@@ -1,0 +1,11 @@
+B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\net8.0\TelegramLib.deps.json
+B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\net8.0\TelegramLib.dll
+B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\net8.0\TelegramLib.pdb
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.GeneratedMSBuildEditorConfig.editorconfig
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.AssemblyInfoInputs.cache
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.AssemblyInfo.cs
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.csproj.CoreCompileInputs.cache
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.dll
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\refint\TelegramLib.dll
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\TelegramLib.pdb
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\net8.0\ref\TelegramLib.dll

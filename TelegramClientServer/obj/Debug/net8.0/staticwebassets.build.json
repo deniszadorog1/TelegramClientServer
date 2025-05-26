@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "NUlnnxUK1qHgQgRQ/5yj+XYxMk5qefKhTabJnrS2sew=",
+  "Source": "TelegramClientServer",
+  "BasePath": "_content/TelegramClientServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

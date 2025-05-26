@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\LoggedUserProfile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MainChatPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\IconTextBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\MainPage\LeftButtons.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\UserChat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\UserTalkMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\LoggedUserProfile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MainChatPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\IconTextBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\MainPage\LeftButtons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\UserChat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\UserTalkMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.UserTalkMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="100" Height="100">
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+            </Ellipse.Fill>
+        </Ellipse>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                           Text="UserLogin" Margin="10" Foreground="Gray" FontSize="14"/>
+                <TextBlock x:Name="LastMessageTime" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                           Text="mestime" Margin="10" Foreground="Gray" FontSize="14"/>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
+                       HorizontalAlignment="Left" VerticalAlignment="Center"
+                       Margin="10 0 0 0"
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap"
+                       Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"/>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

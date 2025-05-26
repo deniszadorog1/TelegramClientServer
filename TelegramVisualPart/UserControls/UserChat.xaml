@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.UserChat"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
+             mc:Ignorable="d" 
+                     
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{StaticResource DarkThemeOne}">
+            <Grid HorizontalAlignment="Left" Margin="10 0 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" x:Name="ChatFriendLogin" Text="FriendLogin" FontSize="12"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White"/>
+                <TextBlock Grid.Row="1" x:Name="ChatFriendLastSeen" Text="Last seen time" FontSize="12"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray"/>
+                
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <materialDesign:PackIcon Kind="Loupe" Foreground="Gray"
+                                         HorizontalAlignment="Center" Width="20" Height="20" 
+                                         VerticalAlignment="Center" Margin="5"/>
+                
+                <materialDesign:PackIcon Kind="PageLayoutSidebarRight" Foreground="Gray"
+                                         HorizontalAlignment="Center" Width="20" Height="20" 
+                                         VerticalAlignment="Center" Margin="5"/>
+                
+                <materialDesign:PackIcon Kind="DotsVerticalCircleOutline" Foreground="Gray"
+                                         HorizontalAlignment="Center" Width="20" Height="20" 
+                                         VerticalAlignment="Center" Margin="5"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="{StaticResource DarkThemeSecond}">
+            <ListBox Background="{StaticResource DarkThemeSecond}" BorderThickness="0"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+                
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon Kind="Paperclip" Grid.Column="0" Margin="10 0 0 0"
+                                     Width="25" Height="25" VerticalAlignment="Center" Foreground="Gray"/>
+            <TextBox Grid.Column="1" x:Name="CommentTextBox" Background="{StaticResource DarkThemeOne}" Foreground="Aqua" 
+                     Text="Write message here..." VerticalContentAlignment="Center"
+                     materialDesign:HintAssist.Hint="Comment"  BorderThickness="0" FontSize="12" />
+        </Grid>
+        
+    </Grid>
+</UserControl>
