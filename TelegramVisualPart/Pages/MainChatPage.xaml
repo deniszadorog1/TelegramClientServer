@@ -25,19 +25,19 @@
                 
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
-                
-                <userControls:IconTextBut x:Name="MyProfileDrawBut"/>
-                <userControls:IconTextBut x:Name="WalletDrawBut"/>
+
+                <userControls:IconTextBut x:Name="MyProfileDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="WalletDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
-                
-                <userControls:IconTextBut x:Name="NewGroupDrawBut"/>
-                <userControls:IconTextBut x:Name="NewChannelDrawBut"/>
-                <userControls:IconTextBut x:Name="ContactsDrawBut"/>
-                <userControls:IconTextBut x:Name="CallsDrawBut"/>
-                <userControls:IconTextBut x:Name="SavedMessagesDrawBut"/>
-                <userControls:IconTextBut x:Name="SettingsDrawBut"/>
+
+                <userControls:IconTextBut x:Name="NewGroupDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="ContactsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent >
 

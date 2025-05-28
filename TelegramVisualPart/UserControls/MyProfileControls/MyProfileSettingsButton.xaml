@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.MyProfileControls.MyProfileSettingsButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.MyProfileControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="400"
+             Height="40"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <materialDesign:PackIcon Kind="AccountCircleOutline" Grid.Row="0" Margin="0 0 0 0"
+                                 Width="30" Height="30" HorizontalAlignment="Right"
+                                 Foreground="White" VerticalAlignment="Center"
+                                 Name ="IconVis"/>
+        <TextBlock Grid.Column="1" Name="ButName" VerticalAlignment="Center"
+                   HorizontalAlignment="Left" Text="There should be button name"
+                   Foreground="White" FontSize="12" Margin="10 0 0 0"/>
+
+        <TextBlock Grid.Column="2" Name="AdditionalText" VerticalAlignment="Center"
+                   HorizontalAlignment="Right" Text="There should be addit text"
+                   Foreground="Aqua" FontSize="12" Margin="0 0 20 0"/>
+    </Grid>
+</UserControl>

@@ -8,11 +8,20 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+                
+                <!-- <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" /> 
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="DarkThemeOne" Color="#17212B"/>
             <SolidColorBrush x:Key="DarkThemeSecond" Color="#0E1621"/>
             <SolidColorBrush x:Key="DarkThemeMouseEnterBut" Color="#232E3C"/>
+            <SolidColorBrush x:Key="DarkThemeDeviderField" Color="#232D3B"/>
+            
+            <SolidColorBrush x:Key="DarkThemeProfileButEnter" Color="#1D2A39"/>
+            <SolidColorBrush x:Key="DarkThemeProfileButForeGround" Color="#5DB2F2"/>
 
         </ResourceDictionary>
     </Application.Resources>

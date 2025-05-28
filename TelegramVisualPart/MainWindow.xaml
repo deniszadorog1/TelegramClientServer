@@ -15,9 +15,15 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        
         >
     <Grid>
-        <Frame Name="MainFrame"/>
+        <Frame Name="MainFrame" PreviewMouseDown="MainFrame_PreviewMouseDown"
+               NavigationUIVisibility="Hidden"/>
+
+        <Frame Name="SecondaryFrame" NavigationUIVisibility="Hidden"
+               PreviewMouseDown="SecondaryFrame_PreviewMouseDown"/>
+
+        <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
+               PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
     </Grid>
 </Window>

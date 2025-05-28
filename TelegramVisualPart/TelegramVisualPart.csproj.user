@@ -7,16 +7,34 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Pages\LoggedUserProfile.xaml.cs">
+    <Compile Update="Pages\Contacts\MainContacts.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MyProfile\LoggedUserProfile.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\MainChatPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MyProfile\MyProfileSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MyProfile\SetInformation\SetNameSurname.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MyProfile\SetInformation\SetPhoneNumber.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\MyProfile\SetInformation\SetUsername.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\IconTextBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MainPage\LeftButtons.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\UserChat.xaml.cs">
@@ -30,16 +48,34 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\LoggedUserProfile.xaml">
+    <Page Update="Pages\Contacts\MainContacts.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\LoggedUserProfile.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\MainChatPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\MyProfileSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\SetInformation\SetNameSurname.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\SetInformation\SetPhoneNumber.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\SetInformation\SetUsername.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\IconTextBut.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MainPage\LeftButtons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\UserChat.xaml">

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.UserControls;
 
 namespace TelegramVisualPart.Pages
 {
@@ -21,8 +22,10 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class MainChatPage : Page
     {
-        public MainChatPage()
+        private Frame _frame;
+        public MainChatPage(Frame frame)
         {
+            _frame = frame;
             InitializeComponent();
 
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
@@ -58,10 +61,26 @@ namespace TelegramVisualPart.Pages
             SavedMessagesDrawBut.ButName.Text = "Saved Messages";
 
             SettingsDrawBut.IconType.Kind = PackIconKind.SettingsOutline;
-            SettingsDrawBut.ButName.Text = "Settings"; 
-            
-
-
+            SettingsDrawBut.ButName.Text = "Settings";
         }
+
+        private void LeftBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is IconTextBut icon)
+            {
+                Page page = GetPageByIcon(icon);
+                if (page is null) return;
+
+                ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(page);
+            }
+        }
+
+        public Page GetPageByIcon(IconTextBut icon)
+        {
+            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_frame) : 
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(_frame) : null;
+        }
+
+
     }
 }

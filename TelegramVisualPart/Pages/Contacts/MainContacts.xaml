@@ -1,0 +1,64 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Contacts.MainContacts"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Contacts"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="450"
+      Height="650" Width="450"
+      VerticalAlignment="Center"
+      HorizontalAlignment="Center"
+      Title="MainContacts"
+      
+      >
+
+    <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TextBlock Text="Contacts" HorizontalAlignment="Left" VerticalAlignment="Center"
+                       FontSize="22" Foreground="White" Margin="20 0 0 0"/>
+
+                <materialDesign:PackIcon Name="SortBut"
+                                     Kind="HamburgerMenu" HorizontalAlignment="Right"  VerticalAlignment="Center"
+                                     Width="35" Height="35" Foreground="Gray" Margin="0 0 20 0"
+                                     MouseEnter="SortBut_MouseEnter" MouseLeave="SortBut_MouseLeave"
+                                     PreviewMouseDown="SortBut_PreviewMouseDown"/>
+            </Grid>
+
+            <Grid Grid.Row="1">
+
+            </Grid>
+
+            <Grid Grid.Row="2">
+
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="AddContactBut"
+                    Content="Add Contact" Background="Transparent" BorderThickness="0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    HorizontalAlignment="Left"
+                    Click="AddContactBut_Click"  Margin="20 0 0 0" 
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CloseBut"
+                Content="Close" Background="Transparent" BorderThickness="0"
+                HorizontalAlignment="Right" Margin="0 0 20 0"
+                MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                Click="CloseBut_Click"/>
+            </Grid>
+
+        </Grid>
+    </Border>
+</Page>
