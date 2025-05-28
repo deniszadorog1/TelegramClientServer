@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\Contacts\AddContact.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Contacts\MainContacts.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -26,6 +29,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\MyProfile\SetInformation\SetUsername.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\SettingsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\IconTextBut.xaml.cs">
@@ -48,6 +57,9 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\Contacts\AddContact.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\Contacts\MainContacts.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -67,6 +79,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\MyProfile\SetInformation\SetUsername.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ContactsControls\UserContact.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\IconTextBut.xaml">

@@ -1,16 +1,19 @@
 ﻿
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\LoggedUserProfile.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\MyProfileSettings.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetNameSurname.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\IconTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MyProfileControls\MyProfileSettingsButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\SettingsPage.xaml;;
 

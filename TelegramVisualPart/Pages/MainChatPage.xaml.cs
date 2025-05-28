@@ -78,7 +78,8 @@ namespace TelegramVisualPart.Pages
         public Page GetPageByIcon(IconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_frame) : 
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(_frame) : null;
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(_frame)  : 
+                icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_frame) : null;
         }
 
 

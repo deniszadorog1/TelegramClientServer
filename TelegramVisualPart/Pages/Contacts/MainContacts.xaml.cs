@@ -57,7 +57,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void AddContactBut_Click(object sender, RoutedEventArgs e)
         {
-
+            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new AddContact(_frame));
         }
 
         private void CloseBut_Click(object sender, RoutedEventArgs e)
