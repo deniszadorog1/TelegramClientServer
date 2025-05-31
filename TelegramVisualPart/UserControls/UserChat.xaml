@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
              mc:Ignorable="d" 
-                     
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" 
+             
+             KeyDown="UserControl_KeyDown"
+             >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -47,7 +48,8 @@
 
         <Grid Grid.Row="1" Background="{StaticResource DarkThemeSecond}">
             <ListBox Background="{StaticResource DarkThemeSecond}" BorderThickness="0"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible">
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
+                     VerticalAlignment="Bottom">
                 
             </ListBox>
         </Grid>
@@ -57,11 +59,14 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon Kind="Paperclip" Grid.Column="0" Margin="10 0 0 0"
+            <materialDesign:PackIcon Kind="Paperclip" Grid.Column="0" Margin="10 0 0 0" Name ="AddFile"
+                                     MouseEnter="AddFile_MouseEnter" MouseLeave="AddFile_MouseLeave"
+                                     PreviewMouseDown="AddFile_PreviewMouseDown"
                                      Width="25" Height="25" VerticalAlignment="Center" Foreground="Gray"/>
             <TextBox Grid.Column="1" x:Name="CommentTextBox" Background="{StaticResource DarkThemeOne}" Foreground="Aqua" 
-                     Text="Write message here..." VerticalContentAlignment="Center"
-                     materialDesign:HintAssist.Hint="Comment"  BorderThickness="0" FontSize="12" />
+                     VerticalContentAlignment="Center" CaretBrush="White"
+                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                     materialDesign:HintAssist.Hint="Enter message here..."  BorderThickness="0" FontSize="12" />
         </Grid>
         
     </Grid>

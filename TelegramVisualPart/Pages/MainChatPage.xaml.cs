@@ -30,6 +30,8 @@ namespace TelegramVisualPart.Pages
 
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
             SetDrawButsStyles();
+
+            SetChatClickEvent();
         }
 
         private void LeftButtons_OnMenuClick(object sender, EventArgs e)
@@ -82,6 +84,38 @@ namespace TelegramVisualPart.Pages
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_frame) : null;
         }
 
+        private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+        }
 
+        private void SetChatClickEvent()
+        {
+            for(int i = 0; i < ChatsBox.Items.Count; i++)
+            {
+                if (ChatsBox.Items[i] is UserTalkMessage chat)
+                {
+                    SetChat(chat);
+                }
+            }
+        }
+
+        public void SetChat(UserTalkMessage chat)
+        {
+            //Get chat obj from db
+            //Set chat params
+        }
+
+        private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set Saved Messages chat control
+
+
+                
+
+        }
+
+        
+
+        
     }
 }

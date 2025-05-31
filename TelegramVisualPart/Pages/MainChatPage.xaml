@@ -7,7 +7,7 @@
       xmlns:leftButs="clr-namespace:TelegramVisualPart.UserControls.MainPage"
       xmlns:userControls="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+      xmlns:controls="clr-namespace:TelegramVisualPart.UserControls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainChatPage" >
@@ -36,7 +36,7 @@
                 <userControls:IconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <userControls:IconTextBut x:Name="ContactsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <userControls:IconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                <userControls:IconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <userControls:IconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
                 <userControls:IconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent >
@@ -44,14 +44,15 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="65"/>
-                <ColumnDefinition MinWidth="75"/>
+                <ColumnDefinition MinWidth="200" x:Name="ChatsColumn"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition MinWidth="250"/>
             </Grid.ColumnDefinitions>
 
             <leftButs:LeftButtons x:Name="LeftButtons" OnMenuClick="LeftButtons_OnMenuClick"  Background="{StaticResource DarkThemeSecond}"/>
 
-            <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" >
+            <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" Name ="ChatsGrid" 
+                  SizeChanged="ChatsGrid_SizeChanged">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition/>
@@ -67,8 +68,8 @@
                            CaretBrush="White"/>
                 </Border>
 
-                <ListBox Grid.Row="1">
-                    
+                <ListBox Grid.Row="1" x:Name="ChatsBox">
+                    <controls:UserTalkMessage Margin="-10 0 0 0" Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
                 </ListBox>
                 
             </Grid>

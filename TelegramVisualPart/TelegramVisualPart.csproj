@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Visuals\Images\UserImages\fray.jpg" />
     <None Remove="Visuals\Images\UserImages\Minato.jpg" />
     <None Remove="Visuals\Images\UserImages\WhiteCat.png" />
   </ItemGroup>
@@ -21,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Visuals\Images\UserImages\fray.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Visuals\Images\UserImages\Minato.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

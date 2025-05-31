@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 B:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml
-161943056819
+192023837709
 
-191589277266
+22-2054721888
 237-27527220
-MainWindow.xaml;Pages\Contacts\AddContact.xaml;Pages\Contacts\MainContacts.xaml;Pages\MainChatPage.xaml;Pages\MyProfile\LoggedUserProfile.xaml;Pages\MyProfile\MyProfileSettings.xaml;Pages\MyProfile\SetInformation\SetNameSurname.xaml;Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;Pages\MyProfile\SetInformation\SetUsername.xaml;Pages\Settings\SettingsPage.xaml;UserControls\ContactsControls\UserContact.xaml;UserControls\IconTextBut.xaml;UserControls\MainPage\LeftButtons.xaml;UserControls\MyProfileControls\MyProfileSettingsButton.xaml;UserControls\UserChat.xaml;UserControls\UserTalkMessage.xaml;
+MainWindow.xaml;Pages\Contacts\AddContact.xaml;Pages\Contacts\MainContacts.xaml;Pages\MainChatPage.xaml;Pages\MyProfile\LoggedUserProfile.xaml;Pages\MyProfile\MyProfileSettings.xaml;Pages\MyProfile\SetInformation\SetNameSurname.xaml;Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;Pages\MyProfile\SetInformation\SetUsername.xaml;Pages\Settings\SettingsPage.xaml;UserControls\ChatControls\ImageMessage.xaml;UserControls\ChatControls\MonthDay.xaml;UserControls\ChatControls\TextMessage.xaml;UserControls\ContactsControls\UserContact.xaml;UserControls\IconTextBut.xaml;UserControls\MainPage\LeftButtons.xaml;UserControls\MyProfileControls\MyProfileSettingsButton.xaml;UserControls\UserChat.xaml;UserControls\UserTalkMessage.xaml;
 
 False
 
