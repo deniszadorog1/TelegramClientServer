@@ -1,0 +1,392 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.PrivAndSecurity.SetPrivacyByType"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity"
+      xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls"
+      mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="400"
+      Height="450" Width="400" 
+      VerticalAlignment="Top" Margin="0 50 0 0"
+      Title="SetPrivacyByType">
+
+    <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="130"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="ActionType" Text="Action name here"
+                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                   Margin="20 0 0 0" FontSize="18" Foreground="White"/>
+
+            <Grid Grid.Row="1" Margin="20 0 20 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Name ="WhoCanUseBlock" Text="Who can use it" TextWrapping="Wrap"
+                           Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                           VerticalAlignment="Center" FontSize="16"/>
+
+                <StackPanel Grid.Row="1" >
+                    <RadioButton Foreground="White" Content="Everybody"
+                             Name="EverybodyRadio" Checked="EverybodyRadio_Checked"
+                             FontSize="16" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                 Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                    <RadioButton Foreground="White" Content="Contacts"
+                             Name="ContactsRadio" Checked="ContactsRadio_Checked"
+                             FontSize="16" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                 Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                    <RadioButton Foreground="White" Content="Nobody"
+                             Name="NobodyRadio" Checked="NobodyRadio_Checked"
+                             FontSize="16" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                 Style="{StaticResource MaterialDesignRadioButton}"/>
+                </StackPanel>
+            </Grid>
+
+
+            <Grid Grid.Row="2" Margin="0 0 0 0" Name="MainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Name ="PhoneNumberRow" Height="0"/>
+                    <RowDefinition Name = "LastSeenRow" Height="0"/>
+                    <RowDefinition Name = "ProfilePhotosRow" Height="0"/>
+                    <RowDefinition Name = "ForwardedMessagesRow" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Name="PhoneGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name="PhoneEverybody" Height="250"/>
+                        <RowDefinition Name="PhoneContacts" Height="0"/>
+                        <RowDefinition Name="PhoneNobody" Height="0" />
+                    </Grid.RowDefinitions>
+
+                    <!--Height - 450-->
+                    <Grid Grid.Row="0" Name="PhoneEverybodyGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="55"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Name="RadioPhoneEveybodyDescription"
+                            Background="{StaticResource DarkThemeDeviderField}">
+                            <TextBlock Name="DescriptionPhoneEverybodyText" TextWrapping="Wrap" Margin="20 0 20 0"
+                                       Foreground="Gray" FontSize="14" Padding="0 10 0 0"
+                                       Text="There is gona some text one two three four five size seve eight nine ten"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                        <buts:EnumPrivacyButton x:Name="PhoneEverybodyUsersExcepts"
+                                                Grid.Row="2" Margin="5 0 0 0"/>
+
+                        <TextBlock Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"
+                                   FontSize="14" Foreground="Gray" TextWrapping="Wrap"
+                                   Padding="20 10 10 0"
+                                   Text="Add users or groups to override the settings above."/>
+                    </Grid>
+
+                    <!--Height - 450-->
+                    <Grid Grid.Row="1" Name="PhoneContactGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="55"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Name="RadioPhoneContactDescription"
+                          Background="{StaticResource DarkThemeDeviderField}">
+                            <TextBlock Name="DescriptionPhoneContactText" TextWrapping="Wrap" Margin="20 0 20 0"
+                                     Foreground="Gray" FontSize="14" Padding="0 10 0 0"
+                                     Text="There is gona some text one two three four five size seve eight nine ten"/>
+                        </Grid>
+
+                        <TextBlock Grid.Row="1"
+                                     Text="Add Exceptions" FontSize="16" 
+                                     VerticalAlignment="Center" Margin="20 0 0 0"
+                                     Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                        <StackPanel Grid.Row="2">
+                            <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneContactAlwaysShareBut"
+                                                    Margin="5 0 0 0"/>
+                            <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneContactNeverShareBut"
+                                                    Margin="5 0 0 0"/>
+                        </StackPanel>
+
+
+                        <TextBlock Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"
+                                 FontSize="14" Foreground="Gray" TextWrapping="Wrap"
+                                 Padding="20 10 10 0"
+                                 Text="Add users or groups to override the settings above."/>
+                    </Grid>
+
+                    <!--Height - 550-->
+                    <Grid Grid.Row="2" Name="PhoneNobodyGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="75"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="55"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Name="RadioPhoneNobodyDescription"
+                                 Background="{StaticResource DarkThemeDeviderField}">
+                            <TextBlock Name="DescriptionPhoneNobodyText" TextWrapping="Wrap" Margin="20 0 20 0"
+                                  Foreground="Gray" FontSize="14" Padding="0 10 0 0"
+                                  Text="There is gona some text one two three four five size seve eight nine ten"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Who can find me by my number"
+                                       VerticalAlignment="Center" Margin="20 0 0 0"
+                                       FontSize="16"
+                                       Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                            <StackPanel Grid.Row="1" Margin="20 0 0 0">
+                                <RadioButton Foreground="White" Content="Everybody"
+                                     Name="NobodyEverybodyRadio"
+                                     FontSize="16" IsChecked="False" 
+                                     Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                                     Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                                <RadioButton Foreground="White" Content="My Contacts"
+                                     Name="NobodyContactsRadio"
+                                     FontSize="16" IsChecked="False" 
+                                     Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                                     Style="{StaticResource MaterialDesignRadioButton}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Grid.Row="2"
+                                  Text="Add Exceptions" FontSize="16" 
+                                  VerticalAlignment="Center" Margin="20 0 0 0"
+                                  Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                        <StackPanel Grid.Row="3">
+                            <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneNobodyAlwaysShareBut"
+                             Margin="5 0 0 0"/>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"
+                              FontSize="14" Foreground="Gray" TextWrapping="Wrap"
+                              Padding="20 10 10 0"
+                              Text="Add users or groups to override the settings above."/>
+                    </Grid>
+                </Grid>
+
+                <ScrollViewer Name="LastSeenListBox" Grid.Row="1"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <Grid Name="LastSeenGrid" 
+                          Width="{Binding ActualWidth, ElementName=LastSeenListBox}"
+                          Height="{Binding ActualHeight, ElementName=LasteenListBox}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Name="LastSeenEverybodyRow" Height="0"/>
+                            <RowDefinition Name="LastSeenOtherRow" />
+                        </Grid.RowDefinitions>
+
+                        <!--height - 450-->
+                        <Grid Grid.Row="0" Name="LastSeemEverybodyGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                       Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap"
+                                       Text="Unless you are a Pemium user, you wont see Last Seen or Online statuses for people with whom you dont share yours. Approximate times will be shown insted(recently, within a week, within a month)."/>
+
+                            <TextBlock Grid.Row="1"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                            <buts:EnumPrivacyButton x:Name="LastSeenEverybodyUsersExcepts"
+                                            Grid.Row="2" Margin="5 0 5 0"/>
+                            <TextBlock Grid.Row="3"
+                                Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                       Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap" 
+                                        Text="You can add users or entire groups as axceptions that will override the settings above"/>
+
+                        </Grid>
+
+
+                        <!--Height - 720 for Contacts; 690 for Nobody-->
+                        <Grid Grid.Row="1" Name="LastSeenOtherGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="65" Name="ExecLastSeenButs"/>
+                                <RowDefinition Height="55"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="90"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="80"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                       Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap"
+                                        Text="Unless you are a Pemium user, you wont see Last Seen or Online statuses for people with whom you dont share yours. Approximate times will be shown insted(recently, within a week, within a month)."/>
+
+                            <TextBlock Grid.Row="1"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                            <StackPanel Grid.Row="2">
+                                <buts:EnumPrivacyButton x:Name="LastSeenOtherAlwaysShare"
+                                                 Margin="5 0 5 0"/>
+
+                                <buts:EnumPrivacyButton x:Name="LastSeenOtherNeverShare"
+                                               Margin="5 0 5 0"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="3"
+                                       Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                       Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap" 
+                                       Text="You can add users or entire groups as axceptions that will override the settings above"/>
+
+                            <buts:ToggleTextBut Grid.Row="4" x:Name="HideReedTimeToggleBut" Margin="10 0 20 0"/>
+
+                            <TextBlock Grid.Row="5"
+                                  Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                  Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap" 
+                                  Text="Hide the time when you read messages from people who cnat see your last seen. If you turn this on, their read time will also be hidden from you (unless you are a Premium user) "/>
+
+                            <TextBlock Grid.Row="6"
+                                   Text="Subscribe to Telegram Premium" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+
+                            <TextBlock Grid.Row="7"
+                                  Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
+                                  Foreground="Gray" Padding="20 5 45 0" TextWrapping="Wrap" 
+                                  Text="If you subscribe to Premium, you will see other users` last seen and read time even If you hid yours from them(unless they specifically restrict it)"/>
+
+                        </Grid>
+
+                    </Grid>
+                </ScrollViewer>
+
+                <!-- Profile photos(My contacts) height =500 -->
+                <Border Grid.Row="2" CornerRadius="15">
+                    <Grid  Name="ProfilePhotos">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" Name="PubPhotoButRow"/>
+                                <RowDefinition Height="60" Name="ProfPhotoTextRow"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="65" Name="ShareButsRow"/>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+
+                            <otherButs:IconTextBut x:Name="SetPubPhotoBut" Margin="10 0 0 0"/>
+
+                            <TextBlock Name="SetProfPhotoText" Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="You can upload a public photo for users who are restricted from viewing yout real profile photos." TextWrapping="Wrap" FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5"/>
+
+                            <TextBlock Grid.Row="2"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                            <StackPanel Grid.Row="3" Name="ProfPhotoShareButsPanel">
+                                <buts:EnumPrivacyButton Grid.Row="2" x:Name="ProfPhotosAlwaysShareBut"
+                                                    Margin="5 0 0 0"/>
+                                <buts:EnumPrivacyButton Grid.Row="2" x:Name="ProfPhotosNeverShareBut"
+                                                    Margin="5 0 0 0"/>
+                            </StackPanel>
+
+                            <TextBlock Name="SetProfPhotoExecText" Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="These settings will override that values above." TextWrapping="Wrap" FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5"/>
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- Contacts Height = 400; -->
+                <Border Grid.Row="3" Name="ForwardedMessageBorder" CornerRadius="15">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="65" Name="ForewarMesSHardButsRow"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Name="SetForwardMessText" Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="Messages you send will not link back to your account when forwarded by other usesrs." FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5" TextWrapping="Wrap"/>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                        <StackPanel Grid.Row="2" Name="ForwardMeesagesShareButsPanel">
+                            <buts:EnumPrivacyButton Grid.Row="2" x:Name="ForwardMeesagesAlwaysShareBut"
+                                                    Margin="5 0 0 0"/>
+                            <buts:EnumPrivacyButton Grid.Row="2" x:Name="ForwardMeesagesNeverShareBut"
+                                                    Margin="5 0 0 0"/>
+                        </StackPanel>
+
+                        <TextBlock Name="SetForwardMeesagesExecText" Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="Messages you send will not link back to your account when forwarded by other usesrs." FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5" TextWrapping="Wrap"/>
+                        
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                    Content="Cancel" Background="Transparent" BorderThickness="0"
+                    HorizontalAlignment="Right" Margin="0 0 10 0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                    Content="Save" Background="Transparent" BorderThickness="0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    HorizontalAlignment="Left"
+                    Click="SaveBut_Click"  Margin="10 0 20 0" 
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+            </StackPanel>
+
+
+        </Grid>
+    </Border>
+</Page>

@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TelegramVisualPart"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -10,7 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
-                
+
                 <!-- <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" /> 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
@@ -19,9 +20,12 @@
             <SolidColorBrush x:Key="DarkThemeSecond" Color="#0E1621"/>
             <SolidColorBrush x:Key="DarkThemeMouseEnterBut" Color="#232E3C"/>
             <SolidColorBrush x:Key="DarkThemeDeviderField" Color="#232D3B"/>
-            
+
             <SolidColorBrush x:Key="DarkThemeProfileButEnter" Color="#1D2A39"/>
             <SolidColorBrush x:Key="DarkThemeProfileButForeGround" Color="#5DB2F2"/>
+
+
+            <sys:Int32 x:Key="PrivacyTypeMargin">20</sys:Int32>
 
         </ResourceDictionary>
     </Application.Resources>

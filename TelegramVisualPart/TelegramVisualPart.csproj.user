@@ -34,6 +34,21 @@
     <Compile Update="Pages\Saved\SavedMessagesInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Settings\SettingsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -49,13 +64,25 @@
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserControls\IconTextBut.xaml.cs">
+    <Compile Update="UserControls\DifferButs\EnumPrivacyButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DifferButs\IconTextBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DifferButs\ToggleTextBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MainPage\LeftButtons.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DifferButs\ToggleIconBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\ToUnblockUser.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\UserChat.xaml.cs">
@@ -96,6 +123,21 @@
     <Page Update="Pages\Saved\SavedMessagesInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\Settings\SettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -111,13 +153,25 @@
     <Page Update="UserControls\ContactsControls\UserContact.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserControls\IconTextBut.xaml">
+    <Page Update="UserControls\DifferButs\EnumPrivacyButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DifferButs\IconTextBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DifferButs\ToggleTextBut.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MainPage\LeftButtons.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DifferButs\ToggleIconBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ToUnblockUser.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\UserChat.xaml">

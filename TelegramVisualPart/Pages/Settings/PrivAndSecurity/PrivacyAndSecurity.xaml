@@ -1,0 +1,131 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.PrivAndSecurity.PrivacyAndSecurity"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity"
+      xmlns:enumBut ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"      
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="400"
+      Height="650" Width="400" VerticalAlignment="Top"
+      Title="PrivacyAndSecurity">
+
+    <Border CornerRadius="15" 
+            Background="{StaticResource DarkThemeOne}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:PackIcon Kind="ArrowLeft" VerticalAlignment="Center"
+                             Name="BackBut"
+                             HorizontalAlignment="Right" Foreground="Gray"
+                             Width="30" Height="30" Margin="10"
+                             MouseEnter="Buts_MouseEnter"
+                             MouseLeave="Buts_MouseLeave"
+                             PreviewMouseDown="BackBut_PreviewMouseDown"/>
+
+                <TextBlock Grid.Column="1" Text="Privacy and Security"
+               VerticalAlignment="Center" HorizontalAlignment="Left"
+               Foreground="White" FontSize="18"/>
+
+                <materialDesign:PackIcon Kind="Close" Grid.Column="2"
+                             Name="CloseBut"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Right" Foreground="Gray"
+                             Width="30" Height="30" Margin="10"
+                             MouseEnter="Buts_MouseEnter"
+                             MouseLeave="Buts_MouseLeave"
+                             PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+            </Grid>
+
+            <Line StrokeThickness="5" Stroke="{StaticResource DarkThemeDeviderField}" 
+                X1="0" X2="1000" VerticalAlignment="Bottom"/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="10"
+               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <StackPanel Grid.Row="1">
+                    <enumBut:EnumPrivacyButton x:Name="LocalPasscode" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="BlockedUsers" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="10"
+               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <StackPanel Grid.Row="1">
+                    <enumBut:EnumPrivacyButton x:Name="PhoneNumber" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="LastSeen" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="ProfilePhotos" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="ForwardedMessages" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="Messages" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="DateOfBirth" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    <enumBut:EnumPrivacyButton x:Name="BioBut" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="10"
+               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <StackPanel Grid.Row="1">
+                    <enumBut:EnumPrivacyButton x:Name="ClearPayments"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="10"
+               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <StackPanel Grid.Row="1">
+                    <enumBut:EnumPrivacyButton x:Name="DeleteAway"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="5">
+                <materialDesign:PackIcon Kind="SmileyDead" HorizontalAlignment="Center"
+                             VerticalAlignment="Center" Foreground="White"
+                             Width="75" Height="75"/>
+            </Grid>
+
+        </Grid>
+
+    </Border>
+</Page>

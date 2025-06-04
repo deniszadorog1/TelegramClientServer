@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.SettingsControls.ToUnblockUser"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="300"
+             >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="75"/>
+        </Grid.ColumnDefinitions>
+
+        <Ellipse Height="50" Width="50">
+            <Ellipse.Fill>
+                <ImageBrush x:Name="UserImageBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+            </Ellipse.Fill>
+        </Ellipse>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="ChaterLogin" Text="login should be there"
+                       Foreground="White" VerticalAlignment="Center"/>
+
+            <TextBlock Name="UserName" Text="There should be username"
+                       Grid.Row="1"
+                       Foreground="White" VerticalAlignment="Center"/>
+        </Grid>
+
+        <TextBlock Name="UnblockBut" PreviewMouseDown="UnblockBut_PreviewMouseDown"
+                   MouseEnter="UnblockBut_MouseEnter"  MouseLeave="UnblockBut_MouseLeave"
+                   Grid.Column="2" Text="Unblock" Margin="10"
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+    </Grid>
+</UserControl>

@@ -65,7 +65,10 @@ namespace TelegramVisualPart.Pages.Settings
 
         public Page GetPageByIcon(IconTextBut icon)
         {
-            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_frame) : null;
+            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_frame) :
+                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_frame) : 
+                icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_frame) :
+                null;
         }
 
         public void SetButtonsView()

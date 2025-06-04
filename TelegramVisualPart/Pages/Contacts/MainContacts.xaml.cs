@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Enums;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -23,9 +25,11 @@ namespace TelegramVisualPart.Pages.Contacts
     public partial class MainContacts : Page
     {
         private Frame _frame;
-        public MainContacts(Frame frame)
+        private ContactsPageAction _type;
+        public MainContacts(Frame frame, ContactsPageAction type)
         {
             _frame = frame;
+            _type = type;
             InitializeComponent();
         }
 
@@ -63,6 +67,21 @@ namespace TelegramVisualPart.Pages.Contacts
         private void CloseBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+        }
+
+        private void UserContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            switch (_type)
+            {
+                case ContactsPageAction.AddContact:
+                    {
+                        break;
+                    }
+                case ContactsPageAction.Block:
+                    {
+                        break;
+                    }
+            }
         }
     }
 }

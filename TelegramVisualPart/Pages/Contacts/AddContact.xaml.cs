@@ -45,7 +45,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new MainContacts(_frame));
+            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new MainContacts(_frame, Enums.ContactsPageAction.AddContact));
         }
 
         private void PhoneBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

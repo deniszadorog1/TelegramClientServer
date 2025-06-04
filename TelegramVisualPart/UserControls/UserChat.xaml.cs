@@ -46,7 +46,7 @@ namespace TelegramVisualPart.UserControls
 
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
 
-            ChatBox.Items.Add(new TextMessage(
+            ChatBox.Items.Add(new TextMessage (
                 GetConvertedStringMessage(CommentTextBox.Text), img));
             CommentTextBox.Text = string.Empty;
 
