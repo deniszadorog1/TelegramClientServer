@@ -120,7 +120,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.PhoneNumber) :
                 name == LastSeen.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.LastSeen) :
                 name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.ProfilePhotos) :
-                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.ForwardedMessages) : null;
+                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.ForwardedMessages) :
+                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.DateBirth) :
+                name == BioBut.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.Bio) :
+                name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount(_frame) :
+                name == Messages.Name.ToString() ? new PrivacyMessages(_frame) : null;
+                
         }
     }
 }

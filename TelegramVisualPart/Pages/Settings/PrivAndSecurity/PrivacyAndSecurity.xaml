@@ -115,7 +115,7 @@
                FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
 
                 <StackPanel Grid.Row="1">
-                    <enumBut:EnumPrivacyButton x:Name="DeleteAway"/>
+                    <enumBut:EnumPrivacyButton x:Name="DeleteAway" PreviewMouseDown="Buts_PreviewMouseDown"/>
                 </StackPanel>
             </Grid>
 

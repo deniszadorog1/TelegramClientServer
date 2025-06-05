@@ -62,7 +62,9 @@
                     <RowDefinition Name ="PhoneNumberRow" Height="0"/>
                     <RowDefinition Name = "LastSeenRow" Height="0"/>
                     <RowDefinition Name = "ProfilePhotosRow" Height="0"/>
-                    <RowDefinition Name = "ForwardedMessagesRow" />
+                    <RowDefinition Name = "ForwardedMessagesRow" Height="0"/>
+                    <RowDefinition Name = "DateOfBirthRow" Height="0"/>
+                    <RowDefinition Name = "BIORow"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Name="PhoneGrid">
@@ -364,9 +366,60 @@
                         <TextBlock Name="SetForwardMeesagesExecText" Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}"
                                    Text="Messages you send will not link back to your account when forwarded by other usesrs." FontSize="14"
                                    Foreground="Gray" Padding="20 5 10 5" TextWrapping="Wrap"/>
-                        
+
                     </Grid>
                 </Border>
+
+                <Grid Grid.Row="4" Name="DateOfBirthBorder">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="65" Name="BirtDateShardButsRow"/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                    <StackPanel Grid.Row="1" Name="BirthDateShareButsPanel">
+                        <buts:EnumPrivacyButton Grid.Row="1" x:Name="BirthDateAlwaysShareBut"
+                                                    Margin="5 0 0 0"/>
+                        <buts:EnumPrivacyButton Grid.Row="2" x:Name="BirthDateNeverShareBut"
+                                                    Margin="5 0 0 0"/>
+                    </StackPanel>
+                    
+                    <TextBlock Name="SetBirthDateText" Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="These users will or will not be able to see your date of birth regardless of the settings above" FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5" TextWrapping="Wrap"/>
+
+
+                </Grid>
+
+                <Grid Grid.Row="5" Name="BioGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="65" Name="BioShardButsRow"/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                                   Text="Add Exceptions" FontSize="16" 
+                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                    <StackPanel Grid.Row="1" Name="BioShareButsPanel">
+                        <buts:EnumPrivacyButton Grid.Row="1" x:Name="BioAlwaysShareBut"
+                                                    Margin="5 0 0 0"/>
+                        <buts:EnumPrivacyButton Grid.Row="2" x:Name="BioNeverShareBut"
+                                                    Margin="5 0 0 0"/>
+                    </StackPanel>
+
+                    <TextBlock Name="SetBioText" Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"
+                                   Text="These users will or will not be able to see your date of birth regardless of the settings above" FontSize="14"
+                                   Foreground="Gray" Padding="20 5 10 5" TextWrapping="Wrap"/>
+
+                </Grid>
 
             </Grid>
 

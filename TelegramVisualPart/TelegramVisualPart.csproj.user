@@ -34,6 +34,12 @@
     <Compile Update="Pages\Saved\SavedMessagesInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Settings\Folders\FolderAction.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\Folders\FoldersPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -44,6 +50,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\PrivacyDeleteAccount.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\PrivacyMessages.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml.cs">
@@ -80,6 +92,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DifferButs\ToggleIconBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsControls\ToUnblockUser.xaml.cs">
@@ -123,6 +147,12 @@
     <Page Update="Pages\Saved\SavedMessagesInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\Settings\Folders\FolderAction.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\Folders\FoldersPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -133,6 +163,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\PrivacyDeleteAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\PrivacyMessages.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml">
@@ -169,6 +205,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DifferButs\ToggleIconBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\ToUnblockUser.xaml">

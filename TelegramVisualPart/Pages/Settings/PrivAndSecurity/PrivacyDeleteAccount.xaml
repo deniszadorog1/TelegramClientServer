@@ -1,0 +1,90 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.PrivAndSecurity.PrivacyDeleteAccount"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity"
+      mc:Ignorable="d" 
+      d:DesignHeight="390" d:DesignWidth="400"
+      Height="390" Width="400"
+      Title="PrivacyDeleteAccount">
+
+    <Border CornerRadius="15" x:Name="BgBorder"
+            Background="{StaticResource DarkThemeOne}">
+        <Grid Margin="20 20 20 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="160"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="Add Exceptions" FontSize="20" 
+                       VerticalAlignment="Center"
+                       Foreground="White"/>
+            
+            <TextBlock Grid.Row="1" TextWrapping="Wrap"
+                       Foreground="White" FontSize="18"
+                       Padding="0 10 5 0 "
+                       Text="If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts."/>
+
+            <StackPanel Grid.Row="2" Orientation="Vertical">
+                <RadioButton Foreground="White" Content="1 month"
+                             Name="OneMonthRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                <RadioButton Foreground="White" Content="3 month"
+                             Name="ThreeMonthRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                <RadioButton Foreground="White" Content="6 month"
+                             Name="SixRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                <RadioButton Foreground="White" Content="12 month"
+                             Name="TwelveMonthRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                
+                <RadioButton Foreground="White" Content="18 month"
+                             Name="EighteenMonthRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                <RadioButton Foreground="White" Content="24 month"
+                             Name="TwentyfourMonthRadio" Checked="Radio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" 
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                    Content="Cancel" Background="Transparent" BorderThickness="0"
+                    HorizontalAlignment="Right" Margin="0 0 10 0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                    Content="Save" Background="Transparent" BorderThickness="0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    HorizontalAlignment="Left"
+                    Click="SaveBut_Click"  Margin="10 0 0 0" 
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+            </StackPanel>
+
+
+        </Grid>
+    </Border>
+</Page>

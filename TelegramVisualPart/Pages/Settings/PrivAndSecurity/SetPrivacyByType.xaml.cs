@@ -61,11 +61,52 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         SetForwardMessagesBlocks();
                         break;
                     }
+                case PrivacySettingType.DateBirth:
+                    {
+                        SetDateOfBirthBlocks();
+                        break;
+                    }
+                case PrivacySettingType.Bio:
+                    {
+                        SetBioBlocks();
+                        break;
+                    }
             }
         }
 
-        private EnumPrivacyButton _forwardMessagesAlwaysShare;
-        private EnumPrivacyButton _forwardMessagesNeverShare;
+        private EnumPrivacyButton _alwaysShare;
+        private EnumPrivacyButton _neverShare;
+
+        private void SetBioBlocks()
+        {
+            ActionType.Text = "Bio";
+            WhoCanUseBlock.Text = "Who can see my bio";
+
+            BioAlwaysShareBut.NamePart.Text = "Always share with";
+            BioAlwaysShareBut.EnumPart.Text = "Add users";
+
+            BioNeverShareBut.NamePart.Text = "Never share with";
+            BioNeverShareBut.EnumPart.Text = "Add users";
+
+            _alwaysShare = BioAlwaysShareBut;
+            _neverShare = BioNeverShareBut;
+        }
+
+        private void SetDateOfBirthBlocks()
+        {
+            ActionType.Text = "Date of birth privacy";
+            WhoCanUseBlock.Text = "Who can see my date of birth";
+
+            BirthDateAlwaysShareBut.NamePart.Text = "Always share with";
+            BirthDateAlwaysShareBut.EnumPart.Text = "Add users";
+
+            BirthDateNeverShareBut.NamePart.Text = "Never share with";
+            BirthDateNeverShareBut.EnumPart.Text = "Add users";
+
+            _alwaysShare = BirthDateAlwaysShareBut;
+            _neverShare = BirthDateNeverShareBut;
+        }
+
         private void SetForwardMessagesBlocks()
         {
             ActionType.Text = "Forwarded Messages";
@@ -77,12 +118,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             ForwardMeesagesNeverShareBut.NamePart.Text = "Never share with";
             ForwardMeesagesNeverShareBut.EnumPart.Text = "Add users";
 
-            _forwardMessagesAlwaysShare = ForwardMeesagesAlwaysShareBut;
-            _forwardMessagesNeverShare = ForwardMeesagesNeverShareBut;
+            _alwaysShare = ForwardMeesagesAlwaysShareBut;
+            _neverShare = ForwardMeesagesNeverShareBut;
         }
 
-        private EnumPrivacyButton _profPhotoAlwaysShare;
-        private EnumPrivacyButton _profPhotoNeverShare;
         public void SetProfilePhotosBlocks()
         {
             ActionType.Text = "Profile Photos";
@@ -99,8 +138,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             ProfPhotosNeverShareBut.NamePart.Text = "Never share with";
             ProfPhotosNeverShareBut.EnumPart.Text = "Add users";
 
-            _profPhotoAlwaysShare = ProfPhotosAlwaysShareBut;
-            _profPhotoNeverShare = ProfPhotosNeverShareBut;
+            _alwaysShare = ProfPhotosAlwaysShareBut;
+            _neverShare = ProfPhotosNeverShareBut;
 
         }
 
@@ -191,7 +230,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ShareButsRow.Height = new GridLength(35);
 
                         ProfPhotoShareButsPanel.Children.Clear();
-                        ProfPhotoShareButsPanel.Children.Add(_profPhotoNeverShare);
+                        ProfPhotoShareButsPanel.Children.Add(_neverShare);
 
                         Height = 360;
                         break;
@@ -201,12 +240,32 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForewarMesSHardButsRow.Height = new GridLength(35);
 
                         ForwardMeesagesShareButsPanel.Children.Clear();
-                        ForwardMeesagesShareButsPanel.Children.Add(_forwardMessagesNeverShare);
+                        ForwardMeesagesShareButsPanel.Children.Add(_neverShare);
 
                         Height = 370;
                         break;
                     }
-                    
+                case PrivacySettingType.DateBirth:
+                    {
+                        BirtDateShardButsRow.Height = new GridLength(35);
+
+                        BirthDateShareButsPanel.Children.Clear();
+                        BirthDateShareButsPanel.Children.Add(_neverShare);
+
+                        Height = 370;
+                        break;
+                    }
+                case PrivacySettingType.Bio:
+                    {
+                        BioShardButsRow.Height = new GridLength(35);
+
+                        BioShareButsPanel.Children.Clear();
+                        BioShareButsPanel.Children.Add(_neverShare);
+
+                        Height = 370;
+                        break;
+                    }
+
             }
         }
 
@@ -235,8 +294,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ShareButsRow.Height = new GridLength(65);
 
                         ProfPhotoShareButsPanel.Children.Clear();
-                        ProfPhotoShareButsPanel.Children.Add(_profPhotoAlwaysShare);
-                        ProfPhotoShareButsPanel.Children.Add(_profPhotoNeverShare);
+                        ProfPhotoShareButsPanel.Children.Add(_alwaysShare);
+                        ProfPhotoShareButsPanel.Children.Add(_neverShare);
 
                         Height = 490;
                         break;
@@ -246,12 +305,35 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForewarMesSHardButsRow.Height = new GridLength(65);
 
                         ForwardMeesagesShareButsPanel.Children.Clear();
-                        ForwardMeesagesShareButsPanel.Children.Add(_forwardMessagesAlwaysShare);
-                        ForwardMeesagesShareButsPanel.Children.Add(_forwardMessagesNeverShare);
+                        ForwardMeesagesShareButsPanel.Children.Add(_alwaysShare);
+                        ForwardMeesagesShareButsPanel.Children.Add(_neverShare);
 
                         Height = 400;
                         break;
                     }
+                case PrivacySettingType.DateBirth:
+                    {
+                        BirtDateShardButsRow.Height = new GridLength(65);
+
+                        BirthDateShareButsPanel.Children.Clear();
+                        BirthDateShareButsPanel.Children.Add(_alwaysShare);
+                        BirthDateShareButsPanel.Children.Add(_neverShare);
+
+                        Height = 400;
+                        break;
+                    }
+                case PrivacySettingType.Bio:
+                    {
+                        BioShardButsRow.Height = new GridLength(65);
+
+                        BioShareButsPanel.Children.Clear();
+                        BioShareButsPanel.Children.Add(_alwaysShare);
+                        BioShareButsPanel.Children.Add(_neverShare);
+
+                        Height = 400;
+                        break;
+                    }
+
             }
         }
 
@@ -280,7 +362,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ShareButsRow.Height = new GridLength(35);
 
                         ProfPhotoShareButsPanel.Children.Clear();
-                        ProfPhotoShareButsPanel.Children.Add(_profPhotoAlwaysShare);
+                        ProfPhotoShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 460;
                         break;
@@ -290,7 +372,27 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForewarMesSHardButsRow.Height = new GridLength(35);
 
                         ForwardMeesagesShareButsPanel.Children.Clear();
-                        ForwardMeesagesShareButsPanel.Children.Add(_forwardMessagesAlwaysShare);
+                        ForwardMeesagesShareButsPanel.Children.Add(_alwaysShare);
+
+                        Height = 370;
+                        break;
+                    }
+                case PrivacySettingType.DateBirth:
+                    {
+                        BirtDateShardButsRow.Height = new GridLength(35);
+
+                        BirthDateShareButsPanel.Children.Clear();
+                        BirthDateShareButsPanel.Children.Add(_alwaysShare);
+
+                        Height = 370;
+                        break;
+                    }
+                case PrivacySettingType.Bio:
+                    {
+                        BioShardButsRow.Height = new GridLength(35);
+
+                        BioShareButsPanel.Children.Clear();
+                        BioShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 370;
                         break;
@@ -355,6 +457,20 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         Height = 400;
                         break;
                     }
+                case PrivacySettingType.DateBirth:
+                    {
+                        DateOfBirthRow.Height = new GridLength();
+
+                        Height = 400;
+                        break;
+                    }
+                case PrivacySettingType.Bio:
+                    {
+                        BIORow.Height = new GridLength();
+
+                        Height = 400;
+                        break;
+                    }
             };
         }
 
@@ -364,6 +480,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             LastSeenRow.Height = new GridLength(0);
             ProfilePhotosRow.Height = new GridLength(0);
             ForwardedMessagesRow.Height = new GridLength(0);
+            DateOfBirthRow.Height = new GridLength(0);
+            BIORow.Height = new GridLength(0);
         }
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
