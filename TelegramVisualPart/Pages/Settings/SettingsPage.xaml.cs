@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.UserControls;
 
@@ -69,7 +70,8 @@ namespace TelegramVisualPart.Pages.Settings
             return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_frame) :
                 icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_frame) : 
                 icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_frame) :
-                icon.Name == Folders.Name.ToString() ? new FoldersPage(_frame) : null;
+                icon.Name == Folders.Name.ToString() ? new FoldersPage(_frame) : 
+                icon.Name == Advanced.Name.ToString() ? new AdvancedPage(_frame) : null;
         }
 
         public void SetButtonsView()

@@ -37,6 +37,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             CreateInviteLinkBut.NewFolderText.Text = "Create an Invite Link";
             CreateInviteLinkBut.IconType.Kind = PackIconKind.LinkVariant;
+
+            ChatToExcludeBut.IconType.Kind = PackIconKind.Minus; 
         }
 
         private void ToChooseFolderIcon_MouseEnter(object sender, MouseEventArgs e)
@@ -47,11 +49,6 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private void ToChooseFolderIcon_MouseLeave(object sender, MouseEventArgs e)
         {
             //FolderIcon.Visibility = Visibility.Hidden;
-        }
-
-        private void ChatToExcludeBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         private void CreateBut_Click(object sender, RoutedEventArgs e)
@@ -78,6 +75,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private void FolderIcon_MouseLeave(object sender, MouseEventArgs e)
         {
             FolderIcon.Visibility = Visibility.Hidden;
+        }
+
+        private void CreateNewFolderBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(new FoldersChatAction(_frame, Enums.FolderChatActionType.AddChatInFolder));
+        }
+
+        private void ChatToExcludeBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(new FoldersChatAction(_frame, Enums.FolderChatActionType.ExcludeChat));
         }
     }
 }

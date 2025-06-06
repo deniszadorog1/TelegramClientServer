@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\Advanced\AdvancedPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Contacts\AddContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -35,6 +38,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\Folders\FolderAction.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\Folders\FoldersChatAction.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\Folders\FoldersPage.xaml.cs">
@@ -94,7 +100,22 @@
     <Compile Update="UserControls\DifferButs\ToggleIconBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\ChatToAddInFolder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\FoldersPrivacy\FolderChatType.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml.cs">
@@ -118,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Advanced\AdvancedPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Contacts\AddContact.xaml">
@@ -148,6 +172,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\Folders\FolderAction.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\Folders\FoldersChatAction.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\Folders\FoldersPage.xaml">
@@ -207,7 +234,22 @@
     <Page Update="UserControls\DifferButs\ToggleIconBut.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\ChatToAddInFolder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\FolderChatType.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml">

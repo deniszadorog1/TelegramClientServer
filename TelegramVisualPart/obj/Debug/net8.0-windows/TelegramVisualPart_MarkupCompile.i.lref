@@ -1,8 +1,6 @@
 ﻿
 
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FolderAction.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersPage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml;;
 

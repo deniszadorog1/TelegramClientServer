@@ -1,6 +1,7 @@
-﻿
+﻿B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
@@ -11,6 +12,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformatio
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Saved\SavedMessagesInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FolderAction.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersChatAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml;;
@@ -30,7 +32,12 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\Toggl
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MyProfileControls\MyProfileSettingsButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\ChatToAddInFolder.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderChatType.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderIcons.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml;;

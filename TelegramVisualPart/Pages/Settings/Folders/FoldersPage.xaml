@@ -80,16 +80,19 @@
                 <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
                FontSize="18" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
 
-                <ListBox  Grid.Row="1" Name="Folders" Margin="10 0 0 0">
-                    <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <folderBut:FolderLittleInfo Grid.Row="1"/>
+                <ListBox  Grid.Row="1" Name="Folders" Margin="0 0 0 0">
+                    <ListBoxItem HorizontalContentAlignment="Stretch"
+                                 Style="{StaticResource BasicListBoxItemStyle}">
+                        <folderBut:FolderLittleInfo Grid.Row="1" Margin="20 0 0 0"/>
                     </ListBoxItem>
 
-                    <ListBoxItem HorizontalContentAlignment="Stretch">
+                    <ListBoxItem HorizontalContentAlignment="Stretch"
+                                 Style="{StaticResource BasicListBoxItemStyle}">
                         <folderBut:AddFolderBut x:Name="CreateNewFolderBut"  
                                                 PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown"/>
                     </ListBoxItem>
                 </ListBox>
+                
             </Grid>
 
             <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>

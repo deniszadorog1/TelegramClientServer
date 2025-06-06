@@ -25,7 +25,19 @@
             <SolidColorBrush x:Key="DarkThemeProfileButForeGround" Color="#5DB2F2"/>
 
 
+
+            <SolidColorBrush x:Key="FolderContactColor" Color="#4C9AE2"/>
+            <SolidColorBrush x:Key="FolderNonContactColor" Color="#47B1DB"/>
+            <SolidColorBrush x:Key="FolderGroupColor" Color="#73C655"/>
+            <SolidColorBrush x:Key="FolderChannelsColor" Color="#E86951"/>
+            <SolidColorBrush x:Key="FolderBotsColor" Color="#F07596"/>
+
             <sys:Int32 x:Key="PrivacyTypeMargin">20</sys:Int32>
+
+
+            <Style x:Key="BasicListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="0"/>
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>

@@ -33,4 +33,14 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Visuals\Images\SystemImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
 </Project>

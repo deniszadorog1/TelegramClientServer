@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"     
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="400">
+             d:DesignHeight="40" d:DesignWidth="400"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -15,7 +17,7 @@
 
         <materialDesign:PackIcon Kind="CirclesAdd"  Name="IconType"
                                  Grid.Column="0" VerticalAlignment="Center"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Right" 
                                  Foreground="{StaticResource DarkThemeProfileButForeGround}"
                                  Width="30" Height="30"/>
 

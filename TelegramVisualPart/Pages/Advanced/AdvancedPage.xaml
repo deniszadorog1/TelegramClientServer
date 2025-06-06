@@ -1,0 +1,81 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Advanced.AdvancedPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Advanced"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"   
+      xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons"
+      xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Height="450" Width="400"
+      Title="AdvancedPage">
+
+    <Border Name="BgBorder" CornerRadius="15"
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Name="UpperThing">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ArrowLeft" Margin="10 0 0 0" 
+                                         Width="35" Height="35"
+                                         VerticalAlignment="Center" HorizontalAlignment="Left"
+                                         Foreground="Gray"
+                                         Name="GetBackBut"
+                                         MouseEnter="Buts_MouseEnter"
+                                         MouseLeave="Buts_MouseLeave"
+                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
+
+                    <TextBlock Text="Advanced" VerticalAlignment="Center" Foreground="White"
+                           Margin="10 0 0 0" FontSize="20"/>
+                </StackPanel>
+
+                <Grid Grid.Column="1">
+                    <materialDesign:PackIcon Kind="Close" Margin="0 0 15 0" 
+                                         Width="35" Height="35"
+                                         VerticalAlignment="Center" 
+                                         HorizontalAlignment="Right"
+                                         Foreground="Gray"
+                                         Name="CloseBut"
+                                         MouseEnter="Buts_MouseEnter"
+                                         MouseLeave="Buts_MouseLeave"
+                                         PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1" Name="DataAndStroage">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+                <TextBlock Text="Data and storage" VerticalAlignment="Center" Margin="20 0 0 0"
+                           Name="DataStorageText"
+                           FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                <StackPanel Name="DataStorageStack" Grid.Row="1">
+                    <buts:DoubleTextIconBut x:Name="DownloadPathBut" Margin="0 5 0 0"/>
+                    <buts:IconTextButAdvanced x:Name="Downloads" Margin="0 5 0 0"/>
+                    <buts:ToggleButAdvanced x:Name="IsAskDownloadPath" Margin="0 5 0 0"/>
+                </StackPanel>
+
+            </Grid>
+
+            <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
+
+            <Grid Grid.Row="3">
+                
+            </Grid>
+            
+        </Grid>
+    </Border>
+</Page>

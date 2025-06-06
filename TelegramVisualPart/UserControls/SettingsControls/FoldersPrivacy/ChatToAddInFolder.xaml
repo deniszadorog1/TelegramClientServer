@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy.ChatToAddInFolder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
+             mc:Ignorable="d" 
+             d:DesignHeight="45" d:DesignWidth="200"
+             Margin="0 5 0 5"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"
+             PreviewMouseDown="UserControl_PreviewMouseDown">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border CornerRadius="100" Width="45" Height="45" Name="ChosenChatIconBorder"
+                Background="Transparent" HorizontalAlignment="Right">
+            <Border CornerRadius="100" Width="42" Height="43" 
+                Background="{StaticResource DarkThemeProfileButEnter}">
+                <Ellipse Width="40" Height="40">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Border>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="10 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Name="ChatName" Text="There is chat name"
+                       HorizontalAlignment="Left" Foreground="White" 
+                       VerticalAlignment="Center" FontSize="14"/>
+
+            <TextBlock Grid.Row="1" Name="ChatType" Text="There is chat type"
+                       HorizontalAlignment="Left" Foreground="Gray" 
+                       VerticalAlignment="Center" FontSize="14"/>
+        </Grid>
+        
+    </Grid>
+</UserControl>
