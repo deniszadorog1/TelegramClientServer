@@ -106,7 +106,13 @@
     <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml.cs">
@@ -240,7 +246,13 @@
     <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml">

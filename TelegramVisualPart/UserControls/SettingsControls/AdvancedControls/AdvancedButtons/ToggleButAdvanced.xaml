@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="400"
-             Height="30">
+             Height="40" 
+             MouseEnter="UserControl_MouseEnter" 
+             MouseLeave="UserControl_MouseLeave"
+             PreviewMouseDown="UserControl_PreviewMouseDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

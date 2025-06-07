@@ -93,5 +93,48 @@ namespace TelegramVisualPart
         {
             ClearThirdFrame();
         }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Maximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized;
+            else
+                this.WindowState = WindowState.Normal;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if(sender is Button but) but.Background = 
+                    (SolidColorBrush)Application.Current.Resources["OtherUpperButColor"];
+
+        }
+
+        private void UpperBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Button but) but.Background = Brushes.Transparent;
+
+        }
+
+        private void CloseWindowBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Button but) but.Background =
+                    (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+        }
     }
 }

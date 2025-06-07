@@ -24,5 +24,22 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.Adva
         {
             InitializeComponent();
         }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            Background = (SolidColorBrush)Application.Current.Resources["DarkThemeDeviderField"];
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            Background = Brushes.Transparent;
+        }
+
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Toggle.IsChecked = !Toggle.IsChecked;
+        }
     }
 }
