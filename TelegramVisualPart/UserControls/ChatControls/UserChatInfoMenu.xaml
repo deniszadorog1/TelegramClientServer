@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatControls.UserChatInfoMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="240" d:DesignWidth="250"
+             Height="240" Width="250">
+    <Border Name="BgBorder" CornerRadius="10"
+            Background="{StaticResource DarkThemeOne}">
+        <StackPanel Margin="0 5 0 5">
+            <buts:IconTextBut x:Name="MuteNotifsBut" Margin="0 5 0 5"/>
+            <Grid Height="10" Background="{StaticResource DarkThemeDeviderField}"/>
+            <buts:IconTextBut x:Name="ViewProfileBut"/>
+            <buts:IconTextBut x:Name="SetWallpaperBut"/>
+            <buts:IconTextBut x:Name="ExportHistoryBut"/>
+            <buts:IconTextBut x:Name="ClearChatBut"/>
+            <buts:IconTextBut x:Name="DeleteChatBut"/>
+        </StackPanel>
+    </Border>
+</UserControl>

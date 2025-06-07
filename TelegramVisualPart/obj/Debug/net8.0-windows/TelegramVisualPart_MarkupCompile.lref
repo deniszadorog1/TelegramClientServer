@@ -22,9 +22,12 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurit
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\PrivacyMessages.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\SettingsPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ImageMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MonthDay.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconTextBut.xaml;;
@@ -46,4 +49,5 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfo.xaml;;
 

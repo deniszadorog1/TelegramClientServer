@@ -32,9 +32,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetWidth();
         }
 
+        private const int _minMessageWidth = 30;
         private void SetWidth()
         {
             double blockSize = GetStringWidth();
+
+            if (blockSize < _minMessageWidth) blockSize = _minMessageWidth;
 
             Width = blockSize + ImageColumnSize.Width.Value + Message.FontSize;
             SetTime();

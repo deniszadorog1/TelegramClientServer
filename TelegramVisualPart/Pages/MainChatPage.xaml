@@ -85,9 +85,9 @@
                   ResizeDirection="Columns"
                   Cursor="SizeWE"/>
 
-            <userControls:UserChat Grid.Column="3">
+            <userControls:UserChat Grid.Column="3" x:Name="UserChat"/>
 
-            </userControls:UserChat>
+
 
 
         </Grid>

@@ -1,0 +1,255 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatControls.ContactInfo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+             xmlns:otherButs="clr-namespace:TelegramVisualPart.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="850" d:DesignWidth="400">
+    <Border Name="BgBorder" CornerRadius="15" 
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                           FontSize="22" Foreground="White" Text="User Info" 
+                           Margin="10 0 0 0"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1"
+                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Grid Name ="MenuButGrid">
+                        <materialDesign:PackIcon Kind="DotsVertical" Name="MoreInfoBut"
+                                             Margin="0 0 10 0"
+                                             Width="30" Height="30"
+                                             Foreground="Gray"/>
+                    </Grid>
+
+                    <Grid Name="CloseButGrid">
+                        <materialDesign:PackIcon Kind="Close" Name="CloseBut"
+                                             Margin="0 0 20 0"
+                                             Width="30" Height="30"
+                                             Foreground="Gray"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" Margin="0 10 0 0" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="250"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="200"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Ellipse Grid.Row="0" Name ="UserIcon" 
+                                 Width="70" Height="70" HorizontalAlignment="Center">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <Grid Grid.Column="1" Margin="0 5 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
+                                        VerticalAlignment="Center" Foreground="White" FontSize="14"/>
+
+                            <TextBlock Grid.Row="1" Name="PhoneNumber" 
+                                       Text="There gona be last seen online"
+                                      VerticalAlignment="Center" 
+                                       Foreground="White" FontSize="12"/>
+
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"/>
+
+                    <Grid Grid.Row="2" Margin="0 5 0 5">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+
+                            <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="InfoIcon"/>
+
+                            <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
+                            <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="Login" VerticalAlignment="Center"/>
+                            <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
+
+                            
+                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="3" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="BellIcon"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="Notifications"
+                                       Foreground="White" FontSize="14"/>
+                            <ToggleButton Name ="TNOtificationToggle" Width="35"
+                                          Grid.Column="2" Grid.Row="3"
+                                          HorizontalAlignment="Right"
+                                          Margin="0 0 20 0"
+                                          Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                                          ToolTip="MaterialDesignSwitchDarkToggleButton"                      
+                                          IsChecked="True" Background="{StaticResource DarkThemeProfileButForeGround}"/>
+
+                            <Grid Grid.ColumnSpan="3" Grid.Row="4" Name ="SendMessageBut"
+                                  MouseEnter="But_MouseEnter"
+                                  MouseLeave="But_MouseLeave" Background="Transparent"
+                                  PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
+                            
+                            <TextBlock Grid.Column="1" Grid.Row="4" Text="SEND MESSAGE" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                       FontWeight="Bold" MouseEnter="But_MouseEnter" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
+
+                    <Grid Grid.Row="4" Margin="0 5 0 5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="3" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="4" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+
+                        <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="ImageIcon"/>
+
+                        <materialDesign:PackIcon Kind="VideoOutline" Grid.Row="1" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="VideoIcon"/>
+
+                        <materialDesign:PackIcon Kind="FileOutline" Grid.Row="2" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="FileIcon"/>
+                        
+                        <materialDesign:PackIcon Kind="Link" Grid.Row="3" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="LinkIcon"/>
+
+                        <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="4" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="GifIcon"/>
+
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Amount of photos" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="Amount of videos" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" Text="Amount of fiels" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="Amount of shared links" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="4" Text="Amount of GIFs" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                    </Grid>
+                    <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"/>
+
+                    <Grid Grid.Row="6" Margin="0 5 0 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="3" Grid.Row="2" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+                        <Grid Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"/>
+
+
+                        <materialDesign:PackIcon Kind="ShareOutline" Grid.Row="0" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="SendIcon"/>
+                        <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name="PenIcon"/>
+                        <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="White" Name ="CanIcon"/>
+                        <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="40" Width="40" Foreground="{StaticResource CloseWindowColor}"/>
+
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="Share this contact" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="Edit contact" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="2" Text="Delete contact" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                        <TextBlock Grid.Column="1" Grid.Row="3" Text="Block user" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource CloseWindowColor}" MouseEnter="But_MouseEnter" />
+
+                    </Grid>
+                    
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

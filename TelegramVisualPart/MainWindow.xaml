@@ -16,8 +16,11 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         
-                WindowStyle="None"
+        WindowState="Maximized"
+        WindowStyle="None"
         AllowsTransparency="True"
+        
+        PreviewMouseDown="Window_MouseDown"
         
         >
     <Grid>

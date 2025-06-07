@@ -136,5 +136,13 @@ namespace TelegramVisualPart
             if (sender is Button but) but.Background =
                     (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
         }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(MainFrame.Content is MainChatPage page)
+            {
+                page.UserChat.UserChatMenu.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

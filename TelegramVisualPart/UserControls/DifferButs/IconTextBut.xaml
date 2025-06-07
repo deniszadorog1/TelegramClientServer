@@ -9,8 +9,8 @@
              d:DesignHeight="50" d:DesignWidth="200" 
              
              MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave"
-             Margin="5">
+             MouseLeave="UserControl_MouseLeave">
+    <!--="5" -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>

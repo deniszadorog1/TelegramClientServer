@@ -1,0 +1,57 @@
+﻿using MaterialDesignThemes.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace TelegramVisualPart.UserControls.ChatControls
+{
+    /// <summary>
+    /// Логика взаимодействия для UserChatInfoMenu.xaml
+    /// </summary>
+    public partial class UserChatInfoMenu : UserControl
+    {
+        public UserChatInfoMenu()
+        {
+            InitializeComponent();
+
+            SetBasicBlocks();
+        }
+
+        public void SetBasicBlocks()
+        {
+            MuteNotifsBut.IconType.Kind = PackIconKind.VolumeMute;
+            MuteNotifsBut.ButName.Text = "Mute notifications";
+
+            ViewProfileBut.IconType.Kind = PackIconKind.AccountCircleOutline;
+            ViewProfileBut.ButName.Text = "View profile";
+
+            SetWallpaperBut.IconType.Kind = PackIconKind.PaintbrushOutline;
+            SetWallpaperBut.ButName.Text = "Set Wallpaper";
+
+            ExportHistoryBut.IconType.Kind = PackIconKind.Export;
+            ExportHistoryBut.ButName.Text = "Export chat history";
+
+            ClearChatBut.IconType.Kind = PackIconKind.Broom;
+            ClearChatBut.ButName.Text = "Clear history";
+
+            DeleteChatBut.IconType.Kind = PackIconKind.TrashCanOutline;
+            DeleteChatBut.ButName.Text = "Delete chat";
+
+            DeleteChatBut.IconType.Foreground = 
+                (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+            DeleteChatBut.ButName.Foreground =
+                (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+        }
+    }
+}

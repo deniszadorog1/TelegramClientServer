@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,18 @@ namespace TelegramVisualPart.UserControls
         public UserChat()
         {
             InitializeComponent();
+
+            SetMarginForChatMenu();
+        }
+
+        public void SetMarginForChatMenu()
+        {
+            UserChatMenu.Margin = new Thickness(
+                0,
+                UpperRow.Height.Value,
+                20,
+                0
+            );
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
@@ -46,8 +59,12 @@ namespace TelegramVisualPart.UserControls
 
             System.Windows.Controls.Image img = new System.Windows.Controls.Image();
 
-            ChatBox.Items.Add(new TextMessage (
+            ChatBox.Items.Add(new TextMessage(
                 GetConvertedStringMessage(CommentTextBox.Text), img));
+
+            //Back Message + date
+
+
             CommentTextBox.Text = string.Empty;
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
@@ -101,6 +118,78 @@ namespace TelegramVisualPart.UserControls
         private void AddImageMessage(System.Windows.Controls.Image img)
         {
             ChatBox.Items.Add(new ImageMessage(img));
+        }
+
+        private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //frind message menu
+        }
+
+        private void UserInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //ShowUser info menu
+        }
+
+        private void UserChatMenuBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //show user menu
+
+            UserChatMenu.Visibility = Visibility.Visible;
+        }
+
+        private void UserChatMenuBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(UserChatMenuIcon, Brushes.White);
+        }
+
+        private void UserChatMenuBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(UserChatMenuIcon, Brushes.Gray);
+        }
+
+        private void UserInfoBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(UserInfoIcon, Brushes.White);
+        }
+
+        private void UserInfoBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(UserInfoIcon, Brushes.Gray);
+        }
+
+        private void FindMessageBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(FindMessageIcon, Brushes.White);
+        }
+
+        private void FindMessageBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SetForegroundForIcon(FindMessageIcon, Brushes.Gray);
+        }
+
+        public void SetForegroundForIcon(PackIcon icon, Brush color)
+        {
+            icon.Foreground = color;
+        }
+
+        private void UserInforGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserInforGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void UserInforGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Pages.UserInfo());
+        }
+
+        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
         }
     }
 }
