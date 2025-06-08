@@ -73,6 +73,36 @@
     <Compile Update="Pages\UserInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\UserInfoContact\ActionsFolder\BlockContact.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserInfoContact\ActionsFolder\DeleteContact.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserInfoContact\ActionsFolder\EditUserContact.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserInfoContact\ActionsFolder\ShareContact.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\ContactInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -95,6 +125,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DifferButs\EnumPrivacyButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\DifferButs\IconButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\DifferButs\IconTextBut.xaml.cs">
@@ -225,6 +258,36 @@
     <Page Update="Pages\UserInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\UserInfoContact\ActionsFolder\BlockContact.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserInfoContact\ActionsFolder\DeleteContact.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserInfoContact\ActionsFolder\EditUserContact.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserInfoContact\ActionsFolder\ShareContact.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\ChatControls\ContactInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -247,6 +310,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DifferButs\EnumPrivacyButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\DifferButs\IconButton.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DifferButs\IconTextBut.xaml">

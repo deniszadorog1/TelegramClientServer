@@ -75,5 +75,56 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
 
         }
+
+        private void CloseButGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseBut.Foreground = Brushes.White;
+        }
+
+        private void CloseButGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            CloseBut.Foreground = Brushes.Gray;
+        }
+
+        private void CloseButGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private void MenuButGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MoreInfoBut.Foreground = Brushes.White;
+        }
+
+        private void MenuButGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MoreInfoBut.Foreground = Brushes.Gray;
+        }
+
+        private void MenuButGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+        
+        }
+
+        private void BlockLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.BlockContact());
+        }
+
+        private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.DeleteContact());
+        }
+
+        private void EditContactLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.EditUserContact());
+        }
+
+        private void ShareLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.ShareContact());
+
+        }
     }
 }

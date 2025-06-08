@@ -1,0 +1,91 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.UserInfoContact.ActionsFolder.EditUserContact"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.UserInfoContact.ActionsFolder"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="400"
+      Height="300" Width="400"
+      Title="EditUserContact">
+
+    <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="65"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row ="0" Text="Edit contact" VerticalAlignment="Center" 
+                       Margin="15" Foreground="White" FontSize="16"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Ellipse Grid.Column="0" VerticalAlignment="Center"
+                      Name="UserEllipseImage" Width="40" Height="40">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Foreground="White" FontSize="16" 
+                                    Name ="PhoneNumberBox"
+                                    VerticalAlignment="Bottom" Text="There gonna be phone number"/>
+
+                    <TextBlock Grid.Row="1" Foreground="Gray" FontSize="14" 
+                                    Name ="LastSeenBox"
+                                    VerticalAlignment="Top" Text="There gonna be last seen online"/>
+                </Grid>
+
+
+            </Grid>
+
+            <TextBox Grid.Row="2" Grid.Column="1"
+                  Foreground="White" Margin="15 10 15 10" FontSize="16"
+                  materialDesign:HintAssist.Hint="First name"
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  CaretBrush="White" Name="FirstNameBox"
+                  materialDesign:HintAssist.Foreground="Gray"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+            <TextBox Grid.Row="3" 
+                  Foreground="White" Margin="15 10 15 10" FontSize="16"
+                  materialDesign:HintAssist.Hint="Last name"
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  CaretBrush="White" Name="LastNameBox"
+                  materialDesign:HintAssist.Foreground="Gray"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                          Content="Cancel" Background="Transparent" BorderThickness="0"
+                          HorizontalAlignment="Right" Margin="0 0 10 0"
+                          MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                          Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                          Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DoneBut"
+                          Content="Done" Background="Transparent" BorderThickness="0"
+                          MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                          HorizontalAlignment="Left" 
+                          Click="DoneBut_Click"  Margin="10 0 20 0" 
+                          Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

@@ -22,6 +22,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurit
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\PrivacyMessages.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\SettingsPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ImageMessage.xaml;;
@@ -30,6 +31,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Tex
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleTextBut.xaml;;
@@ -49,5 +51,14 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfo.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\BlockContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\DeleteContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\EditUserContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\ShareContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.xaml;;
 

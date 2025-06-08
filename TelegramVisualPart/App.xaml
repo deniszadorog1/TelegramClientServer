@@ -35,6 +35,7 @@
 
 
             <SolidColorBrush x:Key="CloseWindowColor" Color="#E81123"/>
+            <SolidColorBrush x:Key="CloseButBg" Color="#3E3336"/>
             <SolidColorBrush x:Key="OtherUpperButColor" Color="#4C535B"/>
             <SolidColorBrush x:Key="UpperBangColor" Color="#3A4047"/>
 

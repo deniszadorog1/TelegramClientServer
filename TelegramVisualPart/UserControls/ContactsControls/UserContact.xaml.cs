@@ -24,5 +24,15 @@ namespace TelegramVisualPart.UserControls.ContactsControls
         {
             InitializeComponent();
         }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Background = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButEnter"];
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Background = Brushes.Transparent;
+        }
     }
 }

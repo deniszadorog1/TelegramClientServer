@@ -1,0 +1,43 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.UserInfoContact.ActionsFolder.BlockContact"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.UserInfoContact.ActionsFolder"
+      mc:Ignorable="d" 
+      d:DesignHeight="200" d:DesignWidth="400"
+      Height="200" Width="400"
+      Title="BlockContact">
+
+    <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="UpperBlock" Text="Block User" Foreground="White" 
+                       FontSize="16" Margin="15"/>
+            <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
+                       Text="Do you want to block USERNAME from messaging and calling you on Telegram?" 
+                       Foreground="White" FontSize="16" Margin="15"/>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Right" Margin="0 0 10 0"
+                            MouseEnter="CancelBut_MouseEnter"  MouseLeave="But_MouseLeave"
+                            Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                            Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="BlockBut"
+                            Content="Block" Background="Transparent" BorderThickness="0"
+                            MouseEnter="BlockBut_MouseEnter"  MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Left" 
+                            Click="BlockBut_Click"  Margin="10 0 20 0" 
+                            Foreground="{StaticResource CloseWindowColor}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

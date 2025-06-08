@@ -21,6 +21,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyMessages.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\SetPrivacyByType.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\SettingsPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ContactInfo.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\DoubleText.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ImageMessage.g.cs
@@ -29,6 +30,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\UserChatInfoMenu.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\UserContact.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\EnumPrivacyButton.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\IconButton.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\IconTextBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\ToggleIconBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\ToggleTextBut.g.cs
@@ -96,6 +98,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Micro
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.IO.Pipelines.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.Net.WebSockets.WebSocketProtocol.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\BlockContact.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\App.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\MainWindow.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Advanced\AdvancedPage.baml
@@ -119,6 +122,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyMessages.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\SetPrivacyByType.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\SettingsPage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ContactInfo.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\DoubleText.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ImageMessage.baml
@@ -127,6 +131,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\UserChatInfoMenu.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\UserContact.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\EnumPrivacyButton.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\IconButton.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\IconTextBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\ToggleIconBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\DifferButs\ToggleTextBut.baml
@@ -146,6 +151,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\ToUnblockUser.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\UserChat.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\UserTalkMessage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\BlockContact.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.g.resources
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.GeneratedMSBuildEditorConfig.editorconfig
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.AssemblyInfoInputs.cache
@@ -158,5 +164,21 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\DeleteContact.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\EditUserContact.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\ShareContact.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\DeleteContact.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\EditUserContact.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\ShareContact.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.baml

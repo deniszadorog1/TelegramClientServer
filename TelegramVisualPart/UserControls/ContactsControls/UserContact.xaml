@@ -7,6 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="45" d:DesignWidth="300"
              Height="45"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"
              >
     <Grid>
         <Grid.ColumnDefinitions>

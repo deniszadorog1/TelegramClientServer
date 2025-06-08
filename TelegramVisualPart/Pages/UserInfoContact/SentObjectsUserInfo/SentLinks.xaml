@@ -1,0 +1,46 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo.SentLinks"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:helper ="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatButsControls.SentObjects"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="400"
+      Width="400"
+      Title="SentLinks">
+    <Border Name="BgBorder" CornerRadius="15"
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+
+                <controls:IconButton x:Name="BackBut" Width="30" Height="30" 
+                                     MouseDown="BackBut_MouseDown"/>
+
+                <TextBlock Grid.Column="1" Text="Shared links" VerticalAlignment="Center"
+                           Foreground="White" FontSize="16" Margin="5"/>
+
+                <controls:IconButton x:Name="CloseBut" Width="30" Height="30" 
+                                     Grid.Column ="2" MouseDown="CloseBut_MouseDown"/>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <helper:DateStackPanel/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Page>

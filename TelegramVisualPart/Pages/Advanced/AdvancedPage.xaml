@@ -8,8 +8,8 @@
       xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons"
       xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="400"
-      Height="800" Width="400"
+      d:DesignHeight="750" d:DesignWidth="400"
+      Height="750" Width="400"
       Title="AdvancedPage">
 
     <Border Name="BgBorder" CornerRadius="15"
@@ -54,7 +54,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="150"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="90"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="135"/>
                         <RowDefinition Height="10"/>
@@ -95,7 +95,6 @@
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
                             <buts:IconTextButAdvanced x:Name="PrivateChatsBut" Margin="0 5 0 0"/>
-                            <buts:IconTextButAdvanced x:Name="InChannelsBut" Margin="0 5 0 0"/>
 
                         </StackPanel>
 
@@ -156,7 +155,7 @@
                                 <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
                                            Content="Show tray icon" Name="TrayIconBox" Margin="0 5 0 0"
                                            Background="{StaticResource DarkThemeProfileButForeGround}"
-                                           IsChecked="False" FontSize="14"                                
+                                           IsChecked="False" FontSize="14"                           
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
