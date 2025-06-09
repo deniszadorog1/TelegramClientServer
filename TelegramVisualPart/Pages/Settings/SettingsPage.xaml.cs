@@ -24,10 +24,8 @@ namespace TelegramVisualPart.Pages.Settings
     /// </summary>
     public partial class SettingsPage : Page
     {
-        private Frame _frame;
-        public SettingsPage(Frame frame)
+        public SettingsPage()
         {
-            _frame = frame;
             InitializeComponent();
             SetButtonsView();
         }
@@ -51,7 +49,7 @@ namespace TelegramVisualPart.Pages.Settings
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void Buts_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -61,17 +59,17 @@ namespace TelegramVisualPart.Pages.Settings
                 Page page = GetPageByIcon(icon);
                 if (page is null) return;
 
-                ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(page);
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
             }
         }
 
         public Page GetPageByIcon(IconTextBut icon)
         {
-            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_frame) :
-                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_frame) : 
-                icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_frame) :
-                icon.Name == Folders.Name.ToString() ? new FoldersPage(_frame) : 
-                icon.Name == Advanced.Name.ToString() ? new AdvancedPage(_frame) : null;
+            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile() :
+                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings() : 
+                icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity() :
+                icon.Name == Folders.Name.ToString() ? new FoldersPage() : 
+                icon.Name == Advanced.Name.ToString() ? new AdvancedPage() : null;
         }
 
         public void SetButtonsView()

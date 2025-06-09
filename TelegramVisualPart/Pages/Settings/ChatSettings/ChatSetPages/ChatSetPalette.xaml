@@ -1,0 +1,66 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages.ChatSetPalette"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="450"
+      Title="ChatSetPalette">
+
+    <Border x:Name="BgBorder" CornerRadius="15" 
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Choose accent color" VerticalAlignment="Center" Margin="15" 
+                   Foreground="White" FontSize="16"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column ="0" Name="PickersGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="75"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+
+                <Grid Grid.Column="1" Name="BoxesGrids">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock />
+                </Grid>
+
+            </Grid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" 
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                    Content="Cancel" Background="Transparent" BorderThickness="0"
+                    HorizontalAlignment="Right" Margin="0 0 10 0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                    Content="Save" Background="Transparent" BorderThickness="0"
+                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                    HorizontalAlignment="Left"
+                    Click="SaveBut_Click"  Margin="10 0 0 0" 
+                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

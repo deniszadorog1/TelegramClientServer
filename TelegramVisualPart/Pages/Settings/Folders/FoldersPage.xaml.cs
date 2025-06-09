@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FoldersPage : Page
     {
-        private Frame _frame;
-        public FoldersPage(Frame frame)
+        public FoldersPage()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -49,12 +47,12 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new SettingsPage(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -75,7 +73,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CreateNewFolderBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(new FolderAction(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new FolderAction());
         }
     }
 }

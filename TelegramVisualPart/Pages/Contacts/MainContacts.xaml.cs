@@ -24,11 +24,9 @@ namespace TelegramVisualPart.Pages.Contacts
     /// </summary>
     public partial class MainContacts : Page
     {
-        private Frame _frame;
         private ContactsPageAction _type;
-        public MainContacts(Frame frame, ContactsPageAction type)
+        public MainContacts(ContactsPageAction type)
         {
-            _frame = frame;
             _type = type;
             InitializeComponent();
         }
@@ -61,12 +59,12 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void AddContactBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new AddContact(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new AddContact());
         }
 
         private void CloseBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void UserContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)

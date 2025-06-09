@@ -23,12 +23,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class SetPrivacyByType : Page
     {
-        private Frame _frame;
         private PrivacySettingType _type;
 
-        public SetPrivacyByType(Frame frame, PrivacySettingType type)
+        public SetPrivacyByType(PrivacySettingType type)
         {
-            _frame = frame;
             _type = type;
             InitializeComponent();
 
@@ -491,7 +489,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
     }
 }

@@ -23,10 +23,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class PrivacyAndSecurity : Page
     {
-        private Frame _frame;
-        public PrivacyAndSecurity(Frame frame)
+        public PrivacyAndSecurity()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetButsVisibility();
@@ -89,12 +87,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new SettingsPage(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
         }
 
         private void Buts_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -107,24 +105,24 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
                 if (page is SetLocalCode || page is BlockedUsers)
                 {
-                    ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(page);
+                    ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
                 }
-                else ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame((page));
+                else ((MainWindow)Window.GetWindow(this)).SetThirdFrame((page));
             }
         }
 
         private Page GetPageForBut(string name)
         {
-            return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_frame) :
-                name == BlockedUsers.Name.ToString() ? new BlockedUsers(_frame) :
-                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.PhoneNumber) :
-                name == LastSeen.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.LastSeen) :
-                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.ProfilePhotos) :
-                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.ForwardedMessages) :
-                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.DateBirth) :
-                name == BioBut.Name.ToString() ? new SetPrivacyByType(_frame, Enums.PrivacySettingType.Bio) :
-                name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount(_frame) :
-                name == Messages.Name.ToString() ? new PrivacyMessages(_frame) : null;
+            return name == LocalPasscode.Name.ToString() ? new SetLocalCode() :
+                name == BlockedUsers.Name.ToString() ? new BlockedUsers() :
+                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber) :
+                name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen) :
+                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos) :
+                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ForwardedMessages) :
+                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth) :
+                name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio) :
+                name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount() :
+                name == Messages.Name.ToString() ? new PrivacyMessages() : null;
                 
         }
     }

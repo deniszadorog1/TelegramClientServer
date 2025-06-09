@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class LoggedUserProfile : Page
     {
-        private Frame _frame;
-        public LoggedUserProfile(Frame frame)
+        public LoggedUserProfile()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -42,12 +40,13 @@ namespace TelegramVisualPart.Pages
 
         private void SettingsBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new MyProfile.MyProfileSettings(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new MyProfile.MyProfileSettings());
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
     }
 }

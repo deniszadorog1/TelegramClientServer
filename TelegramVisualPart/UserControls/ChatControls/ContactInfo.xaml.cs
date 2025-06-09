@@ -28,7 +28,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
 
         private void SetIconsSize()
-        {
+        {           
             SetIconSize(InfoIcon);
             SetIconSize(BellIcon);
 
@@ -42,6 +42,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetIconSize(PenIcon);
             SetIconSize(CanIcon);
             SetIconSize(HandIcon);
+
+            ContactMenu.Margin = new Thickness(
+                0,
+                UpperRow.Height.Value + 10,
+                20,
+                0
+                );
         }
 
         private const int _iconWidth = 30;
@@ -101,11 +108,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             MoreInfoBut.Foreground = Brushes.Gray;
         }
 
-        private void MenuButGrid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-        
-        }
-
         private void BlockLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.BlockContact());
@@ -125,6 +127,35 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.ShareContact());
 
+        }
+
+        private void Line_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Grid grid)
+            {
+                ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.
+                    SentObjectsUserInfo.SentItemsUserContact(GetItemType(grid.Name)));
+            }
+        }
+
+        private Enums.SentItemsTypes GetItemType(string name)
+        {
+            return name == PhotosLine.Name.ToString() ? Enums.SentItemsTypes.Photos :
+                name == VideosLine.Name.ToString() ? Enums.SentItemsTypes.Video :
+                name == FilesLine.Name.ToString() ? Enums.SentItemsTypes.File :
+                name == LinksLine.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
+                name == GIFsLine.Name.ToString() ? Enums.SentItemsTypes.GIFs :
+                Enums.SentItemsTypes.Photos;
+        }
+
+        private bool _isMenuOpen = false;
+
+        private void MenuButGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _isMenuOpen = !_isMenuOpen;
+
+            if (_isMenuOpen) ContactMenu.Visibility = Visibility.Visible;
+            else ContactMenu.Visibility = Visibility.Hidden;
         }
     }
 }

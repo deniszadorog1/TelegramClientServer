@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class PrivacyDeleteAccount : Page
     {
-        private Frame _frame;
-        public PrivacyDeleteAccount(Frame frame)
+        public PrivacyDeleteAccount()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -35,7 +33,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)

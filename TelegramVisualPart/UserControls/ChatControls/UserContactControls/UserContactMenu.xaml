@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatControls.UserContactControls.UserContactMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.UserContactControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="260" d:DesignWidth="250"
+             Width="250" Height="225">
+    <Border x:Name="BgBorder" CornerRadius="15"
+            Background="{StaticResource DarkThemeOne}">
+        <StackPanel x:Name="ButPanel" Margin="0 5 0 0">
+            <buts:IconTextBut x:Name="AutoDelete" PreviewMouseDown="But_PreviewMouseDown"/>
+            <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=BgBorder}" Y2="0" 
+                  Stroke="{StaticResource DarkThemeDeviderField}" StrokeThickness="5" Margin="0 5 0 0"/>
+            <buts:IconTextBut x:Name="ShareContact" PreviewMouseDown="But_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="EditContact" PreviewMouseDown="But_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="ExportHistory" PreviewMouseDown="But_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="AddToFolder" PreviewMouseDown="But_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="BlockUser" PreviewMouseDown="But_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="DeleteContact" PreviewMouseDown="But_PreviewMouseDown"/>
+        </StackPanel>
+    </Border>
+</UserControl>

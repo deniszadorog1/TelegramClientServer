@@ -22,10 +22,8 @@ namespace TelegramVisualPart.Pages.Advanced
     /// </summary>
     public partial class AdvancedPage : Page
     {
-        private Frame _frame;
-        public AdvancedPage(Frame frame)
+        public AdvancedPage()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetBaseBlocks();
@@ -70,12 +68,12 @@ namespace TelegramVisualPart.Pages.Advanced
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new Settings.SettingsPage(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Settings.SettingsPage());
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)

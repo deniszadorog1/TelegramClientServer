@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
     /// </summary>
     public partial class NotAndSoundSettings : Page
     {
-        private Frame _frame;
-        public NotAndSoundSettings(Frame frame)
+        public NotAndSoundSettings()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetButsVisibility();
@@ -69,12 +67,12 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new SettingsPage(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
         }
     }
 }

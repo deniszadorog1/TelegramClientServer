@@ -22,10 +22,8 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class MainChatPage : Page
     {
-        private Frame _frame;
-        public MainChatPage(Frame frame)
+        public MainChatPage()
         {
-            _frame = frame;
             InitializeComponent();
 
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
@@ -73,15 +71,15 @@ namespace TelegramVisualPart.Pages
                 Page page = GetPageByIcon(icon);
                 if (page is null) return;
 
-                ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(page);
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
             }
         }
 
         public Page GetPageByIcon(IconTextBut icon)
         {
-            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_frame) : 
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(_frame, Enums.ContactsPageAction.AddContact)  : 
-                icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_frame) : null;
+            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile() : 
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact)  : 
+                icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage() : null;
         }
 
         private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)

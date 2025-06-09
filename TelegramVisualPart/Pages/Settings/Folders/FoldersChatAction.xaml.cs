@@ -22,11 +22,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FoldersChatAction : Page
     {
-        private Frame _frame;
         private FolderChatActionType _type;
-        public FoldersChatAction(Frame frame, FolderChatActionType type)
+        public FoldersChatAction(FolderChatActionType type)
         {
-            _frame = frame;
             _type = type;
 
             InitializeComponent();
@@ -124,7 +122,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void ChatTypes_PreviewMouseDown(object sender, MouseButtonEventArgs e)

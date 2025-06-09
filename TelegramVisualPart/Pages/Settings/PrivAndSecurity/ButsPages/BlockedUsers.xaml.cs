@@ -22,10 +22,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     /// </summary>
     public partial class BlockedUsers : Page
     {
-        private Frame _frame;
-        public BlockedUsers(Frame frame)
+        public BlockedUsers()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetButsVisualState();
@@ -63,23 +61,24 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new PrivacyAndSecurity(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new PrivacyAndSecurity());
         }
 
         private void ToBlockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainContacts toBlock = new MainContacts(_frame, Enums.ContactsPageAction.Block);
+            MainContacts toBlock = new MainContacts(Enums.ContactsPageAction.Block);
 
             toBlock.ContactsBlock.Text = "Select user to block";
             toBlock.SortBut.Visibility = Visibility.Hidden;
             toBlock.AddContactBut.Visibility = Visibility.Hidden;
 
-            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(toBlock);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(toBlock);
         }
     }
 }

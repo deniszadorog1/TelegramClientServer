@@ -11,6 +11,6 @@
       Title="UserInfo">
 
     <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">
-        <UserInfo:ContactInfo/>
+        <UserInfo:ContactInfo x:Name="ContactInfo"/>
     </Border>
 </Page>

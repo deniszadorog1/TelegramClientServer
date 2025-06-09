@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.IO;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Windows;
@@ -23,7 +24,10 @@ namespace TelegramVisualPart
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Content = new MainChatPage(MainFrame);
+
+
+            ///Visuals/Images/UserImages/Minato.jpg"
+            MainFrame.Content = new MainChatPage();
         }
 
         public void SetSecondaryFrame(Page page)
@@ -142,6 +146,10 @@ namespace TelegramVisualPart
             if(MainFrame.Content is MainChatPage page)
             {
                 page.UserChat.UserChatMenu.Visibility = Visibility.Hidden;
+            }
+            if (SecondaryFrame.Content is UserInfo info)
+            {
+                info.ContactInfo.ContactMenu.Visibility = Visibility.Hidden;
             }
         }
     }

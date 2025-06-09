@@ -37,6 +37,12 @@
     <Compile Update="Pages\Saved\SavedMessagesInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\ChatSettings\MainChatSettingsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Settings\Folders\FolderAction.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -85,10 +91,7 @@
     <Compile Update="Pages\UserInfoContact\ActionsFolder\ShareContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.xaml.cs">
+    <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml.cs">
@@ -119,6 +122,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\UserChatInfoMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
@@ -158,6 +164,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteRectangle.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml.cs">
@@ -222,6 +237,12 @@
     <Page Update="Pages\Saved\SavedMessagesInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\ChatSettings\MainChatSettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\Settings\Folders\FolderAction.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -270,10 +291,7 @@
     <Page Update="Pages\UserInfoContact\ActionsFolder\ShareContact.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentGIFs.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentLinks.xaml">
+    <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml">
@@ -304,6 +322,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\UserChatInfoMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\UserContact.xaml">
@@ -343,6 +364,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteRectangle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml">

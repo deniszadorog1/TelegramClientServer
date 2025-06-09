@@ -20,10 +20,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetUsername : Page
     {
-        private Frame _frame;
-        public SetUsername(Frame frame)
+        public SetUsername()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -45,7 +43,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
     }
 }

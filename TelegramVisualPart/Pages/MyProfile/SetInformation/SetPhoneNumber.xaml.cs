@@ -20,10 +20,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetPhoneNumber : Page
     {
-        private Frame _frame;
-        public SetPhoneNumber(Frame frame)
+        public SetPhoneNumber()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -40,7 +38,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private void Ok_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
     }
 }

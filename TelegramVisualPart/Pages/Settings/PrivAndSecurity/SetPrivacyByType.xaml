@@ -40,7 +40,7 @@
                              Name="EverybodyRadio" Checked="EverybodyRadio_Checked"
                              FontSize="16" IsChecked="False" 
                              Background="{StaticResource DarkThemeProfileButForeGround}"                             
-                 Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
 
                     <RadioButton Foreground="White" Content="Contacts"
                              Name="ContactsRadio" Checked="ContactsRadio_Checked"

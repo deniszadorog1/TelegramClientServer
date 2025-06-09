@@ -23,10 +23,8 @@ namespace TelegramVisualPart.Pages.MyProfile
     /// </summary>
     public partial class MyProfileSettings : Page
     {
-        private Frame _frame;
-        public MyProfileSettings(Frame frame)
+        public MyProfileSettings()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetButtonsView();
@@ -67,12 +65,13 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new LoggedUserProfile(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new LoggedUserProfile());
         }
 
         private void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -87,15 +86,15 @@ namespace TelegramVisualPart.Pages.MyProfile
                 Page page = GetPageByName(but.Name.ToString());
                 if (page is null) return;
 
-                ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(page);
+                ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
             }
         }
 
         public Page GetPageByName(string name)
         {
-            return name == Name.Name.ToString() ? new SetInformation.SetNameSurname(_frame) :
-                name == Username.Name.ToString() ? new SetInformation.SetUsername(_frame) : 
-                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber(_frame) : null;
+            return name == Name.Name.ToString() ? new SetInformation.SetNameSurname() :
+                name == Username.Name.ToString() ? new SetInformation.SetUsername() : 
+                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber() : null;
         }
     }
 }

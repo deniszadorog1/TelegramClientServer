@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FolderAction : Page
     {
-        private Frame _frame;
-        public FolderAction(Frame frame)
+        public FolderAction()
         {
-            _frame = frame;
             InitializeComponent();
 
             SetBlocks();
@@ -58,7 +56,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -79,12 +77,12 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CreateNewFolderBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(new FoldersChatAction(_frame, Enums.FolderChatActionType.AddChatInFolder));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new FoldersChatAction(Enums.FolderChatActionType.AddChatInFolder));
         }
 
         private void ChatToExcludeBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetThirdFrame(new FoldersChatAction(_frame, Enums.FolderChatActionType.ExcludeChat));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new FoldersChatAction(Enums.FolderChatActionType.ExcludeChat));
         }
     }
 }

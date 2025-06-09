@@ -21,10 +21,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     /// </summary>
     public partial class SetLocalCode : Page
     {
-        private Frame _frame;
-        public SetLocalCode(Frame frame)
+        public SetLocalCode()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -49,12 +47,13 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).SetSecondaryFrame(new PrivacyAndSecurity(_frame));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new PrivacyAndSecurity());
         }
     }
 }

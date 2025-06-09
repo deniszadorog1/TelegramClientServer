@@ -20,10 +20,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class PrivacyMessages : Page
     {
-        private Frame _frame;
-        public PrivacyMessages(Frame frame)
+        public PrivacyMessages()
         {
-            _frame = frame;
             InitializeComponent();
         }
 
@@ -55,7 +53,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(_frame)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
     }
 }
