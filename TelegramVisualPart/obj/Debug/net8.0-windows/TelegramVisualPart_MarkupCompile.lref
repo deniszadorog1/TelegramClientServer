@@ -12,7 +12,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformatio
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Saved\SavedMessagesInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\MainChatSettingsPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\MainChatSetPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FolderAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersChatAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersPage.xaml;;
@@ -55,8 +56,13 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\FontFamilyChoose\FontToChoose.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\CirclePaletteBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\ColorPickerLine.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteRectangle.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteTextBox.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\ThemeSetBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\ChatToAddInFolder.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderChatType.xaml;;
@@ -66,4 +72,5 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\BackMessage.xaml;;
 

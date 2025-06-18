@@ -5,9 +5,12 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramClientServer", "TelegramClientServer\TelegramClientServer.csproj", "{35BEFD52-591A-44DD-9D19-9796E2C457F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramVisualPart", "TelegramVisualPart\TelegramVisualPart.csproj", "{532DAD4B-B4BF-42E3-9CD1-CED37C365424}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramVisualPart", "TelegramVisualPart\TelegramVisualPart.csproj", "{532DAD4B-B4BF-42E3-9CD1-CED37C365424}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B} = {C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramLib", "TelegramLib\TelegramLib.csproj", "{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramLib", "TelegramLib\TelegramLib.csproj", "{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

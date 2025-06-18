@@ -65,6 +65,5 @@ namespace TelegramVisualPart.UserControls.ChatControls
             );
             return formattedText.Width;
         }
-
     }
 }

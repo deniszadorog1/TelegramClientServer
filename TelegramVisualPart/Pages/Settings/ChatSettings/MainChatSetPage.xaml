@@ -1,0 +1,188 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.ChatSettings.MainChatSetPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.ChatSettings"
+      xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="640" d:DesignWidth="400"
+      Height="640" Width="400"
+      Title="MainChatSetPage">
+
+    <Page.Resources>
+        <Style x:Key="CircleColorStyle" TargetType="{x:Type controls:CircleColor}">
+            <Setter Property="Margin" Value="7 0 0 0"/>
+            <EventSetter Event="MouseDown" Handler="CircleColor_MouseDown"/>
+        </Style>
+    </Page.Resources>
+
+    <Border Name="BgBorder" CornerRadius="15"
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
+
+                <buts:IconButton Width="70"
+                                 HorizontalAlignment="Right" x:Name="BackBut"
+                                 PreviewMouseDown="BackBut_PreviewMouseDown"/>
+
+                <TextBlock Name="ChatNameBlock" Grid.Column="1" 
+                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Text="Chat Settings" Margin="10" Foreground="White"
+                           FontSize="16"/>
+
+                <buts:IconButton Grid.Column="2" Width="70"
+                                 HorizontalAlignment="Left" x:Name="CloseBut"
+                                 PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="10"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="145"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Name="ThemesTextBlock" VerticalAlignment="Center"
+                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                   Text="Themes" FontSize="16" Margin="15 0 0 0"/>
+
+                        <WrapPanel Name="ThemesWrap" Orientation="Horizontal"
+                                   Grid.Row="1" Margin="5 0 0 0">
+                            <controls:ThemeCard x:Name="ClassicCard" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="DayCard" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="TintedCard" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="NightCard" Margin="10 0 0 0"/>
+                        </WrapPanel>
+
+                        <StackPanel Grid.Row="2" HorizontalAlignment="Left" Name="ColorCirclesPanel"
+                                    Margin="20 0 0 0" Orientation="Horizontal">
+                            <controls:CircleColor x:Name="LightGreen"/>
+                            <controls:CircleColor x:Name="Blue" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Green" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Pink" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Orange" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Purple" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Red" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Gray" Style="{StaticResource CircleColorStyle}"/>
+                            <controls:CircleColor x:Name="Yellow" Style="{StaticResource CircleColorStyle}"/>
+
+                            <Grid PreviewMouseDown="PaletteBut_PreviewMouseDown" Background="Transparent">
+                                <materialDesign:PackIcon Kind="PaletteOutline"  Foreground="Aqua"
+                                                     Width="35" Height="35"
+                                                     Name="PaletteBut" Margin="7 0 0 0"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
+
+                        <Grid Grid.Row="4" Name="ThemeSettings" Margin="0 10 0 0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Theme settings" Margin="15 0 0 0" Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                       FontSize="16" VerticalAlignment="Center"/>
+
+                            <StackPanel Grid.Row="1" Orientation="Vertical">
+                                <controls:ThemeSetBut x:Name="AutoNightBut" Margin="0 5 0 0"/>
+                                <controls:ThemeSetBut x:Name="FontFamalyBut" Margin="0 5 0 0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"
+                              Margin="0 10 0 0"/>
+
+                        <Grid Grid.Row="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                       FontSize="16" VerticalAlignment="Center"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Name="ChosenWallpaperImage" 
+                                       Width="85" Height="85"/>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Choose from gallery" Name="ChooseWallpaperFromGalery"
+                                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                                   FontSize="15" VerticalAlignment="Center"
+                                                   PreviewMouseDown="ChooseWallpaperFromGalery_PreviewMouseDown"
+                                                   MouseEnter="ChatWallpaperTextBlock_MouseEnter"
+                                                   MouseLeave="ChatWallpaperTextBlock_MouseLeave"/>
+
+                                    <TextBlock Text="Choose from file" Name="ChooseWallpaperFromFile"
+                                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                                   FontSize="15" VerticalAlignment="Top" Grid.Row="1"
+                                                   PreviewMouseDown="ChooseWallpaperFromFile_PreviewMouseDown"
+                                                   MouseEnter="ChatWallpaperTextBlock_MouseEnter"
+                                                   MouseLeave="ChatWallpaperTextBlock_MouseLeave"/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        <Grid Grid.Row="7" Background="{StaticResource DarkThemeDeviderField}"/>
+
+
+                        <StackPanel Grid.Row="8">
+                            <RadioButton Foreground="White" Content="Send with Enter"
+                             Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                            <RadioButton Foreground="White" Content="Send with Ctrl+Enter"
+                             Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
+                             FontSize="18" IsChecked="False" 
+                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                        </StackPanel>
+
+
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Page>

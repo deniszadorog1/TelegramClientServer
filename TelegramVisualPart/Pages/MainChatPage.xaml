@@ -15,20 +15,20 @@
     <materialDesign:DrawerHost x:Name="MainDrawerHost">
         <materialDesign:DrawerHost.LeftDrawerContent>
             <StackPanel Background="{StaticResource DarkThemeOne}" Width="275">
-                
+
                 <Ellipse Name ="LoggedUserImage" Width="50" Height="50"
                          HorizontalAlignment="Left" Margin="10">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="pack://application:,,,/Visuals/Images/UserImages/Minato.jpg"/>
                     </Ellipse.Fill>
                 </Ellipse>
-                
+
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
 
                 <userControls:IconTextBut x:Name="MyProfileDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <userControls:IconTextBut x:Name="WalletDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                
+
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
 
@@ -44,23 +44,24 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="65"/>
-                <ColumnDefinition MinWidth="200" x:Name="ChatsColumn"/>
-                <ColumnDefinition Width="5"/>
+                <ColumnDefinition MinWidth="50" x:Name="ChatsColumn" />
+                <ColumnDefinition Width="3"/>
                 <ColumnDefinition MinWidth="250"/>
             </Grid.ColumnDefinitions>
 
             <leftButs:LeftButtons x:Name="LeftButtons" OnMenuClick="LeftButtons_OnMenuClick"  Background="{StaticResource DarkThemeSecond}"/>
 
-            <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" Name ="ChatsGrid" 
+            <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" 
+                  Name ="ChatsGrid" 
                   SizeChanged="ChatsGrid_SizeChanged">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Margin="10 5 10 0" CornerRadius="20"
+                <Border Grid.Row="0" Margin="10 5 10 0" CornerRadius="20" Name="SearchBorder"
                         Background="{StaticResource DarkThemeDeviderField}">
-                    <TextBox Grid.Row="0"
+                    <TextBox Grid.Row="0"  Name="SarchBox" 
                           Foreground="White" Margin="10 0 10 0" FontSize="14"
                           materialDesign:HintAssist.Hint="Serch"
                           materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
@@ -68,22 +69,32 @@
                            CaretBrush="White"/>
                 </Border>
 
+                <Grid Name="MagnifierGrid" Background="Transparent" Visibility="Visible"
+                      MouseEnter="MagnifierGrid_MouseEnter"
+                      MouseLeave="MagnifierGrid_MouseLeave"
+                      PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
+                    
+                    <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
+                                                 Width="35" Height="35" Foreground="Gray"/>
+                </Grid>
+
                 <ListBox Grid.Row="1" x:Name="ChatsBox">
                     <controls:UserTalkMessage Margin="-10 0 0 0" Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
                 </ListBox>
-                
+
             </Grid>
 
 
             <GridSplitter Grid.Column="2"
-                  Width="5"
+                  Width="3" Name="MySplitter"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
-                  Background="Gray"
+                  Background="Red"
                   ShowsPreview="False"
                   ResizeBehavior="PreviousAndNext"
                   ResizeDirection="Columns"
-                  Cursor="SizeWE"/>
+                  Cursor="SizeWE"
+                         DragDelta="GridSplitter_DragDelta" />
 
             <userControls:UserChat Grid.Column="3" x:Name="UserChat"/>
 

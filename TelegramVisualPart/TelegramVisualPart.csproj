@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TelegramLib\TelegramLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>

@@ -42,7 +42,18 @@
             <SolidColorBrush x:Key="ColorCardTinted" Color="#485761"/>
             <SolidColorBrush x:Key="ColorCardNight" Color="#485761"/>
 
+            <SolidColorBrush x:Key="PalleteCircleOneColor" Color="#3FC1B0"/>
+            <SolidColorBrush x:Key="PalleteCircleTwoColor" Color="#60A8E7"/>
+            <SolidColorBrush x:Key="PalleteCircleThreeColor" Color="#4E9C57"/>
+            <SolidColorBrush x:Key="PalleteCircleFourColor" Color="#CA7896"/>
+            <SolidColorBrush x:Key="PalleteCircleFiveColor" Color="#CC925C"/>
+            <SolidColorBrush x:Key="PalleteCircleSixColor" Color="#A58ED2"/>
+            <SolidColorBrush x:Key="PalleteCircleSevenColor" Color="#D27570"/>
+            <SolidColorBrush x:Key="PalleteCircleEightColor" Color="#7B8799"/>
+            <SolidColorBrush x:Key="PalleteCircleNineColor" Color="#CBAC67"/>
 
+
+            <GradientStop x:Key="LinearPalleteColor" Color="Red"/>
 
             <sys:Int32 x:Key="PrivacyTypeMargin">20</sys:Int32>
 

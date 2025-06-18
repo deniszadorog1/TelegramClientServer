@@ -18,6 +18,11 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0" Name="UserInfoColumn"/>
+        </Grid.ColumnDefinitions>
+        
         <Grid Grid.Row="0" Background="{StaticResource DarkThemeOne}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -103,5 +108,6 @@
                 Panel.ZIndex="100"
                 Visibility="Hidden" />
 
+        <Grid Grid.Column="1" Grid.RowSpan="3" Name="ContactInfoGrid"/>
     </Grid>
 </UserControl>

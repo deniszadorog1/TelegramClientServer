@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.PaletteControls.PaletteTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.PaletteControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="200"
+             Height="30">
+    <Grid>
+
+        <Label Content="W" Margin="0 0 0 0" Foreground="Gray" 
+               VerticalAlignment="Center" HorizontalAlignment="Left"
+               FontSize="14" Name="FrontLetter"/>
+
+        <TextBox Foreground="White"  FontSize="14"
+                 materialDesign:HintAssist.Hint="Number"
+                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                 CaretBrush="White" Name="Number"
+                 materialDesign:HintAssist.Foreground="Gray"
+                 Padding="20 0 40 0"/>
+
+        <Label Content="W" Margin="0 0 10 0" Foreground="Gray" 
+               VerticalAlignment="Center" HorizontalAlignment="Right"
+               FontSize="14"  Name="BackLetter"/>
+
+    </Grid>
+</UserControl>

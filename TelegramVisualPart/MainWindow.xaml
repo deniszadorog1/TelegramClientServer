@@ -21,7 +21,7 @@
         AllowsTransparency="True"
         
         PreviewMouseDown="Window_MouseDown"
-        
+        SizeChanged="Window_SizeChanged"
         >
     <Grid>
         <Grid.RowDefinitions>

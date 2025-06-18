@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MahApps.Metro.Controls;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,9 +75,9 @@ namespace TelegramVisualPart.UserControls
         {
             const int checker = 20;
 
-            for(int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
-                if(i % checker == 0)
+                if (i % checker == 0)
                 {
                     str = str.Insert(i, "\n");
                 }
@@ -127,7 +128,42 @@ namespace TelegramVisualPart.UserControls
 
         private void UserInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //ShowUser info menu
+            if (UserInfoColumn.Width.Value == 0)
+            {
+                AddContactInfo();
+                return;
+            }
+            RemoveRightContactInfo();
+        }
+
+        public void AddContactInfo()
+        {
+            const int _userContactWidth = 350;
+            double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
+
+            if (windowWidth + _userContactWidth <= 
+                SystemParameters.PrimaryScreenWidth)
+            {
+                ((MainWindow)Window.GetWindow(this)).Width = 
+                    windowWidth + _userContactWidth;
+            }
+
+            ContactInfo info = new ContactInfo();
+            info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
+
+            UserInfoColumn.Width = new GridLength(_userContactWidth);
+            ContactInfoGrid.Children.Add(info);    
+        }
+
+        public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
+        {
+            RemoveRightContactInfo();
+        }
+
+        public void RemoveRightContactInfo()
+        {
+            ContactInfoGrid.Children.Clear();
+            UserInfoColumn.Width = new GridLength(0);
         }
 
         private void UserChatMenuBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

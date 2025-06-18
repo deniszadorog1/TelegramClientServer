@@ -152,5 +152,10 @@ namespace TelegramVisualPart
                 info.ContactInfo.ContactMenu.Visibility = Visibility.Hidden;
             }
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -77,18 +77,19 @@ namespace TelegramVisualPart.Pages
 
         public Page GetPageByIcon(IconTextBut icon)
         {
-            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile() : 
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact)  : 
+            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile() :
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact) :
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage() : null;
         }
 
         private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+
         }
 
         private void SetChatClickEvent()
         {
-            for(int i = 0; i < ChatsBox.Items.Count; i++)
+            for (int i = 0; i < ChatsBox.Items.Count; i++)
             {
                 if (ChatsBox.Items[i] is UserTalkMessage chat)
                 {
@@ -108,12 +109,71 @@ namespace TelegramVisualPart.Pages
             //Set Saved Messages chat control
 
 
-                
+
 
         }
 
-        
+        private void GridSplitter_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            Point mousePos = Mouse.GetPosition(Application.Current.MainWindow);
+            double desired = ChatsColumn.ActualWidth + e.HorizontalChange;
 
-        
+            if (mousePos.X < 300)
+            {
+                ChatsColumn.Width = new GridLength(75);
+                SetVisibilityForChatObjects(true);
+                //hide all chat textBlocks except UserImage
+            }
+            else
+            {
+                double clamped = Math.Max(100, desired);
+                ChatsColumn.Width = new GridLength(clamped);
+                SetVisibilityForChatObjects(false);
+            }
+        }
+
+        private void SetVisibilityForChatObjects(bool isShort)
+        {
+            SetChatInfoVisibility(isShort);
+            SetSearchLineVisibility(isShort);
+        }
+
+        public void SetSearchLineVisibility(bool isShort)
+        {
+            Visibility magniVis = isShort ? Visibility.Visible : Visibility.Hidden;
+
+            MagnifierGrid.Visibility = magniVis;
+            SearchBorder.Visibility = magniVis == Visibility.Visible ? 
+                Visibility.Hidden : Visibility.Visible;
+        }
+
+        public void SetChatInfoVisibility(bool isShort)
+        {
+            Visibility vis = isShort ? Visibility.Hidden : Visibility.Visible;
+            
+            foreach(var mes in ChatsBox.Items)
+            {
+                if (mes is not UserTalkMessage) return;
+                UserTalkMessage message = mes as UserTalkMessage;
+                message.InfoGrid.Visibility = vis;
+            }
+        }
+
+        private void MagnifierGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SearchChatBut.Foreground = Brushes.White;
+        }
+
+        private void MagnifierGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SearchChatBut.Foreground = Brushes.Gray;
+        }
+
+        private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ChatsColumn.Width = new GridLength(300);
+            SetVisibilityForChatObjects(false);
+            //Change border size   
+        }
     }
 }

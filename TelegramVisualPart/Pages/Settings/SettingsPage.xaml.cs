@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.Pages.Advanced;
+using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.UserControls;
 
@@ -66,10 +67,11 @@ namespace TelegramVisualPart.Pages.Settings
         public Page GetPageByIcon(IconTextBut icon)
         {
             return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile() :
-                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings() : 
+                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings() :
                 icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity() :
-                icon.Name == Folders.Name.ToString() ? new FoldersPage() : 
-                icon.Name == Advanced.Name.ToString() ? new AdvancedPage() : null;
+                icon.Name == Folders.Name.ToString() ? new FoldersPage() :
+                icon.Name == Advanced.Name.ToString() ? new AdvancedPage() :
+                icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage() : null;
         }
 
         public void SetButtonsView()

@@ -7,8 +7,76 @@
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="250"
              MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave">
-    <Rectangle Stretch="Fill" >
-            
-    </Rectangle>
+             MouseLeave="UserControl_MouseLeave"
+             
+             MouseDown="UserControl_MouseDown"
+             MouseMove="UserControl_MouseMove"
+             MouseUp="UserControl_MouseUp" 
+             Width="300" Height="300">
+
+    <UserControl.Resources>
+        <DrawingBrush x:Key="SpectrumWithVerticalFade">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <!-- Horizontal gradient from left to right -->
+                    <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,1,1" />
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Brush>
+                            <LinearGradientBrush x:Name="gradientBrusha" StartPoint="0,0" EndPoint="1,0">
+                                <!-- Red -->
+                                <GradientStop  Color="#FF0000" Offset="0.01"/>
+
+                                <!-- Orange -->
+                                <GradientStop Color="Orange" Offset="0.17"/>
+
+                                <!-- Yellow -->
+                                <GradientStop Color="#FFFF00" Offset="0.33"/>
+                                <GradientStop Color="#FFFF00" Offset="0.35"/>
+
+                                <!-- Green -->
+                                <GradientStop Color="#00FF00" Offset="0.50"/>
+                                <GradientStop Color="#00FF00" Offset="0.51"/>
+
+                                <!-- Cyan -->
+                                <GradientStop Color="#00FFFF" Offset="0.60"/>
+                                <GradientStop Color="#00FFFF" Offset="0.63"/>
+
+                                <!-- Blue -->
+                                <GradientStop Color="#0000FF" Offset="0.78"/>
+                                <GradientStop Color="#0000FF" Offset="0.80"/>
+
+                                <!-- Magenta -->
+                                <GradientStop Color="#ff06e2" Offset="0.92"/>
+
+                                <!-- Red -->
+                                <GradientStop Color="Red" Offset="1.00"/>
+                            </LinearGradientBrush>
+                        </GeometryDrawing.Brush>
+                    </GeometryDrawing>
+                    <!-- Vertical gradient from top to bottom to white -->
+                    <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,1,1" />
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Brush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="Transparent" Offset="0.01"/>
+                                <GradientStop Color="#FFFFFF" Offset="0.99"/>
+                            </LinearGradientBrush>
+                        </GeometryDrawing.Brush>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </UserControl.Resources>
+
+    <Canvas Name="BgCanvas" ClipToBounds="True">
+        <Rectangle Name="RectPalette"
+                   Fill="{StaticResource SpectrumWithVerticalFade}"
+                   Width="{Binding ActualWidth, ElementName=BgCanvas}"
+                   Height="{Binding ActualHeight, ElementName=BgCanvas}"/>
+        <local:CirclePaletteBut x:Name="CircleBut"/>
+    </Canvas>
 </UserControl>
