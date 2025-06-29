@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace TelegramVisualPart.UserControls.ChatsSearch
+{
+    /// <summary>
+    /// Логика взаимодействия для ChatButton.xaml
+    /// </summary>
+    public partial class ChatButton : UserControl
+    {
+        public ChatButton()
+        {
+            InitializeComponent();
+        }
+
+        private void UserChat_MouseEnter(object sender, MouseEventArgs e)
+        {
+            UserChat.Background =
+                     (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
+
+        }
+
+        private void UserChat_MouseLeave(object sender, MouseEventArgs e)
+        {
+            UserChat.Background = new SolidColorBrush(Colors.Transparent);
+        }
+    }
+}

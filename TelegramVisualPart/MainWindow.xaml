@@ -18,7 +18,7 @@
         
         WindowState="Maximized"
         WindowStyle="None"
-        AllowsTransparency="True"
+        AllowsTransparency="False"
         
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
@@ -30,7 +30,9 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="{StaticResource UpperBangColor}" 
-                  MouseLeftButtonDown="DragWindow">
+                  MouseLeftButtonDown="DragWindow"
+                  MouseLeftButtonUp="Grid_MouseLeftButtonUp"
+                  MouseMove="Grid_MouseMove">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                 <Button Content="—" Width="43" Click="Minimize_Click"  Margin="5 0 5 0"

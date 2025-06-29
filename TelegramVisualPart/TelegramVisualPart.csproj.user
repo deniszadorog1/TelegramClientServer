@@ -133,6 +133,12 @@
     <Compile Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatsSearch\ChatButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatsSearch\SearchControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -352,6 +358,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsSearch\ChatButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsSearch\SearchControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\UserContact.xaml">

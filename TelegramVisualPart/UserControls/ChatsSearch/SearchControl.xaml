@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatsSearch.SearchControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatsSearch"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="400"
+             Height="250">
+
+    <UserControl.Resources>
+        <Style x:Key="Tabs" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="10 0 0 0"/>
+            <EventSetter Event="PreviewMouseDown" Handler="TextBlock_PreviewMouseDown"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" Name="TypesRows"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Name="TypesToSearchGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal" Name="TabsPanel">
+                <TextBlock Style="{StaticResource Tabs}" Name="ChatTab" Text="Chats" Foreground="{StaticResource FolderContactColor}"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="PhotosTab" Text="Photos"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="VideosTab" Text="Videos"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="DownloadsTab" Text="Downloads"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="LinksTab" Text="Links"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1" Name="RectGrid">
+                <Rectangle Name="ActiveRect" Fill="{StaticResource FolderContactColor}" Width="35"
+                           Height="4"
+                           HorizontalAlignment="Left" Margin="10 0 0 0"
+                           VerticalAlignment="Top">
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform x:Name="ActiveRectTransform" />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Grid>
+        </Grid>
+
+        <Grid Name="FrqContactsGrid" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" Name="FrqContactRow"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}">
+                <TextBlock Name="FrqContactsBlockName" Text=" Frquent contacts" 
+                           VerticalAlignment="Center" Margin="15 0 0 0" Foreground="Gray"/>
+                <Grid PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent">
+                    <TextBlock Text="show all" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Background="Transparent" Foreground="Gray" Name="ShowFreqChats" Margin="0 0 10 0"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                              VerticalScrollBarVisibility="Disabled">
+                    <WrapPanel Orientation="Horizontal" Name="ChatsPanel" 
+                               VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <local:ChatButton x:Name="TestChat"/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                        <local:ChatButton/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

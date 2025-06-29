@@ -129,7 +129,15 @@ namespace TelegramVisualPart.Pages
                 double clamped = Math.Max(100, desired);
                 ChatsColumn.Width = new GridLength(clamped);
                 SetVisibilityForChatObjects(false);
+                SearchChatBut.Visibility = Visibility.Visible;
             }
+            SetSearchPanelWidth();
+        }
+
+        public void SetSearchPanelWidth()
+        {
+            if (SearchBoxGrid.Visibility == Visibility.Hidden) return;
+            SearchControl.SetControlSize();
         }
 
         private void SetVisibilityForChatObjects(bool isShort)
@@ -174,6 +182,37 @@ namespace TelegramVisualPart.Pages
             ChatsColumn.Width = new GridLength(300);
             SetVisibilityForChatObjects(false);
             //Change border size   
+            SetSearchBoxVisible();
+        }
+
+        private void SarchBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SetSearchBoxVisible();
+        }
+
+        public void SetSearchBoxVisible()
+        {
+            ChatsBox.Visibility = Visibility.Hidden;
+            SearchBoxGrid.Visibility = Visibility.Visible;
+            ChatsColumn.MinWidth = 250;
+        }
+
+        private void SarchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ChatsBox.Visibility = Visibility.Visible;
+            SearchBoxGrid.Visibility = Visibility.Hidden;
+            ChatsColumn.MinWidth = 50;
+        }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var focusedEl = Keyboard.FocusedElement;
+
+            if(focusedEl is TextBox box && box.Name == SarchBox.Text)
+            {
+
+            }
+            bool ifFoc = SarchBox.IsFocused;
         }
     }
 }

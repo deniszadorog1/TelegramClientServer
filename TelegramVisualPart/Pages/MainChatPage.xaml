@@ -8,9 +8,11 @@
       xmlns:userControls="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:TelegramVisualPart.UserControls"
+      xmlns:searchControl ="clr-namespace:TelegramVisualPart.UserControls.ChatsSearch"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainChatPage" >
+      Title="MainChatPage" PreviewMouseDown="Page_MouseDown">
+
 
     <materialDesign:DrawerHost x:Name="MainDrawerHost">
         <materialDesign:DrawerHost.LeftDrawerContent>
@@ -66,24 +68,32 @@
                           materialDesign:HintAssist.Hint="Serch"
                           materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                           materialDesign:HintAssist.Foreground="Gray"
-                           CaretBrush="White"/>
+                          CaretBrush="White" 
+                          GotFocus="SarchBox_GotFocus"
+                          LostFocus="SarchBox_LostFocus"/>
                 </Border>
 
                 <Grid Name="MagnifierGrid" Background="Transparent" Visibility="Visible"
                       MouseEnter="MagnifierGrid_MouseEnter"
                       MouseLeave="MagnifierGrid_MouseLeave"
                       PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
-                    
                     <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
-                                                 Width="35" Height="35" Foreground="Gray"/>
+                                                 Width="35" Height="35" Foreground="Gray" 
+                                                 Visibility="Hidden"/>
                 </Grid>
 
                 <ListBox Grid.Row="1" x:Name="ChatsBox">
-                    <controls:UserTalkMessage Margin="-10 0 0 0" Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
+                    <controls:UserTalkMessage Margin="-10 0 0 0"   
+                                              Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
                 </ListBox>
 
-            </Grid>
+                <Grid Grid.Row="1" Name="SearchBoxGrid" Visibility="Hidden" 
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <searchControl:SearchControl x:Name="SearchControl"
+                                                 HorizontalAlignment="Stretch"/>
+                </Grid>
 
+            </Grid>
 
             <GridSplitter Grid.Column="2"
                   Width="3" Name="MySplitter"
@@ -94,12 +104,9 @@
                   ResizeBehavior="PreviousAndNext"
                   ResizeDirection="Columns"
                   Cursor="SizeWE"
-                         DragDelta="GridSplitter_DragDelta" />
+                  DragDelta="GridSplitter_DragDelta" />
 
             <userControls:UserChat Grid.Column="3" x:Name="UserChat"/>
-
-
-
 
         </Grid>
     </materialDesign:DrawerHost>

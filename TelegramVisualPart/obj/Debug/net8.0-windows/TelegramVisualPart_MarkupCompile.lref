@@ -35,6 +35,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Cha
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\SharedLink.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\BackMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ImageMessage.xaml;;
@@ -42,6 +43,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Mon
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserContactControls\UserContactMenu.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\ChatButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\SearchControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
@@ -72,5 +75,4 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\BackMessage.xaml;;
 

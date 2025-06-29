@@ -104,9 +104,9 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
 
         public void SetLumValue()
         {
-            double onePart = ColorSpecter.ActualWidth / 75;
+            double onePart = ColorSpecter.ActualWidth / 100;
 
-            _lum = (UpperTriangle.Margin.Left / onePart + 25) / 100;
+            _lum = (UpperTriangle.Margin.Left / onePart) / 100;
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)

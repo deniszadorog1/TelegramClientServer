@@ -98,12 +98,6 @@ namespace TelegramVisualPart
             ClearThirdFrame();
         }
 
-        private void DragWindow(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
-        }
-
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
@@ -156,6 +150,50 @@ namespace TelegramVisualPart
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 
+        }
+
+        private Point _mouseDownPosition;
+        private bool _isMouseDown = false;
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                _mouseDownPosition = e.GetPosition(this);
+                _isMouseDown = true;
+
+                if (this.WindowState != WindowState.Maximized)
+                {
+                    this.DragMove();
+                }
+            }
+        }
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = false;
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isMouseDown && this.WindowState == WindowState.Maximized && e.LeftButton == MouseButtonState.Pressed)
+            {
+                const int _windWidth = 1000;
+                _isMouseDown = false;
+
+                var mousePosition = e.GetPosition(this);
+                double percentHorizontal = mousePosition.X / this.ActualWidth;
+                double targetWidth = _windWidth; 
+
+                this.WindowState = WindowState.Normal;
+
+                var screenPoint = PointToScreen(mousePosition);
+                this.Left = screenPoint.X - targetWidth * percentHorizontal;
+                this.Top = 0;
+                this.Width = targetWidth;
+
+                this.DragMove();
+            }
         }
     }
 }

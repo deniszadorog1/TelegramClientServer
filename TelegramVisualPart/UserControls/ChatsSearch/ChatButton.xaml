@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatsSearch.ChatButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatsSearch"
+             mc:Ignorable="d" 
+             d:DesignHeight="70" d:DesignWidth="50"
+             Height="70" Width="50">
+    <Border CornerRadius="10" Name="UserChat"
+            MouseEnter="UserChat_MouseEnter"
+            MouseLeave="UserChat_MouseLeave">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Ellipse Grid.Row="0" Name ="ChatImage" 
+                 Width="40" Height="40" HorizontalAlignment="Center">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <TextBlock Name="ChatName" Grid.Row="1" TextWrapping="Wrap" FontSize="12"
+                   TextTrimming="CharacterEllipsis"
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Text="There gonna be chat name" Foreground="White"/>
+        </Grid>
+    </Border>
+</UserControl>
