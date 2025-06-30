@@ -49,7 +49,7 @@
                       PreviewMouseDown="FindMessage_PreviewMouseDown"
                       MouseEnter="FindMessageBut_MouseEnter"
                       MouseLeave="FindMessageBut_MouseLeave">
-                    <materialDesign:PackIcon Kind="Loupe" Foreground="Gray"
+                    <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" 
                                          Name="FindMessageIcon"/>

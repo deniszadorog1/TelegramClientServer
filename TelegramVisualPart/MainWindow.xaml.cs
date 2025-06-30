@@ -25,7 +25,6 @@ namespace TelegramVisualPart
         {
             InitializeComponent();
 
-
             ///Visuals/Images/UserImages/Minato.jpg"
             MainFrame.Content = new MainChatPage();
         }
@@ -194,6 +193,12 @@ namespace TelegramVisualPart
 
                 this.DragMove();
             }
+        }
+
+        public void SetChatsMessages()
+        {
+            if (MainFrame.Content is not MainChatPage) return;
+            ((MainChatPage)MainFrame.Content).SetMessageGridMagnifier();
         }
     }
 }

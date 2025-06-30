@@ -163,7 +163,6 @@
 
                         <Grid Grid.Row="7" Background="{StaticResource DarkThemeDeviderField}"/>
 
-
                         <StackPanel Grid.Row="8">
                             <RadioButton Foreground="White" Content="Send with Enter"
                              Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
@@ -176,10 +175,7 @@
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource DarkThemeProfileButForeGround}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
-
                         </StackPanel>
-
-
                     </Grid>
                 </Grid>
             </ScrollViewer>

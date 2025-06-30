@@ -123,7 +123,9 @@ namespace TelegramVisualPart.UserControls
 
         private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //frind message menu
+            //find message menu
+
+
         }
 
         private void UserInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

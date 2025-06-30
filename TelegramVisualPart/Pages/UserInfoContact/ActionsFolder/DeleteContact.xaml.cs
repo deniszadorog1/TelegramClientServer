@@ -38,7 +38,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private void DeleteBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is Button but) but.Background =
-                            (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+                            (SolidColorBrush)Application.Current.Resources["CloseButBg"];
         }
 
         private void DeleteBut_MouseLeave(object sender, MouseEventArgs e)
@@ -54,7 +54,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private void CancelBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is Button but) but.Background =
-                            (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+                            (SolidColorBrush)Application.Current.Resources["OtherButMouseEnter"];
         }
     }
 }

@@ -30,6 +30,32 @@ namespace TelegramVisualPart.Pages
             SetDrawButsStyles();
 
             SetChatClickEvent();
+
+            SetChatClick();
+        }
+
+        public void SetChatClick()
+        {
+            UserChat.FindMessageBut.PreviewMouseDown += Magnifier_PreviewMouseDown;
+        }
+
+        private void Magnifier_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            HideAllChatBlocks();
+            SearchMessageGrid.Visibility = Visibility.Visible;
+        }
+
+        public void HideAllChatBlocks()
+        {
+            ChatsBox.Visibility = Visibility.Hidden;
+            SearchBoxGrid.Visibility = Visibility.Hidden;
+            SearchMessageGrid.Visibility = Visibility.Hidden;
+        }
+
+        public void SetMessageGridMagnifier()
+        {
+            HideAllChatBlocks();
+            ChatsBox.Visibility = Visibility.Visible;
         }
 
         private void LeftButtons_OnMenuClick(object sender, EventArgs e)
@@ -151,15 +177,15 @@ namespace TelegramVisualPart.Pages
             Visibility magniVis = isShort ? Visibility.Visible : Visibility.Hidden;
 
             MagnifierGrid.Visibility = magniVis;
-            SearchBorder.Visibility = magniVis == Visibility.Visible ? 
+            SearchBorder.Visibility = magniVis == Visibility.Visible ?
                 Visibility.Hidden : Visibility.Visible;
         }
 
         public void SetChatInfoVisibility(bool isShort)
         {
             Visibility vis = isShort ? Visibility.Hidden : Visibility.Visible;
-            
-            foreach(var mes in ChatsBox.Items)
+
+            foreach (var mes in ChatsBox.Items)
             {
                 if (mes is not UserTalkMessage) return;
                 UserTalkMessage message = mes as UserTalkMessage;
@@ -179,6 +205,8 @@ namespace TelegramVisualPart.Pages
 
         private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            HideAllChatBlocks();
+
             ChatsColumn.Width = new GridLength(300);
             SetVisibilityForChatObjects(false);
             //Change border size   
@@ -187,6 +215,8 @@ namespace TelegramVisualPart.Pages
 
         private void SarchBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            HideAllChatBlocks();
+
             SetSearchBoxVisible();
         }
 
@@ -208,11 +238,13 @@ namespace TelegramVisualPart.Pages
         {
             var focusedEl = Keyboard.FocusedElement;
 
-            if(focusedEl is TextBox box && box.Name == SarchBox.Text)
+            if (focusedEl is TextBox box && box.Name == SarchBox.Text)
             {
 
             }
             bool ifFoc = SarchBox.IsFocused;
         }
+
+        
     }
 }

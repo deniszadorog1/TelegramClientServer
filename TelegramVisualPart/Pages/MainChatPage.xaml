@@ -82,7 +82,7 @@
                                                  Visibility="Hidden"/>
                 </Grid>
 
-                <ListBox Grid.Row="1" x:Name="ChatsBox">
+                <ListBox Grid.Row="1" x:Name="ChatsBox" Visibility="Hidden">
                     <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
                 </ListBox>
@@ -90,6 +90,13 @@
                 <Grid Grid.Row="1" Name="SearchBoxGrid" Visibility="Hidden" 
                       HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <searchControl:SearchControl x:Name="SearchControl"
+                                                 HorizontalAlignment="Stretch"/>
+                </Grid>
+
+                <Grid Grid.Row="1" Name="SearchMessageGrid" Visibility="Hidden"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                      Margin="0 10 0 0">
+                    <searchControl:SearchMessage x:Name="SearchMessage"
                                                  HorizontalAlignment="Stretch"/>
                 </Grid>
 
@@ -101,6 +108,7 @@
                   VerticalAlignment="Stretch"
                   Background="Red"
                   ShowsPreview="False"
+                  Focusable="False"
                   ResizeBehavior="PreviousAndNext"
                   ResizeDirection="Columns"
                   Cursor="SizeWE"

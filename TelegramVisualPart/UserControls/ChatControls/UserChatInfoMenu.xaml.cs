@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Pages;
+using TelegramVisualPart.Pages.ChatActions;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -52,6 +54,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
             DeleteChatBut.ButName.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+        }
+
+        private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo());
+        }
+
+        private void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new DeleteChat());
+        }
+
+        private void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory());
         }
     }
 }

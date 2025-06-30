@@ -10,6 +10,12 @@
     <Compile Update="Pages\Advanced\AdvancedPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\ClearChatHistory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Contacts\AddContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -139,6 +145,9 @@
     <Compile Update="UserControls\ChatsSearch\SearchControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatsSearch\SearchMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -235,6 +244,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Advanced\AdvancedPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\ClearChatHistory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\DeleteChat.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Contacts\AddContact.xaml">
@@ -364,6 +379,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatsSearch\SearchControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsSearch\SearchMessage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\UserContact.xaml">

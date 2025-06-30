@@ -14,11 +14,11 @@
         <StackPanel Margin="0 5 0 5">
             <buts:IconTextBut x:Name="MuteNotifsBut" Margin="0 5 0 5"/>
             <Grid Height="10" Background="{StaticResource DarkThemeDeviderField}"/>
-            <buts:IconTextBut x:Name="ViewProfileBut"/>
+            <buts:IconTextBut x:Name="ViewProfileBut" PreviewMouseDown="ViewProfileBut_PreviewMouseDown"/>
             <buts:IconTextBut x:Name="SetWallpaperBut"/>
             <buts:IconTextBut x:Name="ExportHistoryBut"/>
-            <buts:IconTextBut x:Name="ClearChatBut"/>
-            <buts:IconTextBut x:Name="DeleteChatBut"/>
+            <buts:IconTextBut x:Name="ClearChatBut" PreviewMouseDown="ClearChatBut_PreviewMouseDown"/>
+            <buts:IconTextBut x:Name="DeleteChatBut" PreviewMouseDown="DeleteChatBut_PreviewMouseDown"/>
         </StackPanel>
     </Border>
 </UserControl>
