@@ -15,7 +15,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.Pages.VisualPages;
+
 using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -99,26 +102,70 @@ namespace TelegramVisualPart.UserControls
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Choose image",
-                Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
+                Title = "Choose image or video",
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi"
             };
 
             if (openFileDialog.ShowDialog() == true)
             {
                 string filePath = openFileDialog.FileName;
+                string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-                System.Windows.Controls.Image img =
-                    new System.Windows.Controls.Image();
-                img.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
+                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                {
+                    // Изображение
+                    var img = new System.Windows.Controls.Image
+                    {
+                        Source = new BitmapImage(new Uri(filePath, UriKind.Absolute)),
+                        //Width = 200 
+                    };
 
-                if (img is null) return;
-                AddImageMessage(img);
+                    AddImageMessage(img);
+                }
+                else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
+                {
+                    var media = new MediaElement
+                    {
+                        Source = new Uri(filePath, UriKind.Absolute),
+                        Width = 300,
+                        Height = 200,
+                        LoadedBehavior = MediaState.Manual,
+                        UnloadedBehavior = MediaState.Manual
+                    };
+
+                    media.Play();
+
+                    AddVideoMessage(media);
+                }
             }
         }
-
-        private void AddImageMessage(System.Windows.Controls.Image img)
+        
+        private void AddVideoMessage(MediaElement el)
         {
-            ChatBox.Items.Add(new ImageMessage(img));
+            var video = new MediaMessage(el);
+            video.PreviewMouseDown += ChatVideo_PreviewMouseDown;
+            ChatBox.Items.Add(video);
+        }
+        
+        private void ChatVideo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not MediaMessage) return;
+            MediaMessage message = sender as MediaMessage;
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new VisualActionPage(message.GetVideo()));
+        }
+
+        private void AddImageMessage(Image img)
+        {
+            var message = new MediaMessage(img);
+            message.PreviewMouseDown += ChatImage_PreviewMouseDown;
+            ChatBox.Items.Add(message);
+        }
+
+        private void ChatImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not MediaMessage) return;
+            MediaMessage message = sender as MediaMessage;
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new VisualActionPage(message.GetImage()));
         }
 
         private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -143,10 +190,10 @@ namespace TelegramVisualPart.UserControls
             const int _userContactWidth = 350;
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
-            if (windowWidth + _userContactWidth <= 
+            if (windowWidth + _userContactWidth <=
                 SystemParameters.PrimaryScreenWidth)
             {
-                ((MainWindow)Window.GetWindow(this)).Width = 
+                ((MainWindow)Window.GetWindow(this)).Width =
                     windowWidth + _userContactWidth;
             }
 
@@ -154,7 +201,7 @@ namespace TelegramVisualPart.UserControls
             info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
 
             UserInfoColumn.Width = new GridLength(_userContactWidth);
-            ContactInfoGrid.Children.Add(info);    
+            ContactInfoGrid.Children.Add(info);
         }
 
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
@@ -228,6 +275,16 @@ namespace TelegramVisualPart.UserControls
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Hand;
+        }
+
+        private void EmojisGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            EmojisBoard.Visibility = Visibility.Visible;
+        }
+
+        private void EmojisBoard_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EmojisBoard.Visibility = Visibility.Hidden;
         }
     }
 }

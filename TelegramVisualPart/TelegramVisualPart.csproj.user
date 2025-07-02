@@ -16,6 +16,9 @@
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Contacts\AddContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,6 +106,9 @@
     <Compile Update="Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\VisualPages\VisualActionPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -124,7 +130,22 @@
     <Compile Update="UserControls\ChatControls\DoubleText.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="UserControls\ChatControls\ImageMessage.xaml.cs">
+    <Compile Update="UserControls\ChatControls\Emojis\Emoji.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\Emojis\EmojisBlock.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\Emojis\FullVisualsBlock.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\MediaActions\MediaMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\MediaMessage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\MonthDay.xaml.cs">
@@ -238,6 +259,9 @@
     <Compile Update="UserControls\UserTalkMessage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatControls\MediaActions\ActionButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
@@ -250,6 +274,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Contacts\AddContact.xaml">
@@ -339,6 +366,9 @@
     <Page Update="Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\VisualPages\VisualActionPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -360,7 +390,22 @@
     <Page Update="UserControls\ChatControls\DoubleText.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="UserControls\ChatControls\ImageMessage.xaml">
+    <Page Update="UserControls\ChatControls\Emojis\Emoji.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\Emojis\EmojisBlock.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\Emojis\FullVisualsBlock.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\MediaActions\MediaMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\MediaMessage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MonthDay.xaml">
@@ -472,6 +517,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\UserTalkMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\MediaActions\ActionButton.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

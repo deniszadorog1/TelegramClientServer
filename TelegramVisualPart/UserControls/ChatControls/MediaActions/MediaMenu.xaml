@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatControls.MediaActions.MediaMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.MediaActions"
+             mc:Ignorable="d" 
+             d:DesignHeight="240" d:DesignWidth="150"
+             Width="150" Height="240">
+    <StackPanel Orientation="Vertical">
+        <local:ActionMenuButton x:Name="GoToMessage" PreviewMouseDown="GoToMessage_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="ShowInFolder" PreviewMouseDown="ShowInFolder_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="CopyFrame" PreviewMouseDown="CopyFrame_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="Forward" PreviewMouseDown="Forward_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="Delete" PreviewMouseDown="Delete_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="SaveAs" PreviewMouseDown="SaveAs_PreviewMouseDown"/>
+    </StackPanel>
+</UserControl>

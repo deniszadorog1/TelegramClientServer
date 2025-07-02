@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
+             xmlns:Emojis="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
              d:DesignHeight="450" d:DesignWidth="800" 
              
              KeyDown="UserControl_KeyDown"
@@ -22,7 +23,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0" Name="UserInfoColumn"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Row="0" Background="{StaticResource DarkThemeOne}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -83,7 +84,7 @@
                      VerticalAlignment="Bottom"/>
         </Grid>
 
-        <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 10">
+        <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
@@ -99,6 +100,22 @@
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                      materialDesign:HintAssist.Hint="Enter message here..."  
                      BorderThickness="0" FontSize="16" />
+
+            <Grid Grid.Column="2" Name="EmojisGrid" 
+                  Background="Transparent"
+                  MouseEnter="EmojisGrid_MouseEnter">
+                <materialDesign:PackIcon Kind="SmileyOutline" Name="Emojis" 
+                                      Width="40" Height="40"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Foreground="Gray"/>
+            </Grid>
+
+            <Emojis:FullVisualsBlock Grid.Column="2" x:Name="EmojisBoard"
+                                     Panel.ZIndex="100" 
+                                     Margin="-385 -370 0 0" Visibility="Hidden"
+                                     MouseLeave="EmojisBoard_MouseLeave"/>
+
         </Grid>
 
         <buts:UserChatInfoMenu x:Name="UserChatMenu"

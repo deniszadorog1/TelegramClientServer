@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -70,6 +71,8 @@ namespace TelegramVisualPart.Pages.ChatActions
         private void EnAutoDelete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Show auto delete message 
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion());
         }
     }
 }
