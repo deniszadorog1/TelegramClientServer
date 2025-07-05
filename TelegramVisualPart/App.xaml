@@ -16,6 +16,11 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
+            <SolidColorBrush x:Key="TempActiveTextColor" Color="#5DB2F2"/>
+
+            
+            
+
             <SolidColorBrush x:Key="DarkThemeOne" Color="#17212B"/>
             <SolidColorBrush x:Key="DarkThemeSecond" Color="#0E1621"/>
             <SolidColorBrush x:Key="DarkThemeMouseEnterBut" Color="#232E3C"/>

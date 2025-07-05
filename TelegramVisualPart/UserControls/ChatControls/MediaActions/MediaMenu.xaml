@@ -8,11 +8,11 @@
              d:DesignHeight="240" d:DesignWidth="150"
              Width="150" Height="240">
     <StackPanel Orientation="Vertical">
-        <local:ActionMenuButton x:Name="GoToMessage" PreviewMouseDown="GoToMessage_PreviewMouseDown"/>
-        <local:ActionMenuButton x:Name="ShowInFolder" PreviewMouseDown="ShowInFolder_PreviewMouseDown"/>
-        <local:ActionMenuButton x:Name="CopyFrame" PreviewMouseDown="CopyFrame_PreviewMouseDown"/>
-        <local:ActionMenuButton x:Name="Forward" PreviewMouseDown="Forward_PreviewMouseDown"/>
-        <local:ActionMenuButton x:Name="Delete" PreviewMouseDown="Delete_PreviewMouseDown"/>
-        <local:ActionMenuButton x:Name="SaveAs" PreviewMouseDown="SaveAs_PreviewMouseDown"/>
+        <local:ActionMenuButton x:Name="GoToMessage"/>
+        <local:ActionMenuButton x:Name="ShowInFolder"/>
+        <local:ActionMenuButton x:Name="CopyFrame"/>
+        <local:ActionMenuButton x:Name="Forward"/>
+        <local:ActionMenuButton x:Name="Delete"/>
+        <local:ActionMenuButton x:Name="SaveAs"/>
     </StackPanel>
 </UserControl>

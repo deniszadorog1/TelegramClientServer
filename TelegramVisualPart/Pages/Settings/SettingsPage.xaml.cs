@@ -17,6 +17,7 @@ using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.Pages.Settings
 {
@@ -55,7 +56,7 @@ namespace TelegramVisualPart.Pages.Settings
 
         private void Buts_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is IconTextBut icon)
+            if (sender is MenuIconTextBut icon)
             {
                 Page page = GetPageByIcon(icon);
                 if (page is null) return;
@@ -64,7 +65,7 @@ namespace TelegramVisualPart.Pages.Settings
             }
         }
 
-        public Page GetPageByIcon(IconTextBut icon)
+        public Page GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile() :
                 icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings() :

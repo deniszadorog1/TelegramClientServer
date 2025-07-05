@@ -1,8 +1,11 @@
 ﻿
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
@@ -14,6 +17,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformatio
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Saved\SavedMessagesInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\SetChatWallpaper.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\WallpaperPreview.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\MainChatSetPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FolderAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersChatAction.xaml;;
@@ -32,6 +37,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\Actions
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\EditUserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\ShareContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\VisualPages\VisualActionPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\DateStackPanel.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\DateWrap.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml;;
@@ -39,6 +45,13 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Cha
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\BackMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\Emoji.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\FullVisualsBlock.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionMenuButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\MediaMenu.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MonthDay.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
@@ -50,6 +63,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconTextBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\MenuIconTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
@@ -65,6 +79,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\ColorPickerLine.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteRectangle.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteTextBox.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\Wallpaper.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\WallpaperBotBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\ThemeSetBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\AddFolderBut.xaml;;
@@ -76,14 +92,5 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\VisualPages\VisualActionPage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionMenuButton.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\MediaMenu.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionButton.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\Emoji.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\FullVisualsBlock.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPage.xaml;;
 

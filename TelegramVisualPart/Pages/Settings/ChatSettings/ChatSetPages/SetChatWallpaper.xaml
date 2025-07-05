@@ -1,0 +1,65 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages.SetChatWallpaper"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="420"
+      Height="450" Width="420"
+      Title="SetChatWallpaper">
+
+    <Border Name="BorderBg" Background="{StaticResource DarkThemeOne}" CornerRadius="15">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition/>
+                <RowDefinition Height="75"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="PageNameBlock" Text="Choose a wallpaper" VerticalAlignment="Center" 
+                       Margin="25 0 0 0" Foreground="White" FontSize="22"/>
+
+            <ScrollViewer Grid.Row="1" Name="WallPapers" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Name="ChooseFromFileGrid"
+                          Background="Transparent"
+                          MouseEnter="ChooseFromFileGrid_MouseEnter"
+                          MouseLeave="ChooseFromFileGrid_MouseLeave"
+                          PreviewMouseDown="ChooseFromFileGrid_PreviewMouseDown">
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <materialDesign:PackIcon Name="Icon" Kind="Image" Width="30" Height="30"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Foreground="White"/>
+
+                        <TextBlock Grid.Column="1" Name="ChooseFileBlock" Text="Choose from file" 
+                                   VerticalAlignment="Center" Foreground="White" FontSize="16"/>
+                    </Grid>
+
+                    <WrapPanel Grid.Row="1">
+                        <controls:Wallpaper/>
+                        <controls:Wallpaper/>
+                        <controls:Wallpaper/>
+                    </WrapPanel>
+                </Grid>
+                
+            </ScrollViewer>
+
+            <controls:WallpaperBotBut Grid.Row="2" HorizontalAlignment="Right" 
+                                      Width="75" Height="50"
+                                      VerticalAlignment="Center" Margin="0 0 20 0" />
+        </Grid>
+    </Border>
+</Page>

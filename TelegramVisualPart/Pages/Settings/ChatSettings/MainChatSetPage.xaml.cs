@@ -117,8 +117,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
             Yellow.BgBorder.Background =
                 (SolidColorBrush)Application.Current.Resources["PalleteCircleNineColor"];
-
-
         }
 
         private void SetColorCards()
@@ -167,7 +165,16 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             if (sender is CircleColor color)
             {
                 color.WhiteCircle.Visibility = Visibility.Visible;
+
+                SetNewTempColor(color);
             }
+        }
+
+
+        public void SetNewTempColor(CircleColor color )
+        {
+            Application.Current.Resources["TempActiveTextColor"] = 
+                color.BgBorder.Background as SolidColorBrush; 
         }
 
         public void HideChosenColorCircle()
@@ -214,7 +221,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void ChooseWallpaperFromGalery_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper());
         }
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)

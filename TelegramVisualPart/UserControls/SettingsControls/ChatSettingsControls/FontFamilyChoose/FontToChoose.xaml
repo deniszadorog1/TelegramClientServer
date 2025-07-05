@@ -14,7 +14,7 @@
                              Name="FontName" 
                              materialDesign:RadioButtonAssist.RadioButtonSize="26"
                              FontSize="20" IsChecked="False" Padding="20 0 0 0"
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
     </StackPanel>
 </UserControl>

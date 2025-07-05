@@ -12,7 +12,9 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Pages;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramVisualPart
 {
@@ -26,7 +28,7 @@ namespace TelegramVisualPart
             InitializeComponent();
 
             ///Visuals/Images/UserImages/Minato.jpg"
-            MainFrame.Content = new MainChatPage();
+            MainFrame.Content = new EnterPage();
         }
 
         public void SetSecondaryFrame(Page page)
@@ -118,7 +120,7 @@ namespace TelegramVisualPart
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if(sender is Button but) but.Background = 
-                    (SolidColorBrush)Application.Current.Resources["OtherUpperButColor"];
+                    (SolidColorBrush)System.Windows.Application.Current.Resources["OtherUpperButColor"];
 
         }
 
@@ -131,7 +133,7 @@ namespace TelegramVisualPart
         private void CloseWindowBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is Button but) but.Background =
-                    (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
+                    (SolidColorBrush)System.Windows.Application.Current.Resources["CloseWindowColor"];
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -199,6 +201,27 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage) return;
             ((MainChatPage)MainFrame.Content).SetMessageGridMagnifier();
+        }
+
+        public void AddEmojiInChat(string text)
+        {
+            if(MainFrame.Content is MainChatPage chatPage)
+            {
+                chatPage.UserChat.AddEmoji(text);
+            }
+        }
+
+        public void SendGif(string gifPath) 
+        {
+            if (MainFrame.Content is MainChatPage chatPage)
+            {
+                chatPage.UserChat.SendGif(gifPath);
+            }
+        }
+
+        public void SetMainFrameContent(Page page)
+        {
+            MainFrame.Content = page;
         }
     }
 }

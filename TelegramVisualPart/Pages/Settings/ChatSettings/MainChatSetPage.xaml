@@ -70,7 +70,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Name="ThemesTextBlock" VerticalAlignment="Center"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                   Foreground="{StaticResource TempActiveTextColor}"
                                    Text="Themes" FontSize="16" Margin="15 0 0 0"/>
 
                         <WrapPanel Name="ThemesWrap" Orientation="Horizontal"
@@ -83,7 +83,7 @@
 
                         <StackPanel Grid.Row="2" HorizontalAlignment="Left" Name="ColorCirclesPanel"
                                     Margin="20 0 0 0" Orientation="Horizontal">
-                            <controls:CircleColor x:Name="LightGreen"/>
+                            <controls:CircleColor x:Name="LightGreen" Style="{StaticResource CircleColorStyle}"/>
                             <controls:CircleColor x:Name="Blue" Style="{StaticResource CircleColorStyle}"/>
                             <controls:CircleColor x:Name="Green" Style="{StaticResource CircleColorStyle}"/>
                             <controls:CircleColor x:Name="Pink" Style="{StaticResource CircleColorStyle}"/>
@@ -108,7 +108,7 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Theme settings" Margin="15 0 0 0" Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                            <TextBlock Text="Theme settings" Margin="15 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
                                        FontSize="16" VerticalAlignment="Center"/>
 
                             <StackPanel Grid.Row="1" Orientation="Vertical">
@@ -126,7 +126,7 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
                                        FontSize="16" VerticalAlignment="Center"/>
 
                             <Grid Grid.Row="1">
@@ -145,14 +145,14 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Text="Choose from gallery" Name="ChooseWallpaperFromGalery"
-                                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                                   Foreground="{StaticResource TempActiveTextColor}"
                                                    FontSize="15" VerticalAlignment="Center"
                                                    PreviewMouseDown="ChooseWallpaperFromGalery_PreviewMouseDown"
                                                    MouseEnter="ChatWallpaperTextBlock_MouseEnter"
                                                    MouseLeave="ChatWallpaperTextBlock_MouseLeave"/>
 
                                     <TextBlock Text="Choose from file" Name="ChooseWallpaperFromFile"
-                                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                                   Foreground="{StaticResource TempActiveTextColor}"
                                                    FontSize="15" VerticalAlignment="Top" Grid.Row="1"
                                                    PreviewMouseDown="ChooseWallpaperFromFile_PreviewMouseDown"
                                                    MouseEnter="ChatWallpaperTextBlock_MouseEnter"
@@ -167,13 +167,13 @@
                             <RadioButton Foreground="White" Content="Send with Enter"
                              Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
                              FontSize="18" IsChecked="False" 
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
                             <RadioButton Foreground="White" Content="Send with Ctrl+Enter"
                              Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
                              FontSize="18" IsChecked="False" 
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
                         </StackPanel>
                     </Grid>

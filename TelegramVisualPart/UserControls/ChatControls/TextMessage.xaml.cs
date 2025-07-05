@@ -21,7 +21,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
     public partial class TextMessage : UserControl
     {
         private string _text;
-        public TextMessage(string text, Image img)
+        public TextMessage(string text)
         {
             _text = text;
 

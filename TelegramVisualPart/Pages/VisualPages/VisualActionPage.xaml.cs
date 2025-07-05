@@ -50,6 +50,33 @@ namespace TelegramVisualPart.Pages.VisualPages
             ImageToShow = null;
         }
 
+        public string? _gifPath = null;
+        public VisualActionPage(string gifPath)
+        {
+            _gifPath = gifPath;
+            InitializeComponent();
+
+            SetGifParams();
+            SetBasicParams();
+
+            VideoToShow.Visibility = Visibility.Hidden;
+            VideoToShow = null;
+
+        }
+
+        public void SetGifParams()
+        {
+            var uri = new Uri(_gifPath, UriKind.RelativeOrAbsolute);
+            var source = new BitmapImage(uri);
+            WpfAnimatedGif.ImageBehavior.SetAnimatedSource(ImageToShow, source);
+            WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(ImageToShow, RepeatBehavior.Forever);
+
+            Console.WriteLine(source.Width + source.Height);
+
+            ImageToShow.RenderTransform = new RotateTransform(_rotation,
+                    source.Width / 2, source.Height / 2);
+        } 
+
         public void SetBasicParams()
         {
             LeftArrowEl.TestIcon.Kind = PackIconKind.KeyboardArrowLeft;
@@ -58,6 +85,49 @@ namespace TelegramVisualPart.Pages.VisualPages
             SaveBut.TestIcon.Kind = PackIconKind.ContentSaveOutline;
             RotateBut.TestIcon.Kind = PackIconKind.RotateLeft;
             MenuBut.TestIcon.Kind = PackIconKind.DotsVertical;
+
+            SetEventsForMenu();
+        }
+
+        public void SetEventsForMenu()
+        {
+            MediaMenu.GoToMessage.PreviewMouseDown += MoveToMessage_PreviewMouseDown;
+            MediaMenu.ShowInFolder.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
+            MediaMenu.CopyFrame.PreviewMouseDown += CopyFrame_PreviewMouseDown;
+            MediaMenu.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
+            MediaMenu.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
+            MediaMenu.SaveAs.PreviewMouseDown += SaveAs_PreviewMouseDown;
+
+        }
+
+        private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set move to message on chat
+        }
+
+        private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Show folder
+        }
+
+        private void CopyFrame_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Copy this into buffer
+        }
+
+        private void Forward_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Resent element to another user
+        }
+
+        private void Delete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Delete element
+        }
+
+        private void SaveAs_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SaveElement();
         }
 
         private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -72,7 +142,14 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void SaveBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(ImageToShow is not null) SaveElements.SaveImageAs(_img);
+            SaveElement();
+        }
+
+        public void SaveElement()
+        {
+            if (ImageToShow is not null && _gifPath is not null) SaveElements.SaveGifAs(_gifPath);
+            else if (ImageToShow is not null) SaveElements.SaveImageAs(_img);
+            else if (VideoToShow is not null) SaveElements.SaveVideoAs(VideoToShow);
         }
 
         private int _rotation = 0;
@@ -109,7 +186,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void ImageToShow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ImageToShow is null) return;
+            if (ImageToShow is null || _gifPath is not null) return;
             ImageToShow.RenderTransform = new RotateTransform(_rotation, 
                 ImageToShow.ActualWidth / 2, ImageToShow.ActualHeight / 2);
         }

@@ -57,8 +57,6 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
                 return;
             }
 
-            const int error = 1;
-
             double someInRow = this.ActualWidth / TestChat.Width;
 
             //some shit with math round to check
@@ -78,7 +76,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
             block.Foreground =
-                (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
             Point targetPos = block.TranslatePoint(new Point(0, 0), RectGrid);
             double targetWidth = block.ActualWidth;

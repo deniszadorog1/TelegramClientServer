@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:butsControls="clr-namespace:TelegramVisualPart.UserControls"
-      
+      xmlns:menuIconTextBut ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       mc:Ignorable="d" 
       d:DesignHeight="625" d:DesignWidth="350"
       Height="625" Width="350"
@@ -88,15 +88,15 @@
             <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
 
             <StackPanel Grid.Row="3">
-                <butsControls:IconTextBut x:Name="MyAccount" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="NotifsSounds" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="PrivacySecurity" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="ChatSettings" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="Folders" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="Advanced" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="SpeakersAndCamera" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="BatteryAnimation" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <butsControls:IconTextBut x:Name="Language" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="PrivacySecurity" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Folders" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Advanced" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Language" PreviewMouseDown="Buts_PreviewMouseDown"/>
             </StackPanel>
 
             <Grid Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"/>

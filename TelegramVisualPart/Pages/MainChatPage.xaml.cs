@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.Pages
 {
@@ -92,7 +93,7 @@ namespace TelegramVisualPart.Pages
 
         private void LeftBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is IconTextBut icon)
+            if (sender is MenuIconTextBut icon)
             {
                 Page page = GetPageByIcon(icon);
                 if (page is null) return;
@@ -101,7 +102,7 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public Page GetPageByIcon(IconTextBut icon)
+        public Page GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile() :
                 icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact) :

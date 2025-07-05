@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IoBT4qbi/hw=",
+  "dgSpecHash": "gYrXFT99KBE=",
   "success": true,
   "projectFilePath": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
   "expectedPackageFiles": [
@@ -55,7 +55,8 @@
     "C:\\Users\\denis\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
-    "C:\\Users\\denis\\.nuget\\packages\\system.threading.channels\\8.0.0\\system.threading.channels.8.0.0.nupkg.sha512"
+    "C:\\Users\\denis\\.nuget\\packages\\system.threading.channels\\8.0.0\\system.threading.channels.8.0.0.nupkg.sha512",
+    "C:\\Users\\denis\\.nuget\\packages\\wpfanimatedgif\\2.0.2\\wpfanimatedgif.2.0.2.nupkg.sha512"
   ],
   "logs": []
 }

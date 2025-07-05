@@ -23,6 +23,6 @@
         <TextBlock Grid.Column="1"
                    Name="EnumPart" Text="chosen enum value is here" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Margin="0 0 15 0" FontSize="14" 
-                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                   Foreground="{StaticResource TempActiveTextColor}"/>
     </Grid>
 </UserControl>

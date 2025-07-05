@@ -1,0 +1,62 @@
+﻿<Page x:Class="TelegramVisualPart.EnterInAccount.RegistrationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.EnterInAccount"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="RegistrationPage">
+
+    <Border Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="300"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="10">
+
+                <TextBlock Text="This is Registration page" Foreground="White" FontSize="18"
+                           FontWeight="SemiBold"/>
+
+                <TextBlock Text="Enter usr info carefuly" Foreground="Gray"
+                           FontSize="16" Margin="0 10 0 10"/>
+
+                <TextBox Name="LoginBox"
+                         materialDesign:HintAssist.Hint="Enter login here"
+                         Foreground="White"
+                         FontSize="18"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                <TextBox Name="PasswordBox" 
+                         materialDesign:HintAssist.Hint="enter password here"
+                         Foreground="White"
+                         FontSize="18"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+                <Button Name="RegisterBut" Content="Create new Account" Margin="0 10 0 0"
+                        Background="{StaticResource TempActiveTextColor}"
+                        BorderThickness="0" Click="RegisterBut_Click"/>
+
+                <Grid Name="GetBackGrid" HorizontalAlignment="Center"
+                      Background="Transparent" Margin="0 10 0 0"
+                      MouseEnter="GetBackGrid_MouseEnter"
+                      MouseLeave="GetBackGrid_MouseLeave"
+                      PreviewMouseDown="GetBackGrid_PreviewMouseDown">
+                    <TextBlock Name="Register" FontSize="16" Text="Registration"  
+                               HorizontalAlignment="Center" 
+                               Foreground="{StaticResource TempActiveTextColor}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

@@ -35,5 +35,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         {
             BorderBg.Background = new SolidColorBrush(Colors.Transparent);
         }
+
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).AddEmojiInChat(EmojiBlock.Text);
+        }
     }
 }

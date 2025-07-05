@@ -17,7 +17,7 @@
         <materialDesign:PackIcon Kind="AlertCircleOutline" 
                                  Grid.Column="0" VerticalAlignment="Center"
                                  HorizontalAlignment="Left"
-                                 Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                 Foreground="{StaticResource TempActiveTextColor}"
                                  Width="30" Height="30"/>
 
         <Grid Grid.Column ="1">

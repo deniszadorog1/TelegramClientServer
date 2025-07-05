@@ -38,7 +38,7 @@
                    MouseEnter="UnblockBut_MouseEnter"  MouseLeave="UnblockBut_MouseLeave"
                    Grid.Column="2" Text="Unblock" Margin="10"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                   Foreground="{StaticResource TempActiveTextColor}"/>
 
     </Grid>
 </UserControl>

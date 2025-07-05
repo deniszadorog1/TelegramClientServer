@@ -35,5 +35,52 @@ namespace TelegramVisualPart.Services
                 }
             }
         }
+
+        public static void SaveGifAs(string gifPath)
+        {
+            /*            if (!gifPath.StartsWith("pack://siteoforigin:,,,"))
+                        {
+                            MessageBox.Show("Ожидался URI в формате pack://siteoforigin:,,,");
+                            return;
+                        }*/
+
+            string relativePath = gifPath.Replace("pack://siteoforigin:,,,", "").TrimStart('/');
+
+            string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
+
+            if (!File.Exists(absolutePath))
+            {
+                MessageBox.Show("File was not found:\n" + absolutePath);
+                return;
+            }
+
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Сохранить GIF как...",
+                Filter = "GIF files (*.gif)|*.gif",
+                FileName = Path.GetFileName(absolutePath)
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                File.Copy(absolutePath, dialog.FileName, overwrite: true);
+            }
+        }
+
+        public static void SaveVideoAs(MediaElement element)
+        {
+            string originalPath = element.Source.LocalPath; 
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Title = "Сохранить видео как...",
+                Filter = "MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*",
+                FileName = Path.GetFileName(originalPath)
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                File.Copy(originalPath, dialog.FileName, overwrite: true);
+            }
+        }
     }
 }

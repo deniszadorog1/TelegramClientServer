@@ -48,35 +48,5 @@ namespace TelegramVisualPart.UserControls.ChatControls.MediaActions
             SaveAs.Icon.Kind = PackIconKind.ContentSaveOutline;
             SaveAs.ButText.Text = "Save As...";
         }
-
-        private void GoToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void CopyFrame_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void Forward_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void Delete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void SaveAs_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

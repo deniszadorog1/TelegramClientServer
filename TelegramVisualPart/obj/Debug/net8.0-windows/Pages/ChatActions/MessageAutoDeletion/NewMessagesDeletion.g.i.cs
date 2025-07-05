@@ -69,8 +69,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/chatactions/messageautodeletion/newmessagesde" +
-                    "letion.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/chatactions/messageautodeletion/newm" +
+                    "essagesdeletion.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

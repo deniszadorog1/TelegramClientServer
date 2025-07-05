@@ -12,7 +12,8 @@
           "MaterialDesignThemes": "5.2.1",
           "MaterialDesignThemes.MahApps": "5.2.1",
           "Microsoft.AspNetCore.SignalR": "1.2.0",
-          "TelegramLib": "1.0.0"
+          "TelegramLib": "1.0.0",
+          "WpfAnimatedGif": "2.0.2"
         },
         "runtime": {
           "TelegramVisualPart.dll": {}
@@ -569,6 +570,14 @@
       "System.Text.Encodings.Web/8.0.0": {},
       "System.Text.Json/4.7.2": {},
       "System.Threading.Channels/8.0.0": {},
+      "WpfAnimatedGif/2.0.2": {
+        "runtime": {
+          "lib/netcoreapp3.0/WpfAnimatedGif.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.2.0"
+          }
+        }
+      },
       "TelegramLib/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.5"
@@ -951,6 +960,13 @@
       "sha512": "sha512-CMaFr7v+57RW7uZfZkPExsPB6ljwzhjACWW1gfU35Y56rk72B/Wu+sTqxVmGSk4SFUlPc3cjeKND0zktziyjBA==",
       "path": "system.threading.channels/8.0.0",
       "hashPath": "system.threading.channels.8.0.0.nupkg.sha512"
+    },
+    "WpfAnimatedGif/2.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-B0j9SqtThyHVTiOPvu6yR+39Te0g3o+7Jjb+qEm7+Iz1HRqbE5/4QV+ntHWOYYBPOUFr9x1mdzGl/EzWP+nKiA==",
+      "path": "wpfanimatedgif/2.0.2",
+      "hashPath": "wpfanimatedgif.2.0.2.nupkg.sha512"
     },
     "TelegramLib/1.0.0": {
       "type": "project",

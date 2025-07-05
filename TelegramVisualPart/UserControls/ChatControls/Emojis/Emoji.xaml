@@ -9,6 +9,7 @@
              Height="40" Width="40"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave"
+             PreviewMouseDown="UserControl_PreviewMouseDown"
              >
     <Grid Background="{StaticResource DarkThemeOne}">
         <Border x:Name="BorderBg" Background="Transparent"

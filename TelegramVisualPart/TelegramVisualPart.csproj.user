@@ -7,6 +7,12 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="EnterInAccount\EnterPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="EnterInAccount\RegistrationPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Advanced\AdvancedPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -50,6 +56,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\ChatSettings\ChatSetPages\SetChatWallpaper.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\ChatSettings\ChatSetPages\WallpaperPreview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\Settings\ChatSettings\MainChatSetPage.xaml.cs">
@@ -181,6 +193,9 @@
     <Compile Update="UserControls\DifferButs\IconTextBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\DifferButs\MenuIconTextBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\DifferButs\ToggleTextBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -226,6 +241,12 @@
     <Compile Update="UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteTextBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\Wallpaper.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\WallpaperBotBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -264,6 +285,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="EnterInAccount\EnterPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="EnterInAccount\RegistrationPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -310,6 +337,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\ChatSettings\ChatSetPages\SetChatWallpaper.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\ChatSettings\ChatSetPages\WallpaperPreview.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\ChatSettings\MainChatSetPage.xaml">
@@ -441,6 +474,9 @@
     <Page Update="UserControls\DifferButs\IconTextBut.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UserControls\DifferButs\MenuIconTextBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\DifferButs\ToggleTextBut.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -484,6 +520,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteTextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\Wallpaper.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\ChatSettingsControls\SetWallpapersControls\WallpaperBotBut.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\ChatSettingsControls\ThemeCard.xaml">

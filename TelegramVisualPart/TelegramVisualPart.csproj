@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Visuals\Gifs\TestGif.gif" />
     <None Remove="Visuals\Images\UserImages\fray.jpg" />
     <None Remove="Visuals\Images\UserImages\Minato.jpg" />
     <None Remove="Visuals\Images\UserImages\WhiteCat.png" />
@@ -19,9 +20,13 @@
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Visuals\Gifs\TestGif.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Visuals\Images\UserImages\fray.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

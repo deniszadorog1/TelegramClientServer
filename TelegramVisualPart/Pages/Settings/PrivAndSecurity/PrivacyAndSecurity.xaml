@@ -63,7 +63,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="10"
-               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+               FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="LocalPasscode" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -78,7 +78,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="10"
-               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+               FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="PhoneNumber" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -98,7 +98,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="10"
-               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+               FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="ClearPayments"/>
@@ -112,7 +112,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="10"
-               FontSize="16" Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+               FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="DeleteAway" PreviewMouseDown="Buts_PreviewMouseDown"/>

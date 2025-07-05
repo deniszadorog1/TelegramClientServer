@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAnimatedGif;
 
 namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 {
@@ -24,6 +25,45 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         public FullVisualsBlock()
         {
             InitializeComponent();
+
+            SetBasicParams();
+
+            SetGifs();
+        }
+
+        public void SetGifs()
+        {
+            //Set gifs here
+            
+            Image img = new Image()
+            {
+                Width = 100,
+                Height = 100
+            };
+
+            var gifUri = new Uri("pack://siteoforigin:,,,/Visuals/Gifs/TestGif.gif", UriKind.Absolute);
+            var image = new BitmapImage(gifUri);
+            ImageBehavior.SetAnimatedSource(img, image);
+
+            GIFsPanel.Children.Add(img);
+
+            img.PreviewMouseDown += Gif_PreviewMouseDown;
+        }
+
+        private void Gif_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not Image) return;
+
+            Image img = sender as Image;
+            string gifPath = ((BitmapImage)ImageBehavior.GetAnimatedSource(img)).UriSource.ToString();
+
+            ((MainWindow)Window.GetWindow(this)).SendGif(gifPath);
+        }
+
+        public void SetBasicParams()
+        {
+            EmojisPanel.Visibility = Visibility.Visible;
+            GIFsPanel.Visibility = Visibility.Hidden;
         }
 
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -31,7 +71,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
             block.Foreground =
-                (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
             Point targetPos = block.TranslatePoint(new Point(0, 0), RectGrid);
             double targetWidth = block.ActualWidth;
@@ -71,6 +111,23 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
                     textBlock.Foreground = new SolidColorBrush(Colors.Gray);
                 }
             }
+        }
+
+        private void GIFsTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            EmojisPanel.Visibility = Visibility.Hidden;
+            GIFsPanel.Visibility = Visibility.Visible;
+        }
+
+        private void StickersTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void EmojiTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            EmojisPanel.Visibility = Visibility.Visible;
+            GIFsPanel.Visibility = Visibility.Hidden;
         }
     }
 }

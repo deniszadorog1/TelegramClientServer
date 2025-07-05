@@ -1,0 +1,151 @@
+﻿using MaterialDesignThemes.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
+{
+    /// <summary>
+    /// Логика взаимодействия для WallpaperPreview.xaml
+    /// </summary>
+    public partial class WallpaperPreview : Page
+    {
+        public WallpaperPreview()
+        {
+            InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
+            ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
+
+            Share.TextBlock.Text = "Share";
+            Cancel.TextBlock.Text = "Cancel";
+            Apply.TextBlock.Text = "Apply";
+        }
+
+        private void BlurGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void BlurGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void BlurGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IsBlurCheckBox.IsChecked = !IsBlurCheckBox.IsChecked;
+
+            if (ImageGrid.Effect is not null)
+            {
+                ImageGrid.Effect = null;
+                return;
+            }
+
+            ImageGrid.Effect = new BlurEffect()
+            {
+                Radius = 20
+            };
+        }
+
+
+
+        private void Cancel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private void Apply_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Apply new bg Image for allChats //mb Grid
+
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private void Share_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set Share option IDK what it does
+        }
+
+        private void ChangeLightState_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            InvertColors();
+        }
+
+        private const PackIconKind _moonIconKind = PackIconKind.MoonAndStars;
+
+        public void InvertColors()
+        {
+            ChangeLightState.IconType.Kind = ChangeLightState.IconType.Kind == _moonIconKind ? 
+                PackIconKind.WeatherSunny : _moonIconKind;
+
+            if(ChangeLightState.IconType.Kind == _moonIconKind)
+            {
+                SetLightState();
+                return;
+            }
+            SetDarkState();
+        }
+
+        private readonly SolidColorBrush _whiteStateBgColor = 
+            new SolidColorBrush(Colors.White);
+
+        private readonly SolidColorBrush _whiteStateTextBlockColor =
+                new SolidColorBrush(Colors.Black);
+
+        private readonly SolidColorBrush _whiteStateButTextColor =
+                new SolidColorBrush(Colors.Blue);
+
+        public void SetLightState()
+        {
+            BorderBg.Background = _whiteStateBgColor;
+            FirstMessageBorder.Background = _whiteStateBgColor;
+            SecondMessageBorder.Background = _whiteStateBgColor;
+
+            PageName.Foreground = _whiteStateTextBlockColor;
+            FirstMessageTextBlock.Foreground = _whiteStateTextBlockColor;
+            SecondMessageTextBlock.Foreground = _whiteStateTextBlockColor;
+
+            Share.TextBlock.Foreground = _whiteStateButTextColor;
+            Cancel.TextBlock.Foreground = _whiteStateButTextColor;
+            Apply.TextBlock.Foreground = _whiteStateButTextColor;
+        }
+
+        private readonly SolidColorBrush _darkStateTextBlockColor = new SolidColorBrush(Colors.White);
+
+        public void SetDarkState()
+        {
+            SolidColorBrush darkBg = (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
+            SolidColorBrush activeColor = new SolidColorBrush(Colors.White);
+
+            BorderBg.Background = darkBg;
+            FirstMessageBorder.Background = darkBg;
+            SecondMessageBorder.Background = darkBg;
+
+            PageName.Foreground = _darkStateTextBlockColor;
+            FirstMessageTextBlock.Foreground = _darkStateTextBlockColor;
+            SecondMessageTextBlock.Foreground = _darkStateTextBlockColor;
+
+            Share.TextBlock.Foreground = activeColor;
+            Cancel.TextBlock.Foreground = activeColor;
+            Apply.TextBlock.Foreground = activeColor;
+            ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
+        }
+    }
+}

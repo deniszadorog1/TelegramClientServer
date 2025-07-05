@@ -18,11 +18,11 @@
         <materialDesign:PackIcon Kind="CirclesAdd"  Name="IconType"
                                  Grid.Column="0" VerticalAlignment="Center"
                                  HorizontalAlignment="Right" 
-                                 Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                 Foreground="{StaticResource TempActiveTextColor}"
                                  Width="30" Height="30"/>
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="NewFolderText"
                        VerticalAlignment="Center" Margin="10 0 0 0"
-                       Foreground="{StaticResource DarkThemeProfileButForeGround}" FontSize="12"/>
+                       Foreground="{StaticResource TempActiveTextColor}" FontSize="12"/>
     </Grid>
 </UserControl>

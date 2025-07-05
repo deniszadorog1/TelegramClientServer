@@ -20,12 +20,12 @@
         <materialDesign:PackIcon Kind="ProgressDownload" 
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
-                                 Foreground="White"
+                                 Foreground="{StaticResource TempActiveTextColor}"
                                  Width="35" Height="35"
                                  Name="IconType"/>
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Foreground="White" Margin="5 0 0 0"/>
+                   Foreground="{StaticResource TempActiveTextColor}" Margin="5 0 0 0"/>
         
     </Grid>
 </UserControl>

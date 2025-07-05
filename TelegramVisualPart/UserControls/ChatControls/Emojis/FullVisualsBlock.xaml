@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
+             xmlns:wpfAnimatedGif="http://wpfanimatedgif.codeplex.com"
              mc:Ignorable="d" 
              d:DesignHeight="420" d:DesignWidth="350"
              Height="420" Width="350">
@@ -33,13 +34,19 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" Name="TabsPanel" HorizontalAlignment="Center">
-                    <TextBlock Style="{StaticResource Tabs}" Name="EmojiTab" Text="Emoji" Foreground="{StaticResource FolderContactColor}"/>
-                    <TextBlock Style="{StaticResource Tabs}" Name="StickersTab" Text="Stickers"/>
-                    <TextBlock Style="{StaticResource Tabs}" Name="GIFsTab" Text="GIFs"/>
+                    <TextBlock Style="{StaticResource Tabs}" Name="EmojiTab" Text="Emoji" 
+                               Foreground="{StaticResource TempActiveTextColor}"
+                               PreviewMouseDown="EmojiTab_PreviewMouseDown"/>
+                    
+                    <TextBlock Style="{StaticResource Tabs}" Name="StickersTab" Text="Stickers"
+                               PreviewMouseDown="StickersTab_PreviewMouseDown"/>
+                  
+                    <TextBlock Style="{StaticResource Tabs}" Name="GIFsTab" Text="GIFs"
+                               PreviewMouseDown="GIFsTab_PreviewMouseDown"/>
                 </StackPanel>
 
                 <Grid Grid.Row="1" Name="RectGrid">
-                    <Rectangle Name="ActiveRect" Fill="{StaticResource FolderContactColor}" Width="35"
+                    <Rectangle Name="ActiveRect" Fill="{StaticResource TempActiveTextColor}" Width="35"
                    Height="4"
                    HorizontalAlignment="Left" Margin="40 0 0 0"
                    VerticalAlignment="Top">
@@ -50,7 +57,18 @@
                 </Grid>
             </Grid>
             
-            <local:EmojisBlock Grid.Row="1" VerticalAlignment="Top" Margin="0 10 0 0"/>
+            <local:EmojisBlock Grid.Row="1" x:Name="EmojisPanel"
+                               VerticalAlignment="Top" Margin="0 10 0 0" Visibility="Hidden"/>
+
+            <WrapPanel Grid.Row="1" Name="GIFsPanel" Margin="5" Visibility="Visible">
+                <Image Width="100"
+                   Height="100"
+                   Margin="2"
+                   Stretch="Uniform"
+                   wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif" />
+
+            </WrapPanel>
+
         </Grid>
     </Border>
 </UserControl>

@@ -32,27 +32,27 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Name ="WhoCanUseBlock" Text="Who can use it" TextWrapping="Wrap"
-                           Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                           Foreground="{StaticResource TempActiveTextColor}"
                            VerticalAlignment="Center" FontSize="16"/>
 
                 <StackPanel Grid.Row="1" >
                     <RadioButton Foreground="White" Content="Everybody"
                              Name="EverybodyRadio" Checked="EverybodyRadio_Checked"
                              FontSize="16" IsChecked="False" 
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                             Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
                     <RadioButton Foreground="White" Content="Contacts"
                              Name="ContactsRadio" Checked="ContactsRadio_Checked"
                              FontSize="16" IsChecked="False" 
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
-                 Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Background="{StaticResource TempActiveTextColor}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
 
                     <RadioButton Foreground="White" Content="Nobody"
                              Name="NobodyRadio" Checked="NobodyRadio_Checked"
                              FontSize="16" IsChecked="False" 
-                             Background="{StaticResource DarkThemeProfileButForeGround}"                             
-                 Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Background="{StaticResource TempActiveTextColor}"                             
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
                 </StackPanel>
             </Grid>
 
@@ -74,7 +74,6 @@
                         <RowDefinition Name="PhoneNobody" Height="0" />
                     </Grid.RowDefinitions>
 
-                    <!--Height - 450-->
                     <Grid Grid.Row="0" Name="PhoneEverybodyGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="75"/>
@@ -93,7 +92,7 @@
                         <TextBlock Grid.Row="1"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <buts:EnumPrivacyButton x:Name="PhoneEverybodyUsersExcepts"
                                                 Grid.Row="2" Margin="5 0 0 0"/>
@@ -123,7 +122,7 @@
                         <TextBlock Grid.Row="1"
                                      Text="Add Exceptions" FontSize="16" 
                                      VerticalAlignment="Center" Margin="20 0 0 0"
-                                     Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                     Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="2">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneContactAlwaysShareBut"
@@ -165,19 +164,19 @@
                             <TextBlock Grid.Row="0" Text="Who can find me by my number"
                                        VerticalAlignment="Center" Margin="20 0 0 0"
                                        FontSize="16"
-                                       Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                       Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="1" Margin="20 0 0 0">
                                 <RadioButton Foreground="White" Content="Everybody"
                                      Name="NobodyEverybodyRadio"
                                      FontSize="16" IsChecked="False" 
-                                     Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                                     Background="{StaticResource TempActiveTextColor}"                             
                                      Style="{StaticResource MaterialDesignRadioButton}"/>
 
                                 <RadioButton Foreground="White" Content="My Contacts"
                                      Name="NobodyContactsRadio"
                                      FontSize="16" IsChecked="False" 
-                                     Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                                     Background="{StaticResource TempActiveTextColor}"                             
                                      Style="{StaticResource MaterialDesignRadioButton}"/>
                             </StackPanel>
                         </Grid>
@@ -185,7 +184,7 @@
                         <TextBlock Grid.Row="2"
                                   Text="Add Exceptions" FontSize="16" 
                                   VerticalAlignment="Center" Margin="20 0 0 0"
-                                  Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                  Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="3">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneNobodyAlwaysShareBut"
@@ -226,7 +225,7 @@
                             <TextBlock Grid.Row="1"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <buts:EnumPrivacyButton x:Name="LastSeenEverybodyUsersExcepts"
                                             Grid.Row="2" Margin="5 0 5 0"/>
@@ -259,7 +258,7 @@
                             <TextBlock Grid.Row="1"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="2">
                                 <buts:EnumPrivacyButton x:Name="LastSeenOtherAlwaysShare"
@@ -284,7 +283,7 @@
                             <TextBlock Grid.Row="6"
                                    Text="Subscribe to Telegram Premium" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
 
                             <TextBlock Grid.Row="7"
@@ -318,7 +317,7 @@
                             <TextBlock Grid.Row="2"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="3" Name="ProfPhotoShareButsPanel">
                                 <buts:EnumPrivacyButton Grid.Row="2" x:Name="ProfPhotosAlwaysShareBut"
@@ -354,7 +353,7 @@
                         <TextBlock Grid.Row="1"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="2" Name="ForwardMeesagesShareButsPanel">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="ForwardMeesagesAlwaysShareBut"
@@ -380,7 +379,7 @@
                     <TextBlock Grid.Row="0"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                     <StackPanel Grid.Row="1" Name="BirthDateShareButsPanel">
                         <buts:EnumPrivacyButton Grid.Row="1" x:Name="BirthDateAlwaysShareBut"
@@ -406,7 +405,7 @@
                     <TextBlock Grid.Row="0"
                                    Text="Add Exceptions" FontSize="16" 
                                    VerticalAlignment="Center" Margin="20 0 0 0"
-                                   Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                     <StackPanel Grid.Row="1" Name="BioShareButsPanel">
                         <buts:EnumPrivacyButton Grid.Row="1" x:Name="BioAlwaysShareBut"
@@ -428,7 +427,7 @@
                     Content="Cancel" Background="Transparent" BorderThickness="0"
                     HorizontalAlignment="Right" Margin="0 0 10 0"
                     MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Foreground="{StaticResource TempActiveTextColor}"
                     Click="CancelBut_Click"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
@@ -436,7 +435,7 @@
                     MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                     HorizontalAlignment="Left"
                     Click="SaveBut_Click"  Margin="10 0 20 0" 
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                    Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>
 
 

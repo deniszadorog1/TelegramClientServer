@@ -19,6 +19,7 @@ using TelegramVisualPart.Pages.VisualPages;
 
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
+using System.Windows.Media.Animation;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -61,10 +62,10 @@ namespace TelegramVisualPart.UserControls
                             Source = new BitmapImage(new Uri(filePath, UriKind.Absolute))
                         };*/
 
-            System.Windows.Controls.Image img = new System.Windows.Controls.Image();
+            //System.Windows.Controls.Image img = new System.Windows.Controls.Image();
 
             ChatBox.Items.Add(new TextMessage(
-                GetConvertedStringMessage(CommentTextBox.Text), img));
+                GetConvertedStringMessage(CommentTextBox.Text)));
 
             //Back Message + date
 
@@ -72,6 +73,16 @@ namespace TelegramVisualPart.UserControls
             CommentTextBox.Text = string.Empty;
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+        }
+
+        public void AddEmoji(string emoji)
+        { 
+
+            ChatBox.Items.Add(new TextMessage(
+                GetConvertedStringMessage(emoji)));
+            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+
+            EmojisBoard.Visibility = Visibility.Hidden;
         }
 
         private string GetConvertedStringMessage(string str)
@@ -113,7 +124,6 @@ namespace TelegramVisualPart.UserControls
 
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
-                    // Изображение
                     var img = new System.Windows.Controls.Image
                     {
                         Source = new BitmapImage(new Uri(filePath, UriKind.Absolute)),
@@ -139,7 +149,23 @@ namespace TelegramVisualPart.UserControls
                 }
             }
         }
-        
+
+        public void SendGif(string gifPath)
+        {
+            var message = new MediaMessage(gifPath);
+            message.PreviewMouseDown += ChatGif_PreviewMouseDown;
+            ChatBox.Items.Add(message);
+        }
+
+        private void ChatGif_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not MediaMessage) return;
+            MediaMessage message = sender as MediaMessage;
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new VisualActionPage(message.GetGifPath()));
+        }
+
+
+
         private void AddVideoMessage(MediaElement el)
         {
             var video = new MediaMessage(el);

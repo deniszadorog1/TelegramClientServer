@@ -99,8 +99,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/userinfocontact/sentobjectsuserinfo/sentitems" +
-                    "usercontact.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/userinfocontact/sentobjectsuserinfo/" +
+                    "sentitemsusercontact.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\UserInfoContact\SentObjectsUserInfo\SentItemsUserContact.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
