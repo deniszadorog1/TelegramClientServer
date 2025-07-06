@@ -7,6 +7,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.x
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
@@ -60,6 +62,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Use
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\ChatButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\SearchControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\SearchMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
@@ -68,6 +72,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\MenuI
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtonsButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MyProfileControls\MyProfileSettingsButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml;;

@@ -170,7 +170,7 @@ namespace TelegramVisualPart.Pages.VisualPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/visualpages/visualactionpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/visualpages/visualactionpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Pages\VisualPages\VisualActionPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

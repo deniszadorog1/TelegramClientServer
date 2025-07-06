@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TelegramLib.MainClasses
 {
-    internal class System
+    public class System
     {
+
     }
 }

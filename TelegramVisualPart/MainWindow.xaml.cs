@@ -28,7 +28,8 @@ namespace TelegramVisualPart
             InitializeComponent();
 
             ///Visuals/Images/UserImages/Minato.jpg"
-            MainFrame.Content = new EnterPage();
+            //MainFrame.Content = new EnterPage();
+            MainFrame.Content = new MainChatPage();
         }
 
         public void SetSecondaryFrame(Page page)

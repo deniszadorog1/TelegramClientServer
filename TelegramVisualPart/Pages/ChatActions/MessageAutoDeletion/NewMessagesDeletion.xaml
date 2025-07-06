@@ -4,45 +4,72 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion"
+      xmlns:autoDelControls="clr-namespace:TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="400"
-      Height="450" Width="400"
+      d:DesignHeight="410" d:DesignWidth="300"
+      Height="410" Width="400"
       Title="NewMessagesDeletion"
       Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <Style x:Key="UpperTextStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Page.Resources>
 
     <Border x:Name="BorderBg" Background="{StaticResource DarkThemeOne}"
             CornerRadius="10">
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
-            <!-- Затемнение сверху -->
-            <Rectangle VerticalAlignment="Top" Height="80"
-                   Fill="Black" Opacity="0.3" />
+            <StackPanel Grid.Row="0" Margin="10">
+                <TextBlock Name="PageNameBlock" Style="{StaticResource UpperTextStyle}" 
+                           Text="Auto-delete messages" FontSize="18" FontWeight="SemiBold"/>
 
-            <!-- Затемнение снизу -->
-            <Rectangle VerticalAlignment="Bottom" Height="80"
-                   Fill="Black" Opacity="0.3" />
+                <TextBlock Style="{StaticResource UpperTextStyle}" FontSize="16"
+                           Margin="0 10 0 0"
+                           Text="Automatically delete new messages for you and USERNAME after a certain period of time."/>
 
-            <!-- Список -->
-            <ListBox Name="DaysListBox"
-                 VerticalAlignment="Center"
-                 HorizontalAlignment="Center"
-                 Width="150"
-                 Height="200"
-                 Background="Transparent"
-                 BorderThickness="0"
-                 Foreground="LightGray"
-                 FontSize="18"
-                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                 SelectionMode="Single"
-                 Loaded="DaysListBox_Loaded"
-                 SelectionChanged="DaysListBox_SelectionChanged">
-            </ListBox>
+                <TextBlock Style="{StaticResource UpperTextStyle}" 
+                   FontSize="16" 
+                   Margin="0 20 0 0"
+                   TextWrapping="Wrap">
+                        <Run Text="You can also set a default "/>
+                        <Run Text="self-destract time" Name="SetDestructBut"
+                             Foreground="{StaticResource TempActiveTextColor}"
+                             MouseEnter="SetDestructBut_MouseEnter" 
+                             MouseLeave="SetDestructBut_MouseLeave"
+                             PreviewMouseDown="SetDestructBut_PreviewMouseDown"/>
+                        <Run Text=" for all your chats in settings"/>
+                </TextBlock>
 
-            <!-- Синие линии вокруг выделенного -->
-            <Grid VerticalAlignment="Center" Height="40" IsHitTestVisible="False">
-                <Rectangle Fill="LightSkyBlue" Height="2" VerticalAlignment="Top" Margin="10,0"/>
-                <Rectangle Fill="LightSkyBlue" Height="2" VerticalAlignment="Bottom" Margin="10,0"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <autoDelControls:SpecialListBox/>
             </Grid>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            Foreground="{StaticResource TempActiveTextColor}"
+                            Click="CancelBut_Click"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                            Content="Save" Background="Transparent" BorderThickness="0"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Left" FontSize="14"
+                            Click="SaveBut_Click"  Margin="5 0 5 0" 
+                            Foreground="{StaticResource TempActiveTextColor}"/>
+            </StackPanel>
+            
         </Grid>
     </Border>
 </Page>

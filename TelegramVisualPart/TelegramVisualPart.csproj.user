@@ -25,6 +25,12 @@
     <Compile Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\Contacts\AddContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -172,6 +178,9 @@
     <Compile Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatsSearch\ChatButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -179,6 +188,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatsSearch\SearchMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
@@ -200,6 +212,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MainPage\LeftButtons.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\MainPage\LeftButtonsButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml.cs">
@@ -304,6 +319,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Contacts\AddContact.xaml">
@@ -453,6 +474,9 @@
     <Page Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\ChatsSearch\ChatButton.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -460,6 +484,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatsSearch\SearchMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\UserContact.xaml">
@@ -481,6 +508,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MainPage\LeftButtons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\MainPage\LeftButtonsButton.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml">

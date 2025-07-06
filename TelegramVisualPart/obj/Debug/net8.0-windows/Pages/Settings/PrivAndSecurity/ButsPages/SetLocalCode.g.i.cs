@@ -73,8 +73,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/settings/privandsecurity/butspages/s" +
-                    "etlocalcode.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/settings/privandsecurity/butspages/setlocalco" +
+                    "de.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

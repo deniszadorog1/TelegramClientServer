@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TelegramVisualPart.Pages.Settings.Folders;
+
 namespace TelegramVisualPart.UserControls.MainPage
 {
     /// <summary>
@@ -23,6 +26,22 @@ namespace TelegramVisualPart.UserControls.MainPage
         public LeftButtons()
         {
             InitializeComponent();
+
+            HamburgMenu.IconType.Kind = PackIconKind.HamburgerMenu;
+
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
+            AllChats.ButIcon.Kind = PackIconKind.Wechat;
+            AllChats.ButText.Text = "All chats";
+
+            Personal.ButIcon.Kind = PackIconKind.AccountCircle;
+            Personal.ButText.Text = "Personal";
+
+            Edit.ButIcon.Kind = PackIconKind.PlaylistEdit;
+            Edit.ButText.Text = "Edit";
         }
 
         public event EventHandler? OnMenuClick;
@@ -30,6 +49,11 @@ namespace TelegramVisualPart.UserControls.MainPage
         private void ShowMenu_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             OnMenuClick?.Invoke(this, EventArgs.Empty); 
+        }
+
+        private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage());
         }
     }
 }

@@ -89,8 +89,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/emojis/emojisblo" +
-                    "ck.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/emojis/emojisblock.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\Emojis\EmojisBlock.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

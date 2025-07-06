@@ -1,0 +1,120 @@
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+
+namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
+{
+    /// <summary>
+    /// Логика взаимодействия для SpecialListBox.xaml
+    /// </summary>
+    public partial class SpecialListBox : UserControl
+    {
+        private const int _borderVal = 2;
+        private readonly Dictionary<int, string> _voc = new Dictionary<int, string>()
+        {
+            { -1, " " },
+            { 0, " " }, 
+            { 1, "1 day" },
+            { 2, "2 days" },
+            { 3, "3 days" },
+            { 4, "4 days" },
+            { 5, "5 days" },
+            { 6, "6 days" },
+            { 7, "1 week" },
+            { 14, "2 weeks" },
+            { 21, "3 weeks" },
+            { 30, "1 month" },
+            { 60, "2 months" },
+            { 90, "3 months" },
+            { 120, "4 months" },
+            { 150, "5 months" },
+            { 180, "6 months" },
+            { 365, "1 year" },
+            { -100, "" },
+            { -200, " " },
+        };
+
+        public SpecialListBox()
+        {
+            InitializeComponent();
+        }
+
+        private int _selectedIndex = 2;
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (CheckPanel.Children.Count == 0)
+                return;
+
+            if (e.Delta < 0)
+                _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
+            else if (e.Delta > 0)
+                _selectedIndex = Math.Max(2, _selectedIndex - 1);
+
+            var selectedElement = CheckPanel.Children[_selectedIndex] as UIElement;
+            CenterElementInScrollViewer(selectedElement);
+
+            //HighlightSelectedElement(_selectedIndex); 
+            e.Handled = true;
+        }
+
+        private void CenterElementInScrollViewer(UIElement element)
+        {
+            if (element == null)
+                return;
+
+            var transform = element.TransformToAncestor(ScrollView);
+            Point position = transform.Transform(new Point(0, 0));
+
+            double elementCenter = position.Y + ((FrameworkElement)element).ActualHeight / 2;
+            double scrollViewerCenter = ScrollView.ViewportHeight / 2;
+
+            double offset = ScrollView.VerticalOffset + (elementCenter - scrollViewerCenter);
+            ScrollView.ScrollToVerticalOffset(offset);
+        }
+
+        private void HighlightSelectedElement(int selectedIndex)
+        {
+            for (int i = 0; i < CheckPanel.Children.Count; i++)
+            {
+                if (CheckPanel.Children[i] is TextBlock tb)
+                {
+                    tb.Background = (i == selectedIndex) ? Brushes.LightGray : Brushes.Transparent;
+                }
+            }
+        }
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var val in _voc)
+            {
+                TextBlock asd = new TextBlock()
+                {
+                    Text = val.Value,
+                    Height = 40,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 16,
+                    Padding = new Thickness(10),
+                    Foreground = new SolidColorBrush(Colors.Gray)
+                };
+                CheckPanel.Children.Add(asd);
+            }
+
+            //DaysListBox.SelectedIndex = 2;
+            //ScrollView.Scroll(DaysListBox.SelectedItem);
+        }
+    }
+}
