@@ -6,12 +6,12 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.NotifsAndSounds"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:butToggleIcon ="clr-namespace:TelegramVisualPart.UserControls"
+      xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="400"
       Height="450" Width="400"
       Title="NotAndSoundSettings"
-      HorizontalAlignment="Center"
-      
+      HorizontalAlignment="Center" 
       >
 
     <Border CornerRadius="15" 
@@ -32,26 +32,22 @@
                     <ColumnDefinition Width="70"/>
                 </Grid.ColumnDefinitions>
 
-                <materialDesign:PackIcon Kind="ArrowLeft" VerticalAlignment="Center"
-                                     Name="BackBut"
-                                     HorizontalAlignment="Right" Foreground="Gray"
-                                     Width="30" Height="30" Margin="10"
-                                     MouseEnter="Buts_MouseEnter"
-                                     MouseLeave="Buts_MouseLeave"
-                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
+
+                <iconBut:IconButton x:Name="BackBut" Width="30" Height="30" Margin="10"
+                                    PreviewMouseDown="BackBut_PreviewMouseDown"
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Right"/>
 
                 <TextBlock Grid.Column="1" Text="Notifications and sounds"
                        VerticalAlignment="Center" HorizontalAlignment="Left"
                        Foreground="White" FontSize="18"/>
 
-                <materialDesign:PackIcon Kind="Close" Grid.Column="2"
-                                     Name="CloseBut"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Right" Foreground="Gray"
-                                     Width="30" Height="30" Margin="10"
-                                     MouseEnter="Buts_MouseEnter"
-                                     MouseLeave="Buts_MouseLeave"
-                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+
+                <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Width="30" Height="30" Margin="10"
+                                    PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
             <Line StrokeThickness="5" Stroke="{StaticResource DarkThemeDeviderField}" 

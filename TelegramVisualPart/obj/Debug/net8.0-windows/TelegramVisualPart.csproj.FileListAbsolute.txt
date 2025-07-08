@@ -268,3 +268,9 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtonsButton.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtonsButton.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.baml

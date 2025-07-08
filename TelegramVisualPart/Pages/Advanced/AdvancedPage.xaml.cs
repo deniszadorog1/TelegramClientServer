@@ -31,6 +31,9 @@ namespace TelegramVisualPart.Pages.Advanced
 
         public void SetBaseBlocks()
         {
+            GetBackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             DownloadPathBut.IconType.Kind = PackIconKind.FileOutline;
             DownloadPathBut.ButName.Text = "Download path";
             DownloadPathBut.TempStatusBut.Text = "Default folder";
@@ -52,18 +55,6 @@ namespace TelegramVisualPart.Pages.Advanced
 
             InstalBetaBut.TextBlock.Text = "Install beta version";
             CheckForUpdates.TextBlock.Text = "Check for updates";
-        }
-
-        private void Buts_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIcon icon) icon.Foreground = Brushes.White;
-            Cursor = Cursors.Hand;
-        }
-
-        private void Buts_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIcon icon) icon.Foreground = Brushes.Gray;
-            Cursor = null;
         }
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

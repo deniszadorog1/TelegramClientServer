@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.ChatActions;
+using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -69,6 +70,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory());
+        }
+
+        private void SetWallpaperBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper());
         }
     }
 }

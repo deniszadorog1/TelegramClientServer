@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void SetFontRadio()
         {
+            ClearSearch.IconType.Kind = PackIconKind.Close;
+
             var fontFamilies = Fonts.SystemFontFamilies;
 
             foreach(FontFamily font in Fonts.SystemFontFamilies)
@@ -89,6 +92,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        private void ClearSearch_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SearchBox.Text = string.Empty;
         }
     }
 }

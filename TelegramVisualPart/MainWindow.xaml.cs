@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Pages;
 using static System.Net.Mime.MediaTypeNames;
-
+using TelegramVisualPart.Services;
 namespace TelegramVisualPart
 {
     /// <summary>
@@ -25,6 +25,8 @@ namespace TelegramVisualPart
     {
         public MainWindow()
         {
+            //VisConstParamsJsonService.GetStringByName("check");
+
             InitializeComponent();
 
             ///Visuals/Images/UserImages/Minato.jpg"
@@ -224,5 +226,25 @@ namespace TelegramVisualPart
         {
             MainFrame.Content = page;
         }
+
+        public void ClearPageFromParentFrame(Page page)
+        {
+            var frame = FindParentFrame(page);
+            if (frame is not null)frame.Content = null; 
+        }
+
+        private Frame FindParentFrame(DependencyObject child)
+        {
+            while (child != null)
+            {
+                if (child is Frame frame)
+                    return frame;
+
+                child = VisualTreeHelper.GetParent(child);
+            }
+
+            return null;
+        }
+
     }
 }

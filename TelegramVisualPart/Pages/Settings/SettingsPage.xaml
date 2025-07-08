@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:butsControls="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:menuIconTextBut ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
       d:DesignHeight="625" d:DesignWidth="350"
       Height="625" Width="350"
@@ -36,21 +37,13 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                    <materialDesign:PackIcon Kind="DotsVertical" Name="MoreInfoBut"
-                                             Margin="0 0 10 0"
-                                             Width="30" Height="30"
-                                             Foreground="Gray"
-                                             MouseEnter="PackIcon_MouseEnter"
-                                             MouseLeave="PackIcon_MouseLeave"
-                                             PreviewMouseDown="MoreInfoBut_PreviewMouseDown"/>
+                    <iconBut:IconButton x:Name="MoreInfoBut"
+                                        Margin="0 0 10 0" Width="30" Height="30"
+                                        PreviewMouseDown="MoreInfoBut_PreviewMouseDown"/>
 
-                    <materialDesign:PackIcon Kind="Close" Name="CloseBut"
-                                             Margin="0 0 20 0"
-                                             Width="30" Height="30"
-                                             Foreground="Gray"
-                                             MouseEnter="PackIcon_MouseEnter"
-                                             MouseLeave="PackIcon_MouseLeave"
-                                             PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+                    <iconBut:IconButton x:Name="CloseBut" 
+                                        Margin="0 0 20 0" Width="30" Height="30"
+                                        PreviewMouseDown="CloseBut_PreviewMouseDown"/>
                 </StackPanel>
             </Grid>
 

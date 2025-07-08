@@ -6,6 +6,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
@@ -79,6 +80,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\FontFamilyChoose\FontToChoose.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\CirclePaletteBut.xaml;;

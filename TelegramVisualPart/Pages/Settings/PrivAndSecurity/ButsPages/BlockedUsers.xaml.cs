@@ -31,6 +31,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         public void SetButsVisualState()
         {
+            BackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             ToBlockBut.IconType.Foreground = 
                 (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.IconType.Kind = PackIconKind.Hand;
@@ -38,25 +41,6 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             ToBlockBut.ButName.Foreground =
                 (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.ButName.Text = "Block user";
-        }
-
-        private void Buts_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Cursor = Cursors.Hand;
-
-            if (sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.White;
-            }
-        }
-
-        private void Buts_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Cursor = null;
-            if (sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.Gray;
-            }
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

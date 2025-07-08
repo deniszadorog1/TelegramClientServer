@@ -13,7 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
+using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
+using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 {
@@ -42,8 +45,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             ExportHistory.IconType.Kind = PackIconKind.Export;
             ExportHistory.ButName.Text = "Export chat history";
 
-            ExportHistory.IconType.Kind = PackIconKind.FolderOutline;
-            ExportHistory.ButName.Text = "Add to folder";
+            AddToFolder.IconType.Kind = PackIconKind.FolderOutline;
+            AddToFolder.ButName.Text = "Add to folder";
 
             BlockUser.IconType.Kind = PackIconKind.Hand;
             BlockUser.ButName.Text = "Block user";
@@ -58,7 +61,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(sender is IconTextBut but)
+            if(sender is MenuIconTextBut but)
             {
                 Page page = GetPageToOpen(but.Name);
                 if (page is null) return;
@@ -68,9 +71,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private Page GetPageToOpen(string name)
         {
-            return name == DeleteContact.Name.ToString() ? new DeleteContact() :
+            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion() :
+                   name == DeleteContact.Name.ToString() ? new DeleteContact() :
                    name == BlockUser.Name.ToString() ? new BlockContact() :
                    name == EditContact.Name.ToString() ? new EditUserContact() :
+                   name == AddToFolder.Name.ToString() ? new FoldersPage() : 
                    name == ShareContact.Name.ToString() ? new ShareContact() : null;
         }
     }

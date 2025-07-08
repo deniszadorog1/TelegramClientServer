@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"   
       xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons"
       xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+      xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
       d:DesignHeight="750" d:DesignWidth="400"
       Height="750" Width="400"
@@ -23,29 +24,23 @@
 
             <Grid Grid.Row="0" Name="UpperThing">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ArrowLeft" Margin="10 0 0 0" 
-                                         Width="35" Height="35"
-                                         VerticalAlignment="Center" HorizontalAlignment="Left"
-                                         Foreground="Gray"
-                                         Name="GetBackBut"
-                                         MouseEnter="Buts_MouseEnter"
-                                         MouseLeave="Buts_MouseLeave"
-                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
 
+                    <iconBut:IconButton x:Name="GetBackBut" Margin="10 0 0 0" 
+                                        Width="35" Height="35"
+                                        VerticalAlignment="Center" HorizontalAlignment="Left"
+                                        PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
+                    
                     <TextBlock Text="Advanced" VerticalAlignment="Center" Foreground="White"
                            Margin="10 0 0 0" FontSize="20"/>
                 </StackPanel>
 
                 <Grid Grid.Column="1">
-                    <materialDesign:PackIcon Kind="Close" Margin="0 0 15 0" 
-                                         Width="35" Height="35"
-                                         VerticalAlignment="Center" 
-                                         HorizontalAlignment="Right"
-                                         Foreground="Gray"
-                                         Name="CloseBut"
-                                         MouseEnter="Buts_MouseEnter"
-                                         MouseLeave="Buts_MouseLeave"
-                                         PreviewMouseDown="CloseBut_PreviewMouseDown"/>
+
+                    <iconBut:IconButton x:Name="CloseBut" Margin="0 0 15 0" 
+                                        Width="35" Height="35"
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Right"
+                                        PreviewMouseDown="CloseBut_PreviewMouseDown"/>
                 </Grid>
             </Grid>
 

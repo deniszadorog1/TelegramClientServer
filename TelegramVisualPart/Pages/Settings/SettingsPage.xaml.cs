@@ -32,18 +32,6 @@ namespace TelegramVisualPart.Pages.Settings
             SetButtonsView();
         }
 
-        private void PackIcon_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIcon icon) icon.Foreground = Brushes.White;
-            Cursor = Cursors.Hand;
-        }
-
-        private void PackIcon_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender is PackIcon icon) icon.Foreground = Brushes.Gray;
-            Cursor = null;
-        }
-
         private void MoreInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //set info 
@@ -77,6 +65,9 @@ namespace TelegramVisualPart.Pages.Settings
 
         public void SetButtonsView()
         {
+            MoreInfoBut.IconType.Kind = PackIconKind.DotsVertical;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             MyAccount.IconType.Kind = PackIconKind.AccountCircleOutline;
             MyAccount.ButName.Text = "My account";
 

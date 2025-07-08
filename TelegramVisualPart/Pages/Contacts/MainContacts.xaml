@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Contacts"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls ="clr-namespace:TelegramVisualPart.UserControls.ContactsControls"
-      
+      xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="450"
       Height="650" Width="450"
@@ -30,11 +30,10 @@
                            HorizontalAlignment="Left" VerticalAlignment="Center"
                        FontSize="22" Foreground="White" Margin="20 0 0 0"/>
 
-                <materialDesign:PackIcon Name="SortBut"
-                                     Kind="HamburgerMenu" HorizontalAlignment="Right"  VerticalAlignment="Center"
-                                     Width="35" Height="35" Foreground="Gray" Margin="0 0 20 0"
-                                     MouseEnter="SortBut_MouseEnter" MouseLeave="SortBut_MouseLeave"
-                                     PreviewMouseDown="SortBut_PreviewMouseDown"/>
+                <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"
+                                    HorizontalAlignment="Right"  VerticalAlignment="Center"
+                                    Margin="0 0 20 0"
+                                    PreviewMouseDown="SortBut_PreviewMouseDown"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -49,18 +48,17 @@
                                          VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Margin="15 0 0 0" Grid.Column="0"/>
                 
-                <TextBox Grid.Row="2" Grid.Column="1"
+                <TextBox Grid.Row="2" Grid.Column="1" Name="SearchBox"
                   Foreground="White" Margin="10 0 10 0" FontSize="16"
-                  materialDesign:HintAssist.Hint="Last name"
+                  materialDesign:HintAssist.Hint="Search"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                   CaretBrush="White"
                   materialDesign:HintAssist.Foreground="Gray"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                <materialDesign:PackIcon Kind="Close" Grid.Column="2" Width="30" Height="30"  
-                                         VerticalAlignment="Center" HorizontalAlignment="Left"
-                                         Foreground="Gray" Margin="5 0 0 0"/>
-
+                <iconBut:IconButton Grid.Column="2" Width="30" Height="30" 
+                                    x:Name="ClearBox" Margin="5 0 0 0"
+                                    PreviewMouseDown="ClearBox_PreviewMouseDown"/>
             </Grid>
 
             <Grid Grid.Row="2">

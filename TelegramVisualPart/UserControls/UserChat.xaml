@@ -8,6 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:Emojis="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
+             xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
              d:DesignHeight="450" d:DesignWidth="800" 
              
              KeyDown="UserControl_KeyDown"

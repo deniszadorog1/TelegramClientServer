@@ -1,18 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TelegramVisualPart.Pages
 {
@@ -24,6 +14,13 @@ namespace TelegramVisualPart.Pages
         public LoggedUserProfile()
         {
             InitializeComponent();
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
+            CloseBut.IconType.Kind = PackIconKind.Close;
+            SettingsBut.IconType.Kind = PackIconKind.LeadPencil;
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)

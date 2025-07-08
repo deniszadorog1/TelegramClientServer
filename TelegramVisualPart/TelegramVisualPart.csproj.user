@@ -22,6 +22,9 @@
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -238,6 +241,12 @@
     <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -316,6 +325,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml">
@@ -532,6 +544,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\ChatSettingsControls\CircleColor.xaml">

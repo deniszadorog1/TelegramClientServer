@@ -29,6 +29,14 @@ namespace TelegramVisualPart.Pages.Contacts
         {
             _type = type;
             InitializeComponent();
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
+            SortBut.IconType.Kind = PackIconKind.HamburgerMenu;
+
+            ClearBox.IconType.Kind = PackIconKind.Close;
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -80,6 +88,11 @@ namespace TelegramVisualPart.Pages.Contacts
                         break;
                     }
             }
+        }
+
+        private void ClearBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SearchBox.Text = string.Empty;
         }
     }
 }

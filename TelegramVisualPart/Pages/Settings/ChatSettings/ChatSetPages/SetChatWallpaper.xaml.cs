@@ -46,5 +46,10 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new WallpaperPreview());
         }
+
+        private void WallpaperBotBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearPageFromParentFrame(this);
+        }
     }
 }

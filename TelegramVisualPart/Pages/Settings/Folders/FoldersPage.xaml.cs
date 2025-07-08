@@ -24,25 +24,14 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         public FoldersPage()
         {
             InitializeComponent();
+
+            SetBasicParams();
         }
 
-        private void Buts_MouseEnter(object sender, MouseEventArgs e)
+        public void SetBasicParams()
         {
-            Cursor = Cursors.Hand;
-
-            if (sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.White;
-            }
-        }
-
-        private void Buts_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Cursor = null;
-            if (sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.Gray;
-            }
+            BackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

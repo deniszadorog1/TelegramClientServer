@@ -60,6 +60,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         private void SetDestructBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Go to anouther page
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SelfDestructTimer());
         }
 

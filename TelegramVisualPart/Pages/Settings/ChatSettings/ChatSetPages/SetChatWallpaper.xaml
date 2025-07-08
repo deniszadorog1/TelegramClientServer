@@ -58,8 +58,9 @@
             </ScrollViewer>
 
             <controls:WallpaperBotBut Grid.Row="2" HorizontalAlignment="Right" 
-                                      Width="75" Height="50"
-                                      VerticalAlignment="Center" Margin="0 0 20 0" />
+                                      Width="75" 
+                                      VerticalAlignment="Center" Margin="0 0 20 0" 
+                                      PreviewMouseDown="WallpaperBotBut_PreviewMouseDown"/>
         </Grid>
     </Border>
 </Page>

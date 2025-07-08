@@ -32,6 +32,9 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetButtonsView()
         {
+            GetBackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             Name.IconVis.Kind = PackIconKind.AccountCircleOutline;
             Name.ButName.Text = "Name";
             Name.AdditionalText.Text = "name here";

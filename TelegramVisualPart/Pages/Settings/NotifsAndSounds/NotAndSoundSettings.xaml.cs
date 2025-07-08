@@ -30,6 +30,9 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         public void SetButsVisibility()
         {
+            BackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             DeskTopNotifs.Icon.Kind = PackIconKind.BellOutline;
             DeskTopNotifs.TextBlock.Text = "Desktop notifications";
 
@@ -44,25 +47,6 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
             PinnedMessages.Icon.Kind = PackIconKind.PinOutline;
             PinnedMessages.TextBlock.Text = "Pinned messages";
-        }
-
-        private void Buts_MouseEnter(object sender, MouseEventArgs e)
-        {
-            Cursor = Cursors.Hand;
-
-            if (sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.White;
-            }
-        }
-
-        private void Buts_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Cursor = null;
-            if(sender is PackIcon icon)
-            {
-                icon.Foreground = Brushes.Gray;
-            }
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

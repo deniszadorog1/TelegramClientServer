@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:radio ="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.FontFamilyChoose"
-        mc:Ignorable="d" 
+      xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
+      mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="400"
       Height="650" Width="400"
       Title="ChooseFontFamily">
@@ -47,7 +48,7 @@
                     <materialDesign:PackIcon Kind="Magnify" Width="30" Height="30" Foreground="Gray"
                                          VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Margin="15 0 0 0" Grid.Column="0"/>
-                    <TextBox Grid.Row="2" Grid.Column="1"
+                    <TextBox Name="SearchBox" Grid.Row="2" Grid.Column="1"
                              Foreground="White" Margin="10 0 10 0" FontSize="16"
                              materialDesign:HintAssist.Hint="Search"
                              materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
@@ -55,9 +56,12 @@
                              materialDesign:HintAssist.Foreground="Gray"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-                    <materialDesign:PackIcon Kind="Close" Grid.Column="2" Width="30" Height="30"  
-                                         VerticalAlignment="Center" HorizontalAlignment="Left"
-                                         Foreground="Gray" Margin="5 0 0 0"/>
+
+                    <iconBut:IconButton x:Name="ClearSearch" Margin="5 0 0 0"
+                                        Grid.Column="2" Width="30" Height="30" 
+                                        VerticalAlignment="Center" HorizontalAlignment="Left"
+                                        PreviewMouseDown="ClearSearch_PreviewMouseDown"/>
+
                 </Grid>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">

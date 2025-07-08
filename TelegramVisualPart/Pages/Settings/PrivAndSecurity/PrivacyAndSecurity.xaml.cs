@@ -32,6 +32,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         public void SetButsVisibility()
         {
+            BackBut.IconType.Kind = PackIconKind.ArrowLeft;
+            CloseBut.IconType.Kind = PackIconKind.Close;
+
             LocalPasscode.NamePart.Text = "Local passcode";
             LocalPasscode.EnumPart.Text = "STATUS";
 
