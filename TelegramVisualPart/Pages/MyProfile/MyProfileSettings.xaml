@@ -83,11 +83,11 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox x:Name="BioTextBox" MaxLength="70" TextChanged="BioTextBox_TextChanged"
-                         materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
-                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
-                         Foreground="White" CaretBrush="White"
-                         VerticalContentAlignment="Center" Margin="10 0 0 0"
-                         FontSize="14" BorderThickness="0"/>
+                             materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
+                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
+                             Foreground="White" CaretBrush="White"
+                             VerticalContentAlignment="Center" Margin="10 0 0 0"
+                             FontSize="14" BorderThickness="0"/>
 
                     <TextBlock Grid.Column="1" x:Name="WordCount" Text="70" TextWrapping="Wrap"
                            FontSize="14" HorizontalAlignment="Center"

@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace TelegramVisualPart.Pages
 {
@@ -23,8 +25,10 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class MainChatPage : Page
     {
-        public MainChatPage()
+        private TelSystem _system;
+        public MainChatPage(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
@@ -33,6 +37,8 @@ namespace TelegramVisualPart.Pages
             SetChatClickEvent();
 
             SetChatClick();
+
+            LeftButtons.SetSystemParam(_system);
         }
 
         public void SetChatClick()
@@ -66,6 +72,8 @@ namespace TelegramVisualPart.Pages
 
         private void SetDrawButsStyles()
         {
+            ClearTextBut.IconType.Kind = PackIconKind.Close;
+
             MyProfileDrawBut.IconType.Kind = PackIconKind.AccountCircleOutline;
             MyProfileDrawBut.ButName.Text = "My Profile";
 
@@ -104,9 +112,9 @@ namespace TelegramVisualPart.Pages
 
         public Page GetPageByIcon(MenuIconTextBut icon)
         {
-            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile() :
+            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser) :
                 icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact) :
-                icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage() : null;
+                icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_system) : null;
         }
 
         private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -147,9 +155,14 @@ namespace TelegramVisualPart.Pages
 
             if (mousePos.X < 300)
             {
+                //hide all chat textBlocks except UserImage
+                HideAllChatBlocks();
+
+                ChatsColumn.MinWidth = 75;
                 ChatsColumn.Width = new GridLength(75);
                 SetVisibilityForChatObjects(true);
-                //hide all chat textBlocks except UserImage
+
+                ChatsBox.Visibility = Visibility.Visible;
             }
             else
             {
@@ -164,6 +177,7 @@ namespace TelegramVisualPart.Pages
         public void SetSearchPanelWidth()
         {
             if (SearchBoxGrid.Visibility == Visibility.Hidden) return;
+            
             SearchControl.SetControlSize();
         }
 
@@ -206,8 +220,6 @@ namespace TelegramVisualPart.Pages
 
         private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            HideAllChatBlocks();
-
             ChatsColumn.Width = new GridLength(300);
             SetVisibilityForChatObjects(false);
             //Change border size   
@@ -216,36 +228,46 @@ namespace TelegramVisualPart.Pages
 
         private void SarchBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            HideAllChatBlocks();
-
             SetSearchBoxVisible();
         }
 
         public void SetSearchBoxVisible()
         {
-            ChatsBox.Visibility = Visibility.Hidden;
+            HideAllChatBlocks();
             SearchBoxGrid.Visibility = Visibility.Visible;
-            ChatsColumn.MinWidth = 250;
+            ChatsColumn.MinWidth = 300;
+            SearchControl.UpdateColors();
         }
 
         private void SarchBox_LostFocus(object sender, RoutedEventArgs e)
         {
+            HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
-            SearchBoxGrid.Visibility = Visibility.Hidden;
             ChatsColumn.MinWidth = 50;
         }
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            return;
             var focusedEl = Keyboard.FocusedElement;
 
-            if (focusedEl is TextBox box && box.Name == SarchBox.Text)
+            if (focusedEl is System.Windows.Controls.TextBox box 
+                && box.Name == SarchBox.Text)
             {
 
             }
             bool ifFoc = SarchBox.IsFocused;
         }
 
-        
+        private void ClearTextBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SarchBox.Text = string.Empty;
+
+            HideAllChatBlocks();
+            ChatsBox.Visibility = Visibility.Visible;
+
+            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
+            Keyboard.ClearFocus();
+        }
     }
 }

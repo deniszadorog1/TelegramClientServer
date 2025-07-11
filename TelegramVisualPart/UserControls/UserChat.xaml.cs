@@ -20,6 +20,8 @@ using TelegramVisualPart.Pages.VisualPages;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 using System.Windows.Media.Animation;
+using System.Windows.Controls.Primitives;
+using Application = System.Windows.Application;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -76,7 +78,7 @@ namespace TelegramVisualPart.UserControls
         }
 
         public void AddEmoji(string emoji)
-        { 
+        {
 
             ChatBox.Items.Add(new TextMessage(
                 GetConvertedStringMessage(emoji)));
@@ -164,15 +166,13 @@ namespace TelegramVisualPart.UserControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new VisualActionPage(message.GetGifPath()));
         }
 
-
-
         private void AddVideoMessage(MediaElement el)
         {
             var video = new MediaMessage(el);
             video.PreviewMouseDown += ChatVideo_PreviewMouseDown;
             ChatBox.Items.Add(video);
         }
-        
+
         private void ChatVideo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not MediaMessage) return;
@@ -180,7 +180,7 @@ namespace TelegramVisualPart.UserControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new VisualActionPage(message.GetVideo()));
         }
 
-        private void AddImageMessage(Image img)
+        public void AddImageMessage(Image img)
         {
             var message = new MediaMessage(img);
             message.PreviewMouseDown += ChatImage_PreviewMouseDown;
@@ -241,10 +241,29 @@ namespace TelegramVisualPart.UserControls
             UserInfoColumn.Width = new GridLength(0);
         }
 
+        public void UpdateColors()
+        {
+            EmojisBoard.ActiveRect.Fill =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            TextBlock block = EmojisBoard.TabsPanel.Children.OfType<TextBlock>().Where
+                (x => !CompareColors(x)).FirstOrDefault();
+
+            if (block is null) return;
+            block.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+        }
+
+        private bool CompareColors(TextBlock block)
+        {
+            return block.Foreground is SolidColorBrush brush &&
+                brush.Color == Colors.Gray;
+        }
+
+
         private void UserChatMenuBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //show user menu
-
             UserChatMenu.Visibility = Visibility.Visible;
         }
 
@@ -295,7 +314,16 @@ namespace TelegramVisualPart.UserControls
 
         private void UserInforGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Pages.UserInfo());
+            Pages.UserInfo info = new Pages.UserInfo();
+            SetUserInfoPageHeight(info);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+        }
+
+        public void SetUserInfoPageHeight(Pages.UserInfo info)
+        {
+            double windowHeight = ((MainWindow)Window.GetWindow(this)).ActualHeight;
+            info.Height = windowHeight <= info.Height ? info.Height : windowHeight - 250;
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
@@ -305,6 +333,7 @@ namespace TelegramVisualPart.UserControls
 
         private void EmojisGrid_MouseEnter(object sender, MouseEventArgs e)
         {
+            UpdateColors();
             EmojisBoard.Visibility = Visibility.Visible;
         }
 

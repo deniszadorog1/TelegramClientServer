@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 {
@@ -21,8 +22,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     /// </summary>
     public partial class SetLocalCode : Page
     {
-        public SetLocalCode()
+        private TelSystem _system;
+        public SetLocalCode(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
             SetBasicParams();
         }
@@ -41,7 +44,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new PrivacyAndSecurity());
+                new PrivacyAndSecurity(_system));
         }
     }
 }

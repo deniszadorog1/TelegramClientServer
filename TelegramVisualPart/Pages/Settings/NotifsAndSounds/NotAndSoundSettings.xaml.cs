@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 {
@@ -21,8 +22,10 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
     /// </summary>
     public partial class NotAndSoundSettings : Page
     {
-        public NotAndSoundSettings()
+        private TelSystem _system;
+        public NotAndSoundSettings(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             SetButsVisibility();
@@ -56,7 +59,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
         }
     }
 }

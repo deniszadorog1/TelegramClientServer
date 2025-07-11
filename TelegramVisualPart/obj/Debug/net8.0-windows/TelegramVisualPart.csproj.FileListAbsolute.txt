@@ -274,3 +274,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AutoDeleteMessages\ChosenChat.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Figure.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Girl.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetBirthDate.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetBirthDate.baml

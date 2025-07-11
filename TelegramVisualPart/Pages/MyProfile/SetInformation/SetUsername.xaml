@@ -22,7 +22,7 @@
         <TextBlock Grid.Row="0" Text="Username" VerticalAlignment="Center"
                    FontSize="20" Foreground="White" Margin="20 0 0 0"/>
 
-        <TextBox Grid.Row="1"
+        <TextBox Grid.Row="1" Name="UserNameBox"
                   Foreground="White" Margin="15" FontSize="16"
                   materialDesign:HintAssist.Hint="@username"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
@@ -46,12 +46,12 @@
                     Content="Cancel" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
                     Click="CancelBut_Click"  Margin="0 0 10 0" 
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                    Foreground="{StaticResource TempActiveTextColor}"/>
 
             <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                     Content="Save" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Foreground="{StaticResource TempActiveTextColor}"
                     Click="SaveBut_Click"/>
         </StackPanel>
 

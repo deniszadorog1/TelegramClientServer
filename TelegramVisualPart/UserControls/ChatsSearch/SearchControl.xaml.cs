@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup.Localizer;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -71,12 +72,35 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             //ChatsPanel.Background = new SolidColorBrush(Colors.Red);
         }
 
-        private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public void UpdateColors()
         {
-            if (sender is not TextBlock block) return;
-            ClearForegroundForTabs();
+            ActiveRect.Fill =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            TextBlock block = TabsPanel.Children.OfType<TextBlock>().Where
+                (x => !CompareColors(x)).FirstOrDefault();
+
+            if (block is null) return;
             block.Foreground =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+        }
+
+        private bool CompareColors(TextBlock block)
+        {
+            return  block.Foreground is SolidColorBrush brush && 
+                brush.Color == Colors.Gray;
+        }
+
+        private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //UpdateColors();
+
+            if (sender is not TextBlock block) return;
+            ClearForegroundForTabs();
+
+            block.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
 
             Point targetPos = block.TranslatePoint(new Point(0, 0), RectGrid);
             double targetWidth = block.ActualWidth;

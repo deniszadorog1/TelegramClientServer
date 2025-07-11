@@ -46,7 +46,7 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="65"/>
+                <ColumnDefinition Width="85"/>
                 <ColumnDefinition MinWidth="50" x:Name="ChatsColumn" />
                 <ColumnDefinition Width="3"/>
                 <ColumnDefinition MinWidth="250"/>
@@ -64,17 +64,28 @@
 
                 <Border Grid.Row="0" Margin="10 5 10 0" CornerRadius="20" Name="SearchBorder"
                         Background="{StaticResource DarkThemeDeviderField}">
-                    <TextBox Grid.Row="0"  Name="SarchBox" 
-                          Foreground="White" Margin="10 0 10 0" FontSize="14"
-                          materialDesign:HintAssist.Hint="Serch"
-                          materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                          materialDesign:HintAssist.Foreground="Gray"
-                          CaretBrush="White" 
-                          GotFocus="SarchBox_GotFocus"
-                          LostFocus="SarchBox_LostFocus"/>
+                    <Grid>
+                        <TextBox Name="SarchBox" 
+                                 Foreground="White" Margin="10 0 35 0" FontSize="14"
+                                 materialDesign:HintAssist.Hint="Serch"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                                 materialDesign:HintAssist.Foreground="Gray"
+                                 CaretBrush="White" 
+                                 GotFocus="SarchBox_GotFocus"
+                                 LostFocus="SarchBox_LostFocus"/>
+        
+                        <menuIconTextBut:IconButton x:Name="ClearTextBut"
+                                                 HorizontalAlignment="Right"
+                                                 VerticalAlignment="Center"
+                                                 Width="25" Height="25"
+                                                 Foreground="Gray"
+                                                 Margin="0 0 10 0"
+                                                 PreviewMouseDown="ClearTextBut_PreviewMouseDown"/>
+
+                    </Grid>
                 </Border>
 
-                <Grid Name="MagnifierGrid" Background="Transparent" Visibility="Visible"
+                <Grid Name="MagnifierGrid" Background="Transparent" Visibility="Hidden"
                       MouseEnter="MagnifierGrid_MouseEnter"
                       MouseLeave="MagnifierGrid_MouseLeave"
                       PreviewMouseDown="MagnifierGrid_PreviewMouseDown">

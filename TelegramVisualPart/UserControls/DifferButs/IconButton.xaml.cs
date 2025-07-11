@@ -28,11 +28,13 @@ namespace TelegramVisualPart.UserControls.DifferButs
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             IconType.Foreground = Brushes.White;
+            Cursor = Cursors.Hand;
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             IconType.Foreground = Brushes.Gray;
+            Cursor = null;
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.Contacts;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
@@ -22,8 +23,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     /// </summary>
     public partial class BlockedUsers : Page
     {
-        public BlockedUsers()
+        private TelSystem _system;
+        public BlockedUsers(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             SetButsVisualState();
@@ -51,7 +54,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new PrivacyAndSecurity());
+                new PrivacyAndSecurity(_system));
         }
 
         private void ToBlockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

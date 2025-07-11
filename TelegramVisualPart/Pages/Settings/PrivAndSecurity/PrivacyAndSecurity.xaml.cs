@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages;
 using TelegramVisualPart.UserControls.DifferButs;
 
@@ -23,8 +24,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class PrivacyAndSecurity : Page
     {
-        public PrivacyAndSecurity()
+        private TelSystem _system;
+        public PrivacyAndSecurity(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             SetButsVisibility();
@@ -95,7 +98,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
         }
 
         private void Buts_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -116,8 +119,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private Page GetPageForBut(string name)
         {
-            return name == LocalPasscode.Name.ToString() ? new SetLocalCode() :
-                name == BlockedUsers.Name.ToString() ? new BlockedUsers() :
+            return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system) :
+                name == BlockedUsers.Name.ToString() ? new BlockedUsers(_system) :
                 name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber) :
                 name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen) :
                 name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos) :

@@ -40,7 +40,8 @@
             </StackPanel>
 
             <Grid Grid.Row="1" Name="RectGrid">
-                <Rectangle Name="ActiveRect" Fill="{StaticResource TempActiveTextColor}" Width="35"
+                <Rectangle Name="ActiveRect" 
+                           Fill="{StaticResource TempActiveTextColor}" Width="35"
                            Height="4"
                            HorizontalAlignment="Left" Margin="10 0 0 0"
                            VerticalAlignment="Top">

@@ -1,4 +1,4 @@
-﻿
+﻿B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPage.xaml;;
@@ -15,6 +15,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.x
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\LoggedUserProfile.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\MyProfileSettings.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetBirthDate.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetNameSurname.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;

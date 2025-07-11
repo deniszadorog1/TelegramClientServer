@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons;
 
 namespace TelegramVisualPart.Pages.Advanced
@@ -22,8 +23,11 @@ namespace TelegramVisualPart.Pages.Advanced
     /// </summary>
     public partial class AdvancedPage : Page
     {
-        public AdvancedPage()
+        private TelSystem _system;
+        public AdvancedPage(TelSystem system)
         {
+            _system = system;
+
             InitializeComponent();
 
             SetBaseBlocks();
@@ -59,7 +63,7 @@ namespace TelegramVisualPart.Pages.Advanced
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Settings.SettingsPage());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Settings.SettingsPage(_system));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

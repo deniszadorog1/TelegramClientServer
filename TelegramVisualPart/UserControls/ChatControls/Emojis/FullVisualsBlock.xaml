@@ -37,10 +37,10 @@
                     <TextBlock Style="{StaticResource Tabs}" Name="EmojiTab" Text="Emoji" 
                                Foreground="{StaticResource TempActiveTextColor}"
                                PreviewMouseDown="EmojiTab_PreviewMouseDown"/>
-                    
+
                     <TextBlock Style="{StaticResource Tabs}" Name="StickersTab" Text="Stickers"
                                PreviewMouseDown="StickersTab_PreviewMouseDown"/>
-                  
+
                     <TextBlock Style="{StaticResource Tabs}" Name="GIFsTab" Text="GIFs"
                                PreviewMouseDown="GIFsTab_PreviewMouseDown"/>
                 </StackPanel>
@@ -56,19 +56,37 @@
                     </Rectangle>
                 </Grid>
             </Grid>
-            
+
             <local:EmojisBlock Grid.Row="1" x:Name="EmojisPanel"
                                VerticalAlignment="Top" Margin="0 10 0 0" Visibility="Hidden"/>
 
-            <WrapPanel Grid.Row="1" Name="GIFsPanel" Margin="5" Visibility="Visible">
-                <Image Width="100"
+
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                <WrapPanel Name="GIFsPanel" Margin="5" Visibility="Hidden">
+                    <Image Width="100"
                    Height="100"
                    Margin="2"
                    Stretch="Uniform"
                    wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif" />
+                </WrapPanel>
+            </ScrollViewer>
 
-            </WrapPanel>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Auto" 
+                          Grid.Row="1">
+                <WrapPanel Name="StickerPanel" Visibility="Visible">
+                    
+                    <Image Name="TestGirlSticker" Width="100" Height="100" Margin="5"
+                           Source="/Visuals/Images/Stickers/Girl.png"
+                           PreviewMouseDown="Sticker_PreviewMouseDown"/>
 
+                    <Image Name="TestFigSticker" Width="100" Height="100" Margin="5"
+                           Source="/Visuals/Images/Stickers/Figure.png" 
+                           PreviewMouseDown="Sticker_PreviewMouseDown"/>
+                </WrapPanel>
+            </ScrollViewer>
+            
         </Grid>
     </Border>
 </UserControl>

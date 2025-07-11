@@ -15,7 +15,8 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
         <materialDesign:PackIcon Kind="PlaylistEdit" Foreground="Gray" 
                                  HorizontalAlignment="Center"
-                                 Width="30" Height="30" Name="ButIcon"/>
-        <TextBlock x:Name="ButText" Text="Edit" HorizontalAlignment="Center" Foreground="Gray" FontSize="12"/>
+                                 Width="40" Height="40" Name="ButIcon"/>
+        <TextBlock x:Name="ButText" Text="Edit" HorizontalAlignment="Center" 
+                   Foreground="Gray" FontSize="14"/>
     </StackPanel>
 </UserControl>

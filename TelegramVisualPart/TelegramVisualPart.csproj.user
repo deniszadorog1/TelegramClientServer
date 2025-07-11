@@ -49,6 +49,9 @@
     <Compile Update="Pages\MyProfile\MyProfileSettings.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\MyProfile\SetInformation\SetBirthDate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\MyProfile\SetInformation\SetNameSurname.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -352,6 +355,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\MyProfile\MyProfileSettings.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\MyProfile\SetInformation\SetBirthDate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\MyProfile\SetInformation\SetNameSurname.xaml">

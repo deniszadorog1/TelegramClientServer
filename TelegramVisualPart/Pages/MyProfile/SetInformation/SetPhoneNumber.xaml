@@ -23,7 +23,7 @@
             <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="Ok"
                     Content="ok" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Foreground="{StaticResource TempActiveTextColor}"
                     Click ="Ok_Click"/>
         </StackPanel>
     </Grid>

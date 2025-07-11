@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
@@ -25,10 +26,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
     /// </summary>
     public partial class UserContactMenu : UserControl
     {
+        private TelSystem _system;
         public UserContactMenu()
         {
             InitializeComponent();
             SetBasicBlocks();
+        }
+
+        public void SetTelSystemParam(TelSystem system)
+        {
+            _system = system;
         }
 
         public void SetBasicBlocks()
@@ -75,7 +82,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                    name == DeleteContact.Name.ToString() ? new DeleteContact() :
                    name == BlockUser.Name.ToString() ? new BlockContact() :
                    name == EditContact.Name.ToString() ? new EditUserContact() :
-                   name == AddToFolder.Name.ToString() ? new FoldersPage() : 
+                   name == AddToFolder.Name.ToString() ? new FoldersPage(_system) : 
                    name == ShareContact.Name.ToString() ? new ShareContact() : null;
         }
     }

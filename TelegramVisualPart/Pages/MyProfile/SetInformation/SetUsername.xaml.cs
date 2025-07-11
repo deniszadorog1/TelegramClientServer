@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -20,9 +21,18 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetUsername : Page
     {
-        public SetUsername()
+        private User _user;
+        public SetUsername(User user)
         {
+            _user = user;
             InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
+            UserNameBox.Text = _user.UserName;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
@@ -38,12 +48,19 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            //Set checks if this is exist
+            //+ Set Changings in DB
 
+            _user.UserName = UserNameBox.Text;
+
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();
         }
     }
 }

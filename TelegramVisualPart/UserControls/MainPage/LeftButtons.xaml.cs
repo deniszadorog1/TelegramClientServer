@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.Settings.Folders;
 
 namespace TelegramVisualPart.UserControls.MainPage
@@ -23,6 +23,7 @@ namespace TelegramVisualPart.UserControls.MainPage
     /// </summary>
     public partial class LeftButtons : UserControl
     {
+        private TelSystem _system;
         public LeftButtons()
         {
             InitializeComponent();
@@ -30,6 +31,11 @@ namespace TelegramVisualPart.UserControls.MainPage
             HamburgMenu.IconType.Kind = PackIconKind.HamburgerMenu;
 
             SetBasicParams();
+        }
+
+        public void SetSystemParam(TelSystem system)
+        {
+            _system = system;
         }
 
         public void SetBasicParams()
@@ -53,7 +59,7 @@ namespace TelegramVisualPart.UserControls.MainPage
 
         private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
         }
     }
 }

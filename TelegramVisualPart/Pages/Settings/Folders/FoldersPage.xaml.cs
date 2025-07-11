@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
 {
@@ -21,8 +22,10 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FoldersPage : Page
     {
-        public FoldersPage()
+        private TelSystem _system;
+        public FoldersPage(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             SetBasicParams();
@@ -41,7 +44,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

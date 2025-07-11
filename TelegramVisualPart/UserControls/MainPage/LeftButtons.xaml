@@ -11,9 +11,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="75"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -21,7 +21,7 @@
         <iconBut:IconButton x:Name="HamburgMenu" Grid.Row="0" Width="30" Height="30"
                                 Foreground="Gray" PreviewMouseDown="ShowMenu_PreviewMouseDown"/>
 
-        <local:LeftButtonsButton Grid.Row="1" x:Name="AllChats"/>
+        <local:LeftButtonsButton Grid.Row="1" x:Name="AllChats" />
         <local:LeftButtonsButton Grid.Row="2" x:Name="Personal"/>
         <local:LeftButtonsButton Grid.Row="3" x:Name="Edit" PreviewMouseDown="Edit_PreviewMouseDown"/>
         

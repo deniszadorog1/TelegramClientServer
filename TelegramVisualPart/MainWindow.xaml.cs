@@ -16,6 +16,9 @@ using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Pages;
 using static System.Net.Mime.MediaTypeNames;
 using TelegramVisualPart.Services;
+using TelegramLib.MainClasses;
+using TelegramVisualPart.Pages.MyProfile;
+
 namespace TelegramVisualPart
 {
     /// <summary>
@@ -23,6 +26,8 @@ namespace TelegramVisualPart
     /// </summary>
     public partial class MainWindow : Window
     {
+        public TelSystem _system = new TelSystem();
+
         public MainWindow()
         {
             //VisConstParamsJsonService.GetStringByName("check");
@@ -31,7 +36,7 @@ namespace TelegramVisualPart
 
             ///Visuals/Images/UserImages/Minato.jpg"
             //MainFrame.Content = new EnterPage();
-            MainFrame.Content = new MainChatPage();
+            MainFrame.Content = new MainChatPage(_system);
         }
 
         public void SetSecondaryFrame(Page page)
@@ -222,6 +227,14 @@ namespace TelegramVisualPart
             }
         }
 
+        public void SendStickerInChat(System.Windows.Controls.Image img)
+        {
+            if (MainFrame.Content is MainChatPage chatPage)
+            {
+                chatPage.UserChat.AddImageMessage(img);
+            }
+        }
+
         public void SetMainFrameContent(Page page)
         {
             MainFrame.Content = page;
@@ -242,8 +255,12 @@ namespace TelegramVisualPart
 
                 child = VisualTreeHelper.GetParent(child);
             }
-
             return null;
+        }
+
+        public void UpdateLoggedUserPage()
+        {
+            SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser));
         }
 
     }

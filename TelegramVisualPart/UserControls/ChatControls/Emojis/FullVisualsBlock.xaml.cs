@@ -29,7 +29,20 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             SetBasicParams();
 
             SetGifs();
+            SetStickers();
         }
+
+        public void SetStickers()
+        {
+            
+        }
+
+        private void Sticker_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not Image) return;
+            ((MainWindow)Window.GetWindow(this)).SendStickerInChat(sender as Image);
+        }
+
 
         public void SetGifs()
         {
@@ -62,14 +75,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         public void SetBasicParams()
         {
+            HideAllPanels();
             EmojisPanel.Visibility = Visibility.Visible;
-            GIFsPanel.Visibility = Visibility.Hidden;
         }
 
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
+
             block.Foreground =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
@@ -115,19 +129,27 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         private void GIFsTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            EmojisPanel.Visibility = Visibility.Hidden;
+            HideAllPanels();
             GIFsPanel.Visibility = Visibility.Visible;
         }
 
         private void StickersTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            HideAllPanels();
+            StickerPanel.Visibility = Visibility.Visible;
         }
 
         private void EmojiTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            HideAllPanels();
             EmojisPanel.Visibility = Visibility.Visible;
+        }
+
+        private void HideAllPanels()
+        {
+            EmojisPanel.Visibility = Visibility.Hidden;
             GIFsPanel.Visibility = Visibility.Hidden;
+            StickerPanel.Visibility = Visibility.Hidden;
         }
     }
 }

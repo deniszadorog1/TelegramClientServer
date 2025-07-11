@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.UserControls.MyProfileControls;
 
 namespace TelegramVisualPart.Pages.MyProfile
@@ -23,11 +24,29 @@ namespace TelegramVisualPart.Pages.MyProfile
     /// </summary>
     public partial class MyProfileSettings : Page
     {
-        public MyProfileSettings()
+        private User _user;
+        public MyProfileSettings(User user)
         {
+            _user = user;
             InitializeComponent();
 
             SetButtonsView();
+            SetUserParams();
+        }
+
+        public void SetUserParams()
+        {
+            BioTextBox.Text = _user.BIO;
+
+            Name.AdditionalText.Text = _user.Name;
+            PhoneNumber.AdditionalText.Text = _user.PhoneNumber;
+            Username.AdditionalText.Text = _user.UserName;
+
+            PersonalChannelBut.AdditionalText.Text = "Not invented!";
+            BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty : 
+                (((DateTime)_user.BirthDay).Day + " " + 
+                ((DateTime)_user.BirthDay).Month + " " + 
+                ((DateTime)_user.BirthDay).Year).ToString();
         }
 
         public void SetButtonsView()
@@ -74,12 +93,13 @@ namespace TelegramVisualPart.Pages.MyProfile
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new LoggedUserProfile());
+                new LoggedUserProfile(_user));
         }
 
         private void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             WordCount.Text = (BioTextBox.MaxLength - BioTextBox.Text.Length).ToString();
+            _user.BIO = BioTextBox.Text;
         }
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -88,16 +108,16 @@ namespace TelegramVisualPart.Pages.MyProfile
             {
                 Page page = GetPageByName(but.Name.ToString());
                 if (page is null) return;
-
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
             }
         }
 
         public Page GetPageByName(string name)
         {
-            return name == Name.Name.ToString() ? new SetInformation.SetNameSurname() :
-                name == Username.Name.ToString() ? new SetInformation.SetUsername() : 
-                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber() : null;
+            return name == Name.Name.ToString() ? new SetInformation.SetNameSurname(_user) :
+                name == Username.Name.ToString() ? new SetInformation.SetUsername(_user) : 
+                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber(_user) : 
+                name == BirthdayBut.Name.ToString() ? new SetInformation.SetBirthDate(_user) : null;
         }
     }
 }

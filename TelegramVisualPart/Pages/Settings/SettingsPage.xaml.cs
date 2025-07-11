@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
@@ -26,8 +27,10 @@ namespace TelegramVisualPart.Pages.Settings
     /// </summary>
     public partial class SettingsPage : Page
     {
-        public SettingsPage()
+        private TelSystem _system;
+        public SettingsPage(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
             SetButtonsView();
         }
@@ -55,12 +58,12 @@ namespace TelegramVisualPart.Pages.Settings
 
         public Page GetPageByIcon(MenuIconTextBut icon)
         {
-            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile() :
-                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings() :
-                icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity() :
-                icon.Name == Folders.Name.ToString() ? new FoldersPage() :
-                icon.Name == Advanced.Name.ToString() ? new AdvancedPage() :
-                icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage() : null;
+            return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser) :
+                icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_system) :
+                icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_system) :
+                icon.Name == Folders.Name.ToString() ? new FoldersPage(_system) :
+                icon.Name == Advanced.Name.ToString() ? new AdvancedPage(_system) :
+                icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage(_system) : null;
         }
 
         public void SetButtonsView()

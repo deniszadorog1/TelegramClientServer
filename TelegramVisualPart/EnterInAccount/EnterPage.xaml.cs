@@ -44,7 +44,7 @@ namespace TelegramVisualPart.EnterInAccount
 
         private void EnterBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetMainFrameContent(new MainChatPage());
+            ((MainWindow)Window.GetWindow(this)).SetMainFrameContent(new MainChatPage(new TelegramLib.MainClasses.TelSystem()));
         }
     }
 }

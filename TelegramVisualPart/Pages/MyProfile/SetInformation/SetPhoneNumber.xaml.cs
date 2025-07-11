@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -20,8 +21,10 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetPhoneNumber : Page
     {
-        public SetPhoneNumber()
+        private User _user;
+        public SetPhoneNumber(User user)
         {
+            _user = user;
             InitializeComponent();
         }
 
