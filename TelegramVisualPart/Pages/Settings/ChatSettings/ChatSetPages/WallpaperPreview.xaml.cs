@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TelegramLib.UserSettings.SettingsTypes;
+
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {
     /// <summary>
@@ -22,11 +24,18 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     /// </summary>
     public partial class WallpaperPreview : Page
     {
-        public WallpaperPreview()
+        private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
+        private Image _img;
+        public WallpaperPreview(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings,
+            Image? bgImage)
         {
+            _settings = settings;
             InitializeComponent();
 
             SetBasicParams();
+
+            if (bgImage is not null) BgImage.Source = bgImage.Source;
+            if (bgImage is not null) _img = bgImage;
         }
 
         public void SetBasicParams()
@@ -64,8 +73,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             };
         }
 
-
-
         private void Cancel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
@@ -74,6 +81,9 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void Apply_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Apply new bg Image for allChats //mb Grid
+ 
+            _settings.Wallpaper.SetBlurParam(ImageGrid.Effect is not null);
+            _settings.Wallpaper.WallpaperPath = TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString()); 
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
@@ -92,10 +102,10 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void InvertColors()
         {
-            ChangeLightState.IconType.Kind = ChangeLightState.IconType.Kind == _moonIconKind ? 
+            ChangeLightState.IconType.Kind = ChangeLightState.IconType.Kind == _moonIconKind ?
                 PackIconKind.WeatherSunny : _moonIconKind;
 
-            if(ChangeLightState.IconType.Kind == _moonIconKind)
+            if (ChangeLightState.IconType.Kind == _moonIconKind)
             {
                 SetLightState();
                 return;
@@ -103,7 +113,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             SetDarkState();
         }
 
-        private readonly SolidColorBrush _whiteStateBgColor = 
+        private readonly SolidColorBrush _whiteStateBgColor =
             new SolidColorBrush(Colors.White);
 
         private readonly SolidColorBrush _whiteStateTextBlockColor =

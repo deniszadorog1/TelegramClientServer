@@ -9,6 +9,8 @@
              Height="230" Width="130" Margin="5" 
              >
     <Grid Name="WallpaperGrid" Background="Green">
-        <Image Name="WallpaperImage"/>
+        <Image Name="WallpaperImage" Stretch="Fill"
+               MouseEnter="WallpaperImage_MouseEnter"
+               MouseLeave="WallpaperImage_MouseLeave"/>
     </Grid>
 </UserControl>

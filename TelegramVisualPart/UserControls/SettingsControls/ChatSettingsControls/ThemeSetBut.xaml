@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="95"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Name="IconTest" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Right"

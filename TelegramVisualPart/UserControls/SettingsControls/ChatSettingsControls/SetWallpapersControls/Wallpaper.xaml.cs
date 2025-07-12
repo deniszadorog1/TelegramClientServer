@@ -24,5 +24,15 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
         {
             InitializeComponent();
         }
+
+        private void WallpaperImage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void WallpaperImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

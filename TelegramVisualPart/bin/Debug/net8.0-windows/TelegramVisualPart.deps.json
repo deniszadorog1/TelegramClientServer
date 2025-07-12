@@ -13,6 +13,7 @@
           "MaterialDesignThemes.MahApps": "5.2.1",
           "Microsoft.AspNetCore.SignalR": "1.2.0",
           "TelegramLib": "1.0.0",
+          "TestThing": "1.0.0",
           "WpfAnimatedGif": "2.0.2"
         },
         "runtime": {
@@ -580,10 +581,19 @@
       },
       "TelegramLib/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "9.0.5"
+          "Microsoft.EntityFrameworkCore": "9.0.5",
+          "TestThing": "1.0.0"
         },
         "runtime": {
           "TelegramLib.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "TestThing/1.0.0": {
+        "runtime": {
+          "TestThing.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -969,6 +979,11 @@
       "hashPath": "wpfanimatedgif.2.0.2.nupkg.sha512"
     },
     "TelegramLib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TestThing/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

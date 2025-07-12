@@ -22,6 +22,7 @@ using Image = System.Windows.Controls.Image;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
 using Application = System.Windows.Application;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -35,6 +36,13 @@ namespace TelegramVisualPart.UserControls
             InitializeComponent();
 
             SetMarginForChatMenu();
+        }
+
+        private TelSystem _system;
+        public void SetSystemParam(TelSystem system)
+        {
+            _system = system;
+            UserChatMenu.SetSystemParam(system);
         }
 
         public void SetMarginForChatMenu()

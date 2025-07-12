@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
@@ -29,6 +30,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             InitializeComponent();
 
             SetBasicBlocks();
+        }
+
+        private TelSystem _system;
+        public void SetSystemParam(TelSystem system)
+        {
+            _system = system;
         }
 
         public void SetBasicBlocks()
@@ -74,7 +81,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetWallpaperBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.Settings.GetChatSettings()));
         }
     }
 }

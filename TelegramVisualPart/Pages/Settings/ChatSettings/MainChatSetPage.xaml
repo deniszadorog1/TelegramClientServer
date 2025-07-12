@@ -75,10 +75,10 @@
 
                         <WrapPanel Name="ThemesWrap" Orientation="Horizontal"
                                    Grid.Row="1" Margin="5 0 0 0">
-                            <controls:ThemeCard x:Name="ClassicCard" Margin="10 0 0 0"/>
-                            <controls:ThemeCard x:Name="DayCard" Margin="10 0 0 0"/>
-                            <controls:ThemeCard x:Name="TintedCard" Margin="10 0 0 0"/>
-                            <controls:ThemeCard x:Name="NightCard" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="Classic" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="Day" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="Tinted" Margin="10 0 0 0"/>
+                            <controls:ThemeCard x:Name="Night" Margin="10 0 0 0"/>
                         </WrapPanel>
 
                         <StackPanel Grid.Row="2" HorizontalAlignment="Left" Name="ColorCirclesPanel"
@@ -112,7 +112,7 @@
                                        FontSize="16" VerticalAlignment="Center"/>
 
                             <StackPanel Grid.Row="1" Orientation="Vertical">
-                                <controls:ThemeSetBut x:Name="AutoNightBut" Margin="0 5 0 0"/>
+                                <controls:ThemeSetBut x:Name="AutoNightBut" Margin="0 5 0 0" PreviewMouseDown="AutoNightBut_PreviewMouseDown"/>
                                 <controls:ThemeSetBut x:Name="FontFamalyBut" Margin="0 5 0 0"/>
                             </StackPanel>
                         </Grid>
@@ -126,7 +126,8 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
+                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" 
+                                       Foreground="{StaticResource TempActiveTextColor}"
                                        FontSize="16" VerticalAlignment="Center"/>
 
                             <Grid Grid.Row="1">

@@ -929,13 +929,24 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "9.0.5"
+          "Microsoft.EntityFrameworkCore": "9.0.5",
+          "TestThing": "1.0.0"
         },
         "compile": {
           "bin/placeholder/TelegramLib.dll": {}
         },
         "runtime": {
           "bin/placeholder/TelegramLib.dll": {}
+        }
+      },
+      "TestThing/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/TestThing.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TestThing.dll": {}
         }
       }
     }
@@ -2140,6 +2151,11 @@
       "type": "project",
       "path": "../TelegramLib/TelegramLib.csproj",
       "msbuildProject": "../TelegramLib/TelegramLib.csproj"
+    },
+    "TestThing/1.0.0": {
+      "type": "project",
+      "path": "../TestThing/TestThing.csproj",
+      "msbuildProject": "../TestThing/TestThing.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2149,6 +2165,7 @@
       "MaterialDesignThemes.MahApps >= 5.2.1",
       "Microsoft.AspNetCore.SignalR >= 1.2.0",
       "TelegramLib >= 1.0.0",
+      "TestThing >= 1.0.0",
       "WpfAnimatedGif >= 2.0.2"
     ]
   },
@@ -2187,6 +2204,9 @@
           "projectReferences": {
             "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj": {
               "projectPath": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj"
+            },
+            "B:\\GitHub\\TelegramClientServer\\TestThing\\TestThing.csproj": {
+              "projectPath": "B:\\GitHub\\TelegramClientServer\\TestThing\\TestThing.csproj"
             }
           }
         }

@@ -18,6 +18,7 @@ using static System.Net.Mime.MediaTypeNames;
 using TelegramVisualPart.Services;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.MyProfile;
+using TelegramVisualPart.Pages.Settings.ChatSettings;
 
 namespace TelegramVisualPart
 {
@@ -262,6 +263,13 @@ namespace TelegramVisualPart
         {
             SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser));
         }
+
+        public void UpdateChatSettingsPage()
+        {
+            SetSecondaryFrame(new MainChatSetPage(_system));
+        }
+
+
 
     }
 }

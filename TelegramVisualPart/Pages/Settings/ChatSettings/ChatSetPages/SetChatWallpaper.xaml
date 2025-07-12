@@ -48,10 +48,10 @@
                                    VerticalAlignment="Center" Foreground="White" FontSize="16"/>
                     </Grid>
 
-                    <WrapPanel Grid.Row="1">
-                        <controls:Wallpaper/>
-                        <controls:Wallpaper/>
-                        <controls:Wallpaper/>
+                    <WrapPanel Grid.Row="1" Name="WallpapersPanel">
+                        <controls:Wallpaper x:Name="OneTest"/>
+                        <controls:Wallpaper x:Name="TwoTest"/>
+                        <controls:Wallpaper x:Name="ThreeTest"/>
                     </WrapPanel>
                 </Grid>
                 

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v8.0": {
       "TelegramLib/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "9.0.5"
+          "Microsoft.EntityFrameworkCore": "9.0.5",
+          "TestThing": "1.0.0"
         },
         "runtime": {
           "TelegramLib.dll": {}
@@ -134,6 +135,14 @@
             "fileVersion": "9.0.525.21509"
           }
         }
+      },
+      "TestThing/1.0.0": {
+        "runtime": {
+          "TestThing.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -226,6 +235,11 @@
       "sha512": "sha512-WoI5or8kY2VxFdDmsaRZ5yaYvvb+4MCyy66eXo79Cy1uMa7qXeGIlYmZx7R9Zy5S4xZjmqvkk2V8L6/vDwAAEA==",
       "path": "system.diagnostics.diagnosticsource/9.0.5",
       "hashPath": "system.diagnostics.diagnosticsource.9.0.5.nupkg.sha512"
+    },
+    "TestThing/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

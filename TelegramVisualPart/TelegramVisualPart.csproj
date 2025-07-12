@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TelegramLib\TelegramLib.csproj" />
+    <ProjectReference Include="..\TestThing\TestThing.csproj" />
   </ItemGroup>
 
   <ItemGroup>

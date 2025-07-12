@@ -1,7 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,10 +12,13 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.MainClasses;
+using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
 
@@ -25,9 +30,13 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
     public partial class MainChatSetPage : Page
     {
         private TelSystem _system;
+        private TelegramLib.UserSettings.SettingsTypes.ChatSettings _chatsSettings;
+
         public MainChatSetPage(TelSystem system)
         {
             _system = system;
+            _chatsSettings = _system.Settings.GetChatSettings();
+
             InitializeComponent();
 
             SetBasicBlocks();
@@ -44,24 +53,109 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             SetButsParams();
 
             SetCheckEventForThemesCards();
+
+            SetClassParams();
+
+            SetChatBgLittleImage();
+        }
+
+        public void SetChatBgLittleImage()
+        {
+            if (_chatsSettings.Wallpaper.WallpaperPath == string.Empty) return;
+            ChosenWallpaperImage.Source = new BitmapImage(new Uri(TestThing.GetTestParams.GetWallpaperPath(_chatsSettings.Wallpaper.WallpaperPath), UriKind.Absolute));
+
+            ChosenWallpaperImage.Effect = _chatsSettings.Wallpaper.IsBlurred ? new BlurEffect() { Radius = 20 } : null;
+        }
+
+        public void SetClassParams()
+        {
+            SetThemeParam();
+            SetColorParam();
+
+            SetAutoNightBut();
+            SetFontParam();
+
+            SetChatWallpaperParam();
+            SendMessageParam();
+        }
+
+        public void SetColorParam()
+        {
+            SolidColorBrush setColor = new SolidColorBrush(Color.FromRgb(
+                _chatsSettings.ChosenColor.R, _chatsSettings.ChosenColor.G, _chatsSettings.ChosenColor.B));
+
+            CircleColor chosenOne = ColorCirclesPanel.Children.OfType<CircleColor>().Where(x => CompareColors(x, setColor)).FirstOrDefault();
+            if (chosenOne is null) return;
+
+            CircleColor_MouseDown(chosenOne, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            {
+                RoutedEvent = UIElement.MouseDownEvent,
+                Source = chosenOne
+            });
+        }
+
+        private bool CompareColors(CircleColor one, SolidColorBrush two)
+        {
+            return one.BgBorder.Background is SolidColorBrush brush &&
+                brush.Color == two.Color;
+        }
+
+        public void SetAutoNightBut()
+        {
+            AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
+        }
+
+        public void SetChatWallpaperParam()
+        {
+            ChosenWallpaperImage.Source = new Image
+            {
+                Width = 200,
+                Height = 200,
+                Source = new BitmapImage(new Uri(_chatsSettings.GetWallpaperPath(), UriKind.Absolute)),
+                Stretch = Stretch.UniformToFill
+            }.Source;
+        }
+
+        public void SendMessageParam()
+        {
+            if (_chatsSettings.IsSendWithEnter)
+            {
+                SendEnterRadio.IsChecked = true;
+                return;
+            }
+            SendCtrlEnterRadio.IsChecked = true;
+        }
+
+        public void SetFontParam()
+        {
+            FontFamalyBut.ChosenType.Text = _chatsSettings.FontName;
+        }
+
+        public void SetThemeParam()
+        {
+            ThemeCard card = ThemesWrap.Children.OfType<ThemeCard>().Where(x => x.Name ==
+            _chatsSettings.Theme.ToString()).FirstOrDefault();
+
+            if (card is null) return;
+            card.RadioBut.IsChecked = true;
         }
 
         public void SetCheckEventForThemesCards()
         {
-            ClassicCard.RadioBut.Checked += Theme_Checked;
-            DayCard.RadioBut.Checked += Theme_Checked;
-            TintedCard.RadioBut.Checked += Theme_Checked;
-            NightCard.RadioBut.Checked += Theme_Checked;
+            Classic.RadioBut.Checked += Theme_Checked;
+            Day.RadioBut.Checked += Theme_Checked;
+            Tinted.RadioBut.Checked += Theme_Checked;
+            Night.RadioBut.Checked += Theme_Checked;
         }
 
         public void Theme_Checked(object sender, RoutedEventArgs e)
         {
             RadioButton but = sender as RadioButton;
 
-            UnCheckRadios(ClassicCard.RadioBut, but);
-            UnCheckRadios(DayCard.RadioBut, but);
-            UnCheckRadios(TintedCard.RadioBut, but);
-            UnCheckRadios(NightCard.RadioBut, but);
+            UnCheckRadios(Classic.RadioBut, but);
+            UnCheckRadios(Day.RadioBut, but);
+            UnCheckRadios(Tinted.RadioBut, but);
+            UnCheckRadios(Night.RadioBut, but);
 
         }
 
@@ -89,7 +183,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void FontFamily_PreviewMouseDown(object sender, MouseEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ChooseFontFamily());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ChooseFontFamily(_chatsSettings));
         }
 
         public void SetCircleColors()
@@ -124,18 +218,17 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void SetColorCards()
         {
-            ClassicCard.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardClassic"];
-            ClassicCard.CardName.Text = "Classic";
+            Classic.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardClassic"];
+            Classic.CardName.Text = "Classic";
 
-            DayCard.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardDay"];
-            DayCard.CardName.Text = "Day";
+            Day.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardDay"];
+            Day.CardName.Text = "Day";
 
-            TintedCard.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardTinted"];
-            TintedCard.CardName.Text = "Tinted";
+            Tinted.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardTinted"];
+            Tinted.CardName.Text = "Tinted";
 
-            NightCard.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardNight"];
-            NightCard.CardName.Text = "Night";
-
+            Night.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardNight"];
+            Night.CardName.Text = "Night";
         }
 
         private const int _iconSize = 30;
@@ -174,10 +267,10 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         }
 
 
-        public void SetNewTempColor(CircleColor color )
+        public void SetNewTempColor(CircleColor color)
         {
-            Application.Current.Resources["TempActiveTextColor"] = 
-                color.BgBorder.Background as SolidColorBrush; 
+            Application.Current.Resources["TempActiveTextColor"] =
+                color.BgBorder.Background as SolidColorBrush;
         }
 
         public void HideChosenColorCircle()
@@ -214,22 +307,30 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void SendEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
-
+            _chatsSettings.IsSendWithEnter = true;
         }
 
         private void SendCtrlEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
-
+            _chatsSettings.IsSendWithEnter = false;
         }
 
         private void ChooseWallpaperFromGalery_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.Settings.GetChatSettings()));
         }
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void AutoNightBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _chatsSettings.NightMode = _chatsSettings.NightMode == AutoNightMode.Off ? 
+                AutoNightMode.System : AutoNightMode.Off;
+
+            AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
         }
     }
 }

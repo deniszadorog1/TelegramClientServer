@@ -39,6 +39,8 @@ namespace TelegramVisualPart.Pages
             SetChatClick();
 
             LeftButtons.SetSystemParam(_system);
+
+            UserChat.SetSystemParam(_system);
         }
 
         public void SetChatClick()
