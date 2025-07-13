@@ -25,7 +25,5 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls
         {
             InitializeComponent();
         }
-
-
     }
 }

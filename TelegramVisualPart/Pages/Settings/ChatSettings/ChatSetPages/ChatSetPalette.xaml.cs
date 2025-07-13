@@ -13,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.PaletteControls;
+
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {
@@ -23,9 +25,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     public partial class ChatSetPalette : Page
     {
         public event EventHandler CustomMouseMoved;
+        private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
 
-        public ChatSetPalette()
+        public ChatSetPalette(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings)
         {
+            _settings = settings;
+
             InitializeComponent();
             SetBasicBlocks();
 
@@ -94,6 +99,14 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            SolidColorBrush bg = FirstColorRect.Fill as SolidColorBrush;
+
+            _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(
+                bg.Color.R,
+                bg.Color.G,
+                bg.Color.B);
+
+            ((MainWindow)Window.GetWindow(this)).UpdateChatSettingsPage();
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

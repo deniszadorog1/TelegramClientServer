@@ -3,16 +3,48 @@
   "WorkspaceRootPath": "B:\\GitHub\\TelegramClientServer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}|TelegramLib\\TelegramLib.csproj|b:\\github\\telegramclientserver\\telegramlib\\usersettings\\settingstypes\\advancedsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}|TelegramLib\\TelegramLib.csproj|solutionrelative:telegramlib\\usersettings\\settingstypes\\advancedsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\advanced\\advancedpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\advanced\\advancedpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\mainchatsetpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themesetbut.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -33,14 +65,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\obj\\debug\\net8.0-windows\\mainwindow.g.i.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\obj\\debug\\net8.0-windows\\mainwindow.g.i.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\telegramvisualpart.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -77,10 +101,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\setwallpaperscontrols\\wallpaper.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\setwallpaperscontrols\\wallpaper.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themesetbut.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -151,18 +171,6 @@
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\userinfo.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\chatsettings\\chatsetpages\\chatsetpalette.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\chatactions\\messageautodeletion\\autodeleteforusers.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\chatactions\\messageautodeletion\\autodeleteforusers.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -177,10 +185,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\settingscontrols\\chatsettingscontrols\\themecard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}|TelegramLib\\TelegramLib.csproj|b:\\github\\telegramclientserver\\telegramlib\\helpers\\colorhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -213,6 +217,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\notifsandsounds\\notandsoundsettings.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\notifsandsounds\\notandsoundsettings.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -222,11 +230,11 @@
       "DocumentGroups": [
         {
           "DockedHeight": 16,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 12,
               "Title": "WallpaperPreview.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
@@ -234,8 +242,7 @@
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-07-11T15:33:36.335Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -243,20 +250,45 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdvancedSettings.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\AdvancedSettings.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\AdvancedSettings.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\AdvancedSettings.cs",
+              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\AdvancedSettings.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAYwCkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T21:43:54.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "AdvancedPage.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Advanced\\AdvancedPage.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Advanced\\AdvancedPage.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Advanced\\AdvancedPage.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Advanced\\AdvancedPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-12T18:31:42.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainChatSetPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml.cs",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml.cs",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml.cs",
-              "ViewState": "AgIAADUBAAAAAAAAAAAAAEwBAABPAAAAAAAAAA==",
+              "ViewState": "AgIAABEBAAAAAAAAAAAuwC8BAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-11T13:33:36.929Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "MainChatSetPage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml",
@@ -268,389 +300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ThemeSetBut.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T13:42:15.248Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ChooseFontFamily.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAiwG0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T20:28:27.954Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ThemeSetBut.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T20:01:40.896Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Wallpaper.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T16:03:04.876Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Program.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\Program.cs",
-              "RelativeDocumentMoniker": "TestThing\\Program.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TestThing\\Program.cs",
-              "RelativeToolTip": "TestThing\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:46:55.691Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "MainChatPage.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAiwBwAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T16:14:44.21Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ChooseFontFamily.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T15:35:25.328Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAPMAAAAAAAAAAAAAAAoBAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-12T00:08:56.495Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "MainWindow.g.i.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
-              "RelativeToolTip": "TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAiwC0AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-12T00:09:21.011Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "TelegramVisualPart.csproj",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\TelegramVisualPart.csproj",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
-              "RelativeToolTip": "TelegramVisualPart\\TelegramVisualPart.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-11T14:05:42.638Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "SetChatWallpaper.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAqwEAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T15:33:38.847Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "WallpaperPreview.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAawFUAAABtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T15:35:47.459Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "ThemeCard.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:08:40.035Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "SetChatWallpaper.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T15:33:26.97Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Wallpaper.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAABBwCIAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T16:18:01.757Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "GetTestParams.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\GetTestParams.cs",
-              "RelativeDocumentMoniker": "TestThing\\GetTestParams.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TestThing\\GetTestParams.cs",
-              "RelativeToolTip": "TestThing\\GetTestParams.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAABBwBcAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:50:28.835Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "ChatSettings.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
-              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAtwDEAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T11:09:40.146Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "ChatWallpaper.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
-              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T15:46:06.016Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "ThemeType.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
-              "RelativeToolTip": "TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T11:10:49.202Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "AutoNightMode.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
-              "RelativeToolTip": "TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T11:12:47.754Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "HelperService.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\HelperService.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\HelperService.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\HelperService.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Services\\HelperService.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAABBwBkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:57:02.76Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "ColorConvertService.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ColorConvertService.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ColorConvertService.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ColorConvertService.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Services\\ColorConvertService.cs",
-              "ViewState": "AgIAAFgAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:56:37.65Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "VisConstParamsJsonService.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAABBwA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:56:39.427Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "SaveElements.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SaveElements.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\SaveElements.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SaveElements.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Services\\SaveElements.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:56:37.012Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "UserChat.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T16:13:15.293Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "UserChat.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAABBwCkAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T16:13:26.683Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "UserChatInfoMenu.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T16:11:41.419Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "UserInfo.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfo.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\UserInfo.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T16:11:09.592Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "UserChatInfoMenu.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAhwBsAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T16:10:39.113Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "MainChatPage.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T14:52:12.136Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
               "Title": "ChatSetPalette.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
@@ -662,71 +312,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 5,
               "Title": "ChatSetPalette.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml.cs",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml.cs",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAqwG4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-11T15:35:38.047Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "AutoDeleteForUsers.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAABBwDgAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T15:14:22.923Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "SearchControl.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAABBwFcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T15:14:31.623Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "NotificationSettings.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
-              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:08:42.903Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "App.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\App.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\App.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\App.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\App.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T15:10:29.537Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 8,
               "Title": "ThemeCard.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml",
@@ -738,7 +337,410 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MainChatPage.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAiwCwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T16:14:44.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ChooseFontFamily.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml.cs",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAiwG0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T20:28:27.954Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "ThemeSetBut.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T20:01:40.896Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Wallpaper.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T16:03:04.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ThemeCard.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeCard.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T14:08:40.035Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ThemeSetBut.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\ThemeSetBut.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T13:42:15.248Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Program.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\Program.cs",
+              "RelativeDocumentMoniker": "TestThing\\Program.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TestThing\\Program.cs",
+              "RelativeToolTip": "TestThing\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T14:46:55.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ChooseFontFamily.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T15:35:25.328Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAPMAAAAAAAAAAAAAAAoBAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T00:08:56.495Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "MainWindow.g.i.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
+              "RelativeToolTip": "TelegramVisualPart\\obj\\Debug\\net8.0-windows\\MainWindow.g.i.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAiwC0AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-12T00:09:21.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "TelegramVisualPart.csproj",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\TelegramVisualPart.csproj",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
+              "RelativeToolTip": "TelegramVisualPart\\TelegramVisualPart.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-07-11T14:05:42.638Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "SetChatWallpaper.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAqwEAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:33:38.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "WallpaperPreview.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAawFUAAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:35:47.459Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "SetChatWallpaper.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T15:33:26.97Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Wallpaper.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\SetWallpapersControls\\Wallpaper.xaml.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAABBwCIAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T16:18:01.757Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "GetTestParams.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\GetTestParams.cs",
+              "RelativeDocumentMoniker": "TestThing\\GetTestParams.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TestThing\\GetTestParams.cs",
+              "RelativeToolTip": "TestThing\\GetTestParams.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAABBwBcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T14:50:28.835Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "ChatSettings.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
+              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\ChatSettings.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAtwDEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:09:40.146Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ChatWallpaper.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
+              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:46:06.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "ThemeType.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
+              "RelativeToolTip": "TelegramLib\\Enums\\Settings\\ChatSettings\\ThemeType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:10:49.202Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "AutoNightMode.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
+              "RelativeToolTip": "TelegramLib\\Enums\\Settings\\ChatSettings\\AutoNightMode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T11:12:47.754Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "HelperService.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\HelperService.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\HelperService.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\HelperService.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Services\\HelperService.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAABBwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T10:57:02.76Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ColorConvertService.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ColorConvertService.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ColorConvertService.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ColorConvertService.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Services\\ColorConvertService.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T10:56:37.65Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "VisConstParamsJsonService.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Services\\VisConstParamsJsonService.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAABBwA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T10:56:39.427Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "SaveElements.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SaveElements.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\SaveElements.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SaveElements.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Services\\SaveElements.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T10:56:37.012Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "UserChat.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T16:13:15.293Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "UserChat.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAABBwCkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T16:13:26.683Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "UserChatInfoMenu.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T16:11:41.419Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "UserInfo.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfo.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\UserInfo.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T16:11:09.592Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "UserChatInfoMenu.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAhwBsAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T16:10:39.113Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "MainChatPage.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T14:52:12.136Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "AutoDeleteForUsers.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\AutoDeleteForUsers.xaml.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAABBwDgAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:14:22.923Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "SearchControl.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAABBwFcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T15:14:31.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "NotificationSettings.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
+              "RelativeToolTip": "TelegramLib\\UserSettings\\SettingsTypes\\NotificationSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-11T10:08:42.903Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 45,
+              "Title": "App.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\App.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\App.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\App.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T15:10:29.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
               "Title": "ColorHelper.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Helpers\\ColorHelper.cs",
               "RelativeDocumentMoniker": "TelegramLib\\Helpers\\ColorHelper.cs",
@@ -746,12 +748,11 @@
               "RelativeToolTip": "TelegramLib\\Helpers\\ColorHelper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T14:47:08.984Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T14:47:08.984Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 48,
               "Title": "TestThing.csproj",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\TestThing.csproj",
               "RelativeDocumentMoniker": "TestThing\\TestThing.csproj",
@@ -759,12 +760,11 @@
               "RelativeToolTip": "TestThing\\TestThing.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-11T14:49:22.788Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T14:49:22.788Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 53,
               "Title": "NotAndSoundSettings.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml.cs",
@@ -772,12 +772,11 @@
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAowEEAAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:04:11.286Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T10:04:11.286Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 47,
               "Title": "TelegramLib.csproj",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj",
               "RelativeDocumentMoniker": "TelegramLib\\TelegramLib.csproj",
@@ -785,24 +784,22 @@
               "RelativeToolTip": "TelegramLib\\TelegramLib.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-11T14:05:41.788Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T14:05:41.788Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 49,
               "Title": "NotAndSoundSettings.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T10:04:08.109Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T10:04:08.109Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 51,
               "Title": "MainSettings.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\MainSettings.cs",
               "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\MainSettings.cs",
@@ -810,12 +807,11 @@
               "RelativeToolTip": "TelegramLib\\UserSettings\\MainSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:07:26.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T10:07:26.224Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 50,
               "Title": "TelSystem.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\TelSystem.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\TelSystem.cs",
@@ -823,8 +819,7 @@
               "RelativeToolTip": "TelegramLib\\MainClasses\\TelSystem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-11T10:08:59.503Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T10:08:59.503Z"
             }
           ]
         }
@@ -845,24 +840,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ChooseFontFamily.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T20:28:12.857Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 23,
               "Title": "WallpaperPreview.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
@@ -870,12 +852,11 @@
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\WallpaperPreview.xaml",
               "ViewState": "AgIAAE4AAAAAAAAAAAAAAHoAAABWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T15:35:51.345Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T15:35:51.345Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 22,
               "Title": "SetChatWallpaper.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
@@ -883,8 +864,7 @@
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\SetChatWallpaper.xaml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAADMAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-07-11T15:53:40.179Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-11T15:53:40.179Z"
             },
             {
               "$type": "Document",
@@ -894,14 +874,14 @@
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\MainChatSetPage.xaml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAE8AAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-07-11T13:33:43.242Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 52,
               "Title": "NotAndSoundSettings.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\NotifsAndSounds\\NotAndSoundSettings.xaml",
@@ -913,16 +893,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 6,
               "Title": "ChatSetPalette.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChatSetPalette.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADAAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-07-11T15:35:32.989Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ChooseFontFamily.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\ChatSettings\\ChatSetPages\\ChooseFontFamily.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-07-11T20:28:12.857Z"
             }
           ]
         }

@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json.Bson;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,7 @@ using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings
@@ -85,13 +87,31 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 _chatsSettings.ChosenColor.R, _chatsSettings.ChosenColor.G, _chatsSettings.ChosenColor.B));
 
             CircleColor chosenOne = ColorCirclesPanel.Children.OfType<CircleColor>().Where(x => CompareColors(x, setColor)).FirstOrDefault();
-            if (chosenOne is null) return;
+            if (chosenOne is null) 
+            {
+                chosenOne = SetCustomColor();
+            };
 
             CircleColor_MouseDown(chosenOne, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
             {
                 RoutedEvent = UIElement.MouseDownEvent,
                 Source = chosenOne
             });
+
+        }
+
+        private CircleColor SetCustomColor()
+        {
+            CircleColor last = ColorCirclesPanel.Children.OfType<CircleColor>().LastOrDefault();
+
+            SolidColorBrush newColor = new SolidColorBrush(
+                Color.FromRgb(
+                    _chatsSettings.ChosenColor.R,
+                    _chatsSettings.ChosenColor.G,
+                    _chatsSettings.ChosenColor.B));
+
+            last.BgBorder.Background = newColor;
+            return last;
         }
 
         private bool CompareColors(CircleColor one, SolidColorBrush two)
@@ -156,13 +176,28 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             UnCheckRadios(Day.RadioBut, but);
             UnCheckRadios(Tinted.RadioBut, but);
             UnCheckRadios(Night.RadioBut, but);
-
         }
 
         public void UnCheckRadios(RadioButton toUncheck, RadioButton chosen)
         {
-            if (toUncheck == chosen) return;
+            if (toUncheck == chosen)
+            {
+                _chatsSettings.Theme = GetChosenType(chosen);
+                return;
+            }
             toUncheck.IsChecked = false;
+        }
+
+        public ThemeType GetChosenType(RadioButton toCheck)
+        {
+            ThemeCard card = HelperService.FindParent<ThemeCard>(toCheck);
+            if (card is null) return ThemeType.Tinted;
+            for (int i = 0; i <= (int)ThemeType.Night; i++)
+            {
+                if (((ThemeType)i).ToString() == card.CardName.Text)
+                    return (ThemeType)i;
+            }
+            return ThemeType.Tinted;
         }
 
         public void SetButsParams()
@@ -263,9 +298,21 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 color.WhiteCircle.Visibility = Visibility.Visible;
 
                 SetNewTempColor(color);
+                SaveChosenColor(color);
+
+                MainWindow wind = ((MainWindow)Window.GetWindow(this));
+                if (wind is not null) wind.UpdateChatSettingsPage();
             }
         }
 
+        private void SaveChosenColor(CircleColor color)
+        {
+            SolidColorBrush bg = color.BgBorder.Background as SolidColorBrush;
+            if (bg is null) return;
+
+           _chatsSettings.ChosenColor = new TelegramLib.Helpers.ColorHelper
+                (bg.Color.R, bg.Color.G, bg.Color.B);
+        }
 
         public void SetNewTempColor(CircleColor color)
         {
@@ -286,7 +333,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void PaletteBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ChatSetPalette());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ChatSetPalette(_chatsSettings));
         }
 
         private void ChatWallpaperTextBlock_MouseEnter(object sender, MouseEventArgs e)
@@ -327,7 +374,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void AutoNightBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _chatsSettings.NightMode = _chatsSettings.NightMode == AutoNightMode.Off ? 
+            _chatsSettings.NightMode = _chatsSettings.NightMode == AutoNightMode.Off ?
                 AutoNightMode.System : AutoNightMode.Off;
 
             AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
