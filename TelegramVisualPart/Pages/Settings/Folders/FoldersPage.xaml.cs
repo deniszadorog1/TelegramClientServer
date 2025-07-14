@@ -40,11 +40,13 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

@@ -68,7 +68,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         private void SetAutoDeleteToContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new AutoDeleteForUsers());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats());
         }
 
         private void DateButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)

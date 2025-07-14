@@ -41,5 +41,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.Adva
         {
             Toggle.IsChecked = !Toggle.IsChecked;
         }
+
+        private void Toggle_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

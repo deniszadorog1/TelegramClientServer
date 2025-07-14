@@ -29,7 +29,7 @@
                        Padding="0 10 5 0 "
                        Text="If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts."/>
 
-            <StackPanel Grid.Row="2" Orientation="Vertical">
+            <StackPanel Grid.Row="2" Orientation="Vertical" Name="RadioPanel">
                 <RadioButton Foreground="White" Content="1 month"
                              Name="OneMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 

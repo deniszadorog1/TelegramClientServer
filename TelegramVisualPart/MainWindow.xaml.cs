@@ -19,6 +19,7 @@ using TelegramVisualPart.Services;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
+using System.Drawing;
 
 namespace TelegramVisualPart
 {
@@ -38,6 +39,11 @@ namespace TelegramVisualPart
             ///Visuals/Images/UserImages/Minato.jpg"
             //MainFrame.Content = new EnterPage();
             MainFrame.Content = new MainChatPage(_system);
+
+
+            System.Windows.Application.Current.Resources["TempActiveTextColor"] =
+                    new SolidColorBrush(System.Windows.Media.Color.FromRgb(_system.LoggedUser.MainColor.R, 
+                    _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B)); 
         }
 
         public void SetSecondaryFrame(Page page)
@@ -162,7 +168,7 @@ namespace TelegramVisualPart
 
         }
 
-        private Point _mouseDownPosition;
+        private System.Windows.Point _mouseDownPosition;
         private bool _isMouseDown = false;
 
         private void DragWindow(object sender, MouseButtonEventArgs e)

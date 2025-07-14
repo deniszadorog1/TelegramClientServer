@@ -41,6 +41,14 @@ namespace TelegramVisualPart.Pages
             LeftButtons.SetSystemParam(_system);
 
             UserChat.SetSystemParam(_system);
+
+            SetSearchMessageParams();
+        }
+
+        public void SetSearchMessageParams()
+        {
+            //Search in chat list of messages
+            //SearchMessage.
         }
 
         public void SetChatClick()

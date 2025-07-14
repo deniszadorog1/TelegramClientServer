@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TelegramLib.Enums.Settings.ChatSettings
 {
-    public enum  AutoNightMode
+    public enum AutoNightMode
     {
         Off = 1, 
         System

@@ -62,7 +62,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\MainW
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Advanced\AdvancedPage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\ClearChatHistory.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\DeleteChat.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.g.cs
@@ -170,7 +169,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\MainW
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Advanced\AdvancedPage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\ClearChatHistory.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\DeleteChat.baml
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.baml
@@ -283,3 +281,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestT
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.pdb
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.baml

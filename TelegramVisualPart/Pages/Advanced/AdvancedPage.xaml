@@ -72,7 +72,8 @@
                         <StackPanel Name="DataStorageStack" Grid.Row="1">
                             <buts:DoubleTextIconBut x:Name="DownloadPathBut" Margin="0 5 0 0"/>
                             <buts:IconTextButAdvanced x:Name="Downloads" Margin="0 5 0 0"/>
-                            <buts:ToggleButAdvanced x:Name="IsAskDownloadPath" Margin="0 5 0 0"/>
+                            <buts:ToggleButAdvanced x:Name="IsAskDownloadPath" Margin="0 5 0 0"
+                                                    PreviewMouseDown="IsAskDownloadPath_PreviewMouseDown"/>
                         </StackPanel>
 
                     </Grid>
@@ -89,8 +90,8 @@
                            FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
-                            <buts:IconTextButAdvanced x:Name="PrivateChatsBut" Margin="0 5 0 0"/>
-
+                            <buts:IconTextButAdvanced x:Name="PrivateChatsBut" Margin="0 5 0 0"
+                                                      PreviewMouseDown="PrivateChatsBut_PreviewMouseDown"/>
                         </StackPanel>
 
                     </Grid>
@@ -111,7 +112,7 @@
                             <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
                                         Content="Show chat name" Name="ShowChatNameBox" Margin="0 5 0 0"
                                         Background="{StaticResource TempActiveTextColor}"
-                                        IsChecked="False" FontSize="14"                                
+                                        IsChecked="False" FontSize="14"    
                                         materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                         Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
@@ -162,7 +163,7 @@
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
                                 <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
-                                           Content="CLose to taskbrar" Name="CloseToTaskBarBox" Margin="0 5 0 0"
+                                           Content="Close to taskbrar" Name="CloseToTaskBarBox" Margin="0 5 0 0"
                                            Background="{StaticResource TempActiveTextColor}"
                                            IsChecked="False" FontSize="14"                                
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
@@ -199,8 +200,10 @@
                            FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
-                            <buts:TwoTextsToggle x:Name="VersionBut"/>
-                            <buts:ToggleButAdvanced x:Name="InstalBetaBut"/>
+                            <buts:TwoTextsToggle x:Name="VersionBut"
+                                                 PreviewMouseDown="VersionBut_PreviewMouseDown"/>
+                            <buts:ToggleButAdvanced x:Name="InstalBetaBut" 
+                                                   PreviewMouseDown="InstalBetaBut_PreviewMouseDown"/>
                             <buts:TextBut x:Name="CheckForUpdates"/>
                         </StackPanel>
                              

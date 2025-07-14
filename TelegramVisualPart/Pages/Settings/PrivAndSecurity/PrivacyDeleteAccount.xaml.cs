@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.Enums;
 
+using TelegramLib.UserSettings.SettingsTypes;
+
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 {
     /// <summary>
@@ -21,9 +23,19 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     /// </summary>
     public partial class PrivacyDeleteAccount : Page
     {
-        public PrivacyDeleteAccount()
+        private PrivAndSecSettings _settings;
+        public PrivacyDeleteAccount(PrivAndSecSettings settings)
         {
+            _settings = settings;
             InitializeComponent();
+
+            SetParam();
+        }
+
+        public void SetParam()
+        {
+            int chosenIndex = (int)_settings.SelfDeleteTime;
+            RadioPanel.Children.OfType<RadioButton>().ToList()[chosenIndex].IsChecked = true;
         }
 
         private void Radio_Checked(object sender, RoutedEventArgs e)

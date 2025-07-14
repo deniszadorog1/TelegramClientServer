@@ -75,13 +75,13 @@
                     MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                     HorizontalAlignment="Left"
                     Click="AddContactBut_Click"  Margin="20 0 0 0" 
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                    Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CloseBut"
                 Content="Close" Background="Transparent" BorderThickness="0"
                 HorizontalAlignment="Right" Margin="0 0 20 0"
                 MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                Foreground="{StaticResource TempActiveTextColor}"
                 Click="CloseBut_Click"/>
             </Grid>
             

@@ -37,13 +37,18 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             BackBut.IconType.Kind = PackIconKind.ArrowLeft;
             CloseBut.IconType.Kind = PackIconKind.Close;
 
-            ToBlockBut.IconType.Foreground = 
-                (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+            //ToBlockBut.IconType.Foreground = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.IconType.Kind = PackIconKind.Hand;
 
-            ToBlockBut.ButName.Foreground =
-                (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+            //ToBlockBut.ButName.Foreground = SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.ButName.Text = "Block user";
+
+            UpdateAmountOfBlocked();
+        }
+
+        public void UpdateAmountOfBlocked()
+        {
+            AmountNum.Text = BlockedUsersPanel.Items.Count.ToString();
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

@@ -63,10 +63,13 @@
             <Grid Grid.Row="3" Background="{StaticResource DarkThemeProfileButEnter}">
                 <TextBlock Margin="10 0 0 5" VerticalAlignment="Bottom" FontSize="14"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           Text="AMOUNT Blocked users" FontWeight="DemiBold"/>
+                           FontWeight="DemiBold">
+                    <Run Text="AMOUNT" Name="AmountNum"/>
+                    <Run Text=" Blocked uses"/>
+                </TextBlock>
             </Grid>
 
-            <ListBox Grid.Row="4">
+            <ListBox Grid.Row="4" Name="BlockedUsersPanel">
                 <ListBoxItem 
                     HorizontalContentAlignment="Stretch">
                     <UnbanControl:ToUnblockUser/>

@@ -69,22 +69,23 @@
             <StackPanel Orientation="Vertical" Grid.Row="5">
                 <TextBox Foreground="White" Margin="15" FontSize="16"
                   materialDesign:HintAssist.Hint="Enter a passcode"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
                   materialDesign:HintAssist.Foreground="Gray"
                   CaretBrush="White"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
                 <TextBox Foreground="White" Margin="15" FontSize="16"
                   materialDesign:HintAssist.Hint="Re-enter new passcode"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
                   materialDesign:HintAssist.Foreground="Gray"
                   CaretBrush="White"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
             </StackPanel>
 
-            <Button Grid.Row="6" Content="Save Passcode" FontFamily="16"
-            Style="{StaticResource MaterialDesignRaisedDarkButton}"
-            Width="220" Height="45" Background="{StaticResource DarkThemeProfileButForeGround}"/>
+            <Button Grid.Row="6" Content="Save Passcode" FontSize="18"
+                    BorderThickness="0"
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Width="320" Height="45" Background="{StaticResource TempActiveTextColor}"/>
         </Grid>
     </Border>
 </Page>

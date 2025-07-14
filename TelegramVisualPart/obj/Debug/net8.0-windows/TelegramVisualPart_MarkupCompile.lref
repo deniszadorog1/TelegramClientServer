@@ -1,4 +1,4 @@
-﻿B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+﻿
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPage.xaml;;
@@ -6,7 +6,6 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\AutoDeleteForUsers.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
@@ -19,6 +18,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformatio
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetNameSurname.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetPhoneNumber.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\SetInformation\SetUsername.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Other\InfoMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Saved\SavedMessagesInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.xaml;;
@@ -36,6 +36,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurit
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\PrivacyMessages.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\SetPrivacyByType.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\SettingsPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ToChooseChats.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\BlockContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\UserInfoContact\ActionsFolder\DeleteContact.xaml;;

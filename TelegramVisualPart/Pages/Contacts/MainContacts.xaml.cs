@@ -73,6 +73,7 @@ namespace TelegramVisualPart.Pages.Contacts
         private void CloseBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void UserContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -93,6 +94,11 @@ namespace TelegramVisualPart.Pages.Contacts
         private void ClearBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             SearchBox.Text = string.Empty;
+        }
+
+        public void AddBlockedContact()
+        {
+            //Set it here
         }
     }
 }

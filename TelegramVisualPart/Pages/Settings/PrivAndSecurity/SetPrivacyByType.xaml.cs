@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Settings.PrivacyAndSecurity;
+using TelegramLib.UserSettings.SettingsTypes;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.UserControls.DifferButs;
 
@@ -24,15 +27,19 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     public partial class SetPrivacyByType : Page
     {
         private PrivacySettingType _type;
+        private PrivAndSecSettings _settings;
 
-        public SetPrivacyByType(PrivacySettingType type)
+        public SetPrivacyByType(PrivacySettingType type, 
+            PrivAndSecSettings settings)
         {
+            _settings = settings;
             _type = type;
+
             InitializeComponent();
 
             SetStartGridsSize();
             SetVisualPart();
-            EverybodyRadio.IsChecked = true;
+            //EverybodyRadio.IsChecked = true;
         }
 
         public void SetVisualPart()
@@ -42,31 +49,43 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 case PrivacySettingType.PhoneNumber:
                     {
                         SetPhoneGridBlocks();
+                        SetWhoCanSeeParam(_settings.PhonePrivacy.ShareType);
+
+                        if (_settings.PhonePrivacy.WhoCanSearch == AllOrNone.Everybody)
+                            EverybodyRadioSub.IsChecked = true;
+                        else if (_settings.PhonePrivacy.WhoCanSearch == AllOrNone.Contact)
+                            MyContactsRadioSub.IsChecked = true;
+
                         break;
                     }
                 case PrivacySettingType.LastSeen:
                     {
                         SetLastSeenBlocks();
+                        SetWhoCanSeeParam(_settings.LastSeenPrivacy.ShareType);
                         break;
                     }
                 case PrivacySettingType.ProfilePhotos:
                     {
                         SetProfilePhotosBlocks();
+                        SetWhoCanSeeParam(_settings.ProfPhotoPrivacy.ShareType);
                         break;
                     }
                 case PrivacySettingType.ForwardedMessages:
                     {
                         SetForwardMessagesBlocks();
+                        SetWhoCanSeeParam(_settings.ForwardMesPrivacy.ShareType);
                         break;
                     }
                 case PrivacySettingType.DateBirth:
                     {
                         SetDateOfBirthBlocks();
+                        SetWhoCanSeeParam(_settings.DateBirthPrivacy.ShareType);
                         break;
                     }
                 case PrivacySettingType.Bio:
                     {
                         SetBioBlocks();
+                        SetWhoCanSeeParam(_settings.BioPrivacy.ShareType);
                         break;
                     }
             }
@@ -190,7 +209,13 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             DescriptionPhoneNobodyText.Text =
                 "Users who add your number to their contacts will see" +
                 "it on Telegram only if they are your contacts";
+        }
 
+        public void SetWhoCanSeeParam(ShareWith toShare) 
+        {
+            if (toShare == ShareWith.Everybody) EverybodyRadio.IsChecked = true;
+            else if (toShare == ShareWith.Contacts) ContactsRadio.IsChecked = true;
+            else if (toShare == ShareWith.Nobody) NobodyRadio.IsChecked = true;
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -213,14 +238,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                     {
                         PhoneEverybody.Height = new GridLength();
                         Height = 450;
+                        _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Everybody;
+                        SetShareParam(_settings.PhonePrivacy, ShareWith.Everybody);
                         break;
                     }
                 case PrivacySettingType.LastSeen:
                     {
                         LastSeenEverybodyRow.Height = new GridLength();
                         Height = 450;
-                        break;
-                    }
+                        SetShareParam(_settings.LastSeenPrivacy, ShareWith.Everybody);
+                        break;                    }
                 case PrivacySettingType.ProfilePhotos:
                     {
                         PubPhotoButRow.Height = new GridLength(0);
@@ -231,6 +258,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ProfPhotoShareButsPanel.Children.Add(_neverShare);
 
                         Height = 360;
+                        SetShareParam(_settings.ProfPhotoPrivacy, ShareWith.Everybody);
                         break;
                     }
                 case PrivacySettingType.ForwardedMessages:
@@ -241,6 +269,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForwardMeesagesShareButsPanel.Children.Add(_neverShare);
 
                         Height = 370;
+                        SetShareParam(_settings.ForwardMesPrivacy, ShareWith.Everybody);
                         break;
                     }
                 case PrivacySettingType.DateBirth:
@@ -251,6 +280,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BirthDateShareButsPanel.Children.Add(_neverShare);
 
                         Height = 370;
+                        SetShareParam(_settings.DateBirthPrivacy, ShareWith.Everybody);
                         break;
                     }
                 case PrivacySettingType.Bio:
@@ -261,10 +291,15 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BioShareButsPanel.Children.Add(_neverShare);
 
                         Height = 370;
+                        SetShareParam(_settings.BioPrivacy, ShareWith.Everybody);
                         break;
                     }
-
             }
+        }
+
+        public void SetShareParam(PrivacySub param, ShareWith value)
+        {
+            param.ShareType = value;
         }
 
         private void ContactsRadio_Checked(object sender, RoutedEventArgs e)
@@ -276,6 +311,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                     {
                         PhoneContacts.Height = new GridLength();
                         Height = 480;
+                        SetShareParam(_settings.PhonePrivacy, ShareWith.Contacts);
                         break;
                     }
                 case PrivacySettingType.LastSeen:
@@ -283,6 +319,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         LastSeenOtherRow.Height = new GridLength();
                         ExecLastSeenButs.Height = new GridLength(65);
                         Height = 720;
+                        SetShareParam(_settings.LastSeenPrivacy, ShareWith.Contacts);
                         break;
                     }
                 case PrivacySettingType.ProfilePhotos:
@@ -296,6 +333,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ProfPhotoShareButsPanel.Children.Add(_neverShare);
 
                         Height = 490;
+                        SetShareParam(_settings.ProfPhotoPrivacy, ShareWith.Contacts);
                         break;
                     }
                 case PrivacySettingType.ForwardedMessages:
@@ -307,6 +345,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForwardMeesagesShareButsPanel.Children.Add(_neverShare);
 
                         Height = 400;
+                        SetShareParam(_settings.ForwardMesPrivacy, ShareWith.Contacts);
                         break;
                     }
                 case PrivacySettingType.DateBirth:
@@ -318,6 +357,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BirthDateShareButsPanel.Children.Add(_neverShare);
 
                         Height = 400;
+                        SetShareParam(_settings.DateBirthPrivacy, ShareWith.Contacts);
                         break;
                     }
                 case PrivacySettingType.Bio:
@@ -329,6 +369,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BioShareButsPanel.Children.Add(_neverShare);
 
                         Height = 400;
+                        SetShareParam(_settings.BioPrivacy, ShareWith.Contacts);
                         break;
                     }
 
@@ -344,6 +385,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                     {
                         PhoneNobody.Height = new GridLength();
                         Height = 500;
+                        SetShareParam(_settings.PhonePrivacy, ShareWith.Nobody);
                         break;
                     }
                 case PrivacySettingType.LastSeen:
@@ -351,6 +393,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         LastSeenOtherRow.Height = new GridLength();
                         ExecLastSeenButs.Height = new GridLength(35);
                         Height = 690;
+                        SetShareParam(_settings.LastSeenPrivacy, ShareWith.Nobody);
                         break;
                     }
                 case PrivacySettingType.ProfilePhotos:
@@ -363,6 +406,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ProfPhotoShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 460;
+                        SetShareParam(_settings.ProfPhotoPrivacy, ShareWith.Nobody);
                         break;
                     }
                 case PrivacySettingType.ForwardedMessages:
@@ -373,6 +417,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         ForwardMeesagesShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 370;
+                        SetShareParam(_settings.ForwardMesPrivacy, ShareWith.Nobody);
                         break;
                     }
                 case PrivacySettingType.DateBirth:
@@ -383,6 +428,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BirthDateShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 370;
+                        SetShareParam(_settings.DateBirthPrivacy, ShareWith.Nobody);
                         break;
                     }
                 case PrivacySettingType.Bio:
@@ -393,6 +439,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         BioShareButsPanel.Children.Add(_alwaysShare);
 
                         Height = 370;
+                        SetShareParam(_settings.BioPrivacy, ShareWith.Nobody);
                         break;
                     }
             }
@@ -490,6 +537,54 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        private void Exps_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not EnumPrivacyButton openExps) return;
+
+            if (openExps == PhoneEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare); 
+            else if (openExps == PhoneContactAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare); 
+            else if (openExps == PhoneContactNeverShareBut) SetToChoosePage(ChooseType.NeverShare); 
+            else if (openExps == PhoneNobodyAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+
+            else if (openExps == LastSeenEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == LastSeenOtherAlwaysShare) SetToChoosePage(ChooseType.AlwaysShare);
+            else if (openExps == LastSeenOtherNeverShare) SetToChoosePage(ChooseType.NeverShare);
+
+            else if (openExps == ProfPhotosAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+            else if (openExps == ProfPhotosNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+
+            else if (openExps == ForwardMeesagesAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+            else if (openExps == ForwardMeesagesNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+
+            else if (openExps == BirthDateAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+            else if (openExps == BirthDateNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+
+            else if (openExps == BioAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+            else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+
+        }
+
+        public void SetToChoosePage(ChooseType shareType)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType));
+        }
+
+        public PrivacySub GetSettingsTypeByPrivButton(EnumPrivacyButton but)
+        {
+            if (but == PhoneEverybodyUsersExcepts) return _settings.PhonePrivacy;
+            return new PhoneNumberSub();
+        }
+
+        private void EverybodyRadioSub_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Everybody;
+        }
+
+        private void MyContactsRadioSub_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Contact;
         }
     }
 }

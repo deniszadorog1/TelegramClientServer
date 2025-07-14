@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages;
 using TelegramVisualPart.UserControls.DifferButs;
 
@@ -31,6 +32,25 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             InitializeComponent();
 
             SetButsVisibility();
+
+            SetBasicClassParams();
+        }
+
+        public void SetBasicClassParams()
+        {
+            PrivAndSecSettings settings = _system.Settings.GetPrivacySettings();
+
+            BlockedUsers.EnumPart.Text = settings.BlockedUsers.Count.ToString();
+
+            PhoneNumber.EnumPart.Text = settings.PhonePrivacy.ShareType.ToString();
+            LastSeen.EnumPart.Text = settings.LastSeenPrivacy.ShareType.ToString();
+            ProfilePhotos.EnumPart.Text = settings.ProfPhotoPrivacy.ShareType.ToString();
+            ForwardedMessages.EnumPart.Text = settings.ForwardMesPrivacy.ShareType.ToString();
+            Messages.EnumPart.Text = settings.MessagesPrivacy.WhoCanSend.ToString();
+            DateOfBirth.EnumPart.Text = settings.DateBirthPrivacy.ShareType.ToString();
+            BioBut.EnumPart.Text = settings.BioPrivacy.ShareType.ToString();
+
+            DeleteAway.EnumPart.Text = settings.SelfDeleteTime.ToString();
         }
 
         public void SetButsVisibility()
@@ -121,14 +141,14 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         {
             return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system) :
                 name == BlockedUsers.Name.ToString() ? new BlockedUsers(_system) :
-                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber) :
-                name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen) :
-                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos) :
-                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ForwardedMessages) :
-                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth) :
-                name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio) :
-                name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount() :
-                name == Messages.Name.ToString() ? new PrivacyMessages() : null;
+                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber, _system.Settings.GetPrivacySettings()) :
+                name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen, _system.Settings.GetPrivacySettings()) :
+                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos, _system.Settings.GetPrivacySettings()) :
+                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ForwardedMessages, _system.Settings.GetPrivacySettings()) :
+                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth, _system.Settings.GetPrivacySettings()) :
+                name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio, _system.Settings.GetPrivacySettings()) :
+                name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount(_system.Settings.GetPrivacySettings()) :
+                name == Messages.Name.ToString() ? new PrivacyMessages(_system.Settings.GetPrivacySettings().MessagesPrivacy) : null;
                 
         }
     }

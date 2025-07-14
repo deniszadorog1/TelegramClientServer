@@ -7,7 +7,7 @@
       xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls"
       mc:Ignorable="d" 
-      d:DesignHeight="400" d:DesignWidth="400"
+      d:DesignHeight="450" d:DesignWidth="400"
       Height="450" Width="400" 
       VerticalAlignment="Top" Margin="0 50 0 0"
       Title="SetPrivacyByType">
@@ -59,19 +59,19 @@
 
             <Grid Grid.Row="2" Margin="0 0 0 0" Name="MainGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Name ="PhoneNumberRow" Height="0"/>
+                    <RowDefinition Name ="PhoneNumberRow"/>
                     <RowDefinition Name = "LastSeenRow" Height="0"/>
                     <RowDefinition Name = "ProfilePhotosRow" Height="0"/>
                     <RowDefinition Name = "ForwardedMessagesRow" Height="0"/>
                     <RowDefinition Name = "DateOfBirthRow" Height="0"/>
-                    <RowDefinition Name = "BIORow"/>
+                    <RowDefinition Name = "BIORow" Height="0"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Name="PhoneGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Name="PhoneEverybody" Height="250"/>
-                        <RowDefinition Name="PhoneContacts" Height="0"/>
-                        <RowDefinition Name="PhoneNobody" Height="0" />
+                        <RowDefinition Name="PhoneContacts" Height="100"/>
+                        <RowDefinition Name="PhoneNobody" Height="50" />
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Name="PhoneEverybodyGrid">
@@ -95,7 +95,8 @@
                                    Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <buts:EnumPrivacyButton x:Name="PhoneEverybodyUsersExcepts"
-                                                Grid.Row="2" Margin="5 0 0 0"/>
+                                                Grid.Row="2" Margin="5 0 0 0"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"/>
 
                         <TextBlock Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"
                                    FontSize="14" Foreground="Gray" TextWrapping="Wrap"
@@ -126,9 +127,11 @@
 
                         <StackPanel Grid.Row="2">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneContactAlwaysShareBut"
-                                                    Margin="5 0 0 0"/>
+                                                    Margin="5 0 0 0"
+                                                    PreviewMouseDown="Exps_PreviewMouseDown"/>
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneContactNeverShareBut"
-                                                    Margin="5 0 0 0"/>
+                                                    Margin="5 0 0 0"
+                                                    PreviewMouseDown="Exps_PreviewMouseDown"/>
                         </StackPanel>
 
 
@@ -168,16 +171,18 @@
 
                             <StackPanel Grid.Row="1" Margin="20 0 0 0">
                                 <RadioButton Foreground="White" Content="Everybody"
-                                     Name="NobodyEverybodyRadio"
+                                     Name="EverybodyRadioSub"
                                      FontSize="16" IsChecked="False" 
                                      Background="{StaticResource TempActiveTextColor}"                             
-                                     Style="{StaticResource MaterialDesignRadioButton}"/>
+                                     Style="{StaticResource MaterialDesignRadioButton}"
+                                             PreviewMouseDown="EverybodyRadioSub_PreviewMouseDown"/>
 
                                 <RadioButton Foreground="White" Content="My Contacts"
-                                     Name="NobodyContactsRadio"
+                                     Name="MyContactsRadioSub"
                                      FontSize="16" IsChecked="False" 
                                      Background="{StaticResource TempActiveTextColor}"                             
-                                     Style="{StaticResource MaterialDesignRadioButton}"/>
+                                     Style="{StaticResource MaterialDesignRadioButton}"
+                                             PreviewMouseDown="MyContactsRadioSub_PreviewMouseDown"/>
                             </StackPanel>
                         </Grid>
 
@@ -188,6 +193,7 @@
 
                         <StackPanel Grid.Row="3">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="PhoneNobodyAlwaysShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                              Margin="5 0 0 0"/>
                         </StackPanel>
 
@@ -228,6 +234,7 @@
                                    Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <buts:EnumPrivacyButton x:Name="LastSeenEverybodyUsersExcepts"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                             Grid.Row="2" Margin="5 0 5 0"/>
                             <TextBlock Grid.Row="3"
                                 Background="{StaticResource DarkThemeDeviderField}" FontSize="14"
@@ -262,9 +269,11 @@
 
                             <StackPanel Grid.Row="2">
                                 <buts:EnumPrivacyButton x:Name="LastSeenOtherAlwaysShare"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                  Margin="5 0 5 0"/>
 
                                 <buts:EnumPrivacyButton x:Name="LastSeenOtherNeverShare"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                Margin="5 0 5 0"/>
                             </StackPanel>
 
@@ -321,8 +330,10 @@
 
                             <StackPanel Grid.Row="3" Name="ProfPhotoShareButsPanel">
                                 <buts:EnumPrivacyButton Grid.Row="2" x:Name="ProfPhotosAlwaysShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                                 <buts:EnumPrivacyButton Grid.Row="2" x:Name="ProfPhotosNeverShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                             </StackPanel>
 
@@ -357,8 +368,10 @@
 
                         <StackPanel Grid.Row="2" Name="ForwardMeesagesShareButsPanel">
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="ForwardMeesagesAlwaysShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                             <buts:EnumPrivacyButton Grid.Row="2" x:Name="ForwardMeesagesNeverShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                         </StackPanel>
 
@@ -383,8 +396,10 @@
 
                     <StackPanel Grid.Row="1" Name="BirthDateShareButsPanel">
                         <buts:EnumPrivacyButton Grid.Row="1" x:Name="BirthDateAlwaysShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                         <buts:EnumPrivacyButton Grid.Row="2" x:Name="BirthDateNeverShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                     </StackPanel>
                     
@@ -409,8 +424,10 @@
 
                     <StackPanel Grid.Row="1" Name="BioShareButsPanel">
                         <buts:EnumPrivacyButton Grid.Row="1" x:Name="BioAlwaysShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                         <buts:EnumPrivacyButton Grid.Row="2" x:Name="BioNeverShareBut"
+                                                PreviewMouseDown="Exps_PreviewMouseDown"
                                                     Margin="5 0 0 0"/>
                     </StackPanel>
 
