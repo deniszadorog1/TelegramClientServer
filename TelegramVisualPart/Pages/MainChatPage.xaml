@@ -73,7 +73,7 @@
                                  CaretBrush="White" 
                                  GotFocus="SarchBox_GotFocus"
                                  LostFocus="SarchBox_LostFocus"/>
-        
+
                         <menuIconTextBut:IconButton x:Name="ClearTextBut"
                                                  HorizontalAlignment="Right"
                                                  VerticalAlignment="Center"
@@ -126,8 +126,21 @@
                   Cursor="SizeWE"
                   DragDelta="GridSplitter_DragDelta" />
 
-            <userControls:UserChat Grid.Column="3" x:Name="UserChat"/>
 
+            <Border Name="ChatBg" Grid.Column="3" Background="{StaticResource DarkThemeSecond}">
+                <Grid>
+                    <Border Name="ChosoeChatBorder" Visibility="Visible"
+                            Background="Gray" CornerRadius="10" 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" Margin="0 0 0 100">
+                        <TextBlock Text="Select chat to start messaging" Foreground="White"
+                                   FontSize="18" Padding="7" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    
+                    <userControls:UserChat x:Name="UserChat" Visibility="Hidden"/>
+                </Grid>
+            </Border>
         </Grid>
     </materialDesign:DrawerHost>
 

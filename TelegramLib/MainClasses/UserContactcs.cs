@@ -9,6 +9,7 @@ namespace TelegramLib.MainClasses
 {
     public class UserContactcs
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string UserName { get; set; }
         public DateTime? BirthDate { get; set; }
@@ -16,9 +17,11 @@ namespace TelegramLib.MainClasses
         public string? PhoneNumber { get; set; }
         List<string> IconsPaths { get; set; }
 
-        public UserContactcs(string name, string userName, DateTime? birthDate,
+        public UserContactcs(int id, string name, string userName, 
+            DateTime? birthDate,
             string bio, string? phoneNumber, List<string> iconsPaths)
         {
+            Id = id;
             Name = name;
             UserName = userName;
             BirthDate = birthDate;
@@ -29,6 +32,7 @@ namespace TelegramLib.MainClasses
 
         public UserContactcs()
         {
+            Id = Id;
             Name = "testNAME";
             UserName = "testUSERNAME";
             BirthDate = DateTime.Now;

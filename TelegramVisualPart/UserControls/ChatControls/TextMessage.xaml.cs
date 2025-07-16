@@ -50,6 +50,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SentTime.Text = $"{time.Hour}:{time.Minute}";
         }
 
+        public void SetTime(DateTime time)
+        {
+            SentTime.Text = $"{time.Hour}:{time.Minute}";
+        }
+
         public double GetStringWidth(string fontFamily = "Segoe UI")
         {
             var typeface = new Typeface(new FontFamily(fontFamily), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);

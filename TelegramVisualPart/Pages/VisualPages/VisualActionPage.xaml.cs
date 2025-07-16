@@ -1,6 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Messages;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.VisualPages
@@ -26,42 +30,118 @@ namespace TelegramVisualPart.Pages.VisualPages
         private Image _img;
         private MediaElement _media;
 
-        public VisualActionPage(Image img)
+        private List<Image> _imgs;
+        private int _mediaIndex;
+
+        public VisualActionPage(Image img, List<Image> chatImgs)
         {
             _img = img;
+            _imgs = chatImgs;
+            SetImgIndex();
+
             InitializeComponent();
 
             SetBasicParams();
             ImageToShow.Source = _img.Source;
 
             VideoToShow.Visibility = Visibility.Hidden;
-            VideoToShow = null;
+            //VideoToShow = null;
         }
 
-        public VisualActionPage(MediaElement media)
+        public void SetImgIndex()
+        {
+            string imgFileName = System.IO.Path.GetFileName(_img.Source.ToString());
+            for (int i = 0; i < _imgs.Count; i++)
+            {
+                string tempImgFileName = System.IO.Path.GetFileName(_imgs[i].Source.ToString());
+                if (tempImgFileName == imgFileName)
+                {
+                    _mediaIndex = i;
+                    return;
+                }
+            }
+        }
+
+        private List<string> _mediaPaths;
+        public VisualActionPage(MediaElement media, List<string> mediasPaths)
         {
             _media = media;
+            _mediaPaths = mediasPaths;
+
+            SetMediaIndex();
+
             InitializeComponent();
 
             VideoToShow.Source = media.Source;
 
             SetBasicParams();
             ImageToShow.Visibility = Visibility.Hidden;
-            ImageToShow = null;
+            //ImageToShow = null;
+        }
+
+        public void HideAllShows()
+        {
+            ImageToShow.Visibility = Visibility.Hidden;
+            VideoToShow.Visibility = Visibility.Hidden;
+        }
+        public void SetVideo(string videoPath)
+        {
+            var media = new MediaElement
+            {
+                Source = new Uri(videoPath, UriKind.Absolute),
+                LoadedBehavior = MediaState.Manual,
+                UnloadedBehavior = MediaState.Manual
+            };
+            media.Play();
+        }
+
+        public void SetMediaIndex()
+        {
+            string mediaFileName = System.IO.Path.GetFileName(_img.Source.ToString());
+            for (int i = 0; i < _mediaPaths.Count; i++)
+            {
+                string tempMediaFileName = System.IO.Path.GetFileName(_mediaPaths[i]);
+                if (tempMediaFileName == mediaFileName)//  ArePathsEqual(_mediaPaths[i], _media.Source))
+                {
+                    _mediaIndex = i;
+                    return;
+                }
+            }
+        }
+
+        public static bool ArePathsEqual(string filePath, Uri fileUri)
+        {
+            return string.Equals(System.IO.Path.GetFullPath(filePath), fileUri.LocalPath, StringComparison.OrdinalIgnoreCase);
         }
 
         public string? _gifPath = null;
-        public VisualActionPage(string gifPath)
+        public VisualActionPage(string gifPath, List<string> mediasPaths)
         {
+            _media = new MediaElement();
+
             _gifPath = gifPath;
+            _mediaPaths = mediasPaths;
+            SetGifIndex();
+
             InitializeComponent();
 
             SetGifParams();
             SetBasicParams();
 
             VideoToShow.Visibility = Visibility.Hidden;
-            VideoToShow = null;
+            //VideoToShow = null;
+        }
 
+        public void SetGifIndex()
+        {
+            for (int i = 0; i < _mediaPaths.Count; i++)
+            {
+                if (_mediaPaths[i].ToString() == _gifPath.ToString())
+                {
+                    _mediaIndex = i;
+                    return;
+                }
+            }
         }
 
         public void SetGifParams()
@@ -71,11 +151,9 @@ namespace TelegramVisualPart.Pages.VisualPages
             WpfAnimatedGif.ImageBehavior.SetAnimatedSource(ImageToShow, source);
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(ImageToShow, RepeatBehavior.Forever);
 
-            Console.WriteLine(source.Width + source.Height);
-
             ImageToShow.RenderTransform = new RotateTransform(_rotation,
                     source.Width / 2, source.Height / 2);
-        } 
+        }
 
         public void SetBasicParams()
         {
@@ -97,7 +175,6 @@ namespace TelegramVisualPart.Pages.VisualPages
             MediaMenu.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
             MediaMenu.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
             MediaMenu.SaveAs.PreviewMouseDown += SaveAs_PreviewMouseDown;
-
         }
 
         private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -132,12 +209,82 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_img is not null &&
+                (_mediaIndex + 1) < _imgs.Count)
+            {
+                _mediaIndex++;
+                ImageToShow.Source = _imgs[_mediaIndex].Source;
+                _img = _imgs[_mediaIndex];
+
+                ClearRenderTransform();
+            }
+            else if (_media is not null &&
+                (_mediaIndex + 1) < _mediaPaths.Count)
+            {
+                _mediaIndex++;
+                SetMediaFile();
+
+                ClearRenderTransform();
+            }
+
             //Set next visual element
         }
 
+        public void SetMediaFile()
+        {
+            HideAllShows();
+
+            MediaType type = FilesAction.GetMediaTypeFromFilename(_mediaPaths[_mediaIndex]);
+
+            if (type is MediaType.Gif)
+            {
+                ImageToShow.Visibility = Visibility.Visible;
+                _gifPath = _mediaPaths[_mediaIndex];
+                SetGifParams();
+            }
+            else if (type is MediaType.Video)
+            {
+                var media = new MediaElement
+                {
+                    Source = new Uri(_mediaPaths[_mediaIndex], UriKind.Absolute),
+                    Width = 300,
+                    Height = 200,
+                    LoadedBehavior = MediaState.Manual,
+                    UnloadedBehavior = MediaState.Manual
+                };
+                media.Play();
+
+                VideoToShow.Source = media.Source;
+
+                VideoToShow.Visibility = Visibility.Visible;
+            }
+        }
+
+
         private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Set previous visual element
+            if (_img is not null &&
+                (_mediaIndex - 1) >= 0)
+            {
+                _mediaIndex--;
+                ImageToShow.Source = _imgs[_mediaIndex].Source;
+                _img = _imgs[_mediaIndex];
+
+                ClearRenderTransform();
+            }
+            else if (_media is not null &&
+                (_mediaIndex - 1) >= 0)
+            {
+                _mediaIndex--;
+                SetMediaFile();
+                ClearRenderTransform();
+            }
+        }
+
+        public void ClearRenderTransform()
+        {
+            ImageToShow.RenderTransform = null;
+            _rotation = 0;
         }
 
         private void SaveBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -157,11 +304,11 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void RotateBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            UIElement el = ImageToShow is null ? VideoToShow : ImageToShow;
+            UIElement el = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow : ImageToShow;
 
-            double width = ImageToShow is null ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
-            double height = ImageToShow is null ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
-            
+            double width = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
+            double height = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
+
             if (!(el.RenderTransform is RotateTransform rotateTransform))
             {
                 rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
@@ -187,7 +334,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         private void ImageToShow_Loaded(object sender, RoutedEventArgs e)
         {
             if (ImageToShow is null || _gifPath is not null) return;
-            ImageToShow.RenderTransform = new RotateTransform(_rotation, 
+            ImageToShow.RenderTransform = new RotateTransform(_rotation,
                 ImageToShow.ActualWidth / 2, ImageToShow.ActualHeight / 2);
         }
 

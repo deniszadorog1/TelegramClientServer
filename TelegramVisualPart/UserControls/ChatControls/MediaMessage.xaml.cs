@@ -47,6 +47,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetGif(gifPath);
         }
 
+
         public void SetGif(string gifPath)
         {
             ImgMessage = null;

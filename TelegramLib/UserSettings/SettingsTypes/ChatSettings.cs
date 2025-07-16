@@ -13,6 +13,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 {
     public class ChatSettings
     {
+        public int Id { get; set; }
         public ThemeType Theme { get; set; }
         public ColorHelper ChosenColor { get; set; }
         public AutoNightMode NightMode { get; set; }
@@ -21,10 +22,11 @@ namespace TelegramLib.UserSettings.SettingsTypes
         public ChatWallpaper Wallpaper { get; set; }
         public List<string> PossibleWallpapers { get; set; }
 
-        public ChatSettings(ThemeType theme, ColorHelper color, AutoNightMode nightMode,
+        public ChatSettings(int id, ThemeType theme, ColorHelper color, AutoNightMode nightMode,
                             string fontName, ChatWallpaper wallpaper, bool isSentWithEnter,
                             List<string> wallpapers)
         {
+            Id = id;
             Theme = theme;
             ChosenColor = color;
             NightMode = nightMode;
@@ -36,6 +38,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
         public ChatSettings()
         {
+            Id = -1;
             Theme = ThemeType.Tinted;
             ChosenColor = new ColorHelper(210, 117, 112); //Test seventh color
             NightMode = AutoNightMode.System;

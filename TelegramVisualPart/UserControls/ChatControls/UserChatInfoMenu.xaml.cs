@@ -76,7 +76,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(new TelegramLib.MainClasses.UserChat()));
         }
 
         private void SetWallpaperBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

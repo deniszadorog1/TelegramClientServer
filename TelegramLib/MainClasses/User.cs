@@ -10,6 +10,7 @@ namespace TelegramLib.MainClasses
 {
     public class User
     {
+        public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Name;
@@ -24,11 +25,12 @@ namespace TelegramLib.MainClasses
 
         public DateTime LastSeenOnline { get; set; }
 
-        public User(string login, string password, string name,
+        public User(int id, string login, string password, string name,
                     string surname, string bio,
                     ColorHelper color, string phoneNumber, 
                     string userName, DateTime? birthDay)
         {
+            Id = id;
             Login = login;
             Password = password;
             Name = name;
@@ -45,6 +47,7 @@ namespace TelegramLib.MainClasses
         //Smth like test params
         public User()
         {
+            Id = -1;
             Login = "asdLOGIN";
             Password = "asdPASSWORD";
             Name = "asdNAME";

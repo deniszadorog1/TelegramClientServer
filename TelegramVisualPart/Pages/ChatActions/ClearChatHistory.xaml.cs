@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 
 namespace TelegramVisualPart.Pages.ChatActions
@@ -21,13 +22,16 @@ namespace TelegramVisualPart.Pages.ChatActions
     /// </summary>
     public partial class ClearChatHistory : Page
     {
-        public ClearChatHistory()
+        private UserChat _chat;
+        public ClearChatHistory(UserChat chat)
         {
+            _chat = chat;
             InitializeComponent();
         }
 
         private void DeleteBut_Click(object sender, RoutedEventArgs e)
         {
+            _chat.ClearChat();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
@@ -74,5 +78,6 @@ namespace TelegramVisualPart.Pages.ChatActions
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion());
         }
+
     }
 }

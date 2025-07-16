@@ -25,6 +25,34 @@ namespace TelegramVisualPart.UserControls.ContactsControls
             InitializeComponent();
         }
 
+        private string _imgSource;
+        private string _login;
+        private DateTime? _lastSeenOnline;
+
+        public UserContact(string imgSource, string login,
+            DateTime? lastOnline)
+        {
+            _imgSource = imgSource;
+            _login = login;
+            _lastSeenOnline = lastOnline;
+
+            InitializeComponent();
+
+            SetParams();
+        }
+
+        public void SetParams()
+        {
+            if (_imgSource != string.Empty)
+            {
+                ImgBrushSource.ImageSource = new BitmapImage(new Uri(_imgSource, UriKind.Absolute));
+            }
+
+            UserLogin.Text = _login;
+            if (_lastSeenOnline is not null)
+                LastSennOnline.Text = $"{_lastSeenOnline.Value.Month}.{_lastSeenOnline.Value.Day}.{_lastSeenOnline.Value.Year}";
+        }
+
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             Background = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButEnter"];

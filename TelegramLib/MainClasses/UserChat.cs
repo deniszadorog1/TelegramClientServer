@@ -9,11 +9,13 @@ namespace TelegramLib.MainClasses
 {
     public class UserChat
     {
+        public int Id { get; set; }
         public UserContactcs Chatter { get; set; }
-        List<Message> Messages { get; set; }
+        public List<Message> Messages { get; set; }
 
-        public UserChat(UserContactcs chatter, List<Message> messages)
+        public UserChat(int id, UserContactcs chatter, List<Message> messages)
         {
+            Id = id;
             Chatter = chatter;
             Messages = messages;
         }
@@ -21,6 +23,11 @@ namespace TelegramLib.MainClasses
         public UserChat()
         {
             //Set Test Params Here
+        }
+
+        public void ClearChat()
+        {
+            Messages.Clear();
         }
         
     }

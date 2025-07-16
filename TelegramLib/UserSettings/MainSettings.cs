@@ -9,15 +9,17 @@ namespace TelegramLib.UserSettings
 {
     public class MainSettings
     {
+        public int Id { get; set; }
         public NotificationSettings NotSettings { private get; set; }
         public ChatSettings ChatsSettings { private get; set; }
         public AdvancedSettings AdvSettings { private get; set; }
         public PrivAndSecSettings PrivacySettings { private get; set; }
 
-        public MainSettings(NotificationSettings notSettings, 
+        public MainSettings(int id, NotificationSettings notSettings, 
             ChatSettings chatSettings, AdvancedSettings advSettings, 
             PrivAndSecSettings privacySettings)
         {
+            Id = id;
             NotSettings = notSettings;
             ChatsSettings = chatSettings;
             AdvSettings = advSettings;
@@ -26,6 +28,7 @@ namespace TelegramLib.UserSettings
 
         public MainSettings()
         {
+            Id = -1;
             NotSettings = new NotificationSettings();
             ChatsSettings = new ChatSettings();
             AdvSettings = new AdvancedSettings();

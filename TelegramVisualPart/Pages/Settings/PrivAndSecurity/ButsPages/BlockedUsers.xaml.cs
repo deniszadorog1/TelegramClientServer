@@ -64,7 +64,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         private void ToBlockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainContacts toBlock = new MainContacts(Enums.ContactsPageAction.Block);
+            MainContacts toBlock = new MainContacts(Enums.ContactsPageAction.Block, _system.Contacts);
 
             toBlock.ContactsBlock.Text = "Select user to block";
             toBlock.SortBut.Visibility = Visibility.Hidden;

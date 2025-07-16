@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
 using static MaterialDesignThemes.Wpf.Theme;
 
@@ -49,6 +52,7 @@ namespace TelegramVisualPart.Pages
         {
             //Search in chat list of messages
             //SearchMessage.
+
         }
 
         public void SetChatClick()
@@ -114,16 +118,44 @@ namespace TelegramVisualPart.Pages
             if (sender is MenuIconTextBut icon)
             {
                 Page page = GetPageByIcon(icon);
-                if (page is null) return;
+
+                if (page is MainContacts) SetMainContactEvents(page);
+                else if (page is null) return;
 
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
             }
         }
 
+        public void SetMainContactEvents(MainContacts mainContacts)
+        {
+            mainContacts.ChosenContact += ContactsChatChosen_PreviewMouseDown;
+        }
+
+        private void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
+        {
+            if (sender is not UserContact userControl) return;
+
+
+            FillUserChat(userControl);
+        }
+
+        public void FillUserChat(UserContact contact)
+        {
+            //SET PAGE FILLING
+
+
+            _system.SetTempChatter(contact.UserLogin.Text);
+
+            ChosoeChatBorder.Visibility = Visibility.Hidden;
+            UserChat.Visibility = Visibility.Visible;
+
+            UserChat.SetUserChatByUserControl(contact);
+        }
+
         public Page GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser) :
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact) :
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system.Contacts) :
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_system) : null;
         }
 

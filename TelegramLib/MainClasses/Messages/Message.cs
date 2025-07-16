@@ -25,6 +25,7 @@ namespace TelegramLib.MainClasses.Messages
             SenderId = -1;
             SentTime = DateTime.Now;
         }
-         
+        
+
     }
 }

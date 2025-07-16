@@ -29,11 +29,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         {
             BorderBg.Background = 
                 (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
+            Cursor = Cursors.Hand;
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             BorderBg.Background = new SolidColorBrush(Colors.Transparent);
+            Cursor = null;
         }
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)

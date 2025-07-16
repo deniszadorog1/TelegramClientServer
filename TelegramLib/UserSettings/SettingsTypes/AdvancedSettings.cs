@@ -8,6 +8,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 {
     public class AdvancedSettings
     {
+        public int Id { get; set; }
         public bool IsAskDownloadPath { get; set; }
 
         public bool IsShowChatName { get; set; }
@@ -23,10 +24,11 @@ namespace TelegramLib.UserSettings.SettingsTypes
         public bool IsInstallBetaVersion { get; set; }
 
 
-        public AdvancedSettings(bool downloadPath, bool showChatNames, bool totalUnReads, bool windowsSysFrame, 
+        public AdvancedSettings(int id, bool downloadPath, bool showChatNames, bool totalUnReads, bool windowsSysFrame, 
             bool trayIcon, bool showTaskbarIcon, bool closeToTaskbar, bool launchTg, 
             bool updateAuto, bool betaVersion)
         {
+            Id = id;
             IsAskDownloadPath = downloadPath;
 
             IsShowChatName = showChatNames;
@@ -44,6 +46,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
         public AdvancedSettings()
         {
+            Id = -1;
             IsAskDownloadPath = false;
 
             IsShowChatName = true;

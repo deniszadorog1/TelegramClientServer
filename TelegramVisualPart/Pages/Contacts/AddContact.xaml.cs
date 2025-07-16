@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -20,8 +21,10 @@ namespace TelegramVisualPart.Pages.Contacts
     /// </summary>
     public partial class AddContact : Page
     {
-        public AddContact()
+        private List<UserContactcs> _contacts;
+        public AddContact(List<UserContactcs> contacts)
         {
+            _contacts = contacts; 
             InitializeComponent();
         }
 
@@ -43,7 +46,8 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new MainContacts(Enums.ContactsPageAction.AddContact));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new MainContacts(Enums.ContactsPageAction.AddContact, _contacts));
         }
 
         private void PhoneBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

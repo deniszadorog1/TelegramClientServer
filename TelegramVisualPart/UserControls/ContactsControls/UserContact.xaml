@@ -18,7 +18,8 @@
 
         <Ellipse Grid.Column="0" Name="UserImage" Width="40" Height="40">
             <Ellipse.Fill>
-                <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                <ImageBrush x:Name="ImgBrushSource" 
+                            ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
             </Ellipse.Fill>
         </Ellipse>
 
@@ -37,8 +38,6 @@
                        Text="Last seen online"
                        VerticalAlignment="Top" Margin="10 0 0 0"
                        Foreground="Gray" />
-
         </Grid>
-        
     </Grid>
 </UserControl>

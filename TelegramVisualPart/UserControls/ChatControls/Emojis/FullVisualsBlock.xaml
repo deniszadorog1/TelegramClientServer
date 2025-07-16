@@ -60,23 +60,22 @@
             <local:EmojisBlock Grid.Row="1" x:Name="EmojisPanel"
                                VerticalAlignment="Top" Margin="0 10 0 0" Visibility="Hidden"/>
 
-
             <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                          Name="GifScroll" 
                           VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                <WrapPanel Name="GIFsPanel" Margin="5" Visibility="Hidden">
+                <WrapPanel Name="GIFsPanel" Margin="5">
                     <Image Width="100"
-                   Height="100"
-                   Margin="2"
-                   Stretch="Uniform"
-                   wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif" />
+                           Height="100"
+                           Margin="2"
+                           Stretch="Uniform"
+                           wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif"/>
                 </WrapPanel>
             </ScrollViewer>
 
-            <ScrollViewer HorizontalScrollBarVisibility="Hidden"
-                          VerticalScrollBarVisibility="Auto" 
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" Name="StickerScroll"
+                          VerticalScrollBarVisibility="Auto" Visibility="Hidden"
                           Grid.Row="1">
                 <WrapPanel Name="StickerPanel" Visibility="Visible">
-                    
                     <Image Name="TestGirlSticker" Width="100" Height="100" Margin="5"
                            Source="/Visuals/Images/Stickers/Girl.png"
                            PreviewMouseDown="Sticker_PreviewMouseDown"/>

@@ -15,7 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.UserControls.ContactsControls;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -24,12 +26,51 @@ namespace TelegramVisualPart.Pages.Contacts
     /// </summary>
     public partial class MainContacts : Page
     {
+        public event EventHandler ChosenContact;
+
         private ContactsPageAction _type;
-        public MainContacts(ContactsPageAction type)
+        private List<UserContactcs> _contacts;
+        
+        public MainContacts(ContactsPageAction type, List<UserContactcs> contacts)
         {
             _type = type;
+            _contacts = contacts;
+
             InitializeComponent();
             SetBasicParams();
+
+            SetContactsParams();
+        }
+
+        public void SetContactsParams()
+        {
+            for(int i = 0; i < _contacts.Count; i++)
+            {
+                UserControls.ContactsControls.UserContact contact = 
+                    new UserControls.ContactsControls.UserContact(
+                        string.Empty, _contacts[i].Name, _contacts[i].BirthDate);
+
+                contact.PreviewMouseDown += Contact_PreviewMouseDown;
+
+                ListBoxItem item = new ListBoxItem
+                {
+                    Content = contact,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    Tag = _contacts[i].UserName
+                };
+
+                ContactsListBox.Items.Add(item);
+            }
+        }
+
+        private void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserContact contact) return;
+
+            ChosenContact?.Invoke(sender, EventArgs.Empty);
+
+
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         public void SetBasicParams()
@@ -67,7 +108,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void AddContactBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new AddContact());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new AddContact(_contacts));
         }
 
         private void CloseBut_Click(object sender, RoutedEventArgs e)

@@ -28,21 +28,37 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
             SetBasicParams();
 
+            SetUserElements();
+
             SetGifs();
-            SetStickers();
+            SetImgsEvents(StickerPanel);
+            SetImgsEvents(GIFsPanel);
         }
 
-        public void SetStickers()
+        public void SetUserElements()
         {
-            
+
         }
+
+        public void SetImgsEvents(WrapPanel panel)
+        {
+            for(int i = 0; i < panel.Children.Count; i++)
+            {
+                if (panel.Children[i] is Image img)
+                {
+                    img.MouseEnter += Image_MouseEnter;
+                    img.MouseLeave += Image_MouseLeave;
+                }
+            }
+        }
+
+
 
         private void Sticker_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not Image) return;
             ((MainWindow)Window.GetWindow(this)).SendStickerInChat(sender as Image);
         }
-
 
         public void SetGifs()
         {
@@ -130,13 +146,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         private void GIFsTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             HideAllPanels();
-            GIFsPanel.Visibility = Visibility.Visible;
+            GifScroll.Visibility = Visibility.Visible;
         }
 
         private void StickersTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             HideAllPanels();
-            StickerPanel.Visibility = Visibility.Visible;
+            StickerScroll.Visibility = Visibility.Visible;
         }
 
         private void EmojiTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -148,8 +164,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         private void HideAllPanels()
         {
             EmojisPanel.Visibility = Visibility.Hidden;
-            GIFsPanel.Visibility = Visibility.Hidden;
-            StickerPanel.Visibility = Visibility.Hidden;
+            GifScroll.Visibility = Visibility.Hidden;
+            StickerScroll.Visibility = Visibility.Hidden;
+        }
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void Image_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
     }
 }

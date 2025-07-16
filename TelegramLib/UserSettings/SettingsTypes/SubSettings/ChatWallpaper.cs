@@ -9,17 +9,20 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings
 {
     public class ChatWallpaper
     {
+        public int Id { get; set; }
         public string WallpaperPath { get; set; } //Set wallpaper settings
         public bool IsBlurred { get; set; }
 
-        public ChatWallpaper(string wallpaperPath, bool isBlurred)
+        public ChatWallpaper(int id, string wallpaperPath, bool isBlurred)
         {
+            Id = id;
             WallpaperPath = wallpaperPath;
             IsBlurred = isBlurred;
         }
 
         public ChatWallpaper()
         {
+            Id = -1;
             WallpaperPath = GetTestParams.GetTestFryImagePath();
             IsBlurred = true;
         }
