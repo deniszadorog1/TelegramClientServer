@@ -32,6 +32,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetBasicBlocks();
         }
 
+        private TelegramLib.MainClasses.UserChat _chat;
+        public void SetChatParam(TelegramLib.MainClasses.UserChat chat)
+        {
+            _chat = chat;
+        }
+
         private TelSystem _system;
         public void SetSystemParam(TelSystem system)
         {
@@ -66,7 +72,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo(_chat));
         }
 
         private void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

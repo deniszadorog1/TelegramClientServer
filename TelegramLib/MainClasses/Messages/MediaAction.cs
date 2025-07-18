@@ -60,5 +60,10 @@ namespace TelegramLib.MainClasses.Messages
             }
         }
 
+        public override string GetLastMessage()
+        {
+            return "Media";
+        }
+
     }
 }

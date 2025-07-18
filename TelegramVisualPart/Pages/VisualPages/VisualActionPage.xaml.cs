@@ -260,7 +260,6 @@ namespace TelegramVisualPart.Pages.VisualPages
             }
         }
 
-
         private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_img is not null &&

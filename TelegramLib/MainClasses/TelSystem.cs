@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,37 @@ namespace TelegramLib.MainClasses
             ChosenChatContact = Contacts.Where(x => x.Name == login).FirstOrDefault();
         }
 
+        public int GetChatsAmount()
+        {
+            return Chats.Count;
+        }
+
+        public UserChat GetChatByIndex(int index)
+        {
+            return Chats[index];
+        }
+
+        public bool IsChatterIsSet()
+        {
+            return ChosenChatContact is not null;
+        }
+
+        public UserChat GetUserChatByChatterName(string chatterName)
+        {
+            UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
+            if (chat is not null) return chat;
+
+            //Create new chat(if its absent)
+            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>());
+            Chats.Add(newChat);
+            return newChat;
+        }
+
+        public UserContactcs GetContactByName(string name)
+        {
+            return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
+        }
+
         public void SetTestSystemParams()
         {
             SetTestUserContacts();
@@ -51,9 +83,9 @@ namespace TelegramLib.MainClasses
 
         public void SetTestUserContacts()
         {
-            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", null));
-            Contacts.Add(new UserContactcs(1, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null));
-            Contacts.Add(new UserContactcs(1, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", null));
+            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", null, DateTime.Now, true));
+            Contacts.Add(new UserContactcs(1, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, null, false));
+            Contacts.Add(new UserContactcs(1, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", null, DateTime.Now, true));
         }
 
         public List<Message> GetTestMessages()

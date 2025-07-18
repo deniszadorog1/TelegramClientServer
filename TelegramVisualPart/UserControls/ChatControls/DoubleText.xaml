@@ -9,7 +9,7 @@
     <StackPanel Orientation="Vertical">
         <TextBlock Name ="UpperText" Text="There gona be upper text"
                    Foreground="White" FontSize="14" Margin="0 0 0 5"/>
-        <TextBlock Name ="BOttomText" Text="There gona be upper text"
+        <TextBlock Name ="BottomText" Text="There gona be upper text"
                    Foreground="Gray" FontSize="14"/>
     </StackPanel>
 </UserControl>

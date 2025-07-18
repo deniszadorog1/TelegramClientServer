@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -25,6 +26,30 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             InitializeComponent();
             SetIconsSize();
+        }
+
+        private TelegramLib.MainClasses.UserChat _chat;
+        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat)
+        {
+            _chat = chat;
+            SetUserParams();
+        }
+
+        private void SetUserParams()
+        {
+            Username.Text = _chat.GetChatter().Name;
+            LastSeenOnline.Text = _chat.GetChatter().GetLastSeen();
+
+            MobileNumber.SetUpperText(_chat.GetChatter().GetPhoneNumber());
+            MobileNumber.SetBottomText("Mobile");
+
+            Login.SetUpperText(_chat.GetChatter().GetUserName());
+            Login.SetBottomText("Username");
+
+            Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
+            Birthdate.SetBottomText("Date of Birth");
+
+            TNOtificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
         }
 
         private void SetIconsSize()

@@ -12,7 +12,8 @@
       xmlns:menuIconTextBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainChatPage" PreviewMouseDown="Page_MouseDown">
+      Title="MainChatPage" PreviewMouseDown="Page_MouseDown"
+      PreviewKeyDown="Page_PreviewKeyDown">
 
 
     <materialDesign:DrawerHost x:Name="MainDrawerHost">
@@ -94,7 +95,7 @@
                                                  Visibility="Hidden"/>
                 </Grid>
 
-                <ListBox Grid.Row="1" x:Name="ChatsBox" Visibility="Hidden">
+                <ListBox Grid.Row="1" x:Name="ChatsBox" Visibility="Visible">
                     <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
                 </ListBox>
@@ -111,7 +112,6 @@
                     <searchControl:SearchMessage x:Name="SearchMessage"
                                                  HorizontalAlignment="Stretch"/>
                 </Grid>
-
             </Grid>
 
             <GridSplitter Grid.Column="2"
@@ -125,8 +125,6 @@
                   ResizeDirection="Columns"
                   Cursor="SizeWE"
                   DragDelta="GridSplitter_DragDelta" />
-
-
             <Border Name="ChatBg" Grid.Column="3" Background="{StaticResource DarkThemeSecond}">
                 <Grid>
                     <Border Name="ChosoeChatBorder" Visibility="Visible"

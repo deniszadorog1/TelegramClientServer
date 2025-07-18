@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,13 @@ namespace TelegramLib.MainClasses
         public string BIO { get; set; }
         public string? PhoneNumber { get; set; }
         List<string> IconsPaths { get; set; }
+        public DateTime? LastSeen { get; set; }
+        public bool IsNotificationsIsOn { get; set; }
 
         public UserContactcs(int id, string name, string userName, 
             DateTime? birthDate,
-            string bio, string? phoneNumber, List<string> iconsPaths)
+            string bio, string? phoneNumber, List<string> iconsPaths,
+            DateTime? lastSeen, bool isNotsOn)
         {
             Id = id;
             Name = name;
@@ -28,6 +32,8 @@ namespace TelegramLib.MainClasses
             BIO = bio;
             PhoneNumber = phoneNumber;
             IconsPaths = iconsPaths;
+            LastSeen = lastSeen;
+            IsNotificationsIsOn = isNotsOn;
         }
 
         public UserContactcs()
@@ -38,6 +44,40 @@ namespace TelegramLib.MainClasses
             BirthDate = DateTime.Now;
             BIO = "testBIO";
             IconsPaths = new List<string>();
+            LastSeen = DateTime.Now;
+            IsNotificationsIsOn = true;
+        }
+
+        public bool GetNotifsState()
+        {
+            return IsNotificationsIsOn;
+        }
+
+        public bool IsNamesAreEqual(string name)
+        {
+            return Name == name;
+        }
+
+        public string GetPhoneNumber()
+        {
+            return PhoneNumber is null ? "unavailable" :  PhoneNumber;
+        }
+
+        public string GetUserName()
+        {
+            return UserName;
+        }
+
+        public string GetBirthDate()
+        {
+            return BirthDate is null ? "unavailable" :
+                $"{((DateTime)BirthDate).Day}.{((DateTime)BirthDate).Month}.{((DateTime)BirthDate).Year}";
+        }
+
+        public string GetLastSeen()
+        {
+            return LastSeen is null ? "recently" :
+                $"{LastSeen.Value.Day}.{LastSeen.Value.Month}.{LastSeen.Value.Year}";
         }
     }
 }

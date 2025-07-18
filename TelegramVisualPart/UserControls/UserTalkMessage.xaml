@@ -14,7 +14,7 @@
 
         <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="50" Height="50">
             <Ellipse.Fill>
-                <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
             </Ellipse.Fill>
         </Ellipse>
 

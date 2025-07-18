@@ -46,9 +46,41 @@ namespace TelegramVisualPart.UserControls
             SetMarginForChatMenu();
         }
 
-        public void SetUserChatByUserControl(UserControl control)
+        private TelegramLib.MainClasses.UserChat _chat;
+        public void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
+            if (chat is null) return;
+            _chat = chat;
+            ClearChat();
 
+            SetChatParams(_chat.GetChatter());
+            SetChatMessages();
+
+            UserChatMenu.SetChatParam(_chat);
+        
+            RemoveRightContactInfo();
+        }
+
+        public void SetChatMessages()
+        {
+            //Get Chatter here (Contact type)
+
+            _chatMessages = _chat.GetChatMessages();
+            SetMessagesInChat();
+        }
+
+        private string _lastSeenDefault = "recently";
+        public void SetChatParams (UserContactcs contact)
+        {
+            ChatFriendLogin.Text = contact.Name;
+
+            ChatFriendLastSeen.Text = contact.LastSeen is null ? _lastSeenDefault :
+                $"{contact.LastSeen.Value.Month}.{contact.LastSeen.Value.Day}.{contact.LastSeen.Value.Year}";
+        }
+
+        public void ClearChat()
+        {
+            ChatBox.Items.Clear();
         }
 
         private TelSystem _system;
@@ -57,20 +89,12 @@ namespace TelegramVisualPart.UserControls
             //Set here chat messages(by ref)
             _system = system;
             UserChatMenu.SetSystemParam(system);
-
-            SetSetChatMessages();
+            SetTestChatMessages();
         }
 
-        public void SetSetChatMessages()
+        public void SetTestChatMessages()
         {
             //Get Chatter here (Contact type)
-
-            /*            UserContactcs chatter = new UserContactcs();
-
-                        TelegramLib.MainClasses.UserChat chat = _system.Chats.Where(x => x.Chatter.Id == chatter.Id).FirstOrDefault();
-                        if (chat is null) return;
-                        _chatMessages = chat.Messages;*/
-
             _chatMessages = _system.GetTestMessages();
             SetMessagesInChat();
         }
@@ -198,7 +222,6 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.Messages.TextMessage(
                 _chatMessages.Count, _system.LoggedUser.Id,
                 DateTime.Now, CommentTextBox.Text));
-            
             CommentTextBox.Text = string.Empty;
         }
 
@@ -398,7 +421,7 @@ namespace TelegramVisualPart.UserControls
 
         public void AddContactInfo()
         {
-            const int _userContactWidth = 350;
+            const int _userContactWidth = 400;
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
             if (windowWidth + _userContactWidth <=
@@ -409,6 +432,7 @@ namespace TelegramVisualPart.UserControls
             }
 
             ContactInfo info = new ContactInfo();
+            info.SetContactInfo(_chat);
             info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
 
             UserInfoColumn.Width = new GridLength(_userContactWidth);
@@ -499,7 +523,7 @@ namespace TelegramVisualPart.UserControls
 
         private void UserInforGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Pages.UserInfo info = new Pages.UserInfo();
+            Pages.UserInfo info = new Pages.UserInfo(_chat);
             SetUserInfoPageHeight(info);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);

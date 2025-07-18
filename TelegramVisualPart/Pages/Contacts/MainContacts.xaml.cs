@@ -46,8 +46,7 @@ namespace TelegramVisualPart.Pages.Contacts
         {
             for(int i = 0; i < _contacts.Count; i++)
             {
-                UserControls.ContactsControls.UserContact contact = 
-                    new UserControls.ContactsControls.UserContact(
+                UserContact contact = new UserContact(
                         string.Empty, _contacts[i].Name, _contacts[i].BirthDate);
 
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
@@ -68,7 +67,6 @@ namespace TelegramVisualPart.Pages.Contacts
             if (sender is not UserContact contact) return;
 
             ChosenContact?.Invoke(sender, EventArgs.Empty);
-
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }

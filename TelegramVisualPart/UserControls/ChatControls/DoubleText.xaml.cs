@@ -24,5 +24,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             InitializeComponent();
         }
+
+        public void SetUpperText(string text)
+        {
+            UpperText.Text = text;
+        }
+
+        public void SetBottomText(string text)
+        {
+            BottomText.Text = text;
+        }
     }
 }

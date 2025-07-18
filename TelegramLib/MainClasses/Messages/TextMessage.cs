@@ -22,5 +22,10 @@ namespace TelegramLib.MainClasses.Messages
             Text = "TextMessage";
             SentTime = DateTime.Now; 
         }
+
+        public override string GetLastMessage()
+        {
+            return Text;
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages
 {
@@ -20,9 +21,13 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class UserInfo : Page
     {
-        public UserInfo()
+        private UserChat _chat;
+        public UserInfo(UserChat chat)
         {
+            _chat = chat;
             InitializeComponent();
+
+            ContactInfo.SetContactInfo(_chat);
         }
     }
 }

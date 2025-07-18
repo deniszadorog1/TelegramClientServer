@@ -1,8 +1,11 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,8 +40,6 @@ namespace TelegramVisualPart.Pages
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
             SetDrawButsStyles();
 
-            SetChatClickEvent();
-
             SetChatClick();
 
             LeftButtons.SetSystemParam(_system);
@@ -46,6 +47,8 @@ namespace TelegramVisualPart.Pages
             UserChat.SetSystemParam(_system);
 
             SetSearchMessageParams();
+
+            UpdateUserChatsPanel();
         }
 
         public void SetSearchMessageParams()
@@ -119,7 +122,7 @@ namespace TelegramVisualPart.Pages
             {
                 Page page = GetPageByIcon(icon);
 
-                if (page is MainContacts) SetMainContactEvents(page);
+                if (page is MainContacts mainContact) SetMainContactEvents(mainContact);
                 else if (page is null) return;
 
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
@@ -134,22 +137,23 @@ namespace TelegramVisualPart.Pages
         private void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
         {
             if (sender is not UserContact userControl) return;
-
-
-            FillUserChat(userControl);
+            SetUserChat(userControl);
+            UpdateUserChatsPanel();
         }
 
-        public void FillUserChat(UserContact contact)
+        public void SetUserChat(UserContact contact)
         {
             //SET PAGE FILLING
-
-
+            // Set chatter page
             _system.SetTempChatter(contact.UserLogin.Text);
+            //Check isf set
+            if (!_system.IsChatterIsSet()) return;
 
             ChosoeChatBorder.Visibility = Visibility.Hidden;
             UserChat.Visibility = Visibility.Visible;
 
-            UserChat.SetUserChatByUserControl(contact);
+            UserChat.SetUserChat(_system.GetUserChatByChatterName(
+                _system.ChosenChatContact.Name));
         }
 
         public Page GetPageByIcon(MenuIconTextBut icon)
@@ -161,33 +165,48 @@ namespace TelegramVisualPart.Pages
 
         private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-
+            SetChatsWidth();
         }
 
-        private void SetChatClickEvent()
+        public void SetChatsWidth()
         {
             for (int i = 0; i < ChatsBox.Items.Count; i++)
             {
-                if (ChatsBox.Items[i] is UserTalkMessage chat)
+                if (ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
+                    item.Content is UserTalkMessage message)
                 {
-                    SetChat(chat);
+                    message.Width = ChatsGrid.ActualWidth;
                 }
+
             }
+        }
+
+        private void UserChat_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.ListBoxItem item ||
+                item.Content is not UserTalkMessage talkControl) return;
+
+            ShowChatControl();
+
+            UserChat.SetUserChat(
+                _system.GetUserChatByChatterName(talkControl.FriendLogin.Text));
+        }
+
+        public void ShowChatControl()
+        {
+            ChosoeChatBorder.Visibility = Visibility.Hidden;
+            UserChat.Visibility = Visibility.Visible;
         }
 
         public void SetChat(UserTalkMessage chat)
         {
-            //Get chat obj from db
+            //Get chat obj from db(nah, another shit should be here)
             //Set chat params
         }
 
         private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set Saved Messages chat control
-
-
-
-
         }
 
         private void GridSplitter_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
@@ -219,7 +238,7 @@ namespace TelegramVisualPart.Pages
         public void SetSearchPanelWidth()
         {
             if (SearchBoxGrid.Visibility == Visibility.Hidden) return;
-            
+
             SearchControl.SetControlSize();
         }
 
@@ -293,7 +312,7 @@ namespace TelegramVisualPart.Pages
             return;
             var focusedEl = Keyboard.FocusedElement;
 
-            if (focusedEl is System.Windows.Controls.TextBox box 
+            if (focusedEl is System.Windows.Controls.TextBox box
                 && box.Name == SarchBox.Text)
             {
 
@@ -310,6 +329,56 @@ namespace TelegramVisualPart.Pages
 
             FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
             Keyboard.ClearFocus();
+        }
+
+        public void UpdateUserChatsPanel()
+        {
+            ChatsBox.Items.Clear();
+
+            int chatsCount = _system.GetChatsAmount();
+            for (int i = 0; i < chatsCount; i++)
+            {
+                System.Windows.Controls.ListBoxItem item = new
+                    System.Windows.Controls.ListBoxItem()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Content = GetTalkMessage(i)
+                };
+                item.PreviewMouseDown += UserChat_PreviewMouseDown;
+
+                ChatsBox.Items.Add(item);
+            }
+        }
+
+        public UserTalkMessage GetTalkMessage(int chatIndex)
+        {
+            UserTalkMessage chatControl = new UserTalkMessage()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Width = ChatsGrid.ActualWidth
+            };
+
+            TelegramLib.MainClasses.UserChat chat =
+                _system.GetChatByIndex(chatIndex);
+
+            chatControl.FriendLogin.Text = chat.GetChatter().Name;
+
+            DateTime? date = chat.GetLastMessageDateTime();
+
+            if (date is not null) chatControl.LastMessageTime.Text = $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
+            chatControl.LastMessage.Text = chat.GetLastMessage();
+
+            //Set Image icon
+            return chatControl;
+        }
+
+        private void Page_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                UserChat.Visibility = Visibility.Hidden;
+                ChosoeChatBorder.Visibility = Visibility.Visible;
+            }
         }
     }
 }

@@ -9,8 +9,8 @@
              xmlns:otherButs="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:menu="clr-namespace:TelegramVisualPart.UserControls.ChatControls.UserContactControls"
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="400"
-             Width="400">
+             d:DesignHeight="850" d:DesignWidth="390"
+             Width="390">
     <Border Name="BgBorder" CornerRadius="15" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
@@ -85,13 +85,12 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
-                                        VerticalAlignment="Center" Foreground="White" FontSize="14"/>
+                                       VerticalAlignment="Center" Foreground="White" FontSize="14"/>
 
-                            <TextBlock Grid.Row="1" Name="PhoneNumber" 
+                            <TextBlock Grid.Row="1" Name="LastSeenOnline" 
                                        Text="There gona be last seen online"
                                       VerticalAlignment="Center" 
                                        Foreground="White" FontSize="12"/>
-
                         </Grid>
                     </Grid>
 
@@ -131,10 +130,11 @@
                             <ToggleButton Name ="TNOtificationToggle" Width="35"
                                           Grid.Column="2" Grid.Row="3"
                                           HorizontalAlignment="Right"
-                                          Margin="0 0 20 0"
+                                          Margin="0 0 30 0"
                                           Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
                                           ToolTip="MaterialDesignSwitchDarkToggleButton"                      
-                                          IsChecked="True" Background="{StaticResource DarkThemeProfileButForeGround}"/>
+                                          IsChecked="True" 
+                                          Background="{StaticResource TempActiveTextColor}"/>
 
                             <Grid Grid.ColumnSpan="3" Grid.Row="4" Name ="SendMessageBut"
                                   MouseEnter="But_MouseEnter"
@@ -143,7 +143,7 @@
 
                             <TextBlock Grid.Column="1" Grid.Row="4" Text="SEND MESSAGE" 
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                                       Foreground="{StaticResource TempActiveTextColor}"
                                        FontWeight="Bold" MouseEnter="But_MouseEnter" />
                         </Grid>
                     </Grid>

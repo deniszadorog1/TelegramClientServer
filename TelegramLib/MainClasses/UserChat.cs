@@ -29,6 +29,31 @@ namespace TelegramLib.MainClasses
         {
             Messages.Clear();
         }
+
+        public UserContactcs GetChatter()
+        {
+            return Chatter;
+        }
+
+        public List<Message> GetChatMessages()
+        {
+            return Messages;
+        }
+
+        public DateTime? GetLastMessageDateTime()
+        {
+            return Messages.Count == 0 ? null : Messages.Last().GetSentDate();
+        }
+
+        public string GetLastMessage()
+        {
+            return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
+        }
         
+        public bool IsNamesAreEqual(string chatterName)
+        {
+            return Chatter.IsNamesAreEqual(chatterName);
+        }
+
     }
 }
