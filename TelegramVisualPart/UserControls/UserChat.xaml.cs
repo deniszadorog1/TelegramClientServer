@@ -29,6 +29,11 @@ using TelegramLib.Enums.Messages;
 using System.IO;
 using Path = System.IO.Path;
 using TelegramVisualPart.Helper;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using TelegramLib.MainClasses.ChatFitures;
+using System.Windows.Media.Effects;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Diagnostics.Eventing.Reader;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -51,14 +56,40 @@ namespace TelegramVisualPart.UserControls
         {
             if (chat is null) return;
             _chat = chat;
+            UserChatMenu.SetChatParam(_chat);
+
             ClearChat();
 
             SetChatParams(_chat.GetChatter());
             SetChatMessages();
 
             UserChatMenu.SetChatParam(_chat);
-        
+
             RemoveRightContactInfo();
+            SetUserBg();
+        }
+
+        public void SetUserBg()
+        {
+            ChatBackground bg = _chat.GetBackground();
+            if (bg is null) return;
+
+            ImageBrush brush = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(bg.GetFileName()), UriKind.Absolute)), 
+                Stretch = Stretch.UniformToFill 
+            };
+
+            CustomBg.Background = brush;
+
+            if (bg.IsBlurred)
+            {
+                CustomBg.Effect = new BlurEffect()
+                {
+                    Radius = 20
+                };
+            }
+            else CustomBg.Effect = null;
         }
 
         public void SetChatMessages()
@@ -70,7 +101,7 @@ namespace TelegramVisualPart.UserControls
         }
 
         private string _lastSeenDefault = "recently";
-        public void SetChatParams (UserContactcs contact)
+        public void SetChatParams(UserContactcs contact)
         {
             ChatFriendLogin.Text = contact.Name;
 
@@ -204,7 +235,7 @@ namespace TelegramVisualPart.UserControls
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
                 AddTextMessage();
@@ -298,7 +329,7 @@ namespace TelegramVisualPart.UserControls
         {
             string fileName = Path.GetFileName(filePath);
 
-            _chatMessages.Add(new MediaAction(_chatMessages.Count + 1, 
+            _chatMessages.Add(new MediaAction(_chatMessages.Count + 1,
                 _system.LoggedUser.Id, DateTime.Now, fileName));
         }
 
@@ -386,10 +417,10 @@ namespace TelegramVisualPart.UserControls
         public List<Image> GetChatImages()
         {
             List<Image> res = new List<Image>();
-            
-            for(int i = 0; i < _chatMessages.Count; i++)
+
+            for (int i = 0; i < _chatMessages.Count; i++)
             {
-                if (_chatMessages[i] is MediaAction media && 
+                if (_chatMessages[i] is MediaAction media &&
                     media.GetMediaTypeFromFilename() == MediaType.Image)
                 {
                     string path = GetPathToMediaFile(media.MediaName, MediaType.Image);
@@ -550,5 +581,101 @@ namespace TelegramVisualPart.UserControls
         {
             EmojisBoard.Visibility = Visibility.Hidden;
         }
+
+        public void ScrollToChosenItem(int index)
+        {
+            var item = ChatBox.Items[index];
+            ChatBox.ScrollIntoView(item);
+
+            SolidColorBrush resourceBrush = 
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            Color color = resourceBrush.Color;
+
+
+            HighlightListBoxItem(index, color);
+        }
+
+        public void HighlightListBoxItem(int index, Color highlightColor)
+        {
+            var item = (ListBoxItem)ChatBox.ItemContainerGenerator.ContainerFromIndex(index);
+            if (item == null) return;
+
+            var brush = new SolidColorBrush(highlightColor);
+            item.Background = brush;
+
+            var animation = new ColorAnimation()
+            {
+                From = highlightColor,
+                To = Colors.Transparent,
+                Duration = new Duration(TimeSpan.FromSeconds(1)),
+                FillBehavior = FillBehavior.Stop
+            };
+
+            animation.Completed += (s, e) =>
+            {
+                item.Background = Brushes.Transparent;
+            };
+
+            brush.BeginAnimation(SolidColorBrush.ColorProperty, animation);
+        }
+
+        public void SetBackground()
+        {
+            //set local
+            if(_chat is not null && !_chat.GetBackground().IsGeneral)
+            {
+                SetChatBackground();
+                return;
+            }
+            //set general
+            if(_chat is not null && _chat.GetBackground().IsGeneral)
+            {
+                SetGeneralBackground();
+                return;
+            }
+            //set transparent
+            CustomBg.Background = new SolidColorBrush(Colors.Transparent);
+        }
+
+        public void SetGeneralBackground()
+        {
+            //Update Every unset bgs in chat
+            CustomBg.Background = GetBgImageBrush(
+                _system.Settings.GetChatSettings().Wallpaper.WallpaperName);
+
+            if (_system.Settings.GetChatSettings().Wallpaper.IsBlurred)
+            {
+                CustomBg.Effect = new BlurEffect()
+                {
+                    Radius = 20
+                };
+                return;
+            }
+            CustomBg.Effect = null;
+        }
+
+        public void SetChatBackground() 
+        {
+            CustomBg.Background = GetBgImageBrush(_chat.GetBackground().GetFileName());
+
+            if (_chat.GetBackground().GetBlurState())
+            {
+                CustomBg.Effect = new BlurEffect()
+                {
+                    Radius = 20
+                };
+            }
+        }
+
+        public ImageBrush GetBgImageBrush(string fileName)
+        {
+            return new ImageBrush()
+            {
+                ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(fileName), UriKind.Absolute)), // или Relative
+                Stretch = Stretch.UniformToFill
+            };
+        }
+
     }
 }

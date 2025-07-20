@@ -24,5 +24,10 @@ namespace TelegramVisualPart.UserControls
         {
             InitializeComponent();
         }
+
+        public string GetLastMessageText()
+        {
+            return LastMessage.Text;
+        }
     }
 }

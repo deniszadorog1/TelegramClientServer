@@ -47,5 +47,20 @@ namespace TelegramVisualPart.Helper
                     }
             }
         }
+
+        public static string GetWallpaperPathByName(string fileName)
+        {
+            // 'B:\GitHub\TelegramClientServer\TelegramVisualPart\Visuals\Images\UserImages\Wallpapers\Monkey.jpg'."
+            
+            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
+            string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
+            string visPath = Path.Combine(tempPath, "Visuals");
+            string imgsPath = Path.Combine(visPath, "Images");
+            string wallPaperPath = Path.Combine(imgsPath, "Wallpapers");
+            string resPath = Path.Combine(wallPaperPath, fileName);
+
+            return resPath;
+        }
     }
 }

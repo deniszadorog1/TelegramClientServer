@@ -25,6 +25,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
     /// </summary>
     public partial class UserChatInfoMenu : UserControl
     {
+       // public event EventHandler ClearHystory;
+
         public UserChatInfoMenu()
         {
             InitializeComponent();
@@ -82,12 +84,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(new TelegramLib.MainClasses.UserChat()));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(_chat));
         }
 
         private void SetWallpaperBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.Settings.GetChatSettings()));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.GetChosenChat().GetBackground()));
         }
     }
 }

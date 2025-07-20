@@ -55,9 +55,8 @@ namespace TelegramVisualPart.Pages.Contacts
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = _contacts[i].UserName
+                    Tag = _contacts[i].UserName //MB need Name(Check it)
                 };
-
                 ContactsListBox.Items.Add(item);
             }
         }
@@ -74,7 +73,6 @@ namespace TelegramVisualPart.Pages.Contacts
         public void SetBasicParams()
         {
             SortBut.IconType.Kind = PackIconKind.HamburgerMenu;
-
             ClearBox.IconType.Kind = PackIconKind.Close;
         }
 

@@ -275,7 +275,17 @@ namespace TelegramVisualPart
             SetSecondaryFrame(new MainChatSetPage(_system));
         }
 
+        public void SetChatBg()
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.SetUserChatBg();
+        }
 
+        public void ClearChat()
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.UserChat.ClearChat();
+        }
 
     }
 }

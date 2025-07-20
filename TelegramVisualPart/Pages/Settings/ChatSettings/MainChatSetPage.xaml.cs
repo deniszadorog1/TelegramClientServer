@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
@@ -63,8 +64,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetChatBgLittleImage()
         {
-            if (_chatsSettings.Wallpaper.WallpaperPath == string.Empty) return;
-            ChosenWallpaperImage.Source = new BitmapImage(new Uri(TestThing.GetTestParams.GetWallpaperPath(_chatsSettings.Wallpaper.WallpaperPath), UriKind.Absolute));
+            if (_chatsSettings.Wallpaper.WallpaperName == string.Empty) return;
+            ChosenWallpaperImage.Source = new BitmapImage(new Uri(TestThing.GetTestParams.GetWallpaperPath(_chatsSettings.Wallpaper.WallpaperName), UriKind.Absolute));
 
             ChosenWallpaperImage.Effect = _chatsSettings.Wallpaper.IsBlurred ? new BlurEffect() { Radius = 20 } : null;
         }
@@ -131,7 +132,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             {
                 Width = 200,
                 Height = 200,
-                Source = new BitmapImage(new Uri(_chatsSettings.GetWallpaperPath(), UriKind.Absolute)),
+                Source = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(_chatsSettings.GetWallpaperName()), UriKind.Absolute)),
                 Stretch = Stretch.UniformToFill
             }.Source;
         }

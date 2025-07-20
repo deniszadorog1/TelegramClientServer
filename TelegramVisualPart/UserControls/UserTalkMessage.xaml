@@ -28,7 +28,7 @@
                 <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
                            Text="UserLogin" Margin="10" Foreground="Gray" FontSize="12"/>
                 <TextBlock x:Name="LastMessageTime" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                           Text="mestime" Margin="10" Foreground="Gray" FontSize="12"/>
+                           Text="mestime" Margin="10 10 25 10" Foreground="Gray" FontSize="12"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 

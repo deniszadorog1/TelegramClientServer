@@ -30,7 +30,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((Grid)this.Parent).Visibility = Visibility.Hidden;
+            if(this.Parent is Grid) ((Grid)this.Parent).Visibility = Visibility.Hidden;
             ((MainWindow)Window.GetWindow(this)).SetChatsMessages();
         }
     }

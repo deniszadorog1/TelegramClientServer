@@ -14,10 +14,13 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.ContactsControls;
@@ -49,6 +52,8 @@ namespace TelegramVisualPart.Pages
             SetSearchMessageParams();
 
             UpdateUserChatsPanel();
+
+            SetNoChatBg();
         }
 
         public void SetSearchMessageParams()
@@ -63,10 +68,81 @@ namespace TelegramVisualPart.Pages
             UserChat.FindMessageBut.PreviewMouseDown += Magnifier_PreviewMouseDown;
         }
 
+        private TelegramLib.MainClasses.UserChat _chosenChat;
         private void Magnifier_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             HideAllChatBlocks();
             SearchMessageGrid.Visibility = Visibility.Visible;
+
+            _chosenChat = _system.GetChosenChat();
+        }
+
+        private void SarchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchMessageGrid.Visibility == Visibility.Visible)
+            {
+                SetMessagesForSearch();
+            }
+        }
+
+        public void SetMessagesForSearch()
+        {
+            SearchedMessageslistBox.Items.Clear();
+            NothingFoundSearch.Visibility = Visibility.Hidden;
+
+            List<TextMessage> messages = _chosenChat.GetMessagesWithGivenText(SarchBox.Text);
+
+            for (int i = 0; i < messages.Count; i++)
+            {
+                UserTalkMessage message = new UserTalkMessage()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
+
+                //If sender is null, check logged user
+                UserContactcs sender = _system.GetContactById(messages[i].SenderId);
+
+                if (sender is not null) message.FriendLogin.Text = sender.Name;
+                else if (_system.IsUserIsSameId(i) is not null) message.FriendLogin.Text = _system.LoggedUser.Name;
+
+                message.LastMessage.Text = messages[i].Text;
+                message.LastMessageTime.Text = messages[i].GetSentTimeInString();
+
+                //SET ICON HERE 
+                System.Windows.Controls.ListBoxItem item =
+                    new System.Windows.Controls.ListBoxItem()
+                    {
+                        Content = message,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch
+                    };
+
+                item.PreviewMouseDown += SearchedMessage_PreviewMouseDown;
+                SearchedMessageslistBox.Items.Add(item);
+            }
+
+            if (SearchedMessageslistBox.Items.Count == 0)
+            {
+                NothingFoundSearch.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void SearchedMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.ListBoxItem item ||
+                item.Content is not UserTalkMessage message) return;
+
+            //Find Message index in chat
+            //Scroll to this message
+            //Show bgs for 2 seconds
+
+            //message index
+            int? messIndex =
+                _chosenChat.GetMessageIndexByText(message.GetLastMessageText());
+            if (messIndex is null) return;
+
+            //scroll to the message
+            UserChat.ScrollToChosenItem((int)messIndex);
         }
 
         public void HideAllChatBlocks()
@@ -74,6 +150,9 @@ namespace TelegramVisualPart.Pages
             ChatsBox.Visibility = Visibility.Hidden;
             SearchBoxGrid.Visibility = Visibility.Hidden;
             SearchMessageGrid.Visibility = Visibility.Hidden;
+            NothingFoundSearch.Visibility = Visibility.Hidden;
+
+            SarchBox.Text = string.Empty;
         }
 
         public void SetMessageGridMagnifier()
@@ -136,6 +215,7 @@ namespace TelegramVisualPart.Pages
 
         private void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
         {
+            if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
             if (sender is not UserContact userControl) return;
             SetUserChat(userControl);
             UpdateUserChatsPanel();
@@ -154,6 +234,7 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetUserChat(_system.GetUserChatByChatterName(
                 _system.ChosenChatContact.Name));
+            
         }
 
         public Page GetPageByIcon(MenuIconTextBut icon)
@@ -177,7 +258,6 @@ namespace TelegramVisualPart.Pages
                 {
                     message.Width = ChatsGrid.ActualWidth;
                 }
-
             }
         }
 
@@ -188,8 +268,15 @@ namespace TelegramVisualPart.Pages
 
             ShowChatControl();
 
+            //Set temp background
+            //(if chats is unset but general been changed)
+
+            //_system.SetGeneralBgToChatsBg();
+
             UserChat.SetUserChat(
                 _system.GetUserChatByChatterName(talkControl.FriendLogin.Text));
+
+            //_system.Chats;
         }
 
         public void ShowChatControl()
@@ -202,6 +289,34 @@ namespace TelegramVisualPart.Pages
         {
             //Get chat obj from db(nah, another shit should be here)
             //Set chat params
+        }
+
+        public void SetUserChatBg()
+        {
+            UserChat.SetBackground();
+            SetNoChatBg();
+        }
+
+        public void SetNoChatBg()
+        {
+            NotFoundBg.Background =new ImageBrush()
+            {
+                ImageSource = new BitmapImage(
+                    new Uri(FilesAction.GetWallpaperPathByName
+                    (_system.Settings.GetChatSettings().Wallpaper.WallpaperName),
+                    UriKind.Absolute)), // или Relative
+                Stretch = Stretch.UniformToFill
+            }; 
+
+            if (_system.Settings.GetChatSettings().Wallpaper.IsBlurred)
+            {
+                NotFoundBg.Effect = new BlurEffect()
+                {
+                    Radius = 20
+                };
+                return;
+            }
+            NotFoundBg.Effect = null;
         }
 
         private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -289,7 +404,7 @@ namespace TelegramVisualPart.Pages
 
         private void SarchBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            SetSearchBoxVisible();
+            if (SearchMessageGrid.Visibility != Visibility.Visible) SetSearchBoxVisible();
         }
 
         public void SetSearchBoxVisible()
@@ -302,7 +417,7 @@ namespace TelegramVisualPart.Pages
 
         private void SarchBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            HideAllChatBlocks();
+            if (SearchMessageGrid.Visibility != Visibility.Visible) HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
             ChatsColumn.MinWidth = 50;
         }
@@ -344,6 +459,7 @@ namespace TelegramVisualPart.Pages
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Content = GetTalkMessage(i)
                 };
+
                 item.PreviewMouseDown += UserChat_PreviewMouseDown;
 
                 ChatsBox.Items.Add(item);
@@ -372,12 +488,37 @@ namespace TelegramVisualPart.Pages
             return chatControl;
         }
 
+        public void UpdateUserTalkChat()
+        {
+            //Get User talk control
+            //Get chat
+            //Set last message of it
+            //Set params to user talk message
+        }
+
         private void Page_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-                UserChat.Visibility = Visibility.Hidden;
-                ChosoeChatBorder.Visibility = Visibility.Visible;
+                SarchBox.Text = string.Empty;
+                FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
+                Keyboard.ClearFocus();
+
+                if (SearchBoxGrid.Visibility == Visibility.Visible)
+                {
+                    HideAllChatBlocks();
+                    ChatsBox.Visibility = Visibility.Visible;
+                }
+                else if (SearchMessageGrid.Visibility == Visibility.Visible)
+                {
+                    HideAllChatBlocks();
+                    ChatsBox.Visibility = Visibility.Visible;
+                }
+                else if (UserChat.Visibility == Visibility.Visible)
+                {
+                    UserChat.Visibility = Visibility.Hidden;
+                    ChosoeChatBorder.Visibility = Visibility.Visible;
+                }
             }
         }
     }

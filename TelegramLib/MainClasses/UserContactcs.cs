@@ -79,5 +79,10 @@ namespace TelegramLib.MainClasses
             return LastSeen is null ? "recently" :
                 $"{LastSeen.Value.Day}.{LastSeen.Value.Month}.{LastSeen.Value.Year}";
         }
+
+        public bool IsSendersIdsAreEqual(int senderId)
+        {
+            return Id == senderId;
+        }
     }
 }

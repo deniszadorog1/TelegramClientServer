@@ -53,9 +53,9 @@ namespace TelegramLib.UserSettings.SettingsTypes
             };
         }
 
-        public string GetWallpaperPath()
+        public string GetWallpaperName()
         {
-            return Wallpaper.WallpaperPath;
+            return Wallpaper.WallpaperName;
         }
 
         public bool IsWallpaperBlurred()

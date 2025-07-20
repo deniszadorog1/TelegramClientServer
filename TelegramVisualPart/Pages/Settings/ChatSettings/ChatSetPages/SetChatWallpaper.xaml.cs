@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls;
 
@@ -26,9 +27,20 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     public partial class SetChatWallpaper : Page
     {
         private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
+        private ChatBackground _chosenBackground;
         public SetChatWallpaper(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings)
         {
             _settings = settings;
+
+            InitializeComponent();
+
+            SetWallpapers();
+            SetClickEventToWallpapers();
+        }
+
+        public SetChatWallpaper(ChatBackground background)
+        {
+            _chosenBackground = background;
             InitializeComponent();
 
             SetWallpapers();
@@ -46,7 +58,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void SetRealWallpapers()
         {
-            for(int i = 0; i < _settings.PossibleWallpapers.Count; i++)
+            for (int i = 0; i < _settings.PossibleWallpapers.Count; i++)
             {
                 //create wallpaper here + add source as bg for bgImage
             }
@@ -78,8 +90,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         public void Wallpaper_PreviewMouseDown(object sender, MouseEventArgs e)
         {
             if (sender is not Wallpaper wallpaper) return;
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new WallpaperPreview(_settings, wallpaper.WallpaperImage));
+
+            Page page = _settings is null ?
+                new WallpaperPreview(_chosenBackground, wallpaper.WallpaperImage) :
+                new WallpaperPreview(_settings, wallpaper.WallpaperImage);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
 
         public Image GetTestImage(string testWallpaperName)

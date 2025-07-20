@@ -62,7 +62,9 @@ namespace TelegramLib.MainClasses
             BirthDay = new DateTime(2003, 7, 4);
         }
 
-
-
+        public bool IsSameId(int id)
+        {
+            return Id == id;
+        }
     }
 }

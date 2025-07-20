@@ -14,8 +14,10 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.UserSettings.SettingsTypes;
+using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {
@@ -26,16 +28,35 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     {
         private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
         private Image _img;
+        private ChatBackground _chatBackground;
+
         public WallpaperPreview(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings,
             Image? bgImage)
         {
             _settings = settings;
-            InitializeComponent();
 
+            InitializeComponent();
             SetBasicParams();
 
-            if (bgImage is not null) BgImage.Source = bgImage.Source;
-            if (bgImage is not null) _img = bgImage;
+            if (bgImage is not null)
+            {
+                BgImage.Source = bgImage.Source; 
+                _img = bgImage;
+            }
+        }
+
+        public WallpaperPreview(ChatBackground background, Image? img)
+        {
+            _chatBackground = background;
+
+            InitializeComponent();
+            SetBasicParams();
+
+            if (img is not null)
+            {
+                BgImage.Source = img.Source;
+                _img = img;
+            }
         }
 
         public void SetBasicParams()
@@ -81,11 +102,22 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void Apply_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Apply new bg Image for allChats //mb Grid
- 
-            _settings.Wallpaper.SetBlurParam(ImageGrid.Effect is not null);
-            _settings.Wallpaper.WallpaperPath = TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString()); 
+            if (_settings is not null)
+            {
+                _settings.Wallpaper.SetBlurParam(ImageGrid.Effect is not null);
+                _settings.Wallpaper.WallpaperName = TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString());
+            }
+            else if(_chatBackground is not null)
+            {
+                _chatBackground.SetBlurState(ImageGrid.Effect is not null);
+                _chatBackground.SetPath(TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString()));
+                _chatBackground.SetIsGeneral(false);
+            }
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+
+            //Set user chat bg
+            ((MainWindow)Window.GetWindow(this)).SetChatBg();
         }
 
         private void Share_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -141,7 +173,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void SetDarkState()
         {
-            SolidColorBrush darkBg = (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
+            SolidColorBrush darkBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkThemeOne"];
             SolidColorBrush activeColor = new SolidColorBrush(Colors.White);
 
             BorderBg.Background = darkBg;

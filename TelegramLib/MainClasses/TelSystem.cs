@@ -45,6 +45,11 @@ namespace TelegramLib.MainClasses
             ChosenChatContact = Contacts.Where(x => x.Name == login).FirstOrDefault();
         }
 
+        public UserChat GetChosenChat()
+        {
+            return Chats.Where(x => x.GetChatter().Name == ChosenChatContact.Name).FirstOrDefault();
+        }
+
         public int GetChatsAmount()
         {
             return Chats.Count;
@@ -63,17 +68,50 @@ namespace TelegramLib.MainClasses
         public UserChat GetUserChatByChatterName(string chatterName)
         {
             UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
-            if (chat is not null) return chat;
+            if (chat is not null)
+            {
+                ChosenChatContact = chat.Chatter;
 
+                //is need to change for ekse bg
+                SetChatBg();
+                return chat;
+            }
             //Create new chat(if its absent)
-            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>());
+            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(), new ChatFitures.ChatBackground("fray.jpg", false, true));
+
             Chats.Add(newChat);
+            SetChatBg();
+
+            ChosenChatContact = newChat.Chatter;
             return newChat;
+        }
+
+        public void SetChatBg()
+        {
+            UserSettings.SettingsTypes.SubSettings.ChatWallpaper wallpaper =
+                Settings.GetChatSettings().Wallpaper;
+
+            UserChat chosen =  GetChosenChat();
+
+            if (!chosen.GetBackground().IsGeneral) return;
+
+            chosen.ChatBg = new ChatFitures.ChatBackground
+                (wallpaper.WallpaperName, wallpaper.IsBlurred, true);
         }
 
         public UserContactcs GetContactByName(string name)
         {
             return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
+        }
+
+        public UserContactcs GetContactById(int id)
+        {
+            return Contacts.Where(x => x.IsSendersIdsAreEqual(id)).FirstOrDefault();
+        }
+
+        public User IsUserIsSameId(int id)
+        {
+            return LoggedUser.IsSameId(id) ? LoggedUser : null;
         }
 
         public void SetTestSystemParams()
@@ -106,5 +144,15 @@ namespace TelegramLib.MainClasses
             return res;
         }
        
+        public void SetGeneralBgToChatsBg()
+        {
+           UserChat chat =  GetChosenChat();
+
+            if (chat.GetBackground().IsGeneral == false) return;
+
+            chat.GetBackground().SetPath(Settings.GetChatSettings().Wallpaper.WallpaperName);
+            chat.GetBackground().SetBlurState(Settings.GetChatSettings().Wallpaper.IsBlurred);
+        }
+
     }
 }

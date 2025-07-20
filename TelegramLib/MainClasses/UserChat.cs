@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 
 namespace TelegramLib.MainClasses
@@ -12,17 +13,25 @@ namespace TelegramLib.MainClasses
         public int Id { get; set; }
         public UserContactcs Chatter { get; set; }
         public List<Message> Messages { get; set; }
+        public ChatBackground ChatBg { get; set; }
 
-        public UserChat(int id, UserContactcs chatter, List<Message> messages)
+        public UserChat(int id, UserContactcs chatter, List<Message> messages, 
+            ChatBackground bg)
         {
             Id = id;
             Chatter = chatter;
             Messages = messages;
-        }
+            ChatBg = bg;
+        }   
 
         public UserChat()
         {
             //Set Test Params Here
+        }
+
+        public ChatBackground GetBackground()
+        {
+            return ChatBg;
         }
 
         public void ClearChat()
@@ -53,6 +62,24 @@ namespace TelegramLib.MainClasses
         public bool IsNamesAreEqual(string chatterName)
         {
             return Chatter.IsNamesAreEqual(chatterName);
+        }
+
+        public List<TextMessage> GetMessagesWithGivenText(string text)
+        {
+            return Messages.OfType<TextMessage>().Where(x => x.Text.Contains(text)).ToList();
+        }
+
+        public int? GetMessageIndexByText(string text)
+        {
+            for(int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i] is TextMessage textMess && 
+                    textMess.Text == text)
+                {
+                    return i;
+                }
+            }
+            return null;
         }
 
     }

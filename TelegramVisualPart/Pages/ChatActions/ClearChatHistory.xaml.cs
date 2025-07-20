@@ -32,6 +32,8 @@ namespace TelegramVisualPart.Pages.ChatActions
         private void DeleteBut_Click(object sender, RoutedEventArgs e)
         {
             _chat.ClearChat();
+
+            ((MainWindow)Window.GetWindow(this)).ClearChat();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 

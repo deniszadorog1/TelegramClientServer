@@ -7,11 +7,12 @@
              xmlns:closeBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200">
+             d:DesignHeight="130" d:DesignWidth="200"
+             Height="130"> 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="70"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -19,30 +20,30 @@
             <TextBlock Name="SearchMessBlock" 
                        Text="Search messages in" 
                        VerticalAlignment="Center" Margin="10 0 0 0" 
-                       Foreground="Gray"/>
+                       Foreground="Gray" FontSize="18"/>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0 10 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" 
-                        Margin="10 0 0 0" Orientation="Horizontal">
-                <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="30" Height="30">
+                        Margin="10 0 0 10" Orientation="Horizontal">
+                <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="45" Height="45">
                     <Ellipse.Fill>
                         <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                     </Ellipse.Fill>
                 </Ellipse>
 
                 <TextBlock Name="ThisChatBlock" Foreground="Gray" VerticalAlignment="Center" 
-                           Text="This chat" FontSize="14" Margin="10 0 0 0"/>
+                           Text="This chat" FontSize="16" Margin="10 0 0 0"/>
             </StackPanel>
 
             <Grid Grid.Column="1">
                 <closeBut:IconButton HorizontalAlignment="Right" VerticalAlignment="Center"
-                                     Width="30" Height="30" x:Name="CloseBut"
+                                     Width="30" Height="30" x:Name="CloseBut" Margin="0 0 10 0"
                                      PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
         </Grid>

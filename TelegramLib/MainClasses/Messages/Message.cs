@@ -36,5 +36,11 @@ namespace TelegramLib.MainClasses.Messages
         {
             return "This is last message";
         }
+
+        public string? GetSentTimeInString()
+        {
+            return $"{SentTime.Day}.{SentTime.Month}.{SentTime.Year}";
+        }
+
     }
 }
