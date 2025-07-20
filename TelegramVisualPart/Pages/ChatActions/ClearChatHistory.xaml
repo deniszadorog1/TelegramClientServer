@@ -29,12 +29,11 @@
                        Text="This action cannot be undone."/>
 
             <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
-                            Content="Also delete for USERNAME" Grid.Row="2" 
+                            Content="Also delete for USERNAME" Grid.Row="2"
                             Name="ShowChatNameBox" Margin="0 5 0 0"
                             Background="{StaticResource DarkThemeProfileButForeGround}"
-                            IsChecked="False" FontSize="14"                                
-                            materialDesign:CheckBoxAssist.CheckBoxSize="22"
-                            />
+                            IsChecked="False" FontSize="14"                               
+                            materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
 
             <TextBlock Grid.Row="3" Text="Enable Auto-Delete" VerticalAlignment="Center"
                        Foreground="{StaticResource FolderContactColor}" FontSize="14"

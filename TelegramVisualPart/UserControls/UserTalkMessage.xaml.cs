@@ -29,5 +29,16 @@ namespace TelegramVisualPart.UserControls
         {
             return LastMessage.Text;
         }
+
+        public string GetFriendName()
+        {
+            return FriendLogin.Text;
+        }
+
+        public void SetDefaultValues()
+        {
+            LastMessage.Text = "no messages";
+            LastMessageTime.Text = "message time";
+        }
     }
 }

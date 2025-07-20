@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 
@@ -15,13 +16,16 @@ namespace TelegramLib.MainClasses
         public List<Message> Messages { get; set; }
         public ChatBackground ChatBg { get; set; }
 
+        public AutoDeleteDuration AutoDelDuration { get; set; }
+
         public UserChat(int id, UserContactcs chatter, List<Message> messages, 
-            ChatBackground bg)
+            ChatBackground bg, AutoDeleteDuration autoDelDuration)
         {
             Id = id;
             Chatter = chatter;
             Messages = messages;
             ChatBg = bg;
+            AutoDelDuration = autoDelDuration;
         }   
 
         public UserChat()
@@ -52,6 +56,16 @@ namespace TelegramLib.MainClasses
         public DateTime? GetLastMessageDateTime()
         {
             return Messages.Count == 0 ? null : Messages.Last().GetSentDate();
+        }
+
+        public DateTime? GetFirstMessageDateTime()
+        {
+            return Messages.Count == 0 ? null : Messages.First().GetSentDate();
+        }
+
+        public void RemoveFirstMessage()
+        {
+            Messages.RemoveAt(0);
         }
 
         public string GetLastMessage()

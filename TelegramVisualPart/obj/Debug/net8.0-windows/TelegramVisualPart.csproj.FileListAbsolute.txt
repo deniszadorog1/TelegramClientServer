@@ -1,3 +1,6 @@
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.deps.json
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.runtimeconfig.json
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramVisualPart.exe
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Gifs\TestGif.gif
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Figure.png
@@ -54,7 +57,9 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Syste
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.Net.WebSockets.WebSocketProtocol.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\WpfAnimatedGif.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramLib.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramLib.pdb
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.csproj.AssemblyReference.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\EnterInAccount\EnterPage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\EnterInAccount\RegistrationPage.g.cs
@@ -74,6 +79,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetNameSurname.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetPhoneNumber.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetUsername.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Saved\SavedMessagesInfo.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.g.cs
@@ -91,6 +97,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyMessages.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\SetPrivacyByType.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\SettingsPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\BlockContact.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\DeleteContact.g.cs
@@ -181,6 +188,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetNameSurname.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetPhoneNumber.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\MyProfile\SetInformation\SetUsername.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Saved\SavedMessagesInfo.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\ChatSettings\ChatSetPages\ChatSetPalette.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\ChatSettings\ChatSetPages\ChooseFontFamily.baml
@@ -198,6 +206,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyMessages.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\SetPrivacyByType.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\SettingsPage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfo.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\BlockContact.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\UserInfoContact\ActionsFolder\DeleteContact.baml
@@ -276,12 +285,3 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.deps.json
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.runtimeconfig.json
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.pdb
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Other\InfoMessage.baml
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ToChooseChats.baml

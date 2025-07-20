@@ -78,7 +78,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         {
             //Show auto delete message 
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion(_chat));
         }
 
     }

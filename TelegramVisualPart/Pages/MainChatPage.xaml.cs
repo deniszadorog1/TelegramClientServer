@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -213,10 +214,12 @@ namespace TelegramVisualPart.Pages
             mainContacts.ChosenContact += ContactsChatChosen_PreviewMouseDown;
         }
 
+        private UserTalkMessage _chosenChatControl;
         private void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
         {
             if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
             if (sender is not UserContact userControl) return;
+
             SetUserChat(userControl);
             UpdateUserChatsPanel();
         }
@@ -234,7 +237,7 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetUserChat(_system.GetUserChatByChatterName(
                 _system.ChosenChatContact.Name));
-            
+
         }
 
         public Page GetPageByIcon(MenuIconTextBut icon)
@@ -299,14 +302,14 @@ namespace TelegramVisualPart.Pages
 
         public void SetNoChatBg()
         {
-            NotFoundBg.Background =new ImageBrush()
+            NotFoundBg.Background = new ImageBrush()
             {
                 ImageSource = new BitmapImage(
                     new Uri(FilesAction.GetWallpaperPathByName
                     (_system.Settings.GetChatSettings().Wallpaper.WallpaperName),
                     UriKind.Absolute)), // или Relative
                 Stretch = Stretch.UniformToFill
-            }; 
+            };
 
             if (_system.Settings.GetChatSettings().Wallpaper.IsBlurred)
             {
@@ -481,19 +484,54 @@ namespace TelegramVisualPart.Pages
 
             DateTime? date = chat.GetLastMessageDateTime();
 
-            if (date is not null) chatControl.LastMessageTime.Text = $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
+            if (date is not null) chatControl.LastMessageTime.Text = 
+                    $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
             chatControl.LastMessage.Text = chat.GetLastMessage();
 
             //Set Image icon
             return chatControl;
         }
 
+        public void ClearChosenUserTalkValue()
+        {
+            UserTalkMessage message =
+                GetChtControlByChatterName(_system.GetChosenChat().Chatter.Name);
+            if (message is null) return;
+
+            message.SetDefaultValues();
+        }
+
         public void UpdateUserTalkChat()
         {
-            //Get User talk control
+            //Check with preload messages + chats
+
+
+            //Get User talk control(by system control)
+            //Get by chosen chat in system 
+            UserTalkMessage message =
+                GetChtControlByChatterName(_system.GetChosenChat().Chatter.Name);
+            if (message is null) return;
+
             //Get chat
-            //Set last message of it
-            //Set params to user talk message
+            message.LastMessage.Text =
+                _system.GetChosenChat().GetLastMessage();
+
+            message.LastMessageTime.Text =
+                _system.GetChosenChat().Messages.Last().GetSentTimeInString();
+        }
+
+        public UserTalkMessage GetChtControlByChatterName(string name)
+        {
+            for (int i = 0; i < ChatsBox.Items.Count; i++)
+            {
+                if (ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
+                    item.Content is UserTalkMessage message &&
+                    message.GetFriendName() == name)
+                {
+                    return message;
+                }
+            }
+            return null;
         }
 
         private void Page_PreviewKeyDown(object sender, KeyEventArgs e)

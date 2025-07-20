@@ -25,6 +25,5 @@ namespace TelegramLib.Enums.Chat
         FiveMonths,
         SixMonths,
         OneYear
-
     }
 }

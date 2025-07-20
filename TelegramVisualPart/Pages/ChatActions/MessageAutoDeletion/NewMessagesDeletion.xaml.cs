@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 {
@@ -20,14 +21,22 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
     /// </summary>
     public partial class NewMessagesDeletion : Page
     {
-        public NewMessagesDeletion()
+        private UserChat _chat;
+        public NewMessagesDeletion(UserChat chat)
         {
+            _chat = chat;
             InitializeComponent();
+
+        }
+
+        public void SetChatToSpecialCheckBox()
+        {
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            SpecialList.SetAutoDeletionValue(_chat.AutoDelDuration);     
         }
 
         public static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject

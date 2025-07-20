@@ -34,6 +34,8 @@ using TelegramLib.MainClasses.ChatFitures;
 using System.Windows.Media.Effects;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Diagnostics.Eventing.Reader;
+using Accessibility;
+using System.Windows.Threading;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -49,6 +51,8 @@ namespace TelegramVisualPart.UserControls
             InitializeComponent();
 
             SetMarginForChatMenu();
+
+            SetAutoDeleteTimer();
         }
 
         private TelegramLib.MainClasses.UserChat _chat;
@@ -253,7 +257,10 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.Messages.TextMessage(
                 _chatMessages.Count, _system.LoggedUser.Id,
                 DateTime.Now, CommentTextBox.Text));
+
             CommentTextBox.Text = string.Empty;
+
+            ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
 
         public void AddEmoji(string emoji)
@@ -675,6 +682,42 @@ namespace TelegramVisualPart.UserControls
                 ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(fileName), UriKind.Absolute)), // или Relative
                 Stretch = Stretch.UniformToFill
             };
+        }
+        private DispatcherTimer _timer;
+        public void SetAutoDeleteTimer()
+        {
+            _timer = new DispatcherTimer()
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+
+            _timer.Tick += (s, e) =>
+            {
+                if (_chat is null) return;
+                
+                //Get First message date
+                DateTime? time =  _chat.GetFirstMessageDateTime();
+                if (time is null) return;
+
+                //Get auto delete date time
+                DateTime deleteTime = /*DateTime.Now.AddSeconds(-10); //*/ _chat.AutoDelDuration.Duration;
+
+                //if need to delete
+                DateTime? firstMessageTime = _chat.GetFirstMessageDateTime();
+                if (firstMessageTime is null || 
+                deleteTime < firstMessageTime) return; //no need in delete
+
+                //NEED to delete
+                ChatBox.Items.RemoveAt(0);
+                _chat.RemoveFirstMessage();
+
+
+                //Check IF NEED to update
+                //update vis + code (check it)
+
+            };
+
+            _timer.Start();
         }
 
     }

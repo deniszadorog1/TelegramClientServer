@@ -51,7 +51,7 @@
             </StackPanel>
 
             <Grid Grid.Row="1">
-                <autoDelControls:SpecialListBox/>
+                <autoDelControls:SpecialListBox x:Name="SpecialList"/>
             </Grid>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">

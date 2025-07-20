@@ -20,6 +20,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
     /// </summary>
     public partial class SetCustomTime : Page
     {
+        public event EventHandler ChosenAutoDelete;
+
         public SetCustomTime()
         {
             InitializeComponent();
@@ -38,12 +40,15 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            //Set Chosen AutoDelet param;
+            ChosenAutoDelete?.Invoke(this, EventArgs.Empty);
+
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
 

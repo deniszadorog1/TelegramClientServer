@@ -77,7 +77,8 @@ namespace TelegramLib.MainClasses
                 return chat;
             }
             //Create new chat(if its absent)
-            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(), new ChatFitures.ChatBackground("fray.jpg", false, true));
+            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(), 
+                new ChatFitures.ChatBackground("fray.jpg", false, true), null);
 
             Chats.Add(newChat);
             SetChatBg();

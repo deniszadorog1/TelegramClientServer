@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TelegramLib.Enums.Chat;
 
 namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 {
@@ -27,7 +29,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         private readonly Dictionary<int, string> _voc = new Dictionary<int, string>()
         {
             { -1, " " },
-            { 0, " " }, 
+            { 0, " " },
             { 1, "1 day" },
             { 2, "2 days" },
             { 3, "3 days" },
@@ -53,6 +55,43 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             InitializeComponent();
         }
 
+        private AutoDeleteDuration _duration;
+        public void SetAutoDeletionValue(AutoDeleteDuration duration)
+        {
+            _duration = duration;
+
+            //Test
+            _duration = new AutoDeleteDuration(AutoDeleteType.FiveMonths);
+
+            if (_duration is null) return;
+
+            //SetV value on list
+
+            for (int i = (int)AutoDeleteType.Nothing; i <= (int)AutoDeleteType.OneYear; i++)
+            {
+                if ((AutoDeleteType)i == _duration.Type)
+                {
+                    //set i value
+                    ValueByIndex(i);
+                    return;
+                }
+            }
+        }
+
+        public void ValueByIndex(int index)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _selectedIndex += index;
+                var args = new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 1)
+                {
+                    RoutedEvent = UIElement.PreviewMouseWheelEvent,
+                    Source = ScrollView
+                };
+                ScrollViewer_PreviewMouseWheel(ScrollView, args);
+            }), DispatcherPriority.Background);
+        }
+
         private int _selectedIndex = 2;
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -69,6 +108,11 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
             //HighlightSelectedElement(_selectedIndex); 
             e.Handled = true;
+        }
+
+        public void SetScrollViewer()
+        {
+
         }
 
         private void CenterElementInScrollViewer(UIElement element)

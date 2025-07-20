@@ -285,6 +285,13 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UserChat.ClearChat();
+            chatPage.ClearChosenUserTalkValue();
+        }
+
+        public void UpdateUserChatTalkControl()
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.UpdateUserTalkChat();
         }
 
     }

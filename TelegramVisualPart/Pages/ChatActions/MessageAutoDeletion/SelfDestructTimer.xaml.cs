@@ -77,10 +77,13 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             //here to do something with date
         }
 
+
         private void CustomTimeBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetCustomTime());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new SetCustomTime());
         }
+
+        
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
