@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
@@ -381,8 +382,7 @@ namespace TelegramVisualPart.Pages
 
             foreach (var mes in ChatsBox.Items)
             {
-                if (mes is not UserTalkMessage) return;
-                UserTalkMessage message = mes as UserTalkMessage;
+                if (mes is not UserTalkMessage message) return;
                 message.InfoGrid.Visibility = vis;
             }
         }
@@ -484,7 +484,7 @@ namespace TelegramVisualPart.Pages
 
             DateTime? date = chat.GetLastMessageDateTime();
 
-            if (date is not null) chatControl.LastMessageTime.Text = 
+            if (date is not null) chatControl.LastMessageTime.Text =
                     $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
             chatControl.LastMessage.Text = chat.GetLastMessage();
 
@@ -559,5 +559,43 @@ namespace TelegramVisualPart.Pages
                 }
             }
         }
+
+        public void SetChosenFolder(Folder chosenFolder)
+        {
+            ChatsBox.Items.Clear();
+            foreach (UserContactcs contact in chosenFolder.Contacts)
+            {
+                UserTalkMessage message = new UserTalkMessage()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Width = ChatsGrid.ActualWidth
+                };
+
+                TelegramLib.MainClasses.UserChat chat = 
+                    _system.GetUserChatByChatterName(contact.Name);
+
+                message.FriendLogin.Text = chat.GetChatter().Name;
+
+                DateTime? date = chat.GetLastMessageDateTime();
+
+                if (date is not null) message.LastMessageTime.Text =
+                        $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
+                message.LastMessage.Text = chat.GetLastMessage();
+
+                System.Windows.Controls.ListBoxItem item =
+                     new System.Windows.Controls.ListBoxItem()
+                     {
+                         Content = message
+                     };
+
+                item.PreviewMouseDown += UserChat_PreviewMouseDown;
+
+                ChatsBox.Items.Add(item);
+            }
+
+            HideAllChatBlocks();
+            ChatsBox.Visibility = Visibility.Visible;
+        }
+
     }
 }

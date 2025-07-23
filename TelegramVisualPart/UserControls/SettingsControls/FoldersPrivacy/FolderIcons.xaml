@@ -9,72 +9,49 @@
              mc:Ignorable="d" 
              d:DesignHeight="160" d:DesignWidth="160"
              Height="160" Width="160">
-   
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type local:IconForFolder}" x:Key="FolderIconStyle">
+            <EventSetter Event="MouseEnter" Handler="But_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="But_MouseLeave"/>
+            <EventSetter Event="PreviewMouseDown" Handler="But_PreviewMouseDown"/>
+        </Style>
+    </UserControl.Resources>
+
     <Border x:Name="BgBorder" CornerRadius="15"
             Background="{StaticResource DarkThemeOne}">
         <WrapPanel Margin="5">
 
-            <local:IconForFolder x:Name="Folder" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Cat" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Book" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Bitcoin" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Lightbulb" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
+            <local:IconForFolder x:Name="Folder" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Cat" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Book" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Bitcoin" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Lightbulb" Style="{StaticResource FolderIconStyle}"/>
 
-            <local:IconForFolder x:Name="Controller" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="MusicNote" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Paintbrush" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Aeroplane" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Volleyball" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
+            <local:IconForFolder x:Name="Controller" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="MusicNote" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Paintbrush" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Aeroplane" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Volleyball" Style="{StaticResource FolderIconStyle}"/>
 
-            <local:IconForFolder x:Name="Star" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Account" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Accounts" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Chat" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Android" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
+            <local:IconForFolder x:Name="Star" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Account" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Accounts" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Chat" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Android" Style="{StaticResource FolderIconStyle}"/>
 
-            <local:IconForFolder x:Name="King" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Flower" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Heart" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="GuyMask" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Bell" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
+            <local:IconForFolder x:Name="King" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Flower" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Heart" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="GuyMask" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Bell" Style="{StaticResource FolderIconStyle}"/>
 
-            <local:IconForFolder x:Name="Bag" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Car" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Pumpkin" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Spapde" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
-            <local:IconForFolder x:Name="Apple" MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" PreviewMouseDown="But_PreviewMouseDown"/>
+            <local:IconForFolder x:Name="Bag" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Car" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Pumpkin" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Spapde" Style="{StaticResource FolderIconStyle}"/>
+            <local:IconForFolder x:Name="Apple" Style="{StaticResource FolderIconStyle}"/>
             
-            <!-- 
-            <materialDesign:PackIcon Kind="Folder" Name="Folder" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Cat" Name="Cat" Margin="5"  Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Book" Name="Book" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Bitcoin" Name="Bitcoin" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Lightbulb" Name="Lightbulb" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-
-            <materialDesign:PackIcon Kind="Controller" Name="Controller" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="MusicNote" Name="Note" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Paintbrush" Name="Brush" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Aeroplane" Name="Plane" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Volleyball" Name="Ball" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-
-            <materialDesign:PackIcon Kind="StarRate" Name="Star" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="AccountCircleOutline" Name="Account" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="AccountMultipleAddOutline" Name="Accounts" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Chat" Name="Chat" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Android" Name="Android" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-
-            <materialDesign:PackIcon Kind="ChessKing" Name="King" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Flower" Name="Flower" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Heart" Name="Heart" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="GuyFawkesMask" Name="GuyMask" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Bell" Name="Bell" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-
-            <materialDesign:PackIcon Kind="MedicalBag" Name="Bag" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="CarSide" Name="Car" Margin="5"  Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Pumpkin" Name="Pumpkin" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="CardsSpade" Name="Spade" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            <materialDesign:PackIcon Kind="Apple" Name="Apple" Margin="5" Width="20" Height="20" Foreground="Gray"/>
-            -->
 
         </WrapPanel>
     </Border>

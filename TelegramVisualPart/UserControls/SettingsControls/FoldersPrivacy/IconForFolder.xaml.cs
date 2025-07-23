@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,11 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
         public IconForFolder()
         {
             InitializeComponent();
+        }
+
+        public PackIconKind GetIconKindType()
+        {
+            return Icon.Kind;
         }
 
     }

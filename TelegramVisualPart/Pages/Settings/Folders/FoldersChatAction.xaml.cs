@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
 {
@@ -22,35 +27,74 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FoldersChatAction : Page
     {
+        public event EventHandler ToSetContacts;
+
+        public List<UserContactcs> _chosenContacts = new List<UserContactcs>();
+
         private FolderChatActionType _type;
-        public FoldersChatAction(FolderChatActionType type)
+        private TelSystem _system;
+
+        public FoldersChatAction(FolderChatActionType type, TelSystem system, 
+            List<UserContactcs> chosenContacts)
         {
+            _system = system;
             _type = type;
+            _chosenContacts = chosenContacts;
 
             InitializeComponent();
 
             SetBasicBlocks();
-            SetBlocksByType();
+
+            SetContacts();
+            SetChosenContacts();
         }
 
-        public void SetBlocksByType()
+        public void SetChosenContacts()
         {
-            if(_type == FolderChatActionType.AddChatInFolder)
+            foreach(UserContactcs contact in _chosenContacts)
             {
-                ChatTypesStack.Children.Remove(MutedChats);
-                ChatTypesStack.Children.Remove(ReadChats);
-                ChatTypesStack.Children.Remove(ArchivedChats);
-                return;
+                FolderChatType control = GetFolderChatTypeByContactName(contact.Name);
+                if (control is null) continue;
+
+                control.ChangeActivenessState();
             }
+        } 
 
-            ChatTypesStack.Children.Remove(ContactsChats);
-            ChatTypesStack.Children.Remove(NoneContactsChats);
-            ChatTypesStack.Children.Remove(GroupsChats); 
-            ChatTypesStack.Children.Remove(ChannelsChats);
-            ChatTypesStack.Children.Remove(BotsChats);
+        public FolderChatType GetFolderChatTypeByContactName(string name)
+        {
+            ListBoxItem item = ListContacts.Items.OfType<ListBoxItem>()
+                .Where(x => x.Content is FolderChatType folder && folder.TypeName.Text == name)
+                .FirstOrDefault();
 
-            ChatTypesRow.Height = new GridLength(MutedChats.Height * 3 + 10);
-             
+            return item is null ? null : (FolderChatType)item.Content;
+        }
+
+        public void SetContacts()
+        {
+            for (int i = 0; i < _system.Contacts.Count; i++)
+            {
+                string contactPath = _system.Contacts[i].GetLastImageName();
+
+                FolderChatType control = new FolderChatType();
+
+                control.TypeName.Text = _system.Contacts[i].Name;
+                control.HideIcon();
+                control.ChatEllipse.Fill = new ImageBrush()
+                {
+                    ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
+                    Stretch = Stretch.Fill
+                };
+
+                ListBoxItem item = new ListBoxItem()
+                {
+                    Content = control,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Padding = new Thickness(0)
+                };
+                item.PreviewMouseDown += ChatTypes_PreviewMouseDown;
+
+                ListContacts.Items.Add(item);
+            }
         }
 
         public void SetBasicBlocks()
@@ -75,18 +119,19 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             BotsChats.TypeName.Text = "Bots";
             BotsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
 
+            /*
+                        MutedChats.IconType.Kind = PackIconKind.VolumeMute;
+                        MutedChats.TypeName.Text = "Muted";
+                        MutedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
 
-            MutedChats.IconType.Kind = PackIconKind.VolumeMute;
-            MutedChats.TypeName.Text = "Muted";
-            MutedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
+                        ReadChats.IconType.Kind = PackIconKind.MessageText;
+                        ReadChats.TypeName.Text = "Read";
+                        ReadChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderNonContactColor"];
 
-            ReadChats.IconType.Kind = PackIconKind.MessageText;
-            ReadChats.TypeName.Text = "Read";
-            ReadChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderNonContactColor"];
-
-            ArchivedChats.IconType.Kind = PackIconKind.Archive;
-            ArchivedChats.TypeName.Text = "Archived";
-            ArchivedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
+                        ArchivedChats.IconType.Kind = PackIconKind.Archive;
+                        ArchivedChats.TypeName.Text = "Archived";
+                        ArchivedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
+                   */
         }
 
         private void ClearSearchBoxGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -117,17 +162,34 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            ToSetContacts?.Invoke(this, EventArgs.Empty);
 
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
+            _chosenContacts.Clear();
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void ChatTypes_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (sender is not ListBoxItem item ||
+                item.Content is not FolderChatType control) return;
 
+            UserContactcs contact =  _system.GetContactByName(control.TypeName.Text);
+            if (contact is null) return;
+
+            if (_chosenContacts.Contains(contact))
+                _chosenContacts.Remove(contact);
+            else
+                _chosenContacts.Add(contact);
+        }
+
+        public List<UserContactcs> GetChosenContacts()
+        {
+            return _chosenContacts;
         }
     }
 }

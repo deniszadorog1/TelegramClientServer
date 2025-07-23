@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
 
 namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
 {
@@ -21,6 +22,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
     /// </summary>
     public partial class FolderIcons : UserControl
     {
+        private PackIconKind _chosenIcon;
+
+        public event EventHandler NewIconChosenEvent;
+
         public FolderIcons()
         {
             InitializeComponent();
@@ -78,7 +83,15 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (sender is not IconForFolder icon) return;
+            _chosenIcon = icon.GetIconKindType();
 
+            NewIconChosenEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        public PackIconKind GetChosenIconName()
+        {
+            return _chosenIcon;
         }
     }
 }

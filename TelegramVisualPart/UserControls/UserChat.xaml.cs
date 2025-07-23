@@ -700,7 +700,7 @@ namespace TelegramVisualPart.UserControls
                 if (time is null) return;
 
                 //Get auto delete date time
-                DateTime deleteTime = /*DateTime.Now.AddSeconds(-10); //*/ _chat.AutoDelDuration.Duration;
+                DateTime deleteTime = DateTime.Now.AddYears(-10); // _chat.AutoDelDuration.Duration;
 
                 //if need to delete
                 DateTime? firstMessageTime = _chat.GetFirstMessageDateTime();

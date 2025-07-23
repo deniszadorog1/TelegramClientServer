@@ -74,19 +74,19 @@
                 <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
                FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <ListBox  Grid.Row="1" Name="Folders" Margin="0 0 0 0">
-                    <ListBoxItem HorizontalContentAlignment="Stretch"
-                                 Style="{StaticResource BasicListBoxItemStyle}">
-                        <folderBut:FolderLittleInfo Grid.Row="1" Margin="20 0 0 0"/>
+                <ListBox  Grid.Row="1" Name="Folders">
+                    
+                    <ListBoxItem HorizontalContentAlignment="Stretch" Padding="0">
+                        <folderBut:FolderLittleInfo Padding="20 5 5 5"/>
                     </ListBoxItem>
 
-                    <ListBoxItem HorizontalContentAlignment="Stretch"
-                                 Style="{StaticResource BasicListBoxItemStyle}">
-                        <folderBut:AddFolderBut x:Name="CreateNewFolderBut"  
+                    <ListBoxItem x:Name="AddFolderBoxItem" HorizontalContentAlignment="Stretch" Padding="0">
+                        <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="0 5 5 5"
                                                 PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown"/>
                     </ListBoxItem>
+                    
                 </ListBox>
-                
+
             </Grid>
 
             <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
@@ -96,7 +96,7 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                
+
                 <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
                     FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
@@ -114,7 +114,7 @@
 
                         <TextBlock Text="Unread" VerticalAlignment="Center" Margin="20 0 0 0"
                                    Foreground="White" FontSize="14"/>
-                        
+
                         <TextBlock Text="New messages from all chats." VerticalAlignment="Top" 
                                    Margin="20 0 0 0" Foreground="Gray" FontSize="14" Grid.Row="1"/>
                     </Grid>
@@ -129,8 +129,8 @@
                             Foreground="{StaticResource TempActiveTextColor}"/>
 
                 </Grid>
-                
-                
+
+
             </Grid>
 
 

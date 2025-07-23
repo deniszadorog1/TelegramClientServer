@@ -20,6 +20,7 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using System.Drawing;
+using TelegramLib.MainClasses.FolderObjs;
 
 namespace TelegramVisualPart
 {
@@ -292,6 +293,16 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateUserTalkChat();
+        }
+
+        public void SetChosenFolderByName(string folderName)
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+
+            Folder folder = _system.GetFolderByName(folderName);
+            if (folder is null) return;
+
+            chatPage.SetChosenFolder(folder);
         }
 
     }

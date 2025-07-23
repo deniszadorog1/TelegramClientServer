@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,10 @@ namespace TelegramVisualPart.UserControls.MainPage
     /// </summary>
     public partial class LeftButtonsButton : UserControl
     {
+        private readonly SolidColorBrush _basicColor = new SolidColorBrush(Colors.Gray);
+        //private readonly SolidColorBrush _activeColor = 
+            
+
         public LeftButtonsButton()
         {
             InitializeComponent();
@@ -33,6 +38,28 @@ namespace TelegramVisualPart.UserControls.MainPage
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = null;
+        }
+
+        public void SetIconKind(PackIconKind kind)
+        {
+            ButIcon.Kind = kind;
+        }
+
+        public void SetButtonText(string text)
+        {
+            ButText.Text = text;
+        }
+
+        public void SetActiveColor()
+        {
+            ButText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+            ButIcon.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+        }
+
+        public void SetBasicColors()
+        {
+            ButText.Foreground = _basicColor;
+            ButIcon.Foreground = _basicColor;
         }
     }
 }

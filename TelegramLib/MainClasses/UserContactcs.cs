@@ -84,5 +84,15 @@ namespace TelegramLib.MainClasses
         {
             return Id == senderId;
         }
+
+        public string GetLastImageName()
+        {
+            if (IconsPaths is null || IconsPaths.Count == 0)
+            {
+                IconsPaths = new List<string>();
+                IconsPaths.Add("Fray.jpg");
+            }
+            return IconsPaths.Last();
+        }
     }
 }

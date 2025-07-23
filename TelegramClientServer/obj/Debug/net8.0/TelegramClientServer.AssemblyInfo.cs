@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TelegramClientServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d16ae2be6ca73b11f398a09a35a7261695dd56c7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ad8d7f938ae74a3467a88c90407d683fb56e72c")]
 [assembly: System.Reflection.AssemblyProductAttribute("TelegramClientServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TelegramClientServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

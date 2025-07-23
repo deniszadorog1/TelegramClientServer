@@ -38,14 +38,24 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
         private bool _isClicked = false;
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            ChangeActivenessState();
+        }
+
+        public void ChangeActivenessState()
+        {
             _isClicked = !_isClicked;
 
             if(_isClicked)
             {
-                ChosenChatIconBorder.Background = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+                ChosenChatIconBorder.Background = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
                 return;
             }
             ChosenChatIconBorder.Background = Brushes.Transparent;
+        }
+
+        public void HideIcon()
+        {
+            IconType.Visibility = Visibility.Hidden;
         }
     }
 }

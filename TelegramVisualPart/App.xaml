@@ -61,52 +61,7 @@
             <GradientStop x:Key="LinearPalleteColor" Color="Red"/>
 
             <sys:Int32 x:Key="PrivacyTypeMargin">20</sys:Int32>
-
-
-            <Style x:Key="BasicListBoxItemStyle" TargetType="ListBoxItem">
-                <Setter Property="Padding" Value="0"/>
-            </Style>
-
-
-            <Style x:Key="CustomMaterialCheckBox" TargetType="CheckBox">
-                <Setter Property="SnapsToDevicePixels" Value="True"/>
-                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                <Setter Property="Focusable" Value="False"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="CheckBox">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border x:Name="BoxBorder"
-                            Width="18" Height="18"
-                            CornerRadius="2"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="2"
-                            VerticalAlignment="Center"
-                            Margin="0,0,5,0">
-                                    <Path x:Name="CheckMark"
-                              Data="M 0 4 L 2 6 L 6 0"
-                              Stroke="{TemplateBinding Foreground}"
-                              StrokeThickness="2"
-                              Visibility="Collapsed"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
-                                </Border>
-                                <ContentPresenter VerticalAlignment="Center" />
-                            </StackPanel>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter TargetName="BoxBorder" Property="Opacity" Value="0.5"/>
-                                    <Setter TargetName="CheckMark" Property="Opacity" Value="0.5"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
     

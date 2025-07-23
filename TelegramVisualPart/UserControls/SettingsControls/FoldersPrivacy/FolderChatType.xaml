@@ -7,12 +7,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="400"
-             Height="40"
+             Height="40" Width="1400"
              Background="{StaticResource DarkThemeProfileButEnter}"
              MouseEnter="UserControl_MouseEnter" 
              MouseLeave="UserControl_MouseLeave"
-             PreviewMouseDown="UserControl_PreviewMouseDown">
-    <Grid>
+             PreviewMouseDown="UserControl_PreviewMouseDown"
+             HorizontalAlignment="Stretch">
+    
+    <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
@@ -25,7 +27,8 @@
                 <Grid>
                     <Ellipse Width="30" Height="30" Name="ChatEllipse"
                              Fill="{StaticResource TempActiveTextColor}"/>
-                    <materialDesign:PackIcon Name="IconType"
+                    
+                        <materialDesign:PackIcon Name="IconType" Visibility="Visible"
                                              Kind="Duck" Foreground="White"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"

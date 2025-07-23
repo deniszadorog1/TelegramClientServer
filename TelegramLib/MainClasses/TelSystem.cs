@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
@@ -19,13 +21,17 @@ namespace TelegramLib.MainClasses
 
         public List<UserContactcs> Contacts { get; set; }
 
+        public List<Folder> Folders { get; set; }
+
         public TelSystem(User user, MainSettings settings,
-            List<UserChat> chats, List<UserContactcs> contacts)
+            List<UserChat> chats, List<UserContactcs> contacts,
+            List<Folder> folders)
         {
             LoggedUser = user;
             Settings = settings;
             Chats = chats;
             Contacts = contacts;
+            Folders = folders;
         }
         
         //Test system
@@ -35,8 +41,44 @@ namespace TelegramLib.MainClasses
             Settings = new MainSettings();
             Chats = new List<UserChat>();
             Contacts = new List<UserContactcs>();
+            Folders = new List<Folder>();
 
             SetTestSystemParams();
+        }
+
+        public void AddFolder(string name, string iconName,  
+            List<UserContactcs> contacts, List<UserContactcs> excludedContacts)
+        {
+            Folder toAdd = new Folder(Folders.Count + 1, name, iconName, contacts, excludedContacts);
+            Folders.Add(toAdd);
+        }
+
+        public bool IsFolderNameExists(string name)
+        {
+            return Folders.Any(x => x.Name == name);
+        }
+
+        public void AddFolder(Folder folder)
+        {
+            //Check is need it add NOT AT THE END
+            Folders.Add(folder);
+        }
+
+        public void RemoveFolderById(int id)
+        {
+            Folders.Remove(Folders.Where(x => x.Id == id).FirstOrDefault());
+        }
+
+        public Folder GetFolderByName(string name)
+        {
+            return Folders.FirstOrDefault(x => x.Name == name);
+        }
+
+        public void ChangeFoldersName(string tempName, string newName)
+        {
+            Folder folder =  Folders.FirstOrDefault(x => x.Name == tempName);
+            if (folder is null) return;
+            folder.SetName(newName);
         }
 
         public UserContactcs ChosenChatContact;
@@ -81,9 +123,10 @@ namespace TelegramLib.MainClasses
                 new ChatFitures.ChatBackground("fray.jpg", false, true), null);
 
             Chats.Add(newChat);
-            SetChatBg();
 
             ChosenChatContact = newChat.Chatter;
+            SetChatBg();
+
             return newChat;
         }
 
@@ -118,13 +161,29 @@ namespace TelegramLib.MainClasses
         public void SetTestSystemParams()
         {
             SetTestUserContacts();
+            SetTestFolders();
+        }
+
+        public void SetTestFolders()
+        {
+            Folders.Add(new Folder(1, "FirstTest", "Folder", 
+                new List<UserContactcs>() { Contacts[0], Contacts[1] }, 
+                new List<UserContactcs>()));
+
+            Folders.Add(new Folder(1, "Android", "Android",
+                new List<UserContactcs>() { Contacts[1], Contacts[2] },
+                new List<UserContactcs>()));
+
+            Folders.Add(new Folder(1, "BellTest", "Bell",
+                new List<UserContactcs>() { Contacts[0], Contacts[2] },
+                new List<UserContactcs>()));
         }
 
         public void SetTestUserContacts()
         {
             Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", null, DateTime.Now, true));
-            Contacts.Add(new UserContactcs(1, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, null, false));
-            Contacts.Add(new UserContactcs(1, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", null, DateTime.Now, true));
+            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, null, false));
+            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", null, DateTime.Now, true));
         }
 
         public List<Message> GetTestMessages()

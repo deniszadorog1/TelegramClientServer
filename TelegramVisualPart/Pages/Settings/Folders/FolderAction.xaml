@@ -14,32 +14,29 @@
 
     <Border x:Name="BgBorder" CornerRadius="15" 
             Background="{StaticResource DarkThemeOne}">
-        <ScrollViewer HorizontalContentAlignment="Stretch"
-                      VerticalScrollBarVisibility="Auto">
-            <Grid Width="{Binding ActualWidth, ElementName=BgBorder}" 
+        <Grid Width="{Binding ActualWidth, ElementName=BgBorder}" 
                       Height="{Binding ActualHeight, ElementName=BgBorder}" 
                       HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
-                <TextBlock x:Name="PageName" Text="New Folder" 
+            <TextBlock x:Name="PageName" Text="New Folder" 
                                VerticalAlignment="Center" Margin="20 0 0 0"
                                Foreground="White" FontSize="18"/>
 
-                <Grid Grid.Row="1">
+            <ListBox Grid.Row="1" Name="MainListBox" HorizontalAlignment="Stretch"
+                     BorderThickness="0">
+                <ListBoxItem HorizontalAlignment="Stretch">
+                    <Grid Grid.Row="1" Width="{Binding ActualWidth, ElementName=MainListBox}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="85"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="85"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox  Grid.Column="0" MaxLength="12"
+                        <TextBox  Grid.Column="0" MaxLength="12"
                              Foreground="White" Margin="20 0 0 0" FontSize="16"
                              materialDesign:HintAssist.Hint="Folder name"
                              materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
@@ -48,104 +45,106 @@
                              materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"                              
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-                    <Grid Width="50" Height="50" Grid.Column="1"
+                        <Grid Width="50" Height="50" Grid.Column="1"
                           HorizontalAlignment ="Left" 
                               Margin="0 0 20 0" Name ="ToChooseFolderIcon" 
                               MouseEnter="ToChooseFolderIcon_MouseEnter"
                               MouseLeave="ToChooseFolderIcon_MouseLeave">
-                        <materialDesign:PackIcon Kind="Folder" Width="40" Height="40"
-                                                     VerticalAlignment="Center" 
-                                                     HorizontalAlignment="Center"
-                                                     Foreground="Gray"/>
+                            <materialDesign:PackIcon Kind="Folder" Width="40" Height="40"
+                                                 x:Name="ChosenFolderIcon"
+                                                 VerticalAlignment="Center" 
+                                                 HorizontalAlignment="Center"
+                                                 Foreground="Gray"/>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </ListBoxItem>
 
-                <chooseFolderIcon:FolderIcons Grid.Row="2" VerticalAlignment="Top" 
+                <!-- <ListBoxItem HorizontalAlignment="Right">
+                    <chooseFolderIcon:FolderIcons Grid.Row="2" VerticalAlignment="Top" 
                                                   HorizontalAlignment="Right"
-                                                  Panel.ZIndex="10" Margin="20 -15 40 0" 
+                                                  Panel.ZIndex="10" Margin="00 0 00 0" 
                                                   x:Name="FolderIcon" Visibility="Hidden"
                                                   MouseLeave="FolderIcon_MouseLeave"/>
+                </ListBoxItem>-->
 
-                <Grid Grid.Row="2" HorizontalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
+                <ListBoxItem>
                     <TextBlock Name ="WhoCanUseBlock" Text="Included chats" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
                            VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
+                </ListBoxItem>
 
-                    <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Grid.Row="1"
-                                            PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown"/>
-                    <TextBlock Margin="0 5 0 0"
-                                   Grid.Row="2"  Background="{StaticResource DarkThemeDeviderField}" 
-                                   HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                <ListBoxItem Name="ToMakeNewFolderListBoxItem"
+                    Padding="0 0 0 3" PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown">
+                    <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="7"
+                                            Width="{Binding ActualWidth, ElementName=MainListBox}"/>
+                </ListBoxItem>
+
+                <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
+                    <TextBlock Margin="0 5 0 0" HorizontalAlignment="Stretch" TextWrapping="Wrap"
                                    Text="Choose chats or types of chats that will appear in this folder."
-                                   Foreground="Gray" FontSize="14" Padding="20 10 0 0"/>
-                </Grid>
+                                   Foreground="Gray" FontSize="14" Padding="20 0 0 0"/>
+                </ListBoxItem>
 
-
-                <Grid Grid.Row="3" HorizontalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
+                <ListBoxItem>
                     <TextBlock Name ="ExcludedChatsBlock" Text="Excluded chats" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
                            VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
+                </ListBoxItem>
 
-                    <folderBut:AddFolderBut x:Name="ChatToExcludeBut" Grid.Row="1" 
-                                            PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown"/>
+                <ListBoxItem Padding="0 0 0 3" PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown"
+                             HorizontalAlignment="Stretch" Name="ToExcludeListBox">
+                    <folderBut:AddFolderBut x:Name="ChatToExcludeBut" HorizontalAlignment="Stretch"
+                                            Padding="7" Width="{Binding ActualWidth, ElementName=MainListBox}"/>
+                </ListBoxItem>
 
-                    <TextBlock Margin="0 5 0 0" 
-                                   Grid.Row="2"  Background="{StaticResource DarkThemeDeviderField}" 
-                                   HorizontalAlignment="Stretch" TextWrapping="Wrap"
-                                   Text="Choose chats or types of chats that will NOT appear in this folder."
-                                   Foreground="Gray" FontSize="14" Padding="20 10 20 0"/>
-                </Grid>
+                <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
+                    <TextBlock Padding = "20 10 10 10"   HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                                Text="Choose chats or types of chats that will NOT appear in this folder."
+                                Foreground="Gray" FontSize="14" />
+                </ListBoxItem>
 
-
-                <Grid Grid.Row="4" HorizontalAlignment="Stretch">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
+                <ListBoxItem>
                     <TextBlock Name ="ShareFolderBlock" Text="Share folder" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
+                           VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>                    
+                </ListBoxItem>
 
-                    <folderBut:AddFolderBut x:Name="CreateInviteLinkBut" Grid.Row="1"
-                                            PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown"/>
+                <ListBoxItem Padding="0 0 0 3" PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown">
+                    <folderBut:AddFolderBut x:Name="CreateInviteLinkBut" Padding="7"
+                                            Width="{Binding ActualWidth, ElementName=MainListBox}"/>                    
+                </ListBoxItem>
 
-                    <TextBlock Margin="0 5 0 0"
-                                   Grid.Row="2"  Background="{StaticResource DarkThemeDeviderField}" 
-                                   HorizontalAlignment="Stretch" TextWrapping="Wrap" 
-                                   Text="Share Accessto some of this folders groups and channels with others."
-                                   Foreground="Gray" FontSize="14" Padding="20 10 20 0"/>
-                </Grid>
+                <ListBoxItem Padding="0" Background="{StaticResource DarkThemeDeviderField}">
+                    <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" 
+                               Text="Share Accessto some of this folders groups and channels with others."
+                               Foreground="Gray" FontSize="14" Padding="30 10 20 10"/>                    
+                </ListBoxItem>
+             
+            </ListBox>
 
-                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+            <Grid Grid.Row="1">
+                <chooseFolderIcon:FolderIcons   Grid.Row="2" VerticalAlignment="Top" 
+                                                HorizontalAlignment="Right"
+                                                Panel.ZIndex="10" Margin="10 40 30 0" 
+                                                x:Name="FolderIcon" Visibility="Hidden"
+                                                MouseLeave="FolderIcon_MouseLeave"/>
+            </Grid>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
                             HorizontalAlignment="Right" Margin="0 0 10 0"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CreateBut"
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CreateBut"
                             Content="Create" Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                             HorizontalAlignment="Left" 
                             Click="CreateBut_Click"  Margin="10 0 20 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
+            </StackPanel>
+        </Grid>
     </Border>
 </Page>

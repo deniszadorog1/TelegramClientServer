@@ -8,8 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="400"
              MouseEnter="UserControl_MouseEnter"
-             MouseLeave="UserControl_MouseLeave">
-    <Grid>
+             MouseLeave="UserControl_MouseLeave"
+             HorizontalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition/>

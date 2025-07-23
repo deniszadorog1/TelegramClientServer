@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 
@@ -61,6 +63,28 @@ namespace TelegramVisualPart.Helper
             string resPath = Path.Combine(wallPaperPath, fileName);
 
             return resPath;
+        }
+
+        public static string GetUserImagePath(string fileName)
+        {
+            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
+            string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
+            string visPath = Path.Combine(tempPath, "Visuals");
+            string imgsPath = Path.Combine(visPath, "Images");
+            string userImage = Path.Combine(imgsPath, "UserImages");
+            string resPath = Path.Combine(userImage, fileName);
+
+            return resPath;
+        }
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            while (child != null && !(child is T))
+            {
+                child = VisualTreeHelper.GetParent(child);
+            }
+            return child as T;
         }
     }
 }
