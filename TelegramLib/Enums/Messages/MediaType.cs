@@ -11,6 +11,7 @@ namespace TelegramLib.Enums.Messages
         Unknown,
         Image,
         Gif,
-        Video
+        Video,
+        Sticker
     }
 }

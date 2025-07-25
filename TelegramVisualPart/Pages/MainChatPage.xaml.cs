@@ -597,5 +597,9 @@ namespace TelegramVisualPart.Pages
             ChatsBox.Visibility = Visibility.Visible;
         }
 
+        public void UpdateFolders()
+        {
+            LeftButtons.UpdateFolders();
+        }
     }
 }

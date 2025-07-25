@@ -21,6 +21,7 @@ using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using System.Drawing;
 using TelegramLib.MainClasses.FolderObjs;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart
 {
@@ -40,7 +41,6 @@ namespace TelegramVisualPart
             ///Visuals/Images/UserImages/Minato.jpg"
             //MainFrame.Content = new EnterPage();
             MainFrame.Content = new MainChatPage(_system);
-
 
             System.Windows.Application.Current.Resources["TempActiveTextColor"] =
                     new SolidColorBrush(System.Windows.Media.Color.FromRgb(_system.LoggedUser.MainColor.R, 
@@ -239,7 +239,7 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is MainChatPage chatPage)
             {
-                chatPage.UserChat.AddImageMessage(img);
+                chatPage.UserChat.AddStickerMessage(img);
             }
         }
 
@@ -305,5 +305,10 @@ namespace TelegramVisualPart
             chatPage.SetChosenFolder(folder);
         }
 
+        public void UpdateFolders()
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.UpdateFolders();
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace TelegramLib.MainClasses.FolderObjs
 
         public void SetName(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) return;
             Name = name;
         }
 
@@ -57,6 +58,16 @@ namespace TelegramLib.MainClasses.FolderObjs
         public void RemoveContactByName(string name)
         {
             Contacts.Remove(Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault());
+        }
+
+        public void SetContacts(List<UserContactcs> contacts)
+        {
+            Contacts = contacts;
+        }
+
+        public void SetExcludeContacts(List<UserContactcs> contacts)
+        {
+            ExcludedContacts = contacts;
         }
     }
 }

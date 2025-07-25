@@ -97,7 +97,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetMediaIndex()
         {
-            string mediaFileName = System.IO.Path.GetFileName(_img.Source.ToString());
+            string mediaFileName = System.IO.Path.GetFileName(_media.Source.ToString());
             for (int i = 0; i < _mediaPaths.Count; i++)
             {
                 string tempMediaFileName = System.IO.Path.GetFileName(_mediaPaths[i]);

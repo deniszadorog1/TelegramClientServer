@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
@@ -24,9 +26,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     /// </summary>
     public partial class FolderAction : Page
     {
+        private bool _isSaveAction = false;
         public event EventHandler FolderCreated; 
 
         private TelSystem _system;
+        private Folder _folder;
 
         private List<UserContactcs> _toExcludeContacts = new List<UserContactcs>();
         private List<UserContactcs> _toAddContacts = new List<UserContactcs>();
@@ -39,6 +43,31 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             SetBlocks();
 
             FolderIcon.NewIconChosenEvent += NewIcon_Event;
+        }
+
+        public FolderAction(TelSystem system, Folder folder)
+        {
+            _isSaveAction = true;
+            _system = system;
+            _folder = folder;
+
+            InitializeComponent();
+
+            SetBlocks();
+            FolderIcon.NewIconChosenEvent += NewIcon_Event;
+            SetChosenFolderParams();
+        }
+
+        public void SetChosenFolderParams()
+        {
+            //Set folders params here
+            _toAddContacts = _folder.Contacts;
+            SetContactsInListBox(_toAddContacts, ToMakeNewFolderListBoxItem);
+
+            _toExcludeContacts = _folder.ExcludedContacts;
+            SetContactsInListBox(_toExcludeContacts, ToExcludeListBox);
+
+            CreateBut.Content = "Save";
         }
 
         public void NewIcon_Event(object sender, EventArgs e)
@@ -73,11 +102,27 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CreateBut_Click(object sender, RoutedEventArgs e)
         {
+            //CHECK FOLDER SETTINGS (IS name exist etc...)
+
+            //Apply folder settings
+            if (_isSaveAction)
+            {
+                _folder.SetContacts(_toAddContacts);
+                _folder.SetExcludeContacts(_toExcludeContacts);
+                _folder.SetIconName(ChosenFolderIcon.Kind.ToString());
+                _folder.SetName(FolderNameBox.Text);
+
+                ((MainWindow)Window.GetWindow(this)).UpdateFolders();
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
+                return;
+            }
+            
             //To add new Folder
             if (!CreateNewFolder()) return;
 
             FolderCreated?.Invoke(this, EventArgs.Empty);
 
+            ((MainWindow)Window.GetWindow(this)).UpdateFolders();
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
         }
 
@@ -194,7 +239,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 FoldersChat folderChat = new FoldersChat();
                 folderChat.Width = this.Width - 40;
                 folderChat.NewFoldersChatText.Text = contacts[i].Name;
-                folderChat.PreviewMouseDown += RemoveFolderChat_PreviewMouseDown;
+
+                folderChat.RemoveControl += RemoveFolderChat_PreviewMouseDown;
+
                 folderChat.ChatEllipse.Fill = new ImageBrush()
                 {
                     ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(contacts[i].GetLastImageName()), UriKind.Absolute)),
@@ -207,14 +254,28 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                     Padding = new Thickness(20, 5, 10, 5)
                 };
 
+      
                 MainListBox.Items.Insert(butIndex + 1, item);
             }
         }
 
-        private void RemoveFolderChat_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void RemoveFolderChat_PreviewMouseDown(object sender, EventArgs e)
         {
+            if (sender is not FoldersChat userInfo) return;
 
+            RemoveUserContact(_toAddContacts, userInfo.NewFoldersChatText.Text);
+            RemoveUserContact(_toExcludeContacts, userInfo.NewFoldersChatText.Text);
+
+            //clear from view
+            ListBoxItem item = ItemsControl.ContainerFromElement(MainListBox, userInfo) as ListBoxItem;
+            MainListBox.Items.Remove(item);
         }
+
+        public void RemoveUserContact(List<UserContactcs> contacts, string contactName)
+        {
+           contacts.Remove(contacts.Where(x => x.Name == contactName).FirstOrDefault());
+        }
+
 
         public void UpdateFolderChats(int boxIndex)
         {

@@ -38,10 +38,12 @@
                        Foreground="White" FontSize="12"/>
         </Grid>
 
-        <Grid Grid.Column="2" HorizontalAlignment="Right"
+        <Grid Grid.Column="2" Name="BucketGrid"
+              HorizontalAlignment="Right"
               Background="Transparent"
               MouseEnter="Grid_MouseEnter"
-              MouseLeave="Grid_MouseLeave">
+              MouseLeave="Grid_MouseLeave"
+              PreviewMouseDown="BucketGrid_PreviewMouseDown">
             <materialDesign:PackIcon x:Name="BucketIcon" 
                                  Kind="TrashCanOutline" 
                                  VerticalAlignment="Center"

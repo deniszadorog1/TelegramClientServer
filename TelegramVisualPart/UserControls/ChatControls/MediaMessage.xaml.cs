@@ -22,13 +22,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
     /// </summary>
     public partial class MediaMessage : UserControl
     {
+        public bool IsSticker { get; }
+
         public Image _img;
         public MediaElement _media;
         public string _gifPath;
+        public string _stickerPath;
 
-        public MediaMessage(Image img)
+        public MediaMessage(Image img, bool isSticker)
         {
             _img = img;
+            IsSticker = isSticker;
+
             InitializeComponent();
             ImgMessage.ImageSource = _img.Source;
 

@@ -76,11 +76,15 @@
                           VerticalScrollBarVisibility="Auto" Visibility="Hidden"
                           Grid.Row="1">
                 <WrapPanel Name="StickerPanel" Visibility="Visible">
-                    <Image Name="TestGirlSticker" Width="100" Height="100" Margin="5"
+                    <Image Name="TestGirlSticker" 
+                           Tag="Girl.png"
+                           Width="100" Height="100" Margin="5"
                            Source="/Visuals/Images/Stickers/Girl.png"
                            PreviewMouseDown="Sticker_PreviewMouseDown"/>
 
-                    <Image Name="TestFigSticker" Width="100" Height="100" Margin="5"
+                    <Image Name="TestFigSticker"
+                           Tag="Figure.png"
+                           Width="100" Height="100" Margin="5"
                            Source="/Visuals/Images/Stickers/Figure.png" 
                            PreviewMouseDown="Sticker_PreviewMouseDown"/>
                 </WrapPanel>

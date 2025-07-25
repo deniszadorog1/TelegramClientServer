@@ -64,6 +64,11 @@ namespace TelegramLib.MainClasses
             Folders.Add(folder);
         }
 
+        public void RemoveFolder(Folder folder)
+        {
+            Folders.Remove(folder);
+        }
+
         public void RemoveFolderById(int id)
         {
             Folders.Remove(Folders.Where(x => x.Id == id).FirstOrDefault());
@@ -193,14 +198,14 @@ namespace TelegramLib.MainClasses
 
             res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
             res.Add(new TextMessage(2, -1, DateTime.Now, "Second"));
-            res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif"));
-            res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg"));
+            res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif", false));
+            res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false ));
             res.Add(new TextMessage(5, -1, DateTime.Now, "Three"));
-            res.Add(new MediaAction(6, -1, DateTime.Now, "Cow.jpg"));
-            res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4"));
+            res.Add(new MediaAction(6, -1, DateTime.Now, "Cow.jpg", false));
+            res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4", false));
             res.Add(new TextMessage(8, -1, DateTime.Now, "Four"));
-            res.Add(new MediaAction(9, -1, DateTime.Now, "Hand.jpg"));
-            res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif"));
+            res.Add(new MediaAction(9, -1, DateTime.Now, "Hand.jpg", false));
+            res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));
             return res;
         }
        

@@ -52,12 +52,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             }
         }
 
-
-
         private void Sticker_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not Image) return;
-            ((MainWindow)Window.GetWindow(this)).SendStickerInChat(sender as Image);
+            if (sender is not Image img) return;
+            ((MainWindow)Window.GetWindow(this)).SendStickerInChat(img);
         }
 
         public void SetGifs()

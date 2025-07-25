@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
@@ -26,6 +27,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     public partial class FoldersPage : Page
     {
         private TelSystem _system;
+     
         public FoldersPage(TelSystem system)
         {
             _system = system;
@@ -37,7 +39,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetCreatedFolderItems()
         {
-            foreach(Folder folder in _system.Folders)
+            foreach (Folder folder in _system.Folders)
             {
                 CreateFolderControl(folder);
             }
@@ -54,6 +56,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             info.SetFolderName(folder.Name);
             info.SetAmountOfItems(folder.Contacts.Count);
+            info.IconType.Kind = Helper.FilesAction.GetIconTypeByString(folder.IconName);
+
+            info.BucketClicked += FolderBucket_Clicked;
 
             ListBoxItem item = new ListBoxItem()
             {
@@ -62,7 +67,46 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 Content = info,
             };
 
+            item.PreviewMouseDown += EnterToFolderSettings_PreviewMouseDown;
+
             Folders.Items.Insert(Folders.Items.IndexOf(AddFolderBoxItem), item);
+        }
+
+        private void FolderBucket_Clicked(object sender, EventArgs e)
+        {
+            if (sender is not FolderLittleInfo folderInfo) return;
+
+            Folder folder = _system.GetFolderByName(folderInfo.FolderName.Text);
+
+            ListBoxItem item = ItemsControl.ContainerFromElement(Folders, folderInfo) as ListBoxItem;
+            Folders.Items.Remove(item);
+
+            _system.RemoveFolder(folder);
+
+            ((MainWindow)Window.GetWindow(this)).UpdateFolders();
+        }
+
+        private void EnterToFolderSettings_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListBoxItem item ||
+                item.Content is not FolderLittleInfo info) return;
+
+            if (IsBucketIsClicked(e, info)) return;
+
+            Folder folder = _system.GetFolderByName(info.FolderName.Text);
+            if (folder is null) return;
+
+            FolderAction folderSettingsPage = new FolderAction(_system, folder);
+
+            if (info.GetIsRemove()) return;
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(folderSettingsPage);
+        }
+
+        private bool IsBucketIsClicked(MouseButtonEventArgs e, FolderLittleInfo info)
+        {
+            var clickedElement = e.OriginalSource as DependencyObject;
+            var bucket = FilesAction.FindParentByName(clickedElement, info.BucketGrid.Name);
+            return bucket is not null;
         }
 
         public void SetBasicParams()
@@ -111,7 +155,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         public void Folder_Created(object sender, EventArgs e)
         {
             if (sender is not FolderAction action) return;
-            
+
             //Add folder control
             CreateFolderControl(_system.GetFolderByName(action.GetFolderName()));
         }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TelegramLib")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ad8d7f938ae74a3467a88c90407d683fb56e72c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4fc047fe1759b37316fb6a3bc54fa7feb62b1e8e")]
 [assembly: System.Reflection.AssemblyProductAttribute("TelegramLib")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TelegramLib")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

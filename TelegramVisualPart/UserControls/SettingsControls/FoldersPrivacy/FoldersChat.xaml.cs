@@ -20,6 +20,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
     /// </summary>
     public partial class FoldersChat : UserControl
     {
+        public event EventHandler RemoveControl;
+
         public FoldersChat()
         {
             InitializeComponent();
@@ -39,7 +41,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
 
         private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Check for remove
+            RemoveControl?.Invoke(this, EventArgs.Empty);
         }
 
         public string GetFolderChatName()

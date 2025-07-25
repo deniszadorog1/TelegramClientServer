@@ -21,7 +21,8 @@
                        VerticalAlignment="Center" Margin="10 0 0 0"
                        Foreground="{StaticResource TempActiveTextColor}" FontSize="12"/>
 
-        <Grid Grid.Column="2" MouseEnter="Grid_MouseEnter" 
+        <Grid Grid.Column="2" Name="CloseGrid"
+              MouseEnter="Grid_MouseEnter" 
               MouseLeave="Grid_MouseLeave"
               PreviewMouseDown="Grid_PreviewMouseDown"
               Background="Transparent">

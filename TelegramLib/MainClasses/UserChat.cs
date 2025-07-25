@@ -33,6 +33,11 @@ namespace TelegramLib.MainClasses
             //Set Test Params Here
         }
 
+        public void AddSticker(string name, int senderId)
+        {
+            Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
+        }
+
         public ChatBackground GetBackground()
         {
             return ChatBg;

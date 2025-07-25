@@ -22,6 +22,9 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
     /// </summary>
     public partial class FolderLittleInfo : UserControl
     {
+        private bool _isRemove = false;
+        public event EventHandler BucketClicked;
+
         public FolderLittleInfo()
         {
             InitializeComponent();
@@ -63,5 +66,18 @@ namespace TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy
         {
             BucketIcon.Foreground = new SolidColorBrush(Colors.Gray);
         }
+
+        private void BucketGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _isRemove = !_isRemove;
+
+            BucketClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        public bool GetIsRemove()
+        {
+            return _isRemove;
+        }
+
     }
 }

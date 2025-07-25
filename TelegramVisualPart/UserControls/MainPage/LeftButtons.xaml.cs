@@ -43,7 +43,7 @@ namespace TelegramVisualPart.UserControls.MainPage
         {
             _system = system;
 
-            SetFolders();
+            UpdateFolders();
         }
 
         public void SetFolders()
@@ -51,7 +51,7 @@ namespace TelegramVisualPart.UserControls.MainPage
             for(int i = 0; i < _system.Folders.Count; i++)
             {
                 LeftButtonsButton folder = new LeftButtonsButton();
-                folder.SetIconKind(GetIconTypeByString(_system.Folders[i].IconName));
+                folder.SetIconKind(FilesAction.GetIconTypeByString(_system.Folders[i].IconName));
                 folder.SetButtonText(_system.Folders[i].Name);
 
                 ListBoxItem item = new ListBoxItem()
@@ -63,15 +63,6 @@ namespace TelegramVisualPart.UserControls.MainPage
 
                 FoldersBox.Items.Insert(FoldersBox.Items.IndexOf(EditFolderBoxItem), item);
             }
-        }
-
-        public PackIconKind GetIconTypeByString(string iconName)
-        {
-            if (Enum.TryParse<PackIconKind>(iconName, out var kind))
-            {
-                return kind;
-            }
-            return PackIconKind.Folder;
         }
 
         public void SetBasicParams()
@@ -120,6 +111,31 @@ namespace TelegramVisualPart.UserControls.MainPage
             item.Background = _activeBgColor;
 
             ((MainWindow)Window.GetWindow(this)).SetChosenFolderByName(but.ButText.Text);
+        }
+
+        public void UpdateFolders()
+        {
+            RemoveFolders();
+            SetFolders();
+        }
+
+        public void RemoveFolders()
+        {
+            List<ListBoxItem> items = new List<ListBoxItem>();
+            foreach(ListBoxItem item in FoldersBox.Items)
+            {
+                //remove test folders later
+                if (item.Name == AllChatsItem.Name ||
+                    item.Name == PersonalItem.Name ||
+                    item.Name == EditFolderBoxItem.Name) continue;
+
+                items.Add(item);
+            }
+
+            foreach(ListBoxItem item in items)
+            {
+                FoldersBox.Items.Remove(item);
+            }
         }
     }
 }
