@@ -140,7 +140,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.DeleteContact());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
+                new Pages.UserInfoContact.ActionsFolder.DeleteContact());
         }
 
         private void EditContactLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -156,10 +157,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void Line_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_chat is null) return;
             if (sender is Grid grid)
             {
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.
-                    SentObjectsUserInfo.SentItemsUserContact(GetItemType(grid.Name)));
+                    SentObjectsUserInfo.SentItemsUserContact(
+                    ((MainWindow)Window.GetWindow(this)).GetSystem(),
+                    GetItemType(grid.Name), _chat));
             }
         }
 

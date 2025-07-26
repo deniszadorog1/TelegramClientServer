@@ -47,6 +47,11 @@ namespace TelegramVisualPart
                     _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B)); 
         }
 
+        public TelSystem GetSystem()
+        {
+            return _system;
+        }
+
         public void SetSecondaryFrame(Page page)
         {
             //SecondaryFrame.Visibility = Visibility.Visible;

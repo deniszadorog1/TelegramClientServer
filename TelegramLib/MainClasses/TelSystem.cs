@@ -167,6 +167,16 @@ namespace TelegramLib.MainClasses
         {
             SetTestUserContacts();
             SetTestFolders();
+
+            SetTestLoggedUserParams();
+        }
+
+        public void SetTestLoggedUserParams()
+        {
+            List<UserContactcs> blockedContacts = new List<UserContactcs>();
+            blockedContacts.Add(Contacts[0]);
+
+            LoggedUser.BlockedContacts = blockedContacts;
         }
 
         public void SetTestFolders()

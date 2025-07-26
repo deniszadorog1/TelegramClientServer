@@ -315,10 +315,12 @@ namespace TelegramVisualPart.UserControls
         {
             string fileName = Path.GetFileName(filePath);
 
-            if (_chatMessages.Where(x => x is MediaAction media &&
+            //Check it for presance
+
+/*            if (_chatMessages.Where(x => x is MediaAction media &&
                     media.MediaName == Path.GetFileName(fileName))
                 .ToList()
-                .Any()) return;
+                .Any()) return;*/
                     
             _chatMessages.Add(new MediaAction(_chatMessages.Count + 1,
                 _system.LoggedUser.Id, DateTime.Now, fileName, false));
@@ -419,8 +421,19 @@ namespace TelegramVisualPart.UserControls
             if (sender is not MediaMessage) return;
             MediaMessage message = sender as MediaMessage;
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new VisualActionPage(message.GetImage(), GetChatImages()));
+            VisualActionPage page = new VisualActionPage(message.GetImage(), GetChatImages());
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+
+            MediaMessage item = ChatBox.Items.OfType<MediaMessage>()
+                .Where(x => x == message).First();
+
+            int index = ChatBox.Items.IndexOf(item);
+
+            List<MediaAction> imgMedias = _chat.GetMediaMessages().Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
+            int imgIndex = imgMedias.FindIndex(x => x == _chat.Messages[index] as MediaAction);
+
+            page.SetUserChat(_system, imgMedias, imgIndex);
         }
 
         public List<Image> GetChatImages()
@@ -432,7 +445,6 @@ namespace TelegramVisualPart.UserControls
                 if (_chatMessages[i] is MediaAction media &&
                     FilesAction.GetMediaTypeFromFilename(media.MediaName) == MediaType.Image)
                 {
-
                     string path = FilesAction.GetFilePathByMediaType(
                         media.IsSticker ? MediaType.Sticker : MediaType.Image, media.MediaName);
                     res.Add(new Image

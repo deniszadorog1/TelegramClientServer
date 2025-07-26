@@ -10,6 +10,11 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 using MaterialDesignThemes.Wpf;
 using System.Configuration;
+using System.Windows.Automation;
+using System.Windows.Shapes;
+using Path = System.IO.Path;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace TelegramVisualPart.Helper
 {
@@ -50,6 +55,11 @@ namespace TelegramVisualPart.Helper
                         return MediaType.Unknown;
                     }
             }
+        }
+
+        public static bool IsFileIsImage(string fileName)
+        {
+            return GetMediaTypeFromFilename(fileName) == MediaType.Image;
         }
 
         private static string GetVisualPath()
@@ -123,6 +133,17 @@ namespace TelegramVisualPart.Helper
             string destinationPath = Path.Combine(copyToDirectory, fileName);
 
             File.Copy(filePath, destinationPath, overwrite: true);
+        }
+
+        public static Image GetImageFromChatImageFolder(string fileName)
+        {
+            string path = Path.Combine(GetChatImageFolderPath(), fileName);
+
+            return new Image()
+            {
+                Source = new BitmapImage(new Uri(path, UriKind.RelativeOrAbsolute)),
+                Stretch = Stretch.Fill
+            };
         }
 
         public static bool IsVideoIsExistInSecFolder(string videoName)

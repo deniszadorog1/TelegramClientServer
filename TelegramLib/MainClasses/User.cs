@@ -25,10 +25,14 @@ namespace TelegramLib.MainClasses
 
         public DateTime LastSeenOnline { get; set; }
 
+        //Blcoked users cant sent messages to Logged user
+        public List<UserContactcs> BlockedContacts { get; set; }
+
         public User(int id, string login, string password, string name,
                     string surname, string bio,
                     ColorHelper color, string phoneNumber, 
-                    string userName, DateTime? birthDay)
+                    string userName, DateTime? birthDay, 
+                    List<UserContactcs> blockedContacts)
         {
             Id = id;
             Login = login;
@@ -42,6 +46,8 @@ namespace TelegramLib.MainClasses
             PhoneNumber = phoneNumber;
             UserName = userName;
             BirthDay = birthDay;
+        
+            BlockedContacts = blockedContacts;
         }
 
         //Smth like test params
@@ -60,6 +66,7 @@ namespace TelegramLib.MainClasses
             UserName = "asdUserName";
 
             BirthDay = new DateTime(2003, 7, 4);
+            BlockedContacts = new List<UserContactcs>();
         }
 
         public bool IsSameId(int id)

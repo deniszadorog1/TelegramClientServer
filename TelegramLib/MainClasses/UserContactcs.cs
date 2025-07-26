@@ -19,6 +19,8 @@ namespace TelegramLib.MainClasses
         List<string> IconsPaths { get; set; }
         public DateTime? LastSeen { get; set; }
         public bool IsNotificationsIsOn { get; set; }
+        
+        public bool IsBlockedUserBlocked { get; set; }
 
         public UserContactcs(int id, string name, string userName, 
             DateTime? birthDate,

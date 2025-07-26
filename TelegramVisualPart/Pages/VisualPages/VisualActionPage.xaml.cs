@@ -17,6 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Messages;
+using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
@@ -30,8 +32,12 @@ namespace TelegramVisualPart.Pages.VisualPages
         private Image _img;
         private MediaElement _media;
 
+        private TelSystem _system;
+        private int _tempMediaIndex = -1;
+        private List<MediaAction> _messages;
+
         private List<Image> _imgs;
-        private int _mediaIndex;
+        //private int _tempMediaIndex;
 
         public VisualActionPage(Image img, List<Image> chatImgs)
         {
@@ -48,6 +54,34 @@ namespace TelegramVisualPart.Pages.VisualPages
             //VideoToShow = null;
         }
 
+        public void SetUserChat(TelSystem system, List<MediaAction> messages, int startElementIndex)
+        {
+            _system = system;
+            _messages = messages;
+            _tempMediaIndex = startElementIndex;
+
+            //_tempMediaIndex = _tempMediaIndex;
+
+            SetMediaParams();
+        }
+
+        public void SetMediaParams()
+        {
+            if (_system is null || _messages is null || _tempMediaIndex == -1) return;
+
+            if (_tempMediaIndex == -1 || _messages[_tempMediaIndex] is not MediaAction media) return;
+
+            ElementName.Text = media.MediaName;
+            PositionInFolder.Text = $"Photo {_messages.FindIndex(x => x.Id == media.Id) + 1} of {_messages.Count}";
+
+            SentDate.Text = $"{media.GetSentDate().Value.Day} {media.GetSentDate().Value.Month} {media.GetSentDate().Value.Year}";
+
+            SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
+                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.SenderId)].Name;
+        }
+
+        
+
         public void SetImgIndex()
         {
             string imgFileName = System.IO.Path.GetFileName(_img.Source.ToString());
@@ -56,7 +90,7 @@ namespace TelegramVisualPart.Pages.VisualPages
                 string tempImgFileName = System.IO.Path.GetFileName(_imgs[i].Source.ToString());
                 if (tempImgFileName == imgFileName)
                 {
-                    _mediaIndex = i;
+                    _tempMediaIndex = i;
                     return;
                 }
             }
@@ -103,7 +137,7 @@ namespace TelegramVisualPart.Pages.VisualPages
                 string tempMediaFileName = System.IO.Path.GetFileName(_mediaPaths[i]);
                 if (tempMediaFileName == mediaFileName)//  ArePathsEqual(_mediaPaths[i], _media.Source))
                 {
-                    _mediaIndex = i;
+                    _tempMediaIndex = i;
                     return;
                 }
             }
@@ -138,7 +172,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             {
                 if (_mediaPaths[i].ToString() == _gifPath.ToString())
                 {
-                    _mediaIndex = i;
+                    _tempMediaIndex = i;
                     return;
                 }
             }
@@ -210,43 +244,51 @@ namespace TelegramVisualPart.Pages.VisualPages
         private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_img is not null &&
-                (_mediaIndex + 1) < _imgs.Count)
+                (_tempMediaIndex + 1) < _imgs.Count)
             {
-                _mediaIndex++;
-                ImageToShow.Source = _imgs[_mediaIndex].Source;
-                _img = _imgs[_mediaIndex];
+                _tempMediaIndex++;
+                ImageToShow.Source = _imgs[_tempMediaIndex].Source;
+                _img = _imgs[_tempMediaIndex];
 
-                ClearRenderTransform();
+                RightArrowActions();
             }
             else if (_media is not null &&
-                (_mediaIndex + 1) < _mediaPaths.Count)
+                (_tempMediaIndex + 1) < _mediaPaths.Count)
             {
-                _mediaIndex++;
+                _tempMediaIndex++;
                 SetMediaFile();
 
-                ClearRenderTransform();
+                RightArrowActions();
             }
 
             //Set next visual element
+        }
+
+        public void RightArrowActions()
+        {
+            ClearRenderTransform();
+
+           // _tempMediaIndex++;
+            SetMediaParams();
         }
 
         public void SetMediaFile()
         {
             HideAllShows();
 
-            MediaType type = FilesAction.GetMediaTypeFromFilename(_mediaPaths[_mediaIndex]);
+            MediaType type = FilesAction.GetMediaTypeFromFilename(_mediaPaths[_tempMediaIndex]);
 
             if (type is MediaType.Gif)
             {
                 ImageToShow.Visibility = Visibility.Visible;
-                _gifPath = _mediaPaths[_mediaIndex];
+                _gifPath = _mediaPaths[_tempMediaIndex];
                 SetGifParams();
             }
             else if (type is MediaType.Video)
             {
                 var media = new MediaElement
                 {
-                    Source = new Uri(_mediaPaths[_mediaIndex], UriKind.Absolute),
+                    Source = new Uri(_mediaPaths[_tempMediaIndex], UriKind.Absolute),
                     Width = 300,
                     Height = 200,
                     LoadedBehavior = MediaState.Manual,
@@ -263,22 +305,31 @@ namespace TelegramVisualPart.Pages.VisualPages
         private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_img is not null &&
-                (_mediaIndex - 1) >= 0)
+                (_tempMediaIndex - 1) >= 0)
             {
-                _mediaIndex--;
-                ImageToShow.Source = _imgs[_mediaIndex].Source;
-                _img = _imgs[_mediaIndex];
+                _tempMediaIndex--;
+                ImageToShow.Source = _imgs[_tempMediaIndex].Source;
+                _img = _imgs[_tempMediaIndex];
 
-                ClearRenderTransform();
+                LeftArrowAction();
             }
             else if (_media is not null &&
-                (_mediaIndex - 1) >= 0)
+                (_tempMediaIndex - 1) >= 0)
             {
-                _mediaIndex--;
+                _tempMediaIndex--;
                 SetMediaFile();
-                ClearRenderTransform();
+                LeftArrowAction();
             }
         }
+
+        public void LeftArrowAction()
+        {
+            ClearRenderTransform();
+            //_tempMediaIndex--;
+            SetMediaParams();
+        }
+
+
 
         public void ClearRenderTransform()
         {

@@ -33,6 +33,18 @@ namespace TelegramLib.MainClasses
             //Set Test Params Here
         }
 
+        public List<MediaAction> GetMediaMessages()
+        {
+            //not Images(can be gifs or video) 
+            return Messages.OfType<MediaAction>()
+                .Where(x => !x.IsSticker).ToList();
+        }
+
+        public int GetMessageId(Message message)
+        {
+            return Messages.Where(x => x.Id == message.Id).First().Id;
+        }
+
         public void AddSticker(string name, int senderId)
         {
             Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
