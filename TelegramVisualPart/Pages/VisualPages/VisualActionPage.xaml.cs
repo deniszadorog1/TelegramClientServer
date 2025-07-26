@@ -78,9 +78,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
                 _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.SenderId)].Name;
-        }
-
-        
+        }  
 
         public void SetImgIndex()
         {
@@ -233,6 +231,13 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void Delete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_system is null) return;
+
+            //Remove from view 
+            //Remove from tel system
+            
+            //Go to other in here (forward, if not -> backwards)
+
             //Delete element
         }
 
@@ -260,7 +265,6 @@ namespace TelegramVisualPart.Pages.VisualPages
 
                 RightArrowActions();
             }
-
             //Set next visual element
         }
 
@@ -288,7 +292,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             {
                 var media = new MediaElement
                 {
-                    Source = new Uri(_mediaPaths[_tempMediaIndex], UriKind.Absolute),
+                    Source = new Uri( _mediaPaths[_tempMediaIndex], UriKind.Absolute),
                     Width = 300,
                     Height = 200,
                     LoadedBehavior = MediaState.Manual,

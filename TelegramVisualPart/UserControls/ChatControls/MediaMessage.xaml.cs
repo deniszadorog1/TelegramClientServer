@@ -14,6 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -71,7 +72,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             InitializeComponent();
 
             HideAllBorders();
-            VideoBorder.Visibility = Visibility.Visible;
+            //VideoBorder.Visibility = Visibility.Visible;
+            ImageBorder.Visibility = Visibility.Visible;
+            SetVideoPreview();
+        }
+
+        private void SetVideoPreview()
+        {
+            string fileName = System.IO.Path.GetFileName(_media.Source.LocalPath);
+
+            Image img = FilesAction.GetImagePreviewForVideo(fileName);
+
+            ImgMessage.ImageSource = img.Source;
         }
 
         public void HideAllBorders()

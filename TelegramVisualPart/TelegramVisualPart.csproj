@@ -1,60 +1,70 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Visuals\Gifs\TestGif.gif" />
-    <None Remove="Visuals\Images\Stickers\Figure.png" />
-    <None Remove="Visuals\Images\Stickers\Girl.png" />
-    <None Remove="Visuals\Images\UserImages\fray.jpg" />
-    <None Remove="Visuals\Images\UserImages\Minato.jpg" />
-    <None Remove="Visuals\Images\UserImages\WhiteCat.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Visuals\Gifs\TestGif.gif" />
+		<None Remove="Visuals\Images\Stickers\Figure.png" />
+		<None Remove="Visuals\Images\Stickers\Girl.png" />
+		<None Remove="Visuals\Images\UserImages\fray.jpg" />
+		<None Remove="Visuals\Images\UserImages\Minato.jpg" />
+		<None Remove="Visuals\Images\UserImages\WhiteCat.png" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
-    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FFMpegCore" Version="5.2.0" />
+		<PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+		<PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+		<PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Visuals\Gifs\TestGif.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Visuals\Images\Stickers\Figure.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Visuals\Images\Stickers\Girl.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Visuals\Images\UserImages\fray.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Visuals\Images\UserImages\Minato.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Visuals\Images\UserImages\WhiteCat.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Visuals\Gifs\TestGif.gif">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Visuals\Images\Stickers\Figure.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Visuals\Images\Stickers\Girl.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Resource Include="Visuals\Images\UserImages\fray.jpg">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Visuals\Images\UserImages\Minato.jpg">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Visuals\Images\UserImages\WhiteCat.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TelegramLib\TelegramLib.csproj" />
-    <ProjectReference Include="..\TestThing\TestThing.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TelegramLib\TelegramLib.csproj" />
+		<ProjectReference Include="..\TestThing\TestThing.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
-  </ItemGroup>
+	<ItemGroup>
+		<Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="ffmpeg\ffmpeg.exe">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="ffmpeg\ffprobe.exe">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

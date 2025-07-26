@@ -16,6 +16,13 @@ using Path = System.IO.Path;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
+using FFMpegCore;
+using FFMpegCore.Pipes;
+using FFMpegCore.Enums;
+using System.Windows.Media.Media3D;
+using Microsoft.EntityFrameworkCore.Storage.Json;
+
+
 namespace TelegramVisualPart.Helper
 {
     public static class FilesAction
@@ -55,6 +62,45 @@ namespace TelegramVisualPart.Helper
                         return MediaType.Unknown;
                     }
             }
+        }
+
+        public static List<string> GetFullPathForVideos(List<string> paths)
+        {
+            for(int i = 0; i < paths.Count; i++)
+            {
+                paths[i] = GetFullVideoPath(paths[i]);
+            }
+            return paths;
+        }
+
+        public static string GetFullVideoPath(string fileName)
+        {
+            return Path.Combine(GetVideosPath(), fileName);
+        }
+
+        public static List<MediaAction> GetVideosFromList(List<MediaAction> medias)
+        {
+            List<MediaAction> toRemove = new List<MediaAction>();
+
+            for(int i = 0; i < medias.Count; i++)
+            {
+                if (GetMediaTypeFromFilename(medias[i].MediaName) != MediaType.Video)
+                {
+                    toRemove.Add(medias[i]);
+                }
+            }
+
+            foreach(MediaAction action in toRemove)
+            {
+                medias.Remove(action);
+            }
+
+            return medias;
+        }
+
+        public static bool IsFileIsVideo(string fileName)
+        {
+            return GetMediaTypeFromFilename(fileName) == MediaType.Video;
         }
 
         public static bool IsFileIsImage(string fileName)
@@ -223,7 +269,59 @@ namespace TelegramVisualPart.Helper
                         return string.Empty;
                     }
             }
-
         }
+
+        public static Image GetImagePreviewForVideo(string videoName)
+        {
+
+            GlobalFFOptions.Configure(new FFOptions
+            {
+                BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),
+                TemporaryFilesFolder = Path.GetTempPath()
+            });
+
+
+            string videoPath = Path.Combine(GetVideosPath(), videoName);
+           
+            using var ms = new MemoryStream();
+
+            FFMpegArguments
+                .FromFileInput(videoPath)
+                .OutputToPipe(new StreamPipeSink(ms), options => options
+                    .WithVideoCodec("png")
+                    .WithFrameOutputCount(1)
+                    .ForceFormat("image2pipe"))
+                .ProcessSynchronously();
+
+
+            ms.Seek(0, SeekOrigin.Begin);
+
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.StreamSource = ms;
+            bitmap.EndInit();
+            bitmap.Freeze();
+
+            return new Image { Source = bitmap };
+        }
+
+        public static MediaElement GetMediaElementByVideoName(string name)
+        {
+            string videoPath = Path.Combine(GetVideosPath(), name);
+
+            MediaElement res = new MediaElement()
+            {
+                Source = new Uri(videoPath, UriKind.Absolute),
+                Width = 300,
+                Height = 200,
+                LoadedBehavior = MediaState.Manual,
+                UnloadedBehavior = MediaState.Manual
+            };
+            res.Play();
+
+            return res;
+        }
+
     }
 }

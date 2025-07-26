@@ -22,6 +22,7 @@ using TelegramVisualPart.Pages.Settings.ChatSettings;
 using System.Drawing;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
+using FFMpegCore;
 
 namespace TelegramVisualPart
 {
@@ -34,6 +35,8 @@ namespace TelegramVisualPart
 
         public MainWindow()
         {
+            //FFMpegCore.FFMpeg.SetExecutablesPath(@"B:\Tools\ffmpeg\bin");
+
             //VisConstParamsJsonService.GetStringByName("check");
 
             InitializeComponent();

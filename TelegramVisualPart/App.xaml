@@ -5,6 +5,7 @@
              StartupUri="MainWindow.xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <Application.Resources>
+       
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
@@ -65,5 +66,6 @@
         </ResourceDictionary>
     </Application.Resources>
     
+
 
 </Application>

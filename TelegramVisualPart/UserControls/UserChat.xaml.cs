@@ -376,8 +376,23 @@ namespace TelegramVisualPart.UserControls
             if (sender is not MediaMessage) return;
             MediaMessage message = sender as MediaMessage;
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new VisualActionPage(message.GetVideo(), GetChatMediaPaths()));
+            VisualActionPage page = new VisualActionPage(message.GetVideo(), GetChatMediaPaths());
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+
+            List<MediaAction> videos =
+                FilesAction.GetVideosFromList(_chat.GetMediaMessages());
+
+            int chosenVideoIndex = GetChosenVideoIndex(message, videos);
+
+            page.SetUserChat(_system, videos, chosenVideoIndex);           
+        }
+
+        public int GetChosenVideoIndex(MediaMessage message, List<MediaAction> videos)
+        {
+            int messageItemIndex = ChatBox.Items.IndexOf(message);
+
+           return videos.IndexOf((MediaAction)_chat.Messages[messageItemIndex]);
         }
 
         public List<string> GetChatMediaPaths()
