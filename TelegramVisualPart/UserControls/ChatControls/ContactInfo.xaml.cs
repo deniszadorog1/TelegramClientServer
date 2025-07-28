@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -29,8 +31,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
 
         private TelegramLib.MainClasses.UserChat _chat;
-        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat)
+        private TelSystem _system;
+        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat, TelSystem system)
         {
+            _system = system;
             _chat = chat;
             SetUserParams();
         }
@@ -49,7 +53,32 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
             Birthdate.SetBottomText("Date of Birth");
 
-            TNOtificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
+            NotificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
+
+            SentObjsParams();
+        }
+
+        public void SentObjsParams()
+        {
+            List<MediaAction> medias = _chat.GetMediaMessages();
+
+            SetTextForTextBlock(AmountOfPhotosTextBlock,
+                FilesAction.GetImagesFromMediaAction(medias),
+                "Amount of photos");
+
+            SetTextForTextBlock(AmountOfVideosTextBlock,
+                FilesAction.GetVideosAmount(medias),
+                "Amount of videos");
+
+            SetTextForTextBlock(AmountOfGifsTextBlock,
+                FilesAction.GetGifsAmount(medias),
+                "Amount of GIFs");
+        }
+
+        private void SetTextForTextBlock(TextBlock block, int amount, string baseString)
+        {
+            string amountStr = amount > 0 ? amount.ToString() +" ": string.Empty;
+            block.Text = $"{amountStr}{baseString}";
         }
 
         private void SetIconsSize()
@@ -183,8 +212,27 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             _isMenuOpen = !_isMenuOpen;
 
-            if (_isMenuOpen) ContactMenu.Visibility = Visibility.Visible;
-            else ContactMenu.Visibility = Visibility.Hidden;
+            if (_isMenuOpen) 
+            {
+                ContactMenu.Visibility = Visibility.Visible;
+                ContactMenu.SetTelSystemParam(_system);
+            }           
+            else 
+            { 
+                ContactMenu.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void NotificationToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_chat is null) return;
+            _chat.GetChatter().SetNotifState(true);
+        }
+
+        private void NotificationToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (_chat is null) return;
+            _chat.GetChatter().SetNotifState(false);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TelegramLib.Enums.Chat;
+using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 
@@ -113,5 +114,59 @@ namespace TelegramLib.MainClasses
             return null;
         }
 
+        public void RemoveElementByIndex(int elIndex, MediaType type)
+        {
+            for(int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i] is MediaAction media && 
+                    !media.IsSticker)
+                {
+                    if (type != GetMediaTypeFromFilename(media.MediaName)) continue;
+                    if(elIndex == 0)
+                    {
+                        Messages.Remove(media);
+                        return;
+                    }                    
+                    elIndex--;
+                }
+            }
+        }
+
+        public MediaType GetMediaTypeFromFilename(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return MediaType.Unknown;
+
+            string extension = Path.GetExtension(path).ToLowerInvariant();
+
+            switch (extension)
+            {
+                case ".jpg":
+                case ".jpeg":
+                case ".png":
+                case ".bmp":
+                case ".webp":
+                    {
+                        return MediaType.Image;
+                    }
+                case ".gif":
+                    {
+                        return MediaType.Gif;
+                    }
+                case ".mp4":
+                case ".avi":
+                case ".mov":
+                case ".webm":
+                case ".mkv":
+                case ".wmv":
+                    {
+                        return MediaType.Video;
+                    }
+                default:
+                    {
+                        return MediaType.Unknown;
+                    }
+            }
+        }
     }
 }

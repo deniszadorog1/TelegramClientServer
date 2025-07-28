@@ -22,12 +22,14 @@ namespace TelegramVisualPart.Pages
     public partial class UserInfo : Page
     {
         private UserChat _chat;
-        public UserInfo(UserChat chat)
+        private TelSystem _system;
+        public UserInfo(UserChat chat, TelSystem system)
         {
+            _system = system;
             _chat = chat;
             InitializeComponent();
 
-            ContactInfo.SetContactInfo(_chat);
+            ContactInfo.SetContactInfo(_chat, _system);
         }
     }
 }

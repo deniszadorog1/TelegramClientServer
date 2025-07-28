@@ -23,6 +23,8 @@ using System.Drawing;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
 using FFMpegCore;
+using TelegramVisualPart.Pages.VisualPages;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace TelegramVisualPart
 {
@@ -317,6 +319,19 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateFolders();
+        }
+
+        public void RemoveElementFromChat(int elIndex, 
+            TelegramLib.Enums.Messages.MediaType type)
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.UserChat.RemoveElementFromChatBox(elIndex, type);
+        }
+
+        public void ClearVisualActionPage()
+        {
+            if (SecondaryFrame.Content is VisualActionPage) ClearSecFrame();
+            else ClearThirdFrame();
         }
     }
 }

@@ -21,7 +21,7 @@
                       HorizontalAlignment="Right"
               Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
               ToolTip="MaterialDesignSwitchDarkToggleButton"                      
-              IsChecked="True" Background="{StaticResource DarkThemeProfileButForeGround}"/>
+              IsChecked="True" Background="{StaticResource TempActiveTextColor}"/>
 
     </Grid>
 </UserControl>

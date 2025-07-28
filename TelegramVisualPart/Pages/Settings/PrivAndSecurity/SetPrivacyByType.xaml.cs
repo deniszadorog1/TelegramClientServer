@@ -145,9 +145,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             WhoCanUseBlock.Text = "Who can see my last seen time";
 
             SetPubPhotoBut.IconType.Kind = PackIconKind.CameraOutline;
-            SetPubPhotoBut.IconType.Foreground = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+            SetPubPhotoBut.IconType.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
             SetPubPhotoBut.ButName.Text = "Set public photo";
-            SetPubPhotoBut.ButName.Foreground = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
+            SetPubPhotoBut.ButName.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
             ProfPhotosAlwaysShareBut.NamePart.Text = "Always share with";
             ProfPhotosAlwaysShareBut.EnumPart.Text = "Add users";

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.UserSettings;
@@ -27,6 +28,7 @@ namespace TelegramLib.MainClasses
             List<UserChat> chats, List<UserContactcs> contacts,
             List<Folder> folders)
         {
+        
             LoggedUser = user;
             Settings = settings;
             Chats = chats;
@@ -229,5 +231,9 @@ namespace TelegramLib.MainClasses
             chat.GetBackground().SetBlurState(Settings.GetChatSettings().Wallpaper.IsBlurred);
         }
 
+        public void RemoveElemetFromChosenChat(int mediaIndex, MediaType type)
+        {
+            GetChosenChat().RemoveElementByIndex(mediaIndex, type);
+        }
     }
 }

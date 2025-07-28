@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
 
 namespace TelegramVisualPart.Pages.VisualPages
 {
@@ -67,7 +69,8 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetMediaParams()
         {
-            if (_system is null || _messages is null || _tempMediaIndex == -1) return;
+            if (_system is null || _messages is null || _tempMediaIndex == -1 ||
+                _messages.Count == 0) return;
 
             if (_tempMediaIndex == -1 || _messages[_tempMediaIndex] is not MediaAction media) return;
 
@@ -233,12 +236,90 @@ namespace TelegramVisualPart.Pages.VisualPages
         {
             if (_system is null) return;
 
-            //Remove from view 
-            //Remove from tel system
-            
-            //Go to other in here (forward, if not -> backwards)
+            //Remove chosen element
+            RemoveFromChat(_tempMediaIndex);
+        }
+        private void RemoveChosenImage()
+        {
+            _imgs.RemoveAt(_tempMediaIndex);
+            _messages.RemoveAt(_tempMediaIndex);
 
-            //Delete element
+            if(_imgs.Count == 0)
+            {
+                //Clear this window
+                ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
+                return;
+            }
+
+            _tempMediaIndex = _imgs.Count <= _tempMediaIndex ? --_tempMediaIndex : _tempMediaIndex;
+
+            ImageToShow.Source = _imgs[_tempMediaIndex].Source;
+        }
+
+        private void RemoveChosenVideo()
+        {
+            _mediaPaths.RemoveAt(_tempMediaIndex);
+            _messages.RemoveAt(_tempMediaIndex);
+
+            if(_mediaPaths.Count == 0)
+            {
+                ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
+                return;
+            }
+            _tempMediaIndex = _mediaPaths.Count <= _tempMediaIndex ? --_tempMediaIndex : _tempMediaIndex;
+
+            SetMediaFile();
+        }
+
+        private void RemoveChosenGif()
+        {
+            _mediaPaths.RemoveAt(_tempMediaIndex);
+            _messages.RemoveAt(_tempMediaIndex);
+
+            if (_mediaPaths.Count == 0)
+            {
+                ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
+                return;
+            }
+            _tempMediaIndex = _mediaPaths.Count <= _tempMediaIndex ? --_tempMediaIndex : _tempMediaIndex;
+
+            SetMediaFile();
+        }
+
+        /// <summary>
+        /// Remove from view and logic
+        /// </summary>
+        /// <param name="mediaIndex"></param>
+        public void RemoveFromChat(int mediaIndex)
+        {
+            //If this is img || video || gif        
+            if(_gifPath is not null)//its gif
+            {
+                ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Gif);
+                _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Gif);
+                RemoveChosenVideo();
+            }
+            else if(_img is not null)//its image 
+            {
+                //Remove from Visual part 
+                ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Image);
+                
+                //Remove from logic
+                _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Image);
+
+                //Go to other in here (forward, if not -> backwards) //Delete element
+                RemoveChosenImage();
+            }
+            else if(_media is not null)//its video
+            {
+                ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Video);
+                _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Video);
+                RemoveChosenVideo();
+            }
+
+            ClearRenderTransform();
+            //_tempMediaIndex--;
+            SetMediaParams();
         }
 
         private void SaveAs_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -332,8 +413,6 @@ namespace TelegramVisualPart.Pages.VisualPages
             //_tempMediaIndex--;
             SetMediaParams();
         }
-
-
 
         public void ClearRenderTransform()
         {

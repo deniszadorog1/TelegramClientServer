@@ -127,8 +127,10 @@
                                                  Height="40" Width="40" Foreground="White" Name="BellIcon"/>
                             <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="Notifications"
                                        Foreground="White" FontSize="14"/>
-                            <ToggleButton Name ="TNOtificationToggle" Width="35"
+                            <ToggleButton Name ="NotificationToggle" Width="35"
                                           Grid.Column="2" Grid.Row="3"
+                                          Checked="NotificationToggle_Checked"
+                                          Unchecked="NotificationToggle_Unchecked"
                                           HorizontalAlignment="Right"
                                           Margin="0 0 30 0"
                                           Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
@@ -201,20 +203,30 @@
                                                  Height="40" Width="40" Foreground="White" Name="GifIcon"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Amount of photos" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                   Name="AmountOfPhotosTextBlock"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                       
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="Amount of videos" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                   Name="AmountOfVideosTextBlock"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+           
                         <TextBlock Grid.Column="1" Grid.Row="2" Text="Amount of fiels" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                   Name="AmountOfFilesTextBlock"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                       
                         <TextBlock Grid.Column="1" Grid.Row="3" Text="Amount of shared links" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                   Name="AmountOfLinksTextBlock"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                        
                         <TextBlock Grid.Column="1" Grid.Row="4" Text="Amount of GIFs" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                   Name="AmountOfGifsTextBlock"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                        
                     </Grid>
                     <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"/>
 

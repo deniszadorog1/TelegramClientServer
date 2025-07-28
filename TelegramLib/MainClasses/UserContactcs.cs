@@ -55,6 +55,11 @@ namespace TelegramLib.MainClasses
             return IsNotificationsIsOn;
         }
 
+        public void SetNotifState(bool state)
+        {
+            IsNotificationsIsOn = state;
+        }
+
         public bool IsNamesAreEqual(string name)
         {
             return Name == name;

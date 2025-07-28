@@ -74,7 +74,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo(_chat));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo(_chat, _system));
         }
 
         private void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

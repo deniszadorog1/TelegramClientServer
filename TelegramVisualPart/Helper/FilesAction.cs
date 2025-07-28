@@ -22,7 +22,6 @@ using FFMpegCore.Enums;
 using System.Windows.Media.Media3D;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 
-
 namespace TelegramVisualPart.Helper
 {
     public static class FilesAction
@@ -64,6 +63,55 @@ namespace TelegramVisualPart.Helper
             }
         }
 
+        public static int GetImagesFromMediaAction(List<MediaAction> medias)
+        {
+            int res = 0;
+            for (int i = 0; i < medias.Count; i++)
+            {
+                if (IsFileIsImage(medias[i].MediaName)) res++;
+            }
+            return res;
+        }
+
+        public static int GetVideosAmount(List<MediaAction> medias)
+        {
+            int res = 0;
+            for(int i = 0; i < medias.Count; i++)
+            {
+                if (IsFileIsVideo(medias[i].MediaName)) res++;
+            }
+            return res;
+        }
+
+        public static int GetGifsAmount(List<MediaAction> medias)
+        {
+            int res = 0;
+            for (int i = 0; i < medias.Count; i++)
+            {
+                if (IsFileIsGif(medias[i].MediaName)) res++;
+            }
+            return res;
+        }
+
+
+        public static List<string> GetFullGifPaths(List<string> gifNames)
+        {
+            List<string> res = new List<string>();
+
+            for(int i = 0; i < gifNames.Count; i++)
+            {
+                res.Add(GetFullGifPath(gifNames[i]));
+            }
+
+            return res;
+        }
+
+        public static string GetFullGifPath(string gifName)
+        {
+            string baseName = Path.GetFileName(gifName);
+            return Path.Combine(GetGifsPath(), baseName);
+        }
+
         public static List<string> GetFullPathForVideos(List<string> paths)
         {
             for(int i = 0; i < paths.Count; i++)
@@ -78,13 +126,13 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(GetVideosPath(), fileName);
         }
 
-        public static List<MediaAction> GetVideosFromList(List<MediaAction> medias)
+        public static List<MediaAction> GetMediaElementsFromListByType(List<MediaAction> medias, MediaType type)
         {
             List<MediaAction> toRemove = new List<MediaAction>();
 
             for(int i = 0; i < medias.Count; i++)
             {
-                if (GetMediaTypeFromFilename(medias[i].MediaName) != MediaType.Video)
+                if (GetMediaTypeFromFilename(medias[i].MediaName) != type)
                 {
                     toRemove.Add(medias[i]);
                 }
@@ -97,6 +145,12 @@ namespace TelegramVisualPart.Helper
 
             return medias;
         }
+
+        public static bool IsFileIsGif(string fileName)
+        {
+            return GetMediaTypeFromFilename(fileName) == MediaType.Gif;
+        }
+
 
         public static bool IsFileIsVideo(string fileName)
         {
@@ -159,6 +213,10 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(GetImagesPath(), "Stickers");
         }
 
+        public static bool IsGifNameIsExist(string fileName)
+        {
+            return File.Exists(Path.Combine(GetGifsPath(), fileName));
+        }
 
         /// <summary>
         /// Is media file is exist in specific folder (chat image folder) 
