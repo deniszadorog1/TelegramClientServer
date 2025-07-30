@@ -231,25 +231,25 @@ namespace TelegramVisualPart
 
         public void AddEmojiInChat(string text)
         {
-            if(MainFrame.Content is MainChatPage chatPage)
+            if (MainFrame.Content is MainChatPage chatPage)
             {
                 chatPage.UserChat.AddEmoji(text);
             }
         }
 
-        public void SendGif(string gifPath) 
+        public void SendGif(string gifPath, string senderImageName) 
         {
             if (MainFrame.Content is MainChatPage chatPage)
             {
-                chatPage.UserChat.SendGif(gifPath);
+                chatPage.UserChat.SendGif(gifPath, senderImageName);
             }
         }
 
-        public void SendStickerInChat(System.Windows.Controls.Image img)
+        public void SendStickerInChat(System.Windows.Controls.Image img, string senderImageName)
         {
             if (MainFrame.Content is MainChatPage chatPage)
             {
-                chatPage.UserChat.AddStickerMessage(img);
+                chatPage.UserChat.AddStickerMessage(img, senderImageName);
             }
         }
 
@@ -278,7 +278,7 @@ namespace TelegramVisualPart
 
         public void UpdateLoggedUserPage()
         {
-            SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser));
+            SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser, _system));
         }
 
         public void UpdateChatSettingsPage()

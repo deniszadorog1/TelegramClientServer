@@ -13,6 +13,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using WpfAnimatedGif;
 
 namespace TelegramVisualPart.UserControls.ChatControls.Emojis
@@ -22,6 +23,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
     /// </summary>
     public partial class FullVisualsBlock : UserControl
     {
+        private TelSystem _system;
         public FullVisualsBlock()
         {
             InitializeComponent();
@@ -33,6 +35,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             SetGifs();
             SetImgsEvents(StickerPanel);
             SetImgsEvents(GIFsPanel);
+        }
+
+        public void SetSystem(TelSystem system)
+        {
+            _system = system;
         }
 
         public void SetUserElements()
@@ -55,7 +62,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         private void Sticker_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not Image img) return;
-            ((MainWindow)Window.GetWindow(this)).SendStickerInChat(img);
+            ((MainWindow)Window.GetWindow(this)).SendStickerInChat(img, _system.LoggedUser.GetFirstImageName().Name);
         }
 
         public void SetGifs()
@@ -84,7 +91,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             Image img = sender as Image;
             string gifPath = ((BitmapImage)ImageBehavior.GetAnimatedSource(img)).UriSource.ToString();
 
-            ((MainWindow)Window.GetWindow(this)).SendGif(gifPath);
+            ((MainWindow)Window.GetWindow(this)).SendGif(gifPath, _system.LoggedUser.GetFirstImageName().Name);
         }
 
         public void SetBasicParams()

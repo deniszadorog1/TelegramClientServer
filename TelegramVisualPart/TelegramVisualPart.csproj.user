@@ -172,6 +172,9 @@
     <Compile Update="UserControls\ChatControls\MediaActions\MediaMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatControls\MediaActions\UserImageMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\MediaMessage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -484,6 +487,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MediaActions\MediaMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\MediaActions\UserImageMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MediaMessage.xaml">

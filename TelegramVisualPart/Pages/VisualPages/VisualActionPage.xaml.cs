@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics.Eventing.Reader;
+using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ using System.Windows.Shapes;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.MainClasses.UserParams;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatControls.MediaActions;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
+using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.VisualPages
 {
@@ -31,12 +36,17 @@ namespace TelegramVisualPart.Pages.VisualPages
     /// </summary>
     public partial class VisualActionPage : Page
     {
+        public event EventHandler ToRemoveImage;
+
         private Image _img;
         private MediaElement _media;
 
         private TelSystem _system;
         private int _tempMediaIndex = -1;
         private List<MediaAction> _messages;
+
+        private List<UserImage> _userImages;
+        private string _userName;
 
         private List<Image> _imgs;
         //private int _tempMediaIndex;
@@ -56,6 +66,86 @@ namespace TelegramVisualPart.Pages.VisualPages
             //VideoToShow = null;
         }
 
+        public void SetUserImages(List<UserImage> images, TelSystem system, string userName, bool isLoggedUser)
+        {
+            MediaMenu = null;
+            _imgs = null;
+
+            _system = system;
+            _userImages = images;
+            _userName = userName;
+            _tempMediaIndex = 0;
+
+            SetUserImageParams();
+
+            HideDeleteFromuserMenu(isLoggedUser);
+            SetEventsForUsersImagesMenu();
+        }
+        
+        public void HideDeleteFromuserMenu(bool isLogged)
+        {
+            if (!isLogged) UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
+        }
+
+        public void SetEventsForUsersImagesMenu()
+        {
+            UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
+            if(UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
+            UsersImageMenu.Copy.PreviewMouseDown += CopyUserImage_PreviewMouseDown;
+            UsersImageMenu.Report.PreviewMouseDown += ReportUserImage_PreviewMouseDown;
+        }
+
+        private void ReportUserImage_PreviewMouseDown(object senner, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("!!!You cant reprt here!!!");
+        }
+
+        private void CopyUserImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var bitmapSource = (BitmapSource)ImageToShow.Source;
+            Clipboard.SetImage(bitmapSource);
+        }
+
+        private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UserImage userImage = _userImages[_tempMediaIndex];
+
+            _userImages.RemoveAt(_tempMediaIndex);
+
+            _tempMediaIndex = _userImages.Count <= _tempMediaIndex ? --_tempMediaIndex : _tempMediaIndex;
+            ToRemoveImage?.Invoke(this, EventArgs.Empty);
+
+            if (_userImages.Count == 0)
+            {
+                ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
+                return;
+            }
+
+            ImageToShow.Source = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_userImages.First().Name), UriKind.Absolute));
+
+            SetUserImageParams();
+        }
+
+        public int GetTempImageIndex()
+        {
+            return _tempMediaIndex;
+        }
+
+        private void SetUserImageParams()
+        {
+            if (_system is null || _userImages is null || _tempMediaIndex == -1 ||
+                _userImages.Count == 0) return;
+
+            UserImage userImage = _userImages[_tempMediaIndex];
+
+            ElementName.Text = userImage.Name;
+            PositionInFolder.Text = $"{_tempMediaIndex + 1} of {_userImages.Count}";
+            SenderName.Text = _userName;
+            SentDate.Text = $"{userImage.Date.Day}.{userImage.Date.Month}.{userImage.Date.Year}";
+        }
+
+
         public void SetUserChat(TelSystem system, List<MediaAction> messages, int startElementIndex)
         {
             _system = system;
@@ -70,9 +160,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         public void SetMediaParams()
         {
             if (_system is null || _messages is null || _tempMediaIndex == -1 ||
-                _messages.Count == 0) return;
-
-            if (_tempMediaIndex == -1 || _messages[_tempMediaIndex] is not MediaAction media) return;
+                _messages.Count == 0 || _messages[_tempMediaIndex] is not MediaAction media) return;
 
             ElementName.Text = media.MediaName;
             PositionInFolder.Text = $"Photo {_messages.FindIndex(x => x.Id == media.Id) + 1} of {_messages.Count}";
@@ -81,7 +169,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
                 _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.SenderId)].Name;
-        }  
+        }
 
         public void SetImgIndex()
         {
@@ -244,7 +332,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             _imgs.RemoveAt(_tempMediaIndex);
             _messages.RemoveAt(_tempMediaIndex);
 
-            if(_imgs.Count == 0)
+            if (_imgs.Count == 0)
             {
                 //Clear this window
                 ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
@@ -261,7 +349,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             _mediaPaths.RemoveAt(_tempMediaIndex);
             _messages.RemoveAt(_tempMediaIndex);
 
-            if(_mediaPaths.Count == 0)
+            if (_mediaPaths.Count == 0)
             {
                 ((MainWindow)Window.GetWindow(this)).ClearVisualActionPage();
                 return;
@@ -293,24 +381,24 @@ namespace TelegramVisualPart.Pages.VisualPages
         public void RemoveFromChat(int mediaIndex)
         {
             //If this is img || video || gif        
-            if(_gifPath is not null)//its gif
+            if (_gifPath is not null)//its gif
             {
                 ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Gif);
                 _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Gif);
                 RemoveChosenVideo();
             }
-            else if(_img is not null)//its image 
+            else if (_img is not null)//its image 
             {
                 //Remove from Visual part 
                 ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Image);
-                
+
                 //Remove from logic
                 _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Image);
 
                 //Go to other in here (forward, if not -> backwards) //Delete element
                 RemoveChosenImage();
             }
-            else if(_media is not null)//its video
+            else if (_media is not null)//its video
             {
                 ((MainWindow)Window.GetWindow(this)).RemoveElementFromChat(mediaIndex, MediaType.Video);
                 _system.RemoveElemetFromChosenChat(mediaIndex, MediaType.Video);
@@ -329,7 +417,14 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (_img is not null &&
+            if (_userImages is not null &&
+                (_tempMediaIndex + 1) < _userImages.Count)
+            {
+                _tempMediaIndex++;
+                SetUserImage();
+            }
+            else if (_img is not null && 
+                _imgs is not null && 
                 (_tempMediaIndex + 1) < _imgs.Count)
             {
                 _tempMediaIndex++;
@@ -349,11 +444,21 @@ namespace TelegramVisualPart.Pages.VisualPages
             //Set next visual element
         }
 
+        public void SetUserImage()
+        {
+            _img = FilesAction.GetUserImage(_userImages[_tempMediaIndex].Name);
+            ImageToShow.Source = _img.Source;
+
+            ClearRenderTransform();
+
+            SetUserImageParams();
+        }
+
         public void RightArrowActions()
         {
             ClearRenderTransform();
 
-           // _tempMediaIndex++;
+            // _tempMediaIndex++;
             SetMediaParams();
         }
 
@@ -373,7 +478,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             {
                 var media = new MediaElement
                 {
-                    Source = new Uri( _mediaPaths[_tempMediaIndex], UriKind.Absolute),
+                    Source = new Uri(_mediaPaths[_tempMediaIndex], UriKind.Absolute),
                     Width = 300,
                     Height = 200,
                     LoadedBehavior = MediaState.Manual,
@@ -389,7 +494,14 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (_img is not null &&
+            if (_userImages is not null &&
+                (_tempMediaIndex - 1) >= 0)
+            {
+                _tempMediaIndex--;
+                SetUserImage();
+            }
+            else if (_img is not null &&
+                _imgs is not null &&
                 (_tempMediaIndex - 1) >= 0)
             {
                 _tempMediaIndex--;
@@ -485,12 +597,19 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void MenuBut_MouseEnter(object sender, MouseEventArgs e)
         {
-            MediaMenu.Visibility = Visibility.Visible;
+            if (MediaMenu is not null) MediaMenu.Visibility = Visibility.Visible;
+            else UsersImageMenu.Visibility = Visibility.Visible; 
         }
 
         private void MediaMenu_MouseLeave(object sender, MouseEventArgs e)
         {
             MediaMenu.Visibility = Visibility.Hidden;
         }
+
+        private void UsersImageMenu_MouseLeave(object sender, MouseEventArgs e)
+        {
+            UsersImageMenu.Visibility = Visibility.Hidden;
+        }
+
     }
 }

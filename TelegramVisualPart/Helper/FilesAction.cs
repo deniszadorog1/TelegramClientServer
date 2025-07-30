@@ -187,8 +187,30 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(wallPaperPath, fileName);
         }
 
+        public static List<Image> GetUserImages(List<string> names)
+        {
+            List<Image> res = new List<Image>();
+
+            for(int i = 0; i < names.Count; i++)
+            {
+                res.Add(GetUserImage(names[i]));
+            }
+            return res;
+        }
+
+        public static Image GetUserImage(string path)
+        {
+            return new Image()
+            {
+                Source = new BitmapImage(new Uri(GetUserImagePath(path), UriKind.Absolute)),
+                Stretch = Stretch.Fill
+            }; 
+        }
+
         public static string GetUserImagePath(string fileName)
         {
+            fileName = Path.GetFileName(fileName);
+
             string userImage = Path.Combine(GetImagesPath(), "UserImages");
             return Path.Combine(userImage, fileName);
         }

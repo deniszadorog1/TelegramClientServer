@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
+using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
@@ -28,12 +29,14 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     {
         private PrivacySettingType _type;
         private PrivAndSecSettings _settings;
+        private List<UserContactcs> _contacts;
 
         public SetPrivacyByType(PrivacySettingType type, 
-            PrivAndSecSettings settings)
+            PrivAndSecSettings settings, List<UserContactcs> contacts)
         {
             _settings = settings;
             _type = type;
+            _contacts = contacts;
 
             InitializeComponent();
 
@@ -531,7 +534,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -563,12 +566,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
             else if (openExps == BioAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
             else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
-
         }
 
         public void SetToChoosePage(ChooseType shareType)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts));
         }
 
         public PrivacySub GetSettingsTypeByPrivButton(EnumPrivacyButton but)

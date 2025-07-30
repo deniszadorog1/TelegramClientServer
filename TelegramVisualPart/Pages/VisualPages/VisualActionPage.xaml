@@ -55,7 +55,7 @@
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
 
-            <Grid HorizontalAlignment="Left" Width="400">
+            <Grid HorizontalAlignment="Left" Width="400" Name="ImageParamsPanel">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -70,7 +70,6 @@
                     <TextBlock x:Name="SenderName" Style="{StaticResource TextStyle}" Text="Sender name"/>
                     <TextBlock x:Name="SentDate" Style="{StaticResource TextStyle}" Text="00.00.0000"/>
                 </StackPanel>
-
             </Grid>
             
             <StackPanel Name="LeftMenuPanel" 
@@ -81,14 +80,21 @@
                 <controls:ActionButton HorizontalAlignment="Right" x:Name="RotateBut"
                                    Style="{StaticResource ButStyle}"
                                    PreviewMouseDown="RotateBut_PreviewMouseDown"/>
+
                 <controls:ActionButton HorizontalAlignment="Right" x:Name="MenuBut"
                                    Style="{StaticResource ButStyle}"
                                    MouseEnter="MenuBut_MouseEnter"
                                    PreviewMouseDown="MenuBut_PreviewMouseDown"/>
 
+                
                 <controls:MediaMenu Panel.ZIndex="100" Margin="-165 -200 0 0"
                                     MouseLeave="MediaMenu_MouseLeave"
                                     x:Name="MediaMenu" Visibility="Hidden"/>
+
+                <controls:UserImageMenu Panel.ZIndex="100" Margin="-150 -100 0 0"
+                                     x:Name="UsersImageMenu" 
+                                     MouseLeave="UsersImageMenu_MouseLeave"
+                                     Visibility="Hidden"/>
 
             </StackPanel>
             

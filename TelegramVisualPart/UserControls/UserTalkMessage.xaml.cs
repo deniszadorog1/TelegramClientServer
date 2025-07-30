@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -20,9 +22,19 @@ namespace TelegramVisualPart.UserControls
     /// </summary>
     public partial class UserTalkMessage : UserControl
     {
-        public UserTalkMessage()
+        private string _imgName;
+        public UserTalkMessage(string imgName)
         {
+            _imgName = imgName;
             InitializeComponent();
+
+            SetContactImage();
+        }
+
+        public void SetContactImage()
+        {
+            ImageIcon.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }
 
         public string GetLastMessageText()

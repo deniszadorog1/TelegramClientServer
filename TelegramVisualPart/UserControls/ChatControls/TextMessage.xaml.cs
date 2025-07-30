@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -21,15 +22,26 @@ namespace TelegramVisualPart.UserControls.ChatControls
     public partial class TextMessage : UserControl
     {
         private string _text;
-        public TextMessage(string text)
+        private string _imgName;
+
+        public TextMessage(string text, string senderImageName)
         {
             _text = text;
+            _imgName = senderImageName;
 
             InitializeComponent();
 
             //BgBrush.ImageSource = img.Source;
             Message.Text = text;
             SetWidth();
+
+            SetImageSource();
+        }
+
+        private void SetImageSource()
+        {
+            BgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }
 
         private const int _minMessageWidth = 30;

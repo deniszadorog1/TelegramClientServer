@@ -48,10 +48,10 @@
                 <ScrollViewer HorizontalScrollBarVisibility="Hidden"
                               VerticalScrollBarVisibility="Auto">
                     <StackPanel Name="ChatsPanelToChoose">
-                        <controls:ChatToApply x:Name="FirstTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>
+                        <!--<controls:ChatToApply x:Name="FirstTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>
                         <controls:ChatToApply x:Name="SecondTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>
                         <controls:ChatToApply x:Name="ThirdTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>
-                        <controls:ChatToApply x:Name="FourthTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>
+                        <controls:ChatToApply x:Name="FourthTest" PreviewMouseDown="TestParam_PreviewMouseDown"/>-->
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

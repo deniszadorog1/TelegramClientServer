@@ -30,29 +30,35 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public string _gifPath;
         public string _stickerPath;
 
-        public MediaMessage(Image img, bool isSticker)
+        public string _senderImgName;
+
+        public MediaMessage(Image img, bool isSticker, string senderImgName)
         {
             _img = img;
             IsSticker = isSticker;
+            _senderImgName = senderImgName;
 
             InitializeComponent();
             ImgMessage.ImageSource = _img.Source;
 
             HideAllBorders();
             ImageBorder.Visibility = Visibility.Visible;
+            SetSenderImage();
         }
 
-        public MediaMessage(string gifPath)
+        public MediaMessage(string gifPath, string senderImgName)
         {
             _gifPath = gifPath;
+            _senderImgName = senderImgName;
+
             InitializeComponent();
 
             HideAllBorders();
             GifBorder.Visibility = Visibility.Visible;
 
             SetGif(gifPath);
+            SetSenderImage();
         }
-
 
         public void SetGif(string gifPath)
         {
@@ -66,15 +72,24 @@ namespace TelegramVisualPart.UserControls.ChatControls
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(GifImage, RepeatBehavior.Forever);
         }
 
-        public MediaMessage(MediaElement media)
+        public MediaMessage(MediaElement media, string senderImgName)
         {
             _media = media;
+            _senderImgName = senderImgName;
+
             InitializeComponent();
 
             HideAllBorders();
             //VideoBorder.Visibility = Visibility.Visible;
             ImageBorder.Visibility = Visibility.Visible;
             SetVideoPreview();
+            SetSenderImage();
+        }
+
+        public void SetSenderImage()
+        {
+            BgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
         }
 
         private void SetVideoPreview()

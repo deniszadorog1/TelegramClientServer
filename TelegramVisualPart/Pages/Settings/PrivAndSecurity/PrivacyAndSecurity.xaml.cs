@@ -141,12 +141,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         {
             return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system) :
                 name == BlockedUsers.Name.ToString() ? new BlockedUsers(_system) :
-                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber, _system.Settings.GetPrivacySettings()) :
-                name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen, _system.Settings.GetPrivacySettings()) :
-                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos, _system.Settings.GetPrivacySettings()) :
-                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ForwardedMessages, _system.Settings.GetPrivacySettings()) :
-                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth, _system.Settings.GetPrivacySettings()) :
-                name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio, _system.Settings.GetPrivacySettings()) :
+                name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber, _system.Settings.GetPrivacySettings(), _system.Contacts) :
+                name == LastSeen.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.LastSeen, _system.Settings.GetPrivacySettings(), _system.Contacts) :
+                name == ProfilePhotos.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ProfilePhotos, _system.Settings.GetPrivacySettings(), _system.Contacts) :
+                name == ForwardedMessages.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.ForwardedMessages, _system.Settings.GetPrivacySettings(), _system.Contacts) :
+                name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth, _system.Settings.GetPrivacySettings(), _system.Contacts) :
+                name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio, _system.Settings.GetPrivacySettings(), _system.Contacts) :
                 name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount(_system.Settings.GetPrivacySettings()) :
                 name == Messages.Name.ToString() ? new PrivacyMessages(_system.Settings.GetPrivacySettings().MessagesPrivacy) : null;
                 

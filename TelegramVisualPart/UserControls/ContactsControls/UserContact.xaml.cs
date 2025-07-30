@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ContactsControls
 {
@@ -20,25 +21,34 @@ namespace TelegramVisualPart.UserControls.ContactsControls
     /// </summary>
     public partial class UserContact : UserControl
     {
+        private string _imgSource;
+        private string _login;
+        private DateTime? _lastSeenOnline;
+        private string _contactImgName;
+
         public UserContact()
         {
             InitializeComponent();
         }
 
-        private string _imgSource;
-        private string _login;
-        private DateTime? _lastSeenOnline;
-
         public UserContact(string imgSource, string login,
-            DateTime? lastOnline)
+            DateTime? lastOnline, string contactImgName)
         {
             _imgSource = imgSource;
             _login = login;
             _lastSeenOnline = lastOnline;
+            _contactImgName = contactImgName;
 
             InitializeComponent();
 
             SetParams();
+            SetUserImage();
+        }
+
+        public void SetUserImage()
+        {
+            ImgBrushSource.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_contactImgName), UriKind.Absolute));
         }
 
         public void SetParams()

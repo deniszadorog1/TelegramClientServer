@@ -72,9 +72,12 @@
                         </Grid.ColumnDefinitions>
 
                         <Ellipse Grid.Row="0" Name ="UserIcon" 
-                                 Width="70" Height="70" HorizontalAlignment="Center">
+                                 Width="70" Height="70" HorizontalAlignment="Center"
+                                 PreviewMouseDown="UserIcon_PreviewMouseDown"
+                                 MouseEnter="UserIcon_MouseEnter"
+                                 MouseLeave="UserIcon_MouseLeave">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                                <ImageBrush x:Name="ContactImgBrush"  ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                             </Ellipse.Fill>
                         </Ellipse>
 

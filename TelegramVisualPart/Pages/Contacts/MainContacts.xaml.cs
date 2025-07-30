@@ -47,7 +47,8 @@ namespace TelegramVisualPart.Pages.Contacts
             for(int i = 0; i < _contacts.Count; i++)
             {
                 UserContact contact = new UserContact(
-                        string.Empty, _contacts[i].Name, _contacts[i].BirthDate);
+                        string.Empty, _contacts[i].Name, _contacts[i].BirthDate,
+                        _contacts[i].GetFirstImageName().Name);
 
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
 

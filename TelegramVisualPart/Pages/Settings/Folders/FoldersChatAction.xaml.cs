@@ -73,7 +73,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             for (int i = 0; i < _system.Contacts.Count; i++)
             {
-                string contactPath = _system.Contacts[i].GetLastImageName();
+                string contactPath = _system.Contacts[i].GetFirstImageName().Name;
 
                 FolderChatType control = new FolderChatType();
 

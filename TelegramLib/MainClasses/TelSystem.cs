@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.MainClasses.UserParams;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 
@@ -196,11 +197,17 @@ namespace TelegramLib.MainClasses
                 new List<UserContactcs>()));
         }
 
+
         public void SetTestUserContacts()
         {
-            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", null, DateTime.Now, true));
-            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, null, false));
-            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", null, DateTime.Now, true));
+            List<UserImage> imageNames = new List<UserImage>();
+            imageNames.Add(new UserImage("fray.jpg", DateTime.Now));
+            imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
+            imageNames.Add(new UserImage("WhiteCat.png", DateTime.Now));
+
+            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames));
+            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames));
+            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames));
         }
 
         public List<Message> GetTestMessages()

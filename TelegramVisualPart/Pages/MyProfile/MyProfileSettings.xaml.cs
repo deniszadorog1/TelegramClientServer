@@ -15,6 +15,9 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.UserParams;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls.MyProfileControls;
 
 namespace TelegramVisualPart.Pages.MyProfile
@@ -25,13 +28,23 @@ namespace TelegramVisualPart.Pages.MyProfile
     public partial class MyProfileSettings : Page
     {
         private User _user;
-        public MyProfileSettings(User user)
+        private TelSystem _system;
+        public MyProfileSettings(User user, TelSystem system)
         {
             _user = user;
+            _system = system;
+
             InitializeComponent();
 
             SetButtonsView();
             SetUserParams();
+
+            SetUserImage();
+        }
+
+        public void SetUserImage()
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         public void SetUserParams()
@@ -93,7 +106,7 @@ namespace TelegramVisualPart.Pages.MyProfile
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new LoggedUserProfile(_user));
+                new LoggedUserProfile(_user, _system));
         }
 
         private void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -118,6 +131,37 @@ namespace TelegramVisualPart.Pages.MyProfile
                 name == Username.Name.ToString() ? new SetInformation.SetUsername(_user) : 
                 name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber(_user) : 
                 name == BirthdayBut.Name.ToString() ? new SetInformation.SetBirthDate(_user) : null;
+        }
+
+        private void Ellipse_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void Ellipse_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string firstImage = _user.GetFirstImageName().Name;
+            Image chosen = FilesAction.GetUserImage(firstImage);
+
+            List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());
+
+            VisualActionPage page = new VisualActionPage(chosen, imgs);
+            page.SetUserImages(_user.UserImages, _system, _user.Name, true);
+
+            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+        }
+
+        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
     }
 }

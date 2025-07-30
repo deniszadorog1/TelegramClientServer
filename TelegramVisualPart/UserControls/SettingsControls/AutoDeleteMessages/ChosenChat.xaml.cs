@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
 {
@@ -27,10 +28,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
             InitializeComponent();
         }
 
-        public void SetBasicParams()
+        public void SetBasicParams(string userImgName, string name)
         {
-            Image img = new Image();
-
+            UserImageBrush.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(userImgName), UriKind.Absolute));
+            UserName.Text = name;
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)

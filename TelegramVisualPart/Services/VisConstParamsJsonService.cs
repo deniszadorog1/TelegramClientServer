@@ -37,6 +37,5 @@ namespace TelegramVisualPart.Services
             SetStringParams(_fileName);
             return _dict[name];
         }
-
     }
 }

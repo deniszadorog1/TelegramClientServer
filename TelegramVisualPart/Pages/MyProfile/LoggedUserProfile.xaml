@@ -52,9 +52,12 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Ellipse Grid.Column="0" Width="75" Height="75">
+                <Ellipse Grid.Column="0" Width="75" Height="75"
+                         MouseEnter="Ellipse_MouseEnter"
+                         MouseLeave="Ellipse_MouseLeave"
+                         PreviewMouseDown="Ellipse_PreviewMouseDown">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                        <ImageBrush x:Name="UserImage"  ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                     </Ellipse.Fill>
                 </Ellipse>
 

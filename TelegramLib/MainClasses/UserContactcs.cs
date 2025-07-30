@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.MainClasses.UserParams;
 
 namespace TelegramLib.MainClasses
 {
@@ -16,16 +17,16 @@ namespace TelegramLib.MainClasses
         public DateTime? BirthDate { get; set; }
         public string BIO { get; set; }
         public string? PhoneNumber { get; set; }
-        List<string> IconsPaths { get; set; }
         public DateTime? LastSeen { get; set; }
         public bool IsNotificationsIsOn { get; set; }
-        
+        public List<UserImage> UserImages { get; set; }
         public bool IsBlockedUserBlocked { get; set; }
 
         public UserContactcs(int id, string name, string userName, 
             DateTime? birthDate,
-            string bio, string? phoneNumber, List<string> iconsPaths,
-            DateTime? lastSeen, bool isNotsOn)
+            string bio, string? phoneNumber,
+            DateTime? lastSeen, bool isNotsOn,
+            List<UserImage> userImages)
         {
             Id = id;
             Name = name;
@@ -33,9 +34,9 @@ namespace TelegramLib.MainClasses
             BirthDate = birthDate;
             BIO = bio;
             PhoneNumber = phoneNumber;
-            IconsPaths = iconsPaths;
             LastSeen = lastSeen;
             IsNotificationsIsOn = isNotsOn;
+            UserImages = userImages;
         }
 
         public UserContactcs()
@@ -45,9 +46,12 @@ namespace TelegramLib.MainClasses
             UserName = "testUSERNAME";
             BirthDate = DateTime.Now;
             BIO = "testBIO";
-            IconsPaths = new List<string>();
             LastSeen = DateTime.Now;
             IsNotificationsIsOn = true;
+
+            UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));     
+            UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
+            UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
         }
 
         public bool GetNotifsState()
@@ -92,14 +96,30 @@ namespace TelegramLib.MainClasses
             return Id == senderId;
         }
 
-        public string GetLastImageName()
+        public UserImage GetFirstImageName()
         {
-            if (IconsPaths is null || IconsPaths.Count == 0)
+            if (UserImages is null || UserImages.Count == 0)
             {
-                IconsPaths = new List<string>();
-                IconsPaths.Add("Fray.jpg");
+                UserImages = new List<UserImage>();
+                UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
             }
-            return IconsPaths.Last();
+            return UserImages.First();
         }
+
+        public List<string> GetImagesNames()
+        {
+            List<string> res = new List<string>();
+
+            for(int i = 0; i < UserImages.Count; i++)
+            {
+                res.Add(UserImages[i].Name);
+            }
+
+            return res;
+        }
+
+
+
+
     }
 }

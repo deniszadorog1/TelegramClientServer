@@ -23,7 +23,7 @@
                 <Ellipse Name ="LoggedUserImage" Width="50" Height="50"
                          HorizontalAlignment="Left" Margin="10">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="pack://application:,,,/Visuals/Images/UserImages/Minato.jpg"/>
+                        <ImageBrush x:Name="UserImage"  ImageSource="pack://application:,,,/Visuals/Images/UserImages/Minato.jpg"/>
                     </Ellipse.Fill>
                 </Ellipse>
 
@@ -96,8 +96,8 @@
                 </Grid>
 
                 <ListBox Grid.Row="1" x:Name="ChatsBox" Visibility="Hidden">
-                    <controls:UserTalkMessage Margin="-10 0 0 0"   
-                                              Width="{Binding ActualWidth, ElementName=ChatsGrid}"/>
+                   <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
+                                              Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                 </ListBox>
 
                 <Grid Grid.Row="1" Name="SearchBoxGrid" Visibility="Hidden" 
@@ -151,11 +151,11 @@
                             Background="Gray" CornerRadius="10" 
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" Margin="0 0 0 100">
-                            <TextBlock Text="Select chat to start messaging" Foreground="White"
+                        <TextBlock Text="Select chat to start messaging" Foreground="White"
                                    FontSize="18" Padding="7" 
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
-                    
+
                     <userControls:UserChat x:Name="UserChat" Visibility="Hidden"/>
                 </Grid>
             </Border>

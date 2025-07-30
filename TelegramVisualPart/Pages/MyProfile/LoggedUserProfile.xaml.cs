@@ -3,7 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.VisualPages;
 
 namespace TelegramVisualPart.Pages
 {
@@ -13,9 +16,12 @@ namespace TelegramVisualPart.Pages
     public partial class LoggedUserProfile : Page
     {
         private User _user;
-        public LoggedUserProfile(User user)
+        private TelSystem _system;
+        public LoggedUserProfile(User user, TelSystem system)
         {
             _user = user;
+            _system = system;
+
             InitializeComponent();
             SetBasicParams();
         }
@@ -30,6 +36,7 @@ namespace TelegramVisualPart.Pages
             PhoneNumberBlock.Text = _user.PhoneNumber;
             UserNameBlock.Text = _user.UserName;
 
+            UserImage.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)
@@ -47,12 +54,43 @@ namespace TelegramVisualPart.Pages
         private void SettingsBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new MyProfile.MyProfileSettings(_user));
+                new MyProfile.MyProfileSettings(_user, _system));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private void Ellipse_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void Ellipse_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string firstImage = _user.GetFirstImageName().Name;
+            Image chosen = FilesAction.GetUserImage(firstImage);
+
+            List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());
+            
+            VisualActionPage page = new VisualActionPage(chosen, imgs);
+            page.SetUserImages(_user.UserImages, _system, _user.Name, true);
+
+            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+        }
+
+        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
     }
 }

@@ -294,3 +294,5 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Syste
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\ffmpeg\ffmpeg.exe
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\ffmpeg\ffprobe.exe
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\MediaActions\UserImageMenu.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\MediaActions\UserImageMenu.baml

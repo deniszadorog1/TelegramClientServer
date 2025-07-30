@@ -244,7 +244,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
                 folderChat.ChatEllipse.Fill = new ImageBrush()
                 {
-                    ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(contacts[i].GetLastImageName()), UriKind.Absolute)),
+                    ImageSource = new BitmapImage(new Uri(
+                        FilesAction.GetUserImagePath(contacts[i].GetFirstImageName().Name), UriKind.Absolute)),
 
                 };
 

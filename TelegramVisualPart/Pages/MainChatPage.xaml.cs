@@ -37,6 +37,8 @@ namespace TelegramVisualPart.Pages
     public partial class MainChatPage : Page
     {
         private TelSystem _system;
+        private TelegramLib.MainClasses.UserChat _chosenChat;
+
         public MainChatPage(TelSystem system)
         {
             _system = system;
@@ -51,26 +53,30 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetSystemParam(_system);
 
-            SetSearchMessageParams();
+            SetUserImage();
 
             UpdateUserChatsPanel();
 
             SetNoChatBg();
         }
 
-        public void SetSearchMessageParams()
+        public void SetUserImage()
         {
-            //Search in chat list of messages
-            //SearchMessage.
-
+            string path = FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
+            UserImage.ImageSource = new BitmapImage(new Uri(path, UriKind.Absolute));
         }
 
         public void SetChatClick()
         {
             UserChat.FindMessageBut.PreviewMouseDown += Magnifier_PreviewMouseDown;
+            LeftButtons.HamburgMenu.PreviewMouseDown += UpdateUserImage_MouseDown;
         }
 
-        private TelegramLib.MainClasses.UserChat _chosenChat;
+        private void UpdateUserImage_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SetUserImage();
+        }
+
         private void Magnifier_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             HideAllChatBlocks();
@@ -96,13 +102,15 @@ namespace TelegramVisualPart.Pages
 
             for (int i = 0; i < messages.Count; i++)
             {
-                UserTalkMessage message = new UserTalkMessage()
+                //If sender is null, check logged user
+                UserContactcs sender = _system.GetContactById(messages[i].SenderId);
+
+                UserTalkMessage message = new UserTalkMessage(sender.GetFirstImageName().Name)
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
-                //If sender is null, check logged user
-                UserContactcs sender = _system.GetContactById(messages[i].SenderId);
+
 
                 if (sender is not null) message.FriendLogin.Text = sender.Name;
                 else if (_system.IsUserIsSameId(i) is not null) message.FriendLogin.Text = _system.LoggedUser.Name;
@@ -238,12 +246,11 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetUserChat(_system.GetUserChatByChatterName(
                 _system.ChosenChatContact.Name));
-
         }
 
         public Page GetPageByIcon(MenuIconTextBut icon)
         {
-            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser) :
+            return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
                 icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system.Contacts) :
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_system) : null;
         }
@@ -279,8 +286,6 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetUserChat(
                 _system.GetUserChatByChatterName(talkControl.FriendLogin.Text));
-
-            //_system.Chats;
         }
 
         public void ShowChatControl()
@@ -471,14 +476,14 @@ namespace TelegramVisualPart.Pages
 
         public UserTalkMessage GetTalkMessage(int chatIndex)
         {
-            UserTalkMessage chatControl = new UserTalkMessage()
+            TelegramLib.MainClasses.UserChat chat =
+                _system.GetChatByIndex(chatIndex);
+            
+            UserTalkMessage chatControl = new UserTalkMessage(chat.GetChatter().GetFirstImageName().Name)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Width = ChatsGrid.ActualWidth
             };
-
-            TelegramLib.MainClasses.UserChat chat =
-                _system.GetChatByIndex(chatIndex);
 
             chatControl.FriendLogin.Text = chat.GetChatter().Name;
 
@@ -565,14 +570,14 @@ namespace TelegramVisualPart.Pages
             ChatsBox.Items.Clear();
             foreach (UserContactcs contact in chosenFolder.Contacts)
             {
-                UserTalkMessage message = new UserTalkMessage()
+                TelegramLib.MainClasses.UserChat chat =
+                    _system.GetUserChatByChatterName(contact.Name);
+
+                UserTalkMessage message = new UserTalkMessage(chat.GetChatter().GetFirstImageName().Name)
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Width = ChatsGrid.ActualWidth
                 };
-
-                TelegramLib.MainClasses.UserChat chat = 
-                    _system.GetUserChatByChatterName(contact.Name);
 
                 message.FriendLogin.Text = chat.GetChatter().Name;
 

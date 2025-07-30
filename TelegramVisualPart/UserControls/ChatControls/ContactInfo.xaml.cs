@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.VisualPages;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -56,6 +57,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             NotificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
 
             SentObjsParams();
+
+            UserContactcs contact = _chat.GetChatter();
+            ContactImgBrush.ImageSource = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         public void SentObjsParams()
@@ -233,6 +238,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_chat is null) return;
             _chat.GetChatter().SetNotifState(false);
+        }
+
+        private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UserContactcs contact = _chat.GetChatter();
+
+            string firstImage = contact.GetFirstImageName().Name;
+            Image chosen = FilesAction.GetUserImage(firstImage);
+
+            List<Image> imgs = FilesAction.GetUserImages(contact.GetImagesNames());
+
+            VisualActionPage page = new VisualActionPage(chosen, imgs);
+            page.SetUserImages(contact.UserImages, _system, contact.Name, false);
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+        }
+
+        private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserIcon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
     }
 }

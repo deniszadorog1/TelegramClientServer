@@ -61,6 +61,9 @@ namespace TelegramVisualPart.UserControls
         {
             if (chat is null) return;
             _chat = chat;
+
+            _chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
+
             UserChatMenu.SetChatParam(_chat);
 
             ClearChat();
@@ -126,6 +129,8 @@ namespace TelegramVisualPart.UserControls
             _system = system;
             UserChatMenu.SetSystemParam(system);
             SetTestChatMessages();
+
+            EmojisBoard.SetSystem(_system);
         }
 
         public void SetTestChatMessages()
@@ -139,20 +144,23 @@ namespace TelegramVisualPart.UserControls
         {
             for (int i = 0; i < _chatMessages.Count; i++)
             {
+                string imgName = _chatMessages[i].SenderId == -1 ?
+                    _system.LoggedUser.GetFirstImageName().Name : _chat.GetChatter().GetFirstImageName().Name;
+
                 if (_chatMessages[i] is TelegramLib.MainClasses.Messages.TextMessage text)
                 {
-                    SetTextMessageInChat(text);
+                    SetTextMessageInChat(text, imgName);
                     //text
                 }
                 else if (_chatMessages[i] is MediaAction media)
                 {
                     //Video or photo
-                    SetMediaMessageInChat(media);
+                    SetMediaMessageInChat(media, imgName);
                 }
             }
         }
 
-        public void SetMediaMessageInChat(MediaAction message)
+        public void SetMediaMessageInChat(MediaAction message, string senderImgName)
         {
             //Got type (To know what folder to search in)
             MediaType type = message.IsSticker ? MediaType.Sticker :
@@ -164,22 +172,22 @@ namespace TelegramVisualPart.UserControls
             {
                 case MediaType.Image:
                     {
-                        AddImageMessage(path, false);
+                        AddImageMessage(path, false, senderImgName);
                         return;
                     }
                 case MediaType.Gif:
                     {
-                        SendGif(path);
+                        SendGif(path, senderImgName);
                         return;
                     }
                 case MediaType.Video:
                     {
-                        AddMediaElement(path);
+                        AddMediaElement(path, senderImgName);
                         return;
                     }
                 case MediaType.Sticker:
                     {
-                        AddImageMessage(path, true);
+                        AddImageMessage(path, true, senderImgName);
                         return;
                     }
                 default:
@@ -189,9 +197,10 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message)
+        public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message, string senderImageName)
         {
-            ChatControls.TextMessage newMes = new ChatControls.TextMessage(GetConvertedStringMessage(message.Text));
+            ChatControls.TextMessage newMes = 
+                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text), senderImageName);
             newMes.SetTime(message.SentTime);
 
             ChatBox.Items.Add(newMes);
@@ -213,14 +222,14 @@ namespace TelegramVisualPart.UserControls
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
-                AddTextMessage();
+                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name);
             }
         }
 
-        private void AddTextMessage()
+        private void AddTextMessage(string senderImageName)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(CommentTextBox.Text)));
+                GetConvertedStringMessage(CommentTextBox.Text), senderImageName));
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -237,7 +246,8 @@ namespace TelegramVisualPart.UserControls
         public void AddEmoji(string emoji)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(emoji)));
+                GetConvertedStringMessage(emoji), _system.LoggedUser.GetFirstImageName().Name));
+
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
             EmojisBoard.Visibility = Visibility.Hidden;
@@ -284,18 +294,18 @@ namespace TelegramVisualPart.UserControls
 
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
-                    AddImageMessage(filePath, false);
+                    AddImageMessage(filePath, false, _system.LoggedUser.GetFirstImageName().Name);
                     AddMediaPath(filePath);
                 }
                 else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
                 {
-                    AddMediaElement(filePath);
+                    AddMediaElement(filePath, _system.LoggedUser.GetFirstImageName().Name);
                     AddMediaPath(filePath);
                 }
             }
         }
 
-        public void AddImageMessage(string filePath, bool isSticker)
+        public void AddImageMessage(string filePath, bool isSticker, string senderImageName)
         {
             var img = new Image
             {
@@ -308,7 +318,7 @@ namespace TelegramVisualPart.UserControls
                 FilesAction.CopyImageToImageFolder(filePath);
             }
 
-            AddImageMessage(img, isSticker);
+            AddImageMessage(img, isSticker, senderImageName);
         }
 
         public void AddMediaPath(string filePath)
@@ -326,7 +336,7 @@ namespace TelegramVisualPart.UserControls
                 _system.LoggedUser.Id, DateTime.Now, fileName, false));
         }
 
-        public void AddMediaElement(string filePath)
+        public void AddMediaElement(string filePath, string senderImageName)
         {
             var media = new MediaElement
             {
@@ -344,12 +354,12 @@ namespace TelegramVisualPart.UserControls
                 FilesAction.CopyVideoToVideoFolder(filePath);
             }
 
-            AddVideoMessage(media);
+            AddVideoMessage(media, senderImageName);
         }
 
-        public void SendGif(string gifPath)
+        public void SendGif(string gifPath, string senderImageName)
         {
-            var message = new MediaMessage(gifPath);
+            var message = new MediaMessage(gifPath, senderImageName);
             message.PreviewMouseDown += ChatGif_PreviewMouseDown;
             ChatBox.Items.Add(message);
             AddMediaPath(gifPath);
@@ -367,9 +377,9 @@ namespace TelegramVisualPart.UserControls
             VisualActionPageParams(message, MediaType.Gif, page);
         }
 
-        private void AddVideoMessage(MediaElement el)
+        private void AddVideoMessage(MediaElement el, string senderImageName)
         {
-            var video = new MediaMessage(el);
+            var video = new MediaMessage(el, senderImageName);
             video.PreviewMouseDown += ChatVideo_PreviewMouseDown;
             ChatBox.Items.Add(video);
         }
@@ -427,16 +437,16 @@ namespace TelegramVisualPart.UserControls
             return res;
         }
 
-        public void AddImageMessage(Image img, bool isSticker)
+        public void AddImageMessage(Image img, bool isSticker, string senderImgName)
         {
-            var message = new MediaMessage(img, isSticker);
+            var message = new MediaMessage(img, isSticker, senderImgName);
             message.PreviewMouseDown += ChatImage_PreviewMouseDown;
             ChatBox.Items.Add(message);
         }
 
-        public void AddStickerMessage(Image img)
+        public void AddStickerMessage(Image img, string senderImageName)
         {
-            var message = new MediaMessage(img, true);
+            var message = new MediaMessage(img, true, senderImageName);
             message.PreviewMouseDown += ChatImage_PreviewMouseDown;
             ChatBox.Items.Add(message);
 
