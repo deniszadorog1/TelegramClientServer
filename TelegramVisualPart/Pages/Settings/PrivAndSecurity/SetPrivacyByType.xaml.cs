@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -18,6 +19,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
@@ -30,13 +32,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         private PrivacySettingType _type;
         private PrivAndSecSettings _settings;
         private List<UserContactcs> _contacts;
+        private TelSystem _system;
 
-        public SetPrivacyByType(PrivacySettingType type, 
-            PrivAndSecSettings settings, List<UserContactcs> contacts)
+        public SetPrivacyByType(PrivacySettingType type,
+            PrivAndSecSettings settings, List<UserContactcs> contacts,
+            TelSystem system)
         {
             _settings = settings;
             _type = type;
             _contacts = contacts;
+            _system = system; 
 
             InitializeComponent();
 
@@ -178,6 +183,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             LastSeenOtherNeverShare.EnumPart.Text = "Add users";
 
             HideReedTimeToggleBut.TextBlock.Text = "Hide read time";
+
+            HideReedTimeToggleBut.Toggle.IsChecked = _settings.LastSeenPrivacy.IsHideReadAction;
+            HideReedTimeToggleBut.Toggle.Checked += ToggleButton_StateChanged;
+            HideReedTimeToggleBut.Toggle.Unchecked += ToggleButton_StateChanged;
+        }
+
+        private void ToggleButton_StateChanged(object sender, RoutedEventArgs e)
+        {
+            var toggle = sender as ToggleButton;
+            _settings.LastSeenPrivacy.IsHideReadAction = (bool)toggle.IsChecked;
         }
 
         public void SetPhoneGridBlocks()
@@ -214,7 +229,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 "it on Telegram only if they are your contacts";
         }
 
-        public void SetWhoCanSeeParam(ShareWith toShare) 
+        public void SetWhoCanSeeParam(ShareWith toShare)
         {
             if (toShare == ShareWith.Everybody) EverybodyRadio.IsChecked = true;
             else if (toShare == ShareWith.Contacts) ContactsRadio.IsChecked = true;
@@ -250,7 +265,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                         LastSeenEverybodyRow.Height = new GridLength();
                         Height = 450;
                         SetShareParam(_settings.LastSeenPrivacy, ShareWith.Everybody);
-                        break;                    }
+                        break;
+                    }
                 case PrivacySettingType.ProfilePhotos:
                     {
                         PubPhotoButRow.Height = new GridLength(0);
@@ -480,7 +496,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 case PrivacySettingType.PhoneNumber:
                     {
                         PhoneNumberRow.Height = new GridLength();
-                       
+
                         Height = 450;
                         break;
                     }
@@ -546,31 +562,31 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         {
             if (sender is not EnumPrivacyButton openExps) return;
 
-            if (openExps == PhoneEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare); 
-            else if (openExps == PhoneContactAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare); 
-            else if (openExps == PhoneContactNeverShareBut) SetToChoosePage(ChooseType.NeverShare); 
-            else if (openExps == PhoneNobodyAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
+            if (openExps == PhoneEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare, _settings.PhonePrivacy);
+            else if (openExps == PhoneContactAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.PhonePrivacy);
+            else if (openExps == PhoneContactNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.PhonePrivacy);
+            else if (openExps == PhoneNobodyAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.PhonePrivacy);
 
-            else if (openExps == LastSeenEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare);
-            else if (openExps == LastSeenOtherAlwaysShare) SetToChoosePage(ChooseType.AlwaysShare);
-            else if (openExps == LastSeenOtherNeverShare) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == LastSeenEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare, _settings.LastSeenPrivacy);
+            else if (openExps == LastSeenOtherAlwaysShare) SetToChoosePage(ChooseType.AlwaysShare, _settings.LastSeenPrivacy);
+            else if (openExps == LastSeenOtherNeverShare) SetToChoosePage(ChooseType.NeverShare, _settings.LastSeenPrivacy);
 
-            else if (openExps == ProfPhotosAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
-            else if (openExps == ProfPhotosNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == ProfPhotosAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.ProfPhotoPrivacy);
+            else if (openExps == ProfPhotosNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.ProfPhotoPrivacy);
 
-            else if (openExps == ForwardMeesagesAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
-            else if (openExps == ForwardMeesagesNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == ForwardMeesagesAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.ForwardMesPrivacy);
+            else if (openExps == ForwardMeesagesNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.ForwardMesPrivacy);
 
-            else if (openExps == BirthDateAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
-            else if (openExps == BirthDateNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == BirthDateAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.DateBirthPrivacy);
+            else if (openExps == BirthDateNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.DateBirthPrivacy);
 
-            else if (openExps == BioAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare);
-            else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare);
+            else if (openExps == BioAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.BioPrivacy);
+            else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.BioPrivacy);
         }
 
-        public void SetToChoosePage(ChooseType shareType)
+        public void SetToChoosePage(ChooseType shareType, PrivacySub sub)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts, sub));
         }
 
         public PrivacySub GetSettingsTypeByPrivButton(EnumPrivacyButton but)
@@ -587,6 +603,33 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         private void MyContactsRadioSub_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Contact;
+        }
+
+        private void SetPubPhotoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Choose image or video",
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                {
+                    FilesAction.AddNewUserImage(filePath);
+
+                    string name = System.IO.Path.GetFileName(filePath);
+
+                    _system.LoggedUser.UserImages.Insert(0, new TelegramLib.MainClasses.UserParams.UserImage(name, DateTime.Now));
+
+                    //Add image to User Images
+                    //Set it To first place
+                }
+            }
         }
     }
 }

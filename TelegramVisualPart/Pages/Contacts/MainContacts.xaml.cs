@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using ControlzEx.Standard;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,15 +27,17 @@ namespace TelegramVisualPart.Pages.Contacts
     /// </summary>
     public partial class MainContacts : Page
     {
-        public event EventHandler ChosenContact;
+        public event EventHandler ContactClicked;
 
         private ContactsPageAction _type;
-        private List<UserContactcs> _contacts;
-        
-        public MainContacts(ContactsPageAction type, List<UserContactcs> contacts)
+        private TelSystem _system;
+        private bool _isBlock;
+
+        public MainContacts(ContactsPageAction type, TelSystem system, bool isBlock)
         {
             _type = type;
-            _contacts = contacts;
+            _system = system;
+            _isBlock = isBlock;
 
             InitializeComponent();
             SetBasicParams();
@@ -44,11 +47,14 @@ namespace TelegramVisualPart.Pages.Contacts
 
         public void SetContactsParams()
         {
-            for(int i = 0; i < _contacts.Count; i++)
+            List<UserContactcs> toAdd = !_isBlock ? _system.Contacts : 
+                _system.Contacts.Where(x => !_system.LoggedUser.BlockedContacts.Select(y => y.Name).Contains(x.Name)).ToList();
+
+            for(int i = 0; i < toAdd.Count; i++)
             {
                 UserContact contact = new UserContact(
-                        string.Empty, _contacts[i].Name, _contacts[i].BirthDate,
-                        _contacts[i].GetFirstImageName().Name);
+                        string.Empty, toAdd[i].Name, toAdd[i].BirthDate,
+                        toAdd[i].GetFirstImageName().Name);
 
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
 
@@ -56,7 +62,7 @@ namespace TelegramVisualPart.Pages.Contacts
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = _contacts[i].UserName //MB need Name(Check it)
+                    Tag = toAdd[i].UserName 
                 };
                 ContactsListBox.Items.Add(item);
             }
@@ -66,7 +72,20 @@ namespace TelegramVisualPart.Pages.Contacts
         {
             if (sender is not UserContact contact) return;
 
-            ChosenContact?.Invoke(sender, EventArgs.Empty);
+            if (_isBlock) //block in logic
+            {
+                UserContactcs toBlock = 
+                    _system.Contacts.Where(x => x.Name == contact.UserLogin.Text).First();
+
+                _system.LoggedUser.BlockedContacts.Add(toBlock);
+
+                ContactClicked?.Invoke(sender, EventArgs.Empty);
+                ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+                return;
+            }
+            
+
+            ContactClicked?.Invoke(sender, EventArgs.Empty);
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
@@ -105,7 +124,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void AddContactBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new AddContact(_contacts));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new AddContact(_system));
         }
 
         private void CloseBut_Click(object sender, RoutedEventArgs e)

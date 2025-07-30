@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.SettingsControls
 {
@@ -23,6 +24,12 @@ namespace TelegramVisualPart.UserControls.SettingsControls
         public ToUnblockUser()
         {
             InitializeComponent();
+        }
+
+        public void SetUserImage(string imageName)
+        {
+            UserImageBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(imageName), UriKind.Absolute));
         }
 
         private void UnblockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

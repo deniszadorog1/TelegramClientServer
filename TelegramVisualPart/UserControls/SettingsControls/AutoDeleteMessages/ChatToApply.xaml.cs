@@ -46,7 +46,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
         }
 
         private bool _isClicked = false;
-        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _isClicked = !_isClicked;
 

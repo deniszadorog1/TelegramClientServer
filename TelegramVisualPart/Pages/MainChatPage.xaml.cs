@@ -220,7 +220,7 @@ namespace TelegramVisualPart.Pages
 
         public void SetMainContactEvents(MainContacts mainContacts)
         {
-            mainContacts.ChosenContact += ContactsChatChosen_PreviewMouseDown;
+            mainContacts.ContactClicked += ContactsChatChosen_PreviewMouseDown;
         }
 
         private UserTalkMessage _chosenChatControl;
@@ -251,7 +251,7 @@ namespace TelegramVisualPart.Pages
         public Page GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system.Contacts) :
+                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system, false) :
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_system) : null;
         }
 

@@ -21,10 +21,10 @@ namespace TelegramVisualPart.Pages.Contacts
     /// </summary>
     public partial class AddContact : Page
     {
-        private List<UserContactcs> _contacts;
-        public AddContact(List<UserContactcs> contacts)
+        private TelSystem _system;
+        public AddContact(TelSystem system)
         {
-            _contacts = contacts; 
+            _system = system; 
             InitializeComponent();
         }
 
@@ -47,7 +47,7 @@ namespace TelegramVisualPart.Pages.Contacts
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new MainContacts(Enums.ContactsPageAction.AddContact, _contacts));
+                new MainContacts(Enums.ContactsPageAction.AddContact, _system, false));
         }
 
         private void PhoneBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

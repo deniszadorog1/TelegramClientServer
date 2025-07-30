@@ -317,7 +317,8 @@
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
 
-                            <otherButs:IconTextBut x:Name="SetPubPhotoBut" Margin="10 0 0 0"/>
+                            <otherButs:IconTextBut x:Name="SetPubPhotoBut" Margin="10 0 0 0" 
+                                                   PreviewMouseDown="SetPubPhotoBut_PreviewMouseDown"/>
 
                             <TextBlock Name="SetProfPhotoText" Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"
                                    Text="You can upload a public photo for users who are restricted from viewing yout real profile photos." TextWrapping="Wrap" FontSize="14"

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using TelegramVisualPart.Enums;
 
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramLib.Enums.Settings.PrivacyAndSecurity;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 {
@@ -40,7 +41,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void Radio_Checked(object sender, RoutedEventArgs e)
         {
-         
+            if (sender is not RadioButton radio) return;
+
+           int index = RadioPanel.Children.OfType<RadioButton>().ToList().IndexOf(radio);
+
+            _settings.SelfDeleteTime = (AwayForTime)index;
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -50,7 +55,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

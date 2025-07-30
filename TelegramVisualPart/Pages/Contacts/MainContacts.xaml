@@ -64,7 +64,8 @@
             <Grid Grid.Row="2">
                 <ListBox Name="ContactsListBox">
                     <ListBoxItem HorizontalContentAlignment="Stretch">
-                        <controls:UserContact x:Name="TestContact" PreviewMouseDown="UserContact_PreviewMouseDown"/>
+                        <!-- <controls:UserContact x:Name="TestContact" 
+                                              PreviewMouseDown="UserContact_PreviewMouseDown"/>-->
                     </ListBoxItem>
                 </ListBox>
             </Grid>

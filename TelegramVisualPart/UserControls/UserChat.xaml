@@ -124,7 +124,6 @@
                                      Panel.ZIndex="100" 
                                      Margin="-385 -370 0 0" Visibility="Hidden"
                                      MouseLeave="EmojisBoard_MouseLeave"/>
-
         </Grid>
 
         <buts:UserChatInfoMenu x:Name="UserChatMenu"

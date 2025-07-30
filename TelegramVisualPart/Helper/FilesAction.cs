@@ -21,6 +21,7 @@ using FFMpegCore.Pipes;
 using FFMpegCore.Enums;
 using System.Windows.Media.Media3D;
 using Microsoft.EntityFrameworkCore.Storage.Json;
+using MaterialDesignThemes.Wpf.Converters;
 
 namespace TelegramVisualPart.Helper
 {
@@ -249,6 +250,18 @@ namespace TelegramVisualPart.Helper
         {
             string chatImagePath = GetChatImageFolderPath();
             return File.Exists(Path.Combine(chatImagePath, mediaName));
+        }
+
+        public static void AddNewUserImage(string path)
+        {
+            string userImagePath = Path.Combine(GetImagesPath(), "UserImages");
+
+            string fileName = Path.GetFileName(path);
+            string destinationPath = Path.Combine(userImagePath, fileName);
+
+            if (Path.Exists(destinationPath)) return;
+
+            File.Copy(path, destinationPath, overwrite: true);
         }
 
         public static void CopyImageToImageFolder(string filePath)

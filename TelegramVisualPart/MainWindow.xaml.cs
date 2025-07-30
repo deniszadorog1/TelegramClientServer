@@ -25,6 +25,8 @@ using TelegramVisualPart.Helper;
 using FFMpegCore;
 using TelegramVisualPart.Pages.VisualPages;
 using Microsoft.EntityFrameworkCore.Metadata;
+using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
+using System.Security.Cryptography;
 
 namespace TelegramVisualPart
 {
@@ -101,13 +103,23 @@ namespace TelegramVisualPart
         public void ClearThirdFrame()
         {
             if (ThirdFrame.Content is null) return;
-         
+
+            UpdatePrivacyAndScurity();
+
             //ThirdFrame.Visibility = Visibility.Hidden;
             ThirdFrame.Content = null;
             
             SecondaryFrame.Effect = null;
             SecondaryFrame.Background = null;
             MainFrame.Background = Brushes.Transparent;
+        }
+
+        public void UpdatePrivacyAndScurity()
+        {
+            if(SecondaryFrame.Content is PrivacyAndSecurity privSettings)
+            {
+               privSettings.SetBasicParams();
+            }
         }
 
         private void MainFrame_PreviewMouseDown(object sender, MouseButtonEventArgs e)

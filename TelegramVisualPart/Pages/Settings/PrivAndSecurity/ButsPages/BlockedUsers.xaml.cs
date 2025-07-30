@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.Contacts;
+using TelegramVisualPart.UserControls.SettingsControls;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 {
@@ -30,6 +32,48 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             InitializeComponent();
 
             SetButsVisualState();
+
+            SetBlockedContacts();
+        }
+
+        public void SetBlockedContacts()
+        {
+            BlockedUsersPanel.Items.Clear();
+
+            List<UserContactcs> blocked = _system.LoggedUser.BlockedContacts;
+            for (int i = 0; i < blocked.Count; i++)
+            {   
+                ToUnblockUser blockedControl = new ToUnblockUser();
+
+                blockedControl.SetUserImage(blocked[i].GetFirstImageName().Name);
+
+                blockedControl.ChaterLogin.Text = blocked[i].Name;
+                blockedControl.UserName.Text = blocked[i].UserName;
+
+
+                ListBoxItem item = new ListBoxItem()
+                {
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    Content = blockedControl.Content
+                };
+
+                blockedControl.UnblockBut.PreviewMouseDown += (sender, e) =>
+                {
+                    UserContactcs contact =
+                    _system.LoggedUser.BlockedContacts.Where(
+                        x => x.Name == blockedControl.ChaterLogin.Text).First();
+
+                    _system.LoggedUser.BlockedContacts.Remove(contact);
+
+                    BlockedUsersPanel.Items.Remove(item);
+
+                    AmountNum.Text = _system.LoggedUser.BlockedContacts.Count.ToString();
+                };
+
+                BlockedUsersPanel.Items.Add(item);
+            }
+
+            AmountNum.Text = blocked.Count.ToString();
         }
 
         public void SetButsVisualState()
@@ -64,13 +108,21 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         private void ToBlockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainContacts toBlock = new MainContacts(Enums.ContactsPageAction.Block, _system.Contacts);
+            MainContacts toBlock = new MainContacts
+                (Enums.ContactsPageAction.Block, _system, true);
 
             toBlock.ContactsBlock.Text = "Select user to block";
             toBlock.SortBut.Visibility = Visibility.Hidden;
             toBlock.AddContactBut.Visibility = Visibility.Hidden;
 
+            toBlock.ContactClicked += UserBlock_Event;
+
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(toBlock);
+        }
+
+        public void UserBlock_Event(object sender, EventArgs e)
+        {
+            SetBlockedContacts();
         }
     }
 }

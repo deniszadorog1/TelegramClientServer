@@ -284,7 +284,7 @@ namespace TelegramVisualPart.UserControls
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose image or video",
-                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi;*.gif"
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi"
             };
 
             if (openFileDialog.ShowDialog() == true)

@@ -60,7 +60,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

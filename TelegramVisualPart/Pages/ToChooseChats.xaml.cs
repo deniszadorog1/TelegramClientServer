@@ -14,8 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
+using static MaterialDesignThemes.Wpf.Theme;
 
 namespace TelegramVisualPart.Pages
 {
@@ -31,19 +33,46 @@ namespace TelegramVisualPart.Pages
 
         private List<UserContactcs> _contacts;
         private ChooseType _type;
-
+        private PrivacySub _sub;
 
         //Set here chosen contacts
-        public ToChooseChats(ChooseType type, List<UserContactcs> contacts)
+        public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub)
         {
             _contacts = contacts;
             _type = type;
+            _sub = sub;
 
             InitializeComponent();
 
             SetParams();
 
             SetContacts();
+            SetChosenContacts();
+        }
+
+        private void SetChosenContacts()
+        {
+            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
+
+            for(int i = 0; i < contacts.Count; i++)
+            {
+                ChatToApply chosen = ChatsPanelToChoose.Children.OfType<ChatToApply>().Where
+                    (x => x.TypeName.Text == contacts[i].Name).FirstOrDefault();
+                if (chosen is null) continue;
+
+                chosen.UserControl_PreviewMouseDown(chosen, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.PreviewMouseDownEvent,
+                    Source = chosen
+                });
+      
+                //Set chosen action 
+                Contact_PreviewMouseDown(chosen, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.PreviewMouseDownEvent,
+                    Source = chosen
+                });
+            }
         }
 
         public void SetContacts()
@@ -91,13 +120,13 @@ namespace TelegramVisualPart.Pages
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Button but) but.Background =
+            if (sender is System.Windows.Controls.Button but) but.Background =
                 (SolidColorBrush)Application.Current.Resources["OtherButMouseEnter"];
         }
 
         private void But_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is Button but) but.Background = new SolidColorBrush(Colors.Transparent);
+            if (sender is System.Windows.Controls.Button but) but.Background = new SolidColorBrush(Colors.Transparent);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -107,7 +136,50 @@ namespace TelegramVisualPart.Pages
 
         private void ApplyBut_Click(object sender, RoutedEventArgs e)
         {
+            //Save chosen contacts
+            SaveChosenContacts();
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        private void SaveChosenContacts()
+        {
+            switch (_type)
+            {
+                case ChooseType.AlwaysShare:
+                    {
+                        _sub.ShareWithExps.AddRange(GetContactsFromChosenChats(_sub.ShareWithExps));
+                        RemoveChosenContacts();
+                        return;
+                    }
+                case ChooseType.NeverShare:
+                    {
+                        _sub.NeverShareExps.AddRange(GetContactsFromChosenChats(_sub.NeverShareExps));
+                        RemoveChosenContacts();
+                        return;
+                    }
+            }
+        }
+
+        public void RemoveChosenContacts()
+        {
+            List<UserContactcs> removeFrom = _type == ChooseType.AlwaysShare ? _sub.NeverShareExps : _sub.ShareWithExps;
+            List<UserContactcs> toRemove = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
+
+            List<UserContactcs> remove = removeFrom.Where(x => toRemove.Select(y => y.Name).Contains(x.Name)).ToList();
+
+            foreach(var contact in remove)
+            {
+                removeFrom.Remove(contact);
+            }
+        }
+
+        private List<UserContactcs> GetContactsFromChosenChats(List<UserContactcs> chosenContacts)
+        {
+            List<string> names = ChatsPanel.Children.OfType<ChosenChat>().Select(x => x.UserName.Text).ToList();
+          
+            return _contacts.Where(x => names.Contains(x.Name) && 
+            !chosenContacts.Select(x => x.Name).Contains(x.Name)).ToList();
         }
 
         public void AddAppliedChat(ChatToApply chatControl)
@@ -120,7 +192,7 @@ namespace TelegramVisualPart.Pages
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            toAdd.SetBasicParams(chatControl.Tag.ToString(), 
+            toAdd.SetBasicParams(chatControl.Tag.ToString(),
                 chatControl.GetTypeName());
 
             toAdd._removeChatEvent += ChosenChat_RemoveClicked;
@@ -131,6 +203,8 @@ namespace TelegramVisualPart.Pages
 
         public void RemoveAppliedChat(ChatToApply toRemove)
         {
+            RemoveContact(toRemove.TypeName.Text);
+
             ChatsPanel.Children.Remove(ChatsPanel.Children.OfType<ChosenChat>().
                 Where(x => x.Name == toRemove.Name).First());
         }
@@ -167,7 +241,17 @@ namespace TelegramVisualPart.Pages
                 Where(x => x.Name == test.Name).FirstOrDefault();
             if (toClear is null) return;
 
+            RemoveContact(toClear.TypeName.Text);
+
             toClear.DiscardChat();
+        }
+
+        public void RemoveContact(string name)
+        {
+            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ? 
+                _sub.ShareWithExps : _sub.NeverShareExps;
+
+            contacts.Remove(contacts.Where(x => x.Name == name).First());
         }
 
     }
