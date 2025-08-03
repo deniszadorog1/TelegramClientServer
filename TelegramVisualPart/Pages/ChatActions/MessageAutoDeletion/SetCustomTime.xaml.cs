@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Chat;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 {
@@ -43,9 +44,12 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
+        public AutoDeleteType _chosenDeletionType;
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Set Chosen AutoDelet param;
+            _chosenDeletionType = TimesToChoose.GetChosenAutoDelItem();
+
             ChosenAutoDelete?.Invoke(this, EventArgs.Empty);
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();

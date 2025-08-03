@@ -6,13 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramClientServer", "TelegramClientServer\TelegramClientServer.csproj", "{35BEFD52-591A-44DD-9D19-9796E2C457F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramVisualPart", "TelegramVisualPart\TelegramVisualPart.csproj", "{532DAD4B-B4BF-42E3-9CD1-CED37C365424}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B} = {C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}
-	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramLib", "TelegramLib\TelegramLib.csproj", "{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestThing", "TestThing\TestThing.csproj", "{292F145D-9EA9-4A5F-98EE-92DC711E89C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestThing", "TestThing\TestThing.csproj", "{292F145D-9EA9-4A5F-98EE-92DC711E89C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramLib", "TelegramLib\TelegramLib.csproj", "{58DCF614-E194-4C31-9DCD-953CE327240C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,14 +25,14 @@ Global
 		{532DAD4B-B4BF-42E3-9CD1-CED37C365424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{532DAD4B-B4BF-42E3-9CD1-CED37C365424}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{532DAD4B-B4BF-42E3-9CD1-CED37C365424}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6E684E9-9A7B-4DA5-9819-79F58E2EE93B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{292F145D-9EA9-4A5F-98EE-92DC711E89C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{292F145D-9EA9-4A5F-98EE-92DC711E89C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{292F145D-9EA9-4A5F-98EE-92DC711E89C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{292F145D-9EA9-4A5F-98EE-92DC711E89C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DCF614-E194-4C31-9DCD-953CE327240C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DCF614-E194-4C31-9DCD-953CE327240C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DCF614-E194-4C31-9DCD-953CE327240C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DCF614-E194-4C31-9DCD-953CE327240C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

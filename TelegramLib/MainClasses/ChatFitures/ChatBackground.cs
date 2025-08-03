@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TelegramLib.MainClasses.ChatFitures
+﻿namespace TelegramLib.MainClasses.ChatFitures
 {
     public class ChatBackground
     {
@@ -13,7 +6,7 @@ namespace TelegramLib.MainClasses.ChatFitures
         public bool IsBlurred { get; set; }
         public bool IsGeneral { get; set; }
 
-        public ChatBackground(string path, bool isBlurred, 
+        public ChatBackground(string path, bool isBlurred,
             bool isGeneral)
         {
             FileName = path;

@@ -1,23 +1,10 @@
-﻿using MahApps.Metro.Controls;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
-using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramLib.MainClasses.ChatFitures;
-using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls;
+using TelegramLib.MainClasses.ChatFitures;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {

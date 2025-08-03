@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.Helpers;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings;
-using TestThing;
+using TelegramLib;
 
 
 namespace TelegramLib.UserSettings.SettingsTypes

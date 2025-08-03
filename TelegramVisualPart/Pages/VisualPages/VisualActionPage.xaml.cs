@@ -159,7 +159,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetMediaParams()
         {
-            if (_system is null || _messages is null || _tempMediaIndex == -1 ||
+            if (_system is null || _messages is null || _tempMediaIndex == -1 || _messages.Count <= _tempMediaIndex ||
                 _messages.Count == 0 || _messages[_tempMediaIndex] is not MediaAction media) return;
 
             ElementName.Text = media.MediaName;
@@ -325,6 +325,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             if (_system is null) return;
 
             //Remove chosen element
+            if (_tempMediaIndex == -1) return;
             RemoveFromChat(_tempMediaIndex);
         }
         private void RemoveChosenImage()

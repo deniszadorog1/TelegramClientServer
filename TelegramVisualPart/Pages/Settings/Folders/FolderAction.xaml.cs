@@ -1,19 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
@@ -27,7 +17,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     public partial class FolderAction : Page
     {
         private bool _isSaveAction = false;
-        public event EventHandler FolderCreated; 
+        public event EventHandler FolderCreated;
 
         private TelSystem _system;
         private Folder _folder;
@@ -116,7 +106,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
                 return;
             }
-            
+
             //To add new Folder
             if (!CreateNewFolder()) return;
 
@@ -128,10 +118,10 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public bool CreateNewFolder()
         {
-            if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||  
+            if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||
                 _system.IsFolderNameExists(FolderNameBox.Text)) return false;
 
-            _system.AddFolder(FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(), 
+            _system.AddFolder(FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(),
                 _toAddContacts, _toExcludeContacts);
             return true;
         }
@@ -215,18 +205,18 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         }
 
         public void ClearAlreadyChosenContacts(List<UserContactcs> chosen, List<UserContactcs> toClear)
-        { 
+        {
             toClear.RemoveAll(contact => chosen.Any(x => x.Name == contact.Name));
 
 
-/*            foreach (UserContactcs contact in toClear)
-            {
-                UserContactcs toRemove = chosen.Where(x => x.Name == contact.Name).FirstOrDefault();
-                if (toRemove is not null)
-                {
-                    toClear.Remove(toRemove);
-                }
-            }*/
+            /*            foreach (UserContactcs contact in toClear)
+                        {
+                            UserContactcs toRemove = chosen.Where(x => x.Name == contact.Name).FirstOrDefault();
+                            if (toRemove is not null)
+                            {
+                                toClear.Remove(toRemove);
+                            }
+                        }*/
         }
 
         public void SetContactsInListBox(List<UserContactcs> contacts, ListBoxItem addFolder)
@@ -255,7 +245,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                     Padding = new Thickness(20, 5, 10, 5)
                 };
 
-      
+
                 MainListBox.Items.Insert(butIndex + 1, item);
             }
         }
@@ -274,7 +264,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void RemoveUserContact(List<UserContactcs> contacts, string contactName)
         {
-           contacts.Remove(contacts.Where(x => x.Name == contactName).FirstOrDefault());
+            contacts.Remove(contacts.Where(x => x.Name == contactName).FirstOrDefault());
         }
 
 

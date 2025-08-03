@@ -13,7 +13,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
     public class PrivAndSecSettings
     {
         public int Id { get; set; }
-        public string? LocalPasscode { get; set; }
+        public string LocalPasscode { get; set; }
         public List<UserContactcs> BlockedUsers { get; set; }
         
         public AwayForTime SelfDeleteTime { get; set; }
@@ -26,7 +26,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
         public DateOfBirthSub DateBirthPrivacy { get; set; }
         public BioSub BioPrivacy { get; set; }
 
-        public PrivAndSecSettings(int id, string? passCode, AwayForTime destructTime,
+        public PrivAndSecSettings(int id, string passCode, AwayForTime destructTime,
             List<UserContactcs> blocked,
             PhoneNumberSub phonePrivacy,
             LastSeenSub lastSeenPrivacy,

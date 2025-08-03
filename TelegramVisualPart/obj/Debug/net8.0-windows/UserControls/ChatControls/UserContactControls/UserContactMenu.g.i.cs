@@ -131,8 +131,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/usercontactcontrols/userc" +
-                    "ontactmenu.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/usercontactcontr" +
+                    "ols/usercontactmenu.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\UserContactControls\UserContactMenu.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

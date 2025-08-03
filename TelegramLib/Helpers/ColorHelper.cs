@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TelegramLib.Helpers
+﻿namespace TelegramLib.Helpers
 {
     public class ColorHelper
     {

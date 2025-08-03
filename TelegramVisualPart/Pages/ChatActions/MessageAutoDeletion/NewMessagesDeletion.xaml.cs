@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
@@ -22,21 +23,18 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
     public partial class NewMessagesDeletion : Page
     {
         private UserChat _chat;
-        public NewMessagesDeletion(UserChat chat)
+        private TelSystem _system;
+
+        public NewMessagesDeletion(UserChat chat, TelSystem system)
         {
             _chat = chat;
+            _system = system;
             InitializeComponent();
-
-        }
-
-        public void SetChatToSpecialCheckBox()
-        {
-
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            SpecialList.SetAutoDeletionValue(_chat.AutoDelDuration);     
+            SpecialList.SetAutoDeletionValue(_chat.GetChatter().AutoDeletion);     
         }
 
         public static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
@@ -70,7 +68,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         {
             //Go to anouther page
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SelfDestructTimer());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SelfDestructTimer(_system));
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -91,6 +89,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            AutoDeleteType type = SpecialList.GetChosenAutoDelItem();
+            _chat.GetChatter().AutoDeletion = new AutoDeleteDuration(type);
+
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 

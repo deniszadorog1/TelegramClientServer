@@ -1,21 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.Folders;
 
@@ -48,7 +36,7 @@ namespace TelegramVisualPart.UserControls.MainPage
 
         public void SetFolders()
         {
-            for(int i = 0; i < _system.Folders.Count; i++)
+            for (int i = 0; i < _system.Folders.Count; i++)
             {
                 LeftButtonsButton folder = new LeftButtonsButton();
                 folder.SetIconKind(FilesAction.GetIconTypeByString(_system.Folders[i].IconName));
@@ -81,7 +69,7 @@ namespace TelegramVisualPart.UserControls.MainPage
 
         private void ShowMenu_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            OnMenuClick?.Invoke(this, EventArgs.Empty); 
+            OnMenuClick?.Invoke(this, EventArgs.Empty);
         }
 
         private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -91,9 +79,9 @@ namespace TelegramVisualPart.UserControls.MainPage
 
         public void ClearButtonsEffects()
         {
-            foreach(var item in FoldersBox.Items)
+            foreach (var item in FoldersBox.Items)
             {
-                if (item is not ListBoxItem boxItem || 
+                if (item is not ListBoxItem boxItem ||
                     boxItem.Content is not LeftButtonsButton but) continue;
                 but.SetBasicColors();
                 boxItem.Background = new SolidColorBrush(Colors.Transparent);
@@ -122,7 +110,7 @@ namespace TelegramVisualPart.UserControls.MainPage
         public void RemoveFolders()
         {
             List<ListBoxItem> items = new List<ListBoxItem>();
-            foreach(ListBoxItem item in FoldersBox.Items)
+            foreach (ListBoxItem item in FoldersBox.Items)
             {
                 //remove test folders later
                 if (item.Name == AllChatsItem.Name ||
@@ -132,7 +120,7 @@ namespace TelegramVisualPart.UserControls.MainPage
                 items.Add(item);
             }
 
-            foreach(ListBoxItem item in items)
+            foreach (ListBoxItem item in items)
             {
                 FoldersBox.Items.Remove(item);
             }

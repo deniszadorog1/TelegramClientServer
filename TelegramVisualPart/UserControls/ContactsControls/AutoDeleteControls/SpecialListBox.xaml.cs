@@ -1,20 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.Enums.Chat;
 
@@ -61,12 +48,10 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             _duration = duration;
 
             //Test
-            _duration = new AutoDeleteDuration(AutoDeleteType.FiveMonths);
-
+            //_duration = new AutoDeleteDuration(AutoDeleteType.FiveMonths);
             if (_duration is null) return;
 
-            //SetV value on list
-
+            //Set value on list
             for (int i = (int)AutoDeleteType.Nothing; i <= (int)AutoDeleteType.OneYear; i++)
             {
                 if ((AutoDeleteType)i == _duration.Type)
@@ -110,9 +95,9 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             e.Handled = true;
         }
 
-        public void SetScrollViewer()
+        public AutoDeleteType GetChosenAutoDelItem()
         {
-
+            return (AutoDeleteType)_selectedIndex - 1;
         }
 
         private void CenterElementInScrollViewer(UIElement element)

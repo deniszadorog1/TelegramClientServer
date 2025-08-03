@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,16 +18,13 @@ namespace TelegramLib.MainClasses
         public List<Message> Messages { get; set; }
         public ChatBackground ChatBg { get; set; }
 
-        public AutoDeleteDuration AutoDelDuration { get; set; }
-
         public UserChat(int id, UserContactcs chatter, List<Message> messages, 
-            ChatBackground bg, AutoDeleteDuration autoDelDuration)
+            ChatBackground bg)
         {
             Id = id;
             Chatter = chatter;
             Messages = messages;
             ChatBg = bg;
-            AutoDelDuration = autoDelDuration;
         }   
 
         public UserChat()

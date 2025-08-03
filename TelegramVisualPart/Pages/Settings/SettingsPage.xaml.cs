@@ -14,11 +14,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramVisualPart.Pages.Settings
 {
@@ -33,6 +35,18 @@ namespace TelegramVisualPart.Pages.Settings
             _system = system;
             InitializeComponent();
             SetButtonsView();
+        
+            SetUserInfo();
+        }
+
+        public void SetUserInfo()
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
+
+            Username.Text = _system.LoggedUser.UserName;
+            PhoneNumber.Text = _system.LoggedUser.PhoneNumber;
+            UserLogin.Text = _system.LoggedUser.Login;
         }
 
         private void MoreInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -100,5 +114,24 @@ namespace TelegramVisualPart.Pages.Settings
 
         }
 
+        private void UserLogin_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is not TextBlock block) return;
+            Cursor = Cursors.Hand;
+            block.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void UserLogin_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is not TextBlock block) return;
+            Cursor = null;
+            block.TextDecorations = null;
+        }
+
+        private void UserLogin_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not TextBlock block) return;
+            Clipboard.SetText(block.Text);
+        }
     }
 }

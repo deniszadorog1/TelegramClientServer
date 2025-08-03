@@ -1,21 +1,10 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
@@ -34,7 +23,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private FolderChatActionType _type;
         private TelSystem _system;
 
-        public FoldersChatAction(FolderChatActionType type, TelSystem system, 
+        public FoldersChatAction(FolderChatActionType type, TelSystem system,
             List<UserContactcs> chosenContacts)
         {
             _system = system;
@@ -51,14 +40,14 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetChosenContacts()
         {
-            foreach(UserContactcs contact in _chosenContacts)
+            foreach (UserContactcs contact in _chosenContacts)
             {
                 FolderChatType control = GetFolderChatTypeByContactName(contact.Name);
                 if (control is null) continue;
 
                 control.ChangeActivenessState();
             }
-        } 
+        }
 
         public FolderChatType GetFolderChatTypeByContactName(string name)
         {
@@ -178,7 +167,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (sender is not ListBoxItem item ||
                 item.Content is not FolderChatType control) return;
 
-            UserContactcs contact =  _system.GetContactByName(control.TypeName.Text);
+            UserContactcs contact = _system.GetContactByName(control.TypeName.Text);
             if (contact is null) return;
 
             if (_chosenContacts.Contains(contact))

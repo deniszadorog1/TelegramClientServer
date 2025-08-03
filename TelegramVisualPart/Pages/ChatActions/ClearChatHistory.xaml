@@ -36,7 +36,7 @@
                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
 
             <TextBlock Grid.Row="3" Text="Enable Auto-Delete" VerticalAlignment="Center"
-                       Foreground="{StaticResource FolderContactColor}" FontSize="14"
+                       Foreground="{StaticResource TempActiveTextColor}" FontSize="14"
                        Name="EnAutoDelete" PreviewMouseDown="EnAutoDelete_PreviewMouseDown"
                        MouseEnter="EnAutoDelete_MouseEnter" MouseLeave="EnAutoDelete_MouseLeave"/>
 

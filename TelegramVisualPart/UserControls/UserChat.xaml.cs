@@ -1,42 +1,22 @@
-﻿using MahApps.Metro.Controls;
-using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramVisualPart.UserControls.ChatControls;
-using TelegramVisualPart.Pages.VisualPages;
-
-using static System.Net.Mime.MediaTypeNames;
-using Image = System.Windows.Controls.Image;
 using System.Windows.Media.Animation;
-using System.Windows.Controls.Primitives;
-using Application = System.Windows.Application;
-using TelegramLib.MainClasses;
-
-using TelegramLib.MainClasses.Messages;
-using TelegramLib.Enums.Messages;
-using System.IO;
-using Path = System.IO.Path;
-using TelegramVisualPart.Helper;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using TelegramLib.MainClasses.ChatFitures;
 using System.Windows.Media.Effects;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System.Diagnostics.Eventing.Reader;
-using Accessibility;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Security.Cryptography.X509Certificates;
+using TelegramLib.Enums.Messages;
+using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.ChatFitures;
+using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.UserControls.ChatControls;
+using Application = System.Windows.Application;
+using Image = System.Windows.Controls.Image;
+using Path = System.IO.Path;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -62,7 +42,7 @@ namespace TelegramVisualPart.UserControls
             if (chat is null) return;
             _chat = chat;
 
-            _chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
+            //_chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
 
             UserChatMenu.SetChatParam(_chat);
 
@@ -199,7 +179,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message, string senderImageName)
         {
-            ChatControls.TextMessage newMes = 
+            ChatControls.TextMessage newMes =
                 new ChatControls.TextMessage(GetConvertedStringMessage(message.Text), senderImageName);
             newMes.SetTime(message.SentTime);
 
@@ -395,25 +375,24 @@ namespace TelegramVisualPart.UserControls
 
             VisualActionPageParams(message, MediaType.Video, page);
 
-/*            List<MediaAction> videos =
-                FilesAction.GetMediaElementsFromListByType(_chat.GetMediaMessages(), MediaType.Video);
+            /*            List<MediaAction> videos =
+                            FilesAction.GetMediaElementsFromListByType(_chat.GetMediaMessages(), MediaType.Video);
 
-            int chosenVideoIndex = GetChosenVideoIndex(message, videos);
+                        int chosenVideoIndex = GetChosenVideoIndex(message, videos);
 
-            page.SetUserChat(_system, videos, chosenVideoIndex);*/
+                        page.SetUserChat(_system, videos, chosenVideoIndex);*/
         }
 
-        public void VisualActionPageParams(MediaMessage mediaMes, MediaType type, 
+        public void VisualActionPageParams(MediaMessage mediaMes, MediaType type,
             VisualActionPage page)
         {
             List<MediaAction> elements =
                 FilesAction.GetMediaElementsFromListByType(_chat.GetMediaMessages(), type);
 
-            int chosenVideoIndex = GetChosenVideoIndex(mediaMes , elements);
+            int chosenVideoIndex = GetChosenVideoIndex(mediaMes, elements);
 
             page.SetUserChat(_system, elements, chosenVideoIndex);
         }
-
 
         public int GetChosenVideoIndex(MediaMessage message, List<MediaAction> videos)
         {
@@ -437,6 +416,8 @@ namespace TelegramVisualPart.UserControls
             return res;
         }
 
+        private bool _isGetStikers;
+
         public void AddImageMessage(Image img, bool isSticker, string senderImgName)
         {
             var message = new MediaMessage(img, isSticker, senderImgName);
@@ -457,11 +438,11 @@ namespace TelegramVisualPart.UserControls
 
         private void ChatImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not MediaMessage) return;
-            MediaMessage message = sender as MediaMessage;
+            if (sender is not MediaMessage message) return;
+            _isGetStikers = message.IsSticker;
+            if (_isGetStikers) return; //NO TO STICKERS
 
             VisualActionPage page = new VisualActionPage(message.GetImage(), GetChatImages());
-
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
 
             MediaMessage item = ChatBox.Items.OfType<MediaMessage>()
@@ -481,7 +462,8 @@ namespace TelegramVisualPart.UserControls
 
             for (int i = 0; i < _chatMessages.Count; i++)
             {
-                if (_chatMessages[i] is MediaAction media &&
+                //For images (NO STIKER)
+                if (_chatMessages[i] is MediaAction media && media.IsSticker == _isGetStikers &&
                     FilesAction.GetMediaTypeFromFilename(media.MediaName) == MediaType.Image)
                 {
                     string path = FilesAction.GetFilePathByMediaType(
@@ -798,7 +780,7 @@ namespace TelegramVisualPart.UserControls
                     {
                         ChatBox.Items.Remove(media);
                         return;
-                    }                   
+                    }
                     elIndex--;
                 }
             }

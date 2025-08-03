@@ -23,9 +23,12 @@ namespace TelegramVisualPart.Pages.ChatActions
     public partial class ClearChatHistory : Page
     {
         private UserChat _chat;
-        public ClearChatHistory(UserChat chat)
+        private TelSystem _system;
+        public ClearChatHistory(UserChat chat, TelSystem system)
         {
             _chat = chat;
+            _system = system;
+
             InitializeComponent();
         }
 
@@ -78,7 +81,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         {
             //Show auto delete message 
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion(_chat));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion(_chat, _system));
         }
 
     }

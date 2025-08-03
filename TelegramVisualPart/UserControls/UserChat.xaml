@@ -84,7 +84,6 @@
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
                      VerticalAlignment="Bottom"/>
-
         </Grid>
 
         <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">

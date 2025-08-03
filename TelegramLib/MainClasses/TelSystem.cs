@@ -1,16 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.MainClasses.UserParams;
 using TelegramLib.UserSettings;
-using TelegramLib.UserSettings.SettingsTypes;
 
 namespace TelegramLib.MainClasses
 {
@@ -29,14 +24,14 @@ namespace TelegramLib.MainClasses
             List<UserChat> chats, List<UserContactcs> contacts,
             List<Folder> folders)
         {
-        
+
             LoggedUser = user;
             Settings = settings;
             Chats = chats;
             Contacts = contacts;
             Folders = folders;
         }
-        
+
         //Test system
         public TelSystem()
         {
@@ -49,7 +44,7 @@ namespace TelegramLib.MainClasses
             SetTestSystemParams();
         }
 
-        public void AddFolder(string name, string iconName,  
+        public void AddFolder(string name, string iconName,
             List<UserContactcs> contacts, List<UserContactcs> excludedContacts)
         {
             Folder toAdd = new Folder(Folders.Count + 1, name, iconName, contacts, excludedContacts);
@@ -84,7 +79,7 @@ namespace TelegramLib.MainClasses
 
         public void ChangeFoldersName(string tempName, string newName)
         {
-            Folder folder =  Folders.FirstOrDefault(x => x.Name == tempName);
+            Folder folder = Folders.FirstOrDefault(x => x.Name == tempName);
             if (folder is null) return;
             folder.SetName(newName);
         }
@@ -112,13 +107,13 @@ namespace TelegramLib.MainClasses
 
         public bool IsChatterIsSet()
         {
-            return ChosenChatContact is not null;
+            return !(ChosenChatContact is null);
         }
 
         public UserChat GetUserChatByChatterName(string chatterName)
         {
             UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
-            if (chat is not null)
+            if (!(chat is null))
             {
                 ChosenChatContact = chat.Chatter;
 
@@ -127,8 +122,8 @@ namespace TelegramLib.MainClasses
                 return chat;
             }
             //Create new chat(if its absent)
-            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(), 
-                new ChatFitures.ChatBackground("fray.jpg", false, true), null);
+            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
+                new ChatFitures.ChatBackground("fray.jpg", false, true));
 
             Chats.Add(newChat);
 
@@ -143,7 +138,7 @@ namespace TelegramLib.MainClasses
             UserSettings.SettingsTypes.SubSettings.ChatWallpaper wallpaper =
                 Settings.GetChatSettings().Wallpaper;
 
-            UserChat chosen =  GetChosenChat();
+            UserChat chosen = GetChosenChat();
 
             if (!chosen.GetBackground().IsGeneral) return;
 
@@ -184,8 +179,8 @@ namespace TelegramLib.MainClasses
 
         public void SetTestFolders()
         {
-            Folders.Add(new Folder(1, "FirstTest", "Folder", 
-                new List<UserContactcs>() { Contacts[0], Contacts[1] }, 
+            Folders.Add(new Folder(1, "FirstTest", "Folder",
+                new List<UserContactcs>() { Contacts[0], Contacts[1] },
                 new List<UserContactcs>()));
 
             Folders.Add(new Folder(1, "Android", "Android",
@@ -205,9 +200,9 @@ namespace TelegramLib.MainClasses
             imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
             imageNames.Add(new UserImage("WhiteCat.png", DateTime.Now));
 
-            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName",  DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames));
-            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName",  DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames));
-            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName",  DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames));
+            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName", DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames, null));
+            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName", DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames, null));
+            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName", DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames, null));
         }
 
         public List<Message> GetTestMessages()
@@ -218,7 +213,7 @@ namespace TelegramLib.MainClasses
             res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
             res.Add(new TextMessage(2, -1, DateTime.Now, "Second"));
             res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif", false));
-            res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false ));
+            res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false));
             res.Add(new TextMessage(5, -1, DateTime.Now, "Three"));
             res.Add(new MediaAction(6, -1, DateTime.Now, "Cow.jpg", false));
             res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4", false));
@@ -227,10 +222,10 @@ namespace TelegramLib.MainClasses
             res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));
             return res;
         }
-       
+
         public void SetGeneralBgToChatsBg()
         {
-           UserChat chat =  GetChosenChat();
+            UserChat chat = GetChosenChat();
 
             if (chat.GetBackground().IsGeneral == false) return;
 

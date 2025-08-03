@@ -1,27 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FFMpegCore;
+using FFMpegCore.Pipes;
+using MaterialDesignThemes.Wpf;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
-using MaterialDesignThemes.Wpf;
-using System.Configuration;
-using System.Windows.Automation;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-
-using FFMpegCore;
-using FFMpegCore.Pipes;
-using FFMpegCore.Enums;
-using System.Windows.Media.Media3D;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using MaterialDesignThemes.Wpf.Converters;
 
 namespace TelegramVisualPart.Helper
 {
@@ -77,7 +64,7 @@ namespace TelegramVisualPart.Helper
         public static int GetVideosAmount(List<MediaAction> medias)
         {
             int res = 0;
-            for(int i = 0; i < medias.Count; i++)
+            for (int i = 0; i < medias.Count; i++)
             {
                 if (IsFileIsVideo(medias[i].MediaName)) res++;
             }
@@ -99,7 +86,7 @@ namespace TelegramVisualPart.Helper
         {
             List<string> res = new List<string>();
 
-            for(int i = 0; i < gifNames.Count; i++)
+            for (int i = 0; i < gifNames.Count; i++)
             {
                 res.Add(GetFullGifPath(gifNames[i]));
             }
@@ -115,7 +102,7 @@ namespace TelegramVisualPart.Helper
 
         public static List<string> GetFullPathForVideos(List<string> paths)
         {
-            for(int i = 0; i < paths.Count; i++)
+            for (int i = 0; i < paths.Count; i++)
             {
                 paths[i] = GetFullVideoPath(paths[i]);
             }
@@ -131,7 +118,7 @@ namespace TelegramVisualPart.Helper
         {
             List<MediaAction> toRemove = new List<MediaAction>();
 
-            for(int i = 0; i < medias.Count; i++)
+            for (int i = 0; i < medias.Count; i++)
             {
                 if (GetMediaTypeFromFilename(medias[i].MediaName) != type)
                 {
@@ -139,7 +126,7 @@ namespace TelegramVisualPart.Helper
                 }
             }
 
-            foreach(MediaAction action in toRemove)
+            foreach (MediaAction action in toRemove)
             {
                 medias.Remove(action);
             }
@@ -192,7 +179,7 @@ namespace TelegramVisualPart.Helper
         {
             List<Image> res = new List<Image>();
 
-            for(int i = 0; i < names.Count; i++)
+            for (int i = 0; i < names.Count; i++)
             {
                 res.Add(GetUserImage(names[i]));
             }
@@ -205,7 +192,7 @@ namespace TelegramVisualPart.Helper
             {
                 Source = new BitmapImage(new Uri(GetUserImagePath(path), UriKind.Absolute)),
                 Stretch = Stretch.Fill
-            }; 
+            };
         }
 
         public static string GetUserImagePath(string fileName)
@@ -375,7 +362,7 @@ namespace TelegramVisualPart.Helper
 
 
             string videoPath = Path.Combine(GetVideosPath(), videoName);
-           
+
             using var ms = new MemoryStream();
 
             FFMpegArguments

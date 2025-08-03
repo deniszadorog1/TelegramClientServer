@@ -283,7 +283,7 @@ namespace TelegramVisualPart.Pages.Advanced {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/advanced/advancedpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/advanced/advancedpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Pages\Advanced\AdvancedPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

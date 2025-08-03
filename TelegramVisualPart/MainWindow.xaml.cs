@@ -1,32 +1,17 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System.IO;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramVisualPart.EnterInAccount;
-using TelegramVisualPart.Pages;
-using static System.Net.Mime.MediaTypeNames;
-using TelegramVisualPart.Services;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.FolderObjs;
+using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
-using System.Drawing;
-using TelegramLib.MainClasses.FolderObjs;
-using TelegramVisualPart.Helper;
-using FFMpegCore;
-using TelegramVisualPart.Pages.VisualPages;
-using Microsoft.EntityFrameworkCore.Metadata;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
-using System.Security.Cryptography;
+using TelegramVisualPart.Pages.VisualPages;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace TelegramVisualPart
 {
@@ -50,8 +35,8 @@ namespace TelegramVisualPart
             MainFrame.Content = new MainChatPage(_system);
 
             System.Windows.Application.Current.Resources["TempActiveTextColor"] =
-                    new SolidColorBrush(System.Windows.Media.Color.FromRgb(_system.LoggedUser.MainColor.R, 
-                    _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B)); 
+                    new SolidColorBrush(System.Windows.Media.Color.FromRgb(_system.LoggedUser.MainColor.R,
+                    _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
         }
 
         public TelSystem GetSystem()
@@ -108,7 +93,7 @@ namespace TelegramVisualPart
 
             //ThirdFrame.Visibility = Visibility.Hidden;
             ThirdFrame.Content = null;
-            
+
             SecondaryFrame.Effect = null;
             SecondaryFrame.Background = null;
             MainFrame.Background = Brushes.Transparent;
@@ -116,9 +101,9 @@ namespace TelegramVisualPart
 
         public void UpdatePrivacyAndScurity()
         {
-            if(SecondaryFrame.Content is PrivacyAndSecurity privSettings)
+            if (SecondaryFrame.Content is PrivacyAndSecurity privSettings)
             {
-               privSettings.SetBasicParams();
+                privSettings.SetBasicParams();
             }
         }
 
@@ -157,7 +142,7 @@ namespace TelegramVisualPart
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
         {
-            if(sender is Button but) but.Background = 
+            if (sender is Button but) but.Background =
                     (SolidColorBrush)System.Windows.Application.Current.Resources["OtherUpperButColor"];
 
         }
@@ -176,7 +161,7 @@ namespace TelegramVisualPart
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(MainFrame.Content is MainChatPage page)
+            if (MainFrame.Content is MainChatPage page)
             {
                 page.UserChat.UserChatMenu.Visibility = Visibility.Hidden;
             }
@@ -222,7 +207,7 @@ namespace TelegramVisualPart
 
                 var mousePosition = e.GetPosition(this);
                 double percentHorizontal = mousePosition.X / this.ActualWidth;
-                double targetWidth = _windWidth; 
+                double targetWidth = _windWidth;
 
                 this.WindowState = WindowState.Normal;
 
@@ -249,7 +234,7 @@ namespace TelegramVisualPart
             }
         }
 
-        public void SendGif(string gifPath, string senderImageName) 
+        public void SendGif(string gifPath, string senderImageName)
         {
             if (MainFrame.Content is MainChatPage chatPage)
             {
@@ -273,7 +258,7 @@ namespace TelegramVisualPart
         public void ClearPageFromParentFrame(Page page)
         {
             var frame = FindParentFrame(page);
-            if (frame is not null)frame.Content = null; 
+            if (frame is not null) frame.Content = null;
         }
 
         private Frame FindParentFrame(DependencyObject child)
@@ -333,7 +318,7 @@ namespace TelegramVisualPart
             chatPage.UpdateFolders();
         }
 
-        public void RemoveElementFromChat(int elIndex, 
+        public void RemoveElementFromChat(int elIndex,
             TelegramLib.Enums.Messages.MediaType type)
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;

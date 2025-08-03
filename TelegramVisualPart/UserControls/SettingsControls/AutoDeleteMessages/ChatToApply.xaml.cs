@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
@@ -21,9 +22,40 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
     /// </summary>
     public partial class ChatToApply : UserControl
     {
+        private UserContactcs _contact;
+
         public ChatToApply()
         {
             InitializeComponent();
+        }
+
+        public ChatToApply(UserContactcs contact)
+        {
+            _contact = contact;
+            InitializeComponent();
+
+            SetAutoDeleteParams();
+        }
+
+        private void SetAutoDeleteParams()
+        {
+            UserImageBrush.ImageSource = new BitmapImage(new Uri(
+                    FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
+            TypeName.Text = _contact.Name;
+
+            //Set auto disable params
+
+            string lowerText = (_contact.AutoDeletion is null ||
+                _contact.AutoDeletion.Type == TelegramLib.Enums.Chat.AutoDeleteType.Nothing) ? 
+                "Auto-delete disabled" :
+                $"auto - delete after{_contact.AutoDeletion.GetStringByType()}";
+
+            AutoDeletionType.Text = lowerText;
+            
+            AutoDeletionType.Foreground = (_contact.AutoDeletion is null ||
+                _contact.AutoDeletion.Type == TelegramLib.Enums.Chat.AutoDeleteType.Nothing) ? 
+                new SolidColorBrush(Colors.Gray) :
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
         }
 
         public void SetParams(string imgName, string upperText, string bottomText)

@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses.UserParams;
 
 namespace TelegramLib.MainClasses
@@ -16,17 +13,19 @@ namespace TelegramLib.MainClasses
         public string UserName { get; set; }
         public DateTime? BirthDate { get; set; }
         public string BIO { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime? LastSeen { get; set; }
         public bool IsNotificationsIsOn { get; set; }
         public List<UserImage> UserImages { get; set; }
         public bool IsBlockedUserBlocked { get; set; }
 
-        public UserContactcs(int id, string name, string userName, 
+        public AutoDeleteDuration AutoDeletion { get; set; }
+
+        public UserContactcs(int id, string name, string userName,
             DateTime? birthDate,
-            string bio, string? phoneNumber,
+            string bio, string phoneNumber,
             DateTime? lastSeen, bool isNotsOn,
-            List<UserImage> userImages)
+            List<UserImage> userImages, AutoDeleteDuration deletion)
         {
             Id = id;
             Name = name;
@@ -37,6 +36,7 @@ namespace TelegramLib.MainClasses
             LastSeen = lastSeen;
             IsNotificationsIsOn = isNotsOn;
             UserImages = userImages;
+            AutoDeletion = deletion;
         }
 
         public UserContactcs()
@@ -49,9 +49,16 @@ namespace TelegramLib.MainClasses
             LastSeen = DateTime.Now;
             IsNotificationsIsOn = true;
 
-            UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));     
+            AutoDeletion = null;
+
+            UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
             UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
             UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
+        }
+
+        public void SetAutoDeleteDuration(AutoDeleteType type)
+        {
+            AutoDeletion = new AutoDeleteDuration(type);
         }
 
         public bool GetNotifsState()
@@ -71,7 +78,7 @@ namespace TelegramLib.MainClasses
 
         public string GetPhoneNumber()
         {
-            return PhoneNumber is null ? "unavailable" :  PhoneNumber;
+            return PhoneNumber is null ? "unavailable" : PhoneNumber;
         }
 
         public string GetUserName()
@@ -110,7 +117,7 @@ namespace TelegramLib.MainClasses
         {
             List<string> res = new List<string>();
 
-            for(int i = 0; i < UserImages.Count; i++)
+            for (int i = 0; i < UserImages.Count; i++)
             {
                 res.Add(UserImages[i].Name);
             }

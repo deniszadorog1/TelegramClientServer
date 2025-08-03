@@ -78,7 +78,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private Page GetPageToOpen(string name)
         {
-            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(_system.GetChosenChat()) :
+            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(_system.GetChosenChat(), _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact() :
                    name == BlockUser.Name.ToString() ? new BlockContact() :
                    name == EditContact.Name.ToString() ? new EditUserContact() :

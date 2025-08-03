@@ -18,8 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Border CornerRadius="100" Width="35" Height="35" 
-                Name="ChosenChatIconBorder"
-                
+                Name="ChosenChatIconBorder"         
                 Background="Transparent">
             <Ellipse Height="33" 
                      Width="33">

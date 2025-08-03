@@ -1,23 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
-using static MaterialDesignThemes.Wpf.Theme;
 
 namespace TelegramVisualPart.Pages
 {
@@ -26,14 +15,79 @@ namespace TelegramVisualPart.Pages
     /// </summary>
     public partial class ToChooseChats : Page
     {
-        public ToChooseChats()
-        {
-            InitializeComponent();
-        }
-
+        private TelSystem _system;
         private List<UserContactcs> _contacts;
         private ChooseType _type;
         private PrivacySub _sub;
+
+        private AutoDeleteType _newAutoDelType;
+        public ToChooseChats(TelSystem system, AutoDeleteType type)
+        {
+            _system = system;
+            _contacts = _system.Contacts;
+            _newAutoDelType = type;
+
+            InitializeComponent();
+
+            SetActionContacts();
+        }
+
+        public void SetActionContacts()
+        {
+            ChatsPanelToChoose.Children.Clear();
+            for (int i = 0; i < _contacts.Count; i++)
+            {
+                ChatToApply contact = new ChatToApply(_contacts[i]);
+
+                contact.Tag = _contacts[i].GetFirstImageName().Name;
+                contact.Name = "contact_" + Guid.NewGuid().ToString("N");
+
+                contact.PreviewMouseDown += AutoDeleteContact_PreviewMouseDown;
+
+                ChatsPanelToChoose.Children.Add(contact);
+            }
+        }
+
+        private void AutoDeleteContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ChatToApply chatToApply) return;
+
+            if (chatToApply.GetIdClicked())
+            {
+                AddAppliedContactToAutoDelete(chatToApply);
+                return;
+            }
+            RemoveAppliedChat(chatToApply);
+        }
+
+        public void AddAppliedContactToAutoDelete(ChatToApply appliedChat)
+        {
+            ChosenChat toAdd = new ChosenChat()
+            {
+                Tag = appliedChat.Tag.ToString(),
+                Name = appliedChat.Name,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            toAdd.SetBasicParams(appliedChat.Tag.ToString(),
+                appliedChat.GetTypeName());
+
+            toAdd._removeChatEvent += ChosenAutoDeleteChat_RemoveClicked;
+
+            //Set params of chosen chat
+            ChatsPanel.Children.Add(toAdd);
+        }
+
+        private void ChosenAutoDeleteChat_RemoveClicked(object sender, EventArgs e)
+        {
+            if (sender is not ChosenChat test) return;
+
+            //Clear chat to apply
+            ClearChatToApply(test);
+
+            //Remove chosen chat
+            ChatsPanel.Children.Remove(test);
+        }
 
         //Set here chosen contacts
         public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub)
@@ -54,7 +108,7 @@ namespace TelegramVisualPart.Pages
         {
             List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
 
-            for(int i = 0; i < contacts.Count; i++)
+            for (int i = 0; i < contacts.Count; i++)
             {
                 ChatToApply chosen = ChatsPanelToChoose.Children.OfType<ChatToApply>().Where
                     (x => x.TypeName.Text == contacts[i].Name).FirstOrDefault();
@@ -65,7 +119,7 @@ namespace TelegramVisualPart.Pages
                     RoutedEvent = UIElement.PreviewMouseDownEvent,
                     Source = chosen
                 });
-      
+
                 //Set chosen action 
                 Contact_PreviewMouseDown(chosen, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
                 {
@@ -100,9 +154,7 @@ namespace TelegramVisualPart.Pages
 
         private void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not ChatToApply) return;
-
-            ChatToApply temp = sender as ChatToApply;
+            if (sender is not ChatToApply temp) return;
 
             if (temp.GetIdClicked())
             {
@@ -137,9 +189,29 @@ namespace TelegramVisualPart.Pages
         private void ApplyBut_Click(object sender, RoutedEventArgs e)
         {
             //Save chosen contacts
-            SaveChosenContacts();
+            if (_system is null) SaveChosenContacts();
+            else ApplyAutoDeletion();
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        private void ApplyAutoDeletion()
+        {
+            //go through all chosen contacts
+            //Compare tags 
+            //Assign new Deletion to contacts
+
+            for (int i = 0; i < ChatsPanel.Children.Count; i++)
+            {
+                if (ChatsPanel.Children[i] is not ChosenChat chat) continue;
+
+                UserContactcs contact = _system.Contacts.Where(
+                    x => x.Name == chat.UserName.Text).FirstOrDefault();
+
+                if (contact is null) continue;
+
+                contact.SetAutoDeleteDuration(_newAutoDelType);
+            }
         }
 
         private void SaveChosenContacts()
@@ -168,7 +240,7 @@ namespace TelegramVisualPart.Pages
 
             List<UserContactcs> remove = removeFrom.Where(x => toRemove.Select(y => y.Name).Contains(x.Name)).ToList();
 
-            foreach(var contact in remove)
+            foreach (var contact in remove)
             {
                 removeFrom.Remove(contact);
             }
@@ -177,8 +249,8 @@ namespace TelegramVisualPart.Pages
         private List<UserContactcs> GetContactsFromChosenChats(List<UserContactcs> chosenContacts)
         {
             List<string> names = ChatsPanel.Children.OfType<ChosenChat>().Select(x => x.UserName.Text).ToList();
-          
-            return _contacts.Where(x => names.Contains(x.Name) && 
+
+            return _contacts.Where(x => names.Contains(x.Name) &&
             !chosenContacts.Select(x => x.Name).Contains(x.Name)).ToList();
         }
 
@@ -203,7 +275,7 @@ namespace TelegramVisualPart.Pages
 
         public void RemoveAppliedChat(ChatToApply toRemove)
         {
-            RemoveContact(toRemove.TypeName.Text);
+            if (_system is null) RemoveContact(toRemove.TypeName.Text);
 
             ChatsPanel.Children.Remove(ChatsPanel.Children.OfType<ChosenChat>().
                 Where(x => x.Name == toRemove.Name).First());
@@ -239,17 +311,20 @@ namespace TelegramVisualPart.Pages
         {
             ChatToApply toClear = ChatsPanelToChoose.Children.OfType<ChatToApply>().
                 Where(x => x.Name == test.Name).FirstOrDefault();
+
             if (toClear is null) return;
 
-            RemoveContact(toClear.TypeName.Text);
+            if (_system is null) RemoveContact(toClear.TypeName.Text);
 
             toClear.DiscardChat();
         }
 
         public void RemoveContact(string name)
         {
-            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ? 
+            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ?
                 _sub.ShareWithExps : _sub.NeverShareExps;
+
+            if (contacts.Count == 0) return;
 
             contacts.Remove(contacts.Where(x => x.Name == name).First());
         }
