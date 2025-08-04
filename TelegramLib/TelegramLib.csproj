@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,7 +73,41 @@
     <Compile Include="MainClasses\UserChat.cs" />
     <Compile Include="MainClasses\UserContactcs.cs" />
     <Compile Include="MainClasses\UserParams\UserImage.cs" />
+    <Compile Include="Models\AdvancedSettings.cs" />
+    <Compile Include="Models\AutoDeleteType.cs" />
+    <Compile Include="Models\AutoNight.cs" />
+    <Compile Include="Models\AwayForType.cs" />
+    <Compile Include="Models\BioSettings.cs" />
+    <Compile Include="Models\BlockedUsers.cs" />
+    <Compile Include="Models\Chat.cs" />
+    <Compile Include="Models\ChatBG.cs" />
+    <Compile Include="Models\ChatImage.cs" />
+    <Compile Include="Models\ChatSettings.cs" />
+    <Compile Include="Models\ChosenPrivacyContacts.cs" />
+    <Compile Include="Models\Contacts.cs" />
+    <Compile Include="Models\DateOfBirthSettings.cs" />
+    <Compile Include="Models\Folder.cs" />
+    <Compile Include="Models\FolderIcons.cs" />
+    <Compile Include="Models\ForwardMessagesSettings.cs" />
+    <Compile Include="Models\GIF.cs" />
+    <Compile Include="Models\LastSeenSettings.cs" />
+    <Compile Include="Models\Messages.cs" />
+    <Compile Include="Models\MessagesSettings.cs" />
+    <Compile Include="Models\NotificatioonsAndSound.cs" />
+    <Compile Include="Models\PhoneNumberSettings.cs" />
+    <Compile Include="Models\PrivacySetting.cs" />
+    <Compile Include="Models\PrivacySettingType.cs" />
+    <Compile Include="Models\ProfilePhotoSettings.cs" />
+    <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\StickerImage.cs" />
+    <Compile Include="Models\sysdiagrams.cs" />
+    <Compile Include="Models\TelegramModel.cs" />
+    <Compile Include="Models\Theme.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserImage.cs" />
+    <Compile Include="Models\WhoCanSeeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DbService.cs" />
     <Compile Include="UserSettings\MainSettings.cs" />
     <Compile Include="UserSettings\SettingsTypes\AdvancedSettings.cs" />
     <Compile Include="UserSettings\SettingsTypes\ChatSettings.cs" />
@@ -87,9 +123,7 @@
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\PrivacySub.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\ProfilePhotosSub.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
