@@ -17,7 +17,7 @@ namespace TelegramLib.Models
 
         public int Id { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

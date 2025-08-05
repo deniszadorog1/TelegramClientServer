@@ -62,6 +62,7 @@
     <Compile Include="Enums\Settings\PrivacyAndSecurity\AllOrNone.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\AwayForTime.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\ShareWith.cs" />
+    <Compile Include="Enums\Settings\PrivacyAndSecurity\SubSettingType.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="MainClasses\ChatFitures\ChatBackground.cs" />
     <Compile Include="MainClasses\FolderObjs\Folder.cs" />
@@ -100,10 +101,10 @@
     <Compile Include="Models\ProfilePhotoSettings.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StickerImage.cs" />
-    <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\TelegramModel.cs" />
     <Compile Include="Models\Theme.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserColor.cs" />
     <Compile Include="Models\UserImage.cs" />
     <Compile Include="Models\WhoCanSeeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

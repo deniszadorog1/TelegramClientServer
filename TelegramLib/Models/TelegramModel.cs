@@ -39,9 +39,9 @@ namespace TelegramLib.Models
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserColor> UserColor { get; set; }
         public virtual DbSet<UserImage> UserImage { get; set; }
         public virtual DbSet<WhoCanSeeType> WhoCanSeeType { get; set; }
 
@@ -66,6 +66,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Messages)
                 .WithOptional(e => e.ChatImage)
                 .HasForeignKey(e => e.ImageId);
+
+            modelBuilder.Entity<Contacts>()
+                .HasMany(e => e.BlockedUsers)
+                .WithOptional(e => e.Contacts)
+                .HasForeignKey(e => e.BlockedUserId);
 
             modelBuilder.Entity<Contacts>()
                 .HasMany(e => e.Chat)
@@ -146,16 +151,6 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Messages)
                 .WithOptional(e => e.StickerImage)
                 .HasForeignKey(e => e.StickerId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.BlockedUsers)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.BlockedUserId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.BlockedUsers1)
-                .WithOptional(e => e.User1)
-                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Contacts)

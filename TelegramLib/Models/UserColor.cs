@@ -6,19 +6,21 @@ namespace TelegramLib.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Folder")]
-    public partial class Folder
+    [Table("UserColor")]
+    public partial class UserColor
     {
         public int Id { get; set; }
 
-        public int? OwnerId { get; set; }
+        public int? R { get; set; }
 
-        [StringLength(255)]
-        public string Name { get; set; }
+        public int? G { get; set; }
 
-        public int? IconId { get; set; }
+        public int? B { get; set; }
 
-        public virtual FolderIcons FolderIcons { get; set; }
+        [StringLength(16)]
+        public string HashColor { get; set; }
+
+        public int? UserId { get; set; }
 
         public virtual User User { get; set; }
     }

@@ -14,15 +14,15 @@ namespace TelegramLib.Models
 
         public int? ThemeId { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string Color { get; set; }
 
         public int? AutoNightId { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string Font { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string BgName { get; set; }
 
         public bool? IsSentWithEnter { get; set; }

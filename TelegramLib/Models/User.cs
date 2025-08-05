@@ -13,7 +13,6 @@ namespace TelegramLib.Models
         public User()
         {
             BlockedUsers = new HashSet<BlockedUsers>();
-            BlockedUsers1 = new HashSet<BlockedUsers>();
             Chat = new HashSet<Chat>();
             Contacts = new HashSet<Contacts>();
             Contacts1 = new HashSet<Contacts>();
@@ -21,6 +20,8 @@ namespace TelegramLib.Models
             Messages = new HashSet<Messages>();
             Messages1 = new HashSet<Messages>();
             Settings = new HashSet<Settings>();
+            UserColor = new HashSet<UserColor>();
+            UserImage = new HashSet<UserImage>();
         }
 
         public int Id { get; set; }
@@ -46,11 +47,14 @@ namespace TelegramLib.Models
         [Column(TypeName = "date")]
         public DateTime? LastOnline { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }
+        [StringLength(1024)]
+        public string BIO { get; set; }
+
+        [StringLength(32)]
+        public string Username { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BlockedUsers> BlockedUsers1 { get; set; }
+        public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
@@ -72,5 +76,11 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Settings> Settings { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserColor> UserColor { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserImage> UserImage { get; set; }
     }
 }

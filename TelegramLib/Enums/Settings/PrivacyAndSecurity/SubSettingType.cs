@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace TelegramLib.Enums.Settings.PrivacyAndSecurity
 {
-    public enum AllOrNone
+    public enum SubSettingType
     {
-        Everybody,
-        Contacts
+        Bio = 1,
+        DateOfBirth,
+        ForwardMessage,
+        LastSeen,
+        Messages,
+        PhoneNumber,
+        Privacy,
+        Profile
     }
 }

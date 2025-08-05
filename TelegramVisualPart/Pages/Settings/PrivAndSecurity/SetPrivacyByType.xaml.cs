@@ -61,7 +61,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
                         if (_settings.PhonePrivacy.WhoCanSearch == AllOrNone.Everybody)
                             EverybodyRadioSub.IsChecked = true;
-                        else if (_settings.PhonePrivacy.WhoCanSearch == AllOrNone.Contact)
+                        else if (_settings.PhonePrivacy.WhoCanSearch == AllOrNone.Contacts)
                             MyContactsRadioSub.IsChecked = true;
 
                         break;
@@ -602,7 +602,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void MyContactsRadioSub_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Contact;
+            _settings.PhonePrivacy.WhoCanSearch = AllOrNone.Contacts;
         }
 
         private void SetPubPhotoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

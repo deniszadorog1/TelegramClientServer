@@ -21,7 +21,7 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
 
         public PhoneNumberSub() : base()
         {
-            WhoCanSearch = AllOrNone.Contact;
+            WhoCanSearch = AllOrNone.Contacts;
         }
     }
 }

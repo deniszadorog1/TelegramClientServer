@@ -7,6 +7,8 @@ using TelegramLib.Models;
 
 using model = TelegramLib.Models;
 using mainClass = TelegramLib.MainClasses;
+using privSub = TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs; 
+
 using TelegramLib.MainClasses.Messages;
 using System.Configuration;
 using System.Data.Entity.Infrastructure;
@@ -18,11 +20,39 @@ using System.Runtime.Serialization;
 using TelegramLib.UserSettings.SettingsTypes;
 using AdvancedSettings = TelegramLib.Models.AdvancedSettings;
 using ChatSettings = TelegramLib.Models.ChatSettings;
+using TelegramLib.MainClasses;
+using System.Dynamic;
+using TelegramLib.Helpers;
+using System.Diagnostics;
+using TelegramLib.UserSettings;
+using TelegramLib.Enums.Settings.ChatSettings;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings;
+using System.Data.Entity.Migrations.Design;
+using System.CodeDom;
+using System.Runtime;
+using Microsoft.SqlServer.Server;
 
 namespace TelegramLib.Services
 {
     public static class DbService
     {
+        public static TelSystem GetTelSystem(string login, string password)
+        {
+            mainClass.User user = GetUserByLoginAndPassword(login, password);
+
+            if (user is null) return null;
+
+            TelSystem system = new TelSystem();
+
+            system.LoggedUser = user;
+            system.Settings = GetSettingsByUserId(user.Id);
+            system.Chats = ;
+            system.Contacts = ;
+            system.Folders = ;
+
+            return system;
+        }
+
         public static List<mainClass.User> GetAllUsers()
         {
             List<mainClass.User> res = new List<mainClass.User>();
@@ -32,8 +62,35 @@ namespace TelegramLib.Services
                 {
                     // ADD BIO, COLOR, USERNAME, BLOCKEDUsers, USERIMAGES
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password, user.Name, user.Surname, "ADD BIO",
-                        new Helpers.ColorHelper(), user.PhoneNumber, "ADD USERNAME", user.Birthday, user.BlockedUsers, new List<UserImage>()))
+                        new Helpers.ColorHelper(), user.PhoneNumber, "ADD USERNAME", user.Birthday, GetBlockedUserIdsByUserId() user.BlockedUsers, GetUserImagesByUserId(user.Id)))
                 }
+            }
+            return res;
+        }
+
+        private static mainClass.User GetUserById(int userId)
+        {
+            mainClass.User res = new mainClass.User();
+            using (var model = new TelegramModel())
+            {
+                model.User user = model.User.Where(x => x.Id == userId).FirstOrDefault();
+                if (user is null) return null;
+
+                res.Id = user.Id;
+                res.Login = user.Login;
+                res.Password = user.Password;
+                res.Name = user.Name;
+                res.Surname = user.Surname;
+                res.BIO = user.BIO;
+
+                res.PhoneNumber = user.PhoneNumber;
+                res.UserName = user.Username;
+                res.BirthDay = user.Birthday;
+
+                res.MainColor = GetUserColorByUserId(user.Id);
+                res.LastSeenOnline = user.LastOnline is null ? DateTime.Now : (DateTime)user.LastOnline;
+
+                res.UserImages = GetUserImagesByUserId(user.Id);
             }
             return res;
         }
@@ -50,7 +107,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                User user = new User();
+                model.User user = new model.User();
 
                 user.Name = name;
                 user.Surname = surname;
@@ -59,12 +116,14 @@ namespace TelegramLib.Services
                 user.Login = login;
                 user.LastOnline = DateTime.Now;
 
+                model.User.Add(user);
+
                 model.SaveChanges();
             }
         }
         public static void UpdateUser(mainClass.User user)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.User toUpdate = model.User.Where(x => x.Id == user.Id).FirstOrDefault();
 
@@ -84,12 +143,12 @@ namespace TelegramLib.Services
 
         public static void GetUsersContacts(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 List<Contacts> contacts = model.Contacts.Where(x => x.UserId == userId).ToList();
 
                 List<mainClass.UserContactcs> resContacts = new List<mainClass.UserContactcs>();
-                foreach(var tempContact in contacts)
+                foreach (var tempContact in contacts)
                 {
                     mainClass.UserContactcs toAdd = new mainClass.UserContactcs();
 
@@ -97,7 +156,7 @@ namespace TelegramLib.Services
                     toAdd.Name = tempContact.Name;
                     toAdd.UserName = tempContact.User.Name;
                     toAdd.BirthDate = tempContact.User.Birthday;
-                    //toAdd.BIO = tempContact.User.
+                    toAdd.BIO = tempContact.User.BIO;
                     toAdd.PhoneNumber = tempContact.User.PhoneNumber;
                     toAdd.LastSeen = tempContact.User.LastOnline;
                     toAdd.IsNotificationsIsOn = false;
@@ -114,16 +173,283 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void GetUsersBlockedIds(int userid)
-        {
 
+
+
+        private static List<UserContactcs> GetBlockedContactsByUserId(int userId)
+        {
+            List<UserContactcs> res = new List<UserContactcs>();
+            using (var model = new TelegramModel())
+            {
+                foreach (var blockedItem in model.BlockedUsers)
+                {
+                    if (blockedItem.User.Id == userId)
+                    {
+                        res.Add(GetContactById((int)blockedItem.BlockedUserId));   //BlockedCONTATCTid                    
+                    }
+                }
+            }
+            return res;
         }
 
+
+
+        private static UserContactcs GetContactById(int contactId)
+        {
+            UserContactcs res = new UserContactcs();
+            using (var model = new TelegramModel())
+            {
+                Contacts contact = model.Contacts.Where(x => x.Id == contactId).FirstOrDefault();
+                if (contact is null) return null;
+
+                mainClass.User user = GetUserById((int)contact.UserId);
+
+                res.Id = contact.Id;
+                res.Name = contact.Name;
+                res.UserName = user.UserName;
+                res.BirthDate = user.BirthDay;
+                res.BIO = user.BIO;
+                res.PhoneNumber = user.PhoneNumber;
+                res.LastSeen = user.LastSeenOnline;
+                res.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
+                res.UserImages = GetUserImagesByUserId(user.Id);
+                res.IsBlockedUserBlocked = contact.Is
+            }
+
+            return res;
+        }
         //Contacts
 
 
 
         // SETTINGS OPTIONS
+
+        public static MainSettings GetSettingsByUserId(int userId)
+        {
+            MainSettings res = new MainSettings();
+
+            using (var model = new TelegramModel())
+            {
+                Settings setting = model.Settings.Where(x => x.UserId == userId).FirstOrDefault();
+                if (setting is null) return null;
+
+                res.Id = setting.Id;
+                res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
+                res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id);
+                res.AdvSettings = GetAdvansedSettingsById(setting.Id);
+                res.PrivacySettings = GetPrivacySettings(setting.Id);
+            }
+
+            return res;
+        }
+
+        private static PrivAndSecSettings GetPrivacySettings(int settingId)
+        {
+            PrivAndSecSettings res = new PrivAndSecSettings();
+
+            using (var model = new TelegramModel())
+            {
+                PrivacySetting settings = model.PrivacySetting.Where(x => x.SettingId == settingId).FirstOrDefault();
+                if (settings is null) return null;
+
+                res.Id = settings.Id;
+                res.LocalPasscode = settings.Passcode;
+                res.SelfDeleteTime = GetAwayForTimeById((int)settings.AwayForTypeId);
+
+                res.PhonePrivacy = GetPhoneNumberSettingsById((int)settings.PhoneNumberSetId, settingId);
+                res.LastSeenPrivacy = GetLastSeenSubById((int)settings.LastSeenSetId, settingId);
+                res.ProfPhotoPrivacy = GetProfPhotoSub((int)settings.PhoneNumberSetId, settingId);
+                res.ForwardMesPrivacy = GetForwardMesSubById((int)settings.ForwardMesSetId, settingId);
+                res.MessagesPrivacy = GetMessagesPrivById((int)settings.MessagesSetId);
+                res.DateBirthPrivacy = GetBirthDateById((int)settings.DateOfBirthSetId, settingId);
+                res.BioPrivacy = GetBioById((int)settings.BioSetId, settingId);
+            }
+            return res;
+        }
+
+        private static BioSub GetBioById(int id, int settingId)
+        {
+            BioSub res = new BioSub();
+
+            using (var model = new TelegramModel())
+            {
+                BioSettings forMes = model.BioSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (forMes is null) return null;
+
+                res.ShareType = GetShareWithById((int)forMes.WhoSeeId);
+                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.Bio);
+                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.Bio);
+            }
+            return res;
+        }
+
+        private static DateOfBirthSub GetBirthDateById(int id, int settingId)
+        {
+            DateOfBirthSub res = new DateOfBirthSub();
+
+            using (var model = new TelegramModel())
+            {
+                DateOfBirthSettings forMes = model.DateOfBirthSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (forMes is null) return null;
+
+                res.ShareType = GetShareWithById((int)forMes.WhoSeeId);
+                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.DateOfBirth);
+                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.DateOfBirth);
+            }
+            return res;
+        }
+
+        private static MessagesSub GetMessagesPrivById(int id)
+        {
+            MessagesSub res = new MessagesSub();
+
+            using(var model = new TelegramModel())
+            {
+                MessagesSettings mesSet = model.MessagesSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (mesSet is null) return null;
+
+                res.WhoCanSend = GetShareWithById((int)mesSet.WhoSeeId);
+            }
+            return res;
+        }
+
+        private static ForwardedMessagesSub GetForwardMesSubById(int id, int settingId)
+        {
+            ForwardedMessagesSub res = new ForwardedMessagesSub();
+
+            using(var model = new TelegramModel())
+            {
+                ForwardMessagesSettings forMes = model.ForwardMessagesSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (forMes is null) return null;
+
+                res.ShareType = GetShareWithById((int)forMes.WhoSeeId);
+                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.ForwardMessage);
+                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.ForwardMessage);
+            }
+            return res;
+        }
+
+        private static ProfilePhotosSub GetProfPhotoSub(int id, int settingId)
+        {
+            ProfilePhotosSub res = new ProfilePhotosSub();
+
+            using(var model = new TelegramModel())
+            {
+                ProfilePhotoSettings photo = model.ProfilePhotoSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (photo is null) return null;
+
+                res.PublicPhotoPath = photo.PublicPhotoId;
+
+                res.ShareType = GetShareWithById((int)photo.WhoSeeId);
+                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.PhoneNumber);
+                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.PhoneNumber);
+            }
+            return res;
+        }
+
+        private static LastSeenSub GetLastSeenSubById(int id, int settingsId)
+        {
+            LastSeenSub res = new LastSeenSub();
+
+            using(var model = new TelegramModel())
+            {
+                LastSeenSettings lastSeen = model.LastSeenSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (lastSeen is null) return null;
+
+                res.IsHideReadAction = (bool)lastSeen.IsHideReadTime;
+                res.ShareType = GetShareWithById((int)lastSeen.WhoSeeId);
+                res.ShareWithExps = GetChosenShareContacts(true, settingsId, SubSettingType.LastSeen);
+                res.NeverShareExps = GetChosenShareContacts(false, settingsId, SubSettingType.LastSeen);
+            }
+            return res;
+        }
+
+        private static PhoneNumberSub GetPhoneNumberSettingsById(int id, int settingsId)
+        {
+            PhoneNumberSub res = new PhoneNumberSub();
+
+            using (var model = new TelegramModel())
+            {
+                PhoneNumberSettings settings = model.PhoneNumberSettings.Where(x => x.Id == id).FirstOrDefault();
+                if (settings is null) return null;
+
+                res.ShareType = GetShareWithById((int)settings.WhoSeeId);
+                res.WhoCanSearch = GetAllOrNooneById((int)settings.WhoCanFindNumber);
+                res.ShareWithExps = GetChosenShareContacts(true, settingsId, SubSettingType.PhoneNumber);
+                res.NeverShareExps = GetChosenShareContacts(false, settingsId, SubSettingType.PhoneNumber);
+            }
+            return res;
+        }
+
+
+        private static UserSettings.SettingsTypes.AdvancedSettings GetAdvansedSettingsById(int settingsId)
+        {
+            UserSettings.SettingsTypes.AdvancedSettings res = new UserSettings.SettingsTypes.AdvancedSettings();
+
+            using (var model = new TelegramModel())
+            {
+                AdvancedSettings settings = model.AdvancedSettings.Where(x => x.SettingId == settingsId).FirstOrDefault();
+                if (settings is null) return null;
+
+                res.Id = settings.Id;
+                res.IsAskDownloadPath = settings.Dow;
+                res.IsShowChatName = (bool)settings.IsShowChatName;
+                res.IsShowTotalUnReads = (bool)settings.IsTotalUnredCount;
+                res.IsUserWindowSysFrame = (bool)settings.IsUseSysWIndowFrame;
+                res.IsShowTrayIcon = (bool)settings.IsShowTrayIcon;
+                res.IsShowTaskbarIcon = (bool)settings.IsShowTaskBarIcon;
+                res.IsCloseToTaskbar = (bool)settings.IsCloseToTaskBar;
+                res.LaunchTelegram = (bool)settings.IsLaunchWhenStart;
+                res.IsUpdateAutomatically = (bool)settings.IsUpdateAutomatically;
+                res.IsInstallBetaVersion = (bool)settings.IsInstallBetaVersion;
+            }
+
+            return res;
+        }
+
+        private static UserSettings.SettingsTypes.ChatSettings GetChatSettingsBySettingsId(int settingsId)
+        {
+            UserSettings.SettingsTypes.ChatSettings res = new UserSettings.SettingsTypes.ChatSettings();
+
+            using (var model = new TelegramModel())
+            {
+                ChatSettings settings = model.ChatSettings.Where(x => x.SettingId == settingsId).FirstOrDefault();
+                if (settings is null) return null;
+
+                res.Id = settings.Id;
+                res.Theme = GetThemeById((int)settings.ThemeId);
+                //res.ChosenColor = new ChosenColor;
+                res.NightMode = GetNightModeById((int)settings.AutoNightId);
+                res.FontName = settings.Font;
+                res.IsSendWithEnter = (bool)settings.IsSentWithEnter;
+                res.Wallpaper = GetChatWallpaperById(settings.Bg);
+                res.PossibleWallpapers =
+            }
+            return res;
+        }
+
+        private static NotificationSettings GetNotifSettingsBySettingsId(int settingId)
+        {
+            NotificationSettings res = new NotificationSettings();
+
+            using (var model = new TelegramModel())
+            {
+                NotificatioonsAndSound settings = model.NotificatioonsAndSound.Where(
+                    x => x.SettingId == settingId).FirstOrDefault();
+                if (settings is null) return null;
+
+                res.Id = settings.Id;
+                res.IsDesktopNotifications = (bool)settings.DesktopNotification;
+                res.IsFlashTaskBar = (bool)settings.FlashTaskBar;
+                res.IsAllowSounds = (bool)settings.AllowSound;
+                res.IsPrivateChats = (bool)settings.PrivateChat;
+                res.IsPinnedMessages = (bool)settings.PinnedMessage;
+            }
+
+            return res;
+        }
+
+
         public static void AddSettings(int userId)
         {
             int newSettingId;
@@ -483,7 +809,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                foreach(var type in model.AwayForType)
+                foreach (var type in model.AwayForType)
                 {
                     if (type.Id == id) return type.Name;
                 }
@@ -494,7 +820,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                foreach(var type in model.AwayForType)
+                foreach (var type in model.AwayForType)
                 {
                     if (type.Name == awayForType) return type.Id;
                 }
@@ -514,9 +840,9 @@ namespace TelegramLib.Services
         }
         private static int GetUserImageByName(string name)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                foreach(var img in model.UserImage)
+                foreach (var img in model.UserImage)
                 {
                     if (img.Name == name) return img.Id;
                 }
@@ -524,7 +850,192 @@ namespace TelegramLib.Services
             return 1;
         }
 
-        //SETTINGS OPTIONS
+        private static List<mainClass.UserParams.UserImage> GetUserImagesByUserId(int userId)
+        {
+            List<mainClass.UserParams.UserImage> res = new List<mainClass.UserParams.UserImage>();
+            using (var model = new TelegramModel())
+            {
+                foreach (var img in model.UserImage)
+                {
+                    if (img.UserId == userId)
+                    {
+                        mainClass.UserParams.UserImage toAdd = new mainClass.UserParams.UserImage();
+
+                        toAdd.Name = img.Name;
+                        toAdd.Date = DateTime.Now;
+
+                        res.Add(toAdd);
+                    }
+                }
+            }
+            return res;
+        }
+
+        private static ColorHelper GetUserColorByUserId(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var color in model.UserColor)
+                {
+                    if (color.UserId == userId)
+                    {
+                        return new ColorHelper((byte)color.R, (byte)color.G, (byte)color.B);
+                    }
+                }
+            }
+            return new ColorHelper();
+        }
+
+        private static ThemeType GetThemeById(int themeId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Theme theme = model.Theme.Where(x => x.Id == themeId).FirstOrDefault();
+                if (theme is null) return ThemeType.Classic;
+
+                for (int i = 1; i <= (int)ThemeType.Night; i++)
+                {
+                    if (theme.Name == ((ThemeType)i).ToString())
+                    {
+                        return (ThemeType)i;
+                    }
+                }
+            }
+            return ThemeType.Classic;
+        }
+
+        private static AutoNightMode GetNightModeById(int nightModeId)
+        {
+            using (var model = new TelegramModel())
+            {
+                AutoNight autoNight = model.AutoNight.Where(x => x.Id == nightModeId).FirstOrDefault();
+                if (autoNight is null) return AutoNightMode.Off;
+
+                for (int i = 1; i <= (int)AutoNightMode.System; i++)
+                {
+                    if (autoNight.Name == ((AutoNightMode)i).ToString())
+                    {
+                        return (AutoNightMode)i;
+                    }
+                }
+            }
+            return AutoNightMode.Off;
+        }
+
+        private static ChatWallpaper GetChatWallpaperById(int chatBgId)
+        {
+            ChatWallpaper res = new ChatWallpaper();
+
+            using (var model = new TelegramModel())
+            {
+                ChatBG bg = model.ChatBG.Where(x => x.Id == chatBgId).FirstOrDefault();
+                if (bg is null) return null;
+
+                res.Id = bg.Id;
+                res.WallpaperName = bg.Name;
+                res.IsBlurred = bg.
+            }
+
+            return res;
+        }
+
+        private static AwayForTime GetAwayForTimeById(int id)
+        {
+            using (var model = new TelegramModel())
+            {
+                AwayForType type = model.AwayForType.Where(x => x.Id == id).FirstOrDefault();
+                if (type is null) return AwayForTime.ThreeMonths;
+
+                for (int i = 0; i <= (int)AwayForTime.TwentyFourMonths; i++)
+                {
+                    if (type.Name == ((AwayForTime)i).ToString())
+                    {
+                        return (AwayForTime)i;
+                    }
+                }
+            }
+            return AwayForTime.ThreeMonths;
+        }
+
+        private static ShareWith GetShareWithById(int id)
+        {
+            using (var model = new TelegramModel())
+            {
+                WhoCanSeeType type = model.WhoCanSeeType.Where(x => x.Id == id).FirstOrDefault();
+                if (type is null) return ShareWith.Contacts;
+
+                for (int i = 0; i <= (int)ShareWith.Nobody; i++)
+                {
+                    if (type.Name == ((ShareWith)i).ToString())
+                    {
+                        return (ShareWith)i;
+                    }
+                }
+            }
+            return ShareWith.Contacts;
+        }
+
+        private static AllOrNone GetAllOrNooneById(int id)
+        {
+            using (var model = new TelegramModel())
+            {
+                WhoCanSeeType type = model.WhoCanSeeType.Where(x => x.Id == id).FirstOrDefault();
+                if (type is null) return AllOrNone.Contacts;
+
+                for (int i = 0; i <= (int)AllOrNone.Contacts; i++)
+                {
+                    if (type.Name == ((AllOrNone)i).ToString())
+                    {
+                        return (AllOrNone)i;
+                    }
+                }
+            }
+            return AllOrNone.Contacts;
+        }
+
+        private static List<UserContactcs> GetChosenShareContacts(bool isShare, int settingId, SubSettingType type)
+        {
+            List<UserContactcs> res = new List<UserContactcs>();
+            int subSettingId = GetSubSettingTypeByEnum(type);
+
+            using(var model = new TelegramModel())
+            {
+                foreach(var contact in model.ChosenPrivacyContacts)
+                {
+                    if(contact.IsShare == isShare && 
+                        contact.SettingTypeId == subSettingId && 
+                        contact.SttingId == settingId)
+                    {
+                        res.Add(GetContactById((int)contact.ContactId));
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        private static int GetSubSettingTypeByEnum(SubSettingType type)
+        {
+            using(var model = new TelegramModel())
+            {
+                PrivacySettingType res =  model.PrivacySettingType.Where(
+                    x => x.Name == type.ToString()).FirstOrDefault();
+                if (res is null) return 1;
+                return res.Id;
+                
+            }
+
+            return 1;
+        }
+
+            
+            
+            //SETTINGS OPTIONS
+
+
+        //Chats
+
+
 
         public static void AddMessageInChat(int chatIndex, int userId,
             int toSendId, Message message)

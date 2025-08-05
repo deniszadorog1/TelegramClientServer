@@ -11,6 +11,7 @@ namespace TelegramLib.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Contacts()
         {
+            BlockedUsers = new HashSet<BlockedUsers>();
             Chat = new HashSet<Chat>();
             ChosenPrivacyContacts = new HashSet<ChosenPrivacyContacts>();
         }
@@ -21,11 +22,16 @@ namespace TelegramLib.Models
 
         public int? FriendId { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string Name { get; set; }
 
-        [StringLength(1)]
+        [StringLength(255)]
         public string LastName { get; set; }
+
+        public bool? IsNotifsIsOn { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
