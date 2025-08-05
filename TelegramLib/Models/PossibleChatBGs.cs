@@ -6,16 +6,18 @@ namespace TelegramLib.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class BlockedUsers
+    public partial class PossibleChatBGs
     {
         public int Id { get; set; }
 
-        public int? UserId { get; set; }
+        public int? ChatId { get; set; }
 
-        public int? BlockedUserId { get; set; }
+        public int? ChatBgId { get; set; }
 
-        public virtual Contacts Contacts { get; set; }
+        public bool? IsGeneral { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual Chat Chat { get; set; }
+
+        public virtual ChatBG ChatBG { get; set; }
     }
 }

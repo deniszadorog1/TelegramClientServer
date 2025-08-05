@@ -9,6 +9,12 @@ namespace TelegramLib.Models
     [Table("Folder")]
     public partial class Folder
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Folder()
+        {
+            ContactsInFolder = new HashSet<ContactsInFolder>();
+        }
+
         public int Id { get; set; }
 
         public int? OwnerId { get; set; }
@@ -17,6 +23,9 @@ namespace TelegramLib.Models
         public string Name { get; set; }
 
         public int? IconId { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactsInFolder> ContactsInFolder { get; set; }
 
         public virtual FolderIcons FolderIcons { get; set; }
 

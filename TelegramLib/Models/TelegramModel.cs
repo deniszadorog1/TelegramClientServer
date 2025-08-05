@@ -17,13 +17,14 @@ namespace TelegramLib.Models
         public virtual DbSet<AutoNight> AutoNight { get; set; }
         public virtual DbSet<AwayForType> AwayForType { get; set; }
         public virtual DbSet<BioSettings> BioSettings { get; set; }
-        public virtual DbSet<BlockedUsers> BlockedUsers { get; set; }
+        public virtual DbSet<BlockedContacts> BlockedContacts { get; set; }
         public virtual DbSet<Chat> Chat { get; set; }
         public virtual DbSet<ChatBG> ChatBG { get; set; }
         public virtual DbSet<ChatImage> ChatImage { get; set; }
         public virtual DbSet<ChatSettings> ChatSettings { get; set; }
         public virtual DbSet<ChosenPrivacyContacts> ChosenPrivacyContacts { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }
+        public virtual DbSet<ContactsInFolder> ContactsInFolder { get; set; }
         public virtual DbSet<DateOfBirthSettings> DateOfBirthSettings { get; set; }
         public virtual DbSet<Folder> Folder { get; set; }
         public virtual DbSet<FolderIcons> FolderIcons { get; set; }
@@ -34,6 +35,7 @@ namespace TelegramLib.Models
         public virtual DbSet<MessagesSettings> MessagesSettings { get; set; }
         public virtual DbSet<NotificatioonsAndSound> NotificatioonsAndSound { get; set; }
         public virtual DbSet<PhoneNumberSettings> PhoneNumberSettings { get; set; }
+        public virtual DbSet<PossibleChatBGs> PossibleChatBGs { get; set; }
         public virtual DbSet<PrivacySetting> PrivacySetting { get; set; }
         public virtual DbSet<PrivacySettingType> PrivacySettingType { get; set; }
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
@@ -68,9 +70,9 @@ namespace TelegramLib.Models
                 .HasForeignKey(e => e.ImageId);
 
             modelBuilder.Entity<Contacts>()
-                .HasMany(e => e.BlockedUsers)
+                .HasMany(e => e.BlockedContacts)
                 .WithOptional(e => e.Contacts)
-                .HasForeignKey(e => e.BlockedUserId);
+                .HasForeignKey(e => e.BlockedContactId);
 
             modelBuilder.Entity<Contacts>()
                 .HasMany(e => e.Chat)
@@ -79,6 +81,11 @@ namespace TelegramLib.Models
 
             modelBuilder.Entity<Contacts>()
                 .HasMany(e => e.ChosenPrivacyContacts)
+                .WithOptional(e => e.Contacts)
+                .HasForeignKey(e => e.ContactId);
+
+            modelBuilder.Entity<Contacts>()
+                .HasMany(e => e.ContactsInFolder)
                 .WithOptional(e => e.Contacts)
                 .HasForeignKey(e => e.ContactId);
 
@@ -166,16 +173,6 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Folder)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.OwnerId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Messages)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.FriendId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Messages1)
-                .WithOptional(e => e.User1)
-                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<UserImage>()
                 .HasMany(e => e.ProfilePhotoSettings)

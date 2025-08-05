@@ -12,13 +12,11 @@ namespace TelegramLib.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            BlockedUsers = new HashSet<BlockedUsers>();
+            BlockedContacts = new HashSet<BlockedContacts>();
             Chat = new HashSet<Chat>();
             Contacts = new HashSet<Contacts>();
             Contacts1 = new HashSet<Contacts>();
             Folder = new HashSet<Folder>();
-            Messages = new HashSet<Messages>();
-            Messages1 = new HashSet<Messages>();
             Settings = new HashSet<Settings>();
             UserColor = new HashSet<UserColor>();
             UserImage = new HashSet<UserImage>();
@@ -54,7 +52,7 @@ namespace TelegramLib.Models
         public string Username { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }
+        public virtual ICollection<BlockedContacts> BlockedContacts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
@@ -67,12 +65,6 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Folder> Folder { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Messages> Messages { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Messages> Messages1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Settings> Settings { get; set; }

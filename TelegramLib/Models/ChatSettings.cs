@@ -14,8 +14,7 @@ namespace TelegramLib.Models
 
         public int? ThemeId { get; set; }
 
-        [StringLength(255)]
-        public string Color { get; set; }
+        public int? UserColorId { get; set; }
 
         public int? AutoNightId { get; set; }
 
@@ -32,5 +31,7 @@ namespace TelegramLib.Models
         public virtual Settings Settings { get; set; }
 
         public virtual Theme Theme { get; set; }
+
+        public virtual UserColor UserColor { get; set; }
     }
 }

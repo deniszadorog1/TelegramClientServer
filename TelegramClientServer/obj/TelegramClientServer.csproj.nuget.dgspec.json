@@ -32,7 +32,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj": {
+                "projectPath": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -80,6 +84,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj": {
+      "restore": {
+        "projectUniqueName": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj",
+        "projectName": "TelegramLib",
+        "projectPath": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
       }
     }
   }

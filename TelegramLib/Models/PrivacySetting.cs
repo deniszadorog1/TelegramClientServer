@@ -35,6 +35,9 @@ namespace TelegramLib.Models
 
         public int? AwayForTypeId { get; set; }
 
+        [StringLength(32)]
+        public string Passcode { get; set; }
+
         public virtual AwayForType AwayForType { get; set; }
 
         public virtual BioSettings BioSettings { get; set; }

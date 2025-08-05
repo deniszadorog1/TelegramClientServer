@@ -9,6 +9,13 @@ namespace TelegramLib.Models
     [Table("Chat")]
     public partial class Chat
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Chat()
+        {
+            Messages = new HashSet<Messages>();
+            PossibleChatBGs = new HashSet<PossibleChatBGs>();
+        }
+
         public int Id { get; set; }
 
         public int? UserId { get; set; }
@@ -28,5 +35,11 @@ namespace TelegramLib.Models
         public virtual Contacts Contacts { get; set; }
 
         public virtual User User { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Messages> Messages { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PossibleChatBGs> PossibleChatBGs { get; set; }
     }
 }

@@ -11,9 +11,10 @@ namespace TelegramLib.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Contacts()
         {
-            BlockedUsers = new HashSet<BlockedUsers>();
+            BlockedContacts = new HashSet<BlockedContacts>();
             Chat = new HashSet<Chat>();
             ChosenPrivacyContacts = new HashSet<ChosenPrivacyContacts>();
+            ContactsInFolder = new HashSet<ContactsInFolder>();
         }
 
         public int Id { get; set; }
@@ -30,8 +31,10 @@ namespace TelegramLib.Models
 
         public bool? IsNotifsIsOn { get; set; }
 
+        public bool? IsBlocked { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }
+        public virtual ICollection<BlockedContacts> BlockedContacts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
@@ -42,5 +45,8 @@ namespace TelegramLib.Models
         public virtual User User { get; set; }
 
         public virtual User User1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactsInFolder> ContactsInFolder { get; set; }
     }
 }

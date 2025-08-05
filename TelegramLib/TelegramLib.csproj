@@ -79,13 +79,14 @@
     <Compile Include="Models\AutoNight.cs" />
     <Compile Include="Models\AwayForType.cs" />
     <Compile Include="Models\BioSettings.cs" />
-    <Compile Include="Models\BlockedUsers.cs" />
+    <Compile Include="Models\BlockedContacts.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\ChatBG.cs" />
     <Compile Include="Models\ChatImage.cs" />
     <Compile Include="Models\ChatSettings.cs" />
     <Compile Include="Models\ChosenPrivacyContacts.cs" />
     <Compile Include="Models\Contacts.cs" />
+    <Compile Include="Models\ContactsInFolder.cs" />
     <Compile Include="Models\DateOfBirthSettings.cs" />
     <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\FolderIcons.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Models\MessagesSettings.cs" />
     <Compile Include="Models\NotificatioonsAndSound.cs" />
     <Compile Include="Models\PhoneNumberSettings.cs" />
+    <Compile Include="Models\PossibleChatBGs.cs" />
     <Compile Include="Models\PrivacySetting.cs" />
     <Compile Include="Models\PrivacySettingType.cs" />
     <Compile Include="Models\ProfilePhotoSettings.cs" />

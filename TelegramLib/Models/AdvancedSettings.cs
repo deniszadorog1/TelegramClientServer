@@ -12,6 +12,8 @@ namespace TelegramLib.Models
 
         public int? SettingId { get; set; }
 
+        public bool? IsAskDownloadPath { get; set; }
+
         public bool? IsShowChatName { get; set; }
 
         public bool? IsTotalUnredCount { get; set; }

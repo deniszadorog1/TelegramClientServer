@@ -739,6 +739,15 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "TelegramLib/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/TelegramLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TelegramLib.dll": {}
+        }
       }
     }
   },
@@ -1906,12 +1915,18 @@
         "system.threading.channels.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "TelegramLib/1.0.0": {
+      "type": "project",
+      "path": "../TelegramLib/TelegramLib.csproj",
+      "msbuildProject": "../TelegramLib/TelegramLib.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Microsoft.AspNetCore.SignalR >= 1.2.0",
-      "Swashbuckle.AspNetCore >= 6.6.2"
+      "Swashbuckle.AspNetCore >= 6.6.2",
+      "TelegramLib >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -1946,7 +1961,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj": {
+              "projectPath": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\TelegramLib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
