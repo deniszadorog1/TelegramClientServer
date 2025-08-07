@@ -35,6 +35,9 @@ using System.Diagnostics.Contracts;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.FolderObjs;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Net.Configuration;
+using TelegramLib.Enums.Chat;
 
 namespace TelegramLib.Services
 {
@@ -61,7 +64,7 @@ namespace TelegramLib.Services
                 DateTime birthDate, string login, string password)
         {
             //Add new user
-            
+
             AddUser(name, surname, phoneNumber, birthDate, login, password);
 
             int addedUserId = GetLastUsersId();
@@ -72,7 +75,7 @@ namespace TelegramLib.Services
 
         private static int GetLastUsersId()
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.User.Last().Id;
             }
@@ -116,6 +119,104 @@ namespace TelegramLib.Services
             return res;
         }
 
+        public static void AddFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.Folder toAdd = new model.Folder();
+
+                toAdd.OwnerId = userId;
+                toAdd.Name = folder.Name;
+                toAdd.IconId = GetFolderIconIdByName(folder.IconName);
+
+
+                model.Folder.Add(toAdd);
+                model.SaveChanges();
+
+                //Add folder contacts
+                AddManyContactInContcatsInFolder(model.Folder.Last().Id,
+                    folder.Contacts, false);
+
+                AddManyContactInContcatsInFolder(model.Folder.Last().Id,
+                    folder.ExcludedContacts, true);
+            }
+        }
+
+        public static void AddManyContactInContcatsInFolder(int folderId,
+            List<UserContactcs> contacts, bool isExclude)
+        {
+            for (int i = 0; i < contacts.Count; i++)
+            {
+                AddContactInCOntcatsInFolder(folderId, contacts[i], isExclude);
+            }
+        }
+
+        public static void AddContactInCOntcatsInFolder(int folderId,
+            UserContactcs contact, bool isExclude)
+        {
+            using (var model = new TelegramModel())
+            {
+                ContactsInFolder toAdd = new ContactsInFolder();
+
+                toAdd.FolderId = folderId;
+                toAdd.ContactId = contact.Id;
+                toAdd.IsExclude = isExclude;
+
+                model.ContactsInFolder.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.Folder toUpdate = model.Folder.Where(x => x.Id == folder.Id).FirstOrDefault();
+                if (toUpdate is null) return;
+
+                toUpdate.Name = folder.Name;
+                toUpdate.IconId = GetFolderIconIdByName(folder.IconName);
+
+                model.SaveChanges();
+
+                //Update folder contacts
+
+                //Remove all folderContacts 
+                RemoveContactsFromFolder(folder.Id);
+
+                //Add folder contacts
+                AddManyContactInContcatsInFolder(folder.Id, folder.Contacts, false);
+                AddManyContactInContcatsInFolder(folder.Id, folder.ExcludedContacts, true);
+            }
+        }
+
+        private static void RemoveContactsFromFolder(int folderId)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<ContactsInFolder> toRemove = new List<ContactsInFolder>();
+                foreach (var temp in model.ContactsInFolder)
+                {
+                    if (temp.FolderId == folderId) toRemove.Add(temp);
+                }
+
+                model.ContactsInFolder.RemoveRange(toRemove);
+                model.SaveChanges();
+            }
+        }
+
+        public static void RemoveFolder(int folderId)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.Folder.RemoveRange(model.Folder.Where(x => x.Id == folderId).ToList());
+                model.SaveChanges();
+
+                RemoveContactsFromFolder(folderId);
+            }
+        }
+
+
         private static List<UserContactcs> GetContactsForFolder(int folderId, bool isExclude)
         {
             List<UserContactcs> res = new List<UserContactcs>();
@@ -142,6 +243,16 @@ namespace TelegramLib.Services
                 FolderIcons foldIcon = model.FolderIcons.Where(x => x.Id == id).FirstOrDefault();
                 if (foldIcon is null) return string.Empty;
                 return foldIcon.Name;
+            }
+        }
+
+        private static int GetFolderIconIdByName(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                FolderIcons foldIcon = model.FolderIcons.Where(x => x.Name == name).FirstOrDefault();
+                if (foldIcon is null) return 1;
+                return foldIcon.Id;
             }
         }
 
@@ -242,8 +353,11 @@ namespace TelegramLib.Services
                         Message toAdd = new Message();
 
                         toAdd.Id = mes.Id;
-                        toAdd.IsLoggedUserSent = (bool)mes.IsLoggedUserSent;
+                        toAdd.SenderUserId = (int)mes.SenderId;
                         toAdd.SentTime = (DateTime)mes.SentDate;
+
+                        //Set message Action
+
 
                         res.Add(toAdd);
                     }
@@ -261,7 +375,7 @@ namespace TelegramLib.Services
                 {
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
-                        new Helpers.ColorHelper(), user.PhoneNumber,
+                        new Helpers.ColorHelper(user.Id), user.PhoneNumber,
                         user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), GetUserImagesByUserId(user.Id)));
                 }
             }
@@ -319,9 +433,28 @@ namespace TelegramLib.Services
 
                 model.User.Add(user);
 
+                AddBasicUserColor(model.User.Last().Id);
+
                 model.SaveChanges();
             }
         }
+
+        private static void AddBasicUserColor(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserColor toAdd = new UserColor();
+
+                toAdd.R = ColorHelper._basicRGB.R;
+                toAdd.G = ColorHelper._basicRGB.G;
+                toAdd.B = ColorHelper._basicRGB.B;
+                toAdd.UserId = userId;
+
+                model.UserColor.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
         public static void UpdateUser(mainClass.User user)
         {
             using (var model = new TelegramModel())
@@ -336,13 +469,15 @@ namespace TelegramLib.Services
                 toUpdate.Password = user.Password;
                 toUpdate.LastOnline = user.LastSeenOnline;
 
+                UpdateColor(user.MainColor);
+
                 model.SaveChanges();
             }
         }
 
         public static bool IsUserExist(string login)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.User.Where(x => x.Login == login).Any();
             }
@@ -444,8 +579,41 @@ namespace TelegramLib.Services
 
             return res;
         }
-        //Contacts
 
+        public static void AddContact(UserContactcs contact, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Contacts toAdd = new Contacts();
+
+                toAdd.UserId = userId;
+                toAdd.FriendId = contact.ContactUserid;
+                toAdd.Name = contact.Name;
+                toAdd.LastName = string.Empty;
+                toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
+                toAdd.IsBlocked = contact.IsBlockedUserBlocked;
+
+                model.Contacts.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateContact(UserContactcs contact, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Contacts toUpdate = model.Contacts.Where(x => x.Id == contact.Id).FirstOrDefault();
+                if (toUpdate is null) return;
+
+                toUpdate.Name = contact.Name;
+                toUpdate.IsNotifsIsOn = contact.IsNotificationsIsOn;
+                toUpdate.IsBlocked = contact.IsBlockedUserBlocked;
+
+                model.SaveChanges();
+            }
+        }
+
+        //Contacts
 
 
         // SETTINGS OPTIONS
@@ -467,6 +635,59 @@ namespace TelegramLib.Services
             }
 
             return res;
+        }
+
+        public static void UpdatePrivacySettings(PrivAndSecSettings settings)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var privSet in model.PrivacySetting)
+                {
+                    if (privSet.Id == settings.Id)
+                    {
+                        //passcode
+                        privSet.Passcode = settings.LocalPasscode;
+
+                        //selfDeletetime
+                        privSet.AwayForTypeId = GetSelfDeleteTypeIdByType(settings.SelfDeleteTime);
+
+                        //phone priv
+                        UpdatePhoneNumberSetting(settings.Id, settings.PhonePrivacy);
+
+                        //profile priv
+                        UpdateProfilePhoto(settings.Id, settings.ProfPhotoPrivacy);
+
+                        //forward priv
+                        UpdateForwardMessages(settings.Id, settings.ForwardMesPrivacy);
+
+                        //message priv
+                        UpdateMessagesPrivacy(settings.Id, settings.MessagesPrivacy);
+
+                        //date birth priv
+                        UpdateDateofBirth(settings.Id, settings.DateBirthPrivacy);
+
+                        //bio priv
+                        UpdateBioSetting(settings.Id, settings.BioPrivacy);
+
+                        model.SaveChanges();
+                        return;
+                    }
+                }
+            }
+        }
+
+
+
+        private static int GetSelfDeleteTypeIdByType(AwayForTime deleteType)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var type in model.AwayForType)
+                {
+                    if (type.Name == deleteType.ToString()) return type.Id;
+                }
+            }
+            return 1;
         }
 
         private static PrivAndSecSettings GetPrivacySettings(int settingId)
@@ -621,7 +842,7 @@ namespace TelegramLib.Services
 
         public static void UpdateAdvanced(UserSettings.SettingsTypes.AdvancedSettings settings)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 AdvancedSettings advModel = model.AdvancedSettings.Where(x => x.Id == settings.Id).FirstOrDefault();
                 if (advModel is null) return;
@@ -634,7 +855,7 @@ namespace TelegramLib.Services
                 advModel.IsCloseToTaskBar = settings.IsCloseToTaskbar;
                 advModel.IsLaunchWhenStart = settings.LaunchTelegram;
                 advModel.IsUpdateAutomatically = settings.IsUpdateAutomatically;
-                advModel.IsInstallBetaVersion = settings.Bet;
+                advModel.IsInstallBetaVersion = settings.IsInstallBetaVersion;
 
                 model.SaveChanges();
             }
@@ -694,7 +915,22 @@ namespace TelegramLib.Services
                 UserColor color = model.UserColor.Where(x => x.Id == id).FirstOrDefault();
                 if (color is null) return null;
 
-                return new ColorHelper((byte)color.R, (byte)color.G, (byte)color.B);
+                return new ColorHelper(id, (byte)color.R, (byte)color.G, (byte)color.B);
+            }
+        }
+
+        public static void UpdateColor(ColorHelper color)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserColor toChange = model.UserColor.Where(x => x.Id == color.Id).FirstOrDefault();
+                if (toChange is null) return;
+
+                toChange.R = color.R;
+                toChange.G = color.G;
+                toChange.B = color.B;
+
+                model.SaveChanges();
             }
         }
 
@@ -710,7 +946,7 @@ namespace TelegramLib.Services
                     {
                         ChatWallpaper paper = GetChatWallpaperById((int)posWalp.ChatBgId);
                         if (paper is null) continue;
-                        res.Add(paper.WallpaperName);            
+                        res.Add(paper.WallpaperName);
                     }
                 }
             }
@@ -787,22 +1023,46 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void UpdateChatSettings(UserSettings.SettingsTypes.ChatSettings settings)
+        public static void UpdateChatSettings(UserSettings.SettingsTypes.ChatSettings settings)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 ChatSettings temp = model.ChatSettings.Where(x => x.Id == settings.Id).FirstOrDefault();
                 if (temp is null) return;
 
-                temp.ThemeId = ;
-                temp.UserColorId = ;
-                temp.AutoNightId = ;
-                temp.Font = ;
-                temp.BgName = ;
+                temp.ThemeId = GetIdByTheme(settings.Theme);
+                temp.UserColorId = settings.ChosenColor.Id;
+                temp.AutoNightId = GetAutoNightIdByType(settings.NightMode);
+                temp.Font = settings.FontName;
+                temp.BgName = settings.Wallpaper.WallpaperName;
                 temp.IsSentWithEnter = settings.IsSendWithEnter;
 
                 model.SaveChanges();
             }
+        }
+
+        private static int GetAutoNightIdByType(AutoNightMode type)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var autoNight in model.AutoNight)
+                {
+                    if (autoNight.Name == type.ToString()) return autoNight.Id;
+                }
+            }
+            return 1;
+        }
+
+        private static int GetIdByTheme(ThemeType theme)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var tempTheme in model.Theme)
+                {
+                    if (tempTheme.Name == theme.ToString()) return tempTheme.Id;
+                }
+            }
+            return 1;
         }
 
         //NOTIFICATION SETTINGS
@@ -954,8 +1214,76 @@ namespace TelegramLib.Services
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
                 settings.WhoCanFindNumber = GetWhoSeeIdByShareWithType(sub.WhoCanSearch.ToString());
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.PhoneNumber), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.PhoneNumber), sub.ShareWithExps, false);
+
                 model.SaveChanges();
             }
+        }
+
+        private static void UpdateChosenPrivContacts(int settingId, int settingTypeId,
+            List<UserContactcs> contacts, bool isShare)
+        {
+            //Remove all rows that confirm conditions
+            List<ChosenPrivacyContacts> toRemove = GetChosenPrivContaactWithCondition(settingId, settingTypeId, isShare);
+
+            using (var model = new TelegramModel())
+            {
+                //Remove
+                foreach (var remove in toRemove)
+                {
+                    model.ChosenPrivacyContacts.Remove(remove);
+                }
+
+                //Add
+                AddChosenPrivContactsByUserContacts(contacts, settingTypeId, isShare, settingId);
+                model.SaveChanges();
+            }
+
+
+            //Add all of them from 
+        }
+
+        private static void AddChosenPrivContactsByUserContacts(
+            List<UserContactcs> contacts, int settingTypeId, bool isShare, int settingId)
+        {
+            using (var model = new TelegramModel())
+            {
+                for (int i = 0; i < contacts.Count; i++)
+                {
+                    ChosenPrivacyContacts toAdd = new ChosenPrivacyContacts();
+
+                    toAdd.ContactId = contacts[i].Id;
+                    toAdd.SettingTypeId = settingTypeId;
+                    toAdd.IsShare = isShare;
+                    toAdd.SttingId = settingId;
+
+                    model.ChosenPrivacyContacts.Add(toAdd);
+                }
+
+                model.SaveChanges();
+            }
+        }
+
+        private static List<ChosenPrivacyContacts> GetChosenPrivContaactWithCondition(int settingId, int settingTypeId, bool isShare)
+        {
+            List<ChosenPrivacyContacts> res = new List<ChosenPrivacyContacts>();
+
+            using (var model = new TelegramModel())
+            {
+                foreach (var contact in model.ChosenPrivacyContacts)
+                {
+                    if (contact.SettingTypeId == settingTypeId &&
+                       contact.SttingId == settingId &&
+                       contact.IsShare == isShare)
+                    {
+                        res.Add(contact);
+                    }
+                }
+            }
+
+            return res;
         }
 
         private static void AddLastSeenSetting()
@@ -1009,6 +1337,11 @@ namespace TelegramLib.Services
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
                 settings.PublicPhotoId = GetUserImageByName(sub.PublicPhotoPath);
+
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Profile), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Profile), sub.ShareWithExps, true);
+
                 model.SaveChanges();
             }
         }
@@ -1034,6 +1367,10 @@ namespace TelegramLib.Services
                 if (settings is null) return;
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.ForwardMessage), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.ForwardMessage), sub.ShareWithExps, true);
+
                 model.SaveChanges();
             }
         }
@@ -1059,6 +1396,10 @@ namespace TelegramLib.Services
                 if (settings is null) return;
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.DateOfBirth), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.DateOfBirth), sub.ShareWithExps, true);
+
                 model.SaveChanges();
             }
         }
@@ -1085,6 +1426,10 @@ namespace TelegramLib.Services
                 if (settings is null) return;
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Bio), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Bio), sub.ShareWithExps, true);
+
                 model.SaveChanges();
             }
         }
@@ -1111,6 +1456,12 @@ namespace TelegramLib.Services
                 if (settings is null) return;
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.WhoCanSend.ToString());
+
+                /*                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Messages), 
+                                    sub.ShareWithExps, true);
+                                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Messages), 
+                                    sub.ShareWithExps, true);*/
+
                 model.SaveChanges();
             }
         }
@@ -1190,11 +1541,11 @@ namespace TelegramLib.Services
                 {
                     if (color.UserId == userId)
                     {
-                        return new ColorHelper((byte)color.R, (byte)color.G, (byte)color.B);
+                        return new ColorHelper(userId, (byte)color.R, (byte)color.G, (byte)color.B);
                     }
                 }
             }
-            return new ColorHelper();
+            return new ColorHelper(userId);
         }
 
         private static ThemeType GetThemeById(int themeId)
@@ -1347,38 +1698,40 @@ namespace TelegramLib.Services
         //Chats
 
 
-/*    public static void AddMessageInChat(int chatIndex, int userId,
-            int toSendId, Message message)
+        public static void AddMessage(UserChat chat, Message message)
         {
             using (var model = new TelegramModel())
             {
                 Messages toAdd = new Messages();
 
-                toAdd.ChatId = ;
-                toAdd.FriendId = toSendId;
+                toAdd.ChatId = chat.Id;
+                toAdd.SenderId = message.SenderUserId;
 
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
-                toAdd.ImageId = null;// to set
+                if (message is MediaAction video && video.IsVideo()) toAdd.VideoId = GetVideoIdByName(video.MediaName);
+                else toAdd.VideoId = null;
+
+
+                if (message is MediaAction image && image.IsImage()) toAdd.ImageId = GetChatImageIdByName(image.MediaName);
+                else toAdd.ImageId = null;
+
                 toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
-
-                to;
-
 
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
 
             }
-        }*/
-    
+        }
 
-        private static int? GetImageIdByMediaAction(MediaAction media)
+        private static int GetChatImageIdByName(string imgName)
         {
-            if (media.IsSticker) return GetStickerIdByName(media.MediaName);
-
-
-
-            return null;
+            using (var model = new TelegramModel())
+            {
+                ChatImage img = model.ChatImage.Where(x => x.Name == imgName).FirstOrDefault();
+                if (img is null) return 1;
+                return img.Id;
+            }
         }
 
         private static int? GetStickerIdByName(string name)
@@ -1388,6 +1741,225 @@ namespace TelegramLib.Services
                 StickerImage img = model.StickerImage.OfType<StickerImage>().Where(x => x.Name == name).FirstOrDefault();
                 if (img is null) return null;
                 return img.Id;
+            }
+        }
+
+        public static void UpdateChat(UserChat chat)
+        {
+            using (var model = new TelegramModel())
+            {
+                Chat toUpdate = model.Chat.Where(x => x.Id == chat.Id).FirstOrDefault();
+                if (toUpdate is null) return;
+
+                toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
+                toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
+                toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
+
+                //Update BG
+                
+                model.SaveChanges();
+            }
+        }
+
+
+
+        private static int GetAutoDelIdByType(Enums.Chat.AutoDeleteType type)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.AutoDeleteType delType = model.AutoDeleteType.Where(x => x.Name == type.ToString()).FirstOrDefault();
+                if (delType is null) return 1;
+                return delType.Id;
+            }
+        }
+
+        public static int GetChatBgIdByName(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                ChatBG bg = model.ChatBG.Where(x => x.Name == name).FirstOrDefault();
+                if (bg is null) return 1;
+                return bg.Id;
+            }
+        }
+
+        public static void ClearChat(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.Messages.RemoveRange(model.Messages.Where(x => x.ChatId == chatId));
+                model.SaveChanges();
+            }
+        }
+
+        public static void SetBgToChat(int chatId, string bgnName)
+        {
+            using (var model = new TelegramModel())
+            {
+                int chatBgId = GetChatBgIdByName(bgnName);
+            }
+        }
+
+        public static void SetChosenBgInPosssibleBGs(int chatId, int chosenBGid)
+        {
+            using (var model = new TelegramModel())
+            {
+                //DisGeneral all of states
+                SetStateToGeneralParamInPossibleBgs(chatId, false);
+
+                //Set state to one (If does not pressent too)
+                if (!IsPossibleBgIsExist(chatId, chosenBGid))
+                {
+                    //To add possible chat bg
+                    AddBgToPossibleBGs(chatId, chosenBGid);
+                }
+                else
+                {
+                    // set genral state to it
+                    SetGeneralStateToPossibleBg(chatId, chosenBGid);
+                }
+                model.SaveChanges();
+
+            }
+        }
+
+        private static void SetGeneralStateToPossibleBg(int chatId, int bgId)
+        {
+            using (var model = new TelegramModel())
+            {
+                PossibleChatBGs toUpdate = model.PossibleChatBGs.Where
+                    (x => x.ChatId == chatId && x.ChatBgId == bgId).FirstOrDefault();
+                if (toUpdate is null) return;
+
+                toUpdate.IsGeneral = true;
+            }
+        }
+
+        private static void AddBgToPossibleBGs(int chatId, int bgId)
+        {
+            using (var model = new TelegramModel())
+            {
+                PossibleChatBGs toAdd = new PossibleChatBGs();
+
+                toAdd.ChatId = chatId;
+                toAdd.ChatBgId = bgId;
+                toAdd.IsGeneral = true;
+
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsPossibleBgIsExist(int chatId, int bgId)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.PossibleChatBGs.Where(x => x.ChatId == chatId && x.ChatBgId == bgId).Any();
+            }
+        }
+
+        private static void SetStateToGeneralParamInPossibleBgs(int chatId, bool state)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var chatBg in model.PossibleChatBGs)
+                {
+                    if (chatBg.ChatId == chatId)
+                    {
+                        chatBg.IsGeneral = state;
+                    }
+                }
+                model.SaveChanges();
+            }
+        }
+
+        public static void AddChatImage(string imgName)
+        {
+            if (IsChatImageisExistByName(imgName)) return;
+
+            using (var model = new TelegramModel())
+            {
+                ChatImage toAdd = new ChatImage();
+
+                toAdd.Name = imgName;
+
+                model.ChatImage.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsChatImageisExistByName(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.ChatImage.Where(x => x.Name == name).Any();
+            }
+        }
+
+        public static void AddBlockedContact(int userId, int contactId)
+        {
+            if (IsContactIsBlocked(userId, contactId)) return;
+            using (var model = new TelegramModel())
+            {
+                BlockedContacts toBlock = new BlockedContacts();
+
+                toBlock.UserId = userId;
+                toBlock.BlockedContactId = contactId;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void UnBlockContact(int userId, int contactId)
+        {
+            using (var model = new TelegramModel())
+            {
+                BlockedContacts toRemove = model.BlockedContacts.Where(
+                    x => x.UserId == userId && x.BlockedContactId == contactId).FirstOrDefault();
+                if (toRemove is null) return;
+
+                model.BlockedContacts.Remove(toRemove);
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsContactIsBlocked(int userId, int contactId)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.BlockedContacts.Where(
+                    x => x.UserId == userId && x.BlockedContactId == contactId).Any();
+            }
+        }
+
+        private static bool IsChatVideoNameIsExist(string videoName)
+        {
+            using(var model = new TelegramModel())
+            {
+                return model.MessageVideo.Where(x => x.Name == videoName).Any();
+            }
+        }
+
+        public static void AddChatVideo(string name)
+        {
+            if (IsChatVideoNameIsExist(name)) return;
+            using(var model = new TelegramModel())
+            {
+                MessageVideo toAdd = new MessageVideo();
+
+                toAdd.Name = name;
+
+                model.MessageVideo.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        private static int GetVideoIdByName(string name)
+        {
+            using(var model = new TelegramModel())
+            {
+                MessageVideo video = model.MessageVideo.Where(x => x.Name == name).FirstOrDefault();
+                if (video is null) return 1;
+                return video.Id;
             }
         }
 

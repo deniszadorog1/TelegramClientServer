@@ -33,6 +33,7 @@ namespace TelegramLib.Models
         public virtual DbSet<LastSeenSettings> LastSeenSettings { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
         public virtual DbSet<MessagesSettings> MessagesSettings { get; set; }
+        public virtual DbSet<MessageVideo> MessageVideo { get; set; }
         public virtual DbSet<NotificatioonsAndSound> NotificatioonsAndSound { get; set; }
         public virtual DbSet<PhoneNumberSettings> PhoneNumberSettings { get; set; }
         public virtual DbSet<PossibleChatBGs> PossibleChatBGs { get; set; }
@@ -41,6 +42,7 @@ namespace TelegramLib.Models
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserColor> UserColor { get; set; }
@@ -114,6 +116,11 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.MessagesSettings)
                 .HasForeignKey(e => e.MessagesSetId);
 
+            modelBuilder.Entity<MessageVideo>()
+                .HasMany(e => e.Messages)
+                .WithOptional(e => e.MessageVideo)
+                .HasForeignKey(e => e.VideoId);
+
             modelBuilder.Entity<PhoneNumberSettings>()
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.PhoneNumberSettings)
@@ -173,6 +180,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Folder)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.OwnerId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Messages)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.SenderId);
 
             modelBuilder.Entity<UserImage>()
                 .HasMany(e => e.ProfilePhotoSettings)

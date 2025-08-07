@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using TelegramLib;
+using TelegramLib.Helpers;
+using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,6 +13,7 @@ namespace TelegramClientServer.Controllers
     [ApiController]
     public class SettingsController : ControllerBase
     {
+        //ADVANCED
         [HttpPost("UpdateAdvanced")] 
         public void UpdateAdvanced([FromBody] AdvancedDTO adv)
         {
@@ -18,9 +21,10 @@ namespace TelegramClientServer.Controllers
         }
         public class AdvancedDTO()
         {
-            public AdvancedSettings Advanced{get;set;}
+            public TelegramLib.UserSettings.SettingsTypes.AdvancedSettings Advanced{get;set;}
         }
 
+        //NOTIFICATIONS
         [HttpPost("UpdateNotifsAndSounds")]
         public void UpdateNotification([FromBody] NotifsAndSoundDTO notifsSettings)
         {
@@ -31,46 +35,40 @@ namespace TelegramClientServer.Controllers
             public NotificationSettings NotifsAndSoundSettings { get; set; }
         }
 
+        //CHAT SETTINGS
         [HttpPost("UpdateChatSettings")]
         public void UpdateChatSettings([FromBody] ChatSettingsDTO chatSets)
         {
-            DbService.UpdateChat
+            DbService.UpdateChatSettings(chatSets.ChatSet);
         }
         public class ChatSettingsDTO()
         {
-            public ChatSettings ChatSet { get; set; }
+            public TelegramLib.UserSettings.SettingsTypes.ChatSettings ChatSet { get; set; }
         }
 
-        // GET: api/<SettingsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        //Update PRIVACY
+        [HttpPost("UpdatePrivacySettings")]
+        public void UpdatePrivacySettings([FromBody] PrivacySettingsDTO privSets)
         {
-            return new string[] { "value1", "value2" };
+            DbService.UpdatePrivacySettings(privSets.ChatSet);
+        }
+        public class PrivacySettingsDTO()
+        {
+            public PrivAndSecSettings ChatSet { get; set; }
         }
 
-        // GET api/<SettingsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        //USER COLOR
+        [HttpPost("UpdateUserColor")]
+        public void UpdatePrivacySettings([FromBody] ChosenColorDTO color)
         {
-            return "value";
+            DbService.UpdateColor(color.ChosenColor);
+        }
+        public class ChosenColorDTO()
+        {
+            public ColorHelper ChosenColor { get; set; }
         }
 
-        // POST api/<SettingsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
 
-        // PUT api/<SettingsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE api/<SettingsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

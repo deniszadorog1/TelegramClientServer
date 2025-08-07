@@ -17,6 +17,8 @@ namespace TelegramLib.MainClasses
         public UserContactcs Chatter { get; set; }
         public List<Message> Messages { get; set; }
         public ChatBackground ChatBg { get; set; }
+        public AutoDeleteType AutoDel { get; set; }
+
 
         public UserChat(int id, UserContactcs chatter, List<Message> messages, 
             ChatBackground bg)

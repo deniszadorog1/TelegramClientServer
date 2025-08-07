@@ -12,7 +12,7 @@ namespace TelegramLib.Models
 
         public int? ChatId { get; set; }
 
-        public bool? IsLoggedUserSent { get; set; }
+        public int? SenderId { get; set; }
 
         [StringLength(1024)]
         public string Message { get; set; }
@@ -23,6 +23,8 @@ namespace TelegramLib.Models
 
         public int? GifId { get; set; }
 
+        public int? VideoId { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime? SentDate { get; set; }
 
@@ -32,6 +34,10 @@ namespace TelegramLib.Models
 
         public virtual GIF GIF { get; set; }
 
+        public virtual User User { get; set; }
+
         public virtual StickerImage StickerImage { get; set; }
+
+        public virtual MessageVideo MessageVideo { get; set; }
     }
 }
