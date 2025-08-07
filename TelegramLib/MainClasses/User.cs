@@ -60,7 +60,7 @@ namespace TelegramLib.MainClasses
             Surname = "asdSURNAME";
             BIO = "asdBIO";
 
-            MainColor = new ColorHelper(255, 0, 0);
+            MainColor = new ColorHelper(-1, 255, 0, 0);
 
             PhoneNumber = "asdPhoneNumber";
             UserName = "asdUserName";

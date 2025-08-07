@@ -559,6 +559,14 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "EntityFramework/6.0.0.0": {
+        "runtime": {
+          "EntityFramework.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.500.124.31603"
+          }
+        }
       }
     }
   },
@@ -904,6 +912,11 @@
     },
     "TestThing/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EntityFramework/6.0.0.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

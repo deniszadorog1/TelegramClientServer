@@ -40,7 +40,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
         {
             Id = -1;
             Theme = ThemeType.Tinted;
-            ChosenColor = new ColorHelper(210, 117, 112); //Test seventh color
+            ChosenColor = new ColorHelper(-1, 210, 117, 112); //Test seventh color
             NightMode = AutoNightMode.System;
             FontName = "Times New Roman";
             IsSendWithEnter = true;

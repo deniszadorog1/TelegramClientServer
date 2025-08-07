@@ -95,7 +95,7 @@ namespace TelegramClientServer.Controllers
         [HttpPost("AddChatBg")]
         public void AddChatBg([FromBody] ChatDTO chat)
         {
-            DbService.SetChosenBgInPosssibleBGs(chat.Chat.Id, DbService.GetChatBgIdByName(chat.Chat.ChatBg.FileName));
+            DbService.SetChosenBgInPossibleBGs(chat.Chat.Id, DbService.GetChatBgIdByName(chat.Chat.ChatBg.FileName));
         }
 
         //user BG 

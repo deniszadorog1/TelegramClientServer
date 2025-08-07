@@ -290,3 +290,5 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\T
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramLib.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramLib.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramLib.dll.config
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\EntityFramework.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\EntityFramework.xml

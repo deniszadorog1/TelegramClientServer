@@ -11,6 +11,7 @@ using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace TelegramVisualPart
@@ -20,7 +21,7 @@ namespace TelegramVisualPart
     /// </summary>
     public partial class MainWindow : Window
     {
-        public TelSystem _system = new TelSystem();
+        public TelSystem _system =  new TelSystem();
 
         public MainWindow()
         {

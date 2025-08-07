@@ -302,6 +302,15 @@ namespace TelegramLib.Services
             return GetChatBackPossibleChatBGs(chatId).Where(x => x.IsGeneral).FirstOrDefault();
         }
 
+        private static int GetChosenBgIdByName(int chatId)
+        {
+            //Check for exception        
+            using(var model = new TelegramModel())
+            {
+                return (int)model.PossibleChatBGs.Where(x => x.ChatId == chatId && (bool)x.IsGeneral).First().ChatBgId;
+            }    
+        }
+
         private static List<ChatBackground> GetChatBackPossibleChatBGs(int chatId)
         {
             List<ChatBackground> res = new List<ChatBackground>();
@@ -902,8 +911,38 @@ namespace TelegramLib.Services
                 res.NightMode = GetNightModeById((int)settings.AutoNightId);
                 res.FontName = settings.Font;
                 res.IsSendWithEnter = (bool)settings.IsSentWithEnter;
-                res.Wallpaper = new ChatWallpaper();// GetChatWallpaperById(settings.Bg);
-                res.PossibleWallpapers = new List<string>();// user many to many (PossibleChatBGs table)
+                res.Wallpaper = GetChatWallPaperIdByName(settings.BgName);// GetChatWallpaperById(settings.Bg);
+                res.PossibleWallpapers = GetPossibleWallpapersForChatSetting(settingsId); // CHECK IF USERID === SETTINGID
+            }
+            return res;
+        }
+
+        private static ChatWallpaper GetChatWallPaperIdByName(string name)
+        {
+            ChatWallpaper res = new ChatWallpaper();
+            using (var model = new TelegramModel())
+            {
+                foreach (var temp in model.ChatBG)
+                {
+                    if (temp.Name == name)
+                    {
+                        res.Id = temp.Id;
+                        res.WallpaperName = temp.Name;
+                        res.IsBlurred = (bool)temp.IsBlurred;
+                    }
+                }
+            }
+            return res;
+        }
+        private static List<string> GetPossibleWallpapersForChatSetting(int userId)
+        {
+            List<string> res = new List<string>();
+            using (var model = new TelegramModel())
+            {
+                foreach (var temp in model.ChatBG)
+                {
+                    res.Add(temp.Name);
+                }
             }
             return res;
         }
@@ -1755,17 +1794,16 @@ namespace TelegramLib.Services
                 toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
                 toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
 
-                //Update BG
-                
+                //Update general BG
+                SetChosenBgInPossibleBGs(toUpdate.Id, GetChosenBgIdByName(toUpdate.Id));
+
                 model.SaveChanges();
             }
         }
 
-
-
         private static int GetAutoDelIdByType(Enums.Chat.AutoDeleteType type)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.AutoDeleteType delType = model.AutoDeleteType.Where(x => x.Name == type.ToString()).FirstOrDefault();
                 if (delType is null) return 1;
@@ -1800,7 +1838,7 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void SetChosenBgInPosssibleBGs(int chatId, int chosenBGid)
+        public static void SetChosenBgInPossibleBGs(int chatId, int chosenBGid)
         {
             using (var model = new TelegramModel())
             {
@@ -1933,7 +1971,7 @@ namespace TelegramLib.Services
 
         private static bool IsChatVideoNameIsExist(string videoName)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.MessageVideo.Where(x => x.Name == videoName).Any();
             }
@@ -1942,7 +1980,7 @@ namespace TelegramLib.Services
         public static void AddChatVideo(string name)
         {
             if (IsChatVideoNameIsExist(name)) return;
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 MessageVideo toAdd = new MessageVideo();
 
@@ -1955,7 +1993,7 @@ namespace TelegramLib.Services
 
         private static int GetVideoIdByName(string name)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 MessageVideo video = model.MessageVideo.Where(x => x.Name == name).FirstOrDefault();
                 if (video is null) return 1;

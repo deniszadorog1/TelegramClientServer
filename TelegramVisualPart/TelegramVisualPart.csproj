@@ -9,6 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="ffmpeg\**" />
+	  <EmbeddedResource Remove="ffmpeg\**" />
+	  <None Remove="ffmpeg\**" />
+	  <Page Remove="ffmpeg\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Remove="Visuals\Gifs\TestGif.gif" />
 		<None Remove="Visuals\Images\Stickers\Figure.png" />
 		<None Remove="Visuals\Images\Stickers\Girl.png" />
@@ -18,10 +25,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="DotNetEnv" Version="3.1.1" />
 		<PackageReference Include="FFMpegCore" Version="5.2.0" />
 		<PackageReference Include="MaterialDesignColors" Version="5.2.1" />
 		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
 		<PackageReference Include="MaterialDesignThemes.MahApps" Version="5.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
 		<PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
 	</ItemGroup>
@@ -36,6 +45,7 @@
 		<Content Include="Visuals\Images\Stickers\Girl.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<None Include="bin\Debug\net8.0-windows\.env" />
 		<Resource Include="Visuals\Images\UserImages\fray.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>
@@ -56,15 +66,6 @@
 		<Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Page>
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Update="ffmpeg\ffmpeg.exe">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="ffmpeg\ffprobe.exe">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 	</ItemGroup>
 
 </Project>

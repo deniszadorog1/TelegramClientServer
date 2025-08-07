@@ -101,7 +101,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         {
             SolidColorBrush bg = FirstColorRect.Fill as SolidColorBrush;
 
-            _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(
+            _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(-1,
                 bg.Color.R,
                 bg.Color.G,
                 bg.Color.B);

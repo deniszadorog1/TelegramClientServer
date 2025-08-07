@@ -312,7 +312,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             if (bg is null) return;
 
            _chatsSettings.ChosenColor = new TelegramLib.Helpers.ColorHelper
-                (bg.Color.R, bg.Color.G, bg.Color.B);
+                (-1 ,bg.Color.R, bg.Color.G, bg.Color.B);
         }
 
         public void SetNewTempColor(CircleColor color)
