@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Standard;
 using MahApps.Metro.Controls;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -68,6 +69,18 @@ namespace TelegramVisualPart.Services
             var response = await _client.PutAsync("api/StartPage/AddUser", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdateUser(TelegramLib.MainClasses.User user)
+        {
+            var data = new { User = user };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/StartPage/UpdateUser", content);
+
+             return response.IsSuccessStatusCode;
         }
 
         public static async Task<bool> AddUserSettings(int userId)

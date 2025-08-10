@@ -18,6 +18,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.UserParams;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.MyProfileControls;
 
 namespace TelegramVisualPart.Pages.MyProfile
@@ -113,6 +114,8 @@ namespace TelegramVisualPart.Pages.MyProfile
         {
             WordCount.Text = (BioTextBox.MaxLength - BioTextBox.Text.Length).ToString();
             _user.BIO = BioTextBox.Text;
+
+            ApiService.UpdateUser(_user);
         }
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)

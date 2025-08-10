@@ -485,6 +485,8 @@ namespace TelegramLib.Services
                 toUpdate.Login = user.Login;
                 toUpdate.Password = user.Password;
                 toUpdate.LastOnline = user.LastSeenOnline;
+                toUpdate.BIO = user.BIO;
+                toUpdate.Username = user.UserName;
 
                 UpdateColor(user.MainColor);
 
@@ -661,7 +663,7 @@ namespace TelegramLib.Services
         public static void UpdatePrivacySettings(PrivAndSecSettings settings)
         {
             //settings = new PrivAndSecSettings();
-
+            
             using (var model = new TelegramModel())
             {
                 foreach (var privSet in model.PrivacySetting)
@@ -697,10 +699,9 @@ namespace TelegramLib.Services
 
                 model.SaveChanges();
             }
-
-
-
         }
+
+
 
         private static int GetSelfDeleteTypeIdByType(AwayForTime deleteType)
         {
@@ -718,7 +719,7 @@ namespace TelegramLib.Services
             return 1;
         }
 
-        private static PrivAndSecSettings GetPrivacySettings(int settingId)
+        public static PrivAndSecSettings GetPrivacySettings(int settingId)
         {
             PrivAndSecSettings res = new PrivAndSecSettings();
 
@@ -915,7 +916,7 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static UserSettings.SettingsTypes.ChatSettings GetChatSettingsBySettingsId(int settingsId)
+        public static UserSettings.SettingsTypes.ChatSettings GetChatSettingsBySettingsId(int settingsId)
         {
             UserSettings.SettingsTypes.ChatSettings res = new UserSettings.SettingsTypes.ChatSettings();
 
@@ -1096,7 +1097,7 @@ namespace TelegramLib.Services
         }
 
         public static void UpdateChatSettings(UserSettings.SettingsTypes.ChatSettings settings)
-        {
+        { 
             using (var model = new TelegramModel())
             {
                 ChatSettings temp = model.ChatSettings.Where(x => x.Id == settings.Id).FirstOrDefault();
@@ -1108,6 +1109,24 @@ namespace TelegramLib.Services
                 temp.Font = settings.FontName;
                 temp.BgName = settings.Wallpaper.WallpaperName;
                 temp.IsSentWithEnter = settings.IsSendWithEnter;
+
+                //UpdateUserColor
+                UpdateUserColor(settings.ChosenColor);
+
+                model.SaveChanges();
+            }
+        }
+
+        private static void UpdateUserColor(TelegramLib.Helpers.ColorHelper color)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserColor toUpdate = model.UserColor.FirstOrDefault(x => x.Id == color.Id);
+                if (toUpdate is null) return;
+
+                toUpdate.R = color.R;
+                toUpdate.G = color.G;
+                toUpdate.B = color.B;
 
                 model.SaveChanges();
             }

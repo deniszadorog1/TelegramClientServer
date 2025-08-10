@@ -669,5 +669,27 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/StartPage/UpdateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "TelegramClientServer.Controllers.StartPageController\u002BUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

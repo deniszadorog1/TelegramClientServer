@@ -39,6 +39,15 @@ namespace TelegramLib.Helpers
             B = 128;
         }
 
-        
+        public ColorHelper()
+        {
+            Id = -1;
+            A = byte.MaxValue;
+            R = 128;
+            G = 255;
+            B = 128;
+        }
+
+
     }
 }

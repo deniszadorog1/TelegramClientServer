@@ -35,7 +35,6 @@ namespace TelegramVisualPart
 
             ///Visuals/Images/UserImages/Minato.jpg"
             //MainFrame.Content = new EnterPage();
-
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)

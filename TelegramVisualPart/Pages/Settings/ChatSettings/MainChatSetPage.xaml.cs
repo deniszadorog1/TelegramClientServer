@@ -184,6 +184,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             if (toUncheck == chosen)
             {
                 _chatsSettings.Theme = GetChosenType(chosen);
+
+                ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
             toUncheck.IsChecked = false;
@@ -312,7 +314,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             if (bg is null) return;
 
            _chatsSettings.ChosenColor = new TelegramLib.Helpers.ColorHelper
-                (-1 ,bg.Color.R, bg.Color.G, bg.Color.B);
+                (_chatsSettings.ChosenColor.Id ,bg.Color.R, bg.Color.G, bg.Color.B);
         }
 
         public void SetNewTempColor(CircleColor color)
@@ -356,11 +358,13 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         private void SendEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
             _chatsSettings.IsSendWithEnter = true;
+            ApiService.UpdateChatSettings(_chatsSettings);
         }
 
         private void SendCtrlEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
             _chatsSettings.IsSendWithEnter = false;
+            ApiService.UpdateChatSettings(_chatsSettings);
         }
 
         private void ChooseWallpaperFromGalery_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -379,6 +383,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 AutoNightMode.System : AutoNightMode.Off;
 
             AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
+
+            ApiService.UpdateChatSettings(_chatsSettings);
         }
     }
 }

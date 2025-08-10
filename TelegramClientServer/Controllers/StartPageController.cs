@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using TelegramLib;
 using TelegramLib.MainClasses;
@@ -22,6 +23,16 @@ namespace TelegramClientServer.Controllers
                 newUser.BirthDate, newUser.Login, newUser.Password);
 
             return true;
+        }
+
+        [HttpPost("UpdateUser")]
+        public void UpdateUser([FromBody] UserDTO user)
+        {
+            DbService.UpdateUser(user.User);
+        }
+        public class UserDTO()
+        {
+            public User User { get; set; }
         }
 
         [HttpPut("AddUserSettings")]

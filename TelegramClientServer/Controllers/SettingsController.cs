@@ -39,6 +39,7 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdateChatSettings")]
         public void UpdateChatSettings([FromBody] ChatSettingsDTO chatSets)
         {
+            //chatSets.ChatSet = DbService.GetChatSettingsBySettingsId(1);
             DbService.UpdateChatSettings(chatSets.ChatSet);
         }
         public class ChatSettingsDTO()
