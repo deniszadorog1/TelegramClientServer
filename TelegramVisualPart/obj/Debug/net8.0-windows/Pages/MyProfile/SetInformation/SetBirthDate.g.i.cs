@@ -133,8 +133,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/myprofile/setinformation/setbirthdat" +
-                    "e.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/myprofile/setinformation/setbirthdate.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\MyProfile\SetInformation\SetBirthDate.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

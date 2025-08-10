@@ -22,6 +22,7 @@
 
         public NotificationSettings()
         {
+            return;
             Id = -1;
             IsDesktopNotifications = false;
             IsFlashTaskBar = false;

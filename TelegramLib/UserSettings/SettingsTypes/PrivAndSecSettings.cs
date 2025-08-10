@@ -52,7 +52,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
         public PrivAndSecSettings()
         {
-            Id = -1;
+            Id = 1;
             LocalPasscode = "passcodeTEST";
             SelfDeleteTime = AwayForTime.SixMonths;
             BlockedUsers = new List<UserContactcs>();

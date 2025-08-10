@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
+using TelegramLib.Services;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
@@ -21,7 +22,7 @@ namespace TelegramVisualPart
     /// </summary>
     public partial class MainWindow : Window
     {
-        public TelSystem _system =  new TelSystem();
+        public TelSystem _system;// = new TelSystem();
 
         public MainWindow()
         {
@@ -30,14 +31,39 @@ namespace TelegramVisualPart
             //VisConstParamsJsonService.GetStringByName("check");
 
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
 
             ///Visuals/Images/UserImages/Minato.jpg"
             //MainFrame.Content = new EnterPage();
-            MainFrame.Content = new MainChatPage(_system);
 
-            System.Windows.Application.Current.Resources["TempActiveTextColor"] =
-                    new SolidColorBrush(System.Windows.Media.Color.FromRgb(_system.LoggedUser.MainColor.R,
-                    _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
+        }
+
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            await SetTestSystem();
+
+            Application.Current.Resources["TempActiveTextColor"] =
+                new SolidColorBrush(Color.FromRgb(_system.LoggedUser.MainColor.R,
+                _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
+
+            MainFrame.Content = new MainChatPage(_system);
+        }
+
+        public async Task SetTestSystem()
+        {
+            User user = await ApiService.GetUser("qwe", "qwe");
+            if (user is not null)
+            {
+                _system = await ApiService.GetTelSystem("qwe", "qwe");
+                return;
+            }
+
+            await ApiService.AddNewUser("qwe", "qwe", "testName", "testSurname", "testPhoneNumber", DateTime.Now);
+
+            await ApiService.AddUserBasicColor(user.Id);
+            await ApiService.AddUserSettings(user.Id);
+
+            _system = await ApiService.GetTelSystem("qwe", "qwe");
         }
 
         public TelSystem GetSystem()

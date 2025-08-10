@@ -58,7 +58,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             PinnedMessages.Toggle.Unchecked += ToggleEvent_MouseDown;
         }
 
-        private void ToggleEvent_MouseDown(object sender, EventArgs e)
+        private async void ToggleEvent_MouseDown(object sender, EventArgs e)
         {
             if (sender is not ToggleButton toggle ||
                 toggle is null) return;
@@ -90,6 +90,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                 _system.Settings.GetNotSettings().IsPinnedMessages =
                     (bool)PinnedMessages.Toggle.IsChecked;
             }
+
+            await ApiService.UpdateNotificationSettings(_system.Settings.GetNotSettings());
         }
         public void SetBasicParams()
         {

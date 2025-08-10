@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using ControlzEx.Standard;
+using MahApps.Metro.Controls;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -6,9 +7,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using System.Xml.Linq;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
@@ -17,7 +20,8 @@ using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Contacts;
-using static ControlzEx.Standard.NativeMethods;
+
+//using static ControlzEx.Standard.NativeMethods;
 
 namespace TelegramVisualPart.Services
 {
@@ -26,6 +30,23 @@ namespace TelegramVisualPart.Services
         private static readonly HttpClient _client;
         private static readonly string? _host =
             Environment.GetEnvironmentVariable("localHost");
+
+        static ApiService()
+        {
+            DotNetEnv.Env.Load();
+
+            _host = Environment.GetEnvironmentVariable("localHost");
+
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+            _client = new HttpClient(handler);
+            _client.BaseAddress = new Uri(_host);
+            //_client.BaseAddress = new Uri("https://localhost:7238/");
+
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
 
         public static async Task<bool> AddNewUser(string login,
             string password, string name, string surname,
@@ -44,7 +65,37 @@ namespace TelegramVisualPart.Services
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("api/StartPage/AddUser", content);
+            var response = await _client.PutAsync("api/StartPage/AddUser", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> AddUserSettings(int userId)
+        {
+            var data = new
+            {
+                UserId = userId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/StartPage/AddUserSettings", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> AddUserBasicColor(int userId)
+        {
+            var data = new
+            {
+                UserId = userId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/StartPage/AddUserBasicColor", content);
 
             return response.IsSuccessStatusCode;
         }
@@ -55,8 +106,8 @@ namespace TelegramVisualPart.Services
             var date = new { Login = login, Password = password };
 
             var json = JsonConvert.SerializeObject(date);
-            var contact = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _client.GetAsync("api/StartPage/GetUser");
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
@@ -74,13 +125,14 @@ namespace TelegramVisualPart.Services
 
             var json = JsonConvert.SerializeObject(date);
             var contact = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _client.GetAsync("api/StartPage/GetTelSystem");
+            var response = await _client.GetAsync($"api/StartPage/GetTelSystem?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
             TelSystem? res = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelSystem>(jsonResponse);
+
             return res;
         }
 
@@ -126,7 +178,7 @@ namespace TelegramVisualPart.Services
         //Priv Settings
         public static async Task<bool> UpdatePrivSettings(PrivAndSecSettings settings)
         {
-            var date = new { ChatSet = settings };
+            var date = new { Settings = settings };
 
             var json = JsonConvert.SerializeObject(date);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -239,7 +291,7 @@ namespace TelegramVisualPart.Services
         //Add chat
         public static void AddChat()
         {
-            
+
         }
 
         //Update chat

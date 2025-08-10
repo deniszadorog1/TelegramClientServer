@@ -38,6 +38,9 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Net.Configuration;
 using TelegramLib.Enums.Chat;
+using System.Drawing;
+
+using System.Data.Entity;
 
 namespace TelegramLib.Services
 {
@@ -47,8 +50,10 @@ namespace TelegramLib.Services
         {
             mainClass.User user = GetUserByLoginAndPassword(login, password);
 
-            if (user is null) return null;
-
+            if (user is null)
+            {
+                throw new NullReferenceException();
+            }
             TelSystem system = new TelSystem();
 
             system.LoggedUser = user;
@@ -305,10 +310,10 @@ namespace TelegramLib.Services
         private static int GetChosenBgIdByName(int chatId)
         {
             //Check for exception        
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return (int)model.PossibleChatBGs.Where(x => x.ChatId == chatId && (bool)x.IsGeneral).First().ChatBgId;
-            }    
+            }
         }
 
         private static List<ChatBackground> GetChatBackPossibleChatBGs(int chatId)
@@ -385,7 +390,7 @@ namespace TelegramLib.Services
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
                         new Helpers.ColorHelper(user.Id), user.PhoneNumber,
-                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), GetUserImagesByUserId(user.Id)));
+                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline));
                 }
             }
             return res;
@@ -442,7 +447,10 @@ namespace TelegramLib.Services
 
                 model.User.Add(user);
 
-                AddBasicUserColor(model.User.Last().Id);
+                //AddBasicUserColor(model.User.Last().Id);
+
+                //Add start settings
+                //AddSettings(model.User.Last().Id);
 
                 model.SaveChanges();
             }
@@ -633,21 +641,27 @@ namespace TelegramLib.Services
 
             using (var model = new TelegramModel())
             {
-                Settings setting = model.Settings.Where(x => x.UserId == userId).FirstOrDefault();
+                //Or user Id
+                Settings setting = model.Settings
+                    .FirstOrDefault(x => x.UserId == userId);
                 if (setting is null) return null;
 
                 res.Id = setting.Id;
+
+
                 res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
+
                 res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id);
                 res.AdvSettings = GetAdvansedSettingsById(setting.Id);
                 res.PrivacySettings = GetPrivacySettings(setting.Id);
             }
-
             return res;
         }
 
         public static void UpdatePrivacySettings(PrivAndSecSettings settings)
         {
+            //settings = new PrivAndSecSettings();
+
             using (var model = new TelegramModel())
             {
                 foreach (var privSet in model.PrivacySetting)
@@ -655,11 +669,10 @@ namespace TelegramLib.Services
                     if (privSet.Id == settings.Id)
                     {
                         //passcode
-                        privSet.Passcode = settings.LocalPasscode;
+                        //privSet.Passcode = settings.LocalPasscode;
 
                         //selfDeletetime
                         privSet.AwayForTypeId = GetSelfDeleteTypeIdByType(settings.SelfDeleteTime);
-
                         //phone priv
                         UpdatePhoneNumberSetting(settings.Id, settings.PhonePrivacy);
 
@@ -677,15 +690,17 @@ namespace TelegramLib.Services
 
                         //bio priv
                         UpdateBioSetting(settings.Id, settings.BioPrivacy);
-
-                        model.SaveChanges();
-                        return;
+                        
+                        break;
                     }
                 }
+
+                model.SaveChanges();
             }
+
+
+
         }
-
-
 
         private static int GetSelfDeleteTypeIdByType(AwayForTime deleteType)
         {
@@ -693,7 +708,11 @@ namespace TelegramLib.Services
             {
                 foreach (var type in model.AwayForType)
                 {
-                    if (type.Name == deleteType.ToString()) return type.Id;
+                    if (type.Name == deleteType.ToString())
+                    {
+                        model.SaveChanges();
+                        return type.Id;
+                    }
                 }
             }
             return 1;
@@ -794,7 +813,7 @@ namespace TelegramLib.Services
                 ProfilePhotoSettings photo = model.ProfilePhotoSettings.Where(x => x.Id == id).FirstOrDefault();
                 if (photo is null) return null;
 
-                res.PublicPhotoPath = GetPublicPhotoPathName((int)photo.PublicPhotoId);
+                res.PublicPhotoPath = photo.PublicPhotoId is null ? null : GetPublicPhotoPathName((int)photo.PublicPhotoId);
 
                 res.ShareType = GetShareWithById((int)photo.WhoSeeId);
                 res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.PhoneNumber);
@@ -803,11 +822,11 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static string GetPublicPhotoPathName(int userIamgeId)
+        private static string GetPublicPhotoPathName(int userImageId)
         {
             using (var model = new TelegramModel())
             {
-                UserImage img = model.UserImage.Where(x => x.Id == userIamgeId).FirstOrDefault();
+                UserImage img = model.UserImage.Where(x => x.Id == userImageId).FirstOrDefault();
                 if (img is null) return string.Empty;
 
                 return img.Name;
@@ -973,6 +992,25 @@ namespace TelegramLib.Services
             }
         }
 
+        public static void AddUserBasicColor(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                ColorHelper color = new ColorHelper(userId);
+
+                UserColor toAdd = new UserColor();
+
+                toAdd.UserId = userId;
+                toAdd.R = color.R;
+                toAdd.G = color.G;
+                toAdd.B = color.B;
+
+                model.UserColor.Add(toAdd);
+
+                model.SaveChanges();
+            }
+        }
+
         private static List<string> GetPossibleChatWallPapersByChatId(int chatId)
         {
             List<string> res = new List<string>();
@@ -992,31 +1030,40 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static NotificationSettings GetNotifSettingsBySettingsId(int settingId)
+        public static NotificationSettings GetNotifSettingsBySettingsId(int settingId)
         {
-            NotificationSettings res = new NotificationSettings();
-
             using (var model = new TelegramModel())
             {
-                NotificatioonsAndSound settings = model.NotificatioonsAndSound.Where(
-                    x => x.SettingId == settingId).FirstOrDefault();
+                NotificatioonsAndSound settings = model.NotificatioonsAndSound.FirstOrDefault(x => x.SettingId == settingId);
                 if (settings is null) return null;
 
-                res.Id = settings.Id;
-                res.IsDesktopNotifications = (bool)settings.DesktopNotification;
-                res.IsFlashTaskBar = (bool)settings.FlashTaskBar;
-                res.IsAllowSounds = (bool)settings.AllowSound;
-                res.IsPrivateChats = (bool)settings.PrivateChat;
-                res.IsPinnedMessages = (bool)settings.PinnedMessage;
+                return new NotificationSettings(settings.Id, (bool)settings.DesktopNotification, (bool)settings.FlashTaskBar,
+                    (bool)settings.AllowSound, (bool)settings.PrivateChat, (bool)settings.PinnedMessage);
             }
-
-            return res;
         }
 
 
         public static void AddSettings(int userId)
         {
-            int newSettingId;
+            //Addsettings
+            AddBaseSettings(userId);
+
+            //Privacy settings
+            AddPrivacySettings(userId);
+
+            //Chat settings
+            AddChatSettings(userId);
+
+            //Advanced settings
+            AddAdvancedSettings(userId);
+
+            //Notifications and sounds settings
+            AddNotificationSettings(userId);
+
+        }
+
+        public static void AddBaseSettings(int userId)
+        {
             using (var model = new TelegramModel())
             {
                 Settings settings = new Settings();
@@ -1025,21 +1072,7 @@ namespace TelegramLib.Services
                 model.Settings.Add(settings);
 
                 model.SaveChanges();
-
-                newSettingId = model.Settings.Last().Id;
             }
-
-            //Privacy settings
-            AddPrivacySettings(newSettingId);
-
-            //Chat settings
-            AddChatSettings(newSettingId);
-
-            //Advanced settings
-            AddAdvancedSettings(newSettingId);
-
-            //Notifications and sounds settings
-            AddNotificationSettings(newSettingId);
         }
 
         //Chat settings
@@ -1054,7 +1087,7 @@ namespace TelegramLib.Services
                 settings.UserColorId = 1;// new ColorHelper();
                 settings.AutoNightId = 1;
                 settings.Font = "Time New Roman";
-                settings.BgName = string.Empty; ///
+                settings.BgName = null; ///
                 settings.IsSentWithEnter = true;
 
                 model.ChatSettings.Add(settings);
@@ -1160,6 +1193,7 @@ namespace TelegramLib.Services
                 settings.IsLaunchWhenStart = false;
                 settings.IsUpdateAutomatically = false;
                 settings.IsInstallBetaVersion = false;
+                settings.IsAskDownloadPath = false;
 
                 model.AdvancedSettings.Add(settings);
 
@@ -1212,7 +1246,7 @@ namespace TelegramLib.Services
                 settings.MessagesSetId = newSettingId;
                 settings.DateOfBirthSetId = newSettingId;
                 settings.BioSetId = newSettingId;
-                settings.AwayForType = null;
+                settings.AwayForTypeId = 6;
 
                 model.PrivacySetting.Add(settings);
                 model.SaveChanges();
@@ -1539,7 +1573,7 @@ namespace TelegramLib.Services
             }
             return 1;
         }
-        private static int GetUserImageByName(string name)
+        private static int? GetUserImageByName(string name)
         {
             using (var model = new TelegramModel())
             {
@@ -1548,7 +1582,7 @@ namespace TelegramLib.Services
                     if (img.Name == name) return img.Id;
                 }
             }
-            return 1;
+            return null;
         }
 
         private static List<mainClass.UserParams.UserImage> GetUserImagesByUserId(int userId)

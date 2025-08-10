@@ -16,6 +16,8 @@ using TelegramVisualPart.Enums;
 
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
+using System.Data.Entity.Core.Common.CommandTrees;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 {
@@ -55,6 +57,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            ApiService.UpdatePrivSettings(_settings);
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

@@ -1,14 +1,13 @@
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Linq;
+
+using System.Data.SqlClient;
 
 namespace TelegramLib.Models
 {
     public partial class TelegramModel : DbContext
     {
         public TelegramModel()
-            : base("name=TelegramModel")
+            : base(@"data source=(localdb)\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True")
         {
         }
 

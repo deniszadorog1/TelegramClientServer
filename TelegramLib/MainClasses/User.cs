@@ -11,7 +11,7 @@ namespace TelegramLib.MainClasses
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public string Name;
+        public string Name { get; set; }
         public string Surname { get; set; }
         public string BIO { get; set; }
 
@@ -31,7 +31,7 @@ namespace TelegramLib.MainClasses
                     ColorHelper color, string phoneNumber,
                     string userName, DateTime? birthDay,
                     List<UserContactcs> blockedContacts,
-                    List<UserImage> userImages)
+                    List<UserImage> userImages, DateTime lastSeen)
         {
             Id = id;
             Login = login;
@@ -48,29 +48,31 @@ namespace TelegramLib.MainClasses
 
             BlockedContacts = blockedContacts;
             UserImages = userImages;
+
+            LastSeenOnline = lastSeen;
         }
 
         //Smth like test params
         public User()
         {
             Id = -1;
-            Login = "asdLOGIN";
-            Password = "asdPASSWORD";
-            Name = "asdNAME";
-            Surname = "asdSURNAME";
-            BIO = "asdBIO";
+            Login = "emptyLOGIN";
+            Password = "emptyPASSWORD";
+            Name = "emptyNAME";
+            Surname = "emptySURNAME";
+            BIO = "emptyBIO";
 
             MainColor = new ColorHelper(-1, 255, 0, 0);
 
-            PhoneNumber = "asdPhoneNumber";
-            UserName = "asdUserName";
+            PhoneNumber = "emptyPhoneNumber";
+            UserName = "emptyUserName";
 
-            BirthDay = new DateTime(2003, 7, 4);
+            BirthDay = new DateTime(2000, 1, 1);
             BlockedContacts = new List<UserContactcs>();
 
-            UserImages = new List<UserImage>();
-            UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
-            UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
+            /*            UserImages = new List<UserImage>();
+                        UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
+                        UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));*/
         }
 
         public bool IsSameId(int id)

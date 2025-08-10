@@ -43,7 +43,8 @@ namespace TelegramLib.MainClasses
 
         public UserContactcs()
         {
-            Id = Id;
+            return;
+            Id = -1;
             Name = "testNAME";
             UserName = "testUSERNAME";
             BirthDate = DateTime.Now;

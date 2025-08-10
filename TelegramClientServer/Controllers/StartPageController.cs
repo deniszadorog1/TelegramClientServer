@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using TelegramLib;
 using TelegramLib.MainClasses;
 using TelegramLib.Services;
@@ -21,6 +22,22 @@ namespace TelegramClientServer.Controllers
                 newUser.BirthDate, newUser.Login, newUser.Password);
 
             return true;
+        }
+
+        [HttpPut("AddUserSettings")]
+        public void AddUserSettings([FromBody] UserIdDTO userId)
+        {
+            DbService.AddSettings(userId.UserId);
+        }
+        public class UserIdDTO()
+        {
+            public int UserId { get; set; }
+        };
+
+        [HttpPut("AddUserBasicColor")]
+        public void AddUserBasicColor([FromBody] UserIdDTO userId)
+        {
+            DbService.AddUserBasicColor(userId.UserId);
         }
 
         [HttpPut("AddTellSystem")] //this better
@@ -45,10 +62,10 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetUser")]
-        public User GetUser([FromBody] GetUserParams userParams)
+        public User GetUser(string login, string password)
         {
             return DbService.GetUserByLoginAndPassword(
-                userParams.Login, userParams.Password);
+                login, password);
         }
         public class GetUserParams()
         {
@@ -57,15 +74,15 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetTelSystem")]
-        public TelSystem GetTellSystemByUser([FromBody] GetUserParams userParam)
+        public TelSystem GetTellSystemByUser(string login, string password)
         {
-            return DbService.GetTelSystem(userParam.Login, userParam.Password);
+            return DbService.GetTelSystem(login, password);
         }
 
         //Update social
         //Get contact by phone number
         //Update user contacts (Add new contact)
-        
+
 
 
         //Update system

@@ -50,16 +50,16 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdatePrivacySettings")]
         public void UpdatePrivacySettings([FromBody] PrivacySettingsDTO privSets)
         {
-            DbService.UpdatePrivacySettings(privSets.ChatSet);
+            DbService.UpdatePrivacySettings(privSets.Settings);
         }
         public class PrivacySettingsDTO()
         {
-            public PrivAndSecSettings ChatSet { get; set; }
+            public PrivAndSecSettings Settings { get; set; }
         }
 
         //USER COLOR
         [HttpPost("UpdateUserColor")]
-        public void UpdatePrivacySettings([FromBody] ChosenColorDTO color)
+        public void UpdatePrivacyColor([FromBody] ChosenColorDTO color)
         {
             DbService.UpdateColor(color.ChosenColor);
         }

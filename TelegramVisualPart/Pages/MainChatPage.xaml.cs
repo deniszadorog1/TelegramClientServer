@@ -26,6 +26,17 @@ namespace TelegramVisualPart.Pages
 
         public MainChatPage(TelSystem system)
         {
+            //Update settings 
+            //Settings 
+            //advanced settings
+            //chat settings 
+            //notifs settings
+
+            //Folders
+            //contacts
+            //chats
+            //messages
+
             _system = system;
             InitializeComponent();
 

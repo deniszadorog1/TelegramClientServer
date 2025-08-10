@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons;
 
 namespace TelegramVisualPart.Pages.Advanced
@@ -85,11 +87,13 @@ namespace TelegramVisualPart.Pages.Advanced
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            UpdateInDb();
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new Settings.SettingsPage(_system));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            UpdateInDb();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
@@ -133,7 +137,13 @@ namespace TelegramVisualPart.Pages.Advanced
 
         private void PrivateChatsBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            UpdateInDb();
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.Other.InfoMessage(("Its already been saved.")));
+        }
+
+        private void UpdateInDb()
+        {
+            ApiService.UpdateAdvanced(_system.Settings.AdvSettings);
         }
     }
 }

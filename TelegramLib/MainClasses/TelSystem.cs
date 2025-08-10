@@ -41,7 +41,7 @@ namespace TelegramLib.MainClasses
             Contacts = new List<UserContactcs>();
             Folders = new List<Folder>();
 
-            SetTestSystemParams();
+            //SetTestSystemParams();
         }
 
         public void AddFolder(string name, string iconName,
