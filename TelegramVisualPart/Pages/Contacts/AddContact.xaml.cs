@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -39,9 +40,42 @@ namespace TelegramVisualPart.Pages.Contacts
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void CreateBut_Click(object sender, RoutedEventArgs e)
+        private async  void CreateBut_Click(object sender, RoutedEventArgs e)
         {
-            //Set adding contact
+            User newContact = await ApiService.GetUserByPhoneNumber(PhoneBox.Text);
+
+            if (newContact is null || string.IsNullOrWhiteSpace(PhoneBox.Text) || 
+                string.IsNullOrWhiteSpace(LastnameBox.Text) || 
+                await ApiService.IsContactExist(_system.LoggedUser.Id, newContact.Id))
+            {
+                ClearFields();
+                return;
+            }
+
+            UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.UserName, newContact.BirthDay,
+                newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null);
+            contact.ContactUserid = newContact.Id;
+
+            await ApiService.AddContact(_system.LoggedUser.Id, contact);
+
+            contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
+
+            _system.Contacts.Add(contact);
+
+            //Add chat in DB
+            ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
+
+            
+            ClearFields();
+
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private void ClearFields()
+        {
+            NameBox.Text = string.Empty;
+            LastnameBox.Text = string.Empty;
+            PhoneBox.Text = string.Empty;
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -62,7 +96,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         private void PhoneBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (PhoneBox.Text.First() == '+') return;
+            if (PhoneBox.Text.Count() == 0 || PhoneBox.Text.First() == '+') return;
             PhoneBox.Text = "+" + new string(PhoneBox.Text.Where(x => x != '+').ToArray());
 
         }

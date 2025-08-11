@@ -282,3 +282,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Teleg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\EntityFramework.SqlServer.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.JsonPatch.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Newtonsoft.Json.Bson.dll

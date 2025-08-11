@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramLib.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,6 +31,18 @@ namespace TelegramClientServer.Controllers
         public void UpdateContact([FromBody] ContactDTO contact)
         {
             DbService.UpdateContact(contact.Contact, contact.UserId);
+        }
+
+        [HttpGet("GetLastUserContact")]
+        public UserContactcs GetContact(int userId)
+        {
+            return DbService.GetLastAddedContactByUser(userId);
+        }
+
+        [HttpGet("IsContactExist")]
+        public bool IsContactExist(int userId, int friendId)
+        {
+            return DbService.IsContactIsExist(userId, friendId);
         }
 
         //blcok contact (ITS UPDATE!!!)
@@ -63,15 +76,35 @@ namespace TelegramClientServer.Controllers
 
         //Add Message
         [HttpPut("AddMessage")]
-        public void AddMessage(MessageDTO message)
+        public IActionResult AddMessage(MessageDTO message)
         {
-            DbService.AddMessage(message.Chat, message.ActionMessage);
+            if (message is Message) return NotFound();
+
+            bool res = DbService.AddMessage(message.Chat, message.ActionMessage);
+            return res ? Ok(true) : NotFound(false);
         }
         public class MessageDTO()
         {
             public UserChat Chat { get; set; }
-            public TelegramLib.MainClasses.Messages.Message ActionMessage { get; set; }
+            public Message ActionMessage { get; set; }
         }
+
+        [HttpGet("GetUserByPhoneNumber")]
+        public IActionResult GetUserByPhoneNumber(string phoneNumber)
+        {
+            TelegramLib.MainClasses.User res = DbService.GetUserByPhoneNumber(phoneNumber);
+
+            if (res is null) return NotFound("Some SHIT");
+
+            return Ok(res);
+        }
+
+        [HttpGet("GetUsersPhoneNumber")]
+        public string GetUsersPhoneNumber()
+        {
+            return DbService.GetPhoneNumberFromUser();
+        }
+
 
         //Update chat
         [HttpPost("UpdateChat")]
@@ -91,6 +124,17 @@ namespace TelegramClientServer.Controllers
             DbService.ClearChat(chat.Chat.Id);
         }
 
+        [HttpPut("AddChat")]
+        public void AddChat([FromBody] AddChatDTO addChat)
+        {
+            DbService.AddChat(addChat.UserId, addChat.ChatterContactId);
+        }
+        public class AddChatDTO()
+        {
+            public int UserId { get; set; }
+            public int ChatterContactId { get; set; }
+        }
+
         //Add chat bg
         [HttpPost("AddChatBg")]
         public void AddChatBg([FromBody] ChatDTO chat)
@@ -106,7 +150,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddChatImage(path.Path);
         }
-        public class PathDTO() 
+        public class PathDTO()
         {
             public string Path { get; set; }
         }
@@ -124,7 +168,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddBlockedContact(contact.UserId, contact.ContactId);
         }
-        public class BlockedContactDTO() 
+        public class BlockedContactDTO()
         {
             public int UserId { get; set; }
             public int ContactId { get; set; }

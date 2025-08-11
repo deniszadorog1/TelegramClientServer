@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TelegramClientServer
 {
@@ -7,12 +9,19 @@ namespace TelegramClientServer
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+                });
+
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
 
             var app = builder.Build();
 

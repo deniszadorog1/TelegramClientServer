@@ -11,7 +11,7 @@ namespace TelegramLib.MainClasses.Messages
 {
     public class MediaAction : Message
     {
-        public bool IsSticker { get; }
+        public bool IsSticker { get; set; }
         public string MediaName { get; set; }
 
         public MediaAction(int id, int senderUserId, DateTime sentTime, string mediaName, bool isSticker) : 

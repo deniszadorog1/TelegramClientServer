@@ -1,6 +1,9 @@
 ﻿using ControlzEx.Standard;
 using MahApps.Metro.Controls;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
@@ -21,6 +25,7 @@ using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Contacts;
+using TelegramVisualPart.UserControls.ContactsControls;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -80,7 +85,7 @@ namespace TelegramVisualPart.Services
 
             var response = await _client.PostAsync("api/StartPage/UpdateUser", content);
 
-             return response.IsSuccessStatusCode;
+            return response.IsSuccessStatusCode;
         }
 
         public static async Task<bool> AddUserSettings(int userId)
@@ -116,10 +121,10 @@ namespace TelegramVisualPart.Services
         // Get User
         public static async Task<TelegramLib.MainClasses.User> GetUser(string login, string password)
         {
-            var date = new { Login = login, Password = password };
+            /*            var date = new { Login = login, Password = password };
 
-            var json = JsonConvert.SerializeObject(date);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var json = JsonConvert.SerializeObject(date);
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");*/
             var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -128,6 +133,34 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
             return user;
+        }
+
+        //Get User By phone number
+        public static async Task<TelegramLib.MainClasses.User> GetUserByPhoneNumber(string phoneNumber)
+        {
+            phoneNumber = phoneNumber.Replace("+", "");
+
+            var response = await _client.GetAsync($"api/Social/GetUserByPhoneNumber?phoneNumber={phoneNumber}");
+
+
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
+            return user;
+        }
+
+        //Get Users phoneNumber
+        public static async Task<string> GetUsersPhoneNumber()
+        {
+            var response = await _client.GetAsync($"api/Social/GetUsersPhoneNumber");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            string res = JsonConvert.DeserializeObject<string>(jsonResponse);
+            return res;
         }
 
 
@@ -142,9 +175,14 @@ namespace TelegramVisualPart.Services
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
-
-            TelSystem? res = jsonResponse is null ? null :
-                JsonConvert.DeserializeObject<TelSystem>(jsonResponse);
+            /*
+                        TelSystem? res = jsonResponse is null ? null :
+                            JsonConvert.DeserializeObject<TelSystem>(jsonResponse);
+            */
+            TelSystem? res = jsonResponse is null ? null : JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
 
             return res;
         }
@@ -252,6 +290,29 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<UserContactcs> GetLastUserContact(int userId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastUserContact?userId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.UserContactcs? contact = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.UserContactcs>(jsonResponse);
+            return contact;
+        }
+
+        public static async Task<bool> IsContactExist(int userId, int friendId)
+        {
+            var response = await _client.GetAsync($"api/Social/IsContactExist?userId={userId}&friendId={friendId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
+
+            bool contact = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return contact;
+        }
+
         //Update User color
         public static async Task<bool> UpdateUserColor(ColorHelper chosenColor)
         {
@@ -294,6 +355,14 @@ namespace TelegramVisualPart.Services
             var data = new { Chat = chat, ActionMessage = message };
 
             var json = JsonConvert.SerializeObject(data);
+
+            json = JsonConvert.SerializeObject(
+                data,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("api/Social/AddMessage", content);
 
@@ -302,9 +371,13 @@ namespace TelegramVisualPart.Services
 
 
         //Add chat
-        public static void AddChat()
+        public static async Task AddNewChat(int userId, int contactId)
         {
+            var data = new { UserId = userId, ChatterContactId = contactId };
 
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("api/Social/AddChat", content);
         }
 
         //Update chat

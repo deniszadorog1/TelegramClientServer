@@ -140,7 +140,8 @@ namespace TelegramLib.MainClasses
 
             UserChat chosen = GetChosenChat();
 
-            if (!chosen.GetBackground().IsGeneral) return;
+            if (!(chosen.GetBackground() is null) && 
+                !chosen.GetBackground().IsGeneral) return;
 
             chosen.ChatBg = new ChatFitures.ChatBackground
                 (wallpaper.WallpaperName, wallpaper.IsBlurred, true);

@@ -13,6 +13,7 @@ using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
 using Application = System.Windows.Application;
 using Image = System.Windows.Controls.Image;
@@ -206,7 +207,7 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        private void AddTextMessage(string senderImageName)
+        private async  void AddTextMessage(string senderImageName)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
                 GetConvertedStringMessage(CommentTextBox.Text), senderImageName));
@@ -217,6 +218,9 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.Messages.TextMessage(
                 _chatMessages.Count, _system.LoggedUser.Id,
                 DateTime.Now, CommentTextBox.Text));
+
+
+           await ApiService.AddMessage(_chatMessages.Last(), _chat);
 
             CommentTextBox.Text = string.Empty;
 
