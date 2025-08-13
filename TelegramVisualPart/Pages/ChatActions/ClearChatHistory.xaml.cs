@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -32,8 +33,9 @@ namespace TelegramVisualPart.Pages.ChatActions
             InitializeComponent();
         }
 
-        private void DeleteBut_Click(object sender, RoutedEventArgs e)
+        private async void DeleteBut_Click(object sender, RoutedEventArgs e)
         {
+            await ApiService.ClearChat(_chat);
             _chat.ClearChat();
 
             ((MainWindow)Window.GetWindow(this)).ClearChat();

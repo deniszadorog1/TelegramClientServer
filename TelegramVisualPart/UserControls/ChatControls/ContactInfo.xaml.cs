@@ -1,4 +1,6 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using ControlzEx.Standard;
+using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -33,10 +36,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private TelegramLib.MainClasses.UserChat _chat;
         private TelSystem _system;
-        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat, TelSystem system)
+        private UserContactcs _contact;
+        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat, TelSystem system, UserContactcs contact)
         {
             _system = system;
             _chat = chat;
+            _contact = contact;
             SetUserParams();
         }
 
@@ -180,7 +185,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void EditContactLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.EditUserContact());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame
+                (new Pages.UserInfoContact.ActionsFolder.EditUserContact(_system.LoggedUser, _contact));
         }
 
         private void ShareLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -228,16 +234,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
-        private void NotificationToggle_Checked(object sender, RoutedEventArgs e)
+        private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
         {
             if (_chat is null) return;
             _chat.GetChatter().SetNotifState(true);
+
+            await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
         }
 
-        private void NotificationToggle_Unchecked(object sender, RoutedEventArgs e)
+        private async void NotificationToggle_Unchecked(object sender, RoutedEventArgs e)
         {
             if (_chat is null) return;
             _chat.GetChatter().SetNotifState(false);
+
+            await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
         }
 
         private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -250,7 +260,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             List<Image> imgs = FilesAction.GetUserImages(contact.GetImagesNames());
 
             VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(contact.UserImages, _system, contact.Name, false);
+            page.SetUserImages(contact.UserImages, _system, contact.Name, false, null);
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
         }

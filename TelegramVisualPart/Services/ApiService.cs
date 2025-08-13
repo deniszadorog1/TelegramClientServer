@@ -121,11 +121,7 @@ namespace TelegramVisualPart.Services
         // Get User
         public static async Task<TelegramLib.MainClasses.User> GetUser(string login, string password)
         {
-            /*            var date = new { Login = login, Password = password };
-
-                        var json = JsonConvert.SerializeObject(date);
-                        var content = new StringContent(json, Encoding.UTF8, "application/json");*/
-            var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
+          var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
@@ -134,6 +130,24 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
             return user;
         }
+
+        public static async Task<TelegramLib.MainClasses.Messages.Message> GetLastChatMessage(int chatId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastChatMessage?chatId={chatId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse))
+                return null;
+
+            var msg = JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.Message>(
+                jsonResponse,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            return msg;
+        } 
 
         //Get User By phone number
         public static async Task<TelegramLib.MainClasses.User> GetUserByPhoneNumber(string phoneNumber)
@@ -224,6 +238,31 @@ namespace TelegramVisualPart.Services
             var response = await _client.PostAsync("api/Settings/UpdateChatSettings", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task ClearChat(UserChat chat)
+        {
+            var data = new { Chat = chat };
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                //RequestUri = new Uri("https://localhost:7164/api/Login/RemoveClosedGames"),
+                RequestUri = new Uri($"{_host}api/Social/ClearChat"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+        }
+
+        public static async Task RemoveContact(UserContactcs contact)
+        {
+            var data = new { Contact = contact };
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/RemoveContact"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
         }
 
         //Priv Settings
@@ -381,7 +420,6 @@ namespace TelegramVisualPart.Services
         }
 
         //Update chat
-
         public static async Task<bool> UpdateChat(UserChat chat)
         {
             var data = new { Chat = chat };

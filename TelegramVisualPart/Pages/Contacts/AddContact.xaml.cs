@@ -54,7 +54,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
             UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.UserName, newContact.BirthDay,
                 newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null);
-            contact.ContactUserid = newContact.Id;
+            contact.ContactUserId = newContact.Id;
 
             await ApiService.AddContact(_system.LoggedUser.Id, contact);
 

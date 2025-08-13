@@ -49,6 +49,8 @@ namespace TelegramVisualPart.Pages.VisualPages
         private string _userName;
 
         private List<Image> _imgs;
+
+        private UserChat _chat;
         //private int _tempMediaIndex;
 
         public VisualActionPage(Image img, List<Image> chatImgs)
@@ -66,7 +68,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             //VideoToShow = null;
         }
 
-        public void SetUserImages(List<UserImage> images, TelSystem system, string userName, bool isLoggedUser)
+        public void SetUserImages(List<UserImage> images, TelSystem system, string userName, bool isLoggedUser, UserChat chat)
         {
             MediaMenu = null;
             _imgs = null;
@@ -75,13 +77,14 @@ namespace TelegramVisualPart.Pages.VisualPages
             _userImages = images;
             _userName = userName;
             _tempMediaIndex = 0;
+            _chat = chat;
 
             SetUserImageParams();
 
             HideDeleteFromuserMenu(isLoggedUser);
             SetEventsForUsersImagesMenu();
         }
-        
+
         public void HideDeleteFromuserMenu(bool isLogged)
         {
             if (!isLogged) UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
@@ -90,7 +93,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         public void SetEventsForUsersImagesMenu()
         {
             UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
-            if(UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
+            if (UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
             UsersImageMenu.Copy.PreviewMouseDown += CopyUserImage_PreviewMouseDown;
             UsersImageMenu.Report.PreviewMouseDown += ReportUserImage_PreviewMouseDown;
         }
@@ -146,12 +149,12 @@ namespace TelegramVisualPart.Pages.VisualPages
         }
 
 
-        public void SetUserChat(TelSystem system, List<MediaAction> messages, int startElementIndex)
+        public void SetUserChat(TelSystem system, List<MediaAction> messages, int startElementIndex, UserChat chat)
         {
             _system = system;
             _messages = messages;
             _tempMediaIndex = startElementIndex;
-
+            _chat = chat;
             //_tempMediaIndex = _tempMediaIndex;
 
             SetMediaParams();
@@ -167,8 +170,10 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             SentDate.Text = $"{media.GetSentDate().Value.Day} {media.GetSentDate().Value.Month} {media.GetSentDate().Value.Year}";
 
+            return;
+            //set text
             SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
-                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.SenderId)].Name;
+                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.Id)].Name;
         }
 
         public void SetImgIndex()
@@ -327,6 +332,8 @@ namespace TelegramVisualPart.Pages.VisualPages
             //Remove chosen element
             if (_tempMediaIndex == -1) return;
             RemoveFromChat(_tempMediaIndex);
+
+            if (_chat is not null) ApiService.UpdateChat(_chat);
         }
         private void RemoveChosenImage()
         {
@@ -424,8 +431,8 @@ namespace TelegramVisualPart.Pages.VisualPages
                 _tempMediaIndex++;
                 SetUserImage();
             }
-            else if (_img is not null && 
-                _imgs is not null && 
+            else if (_img is not null &&
+                _imgs is not null &&
                 (_tempMediaIndex + 1) < _imgs.Count)
             {
                 _tempMediaIndex++;
@@ -599,7 +606,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         private void MenuBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if (MediaMenu is not null) MediaMenu.Visibility = Visibility.Visible;
-            else UsersImageMenu.Visibility = Visibility.Visible; 
+            else UsersImageMenu.Visibility = Visibility.Visible;
         }
 
         private void MediaMenu_MouseLeave(object sender, MouseEventArgs e)

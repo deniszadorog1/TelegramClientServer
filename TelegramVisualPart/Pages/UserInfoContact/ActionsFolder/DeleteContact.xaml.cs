@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 {
@@ -20,13 +23,31 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
     /// </summary>
     public partial class DeleteContact : Page
     {
-        public DeleteContact()
+        private UserContactcs _contact;
+        private TelSystem _system;
+        public DeleteContact(UserContactcs contact, TelSystem system)
         {
+            _contact = contact;
+            _system = system;
+
             InitializeComponent();
+
+            SetBasicParams();
         }
 
-        private void DeleteBut_Click(object sender, RoutedEventArgs e)
+        private void SetBasicParams()
         {
+            BgBrush.ImageSource = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
+
+            UsernamePlace.Text = _contact.Name;
+        }
+
+        private async void DeleteBut_Click(object sender, RoutedEventArgs e)
+        {
+            await ApiService.RemoveContact(_contact);
+            _system.RemoveContact(_contact);
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

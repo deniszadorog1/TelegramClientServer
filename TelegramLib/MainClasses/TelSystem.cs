@@ -238,5 +238,10 @@ namespace TelegramLib.MainClasses
         {
             GetChosenChat().RemoveElementByIndex(mediaIndex, type);
         }
+
+        public void RemoveContact(UserContactcs contact)
+        {
+            Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).FirstOrDefault());
+        }
     }
 }

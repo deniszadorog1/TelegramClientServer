@@ -347,6 +347,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetLastChatMessage",
+    "RelativePath": "api/Social/GetLastChatMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetContact",
     "RelativePath": "api/Social/GetLastUserContact",
     "HttpMethod": "GET",

@@ -9,10 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="ffmpeg\**" />
-	  <EmbeddedResource Remove="ffmpeg\**" />
-	  <None Remove="ffmpeg\**" />
-	  <Page Remove="ffmpeg\**" />
+	  <Compile Remove="bin\**" />
+	  <EmbeddedResource Remove="bin\**" />
+	  <None Remove="bin\**" />
+	  <Page Remove="bin\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -49,7 +49,6 @@
 		<Content Include="Visuals\Images\Stickers\Girl.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-		<None Include="bin\Debug\net8.0-windows\.env" />
 		<Resource Include="Visuals\Images\UserImages\fray.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>

@@ -12,7 +12,7 @@ namespace TelegramClientServer
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+                    options.SerializerSettings.TypeNameHandling = TypeNameHandling.All;
                 });
 
             // Add services to the container.

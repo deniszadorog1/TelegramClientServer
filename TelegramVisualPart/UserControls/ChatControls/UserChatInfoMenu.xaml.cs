@@ -17,6 +17,7 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -25,8 +26,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
     /// </summary>
     public partial class UserChatInfoMenu : UserControl
     {
-       // public event EventHandler ClearHystory;
-
         public UserChatInfoMenu()
         {
             InitializeComponent();
@@ -82,7 +81,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new DeleteChat());
         }
 
-        private void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(_chat, _system));
         }

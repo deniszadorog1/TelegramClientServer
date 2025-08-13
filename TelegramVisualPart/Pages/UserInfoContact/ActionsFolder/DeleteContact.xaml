@@ -35,22 +35,25 @@
             </Grid>
 
             <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
-                       Text="Are you sure you want to delete USERNAME from your contact list?" 
-                       Foreground="White" FontSize="16" Margin="15"/>
+                       Foreground="White" FontSize="16" Margin="15">            
+                <Run Text="Are you sure you want to delete"/>
+                <Run x:Name="UsernamePlace"  Text="USERNAME"/>
+                <Run Text="from your contact list?"/>
+            </TextBlock>
 
             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
                             HorizontalAlignment="Right" Margin="0 0 10 0"
                             MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
-                            Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                            Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DeleteBut"
                             Content="Delete" Background="Transparent" BorderThickness="0"
                             MouseEnter="DeleteBut_MouseEnter"  MouseLeave="DeleteBut_MouseLeave"
                             HorizontalAlignment="Left" 
-                            Click="DeleteBut_Click"  Margin="10 0 20 0" 
+                            Click="DeleteBut_Click" Margin="10 0 20 0" 
                             Foreground="{StaticResource CloseWindowColor}"/>
             </StackPanel>
         </Grid>

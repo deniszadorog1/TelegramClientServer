@@ -80,7 +80,7 @@ namespace TelegramVisualPart.Pages
             List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());
             
             VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(_user.UserImages, _system, _user.Name, true);
+            page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
 
             page.ToRemoveImage += ToRemoveUserImage_MouseDown;
 

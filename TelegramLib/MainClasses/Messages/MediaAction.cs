@@ -30,18 +30,21 @@ namespace TelegramLib.MainClasses.Messages
 
         public bool IsImage()
         {
+            if (IsSticker) return false;
              string ext = Path.GetExtension(MediaName);
             return ext == ".png" || ext == ".jpg" || ext == "jpeg";
         }
 
         public bool IsGif()
         {
+            if (IsSticker) return false;
             string ext = Path.GetExtension(MediaName);
             return ext == ".gif";
         }
 
         public bool IsVideo()
         {
+            if (IsSticker) return false;
             string ext = Path.GetExtension(MediaName);
             return ext == ".mp4";
         }
@@ -50,6 +53,5 @@ namespace TelegramLib.MainClasses.Messages
         {
             return "Media";
         }
-
     }
 }

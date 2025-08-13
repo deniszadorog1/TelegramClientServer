@@ -39,6 +39,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetLastAddedContactByUser(userId);
         }
 
+        [HttpGet("GetLastChatMessage")]
+        public TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
+        {
+            return DbService.GetLastChatMessage(chatId); 
+        }
+
         [HttpGet("IsContactExist")]
         public bool IsContactExist(int userId, int friendId)
         {
@@ -78,8 +84,6 @@ namespace TelegramClientServer.Controllers
         [HttpPut("AddMessage")]
         public IActionResult AddMessage(MessageDTO message)
         {
-            if (message is Message) return NotFound();
-
             bool res = DbService.AddMessage(message.Chat, message.ActionMessage);
             return res ? Ok(true) : NotFound(false);
         }
@@ -123,6 +127,17 @@ namespace TelegramClientServer.Controllers
         {
             DbService.ClearChat(chat.Chat.Id);
         }
+
+        [HttpDelete("RemoveContact")]
+        public void RemoveContact([FromBody] RemoveContactDTO contact)
+        {
+            DbService.RemoveContact(contact.Contact);
+        }
+        public class RemoveContactDTO()
+        {
+            public UserContactcs Contact { get; set; }
+        }
+
 
         [HttpPut("AddChat")]
         public void AddChat([FromBody] AddChatDTO addChat)

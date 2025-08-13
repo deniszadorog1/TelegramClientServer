@@ -42,6 +42,8 @@ using System.Drawing;
 
 using System.Data.Entity;
 using System.Windows.Forms;
+using TelegramLib.Enums.Messages;
+using System.Text.Json.Serialization.Metadata;
 
 namespace TelegramLib.Services
 {
@@ -312,7 +314,11 @@ namespace TelegramLib.Services
             //Check for exception        
             using (var model = new TelegramModel())
             {
-                return (int)model.PossibleChatBGs.Where(x => x.ChatId == chatId && (bool)x.IsGeneral).First().ChatBgId;
+                PossibleChatBGs chosen = model.PossibleChatBGs.FirstOrDefault(x => x.ChatId == chatId && (bool)x.IsGeneral);
+                if (chosen is null) return -1;
+                return (int)chosen.ChatBgId;
+
+                //return (int)model.PossibleChatBGs.Where(x => x.ChatId == chatId && (bool)x.IsGeneral).First().ChatBgId;
             }
         }
 
@@ -356,7 +362,7 @@ namespace TelegramLib.Services
 
         private static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
         {
-            List<TelegramLib.MainClasses.Messages.Message> res = 
+            List<TelegramLib.MainClasses.Messages.Message> res =
                 new List<TelegramLib.MainClasses.Messages.Message>();
 
             using (var model = new TelegramModel())
@@ -389,10 +395,10 @@ namespace TelegramLib.Services
                             ((MediaAction)toAdd).IsSticker = false;
                             ((MediaAction)toAdd).MediaName = GetChatGifNameById((int)mes.GifId);
                         }
-                        else if (!(mes.StickerImage is null))
+                        else if (!(mes.StickerId is null))
                         {
                             ((MediaAction)toAdd).IsSticker = true;
-                            ((MediaAction)toAdd).MediaName = GetChatStickerNameById((int)mes.ImageId);
+                            ((MediaAction)toAdd).MediaName = GetChatStickerNameById((int)mes.StickerId);
                         }
 
                         //Set media or text
@@ -433,7 +439,7 @@ namespace TelegramLib.Services
 
         private static string GetChatImageNameById(int id)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.ChatImage.FirstOrDefault(x => x.Id == id).Name;
             }
@@ -644,7 +650,9 @@ namespace TelegramLib.Services
                 mainClass.User user = GetUserById((int)contact.UserId);
 
                 res.Id = contact.Id;
+                res.ContactUserId = (int)contact.FriendId;
                 res.Name = contact.Name;
+                res.Surname = contact.LastName;
                 res.UserName = user.UserName;
                 res.BirthDate = user.BirthDay;
                 res.BIO = user.BIO;
@@ -658,8 +666,6 @@ namespace TelegramLib.Services
             return res;
         }
 
-
-
         public static void AddContact(UserContactcs contact, int userId)
         {
             using (var model = new TelegramModel())
@@ -667,7 +673,7 @@ namespace TelegramLib.Services
                 Contacts toAdd = new Contacts();
 
                 toAdd.UserId = userId;
-                toAdd.FriendId = contact.ContactUserid;
+                toAdd.FriendId = contact.ContactUserId;
                 toAdd.Name = contact.Name;
                 toAdd.LastName = contact.UserName;
                 toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
@@ -686,6 +692,7 @@ namespace TelegramLib.Services
                 if (toUpdate is null) return;
 
                 toUpdate.Name = contact.Name;
+                toUpdate.LastName = contact.Surname;
                 toUpdate.IsNotifsIsOn = contact.IsNotificationsIsOn;
                 toUpdate.IsBlocked = contact.IsBlockedUserBlocked;
 
@@ -1860,27 +1867,28 @@ namespace TelegramLib.Services
 
 
         //Chats
-
-
         public static bool AddMessage(UserChat chat, TelegramLib.MainClasses.Messages.Message message)
         {
+            if (message is MediaAction mediaAction) AddChatMedia(chat, mediaAction);
+
             using (var model = new TelegramModel())
             {
                 Messages toAdd = new Messages();
 
                 toAdd.ChatId = chat.Id;
                 toAdd.SenderId = message.SenderUserId;
-
-                if (!(message is TextMessage)) return false;
+                toAdd.SentDate = message.SentTime;
 
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
                 if (message is MediaAction video && video.IsVideo()) toAdd.VideoId = GetVideoIdByName(video.MediaName);
                 else toAdd.VideoId = null;
 
-
                 if (message is MediaAction image && image.IsImage()) toAdd.ImageId = GetChatImageIdByName(image.MediaName);
                 else toAdd.ImageId = null;
+
+                if (message is MediaAction gif && gif.IsGif()) toAdd.GifId = GetChatGifIdByName(gif.MediaName);
+                else toAdd.GifId = null;
 
                 toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
 
@@ -1890,6 +1898,62 @@ namespace TelegramLib.Services
             return true;
         }
 
+        public static TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<Messages> toGet = model.Messages.Where(x => x.ChatId == chatId).ToList();
+                Messages chosen = toGet.Last();
+
+                TelegramLib.MainClasses.Messages.Message res;
+
+                if (chosen.Message is null || chosen.Message == string.Empty) res = new MediaAction();
+                else res = new TextMessage();
+
+
+                res.Id = chosen.Id;
+                res.SenderUserId = (int)chosen.SenderId;
+                res.SentTime = chosen.SentDate is null ? DateTime.Now : (DateTime)chosen.SentDate;
+
+                if (res is TextMessage text)
+                {
+                    text.Text = chosen.Message;
+                }
+                else if (res is MediaAction media)
+                {
+                    media.IsSticker = chosen.StickerId is null ? false : true;
+                    media.MediaName = GetMediaNameByMessageId(chosen.Id);
+                }
+                return res;
+            }
+        }
+
+        private static string GetMediaNameByMessageId(int mesId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Messages mes = model.Messages.Where(x => x.Id == mesId).FirstOrDefault();
+                if (mes is null) return string.Empty;
+
+                if (!(mes.ImageId is null)) return GetChatImageNameById((int)mes.ImageId);
+                else if (!(mes.VideoId is null)) return GetChatVideoNameById((int)mes.VideoId);
+                else if (!(mes.GIF is null)) return GetChatGifNameById((int)mes.GifId);
+                else if (!(mes.StickerId is null)) return GetChatStickerNameById((int)mes.StickerId);
+            }
+            return string.Empty;
+        }
+
+
+        private static void AddChatMedia(UserChat chat, TelegramLib.MainClasses.Messages.MediaAction message)
+        {
+            MediaType type = message.IsSticker ? MediaType.Sticker : chat.GetMediaTypeFromFilename(message.MediaName);
+
+            if (type is MediaType.Image) AddChatImage(message.MediaName);
+            else if (type is MediaType.Video) AddChatVideo(message.MediaName);
+            else if (type is MediaType.Gif) AddChatGif(message.MediaName);
+            else if (type is MediaType.Sticker) AddChatSticker(message.MediaName);
+        }
+
         private static int GetChatImageIdByName(string imgName)
         {
             using (var model = new TelegramModel())
@@ -1897,6 +1961,16 @@ namespace TelegramLib.Services
                 ChatImage img = model.ChatImage.Where(x => x.Name == imgName).FirstOrDefault();
                 if (img is null) return 1;
                 return img.Id;
+            }
+        }
+
+        public static int GetChatGifIdByName(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                GIF gif = model.GIF.Where(x => x.Name == name).FirstOrDefault();
+                if (gif is null) return 1;
+                return gif.Id;
             }
         }
 
@@ -1912,6 +1986,16 @@ namespace TelegramLib.Services
 
         public static void UpdateChat(UserChat chat)
         {
+            //Update messages
+
+            /*            //Remove all messages
+                        ClearAllChatMessages(chat.Id);
+
+                        //Add all messages
+                        AddMessagesInChat(chat);*/
+
+            //Update chat messages
+            UpdateMessages(chat);
             using (var model = new TelegramModel())
             {
                 Chat toUpdate = model.Chat.Where(x => x.Id == chat.Id).FirstOrDefault();
@@ -1922,7 +2006,71 @@ namespace TelegramLib.Services
                 toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
 
                 //Update general BG
-                SetChosenBgInPossibleBGs(toUpdate.Id, GetChosenBgIdByName(toUpdate.Id));
+
+                int chosenBgId = GetChosenBgIdByName(toUpdate.Id);
+                if (chosenBgId > 0)
+                {
+                    SetChosenBgInPossibleBGs(toUpdate.Id, chosenBgId);
+                }
+
+                model.SaveChanges();
+            }
+        }
+
+        private static void UpdateMessages(UserChat chat)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<Messages> toRemove = new List<Messages>();
+
+                //Get chat messages
+                foreach (var mes in model.Messages)
+                {
+                    if (mes.ChatId == chat.Id &&
+                        !chat.Messages.Where(x => x.Id == mes.Id).Any())
+                    {
+                        toRemove.Add(mes);
+                    }
+                }
+
+                //Remove chat messages
+                foreach (var mes in toRemove)
+                {
+                    model.Messages.Remove(mes);
+                }
+
+                model.SaveChanges();
+            }
+        }
+
+        private static void AddMessagesInChat(UserChat chat)
+        {
+            for (int i = 0; i < chat.Messages.Count(); i++)
+            {
+                AddMessage(chat, chat.Messages[i]);
+            }
+        }
+
+        private static void ClearAllChatMessages(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<Messages> toRemove = new List<Messages>();
+
+                //Get chat messages
+                foreach (var mes in model.Messages)
+                {
+                    if (mes.ChatId == chatId)
+                    {
+                        toRemove.Add(mes);
+                    }
+                }
+
+                //Remove chat messages
+                foreach (var mes in toRemove)
+                {
+                    model.Messages.Remove(mes);
+                }
 
                 model.SaveChanges();
             }
@@ -2101,6 +2249,105 @@ namespace TelegramLib.Services
             {
                 return model.BlockedContacts.Where(
                     x => x.UserId == userId && x.BlockedContactId == contactId).Any();
+            }
+        }
+
+        public static void RemoveContact(UserContactcs contact)
+        {
+            //Remove contact chat messages
+            RemoveMessagesBySenderId(contact.ContactUserId); //GOES TO USER (Mistake here now)
+            //Remove chat
+            RemoveChatByChatterId(contact.Id);
+            //Remove COntactsFolder
+            RemoveContactsInFolderByContactId(contact.Id);
+
+            //Remove folder(if they are empty)
+            //Remove contact
+            using(var model = new TelegramModel())
+            {
+                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id));
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveEmptyFolders()
+        {
+            using(var model = new TelegramModel())
+            {
+                List<model.Folder> toRemove = new List<model.Folder>();
+
+                
+            }
+        }
+
+        private static void RemoveContactsInFolderByContactId(int contactId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.ContactsInFolder.RemoveRange(model.ContactsInFolder.Where(x => x.ContactId == contactId));
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveChatByChatterId(int chatterId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.Chat.RemoveRange(model.Chat.Where(x => x.ChatterId == chatterId));
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveMessagesBySenderId(int senderId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.Messages.RemoveRange(model.Messages.Where(x => x.SenderId == senderId));
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsChatGifNameIsExist(string gifName)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.GIF.Where(x => x.Name == gifName).Any();
+            }
+        }
+
+        public static void AddChatGif(string name)
+        {
+            if (IsChatGifNameIsExist(name)) return;
+            using (var model = new TelegramModel())
+            {
+                GIF toAdd = new GIF();
+
+                toAdd.Name = name;
+
+                model.GIF.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsChatStickerNameIsExist(string stickerName)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.StickerImage.Where(x => x.Name == stickerName).Any();
+            }
+        }
+
+        public static void AddChatSticker(string name)
+        {
+            if (IsChatStickerNameIsExist(name)) return;
+            using (var model = new TelegramModel())
+            {
+                StickerImage toAdd = new StickerImage();
+
+                toAdd.Name = name;
+
+                model.StickerImage.Add(toAdd);
+                model.SaveChanges();
             }
         }
 

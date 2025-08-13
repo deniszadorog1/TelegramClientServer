@@ -81,7 +81,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(_system.GetChosenChat(), _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact() :
                    name == BlockUser.Name.ToString() ? new BlockContact() :
-                   name == EditContact.Name.ToString() ? new EditUserContact() :
+                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, _system.ChosenChatContact) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system) : 
                    name == ShareContact.Name.ToString() ? new ShareContact() : null;
         }

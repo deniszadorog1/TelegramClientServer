@@ -76,7 +76,7 @@
                           Content="Cancel" Background="Transparent" BorderThickness="0"
                           HorizontalAlignment="Right" Margin="0 0 10 0"
                           MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
-                          Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                          Foreground="{StaticResource TempActiveTextColor}"
                           Click="CancelBut_Click"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DoneBut"
@@ -84,7 +84,7 @@
                           MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
                           HorizontalAlignment="Left" 
                           Click="DoneBut_Click"  Margin="10 0 20 0" 
-                          Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                          Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -131,7 +131,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             int chosenGifIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, gifs, chosenGifIndex);
+            page.SetUserChat(_system, gifs, chosenGifIndex, _chat);
         }
 
         public List<MediaAction> GetGifMessages()
@@ -195,7 +195,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, videos, chosenVideoIndex);
+            page.SetUserChat(_system, videos, chosenVideoIndex, _chat);
         }
 
         public int GetImageIndex(Image img)
@@ -247,7 +247,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
 
-            page.SetUserChat(_system, GetImageMessages(), _imgs.IndexOf(img));
+            page.SetUserChat(_system, GetImageMessages(), _imgs.IndexOf(img), _chat);
         }
 
         public List<MediaAction> GetImageMessages()
