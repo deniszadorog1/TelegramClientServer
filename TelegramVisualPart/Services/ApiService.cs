@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -376,6 +377,18 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task RemoveFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
+        {
+            var data = new { Folder = folder, UserId = userId };
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteFolder"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+        }
+
         //Update folder
         public static async Task<bool> UpdateFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
         {
@@ -431,5 +444,15 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<UserChat> GetChatByUserAndSenderId(int userId, int contactId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetChatByUserAndContactId?userId={userId}&contactId={contactId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+        }
     }
 }

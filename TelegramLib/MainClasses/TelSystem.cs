@@ -1,11 +1,16 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.MainClasses.UserParams;
+using TelegramLib.Models;
 using TelegramLib.UserSettings;
+using Folder = TelegramLib.MainClasses.FolderObjs.Folder;
+using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
 
 namespace TelegramLib.MainClasses
 {
@@ -49,6 +54,11 @@ namespace TelegramLib.MainClasses
         {
             Folder toAdd = new Folder(Folders.Count + 1, name, iconName, contacts, excludedContacts);
             Folders.Add(toAdd);
+        }
+
+        public Folder GetLastFolder()
+        {
+            return Folders.Last();
         }
 
         public bool IsFolderNameExists(string name)
@@ -113,6 +123,8 @@ namespace TelegramLib.MainClasses
         public UserChat GetUserChatByChatterName(string chatterName)
         {
             UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
+
+            //Get tel system
             if (!(chat is null))
             {
                 ChosenChatContact = chat.Chatter;
@@ -122,6 +134,10 @@ namespace TelegramLib.MainClasses
                 return chat;
             }
             //Create new chat(if its absent)
+
+
+            throw new Exception("cant be chat should be set!!!");
+
             UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
                 new ChatFitures.ChatBackground("fray.jpg", false, true));
 
@@ -140,7 +156,7 @@ namespace TelegramLib.MainClasses
 
             UserChat chosen = GetChosenChat();
 
-            if (!(chosen.GetBackground() is null) && 
+            if (!(chosen.GetBackground() is null) &&
                 !chosen.GetBackground().IsGeneral) return;
 
             chosen.ChatBg = new ChatFitures.ChatBackground
@@ -241,7 +257,66 @@ namespace TelegramLib.MainClasses
 
         public void RemoveContact(UserContactcs contact)
         {
+            //Remove chat with messages where contact is
+            RemoveChatsWithContact(contact);
+
+            //remove from folder where contact is
+            RemoveContactFromFolderContacts(contact);
+
+            //Remvoe empty folders
+            RemoveEmptyFolders();
+
+            //Remove from blocked contacts
+            LoggedUser.RemoveBlockedContcatByContact(contact);
+
             Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).FirstOrDefault());
+        }
+
+      
+
+        private void RemoveEmptyFolders()
+        {
+            List<Folder> toRemove = new List<Folder>();
+            for(int i = 0; i < Folders.Count; i++)
+            {
+                if (Folders[i].Contacts.Count == 0)
+                {
+                    toRemove.Add(Folders[i]);
+                }
+            }
+
+            foreach(var remove in toRemove)
+            {
+                Folders.Remove(remove);
+            }
+
+        }
+
+        private void RemoveContactFromFolderContacts(UserContactcs contact)
+        {
+            for(int i = 0; i < Folders.Count; i++)
+            {
+                UserContactcs toRemove = Folders[i].Contacts.FirstOrDefault(x => x.Id == contact.Id);
+                if (!(toRemove is null)) Folders[i].Contacts.Remove(toRemove);
+
+                toRemove = Folders[i].ExcludedContacts.FirstOrDefault(x => x.Id == contact.Id);
+                if (!(toRemove is null)) Folders[i].ExcludedContacts.Remove(toRemove);
+            }
+        }
+
+        private void RemoveChatsWithContact(UserContactcs contact)
+        {
+            List<UserChat> toRemove = Chats.Where(x => x.Chatter.Id == contact.Id).ToList();
+            
+            foreach(var remove in toRemove)
+            {
+                Chats.Remove(remove);
+            }
+        }
+
+        public void AddChat(UserChat chat)
+        {
+            Chats.Add(chat);
         }
     }
 }

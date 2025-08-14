@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
@@ -46,6 +47,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             SetBlocks();
             FolderIcon.NewIconChosenEvent += NewIcon_Event;
             SetChosenFolderParams();
+
+            SetUpdateBlocks();
+        }
+
+        public void SetUpdateBlocks()
+        {
+            if (_folder is null) return;
+
+            FolderNameBox.Text = _folder.Name;
+            ChosenFolderIcon.Kind = Enum.Parse<PackIconKind>(_folder.IconName);
         }
 
         public void SetChosenFolderParams()
@@ -90,17 +101,21 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             // FolderIcon.Visibility = Visibility.Hidden;
         }
 
-        private void CreateBut_Click(object sender, RoutedEventArgs e)
+        private async void CreateBut_Click(object sender, RoutedEventArgs e)
         {
             //CHECK FOLDER SETTINGS (IS name exist etc...)
 
             //Apply folder settings
             if (_isSaveAction)
             {
+                //Update folder
                 _folder.SetContacts(_toAddContacts);
                 _folder.SetExcludeContacts(_toExcludeContacts);
                 _folder.SetIconName(ChosenFolderIcon.Kind.ToString());
                 _folder.SetName(FolderNameBox.Text);
+
+
+                await ApiService.UpdateFolder(_folder, _system.LoggedUser.Id);
 
                 ((MainWindow)Window.GetWindow(this)).UpdateFolders();
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
@@ -108,7 +123,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             }
 
             //To add new Folder
-            if (!CreateNewFolder()) return;
+            if (!await CreateNewFolder()) return;
 
             FolderCreated?.Invoke(this, EventArgs.Empty);
 
@@ -116,13 +131,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
         }
 
-        public bool CreateNewFolder()
+        public async Task<bool> CreateNewFolder()
         {
             if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||
                 _system.IsFolderNameExists(FolderNameBox.Text)) return false;
 
             _system.AddFolder(FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(),
                 _toAddContacts, _toExcludeContacts);
+
+            await ApiService.AddFolder(_system.GetLastFolder(), _system.LoggedUser.Id);
+
             return true;
         }
 

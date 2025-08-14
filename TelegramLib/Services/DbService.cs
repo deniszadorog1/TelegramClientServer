@@ -141,11 +141,15 @@ namespace TelegramLib.Services
                 model.Folder.Add(toAdd);
                 model.SaveChanges();
 
+                var lastFolder = model.Folder
+                .OrderByDescending(f => f.Id) 
+                .FirstOrDefault();
+
                 //Add folder contacts
-                AddManyContactInContcatsInFolder(model.Folder.Last().Id,
+                AddManyContactInContcatsInFolder(lastFolder.Id,
                     folder.Contacts, false);
 
-                AddManyContactInContcatsInFolder(model.Folder.Last().Id,
+                AddManyContactInContcatsInFolder(lastFolder.Id,
                     folder.ExcludedContacts, true);
             }
         }
@@ -175,26 +179,76 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void UpdateFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
+        public static bool UpdateFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
         {
             using (var model = new TelegramModel())
             {
-                model.Folder toUpdate = model.Folder.Where(x => x.Id == folder.Id).FirstOrDefault();
-                if (toUpdate is null) return;
+                model.Folder toUpdate = model.Folder.FirstOrDefault(x => x.Id == folder.Id);
+                if (toUpdate is null) return false;
 
                 toUpdate.Name = folder.Name;
                 toUpdate.IconId = GetFolderIconIdByName(folder.IconName);
 
-                model.SaveChanges();
 
                 //Update folder contacts
+                //Remove Extra Contcats
 
-                //Remove all folderContacts 
-                RemoveContactsFromFolder(folder.Id);
+                RemoveExtraContacts(toUpdate.Id, folder.Contacts, false);
+                RemoveExtraContacts(toUpdate.Id, folder.ExcludedContacts, true);
 
-                //Add folder contacts
-                AddManyContactInContcatsInFolder(folder.Id, folder.Contacts, false);
-                AddManyContactInContcatsInFolder(folder.Id, folder.ExcludedContacts, true);
+                AddExtraContacts(toUpdate.Id, folder.Contacts, false);
+                AddExtraContacts(toUpdate.Id, folder.ExcludedContacts, false);
+
+                /*
+                                //Remove all folderContacts 
+                                RemoveContactsFromFolder(folder.Id);
+
+                                //Add folder contacts
+                                AddManyContactInContcatsInFolder(folder.Id, folder.Contacts, false);
+                                AddManyContactInContcatsInFolder(folder.Id, folder.ExcludedContacts, true);*/
+
+                model.SaveChanges();
+            }
+            return true;
+        }
+
+        private static void AddExtraContacts(int folderId, List<UserContactcs> contacts, bool isExclude)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<ContactsInFolder> toCheck = 
+                    model.ContactsInFolder.Where(x => x.FolderId == folderId && x.IsExclude == isExclude).ToList();
+                
+                foreach(var contact in contacts)
+                {
+                    if(!toCheck.Where(x => x.ContactId == contact.Id).Any())
+                    {
+                        ContactsInFolder toAdd = new ContactsInFolder();
+                        
+                        toAdd.FolderId = folderId;
+                        toAdd.ContactId = contact.Id;
+                        toAdd.IsExclude = isExclude;
+
+                        model.ContactsInFolder.Add(toAdd);
+                    }
+                }
+                model.SaveChanges();  
+            }
+        }
+
+        private static void RemoveExtraContacts(int folderId, List<UserContactcs> contacts, bool isExclude)
+        {
+            //Get contacts to remove 
+            //Remove
+            using (var model = new TelegramModel())
+            {
+                List<ContactsInFolder> foldContacts =
+                    model.ContactsInFolder.Where(x => x.FolderId == folderId && x.IsExclude == isExclude).ToList();
+
+                List<ContactsInFolder> toRemove = foldContacts.Where(x => contacts.Exists(y => y.Id == x.ContactId)).ToList();
+                model.ContactsInFolder.RemoveRange(toRemove);
+
+                model.SaveChanges();
             }
         }
 
@@ -202,11 +256,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                List<ContactsInFolder> toRemove = new List<ContactsInFolder>();
-                foreach (var temp in model.ContactsInFolder)
-                {
-                    if (temp.FolderId == folderId) toRemove.Add(temp);
-                }
+                List<ContactsInFolder> toRemove = 
+                    model.ContactsInFolder.Where(x => x.FolderId == folderId).ToList();
 
                 model.ContactsInFolder.RemoveRange(toRemove);
                 model.SaveChanges();
@@ -217,10 +268,10 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
+                RemoveContactsFromFolder(folderId);
+
                 model.Folder.RemoveRange(model.Folder.Where(x => x.Id == folderId).ToList());
                 model.SaveChanges();
-
-                RemoveContactsFromFolder(folderId);
             }
         }
 
@@ -377,6 +428,7 @@ namespace TelegramLib.Services
 
                         toAdd.Id = mes.Id;
                         toAdd.SenderUserId = (int)mes.SenderId;
+                        toAdd.SenderId = (int)mes.SenderId;
                         toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
 
                         if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
@@ -612,6 +664,8 @@ namespace TelegramLib.Services
 
                 toAdd.Id = contact.Id;
                 toAdd.Name = contact.Name;
+                toAdd.ContactUserId = (int)contact.FriendId;
+                
                 toAdd.UserName = contact.User.Name;
                 toAdd.BirthDate = contact.User.Birthday;
                 toAdd.BIO = contact.User.BIO;
@@ -2255,34 +2309,129 @@ namespace TelegramLib.Services
         public static void RemoveContact(UserContactcs contact)
         {
             //Remove contact chat messages
-            RemoveMessagesBySenderId(contact.ContactUserId); //GOES TO USER (Mistake here now)
+            //RemoveMessagesBySenderId(contact.Id); //CHECK THIS
+
             //Remove chat
-            RemoveChatByChatterId(contact.Id);
+            //RemoveChatByChatterId(contact.Id);
+
+
+            //Remove chat and message where chatter is ContactId
+            RemoveChatWhereChatterIsContact(contact.Id);
+
             //Remove COntactsFolder
             RemoveContactsInFolderByContactId(contact.Id);
 
+            //Remove contact from blockedContacts
+            RemoveBlockedByContactId(contact.Id);
+
+            //Remove contact from Chosen contacts
+            RemoveFromChosenPrivacyContactsByContactId(contact.Id);
+
             //Remove folder(if they are empty)
+            RemoveEmptyFolders(); //CHECK THIS
+
             //Remove contact
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id));
                 model.SaveChanges();
             }
         }
 
-        private static void RemoveEmptyFolders()
+        private static void RemoveChatWhereChatterIsContact(int contactId)
+        {
+            //Get chat
+            //remove messages in chat
+            //remove chat
+
+            using(var model = new TelegramModel())
+            {
+                List<Chat> toRemove = model.Chat.Where(x => x.ChatterId == contactId).ToList();
+            
+                for(int i = 0; i < toRemove.Count(); i++)
+                {
+                    //remove all chat messages
+                    RemoveMessagesByChatId(toRemove[i].Id);
+                }
+
+                //remove chat
+                foreach(var chat in toRemove)
+                {
+                    model.Chat.Remove(chat);
+                }
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveMessagesByChatId(int chatId) 
         {
             using(var model = new TelegramModel())
             {
+                List<Messages> toRemove = model.Messages.Where(x => x.ChatId == chatId).ToList();
+
+                model.Messages.RemoveRange(toRemove);
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveBlockedByContactId(int contactId)
+        {
+            using(var model = new TelegramModel())
+            {
+                List<BlockedContacts> toRemove = 
+                    model.BlockedContacts.Where(x => x.BlockedContactId == contactId).ToList();
+
+                model.BlockedContacts.RemoveRange(toRemove);
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveFromChosenPrivacyContactsByContactId(int contactId)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<ChosenPrivacyContacts> toRemove =
+                    model.ChosenPrivacyContacts.Where(x => x.ContactId == contactId).ToList();
+
+                model.ChosenPrivacyContacts.RemoveRange(toRemove);
+                model.SaveChanges();
+            }
+        }
+
+        private static void RemoveEmptyFolders()
+        {
+            using (var model = new TelegramModel())
+            {
                 List<model.Folder> toRemove = new List<model.Folder>();
 
-                
+                foreach (var folder in model.Folder)
+                {
+                    if (!IsFolderHasContacts(folder))
+                    {
+                        toRemove.Add(folder);
+                    }
+                }
+
+                foreach (var remove in toRemove)
+                {
+                    model.Folder.Remove(remove);
+                }
+
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsFolderHasContacts(model.Folder folder)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.ContactsInFolder.Where(x => x.FolderId == folder.Id).Any();
             }
         }
 
         private static void RemoveContactsInFolderByContactId(int contactId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.ContactsInFolder.RemoveRange(model.ContactsInFolder.Where(x => x.ContactId == contactId));
                 model.SaveChanges();
@@ -2291,7 +2440,7 @@ namespace TelegramLib.Services
 
         private static void RemoveChatByChatterId(int chatterId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.Chat.RemoveRange(model.Chat.Where(x => x.ChatterId == chatterId));
                 model.SaveChanges();
@@ -2300,7 +2449,7 @@ namespace TelegramLib.Services
 
         private static void RemoveMessagesBySenderId(int senderId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.Messages.RemoveRange(model.Messages.Where(x => x.SenderId == senderId));
                 model.SaveChanges();
@@ -2422,6 +2571,17 @@ namespace TelegramLib.Services
 
                 model.Chat.Add(toAdd);
                 model.SaveChanges();
+            }
+        }
+
+        public static UserChat GetChatByUserAndContactIds(int userId, int contactId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId);
+                if (chat is null) return null;
+                return new UserChat(chat.Id, GetUserContactById((int)chat.ChatterId),
+                    GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id));
             }
         }
     }

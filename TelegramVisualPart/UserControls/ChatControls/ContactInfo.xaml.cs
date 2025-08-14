@@ -180,7 +180,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
-                new Pages.UserInfoContact.ActionsFolder.DeleteContact());
+                new Pages.UserInfoContact.ActionsFolder.DeleteContact(_contact, _system));
         }
 
         private void EditContactLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)

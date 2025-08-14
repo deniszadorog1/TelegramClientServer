@@ -107,5 +107,12 @@ namespace TelegramLib.MainClasses
             if (UserImages.Count <= index || UserImages.Count == 0) return;
             UserImages.RemoveAt(index);
         }
+
+        public void RemoveBlockedContcatByContact(UserContactcs contact) 
+        {
+            UserContactcs toRemove = BlockedContacts.Where(x => x.Id == contact.Id).FirstOrDefault();
+            if (toRemove is null) return;
+            BlockedContacts.Remove(toRemove);
+        }
     }
 }

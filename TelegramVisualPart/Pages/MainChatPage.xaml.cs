@@ -240,6 +240,7 @@ namespace TelegramVisualPart.Pages
             ChosoeChatBorder.Visibility = Visibility.Hidden;
             UserChat.Visibility = Visibility.Visible;
 
+            //Set chat into
             UserChat.SetUserChat(_system.GetUserChatByChatterName(
                 _system.ChosenChatContact.Name));
         }

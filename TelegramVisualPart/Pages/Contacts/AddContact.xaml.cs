@@ -25,7 +25,7 @@ namespace TelegramVisualPart.Pages.Contacts
         private TelSystem _system;
         public AddContact(TelSystem system)
         {
-            _system = system; 
+            _system = system;
             InitializeComponent();
         }
 
@@ -40,12 +40,12 @@ namespace TelegramVisualPart.Pages.Contacts
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private async  void CreateBut_Click(object sender, RoutedEventArgs e)
+        private async void CreateBut_Click(object sender, RoutedEventArgs e)
         {
             User newContact = await ApiService.GetUserByPhoneNumber(PhoneBox.Text);
 
-            if (newContact is null || string.IsNullOrWhiteSpace(PhoneBox.Text) || 
-                string.IsNullOrWhiteSpace(LastnameBox.Text) || 
+            if (newContact is null || string.IsNullOrWhiteSpace(PhoneBox.Text) ||
+                string.IsNullOrWhiteSpace(LastnameBox.Text) ||
                 await ApiService.IsContactExist(_system.LoggedUser.Id, newContact.Id))
             {
                 ClearFields();
@@ -54,6 +54,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
             UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.UserName, newContact.BirthDay,
                 newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null);
+
             contact.ContactUserId = newContact.Id;
 
             await ApiService.AddContact(_system.LoggedUser.Id, contact);
@@ -65,10 +66,17 @@ namespace TelegramVisualPart.Pages.Contacts
             //Add chat in DB
             ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
 
-            
+
+            AddChatInTelSystem(_system.LoggedUser.Id, contact.Id);
             ClearFields();
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        private async void AddChatInTelSystem(int userId, int contactId)
+        {
+            UserChat toAdd = await ApiService.GetChatByUserAndSenderId(userId, contactId);
+            _system.AddChat(toAdd);
         }
 
         private void ClearFields()

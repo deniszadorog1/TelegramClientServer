@@ -68,9 +68,9 @@ namespace TelegramClientServer.Controllers
 
         //Update folder
         [HttpPost("UpdateFolder")]
-        public void UpdateFolder([FromBody] FolderDTO folder)
+        public IActionResult UpdateFolder([FromBody] FolderDTO folder)
         {
-            DbService.UpdateFolder(folder.Folder, folder.UserId);
+            return DbService.UpdateFolder(folder.Folder, folder.UserId) ? Ok() : NotFound();
         }
 
         //Delete frolder()
@@ -194,6 +194,12 @@ namespace TelegramClientServer.Controllers
         public void DeleteBlockedContact([FromBody] BlockedContactDTO contact)
         {
             DbService.UnBlockContact(contact.UserId, contact.ContactId);
+        }
+
+        [HttpGet("GetChatByUserAndContactId")]
+        public UserChat GetChatByUserAndContactId(int userId, int contactId)
+        {
+           return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
     }

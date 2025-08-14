@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
@@ -72,11 +73,13 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             Folders.Items.Insert(Folders.Items.IndexOf(AddFolderBoxItem), item);
         }
 
-        private void FolderBucket_Clicked(object sender, EventArgs e)
+        private async void FolderBucket_Clicked(object sender, EventArgs e)
         {
             if (sender is not FolderLittleInfo folderInfo) return;
 
             Folder folder = _system.GetFolderByName(folderInfo.FolderName.Text);
+
+            await ApiService.RemoveFolder(folder, _system.LoggedUser.Id);
 
             ListBoxItem item = ItemsControl.ContainerFromElement(Folders, folderInfo) as ListBoxItem;
             Folders.Items.Remove(item);
