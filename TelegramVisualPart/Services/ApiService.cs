@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,6 +21,7 @@ using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
@@ -149,6 +151,16 @@ namespace TelegramVisualPart.Services
 
             return msg;
         } 
+
+        public static async Task<int> GetChatBgIdByName(string name)
+        {
+            name = System.IO.Path.GetFileName(name);
+            var response = await _client.GetAsync($"api/Social/GetChatBgIdByName?name={name}");
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            int res = JsonConvert.DeserializeObject<int>(jsonResponse);
+            return res;
+        }
 
         //Get User By phone number
         public static async Task<TelegramLib.MainClasses.User> GetUserByPhoneNumber(string phoneNumber)
@@ -444,6 +456,19 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        //Set aut delition
+        public static async Task<bool> SetAutoDeletion(int chatId, 
+            TelegramLib.Enums.Chat.AutoDeleteType type)
+        {
+            var data = new { ChatId = chatId, DelType = type };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/SetAutoDeletion", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
         public static async Task<UserChat> GetChatByUserAndSenderId(int userId, int contactId)
         {
             var response = await _client.GetAsync($"api/Social/GetChatByUserAndContactId?userId={userId}&contactId={contactId}");
@@ -453,6 +478,17 @@ namespace TelegramVisualPart.Services
 
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+        }
+
+        public static async Task<bool> SetChatWallpaper(ChatBackground toSet, int chatId)
+        {
+            var data = new { ToSetPaper = toSet, ChatId = chatId };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/SetChatWallpaper", content);
+
+            return response.IsSuccessStatusCode;
         }
     }
 }

@@ -90,15 +90,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetTelSystem(login, password);
         }
 
-        //Update social
-        //Get contact by phone number
-        //Update user contacts (Add new contact)
 
-
-
-        //Update system
-        //Updates all settings types
-        //Add chosen contacts in privacy 
+        [HttpGet("GetUserByLoginPassword")]
+        public User GetUserByLoginPassword(string login, string password)
+        {
+            return DbService.GetUserByLoginPass(login, password);
+        }
 
 
 

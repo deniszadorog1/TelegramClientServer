@@ -19,6 +19,10 @@ using Application = System.Windows.Application;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
 
+using Microsoft.AspNetCore.SignalR.Client;
+using System.Data.Common;
+
+
 namespace TelegramVisualPart.UserControls
 {
     /// <summary>
@@ -804,5 +808,31 @@ namespace TelegramVisualPart.UserControls
                 }
             }
         }
+
+        private HubConnection _connection;
+        public async Task SetSignalRConnection()
+        {
+            _connection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7164/chatHub")
+            .Build();
+
+            _connection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                Console.WriteLine($"{user}: {message}");
+            });
+
+            await _connection.StartAsync();
+        }
+
+        public async Task SendMessage(string user, string message, 
+            Message sendMessage)
+        {
+            //save sent message in db here
+
+
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("SendMessage", user, message);
+        }
+
     }
 }

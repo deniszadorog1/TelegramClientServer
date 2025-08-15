@@ -44,6 +44,8 @@ using System.Data.Entity;
 using System.Windows.Forms;
 using TelegramLib.Enums.Messages;
 using System.Text.Json.Serialization.Metadata;
+using System.IO;
+using System.Security.Permissions;
 
 namespace TelegramLib.Services
 {
@@ -142,7 +144,7 @@ namespace TelegramLib.Services
                 model.SaveChanges();
 
                 var lastFolder = model.Folder
-                .OrderByDescending(f => f.Id) 
+                .OrderByDescending(f => f.Id)
                 .FirstOrDefault();
 
                 //Add folder contacts
@@ -216,15 +218,15 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                List<ContactsInFolder> toCheck = 
+                List<ContactsInFolder> toCheck =
                     model.ContactsInFolder.Where(x => x.FolderId == folderId && x.IsExclude == isExclude).ToList();
-                
-                foreach(var contact in contacts)
+
+                foreach (var contact in contacts)
                 {
-                    if(!toCheck.Where(x => x.ContactId == contact.Id).Any())
+                    if (!toCheck.Where(x => x.ContactId == contact.Id).Any())
                     {
                         ContactsInFolder toAdd = new ContactsInFolder();
-                        
+
                         toAdd.FolderId = folderId;
                         toAdd.ContactId = contact.Id;
                         toAdd.IsExclude = isExclude;
@@ -232,7 +234,7 @@ namespace TelegramLib.Services
                         model.ContactsInFolder.Add(toAdd);
                     }
                 }
-                model.SaveChanges();  
+                model.SaveChanges();
             }
         }
 
@@ -256,7 +258,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                List<ContactsInFolder> toRemove = 
+                List<ContactsInFolder> toRemove =
                     model.ContactsInFolder.Where(x => x.FolderId == folderId).ToList();
 
                 model.ContactsInFolder.RemoveRange(toRemove);
@@ -346,7 +348,8 @@ namespace TelegramLib.Services
                     if (userId == chat.UserId)
                     {
                         UserChat toAdd = new UserChat(chat.Id, GetUserContactById((int)chat.ChatterId),
-                            GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id));
+                            GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id), 
+                            GetAutoDelTypeById(chat.AutoDeleteId));
 
                         res.Add(toAdd);
                     }
@@ -357,7 +360,7 @@ namespace TelegramLib.Services
 
         private static ChatBackground GetChosenBgByChatId(int chatId)
         {
-            return GetChatBackPossibleChatBGs(chatId).Where(x => x.IsGeneral).FirstOrDefault();
+            return GetChatBackPossibleChatBGs(chatId).FirstOrDefault();
         }
 
         private static int GetChosenBgIdByName(int chatId)
@@ -540,6 +543,17 @@ namespace TelegramLib.Services
             return res;
         }
 
+        public static mainClass.User GetUserByLoginPass(string login, string password)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.User user = model.User.FirstOrDefault(x => x.Login == login && x.Password == password);
+                if (user is null) return null;
+
+                return GetUserById(user.Id);
+            }
+        }
+
         public static mainClass.User GetUserByLoginAndPassword(string login, string password)
         {
             List<mainClass.User> users = GetAllUsers();
@@ -665,7 +679,7 @@ namespace TelegramLib.Services
                 toAdd.Id = contact.Id;
                 toAdd.Name = contact.Name;
                 toAdd.ContactUserId = (int)contact.FriendId;
-                
+
                 toAdd.UserName = contact.User.Name;
                 toAdd.BirthDate = contact.User.Birthday;
                 toAdd.BIO = contact.User.BIO;
@@ -1064,10 +1078,21 @@ namespace TelegramLib.Services
                 res.NightMode = GetNightModeById((int)settings.AutoNightId);
                 res.FontName = settings.Font;
                 res.IsSendWithEnter = (bool)settings.IsSentWithEnter;
-                res.Wallpaper = GetChatWallPaperIdByName(settings.BgName);// GetChatWallpaperById(settings.Bg);
+                res.Wallpaper = GetChatWallpaperByChatSettingsId(res.Id);// GetChatWallpaperById(settings.Bg);
                 res.PossibleWallpapers = GetPossibleWallpapersForChatSetting(settingsId); // CHECK IF USERID === SETTINGID
             }
             return res;
+        }
+
+
+        private static ChatWallpaper GetChatWallpaperByChatSettingsId(int chatSettingId)
+        {
+            using (var model = new TelegramModel())
+            {
+                ChatSettings setting = model.ChatSettings.FirstOrDefault(x => x.Id == chatSettingId);
+                if (setting is null || setting.BgName is null) return null;
+                return GetChatWallpaperById((int)setting.BgName);
+            }
         }
 
         private static ChatWallpaper GetChatWallPaperIdByName(string name)
@@ -1236,11 +1261,15 @@ namespace TelegramLib.Services
                 ChatSettings temp = model.ChatSettings.Where(x => x.Id == settings.Id).FirstOrDefault();
                 if (temp is null) return;
 
+                int? bgIdVal;
+                if (settings.Wallpaper.Id <= 0) bgIdVal = null;
+                else bgIdVal = settings.Wallpaper.Id;
+
                 temp.ThemeId = GetIdByTheme(settings.Theme);
                 temp.UserColorId = settings.ChosenColor.Id;
                 temp.AutoNightId = GetAutoNightIdByType(settings.NightMode);
                 temp.Font = settings.FontName;
-                temp.BgName = settings.Wallpaper.WallpaperName;
+                temp.BgName = bgIdVal;
                 temp.IsSentWithEnter = settings.IsSendWithEnter;
 
                 //UpdateUserColor
@@ -1815,7 +1844,7 @@ namespace TelegramLib.Services
 
             using (var model = new TelegramModel())
             {
-                ChatBG bg = model.ChatBG.Where(x => x.Id == chatBgId).FirstOrDefault();
+                ChatBG bg = model.ChatBG.FirstOrDefault(x => x.Id == chatBgId);
                 if (bg is null) return null;
 
                 res.Id = bg.Id;
@@ -2130,14 +2159,35 @@ namespace TelegramLib.Services
             }
         }
 
-        private static int GetAutoDelIdByType(Enums.Chat.AutoDeleteType type)
+        private static int? GetAutoDelIdByType(Enums.Chat.AutoDeleteType type)
         {
             using (var model = new TelegramModel())
             {
                 model.AutoDeleteType delType = model.AutoDeleteType.Where(x => x.Name == type.ToString()).FirstOrDefault();
-                if (delType is null) return 1;
+                if (delType is null) return null;
                 return delType.Id;
             }
+        }
+
+        private static Enums.Chat.AutoDeleteType GetAutoDelTypeById(int? id)
+        {
+            if (id is null) return Enums.Chat.AutoDeleteType.Nothing;
+            using (var model = new TelegramModel())
+            {
+                model.AutoDeleteType type = model.AutoDeleteType.FirstOrDefault(x => x.Id == id);
+                if (type is null) return Enums.Chat.AutoDeleteType.Nothing;
+
+                return GetAutoDelTypeByTypeString(type.Name);
+            }
+        }
+
+        private static Enums.Chat.AutoDeleteType GetAutoDelTypeByTypeString(string type)
+        {
+            for(int i = 0; i < (int)Enums.Chat.AutoDeleteType.OneYear; i++)
+            {
+                if (type == ((Enums.Chat.AutoDeleteType)i).ToString()) return (Enums.Chat.AutoDeleteType)i;
+            }
+            return Enums.Chat.AutoDeleteType.Nothing;
         }
 
         public static int GetChatBgIdByName(string name)
@@ -2145,7 +2195,7 @@ namespace TelegramLib.Services
             using (var model = new TelegramModel())
             {
                 ChatBG bg = model.ChatBG.Where(x => x.Name == name).FirstOrDefault();
-                if (bg is null) return 1;
+                if (bg is null) return -1;
                 return bg.Id;
             }
         }
@@ -2159,13 +2209,13 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void SetBgToChat(int chatId, string bgnName)
-        {
-            using (var model = new TelegramModel())
-            {
-                int chatBgId = GetChatBgIdByName(bgnName);
-            }
-        }
+        /*        public static void SetBgToChat(int chatId, string bgnName)
+                {
+                    using (var model = new TelegramModel())
+                    {
+                        int chatBgId = GetChatBgIdByName(bgnName);
+                    }
+                }*/
 
         public static void SetChosenBgInPossibleBGs(int chatId, int chosenBGid)
         {
@@ -2344,18 +2394,18 @@ namespace TelegramLib.Services
             //remove messages in chat
             //remove chat
 
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 List<Chat> toRemove = model.Chat.Where(x => x.ChatterId == contactId).ToList();
-            
-                for(int i = 0; i < toRemove.Count(); i++)
+
+                for (int i = 0; i < toRemove.Count(); i++)
                 {
                     //remove all chat messages
                     RemoveMessagesByChatId(toRemove[i].Id);
                 }
 
                 //remove chat
-                foreach(var chat in toRemove)
+                foreach (var chat in toRemove)
                 {
                     model.Chat.Remove(chat);
                 }
@@ -2363,9 +2413,9 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void RemoveMessagesByChatId(int chatId) 
+        private static void RemoveMessagesByChatId(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 List<Messages> toRemove = model.Messages.Where(x => x.ChatId == chatId).ToList();
 
@@ -2376,9 +2426,9 @@ namespace TelegramLib.Services
 
         private static void RemoveBlockedByContactId(int contactId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                List<BlockedContacts> toRemove = 
+                List<BlockedContacts> toRemove =
                     model.BlockedContacts.Where(x => x.BlockedContactId == contactId).ToList();
 
                 model.BlockedContacts.RemoveRange(toRemove);
@@ -2576,13 +2626,100 @@ namespace TelegramLib.Services
 
         public static UserChat GetChatByUserAndContactIds(int userId, int contactId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId);
                 if (chat is null) return null;
                 return new UserChat(chat.Id, GetUserContactById((int)chat.ChatterId),
-                    GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id));
+                    GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id), GetAutoDelTypeById(chat.AutoDeleteId));
             }
         }
+
+        public static void SetAutoDel(int chatId,
+            Enums.Chat.AutoDeleteType type)
+        {
+            using (var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                if (chat is null) return;
+
+                chat.AutoDeleteId = GetAutoDelIdByType(type);
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void RemoveAutoDel(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                if (chat is null) return;
+
+                chat.AutoDeleteId = null;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void SetChatWallpaper(ChatBackground toSet, int chatId)
+        {
+            if (IsPosChatPgIsExisitByChatId(chatId))
+            {
+                UpdateChatWallpaper(toSet, chatId);
+                return;
+            }
+
+            string fileName = Path.GetFileName(toSet.FileName);
+            using (var model = new TelegramModel())
+            {
+                //Clear genral state to possible chat ids
+                SetStateToGeneralParamInPossibleBgs(chatId, false);
+
+                //Add in possible bgs
+                PossibleChatBGs toAdd = new PossibleChatBGs();
+                toAdd.ChatId = chatId;
+                toAdd.ChatBgId = GetChatBgIdByName(fileName);
+                toAdd.IsGeneral = true;
+
+                model.PossibleChatBGs.Add(toAdd);
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateChatWallpaper(ChatBackground toSet, int chatId)
+        {
+            string fileName = Path.GetFileName(toSet.FileName);
+
+            using (var model = new TelegramModel())
+            {
+                PossibleChatBGs toUpdate = model.PossibleChatBGs.FirstOrDefault(x => x.ChatId == chatId);
+                if (toUpdate is null) return;
+
+                //Clear genral state to possible chat ids
+                //SetStateToGeneralParamInPossibleBgs(chatId, false);
+
+                toUpdate.ChatBgId = GetChatBgIdByName(fileName);
+                toUpdate.IsGeneral = true;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static bool IsPosChatPgIsExisitByChatId(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                return !(model.PossibleChatBGs.FirstOrDefault(x => x.ChatId == chatId) is null);
+            }
+        }
+
+        public static void SetWallPaperInSettings()
+        {
+
+        }
+
+
     }
 }

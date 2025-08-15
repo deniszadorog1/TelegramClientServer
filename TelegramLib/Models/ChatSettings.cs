@@ -21,12 +21,13 @@ namespace TelegramLib.Models
         [StringLength(255)]
         public string Font { get; set; }
 
-        [StringLength(255)]
-        public string BgName { get; set; }
+        public int? BgName { get; set; }
 
         public bool? IsSentWithEnter { get; set; }
 
         public virtual AutoNight AutoNight { get; set; }
+
+        public virtual ChatBG ChatBG { get; set; }
 
         public virtual Settings Settings { get; set; }
 

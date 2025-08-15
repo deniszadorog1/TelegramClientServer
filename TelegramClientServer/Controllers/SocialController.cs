@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramLib.Services;
@@ -157,6 +159,17 @@ namespace TelegramClientServer.Controllers
             DbService.SetChosenBgInPossibleBGs(chat.Chat.Id, DbService.GetChatBgIdByName(chat.Chat.ChatBg.FileName));
         }
 
+        [HttpPost("SetAutoDeletion")]
+        public void SetAutoDeletion([FromBody] AutoDelDTO autDel)
+        {
+            DbService.SetAutoDel(autDel.ChatId, autDel.DelType);
+        }
+        public class AutoDelDTO()
+        {
+            public int ChatId { get; set; }
+            public TelegramLib.Enums.Chat.AutoDeleteType DelType { get; set; }
+        }
+
         //user BG 
 
         //Add Chat img
@@ -202,5 +215,22 @@ namespace TelegramClientServer.Controllers
            return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
+        [HttpPost("SetChatWallpaper")]
+        public void SetChatWallpaper([FromBody] ChatWallpaperDTO toSetPaper)
+        {
+            DbService.SetChatWallpaper(toSetPaper.ToSetPaper, toSetPaper.ChatId);
+        }
+        public class ChatWallpaperDTO()
+        {
+            public ChatBackground ToSetPaper { get; set; }
+            public int ChatId { get; set; }
+        }
+
+        [HttpGet("GetChatBgIdByName")]
+        public int GetChatBgidByName(string name)
+        {
+            return DbService.GetChatBgIdByName(name);
+        }
+       
     }
 }

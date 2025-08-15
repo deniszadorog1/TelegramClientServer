@@ -97,7 +97,7 @@ namespace TelegramVisualPart.Pages.ChatActions {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/chatactions/clearchathistory.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/chatactions/clearchathistory.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Pages\ChatActions\ClearChatHistory.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

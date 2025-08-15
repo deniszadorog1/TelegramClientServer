@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace TelegramClientServer
 {
@@ -14,6 +15,9 @@ namespace TelegramClientServer
                 {
                     options.SerializerSettings.TypeNameHandling = TypeNameHandling.All;
                 });
+
+
+            builder.Services.AddSignalR();
 
             // Add services to the container.
 
@@ -38,6 +42,8 @@ namespace TelegramClientServer
 
 
             app.MapControllers();
+
+            app.MapHub<SignalRHubs.MainHub>("/chatHub");
 
             app.Run();
         }

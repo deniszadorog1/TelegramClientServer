@@ -1,13 +1,14 @@
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-
-using System.Data.SqlClient;
+using System.Linq;
 
 namespace TelegramLib.Models
 {
     public partial class TelegramModel : DbContext
     {
         public TelegramModel()
-            : base(@"data source=(localdb)\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True")
+    : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 
@@ -41,7 +42,6 @@ namespace TelegramLib.Models
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserColor> UserColor { get; set; }
@@ -64,6 +64,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Chat)
                 .WithOptional(e => e.ChatBG)
                 .HasForeignKey(e => e.BgImageId);
+
+            modelBuilder.Entity<ChatBG>()
+                .HasMany(e => e.ChatSettings)
+                .WithOptional(e => e.ChatBG)
+                .HasForeignKey(e => e.BgName);
 
             modelBuilder.Entity<ChatImage>()
                 .HasMany(e => e.Messages)

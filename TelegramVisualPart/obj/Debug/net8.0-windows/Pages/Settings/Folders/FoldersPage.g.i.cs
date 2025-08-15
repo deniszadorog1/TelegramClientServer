@@ -148,7 +148,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/settings/folders/folderspage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/settings/folders/folderspage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\Settings\Folders\FoldersPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

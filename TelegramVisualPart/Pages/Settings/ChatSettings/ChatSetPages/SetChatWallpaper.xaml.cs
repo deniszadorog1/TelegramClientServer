@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls;
 using TelegramLib.MainClasses.ChatFitures;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {
@@ -15,6 +16,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     {
         private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
         private ChatBackground _chosenBackground;
+        private UserChat _chat;
+
         public SetChatWallpaper(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings)
         {
             _settings = settings;
@@ -25,9 +28,10 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             SetClickEventToWallpapers();
         }
 
-        public SetChatWallpaper(ChatBackground background)
+        public SetChatWallpaper(ChatBackground background, UserChat chat)
         {
             _chosenBackground = background;
+            _chat = chat;
             InitializeComponent();
 
             SetWallpapers();
@@ -79,7 +83,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             if (sender is not Wallpaper wallpaper) return;
 
             Page page = _settings is null ?
-                new WallpaperPreview(_chosenBackground, wallpaper.WallpaperImage) :
+                new WallpaperPreview(_chosenBackground, wallpaper.WallpaperImage, _chat) :
                 new WallpaperPreview(_settings, wallpaper.WallpaperImage);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
@@ -92,7 +96,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 Source = new BitmapImage(new Uri(TestThing.GetTestParams.GetWallpaperPath(testWallpaperName), UriKind.Absolute))
             };
         }
-
 
         private void CloseBut_Click(object sender, RoutedEventArgs e)
         {
@@ -112,7 +115,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         private void ChooseFromFileGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new WallpaperPreview(_settings, GetTestImage("Snowman.jpg")));
+            ((MainWindow)Window.GetWindow(this)).
+                SetSecondaryFrame(new WallpaperPreview(_settings, GetTestImage("Snowman.jpg")));
         }
 
         private void WallpaperBotBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

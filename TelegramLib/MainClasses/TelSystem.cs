@@ -138,7 +138,7 @@ namespace TelegramLib.MainClasses
 
             throw new Exception("cant be chat should be set!!!");
 
-            UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
+          /*  UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
                 new ChatFitures.ChatBackground("fray.jpg", false, true));
 
             Chats.Add(newChat);
@@ -146,7 +146,7 @@ namespace TelegramLib.MainClasses
             ChosenChatContact = newChat.Chatter;
             SetChatBg();
 
-            return newChat;
+            return newChat;*/
         }
 
         public void SetChatBg()

@@ -19,14 +19,14 @@ namespace TelegramLib.MainClasses
         public ChatBackground ChatBg { get; set; }
         public AutoDeleteType AutoDel { get; set; }
 
-
         public UserChat(int id, UserContactcs chatter, List<Message> messages, 
-            ChatBackground bg)
+            ChatBackground bg, AutoDeleteType type)
         {
             Id = id;
             Chatter = chatter;
             Messages = messages;
             ChatBg = bg;
+            AutoDel = type;
         }   
 
         public UserChat()

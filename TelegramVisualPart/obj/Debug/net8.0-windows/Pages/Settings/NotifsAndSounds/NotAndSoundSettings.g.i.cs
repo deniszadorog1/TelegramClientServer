@@ -115,8 +115,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/settings/notifsandsounds/notandsoundsettings." +
-                    "xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/settings/notifsandsounds/notandsound" +
+                    "settings.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

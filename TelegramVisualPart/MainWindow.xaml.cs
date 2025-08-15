@@ -50,19 +50,31 @@ namespace TelegramVisualPart
 
         public async Task SetTestSystem()
         {
-            User user = await ApiService.GetUser("qwe", "qwe");
+            string testLogPas = "qwe";
+
+            User user = await ApiService.GetUser(testLogPas, testLogPas);
             if (user is not null)
             {
-                _system = await ApiService.GetTelSystem("qwe", "qwe");
+                _system = await ApiService.GetTelSystem(testLogPas, testLogPas);
+
+                if (_system.Settings.GetChatSettings().Wallpaper is null)
+                    _system.Settings.GetChatSettings().Wallpaper =
+                        new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
                 return;
             }
 
-            await ApiService.AddNewUser("qwe", "qwe", "testName", "testSurname", "testPhoneNumber", DateTime.Now);
+            await ApiService.AddNewUser(testLogPas, testLogPas, "testName", "testSurname", "testPhoneNumber", DateTime.Now);
+
+            user = await ApiService.GetUser(testLogPas, testLogPas);
 
             await ApiService.AddUserBasicColor(user.Id);
             await ApiService.AddUserSettings(user.Id);
 
-            _system = await ApiService.GetTelSystem("qwe", "qwe");
+            _system = await ApiService.GetTelSystem(testLogPas, testLogPas);
+
+            if (_system.Settings.GetChatSettings().Wallpaper is null)
+                _system.Settings.GetChatSettings().Wallpaper =
+                    new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
         }
 
         public TelSystem GetSystem()

@@ -369,7 +369,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void ChooseWallpaperFromGalery_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.Settings.GetChatSettings()));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new SetChatWallpaper(_system.Settings.GetChatSettings()));
         }
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)

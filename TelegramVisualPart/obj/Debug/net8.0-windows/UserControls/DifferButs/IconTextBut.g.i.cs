@@ -73,7 +73,7 @@ namespace TelegramVisualPart.UserControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/differbuts/icontextbut.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/differbuts/icontextbut.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\DifferButs\IconTextBut.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

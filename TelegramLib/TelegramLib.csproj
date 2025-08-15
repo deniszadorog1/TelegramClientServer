@@ -219,7 +219,6 @@
     <Compile Include="Models\ProfilePhotoSettings.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StickerImage.cs" />
-    <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\TelegramModel.cs" />
     <Compile Include="Models\Theme.cs" />
     <Compile Include="Models\User.cs" />

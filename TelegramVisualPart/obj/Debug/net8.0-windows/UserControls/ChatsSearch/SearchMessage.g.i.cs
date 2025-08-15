@@ -106,7 +106,8 @@ namespace TelegramVisualPart.UserControls.ChatsSearch {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatssearch/searchmessage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatssearch/searchmessage.xam" +
+                    "l", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\ChatsSearch\SearchMessage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

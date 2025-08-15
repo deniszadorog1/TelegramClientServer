@@ -347,6 +347,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetChatBgidByName",
+    "RelativePath": "api/Social/GetChatBgIdByName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetChatByUserAndContactId",
     "RelativePath": "api/Social/GetChatByUserAndContactId",
     "HttpMethod": "GET",
@@ -506,6 +532,50 @@
       {
         "Name": "contact",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BRemoveContactDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "SetAutoDeletion",
+    "RelativePath": "api/Social/SetAutoDeletion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "autDel",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BAutoDelDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "SetChatWallpaper",
+    "RelativePath": "api/Social/SetChatWallpaper",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "toSetPaper",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BChatWallpaperDTO",
         "IsRequired": true
       }
     ],
@@ -825,6 +895,37 @@
     "ContainingType": "TelegramClientServer.Controllers.StartPageController",
     "Method": "GetUser",
     "RelativePath": "api/StartPage/GetUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
+    "Method": "GetUserByLoginPassword",
+    "RelativePath": "api/StartPage/GetUserByLoginPassword",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

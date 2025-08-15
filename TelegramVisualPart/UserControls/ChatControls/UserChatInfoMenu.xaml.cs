@@ -88,7 +88,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetWallpaperBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetChatWallpaper(_system.GetChosenChat().GetBackground()));
+            if (_chat is null)
+            {
+                return;
+            }
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new SetChatWallpaper(_system.GetChosenChat().GetBackground(), _chat));
         }
     }
 }

@@ -14,8 +14,10 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.Services;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 
@@ -29,6 +31,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
         private Image _img;
         private ChatBackground _chatBackground;
+        private UserChat _chat;
 
         public WallpaperPreview(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings,
             Image? bgImage)
@@ -45,9 +48,10 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             }
         }
 
-        public WallpaperPreview(ChatBackground background, Image? img)
+        public WallpaperPreview(ChatBackground background, Image? img, UserChat chat)
         {
             _chatBackground = background;
+            _chat = chat;
 
             InitializeComponent();
             SetBasicParams();
@@ -99,19 +103,29 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
-        private void Apply_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void Apply_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Apply new bg Image for allChats //mb Grid
             if (_settings is not null)
             {
                 _settings.Wallpaper.SetBlurParam(ImageGrid.Effect is not null);
                 _settings.Wallpaper.WallpaperName = TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString());
+
+                _settings.Wallpaper.Id = 
+                    await ApiService.GetChatBgIdByName(_settings.Wallpaper.WallpaperName);
+
+                //Set Settings wallpaper indb 
+                await ApiService.UpdateChatSettings(_settings);
             }
             else if(_chatBackground is not null)
             {
                 _chatBackground.SetBlurState(ImageGrid.Effect is not null);
                 _chatBackground.SetPath(TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString()));
                 _chatBackground.SetIsGeneral(false);
+
+                //Set chat wallpaper in db
+
+                await ApiService.SetChatWallpaper(_chatBackground, _chat.Id);
             }
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();

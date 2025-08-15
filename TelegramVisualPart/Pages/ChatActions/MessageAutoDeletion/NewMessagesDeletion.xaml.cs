@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 {
@@ -87,10 +88,14 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             AutoDeleteType type = SpecialList.GetChosenAutoDelItem();
             _chat.GetChatter().AutoDeletion = new AutoDeleteDuration(type);
+            _chat.AutoDel = type;
+
+            //Set Auto Del in DB
+            await ApiService.SetAutoDeletion(_chat.Id, type);
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
