@@ -17,6 +17,7 @@ namespace TelegramClientServer
                 });
 
 
+
             builder.Services.AddSignalR();
 
             // Add services to the container.

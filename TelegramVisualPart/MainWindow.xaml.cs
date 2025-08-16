@@ -7,6 +7,7 @@ using System.Windows.Media.Effects;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.Services;
+using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
@@ -34,11 +35,32 @@ namespace TelegramVisualPart
             Loaded += MainWindow_Loaded;
 
             ///Visuals/Images/UserImages/Minato.jpg"
-            //MainFrame.Content = new EnterPage();
+            SetLoginPage();
+
+            SetSignaleRConnection();
+        }
+
+        private void SetLoginPage()
+        {
+            EnterPage page = new EnterInAccount.EnterPage();
+            MainFrame.Content = page;
+        }
+
+        public void SetMainPage(TelSystem system)
+        {
+            _system = system;
+            ((MainWindow)Window.GetWindow(this)).
+                SetMainFrameContent(new MainChatPage(_system));
+        }
+
+        private async Task SetSignaleRConnection()
+        {
+            await SignalRService.SetBasicSignalRConnetion();
         }
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            return;
             await SetTestSystem();
 
             Application.Current.Resources["TempActiveTextColor"] =

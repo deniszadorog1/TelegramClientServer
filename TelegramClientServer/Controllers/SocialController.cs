@@ -215,6 +215,12 @@ namespace TelegramClientServer.Controllers
            return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
+        [HttpGet("ContactBySenderAndReceiverIds")]
+        public UserContactcs GetContactBySenderAndReceiverIds(int senderId, int receiverId)
+        {
+            return DbService.GetContactBySenderReceiverUserIds(senderId, receiverId);
+        }
+
         [HttpPost("SetChatWallpaper")]
         public void SetChatWallpaper([FromBody] ChatWallpaperDTO toSetPaper)
         {

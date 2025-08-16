@@ -101,11 +101,14 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            ApiService.UpdateUser(_user);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            ApiService.UpdateUser(_user);
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new LoggedUserProfile(_user, _system));
         }

@@ -19,7 +19,6 @@ using Application = System.Windows.Application;
 using Image = System.Windows.Controls.Image;
 using Path = System.IO.Path;
 
-using Microsoft.AspNetCore.SignalR.Client;
 using System.Data.Common;
 
 
@@ -226,6 +225,9 @@ namespace TelegramVisualPart.UserControls
             await ApiService.AddMessage(toAdd, _chat);
 
             toAdd = await ApiService.GetLastChatMessage(_chat.Id);
+
+
+            await SendSignalRMessage(toAdd);
 
             _chatMessages.Add(toAdd);
 
@@ -809,29 +811,29 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        private HubConnection _connection;
-        public async Task SetSignalRConnection()
+        public async Task SendSignalRMessage(Message message)
         {
-            _connection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7164/chatHub")
-            .Build();
+            //So now here is SENDERS chat
+            //we need to send RECEIVERS chat to update it here
+            //Where sender is receiver; receiver is sender
 
-            _connection.On<string, string>("ReceiveMessage", (user, message) =>
+            //Get contact where senderId is friendId, UserId - receiverId
+            UserContactcs contcat = await ApiService.GetContactByUserAndFriendIds(_chat.Chatter.ContactUserId, _system.LoggedUser.Id);
+            if (contcat is null) return;
+
+            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.ContactUserId, contcat.Id);
+            if (chat is null) return;
+
+            Console.WriteLine(_chat);
+
+            if(message is TelegramLib.MainClasses.Messages.TextMessage text)
             {
-                Console.WriteLine($"{user}: {message}");
-            });
-
-            await _connection.StartAsync();
-        }
-
-        public async Task SendMessage(string user, string message, 
-            Message sendMessage)
-        {
-            //save sent message in db here
-
-
-            if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendMessage", user, message);
+                await SignalRService.SendTextMessage(chat, text);
+            }
+            else if(message is MediaAction media)
+            {
+                await SignalRService.SendMediaMessage(chat, media);
+            }
         }
 
     }

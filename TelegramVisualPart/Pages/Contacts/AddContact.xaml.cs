@@ -46,7 +46,8 @@ namespace TelegramVisualPart.Pages.Contacts
 
             if (newContact is null || string.IsNullOrWhiteSpace(PhoneBox.Text) ||
                 string.IsNullOrWhiteSpace(LastnameBox.Text) ||
-                await ApiService.IsContactExist(_system.LoggedUser.Id, newContact.Id))
+                await ApiService.IsContactExist(_system.LoggedUser.Id, newContact.Id) ||
+                _system.LoggedUser.PhoneNumber ==  PhoneBox.Text.Trim('+'))
             {
                 ClearFields();
                 return;

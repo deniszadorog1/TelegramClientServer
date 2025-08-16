@@ -12,7 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.Pages;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.EnterInAccount
 {
@@ -21,6 +24,9 @@ namespace TelegramVisualPart.EnterInAccount
     /// </summary>
     public partial class EnterPage : Page
     {
+        public event EventHandler SetSystemPage;
+        public TelSystem _system;
+
         public EnterPage()
         {
             InitializeComponent();
@@ -42,9 +48,36 @@ namespace TelegramVisualPart.EnterInAccount
             ((MainWindow)Window.GetWindow(this)).SetMainFrameContent(new RegistrationPage());
         }
 
-        private void EnterBut_Click(object sender, RoutedEventArgs e)
+        private async void EnterBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetMainFrameContent(new MainChatPage(new TelegramLib.MainClasses.TelSystem()));
+            //Is field are empty 
+            if (string.IsNullOrEmpty(LoginBox.Text) ||
+                string.IsNullOrEmpty(PasswordBox.Text)) return;
+
+            _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
+
+            if (_system is null)
+            {
+                MessageBox.Show("No user with such params");
+                ClearBoxes();
+                return;
+            }
+
+            if (_system.Settings.GetChatSettings().Wallpaper is null)
+                _system.Settings.GetChatSettings().Wallpaper =
+                    new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
+
+            Application.Current.Resources["TempActiveTextColor"] =
+                new SolidColorBrush(Color.FromRgb(_system.LoggedUser.MainColor.R,
+                _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
+
+            ((MainWindow)Window.GetWindow(this)).SetMainPage(_system);
+        }
+
+        private void ClearBoxes()
+        {
+            LoginBox.Text = string.Empty;
+            PasswordBox.Text = string.Empty;
         }
     }
 }

@@ -66,8 +66,8 @@ namespace TelegramClientServer.Controllers
         {
             public string Login { get; set; }
             public string Password { get; set; }
-            public string Name { get; set; }
-            public string Surname { get; set; }
+            public string? Name { get; set; }
+            public string? Surname { get; set; }
             public string PhoneNumber { get; set; }
             public DateTime? BirthDate { get; set; }
         }
@@ -97,43 +97,11 @@ namespace TelegramClientServer.Controllers
             return DbService.GetUserByLoginPass(login, password);
         }
 
-
-
-
-
-
-
-
-        // GET: api/<StartPageController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("IsRegistrationParamsAreExist")]
+        public bool IsRegistrationParamsAreExist(string login, string phoneNumber)
         {
-            return new string[] { "value1", "value2" };
+            return DbService.IsRegistrationParamsareExist(login, phoneNumber);
         }
 
-        // GET api/<StartPageController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<StartPageController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<StartPageController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<StartPageController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

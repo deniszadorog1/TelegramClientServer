@@ -34,12 +34,18 @@
                          materialDesign:HintAssist.Hint="Login"
                          Foreground="White"
                          FontSize="18"
+                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                         materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
+                         CaretBrush="{StaticResource TempActiveTextColor}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
                 <TextBox Name="PasswordBox" 
                          materialDesign:HintAssist.Hint="Password"
                          Foreground="White"
                          FontSize="18"
+                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                         materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
+                         CaretBrush="{StaticResource TempActiveTextColor}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
                 <Button Name="EnterBut" Content="Enter in Account" Margin="0 10 0 0"

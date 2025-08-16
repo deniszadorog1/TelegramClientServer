@@ -54,11 +54,7 @@ namespace TelegramLib.Services
         public static TelSystem GetTelSystem(string login, string password)
         {
             mainClass.User user = GetUserByLoginAndPassword(login, password);
-
-            if (user is null)
-            {
-                throw new NullReferenceException();
-            }
+            if (user is null) return null;
             TelSystem system = new TelSystem();
 
             system.LoggedUser = user;
@@ -2715,11 +2711,23 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void SetWallPaperInSettings()
+        public static bool IsRegistrationParamsareExist(string login, string phoneNumber)
         {
-
+            using(var model = new TelegramModel())
+            {
+                return !(model.User.FirstOrDefault(x => x.Login == login || x.PhoneNumber == phoneNumber) is null);
+            }
         }
 
-
+        //sender and receiver is USER ids
+        public static UserContactcs GetContactBySenderReceiverUserIds(int senderId, int receiverId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Contacts cont = model.Contacts.FirstOrDefault(x => x.UserId == senderId && x.FriendId == receiverId);
+                if (cont is null) return null;
+                return GetContactById(cont.Id);
+            }
+        }
     }
 }

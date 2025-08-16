@@ -124,7 +124,7 @@ namespace TelegramVisualPart.Services
         // Get User
         public static async Task<TelegramLib.MainClasses.User> GetUser(string login, string password)
         {
-          var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
+            var response = await _client.GetAsync($"api/StartPage/GetUser?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
@@ -132,6 +132,16 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
             return user;
+        }
+
+        public static async Task<bool> IsUserRegistrationParamsAreExist(string login, string phoneNumber)
+        {
+            var response = await _client.GetAsync($"api/StartPage/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return res;
         }
 
         public static async Task<TelegramLib.MainClasses.Messages.Message> GetLastChatMessage(int chatId)
@@ -150,7 +160,7 @@ namespace TelegramVisualPart.Services
                 });
 
             return msg;
-        } 
+        }
 
         public static async Task<int> GetChatBgIdByName(string name)
         {
@@ -457,7 +467,7 @@ namespace TelegramVisualPart.Services
         }
 
         //Set aut delition
-        public static async Task<bool> SetAutoDeletion(int chatId, 
+        public static async Task<bool> SetAutoDeletion(int chatId,
             TelegramLib.Enums.Chat.AutoDeleteType type)
         {
             var data = new { ChatId = chatId, DelType = type };
@@ -478,6 +488,16 @@ namespace TelegramVisualPart.Services
 
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+        }
+
+        public static async Task<UserContactcs> GetContactByUserAndFriendIds(int userId, int friendId)
+        {
+            var response = await _client.GetAsync($"api/Social/ContactBySenderAndReceiverIds?senderId={userId}&receiverId={friendId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return JsonConvert.DeserializeObject<UserContactcs>(jsonResponse);
         }
 
         public static async Task<bool> SetChatWallpaper(ChatBackground toSet, int chatId)

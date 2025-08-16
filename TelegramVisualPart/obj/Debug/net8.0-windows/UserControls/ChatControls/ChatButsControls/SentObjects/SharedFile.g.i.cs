@@ -77,8 +77,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls.SentObje
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/chatbutscontrols" +
-                    "/sentobjects/sharedfile.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/chatbutscontrols/sentobje" +
+                    "cts/sharedfile.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\UserControls\ChatControls\ChatButsControls\SentObjects\SharedFile.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
