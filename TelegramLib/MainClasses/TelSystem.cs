@@ -318,5 +318,10 @@ namespace TelegramLib.MainClasses
         {
             Chats.Add(chat);
         }
+
+        public UserChat GetChatByChatterId(int id)
+        {
+            return Chats.FirstOrDefault(x => x.Chatter.ContactUserId == id);
+        }
     }
 }

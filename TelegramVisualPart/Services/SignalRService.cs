@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.SignalR.Client;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.UserControls;
+using Newtonsoft.Json.Bson;
+using TelegramLib.Models;
+using UserChat = TelegramLib.MainClasses.UserChat;
+using User = TelegramLib.MainClasses.User;
+using Microsoft.AspNetCore.SignalR;
 
 namespace TelegramVisualPart.Services
 {
@@ -17,21 +22,42 @@ namespace TelegramVisualPart.Services
         //SignalR -> ApiService -> Controller -> DbService
 
         private static HubConnection _connection;
+        private static TelSystem _system;
 
-        public static event Action<TelegramLib.MainClasses.UserChat, TextMessage>? TextMessageReceived;
+
+        public static event Action<User, TextMessage>? TextMessageReceived;
+
+
+        public static void SetSystem(TelSystem system)
+        {
+            _system = system;
+        }
 
         public static async Task SetBasicSignalRConnetion()
         {
             await SetSignalRConnection();
         }
 
+        public static string GetUserId(HubConnectionContext connection)
+        {
+            // достаём userId из заголовка
+            if (connection.GetHttpContext().Request.Headers.TryGetValue("userId", out var userId))
+            {
+                return userId;
+            }
+            return null;
+        }
+
         public static async Task SetSignalRConnection()
         {
             _connection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7164/chatHub")
+            .WithUrl("https://localhost:7164/chatHub", options =>
+            {
+                options.Headers.Add("userId", _system.LoggedUser.Id.ToString());
+            })
             .Build();
 
-            _connection.On<TelegramLib.MainClasses.UserChat, TextMessage>("ReceiveTextMessage", (chat, message) =>
+            _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
             {
                 //Need to be: senderUSERid, receiverUSERid, message
                 //sender already added message to hiss chatDB
@@ -40,26 +66,57 @@ namespace TelegramVisualPart.Services
                 //sender converts into contact id -> find chat in db by this params -> add message to chat
 
 
+                TextMessageReceived?.Invoke(user, message);
+
                 return;
-                Console.WriteLine($"{chat}: {message}");
             });
 
             _connection.On<TelegramLib.MainClasses.UserChat, MediaAction>("ReceiveMediaMessage", (chat, message) =>
             {
-                //SignalR -> ApiService -> Controller -> DbService
+
+
 
                 return;
-                Console.WriteLine($"{chat}: {message}");
             });
+
+            //Add contacts
+            _connection.On<User, User>("AddContact", async (user, toAdd) =>
+            {
+
+                //Add conatct in system
+                UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.UserName, toAdd.BirthDay,
+                    toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null);
+
+                contact.ContactUserId = toAdd.Id;
+                //add cotact in db
+
+                await ApiService.AddContact(_system.LoggedUser.Id, contact);
+
+                contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
+
+                _system.Contacts.Add(contact);
+
+                //Add chat in DB
+                await ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
+
+                UserChat chatToAdd = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.Id);
+                _system.AddChat(chatToAdd);
+                return;
+            });
+
+
+            //Update contacts (BIO, username, etc)  //MAYBE
+            
+
 
             await _connection.StartAsync();
         }
 
-        public static async Task SendTextMessage(TelegramLib.MainClasses.UserChat chat, TextMessage message)
+        public static async Task SendTextMessage(User sender, TextMessage message)
         {
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendTextMessage", chat, message);
+                await _connection.InvokeAsync("SendTextMessage", sender, message);
         }
 
         public static async Task SendMediaMessage(TelegramLib.MainClasses.UserChat chat, MediaAction message)
@@ -67,6 +124,12 @@ namespace TelegramVisualPart.Services
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", chat, message);
+        }
+
+        public static async Task AddContact(User user, User contact)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("AddContact", user, contact);
         }
     }
 }

@@ -36,8 +36,6 @@ namespace TelegramVisualPart
 
             ///Visuals/Images/UserImages/Minato.jpg"
             SetLoginPage();
-
-            SetSignaleRConnection();
         }
 
         private void SetLoginPage()
@@ -46,17 +44,18 @@ namespace TelegramVisualPart
             MainFrame.Content = page;
         }
 
-        public void SetMainPage(TelSystem system)
+        public async void SetMainPage(TelSystem system)
         {
             _system = system;
+
+            SignalRService.SetSystem(_system);
+            await SignalRService.SetBasicSignalRConnetion();
+
             ((MainWindow)Window.GetWindow(this)).
                 SetMainFrameContent(new MainChatPage(_system));
         }
 
-        private async Task SetSignaleRConnection()
-        {
-            await SignalRService.SetBasicSignalRConnetion();
-        }
+
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {

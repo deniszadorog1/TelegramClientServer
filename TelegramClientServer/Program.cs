@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using TelegramClientServer.SignalRHubs;
 
 namespace TelegramClientServer
 {
@@ -19,6 +20,7 @@ namespace TelegramClientServer
 
 
             builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();
 
             // Add services to the container.
 

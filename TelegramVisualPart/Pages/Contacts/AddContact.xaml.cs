@@ -65,10 +65,14 @@ namespace TelegramVisualPart.Pages.Contacts
             _system.Contacts.Add(contact);
 
             //Add chat in DB
-            ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
-
+            await ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
 
             AddChatInTelSystem(_system.LoggedUser.Id, contact.Id);
+
+
+            //Add backwards (add temp user in added user contact);
+            await SignalRService.AddContact(newContact, _system.LoggedUser);
+
             ClearFields();
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();

@@ -61,6 +61,8 @@ namespace TelegramVisualPart.Services
             string password, string name, string surname,
             string phoneNumber, DateTime? birthDate)
         {
+            if (name is null || name == string.Empty) name = login;
+
             var data = new
             {
                 Login = login,
