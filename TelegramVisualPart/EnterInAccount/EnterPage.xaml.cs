@@ -63,6 +63,8 @@ namespace TelegramVisualPart.EnterInAccount
                 return;
             }
 
+            await SetOnlineStatus();
+
             if (_system.Settings.GetChatSettings().Wallpaper is null)
                 _system.Settings.GetChatSettings().Wallpaper =
                     new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
@@ -72,6 +74,12 @@ namespace TelegramVisualPart.EnterInAccount
                 _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
 
             ((MainWindow)Window.GetWindow(this)).SetMainPage(_system);
+        }
+
+        private async Task  SetOnlineStatus()
+        {
+            _system.LoggedUser.IsOnline = true;
+            await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, true);
         }
 
         private void ClearBoxes()

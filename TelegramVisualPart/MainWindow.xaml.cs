@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.IdentityModel.Tokens;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -27,6 +28,11 @@ namespace TelegramVisualPart
 
         public MainWindow()
         {
+            //Upper thing
+            //unicode smiles
+            //update user
+
+
             //FFMpegCore.FFMpeg.SetExecutablesPath(@"B:\Tools\ffmpeg\bin");
 
             //VisConstParamsJsonService.GetStringByName("check");
@@ -36,6 +42,21 @@ namespace TelegramVisualPart
 
             ///Visuals/Images/UserImages/Minato.jpg"
             SetLoginPage();
+
+            SignalRService.UpdateContactDel += UpdateUserSignalR;
+        }
+
+        private void UpdateUserSignalR(User updated)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_system is null) return;
+                UserContactcs? contactToUpdate =
+                    _system.Contacts.FirstOrDefault(x => x.ContactUserId == updated.Id);
+                if (contactToUpdate is null) return;
+
+                contactToUpdate.UpdateByUser(updated);
+            });
         }
 
         private void SetLoginPage()
@@ -194,8 +215,12 @@ namespace TelegramVisualPart
                 this.WindowState = WindowState.Normal;
         }
 
-        private void Close_Click(object sender, RoutedEventArgs e)
+        private async void Close_Click(object sender, RoutedEventArgs e)
         {
+            if (_system is not null && _system.LoggedUser is not null)
+            {
+                await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, false);
+            };
             this.Close();
         }
 
@@ -203,7 +228,6 @@ namespace TelegramVisualPart
         {
             if (sender is Button but) but.Background =
                     (SolidColorBrush)System.Windows.Application.Current.Resources["OtherUpperButColor"];
-
         }
 
         private void UpperBut_MouseLeave(object sender, MouseEventArgs e)
@@ -388,6 +412,11 @@ namespace TelegramVisualPart
         {
             if (SecondaryFrame.Content is VisualActionPage) ClearSecFrame();
             else ClearThirdFrame();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
         }
     }
 }

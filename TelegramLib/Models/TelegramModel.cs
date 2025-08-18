@@ -8,7 +8,7 @@ namespace TelegramLib.Models
     public partial class TelegramModel : DbContext
     {
         public TelegramModel()
-    : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+            : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 

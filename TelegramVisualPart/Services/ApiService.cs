@@ -136,6 +136,30 @@ namespace TelegramVisualPart.Services
             return user;
         }
 
+        public static async Task<TelegramLib.MainClasses.User> GetUserById(int id)
+        {
+            var response = await _client.GetAsync($"api/Social/GetUserById?userId={id}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
+            return user;
+        }
+
+
+        public static async Task<bool> IsUserOnline(int userId)
+        {
+            var response = await _client.GetAsync($"api/StartPage/IsUserOnline?userId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
+
+            bool isOnline = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return isOnline;
+        }
+
         public static async Task<bool> IsUserRegistrationParamsAreExist(string login, string phoneNumber)
         {
             var response = await _client.GetAsync($"api/StartPage/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
@@ -509,6 +533,17 @@ namespace TelegramVisualPart.Services
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Social/SetChatWallpaper", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> SetUserOnlineStatus(int userId, bool status)
+        {
+            var data = new { UserId = userId, Status = status };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/SetUserOnlineStatus", content);
 
             return response.IsSuccessStatusCode;
         }

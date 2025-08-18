@@ -11,6 +11,8 @@ namespace TelegramLib.MainClasses
         public int Id { get; set; }
         public int ContactUserId { get; set; }
 
+        public bool IsOnline { get; set; }
+
         public string Name { get; set; }
         public string Surname { get; set; }
         public string UserName { get; set; }
@@ -28,7 +30,8 @@ namespace TelegramLib.MainClasses
             DateTime? birthDate,
             string bio, string phoneNumber,
             DateTime? lastSeen, bool isNotsOn,
-            List<UserImage> userImages, AutoDeleteDuration deletion)
+            List<UserImage> userImages, AutoDeleteDuration deletion, 
+            bool isOnline)
         {
             Id = id;
             Name = name;
@@ -40,6 +43,7 @@ namespace TelegramLib.MainClasses
             IsNotificationsIsOn = isNotsOn;
             UserImages = userImages;
             AutoDeletion = deletion;
+            IsOnline = isOnline;
         }
 
         public UserContactcs()
@@ -54,6 +58,8 @@ namespace TelegramLib.MainClasses
             IsNotificationsIsOn = true;
 
             AutoDeletion = null;
+
+            IsOnline = false;
 
             UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
             UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
@@ -129,8 +135,15 @@ namespace TelegramLib.MainClasses
             return res;
         }
 
-
-
-
+        public void UpdateByUser(User user)
+        {
+            Name = user.Name;
+            UserName = user.UserName;
+            BirthDate = user.BirthDay;
+            BIO = user.BIO;
+            PhoneNumber = user.PhoneNumber;
+            LastSeen = user.LastSeenOnline;
+            UserImages = user.UserImages is null || user.UserImages.Count == 0 ? UserImages : user.UserImages;
+        }
     }
 }

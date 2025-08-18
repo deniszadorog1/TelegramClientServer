@@ -52,6 +52,8 @@ namespace TelegramLib.Models
         [StringLength(32)]
         public string Username { get; set; }
 
+        public bool? IsOnline { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BlockedContacts> BlockedContacts { get; set; }
 

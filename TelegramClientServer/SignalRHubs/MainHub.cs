@@ -22,5 +22,10 @@ namespace TelegramClientServer.SignalRHubs
             //await Clients.All.SendAsync("AddContact", user, contact);
         }
 
+        public async Task UpdateContact(User updatedContact)
+        {
+            await Clients.All.SendAsync("UpdateContact", updatedContact);
+        }
+
     }
 }

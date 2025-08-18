@@ -217,9 +217,9 @@ namespace TelegramLib.MainClasses
             imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
             imageNames.Add(new UserImage("WhiteCat.png", DateTime.Now));
 
-            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName", DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames, null));
-            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName", DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames, null));
-            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName", DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames, null));
+            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName", DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames, null, false));
+            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName", DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames, null, false));
+            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName", DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames, null, false));
         }
 
         public List<Message> GetTestMessages()

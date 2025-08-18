@@ -506,13 +506,14 @@ namespace TelegramLib.Services
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
                         new Helpers.ColorHelper(user.Id), user.PhoneNumber,
-                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline));
+                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), 
+                        GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline, (bool)user.IsOnline));
                 }
             }
             return res;
         }
 
-        private static mainClass.User GetUserById(int userId)
+        public static mainClass.User GetUserById(int userId)
         {
             mainClass.User res = new mainClass.User();
             using (var model = new TelegramModel())
@@ -521,6 +522,7 @@ namespace TelegramLib.Services
                 if (user is null) return null;
 
                 res.Id = user.Id;
+                res.IsOnline = (bool)user.IsOnline;
                 res.Login = user.Login;
                 res.Password = user.Password;
                 res.Name = user.Name;
@@ -565,6 +567,7 @@ namespace TelegramLib.Services
                 model.User user = new model.User();
 
                 user.Name = name;
+                user.IsOnline = true;
                 user.Surname = surname;
                 user.PhoneNumber = phoneNumber;
                 user.Birthday = birthdate;
@@ -606,6 +609,7 @@ namespace TelegramLib.Services
                 model.User toUpdate = model.User.Where(x => x.Id == user.Id).FirstOrDefault();
 
                 toUpdate.Name = user.Name;
+                toUpdate.IsOnline = user.IsOnline;
                 toUpdate.Surname = user.Name;
                 toUpdate.PhoneNumber = user.PhoneNumber;
                 toUpdate.Birthday = user.BirthDay;
@@ -643,6 +647,7 @@ namespace TelegramLib.Services
                     UserContactcs toAdd = new UserContactcs();
 
                     toAdd.Id = tempContact.Id;
+                    toAdd.IsOnline = IsContactOnlineByUserId((int)tempContact.FriendId);
                     toAdd.Name = tempContact.Name;
                     toAdd.UserName = tempContact.User.Name;
                     toAdd.BirthDate = tempContact.User.Birthday;
@@ -663,6 +668,16 @@ namespace TelegramLib.Services
             }
         }
 
+        private static bool IsContactOnlineByUserId(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.User toGetOnlineStatus = model.User.FirstOrDefault(x => x.Id == userId);
+                if (toGetOnlineStatus is null) return false;
+                return (bool)toGetOnlineStatus.IsOnline;
+            }
+        }
+
         public static UserContactcs GetUserContactById(int contactId)
         {
             using (var model = new TelegramModel())
@@ -675,7 +690,7 @@ namespace TelegramLib.Services
                 toAdd.Id = contact.Id;
                 toAdd.Name = contact.Name;
                 toAdd.ContactUserId = (int)contact.FriendId;
-
+                toAdd.IsOnline = IsContactOnlineByUserId((int)contact.FriendId);
                 toAdd.UserName = contact.User.Name;
                 toAdd.BirthDate = contact.User.Birthday;
                 toAdd.BIO = contact.User.BIO;
@@ -715,6 +730,7 @@ namespace TelegramLib.Services
 
                 res.Id = contact.Id;
                 res.ContactUserId = (int)contact.FriendId;
+                res.IsOnline = IsContactOnlineByUserId((int)contact.FriendId);
                 res.Name = contact.Name;
                 res.Surname = contact.LastName;
                 res.UserName = user.UserName;
@@ -738,6 +754,7 @@ namespace TelegramLib.Services
 
                 toAdd.UserId = userId;
                 toAdd.FriendId = contact.ContactUserId;
+
                 toAdd.Name = contact.Name;
                 toAdd.LastName = contact.UserName;
                 toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
@@ -2727,6 +2744,28 @@ namespace TelegramLib.Services
                 Contacts cont = model.Contacts.FirstOrDefault(x => x.UserId == senderId && x.FriendId == receiverId);
                 if (cont is null) return null;
                 return GetContactById(cont.Id);
+            }
+        }
+
+        public static void SetOnlineStatus(int userId, bool isOnline)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.User toSet = model.User.FirstOrDefault(x => x.Id == userId);
+                if (toSet is null) return;
+
+                toSet.IsOnline = isOnline;
+                model.SaveChanges();
+            }
+        }
+
+        public static bool IsUserOnline(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.User toCheck = model.User.FirstOrDefault(x => x.Id == userId);
+                if (toCheck is null) return false;
+                return (bool)toCheck.IsOnline;
             }
         }
     }

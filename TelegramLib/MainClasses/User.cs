@@ -9,6 +9,7 @@ namespace TelegramLib.MainClasses
     public class User
     {
         public int Id { get; set; }
+        public bool IsOnline { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
@@ -31,7 +32,8 @@ namespace TelegramLib.MainClasses
                     ColorHelper color, string phoneNumber,
                     string userName, DateTime? birthDay,
                     List<UserContactcs> blockedContacts,
-                    List<UserImage> userImages, DateTime lastSeen)
+                    List<UserImage> userImages, DateTime lastSeen, 
+                    bool isOnline)
         {
             Id = id;
             Login = login;
@@ -50,6 +52,7 @@ namespace TelegramLib.MainClasses
             UserImages = userImages;
 
             LastSeenOnline = lastSeen;
+            IsOnline = isOnline;
         }
 
         //Smth like test params
@@ -69,6 +72,8 @@ namespace TelegramLib.MainClasses
 
             BirthDay = new DateTime(2000, 1, 1);
             BlockedContacts = new List<UserContactcs>();
+
+            IsOnline = false;
 
             /*            UserImages = new List<UserImage>();
                         UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));

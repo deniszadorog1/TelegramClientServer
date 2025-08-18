@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
@@ -37,18 +38,37 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelegramLib.MainClasses.UserChat _chat;
         private TelSystem _system;
         private UserContactcs _contact;
-        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat, TelSystem system, UserContactcs contact)
+
+        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat,
+            TelSystem system, UserContactcs contact)
         {
             _system = system;
             _chat = chat;
             _contact = contact;
             SetUserParams();
+
+            SignalRService.UpdateContactDel += UpdateContactParams;
+        }
+
+        private void UpdateContactParams(User updated)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_contact.ContactUserId != updated.Id) return;
+
+                Username.Text = updated.UserName;
+
+                MobileNumber.UpperText.Text = updated.PhoneNumber;
+                Login.UpperText.Text = updated.Login;
+                Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" : $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
+            });
         }
 
         private void SetUserParams()
         {
             Username.Text = _chat.GetChatter().Name;
-            LastSeenOnline.Text = _chat.GetChatter().GetLastSeen();
+
+            SetLastSeenOnline();
 
             MobileNumber.SetUpperText(_chat.GetChatter().GetPhoneNumber());
             MobileNumber.SetBottomText("Mobile");
@@ -66,6 +86,29 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UserContactcs contact = _chat.GetChatter();
             ContactImgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
+        }
+
+        private void SetLastSeenOnline()
+        {
+            if(_chat.GetChatter().IsOnline)
+            {
+                SetOnlineStatus();
+                return;
+            }
+            SetOfflineStatus();
+        }
+
+        private void SetOnlineStatus()
+        {
+            LastSeenOnline.Text = "online";
+            LastSeenOnline.Foreground = 
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+        }
+
+        private void SetOfflineStatus()
+        {
+            LastSeenOnline.Text = _chat.GetChatter().GetLastSeen();
+            LastSeenOnline.Foreground = new SolidColorBrush(Colors.Gray);
         }
 
         public void SentObjsParams()
@@ -87,12 +130,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetTextForTextBlock(TextBlock block, int amount, string baseString)
         {
-            string amountStr = amount > 0 ? amount.ToString() +" ": string.Empty;
+            string amountStr = amount > 0 ? amount.ToString() + " " : string.Empty;
             block.Text = $"{amountStr}{baseString}";
         }
 
         private void SetIconsSize()
-        {           
+        {
             SetIconSize(InfoIcon);
             SetIconSize(BellIcon);
 
@@ -121,7 +164,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             icon.Width = _iconWidth;
             icon.Height = _iconHeight;
-        } 
+        }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -135,7 +178,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void But_MouseLeave(object sender, MouseEventArgs e)
         {
-            if(sender is Grid grid)
+            if (sender is Grid grid)
             {
                 grid.Background = Brushes.Transparent;
             }
@@ -223,13 +266,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             _isMenuOpen = !_isMenuOpen;
 
-            if (_isMenuOpen) 
+            if (_isMenuOpen)
             {
                 ContactMenu.Visibility = Visibility.Visible;
                 ContactMenu.SetTelSystemParam(_system);
-            }           
-            else 
-            { 
+            }
+            else
+            {
                 ContactMenu.Visibility = Visibility.Hidden;
             }
         }

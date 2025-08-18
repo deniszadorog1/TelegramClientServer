@@ -99,26 +99,29 @@ namespace TelegramVisualPart.Pages.MyProfile
             if (sender is PackIcon icon) icon.Foreground = Brushes.Gray;
         }
 
-        private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ApiService.UpdateUser(_user);
+            await ApiService.UpdateUser(_user);
+            SignalRService.UpdateContact(_user);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
-        private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ApiService.UpdateUser(_user);
+            await ApiService.UpdateUser(_user);
+            SignalRService.UpdateContact(_user);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new LoggedUserProfile(_user, _system));
         }
 
-        private void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             WordCount.Text = (BioTextBox.MaxLength - BioTextBox.Text.Length).ToString();
             _user.BIO = BioTextBox.Text;
 
-            ApiService.UpdateUser(_user);
+            await ApiService.UpdateUser(_user);
+            SignalRService.UpdateContact(_user);
         }
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)

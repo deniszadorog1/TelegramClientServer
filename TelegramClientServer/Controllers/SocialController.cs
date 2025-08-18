@@ -44,7 +44,7 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetLastChatMessage")]
         public TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
         {
-            return DbService.GetLastChatMessage(chatId); 
+            return DbService.GetLastChatMessage(chatId);
         }
 
         [HttpGet("IsContactExist")]
@@ -212,7 +212,7 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetChatByUserAndContactId")]
         public UserChat GetChatByUserAndContactId(int userId, int contactId)
         {
-           return DbService.GetChatByUserAndContactIds(userId, contactId);
+            return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
         [HttpGet("ContactBySenderAndReceiverIds")]
@@ -237,6 +237,29 @@ namespace TelegramClientServer.Controllers
         {
             return DbService.GetChatBgIdByName(name);
         }
-       
+
+        [HttpGet("IsUserOnline")]
+        public bool IsUserOnline(int userId)
+        {
+            return DbService.IsUserOnline(userId);
+        }
+
+        [HttpGet("GetUserById")]
+        public TelegramLib.MainClasses.User GetUserById(int userId)
+        {
+            return DbService.GetUserById(userId);
+        }
+
+        [HttpPost("SetUserOnlineStatus")]
+        public void SetuserOnlineStatus([FromBody] SetOnlineStatus setStatus)
+        {
+            DbService.SetOnlineStatus(setStatus.UserId, setStatus.Status);
+        }
+
+        public class SetOnlineStatus()
+        {
+            public int UserId { get; set; }
+            public bool Status { get; set; }
+        }
     }
 }

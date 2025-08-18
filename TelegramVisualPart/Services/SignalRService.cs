@@ -26,7 +26,8 @@ namespace TelegramVisualPart.Services
 
 
         public static event Action<User, TextMessage>? TextMessageReceived;
-
+        public static event Action<User, MediaAction>? MediaMessageReceived;
+        public static event Action<User>? UpdateContactDel;
 
         public static void SetSystem(TelSystem system)
         {
@@ -71,10 +72,9 @@ namespace TelegramVisualPart.Services
                 return;
             });
 
-            _connection.On<TelegramLib.MainClasses.UserChat, MediaAction>("ReceiveMediaMessage", (chat, message) =>
+            _connection.On<User, MediaAction>("ReceiveMediaMessage", (sender, message) =>
             {
-
-
+                MediaMessageReceived?.Invoke(sender, message);
 
                 return;
             });
@@ -85,7 +85,7 @@ namespace TelegramVisualPart.Services
 
                 //Add conatct in system
                 UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.UserName, toAdd.BirthDay,
-                    toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null);
+                    toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null, true);
 
                 contact.ContactUserId = toAdd.Id;
                 //add cotact in db
@@ -104,9 +104,15 @@ namespace TelegramVisualPart.Services
                 return;
             });
 
-
             //Update contacts (BIO, username, etc)  //MAYBE
-            
+            _connection.On<User>("UpdateContact", (updatedContact) =>
+            {
+                UpdateContactDel?.Invoke(updatedContact);
+
+                return;
+            });
+
+
 
 
             await _connection.StartAsync();
@@ -119,17 +125,24 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("SendTextMessage", sender, message);
         }
 
-        public static async Task SendMediaMessage(TelegramLib.MainClasses.UserChat chat, MediaAction message)
+        public static async Task SendMediaMessage(User sender, MediaAction message)
         {
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendMediaMessage", chat, message);
+                await _connection.InvokeAsync("SendMediaMessage", sender, message);
         }
 
         public static async Task AddContact(User user, User contact)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("AddContact", user, contact);
+        }
+
+        public static async void UpdateContact(User updatedUser)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateContact", updatedUser);
+
         }
     }
 }
