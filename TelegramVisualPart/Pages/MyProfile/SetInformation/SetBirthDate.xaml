@@ -70,7 +70,7 @@
             <Button Grid.Row="1" Style="{StaticResource MaterialDesignRaisedButton}" Name="RemoveBut"
                     Content="Remove" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Foreground="{StaticResource TempActiveTextColor}"
                     Click="RemoveBut_Click"  HorizontalAlignment="Left" Margin="10 0 0 0"/>
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Right" 
@@ -79,12 +79,12 @@
                     Content="Cancel" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
                     Click="CancelBut_Click"  Margin="0 0 10 0" 
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"/>
+                    Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                     Content="Save" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                    Foreground="{StaticResource TempActiveTextColor}"
                     Click="SaveBut_Click"/>
             </StackPanel>
         </Grid>

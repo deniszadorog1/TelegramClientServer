@@ -151,7 +151,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> IsUserOnline(int userId)
         {
-            var response = await _client.GetAsync($"api/StartPage/IsUserOnline?userId={userId}");
+            var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
@@ -166,6 +166,24 @@ namespace TelegramVisualPart.Services
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
+            bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return res;
+        }
+
+        public static async Task<bool> IsContactContainsInContacts(UserContactcs contact, UserContactcs toCheck)
+        {
+            var data = new
+            {
+                Contact = contact,
+                ToCheck = toCheck
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"api/Social/IsContactContactsInContacts", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
             bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
             return res;
         }
@@ -230,10 +248,10 @@ namespace TelegramVisualPart.Services
         // Get TelSystem
         public static async Task<TelSystem> GetTelSystem(string login, string password)
         {
-            var date = new { Login = login, Password = password };
+/*            var date = new { Login = login, Password = password };
 
             var json = JsonConvert.SerializeObject(date);
-            var contact = new StringContent(json, Encoding.UTF8, "application/json");
+            var contact = new StringContent(json, Encoding.UTF8, "application/json");*/
             var response = await _client.GetAsync($"api/StartPage/GetTelSystem?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();

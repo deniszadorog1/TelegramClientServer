@@ -8,9 +8,12 @@ using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
+using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
 
@@ -26,12 +29,6 @@ namespace TelegramVisualPart.Pages
 
         public MainChatPage(TelSystem system)
         {
-            //Update settings 
-            //Settings 
-            //advanced settings
-            //chat settings 
-            //notifs settings
-
             //Folders
             //contacts
             //chats
@@ -41,6 +38,7 @@ namespace TelegramVisualPart.Pages
             InitializeComponent();
 
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
+
             SetDrawButsStyles();
 
             SetChatClick();
@@ -54,6 +52,149 @@ namespace TelegramVisualPart.Pages
             UpdateUserChatsPanel();
 
             SetNoChatBg();
+
+            SetActiveChats();
+
+            SearchControl.SetSearchType += SetSearchedParams;
+        }
+
+        private const int mediaSize = 85;
+        public void SetSearchedParams(TelegramLib.Enums.Messages.MediaType type)
+        {
+            if (type == TelegramLib.Enums.Messages.MediaType.Unknown)
+            {
+                AllMediasElements.Children.Clear();
+                //Set chats
+            }
+            else if (type == TelegramLib.Enums.Messages.MediaType.Image)
+            {
+                //set images
+                SetAllImagesInPanel();
+            }
+            else if(type == TelegramLib.Enums.Messages.MediaType.Video)
+            {
+                SetVideosInPanel();
+            }
+        }
+
+        private List<MediaAction> _mediasinSearhPanel;
+        private List<string> _videoPaths;
+
+        public void SetVideosInPanel()
+        {
+            AllMediasElements.Children.Clear();
+            //Get paths for 
+            _videoPaths = _system.GetAllVideoMessages().Select(x => x.MediaName).ToList();
+            _searchGridImags.Clear();
+
+            //Set preview image
+            for (int i = 0; i < _videoPaths.Count; i++)
+            {
+                Image img = FilesAction.GetImagePreviewForVideo(_videoPaths[i]);
+
+                img.Tag = _videoPaths[i];
+
+                img.Stretch = Stretch.Fill;
+
+                img.Width = mediaSize;
+                img.Height = mediaSize;
+
+                img.Margin = new Thickness(5);
+
+                img.PreviewMouseDown += MediaVideos_PreviewMouseDown;
+
+                img.MouseEnter += SearchMedia_MouseEnter;
+                img.MouseLeave += SearchMedia_MouseLeave;
+
+                _searchGridImags.Add(img);
+
+                AllMediasElements.Children.Add(img);
+            }
+        }
+
+        public void MediaVideos_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not Image img ||
+                img.Tag is not string tag) return;
+
+            MediaElement videoElement = FilesAction.GetMediaElementByVideoName(tag);
+
+            _videoPaths = FilesAction.GetFullPathForVideos(_videoPaths);
+
+            //SetVideo Paths
+            VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+
+            List<MediaAction> videos = _system.GetAllVideoMessages();
+
+            int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+
+            page.SetUserChat(_system, videos, chosenVideoIndex, null);
+        }
+
+
+        public int GetImageIndex(Image img)
+        {
+            return AllMediasElements.Children.IndexOf(img);
+        }
+
+        private List<Image> _searchGridImags;
+        private void SetAllImagesInPanel()
+        {
+            AllMediasElements.Children.Clear();
+            _mediasinSearhPanel = _system.GetAllImageMessages();
+            _searchGridImags = new List<Image>();
+            for (int i = 0; i < _mediasinSearhPanel.Count; i++)
+            {
+                if (!FilesAction.IsUserChatMediaIsExist(_mediasinSearhPanel[i].MediaName)) continue;
+
+                Image img =  FilesAction.GetImageFromChatImageFolder(_mediasinSearhPanel[i].MediaName);
+
+                img.Width = mediaSize;
+                img.Height = mediaSize;
+
+                img.Margin = new Thickness(5);
+
+                img.PreviewMouseDown += MediaImages_PreviewMouseDown;
+
+                img.MouseEnter += SearchMedia_MouseEnter;
+                img.MouseLeave += SearchMedia_MouseLeave;
+
+                _searchGridImags.Add(img);
+                AllMediasElements.Children.Add(img);
+            }
+        }
+
+        public void MediaImages_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not Image img) return;
+
+            VisualActionPage page = new VisualActionPage(img, _searchGridImags);
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+
+            page.SetUserChat(_system, _mediasinSearhPanel, _searchGridImags.IndexOf(img), null);
+        }
+
+        public void SearchMedia_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        public void SearchMedia_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        public void SetActiveChats()
+        {
+            if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
+            for (int i = 0; i < _system.Contacts.Count; i++)
+            {
+                SetUserChat(_system.Contacts[i].UserName);
+                UpdateUserChatsPanel();
+            }
         }
 
         public void SetUserImage()
@@ -169,6 +310,8 @@ namespace TelegramVisualPart.Pages
 
         private void LeftButtons_OnMenuClick(object sender, EventArgs e)
         {
+            UserChat.Visibility = Visibility.Hidden;
+            ChosoeChatBorder.Visibility = Visibility.Visible;
             DrawerHost.OpenDrawerCommand.Execute(Dock.Left, MainDrawerHost);
         }
 
@@ -225,15 +368,15 @@ namespace TelegramVisualPart.Pages
             if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
             if (sender is not UserContact userControl) return;
 
-            SetUserChat(userControl);
+            SetUserChat(userControl.UserLogin.Text);
             UpdateUserChatsPanel();
         }
 
-        public void SetUserChat(UserContact contact)
+        public void SetUserChat(string userLogin)
         {
             //SET PAGE FILLING
             // Set chatter page
-            _system.SetTempChatter(contact.UserLogin.Text);
+            _system.SetTempChatter(userLogin);
             //Check isf set
             if (!_system.IsChatterIsSet()) return;
 
@@ -416,6 +559,7 @@ namespace TelegramVisualPart.Pages
         {
             HideAllChatBlocks();
             SearchBoxGrid.Visibility = Visibility.Visible;
+            SearchControl.SetContacts(_system);
             ChatsColumn.MinWidth = 300;
             SearchControl.UpdateColors();
         }
@@ -546,6 +690,7 @@ namespace TelegramVisualPart.Pages
 
                 if (SearchBoxGrid.Visibility == Visibility.Visible)
                 {
+                    SearchControl.SetContacts(_system);
                     HideAllChatBlocks();
                     ChatsBox.Visibility = Visibility.Visible;
                 }

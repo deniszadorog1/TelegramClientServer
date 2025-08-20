@@ -48,6 +48,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetUserParams();
 
             SignalRService.UpdateContactDel += UpdateContactParams;
+            SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
+        }
+
+        public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
+                HelperService.SetOnlineStatusInTextBox(LastSeenOnline, toUpdate.IsOnline, toUpdate.LastSeenOnline);
+            });
         }
 
         private void UpdateContactParams(User updated)
@@ -58,11 +68,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 Username.Text = updated.UserName;
 
+
+
                 MobileNumber.UpperText.Text = updated.PhoneNumber;
                 Login.UpperText.Text = updated.Login;
                 Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" : $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
         }
+
+
 
         private void SetUserParams()
         {
@@ -90,7 +104,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetLastSeenOnline()
         {
-            if(_chat.GetChatter().IsOnline)
+            if (_chat.GetChatter().IsOnline)
             {
                 SetOnlineStatus();
                 return;
@@ -101,7 +115,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void SetOnlineStatus()
         {
             LastSeenOnline.Text = "online";
-            LastSeenOnline.Foreground = 
+            LastSeenOnline.Foreground =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
         }
 
@@ -217,7 +231,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void BlockLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.BlockContact());
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
+                new Pages.UserInfoContact.ActionsFolder.BlockContact());
         }
 
         private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -234,8 +249,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ShareLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.ActionsFolder.ShareContact());
-
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
+                new Pages.UserInfoContact.ActionsFolder.ShareContact(_system, _contact));
         }
 
         private void Line_PreviewMouseDown(object sender, MouseButtonEventArgs e)

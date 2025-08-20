@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.IdentityModel.Tokens;
+using System.Formats.Tar;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -70,13 +71,13 @@ namespace TelegramVisualPart
             _system = system;
 
             SignalRService.SetSystem(_system);
+
             await SignalRService.SetBasicSignalRConnetion();
+            SignalRService.UpdateOnlineStatus(_system.LoggedUser);
 
             ((MainWindow)Window.GetWindow(this)).
                 SetMainFrameContent(new MainChatPage(_system));
         }
-
-
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -217,11 +218,20 @@ namespace TelegramVisualPart
 
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
+            LogOut();
+            this.Close();
+        }
+
+        public async void LogOut()
+        {
             if (_system is not null && _system.LoggedUser is not null)
             {
                 await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, false);
+
+                _system.LoggedUser.IsOnline = (await ApiService.GetUserById(_system.LoggedUser.Id)).IsOnline;
+
+                SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             };
-            this.Close();
         }
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
@@ -412,6 +422,13 @@ namespace TelegramVisualPart
         {
             if (SecondaryFrame.Content is VisualActionPage) ClearSecFrame();
             else ClearThirdFrame();
+        }
+
+        public void SetAllChatsInMainPage()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+
+            page.SetActiveChats();
         }
 
         private void Window_Closed(object sender, EventArgs e)

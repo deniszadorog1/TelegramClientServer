@@ -46,6 +46,7 @@ using TelegramLib.Enums.Messages;
 using System.Text.Json.Serialization.Metadata;
 using System.IO;
 using System.Security.Permissions;
+using System.Data.OleDb;
 
 namespace TelegramLib.Services
 {
@@ -2766,6 +2767,16 @@ namespace TelegramLib.Services
                 model.User toCheck = model.User.FirstOrDefault(x => x.Id == userId);
                 if (toCheck is null) return false;
                 return (bool)toCheck.IsOnline;
+            }
+        }
+
+        public static bool IsContactContactinsInContacts(UserContactcs contact, 
+            UserContactcs toCheckCotact)
+        {
+            using(var model = new TelegramModel())
+            {
+                return model.Contacts.Where(x => x.UserId == contact.ContactUserId &&
+                x.FriendId == toCheckCotact.ContactUserId).Any();
             }
         }
     }

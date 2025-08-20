@@ -100,11 +100,19 @@
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                 </ListBox>
 
-                <Grid Grid.Row="1" Name="SearchBoxGrid" Visibility="Hidden" 
-                      HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <StackPanel Grid.Row="1" Name="SearchBoxGrid" Visibility="Hidden" 
+                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                            Orientation="Vertical">
                     <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
-                </Grid>
+
+                    <WrapPanel Name ="AllMediasElements"
+                               Background="Transparent" 
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"> 
+                        
+                    </WrapPanel>
+                </StackPanel>
 
                 <StackPanel Grid.Row="1" Name="SearchMessageGrid" Visibility="Hidden"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
@@ -127,7 +135,6 @@
 
                     <TextBlock Text="Search for messages" FontSize="18"
                                Foreground="Gray" Margin="0 15 0 0"/>
-
 
                 </StackPanel>
 

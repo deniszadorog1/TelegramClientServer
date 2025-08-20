@@ -52,6 +52,8 @@ namespace TelegramVisualPart.Pages.Settings
         private void MoreInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //set info 
+            //Log out 
+            
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

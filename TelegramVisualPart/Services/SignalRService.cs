@@ -28,6 +28,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User, TextMessage>? TextMessageReceived;
         public static event Action<User, MediaAction>? MediaMessageReceived;
         public static event Action<User>? UpdateContactDel;
+        public static event Action<User>? UpdateOnlineStatusDel;
 
         public static void SetSystem(TelSystem system)
         {
@@ -112,8 +113,12 @@ namespace TelegramVisualPart.Services
                 return;
             });
 
-
-
+            //update online status
+            _connection.On<User>("UpdateOnlineStatus", (updatedContact) =>
+            {
+                UpdateOnlineStatusDel?.Invoke(updatedContact);
+                return;
+            });
 
             await _connection.StartAsync();
         }
@@ -142,7 +147,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateContact", updatedUser);
+        }
 
+        public static async void UpdateOnlineStatus(User toUpdate)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
         }
     }
 }

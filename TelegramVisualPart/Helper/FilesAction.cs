@@ -353,7 +353,6 @@ namespace TelegramVisualPart.Helper
 
         public static Image GetImagePreviewForVideo(string videoName)
         {
-
             GlobalFFOptions.Configure(new FFOptions
             {
                 BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),

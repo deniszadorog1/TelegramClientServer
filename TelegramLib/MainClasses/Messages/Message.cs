@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.Enums.Messages;
 
 namespace TelegramLib.MainClasses.Messages
 {
@@ -44,6 +46,5 @@ namespace TelegramLib.MainClasses.Messages
         {
             return $"{SentTime.Day}.{SentTime.Month}.{SentTime.Year}";
         }
-
     }
 }

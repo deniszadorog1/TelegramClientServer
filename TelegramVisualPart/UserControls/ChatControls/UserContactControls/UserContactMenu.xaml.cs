@@ -83,7 +83,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                    name == BlockUser.Name.ToString() ? new BlockContact() :
                    name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, _system.ChosenChatContact) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system) : 
-                   name == ShareContact.Name.ToString() ? new ShareContact() : null;
+                   name == ShareContact.Name.ToString() ? new ShareContact(_system, _system.ChosenChatContact) : null;
         }
     }
 }

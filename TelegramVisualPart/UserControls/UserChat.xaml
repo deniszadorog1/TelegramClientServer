@@ -40,7 +40,8 @@
 
                 <TextBlock Grid.Row="0" x:Name="ChatFriendLogin" Text="FriendLogin" FontSize="16"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White"/>
-                <TextBlock Grid.Row="1" x:Name="ChatFriendLastSeen" Text="Last seen time" FontSize="16"
+                <TextBlock Grid.Row="1" x:Name="ChatFriendLastSeen" 
+                           Text="Last seen time" FontSize="16"
                            HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray"/>
 
             </Grid>

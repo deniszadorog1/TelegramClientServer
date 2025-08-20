@@ -27,5 +27,9 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("UpdateContact", updatedContact);
         }
 
+        public async Task UpdateOnlineStatus(User toUpdate)
+        {
+            await Clients.All.SendAsync("UpdateOnlineStatus", toUpdate);
+        }
     }
 }

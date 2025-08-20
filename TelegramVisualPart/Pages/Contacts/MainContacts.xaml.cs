@@ -17,8 +17,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -45,16 +48,15 @@ namespace TelegramVisualPart.Pages.Contacts
             SetContactsParams();
         }
 
-        public void SetContactsParams()
+        public async Task SetContactsParams()
         {
             List<UserContactcs> toAdd = !_isBlock ? _system.Contacts : 
                 _system.Contacts.Where(x => !_system.LoggedUser.BlockedContacts.Select(y => y.Name).Contains(x.Name)).ToList();
 
             for(int i = 0; i < toAdd.Count; i++)
             {
-                UserContact contact = new UserContact(
-                        string.Empty, toAdd[i].Name, toAdd[i].BirthDate,
-                        toAdd[i].GetFirstImageName().Name);
+                TelegramLib.MainClasses.User user = await ApiService.GetUserById(toAdd[i].ContactUserId);
+                UserContact contact = new UserContact(user);
 
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
 

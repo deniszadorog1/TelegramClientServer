@@ -43,9 +43,19 @@ namespace TelegramVisualPart.UserControls
 
             SignalRService.TextMessageReceived += OnTextMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageRecived;
+            SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
         }
 
-        private void OnMediaMessageRecived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.MediaAction message)
+        public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
+                HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, toUpdate.IsOnline, toUpdate.LastSeenOnline);
+            });
+        }
+
+        public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.MediaAction message)
         {
             Dispatcher.Invoke(() =>
             {
@@ -99,7 +109,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User sender)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(message.Text), "fray.jpg")); //Change on sender image 
+                GetConvertedStringMessage(message.Text), "fray.jpg", _system.Settings.GetChatSettings().FontName)); //Change on sender image 
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -122,10 +132,12 @@ namespace TelegramVisualPart.UserControls
         }
 
         private TelegramLib.MainClasses.UserChat _chat;
-        public void SetUserChat(TelegramLib.MainClasses.UserChat chat)
+        public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
             if (chat is null) return;
             _chat = chat;
+
+            await SetOnlineStatus();
 
             //_chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
 
@@ -140,6 +152,15 @@ namespace TelegramVisualPart.UserControls
 
             RemoveRightContactInfo();
             SetUserBg();
+        }
+
+        public async Task SetOnlineStatus()
+        {
+            if (_chat is null) return;
+            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            if (user is null) return;
+
+            HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
         }
 
         public void SetUserBg()
@@ -177,9 +198,10 @@ namespace TelegramVisualPart.UserControls
         public void SetChatParams(UserContactcs contact)
         {
             ChatFriendLogin.Text = contact.Name;
-
-            ChatFriendLastSeen.Text = contact.LastSeen is null ? _lastSeenDefault :
-                $"{contact.LastSeen.Value.Month}.{contact.LastSeen.Value.Day}.{contact.LastSeen.Value.Year}";
+            /*
+                        ChatFriendLastSeen.Text = contact.LastSeen is null ? _lastSeenDefault :
+                            $"{contact.LastSeen.Value.Month}.{contact.LastSeen.Value.Day}.{contact.LastSeen.Value.Year}";
+                  */
         }
 
         public void ClearChat()
@@ -265,7 +287,7 @@ namespace TelegramVisualPart.UserControls
         public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message, string senderImageName)
         {
             ChatControls.TextMessage newMes =
-                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text), senderImageName);
+                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text), senderImageName, _system.Settings.GetChatSettings().FontName);
             newMes.SetTime(message.SentTime);
 
             ChatBox.Items.Add(newMes);
@@ -294,7 +316,7 @@ namespace TelegramVisualPart.UserControls
         private async void AddTextMessage(string senderImageName)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(CommentTextBox.Text), senderImageName));
+                GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -324,7 +346,7 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.User receiver =
                 await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
 
-                UserContactcs contact =  await ApiService.GetContactByUserAndFriendIds(receiver.Id, _system.LoggedUser.Id);
+                UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(receiver.Id, _system.LoggedUser.Id);
 
                 TelegramLib.MainClasses.UserChat chat =
                     await ApiService.GetChatByUserAndSenderId(receiver.Id, contact.Id);
@@ -339,10 +361,10 @@ namespace TelegramVisualPart.UserControls
         {
             CommentTextBox.Text += emoji;
 
-/*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(emoji), _system.LoggedUser.GetFirstImageName().Name));
+            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
+                            GetConvertedStringMessage(emoji), _system.LoggedUser.GetFirstImageName().Name));
 
-            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);*/
+                        ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);*/
 
             EmojisBoard.Visibility = Visibility.Hidden;
         }

@@ -261,5 +261,17 @@ namespace TelegramClientServer.Controllers
             public int UserId { get; set; }
             public bool Status { get; set; }
         }
+
+        [HttpPost("IsContactContactsInContacts")]
+        public bool IsContactContactsInContacts([FromBody] ContactCheckRequest isContains)
+        {
+            return DbService.IsContactContactinsInContacts(isContains.Contact, isContains.ToCheck);
+        }
+
+        public class ContactCheckRequest
+        {
+            public UserContactcs? Contact { get; set; }
+            public UserContactcs? ToCheck { get; set; }
+        }
     }
 }

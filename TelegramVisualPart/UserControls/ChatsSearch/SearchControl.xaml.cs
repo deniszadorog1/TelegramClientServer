@@ -15,6 +15,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
 using Point = System.Windows.Point;
 
 namespace TelegramVisualPart.UserControls.ChatsSearch
@@ -24,9 +27,36 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
     /// </summary>
     public partial class SearchControl : UserControl
     {
+        public event Action<TelegramLib.Enums.Messages.MediaType> SetSearchType; 
+        private TelSystem _system;
+
+
         public SearchControl()
         {
             InitializeComponent();
+        }
+
+        public void SetContacts(TelSystem system)
+        {
+            _system = system;
+            SetContacts();
+        }
+
+        public void SetContacts()
+        {
+            ChatsPanel.Children.Clear();
+
+            for(int i = 0; i < _system.Contacts.Count; i++)
+            {
+                ChatButton but = new ChatButton();
+
+                but.ChatName.Text = _system.Contacts[i].Name;
+
+                but.UserImgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
+
+                ChatsPanel.Children.Add(but);
+            }
         }
 
         const string _showAll = "show all";
@@ -92,6 +122,25 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
         }
 
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Animation
+            SetBlockAnimation(sender);
+
+            if (sender == ChatTab)
+            {
+                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Unknown);
+            } 
+            else if (sender == PhotosTab)
+            {
+                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Image);
+            }
+            else if(sender == VideosTab)
+            {
+                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Video);
+            }
+        }
+
+        public void SetBlockAnimation(object sender)
         {
             //UpdateColors();
 

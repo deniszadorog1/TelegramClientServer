@@ -50,6 +50,11 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetUserParams()
         {
+            UserName.Text = _user.Login;
+
+            HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);
+            
+
             BioTextBox.Text = _user.BIO;
 
             Name.AdditionalText.Text = _user.Name;

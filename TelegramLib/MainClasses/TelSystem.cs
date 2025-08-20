@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.InteropServices;
 using TelegramLib.Enums.Messages;
@@ -102,6 +103,7 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChosenChat()
         {
+            if (ChosenChatContact is null) return null;
             return Chats.Where(x => x.GetChatter().Name == ChosenChatContact.Name).FirstOrDefault();
         }
 
@@ -322,6 +324,31 @@ namespace TelegramLib.MainClasses
         public UserChat GetChatByChatterId(int id)
         {
             return Chats.FirstOrDefault(x => x.Chatter.ContactUserId == id);
+        }
+
+        public List<MediaAction> GetAllImageMessages()
+        {
+            return GetMesagesByType(MediaType.Image);
+        }
+
+        public List<MediaAction> GetAllVideoMessages()
+        {
+            return GetMesagesByType(MediaType.Video);
+        }
+
+        private List<MediaAction> GetMesagesByType(MediaType type)
+        {
+            List<MediaAction> res = new List<MediaAction>();
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                for(int j = 0; j < Chats[i].Messages.Count; j++)
+                {
+                    if (!(Chats[i].Messages[j] is MediaAction media)) continue;
+                    if (type == MediaType.Image && media.IsImage()) res.Add(media);
+                    else if(type == MediaType.Video && media.IsVideo()) res.Add(media);
+                }
+            }
+            return res;
         }
     }
 }

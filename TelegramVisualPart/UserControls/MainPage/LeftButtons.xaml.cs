@@ -88,6 +88,19 @@ namespace TelegramVisualPart.UserControls.MainPage
             }
         }
 
+        private void AllChatsItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListBoxItem item ||
+                item.Content is not LeftButtonsButton but) return;
+
+            ClearButtonsEffects();
+
+            but.SetActiveColor();
+            item.Background = _activeBgColor;
+
+            ((MainWindow)Window.GetWindow(this)).SetAllChatsInMainPage();
+        }
+
         private void FolderBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem item ||

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Controls;
 
 namespace TelegramVisualPart.Services
 {
@@ -24,5 +25,18 @@ namespace TelegramVisualPart.Services
             return parent as T;
         }
 
+        public static void SetOnlineStatusInTextBox(TextBlock block, bool isOnline, DateTime? lastSeenOnline)
+        {
+            if (isOnline)
+            {
+                block.Text = "online";
+                block.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+                return;
+            }
+
+            block.Foreground = new SolidColorBrush(Colors.Gray);
+            block.Text = lastSeenOnline is null ? "recently" :  
+                $"{lastSeenOnline.Value.Day}.{lastSeenOnline.Value.Month}.{lastSeenOnline.Value.Year}";
+        }
     }
 }

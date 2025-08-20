@@ -549,6 +549,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "IsContactContactsInContacts",
+    "RelativePath": "api/Social/IsContactContactsInContacts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "isContains",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BContactCheckRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "IsContactExist",
     "RelativePath": "api/Social/IsContactExist",
     "HttpMethod": "GET",

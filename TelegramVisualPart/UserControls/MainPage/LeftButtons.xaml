@@ -18,11 +18,11 @@
                                 Foreground="Gray" PreviewMouseDown="ShowMenu_PreviewMouseDown"/>
         
         <ListBox Name="FoldersBox"  Grid.Row="1" HorizontalContentAlignment="Center">
-            <ListBoxItem Name="AllChatsItem" PreviewMouseDown="FolderBut_PreviewMouseDown">
+            <ListBoxItem Name="AllChatsItem" PreviewMouseDown="AllChatsItem_PreviewMouseDown">
                 <local:LeftButtonsButton x:Name="AllChats"/>
             </ListBoxItem>
 
-            <ListBoxItem Name="PersonalItem"  PreviewMouseDown="FolderBut_PreviewMouseDown">
+            <ListBoxItem Name="PersonalItem"  PreviewMouseDown="AllChatsItem_PreviewMouseDown">
                 <local:LeftButtonsButton x:Name="Personal"/>
             </ListBoxItem>
 

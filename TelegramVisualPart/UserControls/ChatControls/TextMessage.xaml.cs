@@ -24,7 +24,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private string _text;
         private string _imgName;
 
-        public TextMessage(string text, string senderImageName)
+        public TextMessage(string text, string senderImageName, string fontName)
         {
             _text = text;
             _imgName = senderImageName;
@@ -36,6 +36,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetWidth();
 
             SetImageSource();
+            SetFont(fontName);
+        }
+
+        private void SetFont(string font)
+        {
+            if (font == string.Empty) font = "Times New Roman";
+            Message.FontFamily = new FontFamily(font);
         }
 
         private void SetImageSource()

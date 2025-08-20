@@ -388,6 +388,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         /// <param name="mediaIndex"></param>
         public void RemoveFromChat(int mediaIndex)
         {
+            if (_system.ChosenChatContact is null) return;
             //If this is img || video || gif        
             if (_gifPath is not null)//its gif
             {
