@@ -259,6 +259,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "AddUserImage",
+    "RelativePath": "api/Social/AddUserImage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "toAddUserImage",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BToAddUserImage",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "AddVideo",
     "RelativePath": "api/Social/AddVideo",
     "HttpMethod": "PUT",

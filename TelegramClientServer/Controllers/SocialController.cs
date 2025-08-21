@@ -255,7 +255,6 @@ namespace TelegramClientServer.Controllers
         {
             DbService.SetOnlineStatus(setStatus.UserId, setStatus.Status);
         }
-
         public class SetOnlineStatus()
         {
             public int UserId { get; set; }
@@ -267,11 +266,21 @@ namespace TelegramClientServer.Controllers
         {
             return DbService.IsContactContactinsInContacts(isContains.Contact, isContains.ToCheck);
         }
-
         public class ContactCheckRequest
         {
             public UserContactcs? Contact { get; set; }
             public UserContactcs? ToCheck { get; set; }
+        }
+
+        [HttpPost ("AddUserImage")]
+        public void AddUserImage([FromBody] ToAddUserImage toAddUserImage)
+        {
+            DbService.AddUserImage(toAddUserImage.User, toAddUserImage.UserImageName);
+        }
+        public class ToAddUserImage()
+        {
+            public TelegramLib.MainClasses.User User { get; set; }
+            public string UserImageName { get; set; }
         }
     }
 }

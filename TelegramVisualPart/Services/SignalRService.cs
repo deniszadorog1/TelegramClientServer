@@ -29,6 +29,8 @@ namespace TelegramVisualPart.Services
         public static event Action<User, MediaAction>? MediaMessageReceived;
         public static event Action<User>? UpdateContactDel;
         public static event Action<User>? UpdateOnlineStatusDel;
+        public static event Action<User>? UpdateUserImage;
+
 
         public static void SetSystem(TelSystem system)
         {
@@ -120,6 +122,24 @@ namespace TelegramVisualPart.Services
                 return;
             });
 
+            _connection.On<User>("AddUserImage", (addedImage) =>
+            {
+                //Add it to contacts system
+                UserContactcs? contact = _system.Contacts.FirstOrDefault(x => x.ContactUserId == addedImage.Id);
+                if (contact is null) return;
+
+                //Set
+                contact.UserImages = addedImage.UserImages;
+
+                //Update in opened chat
+                UpdateUserImage?.Invoke(addedImage);
+
+                //update in opened 
+                //update
+                
+                //Update in view(If need)
+            });
+
             await _connection.StartAsync();
         }
 
@@ -153,6 +173,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
+        }
+
+        public static async void AddUserImage(User addedImage)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection?.InvokeAsync("AddUserImage", addedImage);
         }
     }
 }

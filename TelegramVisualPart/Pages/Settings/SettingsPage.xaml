@@ -37,6 +37,10 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
 
+                    <iconBut:IconButton x:Name="AddImageBut" 
+                                        Margin="0 0 20 0" Width="30" Height="30"
+                                        PreviewMouseDown="CloseBut_PreviewMouseDown"/>        
+                    
                     <iconBut:IconButton x:Name="MoreInfoBut"
                                         Margin="0 0 10 0" Width="30" Height="30"
                                         PreviewMouseDown="MoreInfoBut_PreviewMouseDown"/>

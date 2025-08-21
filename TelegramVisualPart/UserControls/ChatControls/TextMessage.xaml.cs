@@ -33,7 +33,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             //BgBrush.ImageSource = img.Source;
             Message.Text = text;
-            SetWidth();
+            SetWidth(fontName);
 
             SetImageSource();
             SetFont(fontName);
@@ -52,9 +52,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
 
         private const int _minMessageWidth = 30;
-        private void SetWidth()
+        private void SetWidth(string fontName)
         {
-            double blockSize = GetStringWidth();
+            double blockSize = GetStringWidth(fontFamily: fontName);
 
             if (blockSize < _minMessageWidth) blockSize = _minMessageWidth;
 

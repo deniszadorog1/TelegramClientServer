@@ -344,8 +344,9 @@ namespace TelegramLib.Services
                 {
                     if (userId == chat.UserId)
                     {
-                        UserChat toAdd = new UserChat(chat.Id, GetUserContactById((int)chat.ChatterId),
-                            GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id), 
+                        UserChat toAdd = new UserChat(chat.Id, 
+                            GetUserContactById((int)chat.ChatterId),
+                            GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(chat.AutoDeleteId));
 
                         res.Add(toAdd);
@@ -507,7 +508,7 @@ namespace TelegramLib.Services
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
                         new Helpers.ColorHelper(user.Id), user.PhoneNumber,
-                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id), 
+                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id),
                         GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline, (bool)user.IsOnline));
                 }
             }
@@ -671,7 +672,7 @@ namespace TelegramLib.Services
 
         private static bool IsContactOnlineByUserId(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.User toGetOnlineStatus = model.User.FirstOrDefault(x => x.Id == userId);
                 if (toGetOnlineStatus is null) return false;
@@ -699,6 +700,7 @@ namespace TelegramLib.Services
                 toAdd.LastSeen = contact.User.LastOnline;
                 toAdd.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
 
+                toAdd.UserImages = GetUserImagesByUserId((int)contact.FriendId);
                 return toAdd;
             }
         }
@@ -740,10 +742,11 @@ namespace TelegramLib.Services
                 res.PhoneNumber = user.PhoneNumber;
                 res.LastSeen = user.LastSeenOnline;
                 res.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
-                res.UserImages = GetUserImagesByUserId(user.Id);
+                //res.UserImages = GetUserImagesByUserId(user.Id);
                 res.IsBlockedUserBlocked = (bool)contact.IsBlocked;
-            }
 
+                res.UserImages = GetUserImagesByUserId((int)contact.FriendId);
+            }
             return res;
         }
 
@@ -1794,7 +1797,8 @@ namespace TelegramLib.Services
                         toAdd.Name = img.Name;
                         toAdd.Date = (DateTime)img.AddDate;
 
-                        res.Add(toAdd);
+                        res.Insert(0, toAdd); 
+                        //res.Add(toAdd);
                     }
                 }
             }
@@ -2197,7 +2201,7 @@ namespace TelegramLib.Services
 
         private static Enums.Chat.AutoDeleteType GetAutoDelTypeByTypeString(string type)
         {
-            for(int i = 0; i < (int)Enums.Chat.AutoDeleteType.OneYear; i++)
+            for (int i = 0; i < (int)Enums.Chat.AutoDeleteType.OneYear; i++)
             {
                 if (type == ((Enums.Chat.AutoDeleteType)i).ToString()) return (Enums.Chat.AutoDeleteType)i;
             }
@@ -2731,7 +2735,7 @@ namespace TelegramLib.Services
 
         public static bool IsRegistrationParamsareExist(string login, string phoneNumber)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return !(model.User.FirstOrDefault(x => x.Login == login || x.PhoneNumber == phoneNumber) is null);
             }
@@ -2740,7 +2744,7 @@ namespace TelegramLib.Services
         //sender and receiver is USER ids
         public static UserContactcs GetContactBySenderReceiverUserIds(int senderId, int receiverId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Contacts cont = model.Contacts.FirstOrDefault(x => x.UserId == senderId && x.FriendId == receiverId);
                 if (cont is null) return null;
@@ -2762,7 +2766,7 @@ namespace TelegramLib.Services
 
         public static bool IsUserOnline(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.User toCheck = model.User.FirstOrDefault(x => x.Id == userId);
                 if (toCheck is null) return false;
@@ -2770,13 +2774,40 @@ namespace TelegramLib.Services
             }
         }
 
-        public static bool IsContactContactinsInContacts(UserContactcs contact, 
+        public static bool IsContactContactinsInContacts(UserContactcs contact,
             UserContactcs toCheckCotact)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.Contacts.Where(x => x.UserId == contact.ContactUserId &&
                 x.FriendId == toCheckCotact.ContactUserId).Any();
+            }
+        }
+
+        public static void AddUserImage(TelegramLib.MainClasses.User user, string userImageName)
+        {
+            if (IsUserImageisExist(user, userImageName)) return;
+            using (var model = new TelegramModel())
+            {
+                UserImage img = new UserImage();
+
+                img.UserId = user.Id;
+                img.Name = userImageName;
+                img.AddDate = DateTime.Now;
+
+                model.UserImage.Add(img);
+
+                model.SaveChanges();
+            }
+        }
+
+        private static bool IsUserImageisExist(TelegramLib.MainClasses.User user, string userImageNmae)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.UserImage
+                    .Where(x => x.Name == userImageNmae && x.UserId == user.Id)
+                    .Any();
             }
         }
     }

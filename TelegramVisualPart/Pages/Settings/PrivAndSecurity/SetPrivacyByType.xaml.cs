@@ -20,6 +20,7 @@ using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
@@ -607,6 +608,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SetPubPhotoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            ToChooseImage();
+        }
+
+        public void ToChooseImage()
+        {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose image or video",
@@ -624,12 +630,23 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
                     string name = System.IO.Path.GetFileName(filePath);
 
-                    _system.LoggedUser.UserImages.Insert(0, new TelegramLib.MainClasses.UserParams.UserImage(name, DateTime.Now));
-
-                    //Add image to User Images
                     //Set it To first place
+                    _system.LoggedUser.UserImages.Insert(0,
+                         new TelegramLib.MainClasses.UserParams.UserImage(name, DateTime.Now));
+
+                    //Add image to User Images (in db + signalRing this)
+                    AddUserImage(System.IO.Path.GetFileName(name));
                 }
             }
+        }
+
+        private void AddUserImage(string userImageName)
+        {
+            //add image in db
+            ApiService.AddUserImage(_system.LoggedUser, userImageName);
+
+            //Update this with signalR
+            SignalRService.AddUserImage(_system.LoggedUser);
         }
     }
 }

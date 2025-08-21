@@ -12,6 +12,7 @@ using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
@@ -37,6 +38,11 @@ namespace TelegramVisualPart.Pages
             _system = system;
             InitializeComponent();
 
+            SetBasicParams();
+        }
+
+        public void SetBasicParams()
+        {
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
 
             SetDrawButsStyles();
@@ -56,6 +62,31 @@ namespace TelegramVisualPart.Pages
             SetActiveChats();
 
             SearchControl.SetSearchType += SetSearchedParams;
+
+            SignalRService.UpdateUserImage += AddedUserImage;
+        }
+
+        public void AddedUserImage(User user)
+        {
+            Dispatcher.Invoke(() =>
+            {
+/*                TelegramLib.MainClasses.UserChat? chat =
+                _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
+                if (chat is null) return;*/
+
+                ListBoxItem? boxItem = ChatsBox.Items
+                    .OfType<ListBoxItem>()
+                    .FirstOrDefault(x => x.Content is UserTalkMessage talkControl &&
+                            talkControl.FriendLogin.Text == user.Name);
+
+                if (boxItem is null || boxItem.Content is not UserTalkMessage talkControl) return;
+
+                Console.WriteLine(talkControl.LastMessage.Text);
+
+                talkControl.ImageIcon.ImageSource = new BitmapImage(
+                        new Uri(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+                        UriKind.Absolute));
+            });
         }
 
         private const int mediaSize = 85;
@@ -71,7 +102,7 @@ namespace TelegramVisualPart.Pages
                 //set images
                 SetAllImagesInPanel();
             }
-            else if(type == TelegramLib.Enums.Messages.MediaType.Video)
+            else if (type == TelegramLib.Enums.Messages.MediaType.Video)
             {
                 SetVideosInPanel();
             }
@@ -149,7 +180,7 @@ namespace TelegramVisualPart.Pages
             {
                 if (!FilesAction.IsUserChatMediaIsExist(_mediasinSearhPanel[i].MediaName)) continue;
 
-                Image img =  FilesAction.GetImageFromChatImageFolder(_mediasinSearhPanel[i].MediaName);
+                Image img = FilesAction.GetImageFromChatImageFolder(_mediasinSearhPanel[i].MediaName);
 
                 img.Width = mediaSize;
                 img.Height = mediaSize;
@@ -598,7 +629,6 @@ namespace TelegramVisualPart.Pages
         public void UpdateUserChatsPanel()
         {
             ChatsBox.Items.Clear();
-
             int chatsCount = _system.GetChatsAmount();
             for (int i = 0; i < chatsCount; i++)
             {
@@ -610,7 +640,6 @@ namespace TelegramVisualPart.Pages
                 };
 
                 item.PreviewMouseDown += UserChat_PreviewMouseDown;
-
                 ChatsBox.Items.Add(item);
             }
         }

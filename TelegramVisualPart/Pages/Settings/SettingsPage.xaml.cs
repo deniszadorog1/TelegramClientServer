@@ -53,7 +53,7 @@ namespace TelegramVisualPart.Pages.Settings
         {
             //set info 
             //Log out 
-            
+            ((MainWindow)Window.GetWindow(this)).LogOut();
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -84,11 +84,13 @@ namespace TelegramVisualPart.Pages.Settings
 
         public void SetButtonsView()
         {
-            MoreInfoBut.IconType.Kind = PackIconKind.DotsVertical;
+            MoreInfoBut.IconType.Kind = PackIconKind.Logout;
             CloseBut.IconType.Kind = PackIconKind.Close;
-
+            AddImageBut.IconType.Kind = PackIconKind.ImageOutline;
+            
             MyAccount.IconType.Kind = PackIconKind.AccountCircleOutline;
             MyAccount.ButName.Text = "My account";
+
 
             NotifsSounds.IconType.Kind = PackIconKind.BellOutline;
             NotifsSounds.ButName.Text = "Notifications and Sounds";

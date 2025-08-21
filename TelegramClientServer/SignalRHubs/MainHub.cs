@@ -31,5 +31,10 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.All.SendAsync("UpdateOnlineStatus", toUpdate);
         }
+
+        public async Task AddUserImage(User addedImage)
+        {
+            await Clients.All.SendAsync("AddUserImage", addedImage);
+        }
     }
 }

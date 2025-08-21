@@ -95,6 +95,16 @@ namespace TelegramLib.MainClasses
             return UserImages.First();
         }
 
+        public string GetFirstImageNameInString()
+        {
+            if(UserImages is null || UserImages.Count == 0)
+            {
+                return "fray.jpg";
+            }
+            return UserImages.First().Name;
+
+        }
+
         public List<string> GetImagesNames()
         {
             List<string> res = new List<string>();

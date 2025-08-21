@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,14 +52,15 @@ namespace TelegramVisualPart.EnterInAccount
         private async void EnterBut_Click(object sender, RoutedEventArgs e)
         {
             //Is field are empty 
-            if (string.IsNullOrEmpty(LoginBox.Text) ||
-                string.IsNullOrEmpty(PasswordBox.Text)) return;
+            if (string.IsNullOrWhiteSpace(LoginBox.Text) ||
+                string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
-
-            if (_system is null)
+            bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
+            if (_system is null || isOnline)
             {
-                MessageBox.Show("No user with such params");
+                if(_system is null) MessageBox.Show("No user with such params");
+                if(isOnline) MessageBox.Show("User is already online");
                 ClearBoxes();
                 return;
             }

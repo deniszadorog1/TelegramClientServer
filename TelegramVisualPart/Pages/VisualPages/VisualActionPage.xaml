@@ -45,10 +45,10 @@
                                Style="{StaticResource ButStyle}"/>
 
         <Grid Name="ElementPanel" Grid.Column="1" Grid.Row="0">
-            <Image Name="ImageToShow" Stretch="None" Loaded="ImageToShow_Loaded"/>
+            <Image Name="ImageToShow" Stretch="Uniform" Loaded="ImageToShow_Loaded"/>
 
             <MediaElement Name="VideoToShow"
-                          Stretch="None"
+                          Stretch="Fill"
                           MediaOpened="VideoToShow_MediaOpened"/>
         </Grid>
 

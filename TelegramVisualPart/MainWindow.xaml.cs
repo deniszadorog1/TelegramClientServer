@@ -219,11 +219,16 @@ namespace TelegramVisualPart
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
             LogOut();
-            this.Close();
         }
 
         public async void LogOut()
         {
+            if(MainFrame.Content is EnterPage)
+            {
+                this.Close();
+                return;
+            }
+
             if (_system is not null && _system.LoggedUser is not null)
             {
                 await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, false);
@@ -232,6 +237,10 @@ namespace TelegramVisualPart
 
                 SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             };
+
+            ClearThirdFrame();
+            ClearSecFrame();
+            SetLoginPage();
         }
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)

@@ -47,12 +47,63 @@ namespace TelegramVisualPart.Pages.Contacts
             if (newContact is null || string.IsNullOrWhiteSpace(PhoneBox.Text) ||
                 string.IsNullOrWhiteSpace(LastnameBox.Text) ||
                 await ApiService.IsContactExist(_system.LoggedUser.Id, newContact.Id) ||
-                _system.LoggedUser.PhoneNumber ==  PhoneBox.Text.Trim('+'))
+                _system.LoggedUser.PhoneNumber == PhoneBox.Text.Trim('+'))
             {
                 ClearFields();
                 return;
             }
 
+            await ToAdddContact(newContact);
+
+            ClearFields();
+
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+        }
+
+        public async Task ToAdddContact(User newContact)
+        {
+            bool isUserOnline = await ApiService.IsUserOnline(newContact.Id);
+
+            //is online
+            if (isUserOnline)
+            {
+                await AddContactIfContactOnline(newContact);
+                return;
+            }
+
+            //is addable contact is offline
+            
+            //for logged user (whicj is online)
+            AddContactIfContactOnline(newContact);
+
+            //for addable contact(which is offline)
+            AddContactIfContactOffline(newContact);
+
+        }
+
+        public async Task AddContactIfContactOffline(User newContcat)
+        {
+            //Add conatct in system
+            UserContactcs contact = new UserContactcs(-1, 
+                _system.LoggedUser.Name,
+                _system.LoggedUser.UserName,
+                _system.LoggedUser.BirthDay, 
+                _system.LoggedUser.BIO,
+                _system.LoggedUser.PhoneNumber,
+                _system.LoggedUser.LastSeenOnline, true,
+                _system.LoggedUser.UserImages, null, true);
+
+            //add cotact in db
+            await ApiService.AddContact(newContcat.Id, contact);
+
+            contact = await ApiService.GetLastUserContact(newContcat.Id);
+
+            //Add chat in DB
+            await ApiService.AddNewChat(newContcat.Id, contact.Id);
+        }
+
+        public async Task AddContactIfContactOnline(User newContact)
+        {
             UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.UserName, newContact.BirthDay,
                 newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null, false);
 
@@ -72,10 +123,6 @@ namespace TelegramVisualPart.Pages.Contacts
 
             //Add backwards (add temp user in added user contact);
             await SignalRService.AddContact(newContact, _system.LoggedUser);
-
-            ClearFields();
-
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private async void AddChatInTelSystem(int userId, int contactId)

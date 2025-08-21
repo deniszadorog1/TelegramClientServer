@@ -32,18 +32,48 @@ namespace TelegramVisualPart.UserControls
     public partial class UserChat : UserControl
     {
         public List<Message> _chatMessages = new List<Message>();
-
         public UserChat()
         {
             InitializeComponent();
-
             SetMarginForChatMenu();
-
             SetAutoDeleteTimer();
 
             SignalRService.TextMessageReceived += OnTextMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageRecived;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
+            SignalRService.UpdateUserImage += UpdateUserImage;
+        }
+
+        public void UpdateUserImage(TelegramLib.MainClasses.User user)
+        {
+            //Chat
+            UpdateChatImages(user);
+        }
+
+        public void UpdateChatImages(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+                if (chat is null || chat.Chatter.ContactUserId != user.Id) return;
+
+                for (int i = 0; i < ChatBox.Items.Count; i++)
+                {
+                    if (chat.Messages[i].SenderUserId != user.Id) continue;
+                    if (ChatBox.Items[i] is ChatControls.TextMessage textMes)
+                    {
+                        textMes.BgBrush.ImageSource =
+                            new BitmapImage(new Uri(FilesAction.GetUserImagePath(
+                                user.GetFirstImageNameInString()), UriKind.Absolute));
+                    }
+                    else if (ChatBox.Items[i] is MediaMessage mediaMes)
+                    {
+                        mediaMes.BgBrush.ImageSource =
+                            new BitmapImage(new Uri(FilesAction.GetUserImagePath(
+                                user.GetFirstImageNameInString()), UriKind.Absolute));
+                    }
+                }
+            });
         }
 
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
@@ -73,7 +103,7 @@ namespace TelegramVisualPart.UserControls
         private async void AddMediaMessageInChosenChat(MediaAction message, TelegramLib.MainClasses.User sender)
         {
             //Add media in vis
-            SetMediaMessageInChat(message, "fray.jpg");
+            SetMediaMessageInChat(message, sender.GetFirstImageNameInString());
 
             //Add in system
             _chat.Messages.Add(message);
@@ -109,7 +139,8 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User sender)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(message.Text), "fray.jpg", _system.Settings.GetChatSettings().FontName)); //Change on sender image 
+                GetConvertedStringMessage(message.Text), sender.GetFirstImageNameInString(),
+                _system.Settings.GetChatSettings().FontName)); //Change on sender image 
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -231,7 +262,7 @@ namespace TelegramVisualPart.UserControls
         {
             for (int i = 0; i < _chatMessages.Count; i++)
             {
-                string imgName = _chatMessages[i].SenderId == -1 ?
+                string imgName = _chatMessages[i].SenderId == _system.LoggedUser.Id ?
                     _system.LoggedUser.GetFirstImageName().Name : _chat.GetChatter().GetFirstImageName().Name;
 
                 if (_chatMessages[i] is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -287,7 +318,8 @@ namespace TelegramVisualPart.UserControls
         public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message, string senderImageName)
         {
             ChatControls.TextMessage newMes =
-                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text), senderImageName, _system.Settings.GetChatSettings().FontName);
+                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text),
+                senderImageName, _system.Settings.GetChatSettings().FontName);
             newMes.SetTime(message.SentTime);
 
             ChatBox.Items.Add(newMes);
@@ -371,7 +403,7 @@ namespace TelegramVisualPart.UserControls
 
         private string GetConvertedStringMessage(string str)
         {
-            const int checker = 20;
+            const int checker = 15;
 
             for (int i = 0; i < str.Length; i++)
             {
@@ -948,8 +980,6 @@ namespace TelegramVisualPart.UserControls
 
             TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.ContactUserId, contcat.Id);
             if (chat is null) return;
-
-            Console.WriteLine(_chat);
 
             if (message is TelegramLib.MainClasses.Messages.TextMessage text)
             {

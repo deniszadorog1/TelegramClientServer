@@ -431,6 +431,21 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<bool> AddUserImage(TelegramLib.MainClasses.User user, string userImageName)
+        {
+            var date = new
+            {
+                User = user,
+                UserImageName = userImageName
+            };
+
+            var json = JsonConvert.SerializeObject(date);
+            var contact = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/AddUserImage", contact);
+
+            return response.IsSuccessStatusCode;
+        } 
+
         //Add folder
         public static async Task<bool> AddFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
         {
