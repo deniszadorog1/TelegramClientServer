@@ -1,6 +1,28 @@
 [
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "GetLastSeenVisState",
+    "RelativePath": "api/Settings/GetLastSeenVisState",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "UpdateAdvanced",
     "RelativePath": "api/Settings/UpdateAdvanced",
     "HttpMethod": "POST",

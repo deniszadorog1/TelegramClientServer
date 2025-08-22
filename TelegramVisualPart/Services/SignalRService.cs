@@ -14,6 +14,8 @@ using TelegramLib.Models;
 using UserChat = TelegramLib.MainClasses.UserChat;
 using User = TelegramLib.MainClasses.User;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Http;
+using System.Runtime.CompilerServices;
 
 namespace TelegramVisualPart.Services
 {
@@ -30,8 +32,8 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? UpdateContactDel;
         public static event Action<User>? UpdateOnlineStatusDel;
         public static event Action<User>? UpdateUserImage;
-
-
+        public static event Action<User>? ClearChatDel;
+        public static event Action<bool>? SetContactLastSeenVisStateDel;
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -136,8 +138,18 @@ namespace TelegramVisualPart.Services
 
                 //update in opened 
                 //update
-                
+
                 //Update in view(If need)
+            });
+
+            _connection.On<User>("ClearChat", (chatter) =>
+            {
+                ClearChatDel?.Invoke(chatter);
+            });
+
+            _connection.On<bool>("SetContactLastSeenVisState", (isVis) =>
+            {
+                SetContactLastSeenVisStateDel?.Invoke(isVis);
             });
 
             await _connection.StartAsync();
@@ -180,5 +192,19 @@ namespace TelegramVisualPart.Services
             if (_connection.State == HubConnectionState.Connected)
                 await _connection?.InvokeAsync("AddUserImage", addedImage);
         }
+
+        public static async void ClearChat(int clientId, User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection?.InvokeAsync("ClearChat", clientId, user);
+        }
+
+        public static async void SetContactLastSeenVisState(bool isVis)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection?.InvokeAsync("SetContactLastSeenVisState", isVis);
+        }
+
+        
     }
 }

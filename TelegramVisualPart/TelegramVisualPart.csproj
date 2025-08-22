@@ -71,8 +71,4 @@
 		</Page>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="UserControls\Новая папка\" />
-	</ItemGroup>
-
 </Project>

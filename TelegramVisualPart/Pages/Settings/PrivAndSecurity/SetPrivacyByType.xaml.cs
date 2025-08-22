@@ -42,7 +42,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             _settings = settings;
             _type = type;
             _contacts = contacts;
-            _system = system; 
+            _system = system;
 
             InitializeComponent();
 
@@ -549,8 +549,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             BIORow.Height = new GridLength(0);
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            //Set in DB
+
+            await ApiService.UpdatePrivSettings(_settings);
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

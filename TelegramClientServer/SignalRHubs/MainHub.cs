@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
+using User = TelegramLib.MainClasses.User;
 
 namespace TelegramClientServer.SignalRHubs
 {
@@ -35,6 +37,16 @@ namespace TelegramClientServer.SignalRHubs
         public async Task AddUserImage(User addedImage)
         {
             await Clients.All.SendAsync("AddUserImage", addedImage);
+        }
+
+        public async Task ClearChat(int clientId, User chatter)
+        {
+            await Clients.User(clientId.ToString()).SendAsync("ClearChat", chatter);
+        }
+
+        public async Task SetContactLastSeenVisState(bool isSeen)
+        {
+            await Clients.All.SendAsync("SetContactLastSeenVisState", isSeen);
         }
     }
 }

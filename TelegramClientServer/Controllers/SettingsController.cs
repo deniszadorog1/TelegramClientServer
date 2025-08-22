@@ -70,6 +70,12 @@ namespace TelegramClientServer.Controllers
         }
 
 
+        [HttpGet("GetLastSeenVisState")]
+        public void GetLastSeenVisState(int userId)
+        {
+            DbService.GetLastSeenStateByUserId(userId);
+        }
+
 
     }
 }

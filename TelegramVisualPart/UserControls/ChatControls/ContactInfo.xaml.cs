@@ -76,16 +76,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             });
         }
 
-
-
         private void SetUserParams()
         {
             Username.Text = _chat.GetChatter().Name;
 
             SetLastSeenOnline();
 
-            MobileNumber.SetUpperText(_chat.GetChatter().GetPhoneNumber());
-            MobileNumber.SetBottomText("Mobile");
+            SetMobilePhoneNumber();
 
             Login.SetUpperText(_chat.GetChatter().GetUserName());
             Login.SetBottomText("Username");
@@ -100,6 +97,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UserContactcs contact = _chat.GetChatter();
             ContactImgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
+        }
+
+        public void SetMobilePhoneNumber()
+        {
+            //Is its can be seen
+            string phoneText;
+
+            MobileNumber.SetUpperText(_chat.GetChatter().GetPhoneNumber());
+            MobileNumber.SetBottomText("Mobile");
         }
 
         private void SetLastSeenOnline()

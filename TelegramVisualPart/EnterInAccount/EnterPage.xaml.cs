@@ -56,11 +56,17 @@ namespace TelegramVisualPart.EnterInAccount
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
-            bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
-            if (_system is null || isOnline)
+            if (_system is null)
             {
-                if(_system is null) MessageBox.Show("No user with such params");
-                if(isOnline) MessageBox.Show("User is already online");
+                MessageBox.Show("No user with such params");
+                ClearBoxes();
+                return;
+            }
+
+            bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
+            if (isOnline)
+            {
+                MessageBox.Show("User is already online");
                 ClearBoxes();
                 return;
             }
@@ -78,7 +84,7 @@ namespace TelegramVisualPart.EnterInAccount
             ((MainWindow)Window.GetWindow(this)).SetMainPage(_system);
         }
 
-        private async Task  SetOnlineStatus()
+        private async Task SetOnlineStatus()
         {
             _system.LoggedUser.IsOnline = true;
             await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, true);

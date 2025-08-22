@@ -408,6 +408,15 @@ namespace TelegramVisualPart.Services
             return contact;
         }
 
+        public static async Task<bool?> GetLastSeenVisState(int userId)
+        {
+            var response = await _client.GetAsync($"api/Settings/GetLastSeenVisState?userId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            bool? res = JsonConvert.DeserializeObject<bool?>(jsonResponse);
+            return res;
+        }
+
         public static async Task<bool> IsContactExist(int userId, int friendId)
         {
             var response = await _client.GetAsync($"api/Social/IsContactExist?userId={userId}&friendId={friendId}");

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Services;
 
@@ -31,9 +32,54 @@ namespace TelegramVisualPart.Pages.ChatActions
             _system = system;
 
             InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        public async Task SetBasicParams()
+        {
+            TelegramLib.MainClasses.User user =
+                await ApiService.GetUserById(_chat.Chatter.ContactUserId);
+            UsernameBlock.Text = user.Login;
+            UsernameCheckBoxBlock.Text = user.Login;
         }
 
         private async void DeleteBut_Click(object sender, RoutedEventArgs e)
+        {
+            await ClearChat();
+        }
+
+        private async Task ClearChat()
+        {
+            //Is to clear both users
+            bool isClearBoth = (bool)ShowChatNameBox.IsChecked;
+            if (isClearBoth)
+            {
+                //Clear for chatter
+                await ClearForChatter();
+            }
+            //clear for temp user
+            await ClearTempUserChat();
+        }
+
+        public async Task ClearForChatter()
+        {
+            bool isChatterOnline = await ApiService.IsUserOnline(_chat.Chatter.ContactUserId);
+            TelegramLib.MainClasses.User chatter = await ApiService.GetUserById(_chat.Chatter.ContactUserId);
+
+            if (isChatterOnline)
+            {
+                SignalRService.ClearChat(chatter.Id, _system.LoggedUser);
+            }
+            else
+            {
+                UserContactcs userContact = await ApiService.GetContactByUserAndFriendIds(chatter.Id, _system.LoggedUser.Id);
+                UserChat chat = await ApiService.GetChatByUserAndSenderId(chatter.Id, userContact.Id);
+                await ApiService.ClearChat(chat);
+            }
+        }
+
+        private async Task ClearTempUserChat()
         {
             await ApiService.ClearChat(_chat);
             _chat.ClearChat();

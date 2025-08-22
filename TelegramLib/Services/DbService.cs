@@ -2222,7 +2222,9 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                model.Messages.RemoveRange(model.Messages.Where(x => x.ChatId == chatId));
+                model.Messages
+                    .RemoveRange(model.Messages
+                        .Where(x => x.ChatId == chatId));
                 model.SaveChanges();
             }
         }
@@ -2810,5 +2812,24 @@ namespace TelegramLib.Services
                     .Any();
             }
         }
+
+        public static bool? GetLastSeenStateByUserId(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Settings startSetting = model.Settings.FirstOrDefault(x => x.UserId == userId);
+                if (startSetting is null) return null;
+
+                PrivacySetting privSet = model.PrivacySetting.FirstOrDefault(x => x.SettingId == startSetting.Id);
+                if (privSet is null || privSet.LastSeenSetId is null) return null;
+
+                LastSeenSettings res = model.LastSeenSettings.FirstOrDefault(x => x.Id == privSet.LastSeenSetId);
+                if (res is null) return null;
+
+                return res.IsHideReadTime;
+            }
+
+        }
+
     }
 }

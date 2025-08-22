@@ -76,9 +76,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo(_chat, _system));
         }
 
-        private void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new DeleteChat());
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                new DeleteChat(await ApiService.GetUserById(_chat.GetChatter().ContactUserId)));
         }
 
         private async void ClearChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

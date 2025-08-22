@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
@@ -64,15 +65,72 @@ namespace TelegramVisualPart.Pages
             SearchControl.SetSearchType += SetSearchedParams;
 
             SignalRService.UpdateUserImage += AddedUserImage;
+
+            //Check with last message
+            SignalRService.ClearChatDel += ClearChatAction;
+
+            SignalRService.TextMessageReceived += SentTextMessage;
+            SignalRService.MediaMessageReceived += SetMediaMessage;
         }
 
-        public void AddedUserImage(User user)
+        public void SetMediaMessage(TelegramLib.MainClasses.User user,
+            MediaAction media)
         {
             Dispatcher.Invoke(() =>
             {
-/*                TelegramLib.MainClasses.UserChat? chat =
-                _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
-                if (chat is null) return;*/
+                SetInUserTalkMessageLastMessage(user.Login, "media");
+            });
+        }
+
+        public void SentTextMessage(TelegramLib.MainClasses.User user,
+            TelegramLib.MainClasses.Messages.TextMessage textMes)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                SetInUserTalkMessageLastMessage(user.Login, textMes.Text);
+            });
+        }
+
+        public void SetMessageToUserTalkControl(UserTalkMessage control, string message)
+        {
+            control.LastMessage.Text = message;
+        }
+
+        public void ClearChatAction(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                SetInUserTalkMessageLastMessage(user.Login, "No messages");
+            });
+        }
+
+        public void SetInUserTalkMessageLastMessage(string userLogin, string message)
+        {
+            //Find correct item in chat box
+            Dispatcher.Invoke(() =>
+            {
+                ListBoxItem? item = GetChatControlItemByUserLogin(userLogin);
+
+                if (item is null || item.Content is not UserTalkMessage mesControl) return;
+                SetMessageToUserTalkControl(mesControl, message);
+            });
+        }
+
+        public ListBoxItem? GetChatControlItemByUserLogin(string login)
+        {
+            return ChatsBox.Items
+            .OfType<ListBoxItem>()
+            .FirstOrDefault(x => x.Content is UserTalkMessage control &&
+                control.GetFriendName() == login);
+        }
+
+        public void AddedUserImage(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                /*                TelegramLib.MainClasses.UserChat? chat =
+                                _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
+                                if (chat is null) return;*/
 
                 ListBoxItem? boxItem = ChatsBox.Items
                     .OfType<ListBoxItem>()
@@ -736,7 +794,7 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void SetChosenFolder(Folder chosenFolder)
+        public void SetChosenFolder(TelegramLib.MainClasses.FolderObjs.Folder chosenFolder)
         {
             ChatsBox.Items.Clear();
             foreach (UserContactcs contact in chosenFolder.Contacts)

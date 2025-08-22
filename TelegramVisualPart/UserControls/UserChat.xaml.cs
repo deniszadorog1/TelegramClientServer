@@ -42,6 +42,26 @@ namespace TelegramVisualPart.UserControls
             SignalRService.MediaMessageReceived += OnMediaMessageRecived;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.UpdateUserImage += UpdateUserImage;
+            SignalRService.ClearChatDel += ClearChatAction;
+        }
+
+        public void ClearChatAction(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async() =>
+            {
+                TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
+                if (chat is null) return;
+
+                //Is temp is Chosen -> clear vis
+                if (_chat.Id == chat.Id)
+                {
+                    ChatBox.Items.Clear();
+                }
+                //Clear from system
+                chat.Messages.Clear();
+                //Clear from Db
+                await ApiService.ClearChat(chat);
+            });
         }
 
         public void UpdateUserImage(TelegramLib.MainClasses.User user)

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -20,9 +21,22 @@ namespace TelegramVisualPart.Pages.ChatActions
     /// </summary>
     public partial class DeleteChat : Page
     {
-        public DeleteChat()
+        private TelegramLib.MainClasses.User _user;
+        public DeleteChat(TelegramLib.MainClasses.User user)
         {
+            _user = user;
             InitializeComponent();
+
+            SetBasicParams();
+        }
+        public void SetBasicParams()
+        {
+            BgBrush.ImageSource = new BitmapImage(
+                new Uri(FilesAction.GetUserImagePath(
+                    _user.GetFirstImageNameInString()), UriKind.Absolute));
+
+            FirstUsername.Text = _user.Login;
+            UsernameRunBlock.Text = _user.Login;
         }
 
         private void DeleteBut_Click(object sender, RoutedEventArgs e)

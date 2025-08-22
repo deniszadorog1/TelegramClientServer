@@ -20,20 +20,31 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="0 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"
-                       Text="Are you sure you want to delete all message history with USERNAME" 
-                       Foreground="White" FontSize="14"/>
+            <TextBlock Margin="0 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap" 
+                       Foreground="White" FontSize="14">
+                
+                <Run Text="Are you sure you want to delete all message history with"/>
+                <Run Name="UsernameBlock" Text="USERNAME"/>
+            </TextBlock>
 
             <TextBlock Grid.Row="1" Foreground="White" TextWrapping="Wrap"
                        VerticalAlignment="Bottom" FontSize="14"
                        Text="This action cannot be undone."/>
 
-            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
-                            Content="Also delete for USERNAME" Grid.Row="2"
-                            Name="ShowChatNameBox" Margin="0 5 0 0"
-                            Background="{StaticResource DarkThemeProfileButForeGround}"
-                            IsChecked="False" FontSize="14"                               
+            <StackPanel Grid.Row="2" Margin="0 5 0 0" Height="20" Orientation="Horizontal">
+                <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
+                            Name="ShowChatNameBox" 
+                            Background="{StaticResource TempActiveTextColor}"
+                            IsChecked="False"                               
                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
+
+                <TextBlock FontSize="14" Foreground="White" >
+                    <Run Text="Also delete for "/>
+                    <Run Name="UsernameCheckBoxBlock" Text="USERNAME "/>
+                </TextBlock>
+
+            </StackPanel>
+
 
             <TextBlock Grid.Row="3" Text="Enable Auto-Delete" VerticalAlignment="Center"
                        Foreground="{StaticResource TempActiveTextColor}" FontSize="14"
@@ -45,7 +56,7 @@
                             Content="Cancel" Background="Transparent" BorderThickness="0"
                             HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
                             MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
-                            Foreground="{StaticResource DarkThemeProfileButForeGround}"
+                            Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DeleteBut"
