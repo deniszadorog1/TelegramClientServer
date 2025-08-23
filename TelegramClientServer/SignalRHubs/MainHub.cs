@@ -44,9 +44,15 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.User(clientId.ToString()).SendAsync("ClearChat", chatter);
         }
 
-        public async Task SetContactLastSeenVisState(bool isSeen)
+        public async Task SetContactPhoneNumberVisibility(bool isVis, 
+            TelegramLib.MainClasses.User user)
         {
-            await Clients.All.SendAsync("SetContactLastSeenVisState", isSeen);
+            await Clients.All.SendAsync("SetContactPhoneNumberVisibility", isVis, user);
+        }
+
+        public async Task SetContactLastSeenVisState(User user)
+        {
+            await Clients.All.SendAsync("SetContactLastSeenVisState", user);
         }
     }
 }

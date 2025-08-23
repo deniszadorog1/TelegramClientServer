@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -26,6 +27,7 @@ using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramLib.Services;
+using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls.ContactsControls;
@@ -406,6 +408,17 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.UserContactcs? contact = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.UserContactcs>(jsonResponse);
             return contact;
+        }
+
+        public static async Task<MainSettings> GetSettingsByUserId(int userId)
+        {
+            var response = await _client.GetAsync($"api/Settings/GetSettingsByUserId?userId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            MainSettings? res = JsonConvert.DeserializeObject<MainSettings>(jsonResponse);
+            return res;
         }
 
         public static async Task<bool?> GetLastSeenVisState(int userId)

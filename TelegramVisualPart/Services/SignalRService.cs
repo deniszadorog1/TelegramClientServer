@@ -16,6 +16,7 @@ using User = TelegramLib.MainClasses.User;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Http;
 using System.Runtime.CompilerServices;
+using TelegramVisualPart.UserControls.SettingsControls;
 
 namespace TelegramVisualPart.Services
 {
@@ -33,7 +34,10 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? UpdateOnlineStatusDel;
         public static event Action<User>? UpdateUserImage;
         public static event Action<User>? ClearChatDel;
-        public static event Action<bool>? SetContactLastSeenVisStateDel;
+
+        public static event Action<bool, User>? SetContactPhoneNumberVisibilityDel;
+        public static event Action<User>? SetContactLastSeenVisStateDel;
+
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -147,9 +151,14 @@ namespace TelegramVisualPart.Services
                 ClearChatDel?.Invoke(chatter);
             });
 
-            _connection.On<bool>("SetContactLastSeenVisState", (isVis) =>
+            _connection.On<bool, User>("SetContactPhoneNumberVisibility", (isVisivle, updatedUser) =>
             {
-                SetContactLastSeenVisStateDel?.Invoke(isVis);
+                SetContactPhoneNumberVisibilityDel?.Invoke(isVisivle, updatedUser);
+            });
+
+            _connection.On<User>("SetContactLastSeenVisState", (user) =>
+            {
+                SetContactLastSeenVisStateDel?.Invoke(user);
             });
 
             await _connection.StartAsync();
@@ -199,12 +208,18 @@ namespace TelegramVisualPart.Services
                 await _connection?.InvokeAsync("ClearChat", clientId, user);
         }
 
-        public static async void SetContactLastSeenVisState(bool isVis)
+        public static async void SetUserPhonenumberVisibility(bool IsVisisble, 
+            TelegramLib.MainClasses.User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection?.InvokeAsync("SetContactLastSeenVisState", isVis);
-        }
+                await _connection?.InvokeAsync("SetContactPhoneNumberVisibility", IsVisisble, user);
+        } 
 
+        public static async void SetContactLastSeenVisState(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection?.InvokeAsync("SetContactLastSeenVisState", user);
+        }
         
     }
 }

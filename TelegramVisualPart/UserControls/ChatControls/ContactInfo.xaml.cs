@@ -18,9 +18,11 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -29,15 +31,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
     /// </summary>
     public partial class ContactInfo : UserControl
     {
+        private TelegramLib.MainClasses.UserChat _chat;
+        private TelSystem _system;
+        private UserContactcs _contact;
+
         public ContactInfo()
         {
             InitializeComponent();
             SetIconsSize();
         }
 
-        private TelegramLib.MainClasses.UserChat _chat;
-        private TelSystem _system;
-        private UserContactcs _contact;
 
         public void SetContactInfo(TelegramLib.MainClasses.UserChat chat,
             TelSystem system, UserContactcs contact)
@@ -49,6 +52,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
+            SignalRService.SetContactPhoneNumberVisibilityDel += SetPhoneNumberVisAction;
+        }
+
+        public void SetPhoneNumberVisAction(bool isVis, User updatedUser)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_chat is null || _chat.GetChatter().ContactUserId != updatedUser.Id) return;
+                MobileNumber.UpperText.Text = isVis ? _contact.PhoneNumber : "Its hidden LOOOOLL";
+            });
         }
 
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
@@ -67,7 +80,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 if (_contact.ContactUserId != updated.Id) return;
 
                 Username.Text = updated.UserName;
-
 
 
                 MobileNumber.UpperText.Text = updated.PhoneNumber;
@@ -99,12 +111,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
         }
 
-        public void SetMobilePhoneNumber()
+        public async Task SetMobilePhoneNumber()
         {
             //Is its can be seen
-            string phoneText;
 
-            MobileNumber.SetUpperText(_chat.GetChatter().GetPhoneNumber());
+           MainSettings settings = await ApiService.GetSettingsByUserId(_contact.ContactUserId);
+
+            string phoneText = settings.PrivacySettings.PhonePrivacy.ShareType == 
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ? "Its hidden LOOOOLL" :
+                _chat.GetChatter().GetPhoneNumber();
+
+
+            MobileNumber.SetUpperText(phoneText);
             MobileNumber.SetBottomText("Mobile");
         }
 

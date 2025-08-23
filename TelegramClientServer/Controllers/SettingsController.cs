@@ -4,6 +4,7 @@ using TelegramLib;
 using TelegramLib.Helpers;
 using TelegramLib.Models;
 using TelegramLib.Services;
+using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -76,6 +77,11 @@ namespace TelegramClientServer.Controllers
             DbService.GetLastSeenStateByUserId(userId);
         }
 
+        [HttpGet("GetSettingsByUserId")]
+        public MainSettings GetSettingsByUserId(int userId)
+        {
+            return DbService.GetSettingsByUserId(userId);
+        }
 
     }
 }

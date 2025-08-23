@@ -22,6 +22,9 @@ using Path = System.IO.Path;
 using System.Data.Common;
 using TelegramLib.Models;
 using System.Net.Sockets;
+using static System.Data.Entity.Infrastructure.Design.Executor;
+using TelegramLib.UserSettings;
+using System.Windows.Documents;
 
 
 namespace TelegramVisualPart.UserControls
@@ -43,6 +46,34 @@ namespace TelegramVisualPart.UserControls
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.UpdateUserImage += UpdateUserImage;
             SignalRService.ClearChatDel += ClearChatAction;
+
+            SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
+        }
+
+        public void SetLastVisState(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async() =>
+            {
+                await SetLastSeenString(user);
+            });
+        }
+
+        private async Task SetLastSeenString(TelegramLib.MainClasses.User user)
+        {
+            if (_chat is null || _chat.GetChatter().ContactUserId != user.Id);
+
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            if(settings.PrivacySettings.LastSeenPrivacy.ShareType == 
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody)
+            {
+                ChatFriendLastSeen.Foreground = new SolidColorBrush(Colors.Gray);
+                ChatFriendLastSeen.Text = "You cant see this LOOOOLL";
+                return;
+            }
+            HelperService.SetOnlineStatusInTextBox(
+                ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
+
         }
 
         public void ClearChatAction(TelegramLib.MainClasses.User user)
@@ -98,11 +129,13 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.InvokeAsync(async() =>
             {
-                if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
+                await SetLastSeenString(toUpdate);
+
+               /* if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
                 HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, toUpdate.IsOnline, toUpdate.LastSeenOnline);
-            });
+            */});
         }
 
         public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.MediaAction message)
@@ -211,7 +244,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
             if (user is null) return;
 
-            HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
+            await SetLastSeenString(user);
         }
 
         public void SetUserBg()

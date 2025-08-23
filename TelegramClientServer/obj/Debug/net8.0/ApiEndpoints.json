@@ -23,6 +23,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "GetSettingsByUserId",
+    "RelativePath": "api/Settings/GetSettingsByUserId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.UserSettings.MainSettings",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "UpdateAdvanced",
     "RelativePath": "api/Settings/UpdateAdvanced",
     "HttpMethod": "POST",

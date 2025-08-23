@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -317,9 +318,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             }
         }
 
-        public void SetShareParam(PrivacySub param, ShareWith value)
+        public async Task SetShareParam(PrivacySub param, ShareWith value)
         {
             param.ShareType = value;
+            //await ApiService.UpdatePrivSettings(_settings);
         }
 
         private void ContactsRadio_Checked(object sender, RoutedEventArgs e)
@@ -552,10 +554,20 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Set in DB
-
-            await ApiService.UpdatePrivSettings(_settings);
-
+            await ApiService.UpdatePrivSettings(_settings);       
+            
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+
+            UpdateStatesWithSignalR();
+        }
+
+        public void UpdateStatesWithSignalR()
+        {
+            SignalRService.SetUserPhonenumberVisibility(
+                _settings.PhonePrivacy.ShareType == ShareWith.Nobody ? false : true, 
+                _system.LoggedUser);
+
+            SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

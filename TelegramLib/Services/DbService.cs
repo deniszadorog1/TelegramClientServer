@@ -842,6 +842,9 @@ namespace TelegramLib.Services
                         //phone priv
                         UpdatePhoneNumberSetting(settings.Id, settings.PhonePrivacy);
 
+                        //Last seen online
+                        UpdateLastSeenSetting(settings.Id, settings.LastSeenPrivacy);
+
                         //profile priv
                         UpdateProfilePhoto(settings.Id, settings.ProfPhotoPrivacy);
 
@@ -1487,7 +1490,7 @@ namespace TelegramLib.Services
                 settings.WhoCanFindNumber = GetWhoSeeIdByShareWithType(sub.WhoCanSearch.ToString());
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.PhoneNumber), sub.ShareWithExps, true);
-                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.PhoneNumber), sub.ShareWithExps, false);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.PhoneNumber), sub.NeverShareExps, false);
 
                 model.SaveChanges();
             }
@@ -1580,6 +1583,11 @@ namespace TelegramLib.Services
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
                 settings.IsHideReadTime = sub.IsHideReadAction;
+
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.LastSeen), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.LastSeen), sub.NeverShareExps, false);
+
+
                 model.SaveChanges();
             }
         }
@@ -1611,7 +1619,7 @@ namespace TelegramLib.Services
 
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Profile), sub.ShareWithExps, true);
-                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Profile), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Profile), sub.NeverShareExps, false);
 
                 model.SaveChanges();
             }
@@ -1640,7 +1648,7 @@ namespace TelegramLib.Services
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.ForwardMessage), sub.ShareWithExps, true);
-                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.ForwardMessage), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.ForwardMessage), sub.NeverShareExps, false);
 
                 model.SaveChanges();
             }
@@ -1669,7 +1677,7 @@ namespace TelegramLib.Services
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.DateOfBirth), sub.ShareWithExps, true);
-                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.DateOfBirth), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.DateOfBirth), sub.NeverShareExps, false);
 
                 model.SaveChanges();
             }
@@ -1699,7 +1707,7 @@ namespace TelegramLib.Services
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Bio), sub.ShareWithExps, true);
-                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Bio), sub.ShareWithExps, true);
+                UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.Bio), sub.NeverShareExps, false);
 
                 model.SaveChanges();
             }
