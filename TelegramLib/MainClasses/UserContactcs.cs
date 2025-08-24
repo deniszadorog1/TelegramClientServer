@@ -66,9 +66,10 @@ namespace TelegramLib.MainClasses
             UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
         }
 
-        public void SetAutoDeleteDuration(AutoDeleteType type)
+        public void SetAutoDeleteDuration(AutoDeleteType? type)
         {
-            AutoDeletion = new AutoDeleteDuration(type);
+            if (type is null) return;
+            AutoDeletion = new AutoDeleteDuration((AutoDeleteType) type);
         }
 
         public bool GetNotifsState()

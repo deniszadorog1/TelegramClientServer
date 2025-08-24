@@ -30,7 +30,6 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
         public event Action<TelegramLib.Enums.Messages.MediaType> SetSearchType; 
         private TelSystem _system;
 
-
         public SearchControl()
         {
             InitializeComponent();

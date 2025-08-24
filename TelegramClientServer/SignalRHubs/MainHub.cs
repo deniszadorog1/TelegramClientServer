@@ -54,5 +54,10 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.All.SendAsync("SetContactLastSeenVisState", user);
         }
+
+        public async Task SetPhoneNumVisByExps(User user)
+        {
+            await Clients.All.SendAsync("SetPhoneNumVisByExps", user);
+        }
     }
 }

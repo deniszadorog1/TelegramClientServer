@@ -18,7 +18,9 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramLib.UserSettings;
+using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
@@ -41,26 +43,59 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetIconsSize();
         }
 
-
-        public void SetContactInfo(TelegramLib.MainClasses.UserChat chat,
+        public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
             TelSystem system, UserContactcs contact)
         {
             _system = system;
             _chat = chat;
             _contact = contact;
-            SetUserParams();
+
+            await SetUserParams();
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.SetContactPhoneNumberVisibilityDel += SetPhoneNumberVisAction;
+
+            SignalRService.SetContactLastSeenVisStateDel += SetLastSeenState;
+            SignalRService.SetPhoneNumVisByExpsDel += SetPhoneNumberVisByExps;
         }
 
-        public void SetPhoneNumberVisAction(bool isVis, User updatedUser)
+        public void SetPhoneNumberVisByExps(TelegramLib.MainClasses.User user)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.InvokeAsync(async () =>
             {
-                if (_chat is null || _chat.GetChatter().ContactUserId != updatedUser.Id) return;
-                MobileNumber.UpperText.Text = isVis ? _contact.PhoneNumber : "Its hidden LOOOOLL";
+                await SetUserPhoneNumber(user);
+            });
+        }
+
+        public async Task SetUserPhoneNumber(TelegramLib.MainClasses.User contactUser)
+        {
+            if (_chat.GetChatter().ContactUserId != contactUser.Id) return;
+
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(contactUser, Enums.PrivacySettingType.LastSeen);
+
+            await SignalRHelperService.SetPhoneNumber(contactUser, shareType, _chat, MobileNumber.UpperText);
+        }
+
+        public void SetLastSeenState(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (_chat.GetChatter().ContactUserId != user.Id) return;
+
+                IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
+
+                await SignalRHelperService.SetLastSeenString(user, shareType, _chat, LastSeenOnline);
+            });
+        }
+
+        public void SetPhoneNumberVisAction(bool isVis, TelegramLib.MainClasses.User updatedUser)
+        {
+            Dispatcher.InvokeAsync(async() =>
+            {
+                await SetUserPhoneNumber(updatedUser);
+/*                if (_chat is null || _chat.GetChatter().ContactUserId != updatedUser.Id) return;
+                MobileNumber.UpperText.Text = isVis ? _contact.PhoneNumber : "Its hidden LOOOOLL";*/
             });
         }
 
@@ -73,28 +108,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
             });
         }
 
-        private void UpdateContactParams(User updated)
+        private void UpdateContactParams(TelegramLib.MainClasses.User updated)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.InvokeAsync(async() =>
             {
                 if (_contact.ContactUserId != updated.Id) return;
 
                 Username.Text = updated.UserName;
 
+                await SetUserPhoneNumber(updated);
+                //MobileNumber.UpperText.Text = updated.PhoneNumber;
 
-                MobileNumber.UpperText.Text = updated.PhoneNumber;
+
                 Login.UpperText.Text = updated.Login;
                 Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" : $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
         }
 
-        private void SetUserParams()
+        private async Task SetUserParams()
         {
             Username.Text = _chat.GetChatter().Name;
 
-            SetLastSeenOnline();
+            await SetOnlineStatus();
+            //SetLastSeenOnline();
 
-            SetMobilePhoneNumber();
+            await SetMobilePhoneNumber();
 
             Login.SetUpperText(_chat.GetChatter().GetUserName());
             Login.SetBottomText("Username");
@@ -114,33 +152,32 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async Task SetMobilePhoneNumber()
         {
             //Is its can be seen
+            if (_chat is null) return;
+            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            if (user is null) return;
 
-           MainSettings settings = await ApiService.GetSettingsByUserId(_contact.ContactUserId);
+            MainSettings settings = await ApiService.GetSettingsByUserId(_contact.ContactUserId);
 
-            string phoneText = settings.PrivacySettings.PhonePrivacy.ShareType == 
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.PhoneNumber);
+
+            await SignalRHelperService.SetPhoneNumber(user, shareType, _chat, MobileNumber.UpperText);
+
+/*            string phoneText = settings.PrivacySettings.PhonePrivacy.ShareType ==
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ? "Its hidden LOOOOLL" :
                 _chat.GetChatter().GetPhoneNumber();
+            MobileNumber.SetUpperText(phoneText);*/
 
-
-            MobileNumber.SetUpperText(phoneText);
             MobileNumber.SetBottomText("Mobile");
         }
 
-        private void SetLastSeenOnline()
+        public async Task SetOnlineStatus()
         {
-            if (_chat.GetChatter().IsOnline)
-            {
-                SetOnlineStatus();
-                return;
-            }
-            SetOfflineStatus();
-        }
+            if (_chat is null) return;
+            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            if (user is null) return;
 
-        private void SetOnlineStatus()
-        {
-            LastSeenOnline.Text = "online";
-            LastSeenOnline.Foreground =
-                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
+            await SignalRHelperService.SetLastSeenString(user, shareType, _chat, LastSeenOnline);
         }
 
         private void SetOfflineStatus()
@@ -346,6 +383,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
         }
+
 
         private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
         {

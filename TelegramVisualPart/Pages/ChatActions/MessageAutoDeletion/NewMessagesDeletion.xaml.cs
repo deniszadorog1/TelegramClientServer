@@ -86,6 +86,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         private async void SaveBut_Click(object sender, RoutedEventArgs e)

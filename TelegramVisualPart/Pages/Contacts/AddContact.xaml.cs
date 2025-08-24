@@ -157,7 +157,7 @@ namespace TelegramVisualPart.Pages.Contacts
         private void PhoneBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (PhoneBox.Text.Count() == 0 || PhoneBox.Text.First() == '+') return;
-            PhoneBox.Text = "+" + new string(PhoneBox.Text.Where(x => x != '+').ToArray());
+            //PhoneBox.Text = /*"+" +*/ new string(PhoneBox.Text.Where(x => x != '+').ToArray());
 
         }
     }

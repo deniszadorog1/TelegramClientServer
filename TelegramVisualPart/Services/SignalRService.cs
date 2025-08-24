@@ -37,6 +37,7 @@ namespace TelegramVisualPart.Services
 
         public static event Action<bool, User>? SetContactPhoneNumberVisibilityDel;
         public static event Action<User>? SetContactLastSeenVisStateDel;
+        public static event Action<User>? SetPhoneNumVisByExpsDel;
 
         public static void SetSystem(TelSystem system)
         {
@@ -161,6 +162,11 @@ namespace TelegramVisualPart.Services
                 SetContactLastSeenVisStateDel?.Invoke(user);
             });
 
+            _connection.On<User>("SetPhoneNumVisByExps", (user) =>
+            {
+                SetPhoneNumVisByExpsDel?.Invoke(user);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -184,42 +190,48 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("AddContact", user, contact);
         }
 
-        public static async void UpdateContact(User updatedUser)
+        public static async Task UpdateContact(User updatedUser)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateContact", updatedUser);
         }
 
-        public static async void UpdateOnlineStatus(User toUpdate)
+        public static async Task UpdateOnlineStatus(User toUpdate)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
         }
 
-        public static async void AddUserImage(User addedImage)
+        public static async Task AddUserImage(User addedImage)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection?.InvokeAsync("AddUserImage", addedImage);
+                await _connection.InvokeAsync("AddUserImage", addedImage);
         }
 
-        public static async void ClearChat(int clientId, User user)
+        public static async Task ClearChat(int clientId, User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection?.InvokeAsync("ClearChat", clientId, user);
+                await _connection.InvokeAsync("ClearChat", clientId, user);
         }
 
-        public static async void SetUserPhonenumberVisibility(bool IsVisisble, 
+        public static async Task SetUserPhonenumberVisibility(bool IsVisisble, 
             TelegramLib.MainClasses.User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection?.InvokeAsync("SetContactPhoneNumberVisibility", IsVisisble, user);
+                await _connection.InvokeAsync("SetContactPhoneNumberVisibility", IsVisisble, user);
         } 
 
-        public static async void SetContactLastSeenVisState(User user)
+        public static async Task SetContactLastSeenVisState(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection?.InvokeAsync("SetContactLastSeenVisState", user);
+                await _connection.InvokeAsync("SetContactLastSeenVisState", user);
         }
         
+        public static async Task SetPhoneNumVisByExps(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("SetPhoneNumVisByExps", user);
+        }
+
     }
 }

@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
 using TelegramLib.MainClasses;
+using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
@@ -566,8 +567,6 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             SignalRService.SetUserPhonenumberVisibility(
                 _settings.PhonePrivacy.ShareType == ShareWith.Nobody ? false : true, 
                 _system.LoggedUser);
-
-            SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -603,7 +602,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         public void SetToChoosePage(ChooseType shareType, PrivacySub sub)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts, sub));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts, sub, _settings, _system));
         }
 
         public PrivacySub GetSettingsTypeByPrivButton(EnumPrivacyButton but)

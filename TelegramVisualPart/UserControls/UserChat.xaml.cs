@@ -25,6 +25,7 @@ using System.Net.Sockets;
 using static System.Data.Entity.Infrastructure.Design.Executor;
 using TelegramLib.UserSettings;
 using System.Windows.Documents;
+using TelegramVisualPart.Enums;
 
 
 namespace TelegramVisualPart.UserControls
@@ -52,20 +53,34 @@ namespace TelegramVisualPart.UserControls
 
         public void SetLastVisState(TelegramLib.MainClasses.User user)
         {
-            Dispatcher.InvokeAsync(async() =>
+            Dispatcher.InvokeAsync(async () =>
             {
-                await SetLastSeenString(user);
+                if (_chat.GetChatter().ContactUserId != user.Id) return;
+
+                IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
+
+                await SignalRHelperService.SetLastSeenString(user, shareType, _chat, ChatFriendLastSeen);
             });
         }
 
-        private async Task SetLastSeenString(TelegramLib.MainClasses.User user)
+/*        private async Task SetLastSeenString(TelegramLib.MainClasses.User user,
+            IsPrivacyException type)
         {
-            if (_chat is null || _chat.GetChatter().ContactUserId != user.Id);
+
+            if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
 
             MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            if(settings.PrivacySettings.LastSeenPrivacy.ShareType == 
-                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody)
+            if (type == IsPrivacyException.Share)
+            {
+                HelperService.SetOnlineStatusInTextBox(
+                    ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
+                return;
+            }
+
+            if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                type == IsPrivacyException.NeverShare)
             {
                 ChatFriendLastSeen.Foreground = new SolidColorBrush(Colors.Gray);
                 ChatFriendLastSeen.Text = "You cant see this LOOOOLL";
@@ -73,12 +88,11 @@ namespace TelegramVisualPart.UserControls
             }
             HelperService.SetOnlineStatusInTextBox(
                 ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
-
-        }
+        }*/
 
         public void ClearChatAction(TelegramLib.MainClasses.User user)
         {
-            Dispatcher.InvokeAsync(async() =>
+            Dispatcher.InvokeAsync(async () =>
             {
                 TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
                 if (chat is null) return;
@@ -129,13 +143,16 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
         {
-            Dispatcher.InvokeAsync(async() =>
+            Dispatcher.InvokeAsync(async () =>
             {
-                await SetLastSeenString(toUpdate);
 
-               /* if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
-                HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, toUpdate.IsOnline, toUpdate.LastSeenOnline);
-            */});
+                IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.LastSeen);
+                await SignalRHelperService.SetLastSeenString(toUpdate, shareType, _chat, ChatFriendLastSeen);
+
+                /* if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
+                 HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, toUpdate.IsOnline, toUpdate.LastSeenOnline);
+             */
+            });
         }
 
         public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.MediaAction message)
@@ -244,7 +261,8 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
             if (user is null) return;
 
-            await SetLastSeenString(user);
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
+            await SignalRHelperService.SetLastSeenString(user, shareType, _chat, ChatFriendLastSeen);
         }
 
         public void SetUserBg()

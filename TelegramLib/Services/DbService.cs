@@ -344,7 +344,7 @@ namespace TelegramLib.Services
                 {
                     if (userId == chat.UserId)
                     {
-                        UserChat toAdd = new UserChat(chat.Id, 
+                        UserChat toAdd = new UserChat(chat.Id,
                             GetUserContactById((int)chat.ChatterId),
                             GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(chat.AutoDeleteId));
@@ -1500,11 +1500,21 @@ namespace TelegramLib.Services
             List<UserContactcs> contacts, bool isShare)
         {
             //Remove all rows that confirm conditions
-            List<ChosenPrivacyContacts> toRemove = GetChosenPrivContaactWithCondition(settingId, settingTypeId, isShare);
+            List<ChosenPrivacyContacts> toRemove = new List<ChosenPrivacyContacts>();// GetChosenPrivContaactWithCondition(settingId, settingTypeId, isShare);
 
             using (var model = new TelegramModel())
             {
-                //Remove
+
+                foreach (var contact in model.ChosenPrivacyContacts)
+                {
+                    if (contact.SettingTypeId == settingTypeId &&
+                       contact.SttingId == settingId &&
+                       contact.IsShare == isShare)
+                    {
+                        toRemove.Add(contact);
+                    }
+                }
+
                 foreach (var remove in toRemove)
                 {
                     model.ChosenPrivacyContacts.Remove(remove);
@@ -1577,8 +1587,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                LastSeenSettings settings = model.LastSeenSettings.Where(
-                    x => x.Id == settingId).FirstOrDefault();
+                LastSeenSettings settings = model.LastSeenSettings.FirstOrDefault(x => x.Id == settingId);
                 if (settings is null) return;
 
                 settings.WhoSeeId = GetWhoSeeIdByShareWithType(sub.ShareType.ToString());
@@ -1586,7 +1595,6 @@ namespace TelegramLib.Services
 
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.LastSeen), sub.ShareWithExps, true);
                 UpdateChosenPrivContacts(settingId, GetSubSettingTypeByEnum(SubSettingType.LastSeen), sub.NeverShareExps, false);
-
 
                 model.SaveChanges();
             }
@@ -1805,7 +1813,7 @@ namespace TelegramLib.Services
                         toAdd.Name = img.Name;
                         toAdd.Date = (DateTime)img.AddDate;
 
-                        res.Insert(0, toAdd); 
+                        res.Insert(0, toAdd);
                         //res.Add(toAdd);
                     }
                 }
@@ -1956,12 +1964,12 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static int GetSubSettingTypeByEnum(SubSettingType type)
+        public static int GetSubSettingTypeByEnum(SubSettingType type)
         {
             using (var model = new TelegramModel())
             {
-                PrivacySettingType res = model.PrivacySettingType.Where(
-                    x => x.Name == type.ToString()).FirstOrDefault();
+                PrivacySettingType res = model.PrivacySettingType.FirstOrDefault(
+                    x => x.Name == type.ToString());
                 if (res is null) return 1;
                 return res.Id;
 
@@ -2823,7 +2831,7 @@ namespace TelegramLib.Services
 
         public static bool? GetLastSeenStateByUserId(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Settings startSetting = model.Settings.FirstOrDefault(x => x.UserId == userId);
                 if (startSetting is null) return null;
