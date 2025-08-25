@@ -36,6 +36,15 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             SetBasicParams();
             SetCreatedFolderItems();
+
+            SetTestObject();
+        }
+
+        private void SetTestObject()
+        {
+            TestThing.FolderName.Text = "There should be folder name";
+            TestThing.AmountOfChats.Text = "And there is amount of users";
+            TestThing.BucketIcon.Visibility = Visibility.Hidden;
         }
 
         public void SetCreatedFolderItems()
@@ -50,7 +59,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             FolderLittleInfo info = new FolderLittleInfo()
             {
-                Padding = new Thickness(20, 5, 22, 5),
+                Padding = new Thickness(0, 5, 5, 5),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Width = this.Width
             };

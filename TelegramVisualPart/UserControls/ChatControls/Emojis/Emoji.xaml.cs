@@ -25,6 +25,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             InitializeComponent();
         }
 
+        public Emoji(string emoji)
+        {
+            InitializeComponent();
+            EmojiBlock.Text = emoji;
+        }
+
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
             BorderBg.Background = 

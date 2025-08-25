@@ -245,7 +245,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             for (int i = 0; i < contacts.Count; i++)
             {
                 FoldersChat folderChat = new FoldersChat();
-                folderChat.Width = this.Width - 40;
+                folderChat.Width = this.Width - 10;
                 folderChat.NewFoldersChatText.Text = contacts[i].Name;
 
                 folderChat.RemoveControl += RemoveFolderChat_PreviewMouseDown;
@@ -260,7 +260,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 ListBoxItem item = new ListBoxItem()
                 {
                     Content = folderChat,
-                    Padding = new Thickness(20, 5, 10, 5)
+                    Padding = new Thickness(0, 5, 5, 5)
                 };
 
 

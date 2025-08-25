@@ -9,35 +9,40 @@
       xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="750" d:DesignWidth="400"
-      Height="750" Width="400"
+      d:DesignHeight="760" d:DesignWidth="400"
+      Height="760" Width="400"
       Title="AdvancedPage">
 
     <Border Name="BgBorder" CornerRadius="15"
             Background="{StaticResource DarkThemeOne}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
 
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Name="UpperThing">
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Grid Grid.Column="0">
 
-                    <iconBut:IconButton x:Name="GetBackBut" Margin="10 0 0 0" 
-                                        Width="35" Height="35"
-                                        VerticalAlignment="Center" HorizontalAlignment="Left"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <iconBut:IconButton Grid.Column="0" x:Name="GetBackBut"
+                                        Width="25" Height="25"
+                                        VerticalAlignment="Center" HorizontalAlignment="Center"
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
                     
-                    <TextBlock Text="Advanced" VerticalAlignment="Center" Foreground="White"
-                           Margin="10 0 0 0" FontSize="20"/>
-                </StackPanel>
+                    <TextBlock Grid.Column="1" Text="Advanced" VerticalAlignment="Center" 
+                               Foreground="White" Margin="10 0 0 0" FontSize="16"/>
+                </Grid>
 
                 <Grid Grid.Column="1">
 
-                    <iconBut:IconButton x:Name="CloseBut" Margin="0 0 15 0" 
-                                        Width="35" Height="35"
+                    <iconBut:IconButton x:Name="CloseBut" Margin="0 0 30 0" 
+                                        Width="25" Height="25"
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Right"
                                         PreviewMouseDown="CloseBut_PreviewMouseDown"/>

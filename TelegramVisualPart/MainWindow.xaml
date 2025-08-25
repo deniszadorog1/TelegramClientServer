@@ -5,29 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TelegramVisualPart"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" 
+        Height="450" Width="800"
+        MinHeight="700" MinWidth="800"
         
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
-        TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
         
         WindowState="Maximized"
         WindowStyle="None"
-        AllowsTransparency="False"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"
+        Background="White"
         
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged">
 
-    <!--<shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome 
-            CaptionHeight="100"/>
-    </shell:WindowChrome.WindowChrome> -->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -59,19 +54,22 @@
                                 Name ="CloseWindowBut" 
                                 MouseEnter="CloseWindowBut_MouseEnter"
                                 MouseLeave="UpperBut_MouseLeave"/>
-
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
             <Frame Name="MainFrame" PreviewMouseDown="MainFrame_PreviewMouseDown"
-               NavigationUIVisibility="Hidden"/>
+                    NavigationUIVisibility="Hidden"/>
+            <Grid Name="FirstFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
             <Frame Name="SecondaryFrame" NavigationUIVisibility="Hidden"
                PreviewMouseDown="SecondaryFrame_PreviewMouseDown"/>
+            <Grid Name="SecondFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
             <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
                PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
+            <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
+
         </Grid>
     </Grid>
 </Window>

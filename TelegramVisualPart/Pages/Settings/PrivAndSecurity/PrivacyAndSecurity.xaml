@@ -32,18 +32,18 @@
                     <ColumnDefinition Width="70"/>
                 </Grid.ColumnDefinitions>
 
-                <iconBut:IconButton x:Name="BackBut" Width="30" Height="30" Margin="10"
-                                    VerticalAlignment="Center" HorizontalAlignment="Right" 
+                <iconBut:IconButton x:Name="BackBut" Width="25" Height="25" 
+                                    VerticalAlignment="Center" HorizontalAlignment="Center" 
                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
 
-                <TextBlock Grid.Column="1" Text="Privacy and Security"
+                <TextBlock Grid.Column="1" Text="Privacy and Security" Margin="10 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="White" FontSize="18"/>
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Width="30" Height="30" Margin="10"
+                                    Width="25" Height="25" Margin="10"
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
@@ -56,10 +56,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Margin="10 0 0 0">
                     <enumBut:EnumPrivacyButton x:Name="LocalPasscode" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="BlockedUsers" PreviewMouseDown="Buts_PreviewMouseDown"/>
                 </StackPanel>
@@ -71,10 +71,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Margin="10 0 0 0">
                     <enumBut:EnumPrivacyButton x:Name="PhoneNumber" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="LastSeen" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="ProfilePhotos" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -91,10 +91,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Margin="10 0 0 0">
                     <enumBut:EnumPrivacyButton x:Name="ClearPayments"/>
                 </StackPanel>
             </Grid>
@@ -105,10 +105,10 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="1" Margin="10 0 0 0">
                     <enumBut:EnumPrivacyButton x:Name="DeleteAway" PreviewMouseDown="Buts_PreviewMouseDown"/>
                 </StackPanel>
             </Grid>

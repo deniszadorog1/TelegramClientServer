@@ -12,19 +12,19 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Kind="CirclesAdd"  Name="IconType"
                          Grid.Column="0" VerticalAlignment="Center"
-                         HorizontalAlignment="Right" 
+                         HorizontalAlignment="Center" 
                          Foreground="Gray"
-                         Width="30" Height="30"/>
+                         Width="25" Height="25"/>
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="ButName"
-                   VerticalAlignment="Center" Margin="10 0 0 0"
+                   VerticalAlignment="Center"
                    Foreground="White" FontSize="14"
                    HorizontalAlignment="Left"/>
 

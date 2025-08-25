@@ -23,6 +23,29 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         public EmojisBlock()
         {
             InitializeComponent();
+
+            SetEmojisBlock();
+        }
+
+        public void SetEmojisBlock()
+        {
+            EmojisPanel.Children.Add(new Emoji("🙂"));
+            EmojisPanel.Children.Add(new Emoji("😁"));
+            EmojisPanel.Children.Add(new Emoji("😅"));
+            EmojisPanel.Children.Add(new Emoji("😊"));
+            EmojisPanel.Children.Add(new Emoji("😉"));
+            EmojisPanel.Children.Add(new Emoji("😉"));
+            EmojisPanel.Children.Add(new Emoji("😎"));
+            EmojisPanel.Children.Add(new Emoji("😀"));
+            EmojisPanel.Children.Add(new Emoji("😆"));
+            EmojisPanel.Children.Add(new Emoji("☹️"));
+            EmojisPanel.Children.Add(new Emoji("😐"));
+            EmojisPanel.Children.Add(new Emoji("🤣"));
+            EmojisPanel.Children.Add(new Emoji("❤️"));
+            EmojisPanel.Children.Add(new Emoji("🤷"));
+            EmojisPanel.Children.Add(new Emoji("🤡"));
+            EmojisPanel.Children.Add(new Emoji("💩"));
+            EmojisPanel.Children.Add(new Emoji("😺"));
         }
     }
 }

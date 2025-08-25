@@ -20,8 +20,12 @@
             <TextBlock Name="UpperBlock" Text="Block User" Foreground="White" 
                        FontSize="16" Margin="15"/>
             <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
-                       Text="Do you want to block USERNAME from messaging and calling you on Telegram?" 
-                       Foreground="White" FontSize="16" Margin="15"/>
+                       Foreground="White" FontSize="16" Margin="15">
+                
+                <Run Text="Do you want to block "/>
+                <Run Name="UserContactName"  Text ="USERNAME"/>
+                <Run Text=" from messaging and calling you on Telegram?"/>
+            </TextBlock>
 
             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"

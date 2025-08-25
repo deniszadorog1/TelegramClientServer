@@ -8,8 +8,8 @@
       xmlns:butToggleIcon ="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="400"
-      Height="450" Width="400"
+      d:DesignHeight="470" d:DesignWidth="400"
+      Height="470" Width="400"
       Title="NotAndSoundSettings"
       HorizontalAlignment="Center" 
       >
@@ -18,7 +18,7 @@
             Background="{StaticResource DarkThemeOne}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="60"/>
                 <RowDefinition Height="160"/>
                 <RowDefinition Height="80"/>
                 <RowDefinition/>
@@ -33,20 +33,20 @@
                 </Grid.ColumnDefinitions>
 
 
-                <iconBut:IconButton x:Name="BackBut" Width="30" Height="30" Margin="10"
+                <iconBut:IconButton x:Name="BackBut" Width="25" Height="25" Margin="0"
                                     PreviewMouseDown="BackBut_PreviewMouseDown"
                                     VerticalAlignment="Center" 
-                                    HorizontalAlignment="Right"/>
+                                    HorizontalAlignment="Center"/>
 
                 <TextBlock Grid.Column="1" Text="Notifications and sounds"
                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Foreground="White" FontSize="18"/>
+                       Foreground="White" FontSize="17" Margin="10 0 0 0"/>
 
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Width="30" Height="30" Margin="10"
+                                    Width="25" Height="25" Margin="0 0 20 0"
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
@@ -59,7 +59,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Global settings" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Global settings" VerticalAlignment="Bottom" Margin="25 10 10 10"
                        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
@@ -75,7 +75,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Notification for chat" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Notification for chat" VerticalAlignment="Bottom" Margin="25 10 10 10"
                        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
@@ -89,7 +89,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Events" VerticalAlignment="Bottom" Margin="10"
+                <TextBlock Text="Events" VerticalAlignment="Bottom" Margin="25 10 10 10"
                        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">

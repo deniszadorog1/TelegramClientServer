@@ -4,6 +4,7 @@ using System.Formats.Tar;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using TelegramLib.MainClasses;
@@ -29,15 +30,6 @@ namespace TelegramVisualPart
 
         public MainWindow()
         {
-            //Upper thing
-            //unicode smiles
-            //update user
-
-
-            //FFMpegCore.FFMpeg.SetExecutablesPath(@"B:\Tools\ffmpeg\bin");
-
-            //VisConstParamsJsonService.GetStringByName("check");
-
             InitializeComponent();
             Loaded += MainWindow_Loaded;
 
@@ -133,17 +125,68 @@ namespace TelegramVisualPart
                 DrawerHost.CloseDrawerCommand.Execute(null, chat.MainDrawerHost);
             }
             SecondaryFrame.Content = page;
-            SetBlurEffectToMainFrame(MainFrame);
+            SetBlurEffectToFrame(MainFrame);
         }
 
-        public void SetBlurEffectToMainFrame(Frame frame)
+        public void SetBlurEffectToFrame(Frame frame)
         {
             frame.Effect = null;
+
             frame.Effect = new BlurEffect()
             {
-                Radius = 2
+                Radius = 15,
             };
             frame.Background = Brushes.Transparent;
+            SetBgShadowEffect(frame);
+        }
+
+        public void SetBgShadowEffect(Frame frame)
+        {
+            SolidColorBrush shadowBrush =
+                new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+
+            if (frame == MainFrame)
+            {
+                FirstFrameShadow.Background = shadowBrush;
+            }
+            else if (frame == SecondaryFrame)
+            {
+                SecondFrameShadow.Background = shadowBrush;
+            }
+            else if (frame == ThirdFrame)
+            {
+                ThirdFrameShadow.Background = shadowBrush;
+            }
+        }
+
+        public void ClearShadowGridsAndEffects()
+        {
+            SolidColorBrush trancBrush = new SolidColorBrush(Colors.Transparent);
+            FirstFrameShadow.Background = trancBrush;
+            MainFrame.Effect = null;
+
+            SecondFrameShadow.Background = trancBrush;
+            SecondaryFrame.Effect = null;
+
+            ThirdFrameShadow.Background = trancBrush;
+            ThirdFrame.Effect = null;
+        }
+
+        public void ClearShadowOfFrame(Frame frame)
+        {
+            SolidColorBrush trancFrame = new SolidColorBrush(Colors.Transparent);
+            if (frame == MainFrame)
+            {
+                FirstFrameShadow.Background = trancFrame;
+            }
+            else if (frame == SecondaryFrame)
+            {
+                SecondFrameShadow.Background = trancFrame;
+            }
+            else if (frame == ThirdFrame)
+            {
+                ThirdFrameShadow.Background = trancFrame;
+            }
         }
 
         public void ClearSecFrame()
@@ -151,18 +194,20 @@ namespace TelegramVisualPart
             //SecondaryFrame.Visibility = Visibility.Hidden;
             SecondaryFrame.Content = null;
             MainFrame.Effect = null;
+            ClearShadowGridsAndEffects();
         }
 
         public void SetMainFrame(Page page)
         {
             MainFrame.Content = page;
+            ClearShadowGridsAndEffects();
         }
 
         public void SetThirdFrame(Page page)
         {
             //ThirdFrame.Visibility = Visibility.Visible;
             ThirdFrame.Content = page;
-            SetBlurEffectToMainFrame(SecondaryFrame);
+            SetBlurEffectToFrame(SecondaryFrame);
             //SetBlurEffectToMainFrame(MainFrame);
         }
 
@@ -178,6 +223,7 @@ namespace TelegramVisualPart
             SecondaryFrame.Effect = null;
             SecondaryFrame.Background = null;
             MainFrame.Background = Brushes.Transparent;
+            ClearShadowGridsAndEffects();
         }
 
         public void UpdatePrivacyAndScurity()
@@ -214,6 +260,16 @@ namespace TelegramVisualPart
                 this.WindowState = WindowState.Maximized;
             else
                 this.WindowState = WindowState.Normal;
+
+            SetMainPageOnWindowSizeChange();
+        }
+
+        public void SetMainPageOnWindowSizeChange()
+        {
+            if (MainFrame.Content is MainChatPage page)
+            {
+                page.ChatsColumn.Width = new GridLength(300);
+            }
         }
 
         private async void Close_Click(object sender, RoutedEventArgs e)
@@ -223,7 +279,7 @@ namespace TelegramVisualPart
 
         public async void LogOut()
         {
-            if(MainFrame.Content is EnterPage)
+            if (MainFrame.Content is EnterPage)
             {
                 this.Close();
                 return;
@@ -283,6 +339,7 @@ namespace TelegramVisualPart
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
+            SetMainPageOnWindowSizeChange();
             if (e.ButtonState == MouseButtonState.Pressed)
             {
                 _mouseDownPosition = e.GetPosition(this);
@@ -360,7 +417,11 @@ namespace TelegramVisualPart
         public void ClearPageFromParentFrame(Page page)
         {
             var frame = FindParentFrame(page);
-            if (frame is not null) frame.Content = null;
+            if (frame is null) return;
+
+            ClearShadowGridsAndEffects();
+            //ClearShadowOfFrame(frame);
+            frame.Content = null;
         }
 
         private Frame FindParentFrame(DependencyObject child)

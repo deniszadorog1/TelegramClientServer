@@ -129,5 +129,14 @@ namespace TelegramLib.MainClasses
             if (toRemove is null) return;
             BlockedContacts.Remove(toRemove);
         }
+
+        public void AddBlockedContact(UserContactcs contact)
+        {
+            if (!(BlockedContacts.FirstOrDefault(x => x.Id == contact.Id) is null)) return;
+
+            BlockedContacts.Add(contact);
+
+
+        }
     }
 }

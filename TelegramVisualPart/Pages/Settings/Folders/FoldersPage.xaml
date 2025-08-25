@@ -26,25 +26,26 @@
 
             <Grid Grid.Row="0" Name ="UpperPart">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="65"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <iconBut:IconButton x:Name="BackBut"
                                     VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Width="30" Height="30" Margin="0 0 20 0"
+                                    HorizontalAlignment="Center"
+                                    Width="25" Height="25"
                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
 
-                <TextBlock Grid.Column="1" Text="Folders"
+                <TextBlock Grid.Column="1" Text="Folders" Margin="10 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="White" FontSize="18"/>
 
                 <iconBut:IconButton x:Name="CloseBut" Grid.Column="2"
-                                    VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Width="30" Height="30" Margin="10"
+                                    Width="25" Height="25" 
+                                    VerticalAlignment="Center" 
+                                    Margin="0 0 30 0 "
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
@@ -76,8 +77,8 @@
 
                 <ListBox  Grid.Row="1" Name="Folders">
                     
-                    <ListBoxItem HorizontalContentAlignment="Stretch" Padding="0">
-                        <folderBut:FolderLittleInfo Padding="20 5 5 5"/>
+                    <ListBoxItem  HorizontalContentAlignment="Stretch" Padding="0">
+                        <folderBut:FolderLittleInfo x:Name="TestThing" Padding="0 5 5 5"/>
                     </ListBoxItem>
 
                     <ListBoxItem x:Name="AddFolderBoxItem" HorizontalContentAlignment="Stretch" Padding="0">
@@ -100,7 +101,18 @@
                 <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
                     FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <Grid Grid.Row="1">
+
+                <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"
+                      Margin="10">
+
+                    <TextBlock Text="So this is very interesting and useful info, so read this!!!" 
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap" Foreground="White" FontSize="14"/>
+
+                </Grid>
+                
+              <!--  <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="125"/>
@@ -128,7 +140,7 @@
                             Click="Button_Click"  Margin="10 0 20 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
 
-                </Grid>
+                </Grid> -->
 
 
             </Grid>

@@ -120,7 +120,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 //MobileNumber.UpperText.Text = updated.PhoneNumber;
 
 
-                Login.UpperText.Text = updated.Login;
+                UserName.UpperText.Text = updated.Name;
                 Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" : $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
         }
@@ -134,8 +134,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SetMobilePhoneNumber();
 
-            Login.SetUpperText(_chat.GetChatter().GetUserName());
-            Login.SetBottomText("Username");
+            UserName.SetUpperText(_chat.GetChatter().GetUserName());
+            UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+            UserName.SetBottomText("Username");
 
             Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
             Birthdate.SetBottomText("Date of Birth");
@@ -293,7 +294,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void BlockLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
-                new Pages.UserInfoContact.ActionsFolder.BlockContact());
+                new Pages.UserInfoContact.ActionsFolder.BlockContact(_system, _contact));
         }
 
         private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)

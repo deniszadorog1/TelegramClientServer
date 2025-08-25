@@ -282,7 +282,7 @@ namespace TelegramVisualPart.UserControls
             {
                 CustomBg.Effect = new BlurEffect()
                 {
-                    Radius = 20
+                    Radius = 15
                 };
             }
             else CustomBg.Effect = null;

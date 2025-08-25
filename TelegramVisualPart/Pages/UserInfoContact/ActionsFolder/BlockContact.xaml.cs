@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 {
@@ -20,14 +22,31 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
     /// </summary>
     public partial class BlockContact : Page
     {
-        public BlockContact()
+        private TelSystem _system;
+        private UserContactcs _contact;
+
+        public BlockContact(TelSystem system, UserContactcs contact)
         {
+            _system = system;
+            _contact = contact;
+
             InitializeComponent();
+
+            SetBaseParams();
         }
 
-        private void BlockBut_Click(object sender, RoutedEventArgs e)
+        public void SetBaseParams()
         {
+            UserContactName.Text = _contact.Name;
+        }
 
+        private async void BlockBut_Click(object sender, RoutedEventArgs e)
+        {
+            //Added in system
+            _system.LoggedUser.AddBlockedContact(_contact);
+
+            //Add in db
+            await ApiService.AddBlockedContact(_system.LoggedUser.Id, _contact.Id);
         }
 
         private void BlockBut_MouseEnter(object sender, MouseEventArgs e)

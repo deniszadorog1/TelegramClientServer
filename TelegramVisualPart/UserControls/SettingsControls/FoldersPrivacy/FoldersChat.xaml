@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="100" d:DesignWidth="800">
+             d:DesignHeight="40" d:DesignWidth="350">
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="75"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>

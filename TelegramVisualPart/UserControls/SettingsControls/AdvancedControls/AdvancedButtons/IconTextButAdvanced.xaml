@@ -12,22 +12,21 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Kind="ProgressDownload" 
                                  VerticalAlignment="Center"
-                                 HorizontalAlignment="Left"
-                                 Margin="20 0 0 0"
+                                 HorizontalAlignment="Center"
                                  Foreground="Gray"
-                                 Width="30" Height="30"
+                                 Width="25" Height="25"
                                  Name="IconType"/>
         
         <TextBlock Grid.Column="1" Name="ButName" 
                    Text="There would be a but name"
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Left" FontSize="14"
-                   Foreground="White" Margin="10 0 0 0"/>
+                   Foreground="White"/>
     </Grid>
 </UserControl>

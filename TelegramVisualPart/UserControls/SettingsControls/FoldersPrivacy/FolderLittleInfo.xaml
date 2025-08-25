@@ -11,17 +11,17 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon x:Name="IconType" 
                                  Kind="AlertCircleOutline" 
                                  Grid.Column="0" VerticalAlignment="Center"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Center"
                                  Foreground="{StaticResource TempActiveTextColor}"
-                                 Width="30" Height="30"/>
+                                 Width="25" Height="25"/>
 
         <Grid Grid.Column ="1">
             <Grid.RowDefinitions>
@@ -30,12 +30,12 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="Folder name" Name="FolderName"
-                       VerticalAlignment="Center" Margin="10 0 0 0"
+                       VerticalAlignment="Center"
                        Foreground="White" FontSize="12"/>
 
             <TextBlock Grid.Row="1" Text="Amount of items" Name="AmountOfChats"
-                       VerticalAlignment="Center" Margin="10 0 0 0"
-                       Foreground="White" FontSize="12"/>
+                       VerticalAlignment="Center" 
+                       Foreground="Gray" FontSize="12"/>
         </Grid>
 
         <Grid Grid.Column="2" Name="BucketGrid"
@@ -48,7 +48,7 @@
                                  Kind="TrashCanOutline" 
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Right"
-                                 Foreground="Gray" Margin="0 0 30 0"
+                                 Foreground="Gray" Margin="0 0 35 0"
                                  Width="25" Height="25"/>
         </Grid>
 

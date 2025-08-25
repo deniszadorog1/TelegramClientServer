@@ -80,7 +80,7 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}">
+        <Grid Grid.Row="1" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0">
             <Grid Name="CustomBg" Background="Transparent"/>
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"

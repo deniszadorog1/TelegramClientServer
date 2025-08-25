@@ -66,7 +66,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ThreeTest.WallpaperImage.Source = GetTestImage("Snowman.jpg").Source;
             ThreeTest.WallpaperImage.Tag = "Snowman.jpg";
         }
-
         public void SetClickEventToWallpapers()
         {
             for (int i = 0; i < WallpapersPanel.Children.Count; i++)

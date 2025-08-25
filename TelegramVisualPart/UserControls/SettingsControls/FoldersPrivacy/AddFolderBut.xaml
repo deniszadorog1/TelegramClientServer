@@ -12,18 +12,18 @@
              HorizontalAlignment="Stretch">
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Kind="CirclesAdd"  Name="IconType"
                                  Grid.Column="0" VerticalAlignment="Center"
-                                 HorizontalAlignment="Right" 
+                                 HorizontalAlignment="Center" 
                                  Foreground="{StaticResource TempActiveTextColor}"
-                                 Width="30" Height="30"/>
+                                 Width="25" Height="25"/>
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="NewFolderText"
-                       VerticalAlignment="Center" Margin="10 0 0 0"
-                       Foreground="{StaticResource TempActiveTextColor}" FontSize="12"/>
+                       VerticalAlignment="Center" 
+                       Foreground="{StaticResource TempActiveTextColor}" FontSize="15"/>
     </Grid>
 </UserControl>

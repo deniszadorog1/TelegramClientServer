@@ -20,13 +20,12 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="120"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                           FontSize="22" Foreground="White" Text="User Info" 
-                           Margin="10 0 0 0"/>
+                           FontSize="22" Foreground="White" Text="User Info"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -121,7 +120,7 @@
                                                  Height="40" Width="40" Foreground="White" Name="InfoIcon"/>
 
                             <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
-                            <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="Login" VerticalAlignment="Center"/>
+                            <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="UserName" VerticalAlignment="Center"/>
                             <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
 
 

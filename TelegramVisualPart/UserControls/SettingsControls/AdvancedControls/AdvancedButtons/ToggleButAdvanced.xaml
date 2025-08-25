@@ -13,7 +13,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Name ="TextBlock" Grid.Column="0" 

@@ -58,6 +58,7 @@
             </Grid>
 
             <WrapPanel Grid.Row="1" Name="EmojisPanel" Grid.RowSpan="2">
+<!--            <local:Emoji/>
                 <local:Emoji/>
                 <local:Emoji/>
                 <local:Emoji/>
@@ -65,8 +66,7 @@
                 <local:Emoji/>
                 <local:Emoji/>
                 <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
+                <local:Emoji/> -->
             </WrapPanel>
         </Grid>
     </Border>

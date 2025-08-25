@@ -36,7 +36,8 @@ namespace TelegramVisualPart.Pages
             PhoneNumberBlock.Text = _user.PhoneNumber;
             UserNameBlock.Text = _user.UserName;
 
-            UserImage.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            UserImage.ImageSource = 
+                new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)
