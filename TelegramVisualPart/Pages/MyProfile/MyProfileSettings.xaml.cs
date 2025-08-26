@@ -107,14 +107,14 @@ namespace TelegramVisualPart.Pages.MyProfile
         private async void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             await ApiService.UpdateUser(_user);
-            SignalRService.UpdateContact(_user);
+            await SignalRService.UpdateContact(_user);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private async void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             await ApiService.UpdateUser(_user);
-            SignalRService.UpdateContact(_user);
+            await SignalRService.UpdateContact(_user);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new LoggedUserProfile(_user, _system));
@@ -126,7 +126,7 @@ namespace TelegramVisualPart.Pages.MyProfile
             _user.BIO = BioTextBox.Text;
 
             await ApiService.UpdateUser(_user);
-            SignalRService.UpdateContact(_user);
+            await SignalRService.UpdateContact(_user);
         }
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -139,7 +139,7 @@ namespace TelegramVisualPart.Pages.MyProfile
             }
         }
 
-        public Page GetPageByName(string name)
+        public Page? GetPageByName(string name)
         {
             return name == Name.Name.ToString() ? new SetInformation.SetNameSurname(_user) :
                 name == Username.Name.ToString() ? new SetInformation.SetUsername(_user) : 

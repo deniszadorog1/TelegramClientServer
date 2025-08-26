@@ -205,6 +205,7 @@ namespace TelegramVisualPart.Pages
 
                 await CallSignalRMethods();
 
+
                 return;
             }
             else ApplyAutoDeletion();
@@ -213,8 +214,9 @@ namespace TelegramVisualPart.Pages
 
         private async Task CallSignalRMethods()
         {
-            await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
             await SignalRService.SetPhoneNumVisByExps(_system.LoggedUser);
+            await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
+            await SignalRService.UpdateBirtDate(_system.LoggedUser);
         }
 
         private void ApplyAutoDeletion()

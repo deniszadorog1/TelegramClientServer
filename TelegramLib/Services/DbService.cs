@@ -680,6 +680,7 @@ namespace TelegramLib.Services
             }
         }
 
+        //IS NEED TO ADD AUTO DEL IN HERE
         public static UserContactcs GetUserContactById(int contactId)
         {
             using (var model = new TelegramModel())
@@ -687,18 +688,23 @@ namespace TelegramLib.Services
                 Contacts contact = model.Contacts.Where(x => x.Id == contactId).FirstOrDefault();
                 if (contact is null) return null;
 
+                //Is realy friend id should be here
+                Models.User user = model.User.FirstOrDefault(x => x.Id == contact.FriendId);
+                if (user is null) return null;
+
                 UserContactcs toAdd = new UserContactcs();
 
                 toAdd.Id = contact.Id;
                 toAdd.Name = contact.Name;
                 toAdd.ContactUserId = (int)contact.FriendId;
                 toAdd.IsOnline = IsContactOnlineByUserId((int)contact.FriendId);
-                toAdd.UserName = contact.User.Name;
-                toAdd.BirthDate = contact.User.Birthday;
-                toAdd.BIO = contact.User.BIO;
-                toAdd.PhoneNumber = contact.User.PhoneNumber;
+                toAdd.UserName = user.Username;// contact.User.Name;
+                toAdd.BirthDate = user.Birthday;//  contact.User.Birthday;
+                toAdd.BIO = user.BIO;// contact.User.BIO;
+                toAdd.PhoneNumber = user.PhoneNumber;// contact.User.PhoneNumber;
                 toAdd.LastSeen = contact.User.LastOnline;
                 toAdd.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
+                toAdd.Surname = user.Surname;
 
                 toAdd.UserImages = GetUserImagesByUserId((int)contact.FriendId);
                 return toAdd;

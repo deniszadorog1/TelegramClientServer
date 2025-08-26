@@ -559,14 +559,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
 
-            UpdateStatesWithSignalR();
+            await UpdateStatesWithSignalR();
         }
 
-        public void UpdateStatesWithSignalR()
+        public async Task UpdateStatesWithSignalR()
         {
-            SignalRService.SetUserPhonenumberVisibility(
-                _settings.PhonePrivacy.ShareType == ShareWith.Nobody ? false : true, 
-                _system.LoggedUser);
+            await SignalRService.SetPhoneNumVisByExps( _system.LoggedUser);
+
+            await SignalRService.UpdateBirtDate(_system.LoggedUser);
+
+            await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

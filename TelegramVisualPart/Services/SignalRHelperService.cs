@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TelegramLib.MainClasses;
 using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
@@ -23,13 +25,19 @@ namespace TelegramVisualPart.Services
             if (settingType == Enums.PrivacySettingType.LastSeen)
             {
                 return settings.PrivacySettings.LastSeenPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
-                 settings.PrivacySettings.LastSeenPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
-                 IsPrivacyException.Null;
+                     settings.PrivacySettings.LastSeenPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                     IsPrivacyException.Null;
             }
             else if (settingType == PrivacySettingType.PhoneNumber)
             {
                 return settings.PrivacySettings.PhonePrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
                      settings.PrivacySettings.PhonePrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                     IsPrivacyException.Null;
+            }
+            else if(settingType == PrivacySettingType.DateBirth)
+            {
+                return settings.PrivacySettings.DateBirthPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.DateBirthPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
             return IsPrivacyException.Null;
@@ -74,7 +82,7 @@ namespace TelegramVisualPart.Services
                 return;
             }
 
-            if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
+            if (settings.PrivacySettings.PhonePrivacy.ShareType ==
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 type == IsPrivacyException.NeverShare)
             {
@@ -82,6 +90,35 @@ namespace TelegramVisualPart.Services
                 return;
             }
             textBlock.Text = user.PhoneNumber.ToString();
+        }
+
+        public static async Task SetBirthDate(TelegramLib.MainClasses.User user,
+            UserChat _chat, TextBlock textBlock)
+        {
+            if (_chat.GetChatter().ContactUserId != user.Id) return;
+
+            IsPrivacyException shareType =
+                await GetTypeByUser(user, Enums.PrivacySettingType.DateBirth);
+
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            string birthString =  user.BirthDay is null ? "Not born yeat" :
+                $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{user.BirthDay.Value.Year}";
+
+            if (shareType == IsPrivacyException.Share)
+            {
+                textBlock.Text = birthString;
+                return;
+            }
+
+            if (settings.PrivacySettings.DateBirthPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                shareType == IsPrivacyException.NeverShare)
+            {
+                textBlock.Text = "You cant see this LOOOOLL";
+                return;
+            }
+            textBlock.Text = birthString;
         }
     }
 }

@@ -59,5 +59,11 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.All.SendAsync("SetPhoneNumVisByExps", user);
         }
+
+        public async Task UpdateBirthDate(User user)
+        {
+            await Clients.All.SendAsync("UpdateBirthDate", user);
+        }
+
     }
 }

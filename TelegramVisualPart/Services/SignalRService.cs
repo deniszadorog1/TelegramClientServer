@@ -38,6 +38,7 @@ namespace TelegramVisualPart.Services
         public static event Action<bool, User>? SetContactPhoneNumberVisibilityDel;
         public static event Action<User>? SetContactLastSeenVisStateDel;
         public static event Action<User>? SetPhoneNumVisByExpsDel;
+        public static event Action<User>? UpdateBirthDateDel;
 
         public static void SetSystem(TelSystem system)
         {
@@ -118,7 +119,6 @@ namespace TelegramVisualPart.Services
             _connection.On<User>("UpdateContact", (updatedContact) =>
             {
                 UpdateContactDel?.Invoke(updatedContact);
-
                 return;
             });
 
@@ -165,6 +165,11 @@ namespace TelegramVisualPart.Services
             _connection.On<User>("SetPhoneNumVisByExps", (user) =>
             {
                 SetPhoneNumVisByExpsDel?.Invoke(user);
+            });
+
+            _connection.On<User>("UpdateBirthDate", (user) =>
+            {
+                UpdateBirthDateDel?.Invoke(user);
             });
 
             await _connection.StartAsync();
@@ -231,6 +236,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SetPhoneNumVisByExps", user);
+        }
+
+        public static async Task UpdateBirtDate(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateBirthDate", user);
         }
 
     }

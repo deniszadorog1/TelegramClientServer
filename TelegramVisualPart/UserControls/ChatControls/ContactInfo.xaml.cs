@@ -1,30 +1,16 @@
-﻿using ControlzEx.Standard;
-using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Serialization;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
-using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -54,16 +40,27 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
-            SignalRService.SetContactPhoneNumberVisibilityDel += SetPhoneNumberVisAction;
+            //SignalRService.SetContactPhoneNumberVisibilityDel += SetPhoneNumberVisAction;
 
             SignalRService.SetContactLastSeenVisStateDel += SetLastSeenState;
             SignalRService.SetPhoneNumVisByExpsDel += SetPhoneNumberVisByExps;
+            SignalRService.UpdateBirthDateDel += UpdateBirthDate;
+        }
+
+        public void UpdateBirthDate(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (user.Id == _system.LoggedUser.Id) return;
+                await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
+            });
         }
 
         public void SetPhoneNumberVisByExps(TelegramLib.MainClasses.User user)
         {
             Dispatcher.InvokeAsync(async () =>
             {
+                if (user.Id == _system.LoggedUser.Id) return;
                 await SetUserPhoneNumber(user);
             });
         }
@@ -72,7 +69,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_chat.GetChatter().ContactUserId != contactUser.Id) return;
 
-            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(contactUser, Enums.PrivacySettingType.LastSeen);
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(contactUser, Enums.PrivacySettingType.PhoneNumber);
 
             await SignalRHelperService.SetPhoneNumber(contactUser, shareType, _chat, MobileNumber.UpperText);
         }
@@ -81,6 +78,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
+                if (user.Id == _system.LoggedUser.Id) return;
                 if (_chat.GetChatter().ContactUserId != user.Id) return;
 
                 IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
@@ -91,11 +89,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetPhoneNumberVisAction(bool isVis, TelegramLib.MainClasses.User updatedUser)
         {
-            Dispatcher.InvokeAsync(async() =>
+            Dispatcher.InvokeAsync(async () =>
             {
                 await SetUserPhoneNumber(updatedUser);
-/*                if (_chat is null || _chat.GetChatter().ContactUserId != updatedUser.Id) return;
-                MobileNumber.UpperText.Text = isVis ? _contact.PhoneNumber : "Its hidden LOOOOLL";*/
+                /*                if (_chat is null || _chat.GetChatter().ContactUserId != updatedUser.Id) return;
+                                MobileNumber.UpperText.Text = isVis ? _contact.PhoneNumber : "Its hidden LOOOOLL";*/
             });
         }
 
@@ -110,7 +108,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void UpdateContactParams(TelegramLib.MainClasses.User updated)
         {
-            Dispatcher.InvokeAsync(async() =>
+            Dispatcher.InvokeAsync(async () =>
             {
                 if (_contact.ContactUserId != updated.Id) return;
 
@@ -121,7 +119,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
 
                 UserName.UpperText.Text = updated.Name;
-                Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" : $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
+                Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" :
+                $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
         }
 
@@ -131,15 +130,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SetOnlineStatus();
             //SetLastSeenOnline();
-
             await SetMobilePhoneNumber();
+            await SetBirtDate();
+
 
             UserName.SetUpperText(_chat.GetChatter().GetUserName());
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
             UserName.SetBottomText("Username");
 
-            Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
-            Birthdate.SetBottomText("Date of Birth");
+            /*Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
+            Birthdate.SetBottomText("Date of Birth");*/
 
             NotificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
 
@@ -150,35 +150,47 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
         }
 
+        public async Task SetBirtDate()
+        {
+            TelegramLib.MainClasses.User? user = await GetChatterUser(); 
+            if (user is null) return;
+
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.PhoneNumber);
+
+            await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
+
+            Birthdate.SetBottomText("Date of Birth");
+        }
+
         public async Task SetMobilePhoneNumber()
         {
             //Is its can be seen
-            if (_chat is null) return;
-            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            //if (_chat is null) return;
+            TelegramLib.MainClasses.User? user = await GetChatterUser(); //await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
             if (user is null) return;
-
-            MainSettings settings = await ApiService.GetSettingsByUserId(_contact.ContactUserId);
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.PhoneNumber);
 
             await SignalRHelperService.SetPhoneNumber(user, shareType, _chat, MobileNumber.UpperText);
-
-/*            string phoneText = settings.PrivacySettings.PhonePrivacy.ShareType ==
-                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ? "Its hidden LOOOOLL" :
-                _chat.GetChatter().GetPhoneNumber();
-            MobileNumber.SetUpperText(phoneText);*/
 
             MobileNumber.SetBottomText("Mobile");
         }
 
         public async Task SetOnlineStatus()
         {
-            if (_chat is null) return;
-            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            //if (_chat is null) return;
+            TelegramLib.MainClasses.User? user = await GetChatterUser(); await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
             if (user is null) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
             await SignalRHelperService.SetLastSeenString(user, shareType, _chat, LastSeenOnline);
+        }
+
+        public async Task<User?> GetChatterUser()
+        {
+            if (_chat is null) return null;
+            User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            return user;
         }
 
         private void SetOfflineStatus()
