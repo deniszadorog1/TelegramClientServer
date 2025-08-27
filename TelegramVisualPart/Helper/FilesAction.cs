@@ -203,6 +203,14 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(userImage, fileName);
         }
 
+        public static string GetSystemImagePath(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+
+            string sysImage = Path.Combine(GetImagesPath(), "SystemImages");
+            return Path.Combine(sysImage, fileName);
+        }
+
         public static string GetGifsPath()
         {
             return Path.Combine(GetVisualPath(), "Gifs");

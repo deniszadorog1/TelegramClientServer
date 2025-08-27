@@ -26,6 +26,10 @@ using static System.Data.Entity.Infrastructure.Design.Executor;
 using TelegramLib.UserSettings;
 using System.Windows.Documents;
 using TelegramVisualPart.Enums;
+using System.Drawing;
+using Brushes = System.Windows.Media.Brushes;
+using Brush = System.Windows.Media.Brush;
+using Color = System.Windows.Media.Color;
 
 
 namespace TelegramVisualPart.UserControls
@@ -44,18 +48,25 @@ namespace TelegramVisualPart.UserControls
 
             SignalRService.TextMessageReceived += OnTextMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageRecived;
+
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.UpdateUserImage += UpdateUserImage;
             SignalRService.ClearChatDel += ClearChatAction;
 
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
+            SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
+        }
+
+        public void UpdateChatterIamge(TelegramLib.MainClasses.User user)
+        {
+            UpdateChatImages(user);
         }
 
         public void SetLastVisState(TelegramLib.MainClasses.User user)
         {
             Dispatcher.InvokeAsync(async () =>
             {
-                if (_chat.GetChatter().ContactUserId != user.Id) return;
+                if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
 
                 IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
 
@@ -117,35 +128,50 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateChatImages(TelegramLib.MainClasses.User user)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async () =>
             {
                 TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+
                 if (chat is null || chat.Chatter.ContactUserId != user.Id) return;
+
+                await SignalRHelperService.SetFastParamsForPhotoUpdate(user);
 
                 for (int i = 0; i < ChatBox.Items.Count; i++)
                 {
                     if (chat.Messages[i].SenderUserId != user.Id) continue;
+
                     if (ChatBox.Items[i] is ChatControls.TextMessage textMes)
                     {
-                        textMes.BgBrush.ImageSource =
+                        SignalRHelperService.FastSetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);    
+                        //await SignalRHelperService.SetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);    
+                        
+                      /*  textMes.BgBrush.ImageSource =
                             new BitmapImage(new Uri(FilesAction.GetUserImagePath(
-                                user.GetFirstImageNameInString()), UriKind.Absolute));
+                                user.GetFirstImageNameInString()), UriKind.Absolute));*/
                     }
                     else if (ChatBox.Items[i] is MediaMessage mediaMes)
                     {
-                        mediaMes.BgBrush.ImageSource =
+                        SignalRHelperService.FastSetContactPhoto(user, _chat, mediaMes.BgBrush, mediaMes.UserEllipseImage);
+
+                        //await SignalRHelperService.SetContactPhoto(user, _chat, mediaMes.BgBrush, mediaMes.UserEllipseImage);
+
+/*                        mediaMes.BgBrush.ImageSource =
                             new BitmapImage(new Uri(FilesAction.GetUserImagePath(
                                 user.GetFirstImageNameInString()), UriKind.Absolute));
-                    }
+                    */}
                 }
             });
+        }
+
+        public void GetImageSource()
+        {
+            //Is
         }
 
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
         {
             Dispatcher.InvokeAsync(async () =>
             {
-
                 IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.LastSeen);
                 await SignalRHelperService.SetLastSeenString(toUpdate, shareType, _chat, ChatFriendLastSeen);
 
@@ -173,7 +199,8 @@ namespace TelegramVisualPart.UserControls
         private async void AddMediaMessageInChosenChat(MediaAction message, TelegramLib.MainClasses.User sender)
         {
             //Add media in vis
-            SetMediaMessageInChat(message, sender.GetFirstImageNameInString());
+            SetMediaMessageInChat(message,
+               await SignalRHelperService.GetUserPhotoToSet(sender) /*sender.GetFirstImageNameInString()*/);
 
             //Add in system
             _chat.Messages.Add(message);
@@ -209,7 +236,8 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User sender)
         {
             ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(message.Text), sender.GetFirstImageNameInString(),
+                GetConvertedStringMessage(message.Text),
+                /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
                 _system.Settings.GetChatSettings().FontName)); //Change on sender image 
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
@@ -222,6 +250,7 @@ namespace TelegramVisualPart.UserControls
             _chatMessages.Add(message);
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
+
 
         private async void AddTextMessageinUNChosenChat(TelegramLib.MainClasses.UserChat chat,
             TelegramLib.MainClasses.Messages.TextMessage message)
@@ -329,7 +358,7 @@ namespace TelegramVisualPart.UserControls
             SetMessagesInChat();
         }
 
-        public void SetMessagesInChat()
+        public async void SetMessagesInChat()
         {
             for (int i = 0; i < _chatMessages.Count; i++)
             {
@@ -347,6 +376,9 @@ namespace TelegramVisualPart.UserControls
                     SetMediaMessageInChat(media, imgName);
                 }
             }
+
+            //Set chatter photo image
+            if(_chatMessages.Count > 0) UpdateChatImages(await ApiService.GetUserById(_chat.Chatter.ContactUserId));
         }
 
         public void SetMediaMessageInChat(MediaAction message, string senderImgName)
@@ -415,6 +447,8 @@ namespace TelegramVisualPart.UserControls
                 AddTextMessage(_system.LoggedUser.GetFirstImageName().Name);
             }
         }
+
+       
 
         private async void AddTextMessage(string senderImageName)
         {
@@ -1056,11 +1090,12 @@ namespace TelegramVisualPart.UserControls
             {
                 await SignalRService.SendTextMessage(_system.LoggedUser, text);
             }
-            else if (message is MediaAction media)
+            else if (message is TelegramLib.MainClasses.Messages.MediaAction media)
             {
                 await SignalRService.SendMediaMessage(_system.LoggedUser, media);
             }
         }
+
 
     }
 }

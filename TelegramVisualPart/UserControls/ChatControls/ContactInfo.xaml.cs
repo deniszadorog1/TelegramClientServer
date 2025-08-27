@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
@@ -45,6 +46,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SignalRService.SetContactLastSeenVisStateDel += SetLastSeenState;
             SignalRService.SetPhoneNumVisByExpsDel += SetPhoneNumberVisByExps;
             SignalRService.UpdateBirthDateDel += UpdateBirthDate;
+            SignalRService.UpdateContactPhotoDel += UpdateContactPhoto;
+        }
+
+        public void UpdateContactPhoto(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (user.Id == _system.LoggedUser.Id) return;
+
+                Console.WriteLine(_system.Settings.PrivacySettings.ProfPhotoPrivacy);
+                
+                await SignalRHelperService.SetContactPhoto(user, 
+                    _chat, ContactImgBrush, UserIcon);
+            });
         }
 
         public void UpdateBirthDate(TelegramLib.MainClasses.User user)
@@ -145,9 +160,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SentObjsParams();
 
-            UserContactcs contact = _chat.GetChatter();
+
+            await SetContactPhoto();
+         /*   UserContactcs contact = _chat.GetChatter();
             ContactImgBrush.ImageSource = new BitmapImage(new Uri
-                (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));
+                (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));*/
+        }
+
+        public async Task SetContactPhoto()
+        {
+            TelegramLib.MainClasses.User? user = await GetChatterUser();
+            if (user is null) return;
+            
+            await SignalRHelperService.SetContactPhoto(user,
+                _chat, ContactImgBrush, UserIcon);
         }
 
         public async Task SetBirtDate()
@@ -186,10 +212,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             await SignalRHelperService.SetLastSeenString(user, shareType, _chat, LastSeenOnline);
         }
 
-        public async Task<User?> GetChatterUser()
+        public async Task<TelegramLib.MainClasses.User?> GetChatterUser()
         {
             if (_chat is null) return null;
-            User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            TelegramLib.MainClasses.User user = 
+                await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
             return user;
         }
 

@@ -13,7 +13,7 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("ReceiveTextMessage", user, message);
         }
 
-        public async Task SendMediaMessage(UserChat user, MediaAction message)
+        public async Task SendMediaMessage(User user, MediaAction message)
         {
             await Clients.All.SendAsync("ReceiveMediaMessage", user, message);
         }
@@ -65,5 +65,9 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("UpdateBirthDate", user);
         }
 
+        public async Task UpdateContactPhoto(User user)
+        {
+            await Clients.All.SendAsync("UpdateContactPhoto", user);
+        }
     }
 }

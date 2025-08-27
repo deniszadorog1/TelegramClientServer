@@ -74,7 +74,8 @@
                                  Width="70" Height="70" HorizontalAlignment="Center"
                                  PreviewMouseDown="UserIcon_PreviewMouseDown"
                                  MouseEnter="UserIcon_MouseEnter"
-                                 MouseLeave="UserIcon_MouseLeave">
+                                 MouseLeave="UserIcon_MouseLeave"
+                                 IsHitTestVisible="False">
                             <Ellipse.Fill>
                                 <ImageBrush x:Name="ContactImgBrush"  ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                             </Ellipse.Fill>

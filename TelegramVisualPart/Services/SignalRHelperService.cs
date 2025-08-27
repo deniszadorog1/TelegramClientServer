@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.RightsManagement;
@@ -7,10 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.MyProfile.SetInformation;
 using PrivacySettingType = TelegramVisualPart.Enums.PrivacySettingType;
 
 namespace TelegramVisualPart.Services
@@ -34,10 +39,16 @@ namespace TelegramVisualPart.Services
                      settings.PrivacySettings.PhonePrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
-            else if(settingType == PrivacySettingType.DateBirth)
+            else if (settingType == PrivacySettingType.DateBirth)
             {
                 return settings.PrivacySettings.DateBirthPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
                      settings.PrivacySettings.DateBirthPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                     IsPrivacyException.Null;
+            }
+            else if (settingType == PrivacySettingType.ProfilePhotos)
+            {
+                return settings.PrivacySettings.ProfPhotoPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.ProfPhotoPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
             return IsPrivacyException.Null;
@@ -93,16 +104,16 @@ namespace TelegramVisualPart.Services
         }
 
         public static async Task SetBirthDate(TelegramLib.MainClasses.User user,
-            UserChat _chat, TextBlock textBlock)
+            UserChat chat, TextBlock textBlock)
         {
-            if (_chat.GetChatter().ContactUserId != user.Id) return;
+            if (chat.GetChatter().ContactUserId != user.Id) return;
 
             IsPrivacyException shareType =
                 await GetTypeByUser(user, Enums.PrivacySettingType.DateBirth);
 
             MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            string birthString =  user.BirthDay is null ? "Not born yeat" :
+            string birthString = user.BirthDay is null ? "Not born yeat" :
                 $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{user.BirthDay.Value.Year}";
 
             if (shareType == IsPrivacyException.Share)
@@ -119,6 +130,102 @@ namespace TelegramVisualPart.Services
                 return;
             }
             textBlock.Text = birthString;
+        }
+
+        public static async Task SetContactPhoto(TelegramLib.MainClasses.User user,
+            UserChat chat, ImageBrush brush, Ellipse ellipse)
+        {
+            if (chat.GetChatter().ContactUserId != user.Id) return;
+
+            IsPrivacyException shareType =
+                await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
+
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            string stopSignPath = FilesAction.GetSystemImagePath("StopSign.png");
+
+            if (shareType == IsPrivacyException.Share)
+            {
+                brush.ImageSource = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+                UriKind.Absolute));
+                ellipse.IsHitTestVisible = true;
+                return;
+            }
+
+            if (settings.PrivacySettings.ProfPhotoPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                shareType == IsPrivacyException.NeverShare)
+            {
+                brush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                ellipse.IsHitTestVisible = false;
+                return;
+            }
+            brush.ImageSource = new BitmapImage(new Uri
+            (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+            UriKind.Absolute));
+            ellipse.IsHitTestVisible = true;
+        }
+
+        public static async Task<string> GetUserPhotoToSet(TelegramLib.MainClasses.User user)
+        {
+            IsPrivacyException shareType =
+               await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
+
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            if (shareType == IsPrivacyException.Share)
+            {
+                return user.GetFirstImageNameInString();
+            }
+
+            if (settings.PrivacySettings.ProfPhotoPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                shareType == IsPrivacyException.NeverShare)
+            {
+                return null;// FilesAction.GetSystemImagePath("StopSign.png");
+            }
+            return user.GetFirstImageNameInString();
+        }
+
+        private static bool _isPhotoCanBePushed;
+        private static BitmapImage _photoBitmapImg;
+        public static async Task SetFastParamsForPhotoUpdate(TelegramLib.MainClasses.User user)
+        {
+            IsPrivacyException shareType =
+                    await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
+
+            if (shareType == IsPrivacyException.Share)
+            {
+                _photoBitmapImg = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+                UriKind.Absolute));
+                _isPhotoCanBePushed = true;
+                return;
+            }
+
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            if (settings.PrivacySettings.ProfPhotoPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                shareType == IsPrivacyException.NeverShare)
+            {
+                string stopSignPath = FilesAction.GetSystemImagePath("StopSign.png");
+                _photoBitmapImg = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                _isPhotoCanBePushed = false;
+                return;
+            }
+            _photoBitmapImg = new BitmapImage(new Uri
+            (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+            UriKind.Absolute));
+            _isPhotoCanBePushed = true;
+        }
+
+        public static void FastSetContactPhoto(TelegramLib.MainClasses.User user,
+            UserChat chat, ImageBrush brush, Ellipse ellipse)
+        {
+            brush.ImageSource = _photoBitmapImg;
+            ellipse.IsHitTestVisible = _isPhotoCanBePushed;
         }
     }
 }

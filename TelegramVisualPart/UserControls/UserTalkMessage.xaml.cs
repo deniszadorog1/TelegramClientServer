@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,13 @@ namespace TelegramVisualPart.UserControls
 
         public void SetContactImage()
         {
+            if (_imgName is null)
+            {
+                ImageIcon.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                return;
+            }
+
             ImageIcon.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }

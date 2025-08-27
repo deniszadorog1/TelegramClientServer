@@ -186,7 +186,8 @@ namespace TelegramVisualPart.Pages
 
         private void But_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is System.Windows.Controls.Button but) but.Background = new SolidColorBrush(Colors.Transparent);
+            if (sender is System.Windows.Controls.Button but) 
+                but.Background = new SolidColorBrush(Colors.Transparent);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
@@ -201,10 +202,11 @@ namespace TelegramVisualPart.Pages
             //Save chosen contacts
             if (_newAutoDelType is null)
             {
+
+                Console.WriteLine(_sub);
+
                 await SaveChosenContacts();
-
                 await CallSignalRMethods();
-
 
                 return;
             }
@@ -216,7 +218,9 @@ namespace TelegramVisualPart.Pages
         {
             await SignalRService.SetPhoneNumVisByExps(_system.LoggedUser);
             await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
+            
             await SignalRService.UpdateBirtDate(_system.LoggedUser);
+            await SignalRService.UpdateContactPhotoVis(_system.LoggedUser);
         }
 
         private void ApplyAutoDeletion()

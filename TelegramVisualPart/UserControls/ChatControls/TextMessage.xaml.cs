@@ -47,6 +47,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetImageSource()
         {
+            if(_imgName is null)
+            {
+                BgBrush.ImageSource = BgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                return;
+            }
+
             BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }

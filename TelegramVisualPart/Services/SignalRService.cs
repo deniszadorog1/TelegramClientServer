@@ -39,7 +39,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? SetContactLastSeenVisStateDel;
         public static event Action<User>? SetPhoneNumVisByExpsDel;
         public static event Action<User>? UpdateBirthDateDel;
-
+        public static event Action<User>? UpdateContactPhotoDel;
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -66,7 +66,7 @@ namespace TelegramVisualPart.Services
             .WithUrl("https://localhost:7164/chatHub", options =>
             {
                 options.Headers.Add("userId", _system.LoggedUser.Id.ToString());
-            })
+            }) 
             .Build();
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
@@ -172,6 +172,11 @@ namespace TelegramVisualPart.Services
                 UpdateBirthDateDel?.Invoke(user);
             });
 
+            _connection.On<User>("UpdateContactPhoto", (user) =>
+            {
+                UpdateContactPhotoDel?.Invoke(user);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -243,6 +248,13 @@ namespace TelegramVisualPart.Services
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateBirthDate", user);
         }
+
+        public static async Task UpdateContactPhotoVis(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateContactPhoto", user);
+        }
+
 
     }
 }

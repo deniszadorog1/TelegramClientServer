@@ -820,7 +820,6 @@ namespace TelegramLib.Services
 
                 res.Id = setting.Id;
 
-
                 res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
 
                 res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id);
@@ -907,7 +906,7 @@ namespace TelegramLib.Services
 
                 res.PhonePrivacy = GetPhoneNumberSettingsById((int)settings.PhoneNumberSetId, settingId);
                 res.LastSeenPrivacy = GetLastSeenSubById((int)settings.LastSeenSetId, settingId);
-                res.ProfPhotoPrivacy = GetProfPhotoSub((int)settings.PhoneNumberSetId, settingId);
+                res.ProfPhotoPrivacy = GetProfPhotoSub((int)settings.ProfPhotoSetId, settingId);
                 res.ForwardMesPrivacy = GetForwardMesSubById((int)settings.ForwardMesSetId, settingId);
                 res.MessagesPrivacy = GetMessagesPrivById((int)settings.MessagesSetId);
                 res.DateBirthPrivacy = GetBirthDateById((int)settings.DateOfBirthSetId, settingId);
@@ -990,8 +989,8 @@ namespace TelegramLib.Services
                 res.PublicPhotoPath = photo.PublicPhotoId is null ? null : GetPublicPhotoPathName((int)photo.PublicPhotoId);
 
                 res.ShareType = GetShareWithById((int)photo.WhoSeeId);
-                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.PhoneNumber);
-                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.PhoneNumber);
+                res.ShareWithExps = GetChosenShareContacts(true, settingId, SubSettingType.Profile);
+                res.NeverShareExps = GetChosenShareContacts(false, settingId, SubSettingType.Profile);
             }
             return res;
         }

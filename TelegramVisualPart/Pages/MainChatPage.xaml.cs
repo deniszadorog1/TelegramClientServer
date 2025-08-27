@@ -42,7 +42,7 @@ namespace TelegramVisualPart.Pages
             SetBasicParams();
         }
 
-        public void SetBasicParams()
+        public async Task SetBasicParams()
         {
             LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
 
@@ -56,15 +56,16 @@ namespace TelegramVisualPart.Pages
 
             SetUserImage();
 
-            UpdateUserChatsPanel();
+            //await UpdateUserChatsPanel();
 
             SetNoChatBg();
 
-            SetActiveChats();
+            await SetActiveChats();
 
             SearchControl.SetSearchType += SetSearchedParams;
 
             SignalRService.UpdateUserImage += AddedUserImage;
+            SignalRService.UpdateContactPhotoDel += AddedUserImage;
 
             //Check with last message
             SignalRService.ClearChatDel += ClearChatAction;
@@ -126,7 +127,7 @@ namespace TelegramVisualPart.Pages
 
         public void AddedUserImage(TelegramLib.MainClasses.User user)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async () =>
             {
                 /*                TelegramLib.MainClasses.UserChat? chat =
                                 _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
@@ -139,11 +140,16 @@ namespace TelegramVisualPart.Pages
 
                 if (boxItem is null || boxItem.Content is not UserTalkMessage talkControl) return;
 
-                Console.WriteLine(talkControl.LastMessage.Text);
+                int.TryParse(boxItem.Tag.ToString(), out int chatId);
 
-                talkControl.ImageIcon.ImageSource = new BitmapImage(
-                        new Uri(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
-                        UriKind.Absolute));
+                TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, _system.Chats.First(x => x.Id == chatId).Chatter.Id);
+
+                await SignalRHelperService.SetContactPhoto(user, chat,
+                    talkControl.ImageIcon, talkControl.UserEllipseImage);
+                /*
+                                talkControl.ImageIcon.ImageSource = new BitmapImage(
+                                        new Uri(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
+                                        UriKind.Absolute));*/
             });
         }
 
@@ -276,14 +282,16 @@ namespace TelegramVisualPart.Pages
             Cursor = null;
         }
 
-        public void SetActiveChats()
+        public async Task SetActiveChats()
         {
             if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
             for (int i = 0; i < _system.Contacts.Count; i++)
             {
                 SetUserChat(_system.Contacts[i].UserName);
-                UpdateUserChatsPanel();
             }
+            
+            await UpdateUserChatsPanel();
+
         }
 
         public void SetUserImage()
@@ -452,13 +460,13 @@ namespace TelegramVisualPart.Pages
         }
 
         private UserTalkMessage _chosenChatControl;
-        private void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
+        private async void ContactsChatChosen_PreviewMouseDown(object sender, EventArgs e)
         {
             if (ChatsBox.Visibility != Visibility.Visible) ChatsBox.Visibility = Visibility.Visible;
             if (sender is not UserContact userControl) return;
 
             SetUserChat(userControl.UserLogin.Text);
-            UpdateUserChatsPanel();
+            await UpdateUserChatsPanel();
         }
 
         public void SetUserChat(string userLogin)
@@ -477,7 +485,7 @@ namespace TelegramVisualPart.Pages
                 _system.ChosenChatContact.Name));
         }
 
-        public Page GetPageByIcon(MenuIconTextBut icon)
+        public Page? GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
                 icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system, false) :
@@ -684,30 +692,35 @@ namespace TelegramVisualPart.Pages
             Keyboard.ClearFocus();
         }
 
-        public void UpdateUserChatsPanel()
+        public async Task UpdateUserChatsPanel()
         {
             ChatsBox.Items.Clear();
-            int chatsCount = _system.GetChatsAmount();
-            for (int i = 0; i < chatsCount; i++)
+            for (int i = 0; i < _system.Chats.Count(); i++)
             {
                 System.Windows.Controls.ListBoxItem item = new
                     System.Windows.Controls.ListBoxItem()
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Content = GetTalkMessage(i)
+                    Tag = _system.Chats[i].Id
                 };
+
+                item.Content = await GetTalkMessage(i);
 
                 item.PreviewMouseDown += UserChat_PreviewMouseDown;
                 ChatsBox.Items.Add(item);
             }
         }
 
-        public UserTalkMessage GetTalkMessage(int chatIndex)
+        public async Task<UserTalkMessage> GetTalkMessage(int chatIndex)
         {
             TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByIndex(chatIndex);
 
-            UserTalkMessage chatControl = new UserTalkMessage(chat.GetChatter().GetFirstImageName().Name)
+
+            TelegramLib.MainClasses.User chatterUser = await ApiService.GetUserById(chat.Chatter.ContactUserId);
+            string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser);
+
+            UserTalkMessage chatControl = new UserTalkMessage(imageName /*chat.GetChatter().GetFirstImageName().Name*/)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Width = ChatsGrid.ActualWidth
@@ -722,6 +735,10 @@ namespace TelegramVisualPart.Pages
             chatControl.LastMessage.Text = chat.GetLastMessage();
 
             //Set Image icon
+
+            /*      
+                   await SignalRHelperService.SetContactPhoto(chatterUser, chat, chatControl.ImageIcon, chatControl.UserEllipseImage);
+      */
             return chatControl;
         }
 
