@@ -22,10 +22,12 @@
                                  Foreground="White" Margin="10"/>
 
         <TextBlock Name="ButName" Grid.Column ="1" Text="But name here" VerticalAlignment="Center"
-                   Foreground="White" />
+                   Foreground="White" FontSize="16"/>
 
-        <TextBlock Name="ChosenType" Grid.Column="2" Text="Chosen" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="0 0 25 0" Foreground="{StaticResource TempActiveTextColor}"/>
+        <TextBlock Name="ChosenType" Grid.Column="2" Text="Chosen" 
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="0 0 25 0" FontSize="16"
+                   Foreground="{StaticResource TempActiveTextColor}"/>
 
     </Grid>
 </UserControl>

@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="800"
-             Height="30"
+             d:DesignHeight="37" d:DesignWidth="800"
+             Height="37"
              Background="{StaticResource DarkThemeOne}"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">
@@ -18,11 +18,11 @@
 
         <TextBlock Grid.Column="0"
                    Name="NamePart" Text="Name is gonna be here" VerticalAlignment="Center"
-                   HorizontalAlignment="Left" Margin="15 0 0 0" FontSize="14" Foreground="White"/>
+                   HorizontalAlignment="Left" Margin="25 0 0 0" FontSize="16" Foreground="White"/>
 
         <TextBlock Grid.Column="1"
                    Name="EnumPart" Text="chosen enum value is here" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="0 0 15 0" FontSize="14" 
+                   HorizontalAlignment="Right" Margin="0 0 15 0" FontSize="16" 
                    Foreground="{StaticResource TempActiveTextColor}"/>
     </Grid>
 </UserControl>

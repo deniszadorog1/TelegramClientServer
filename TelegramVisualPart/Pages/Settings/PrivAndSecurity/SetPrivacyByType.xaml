@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity"
       xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="400"
-      Height="450" Width="400" 
+      d:DesignHeight="520" d:DesignWidth="400"
+      Height="520" Width="400" 
       VerticalAlignment="Top" Margin="0 50 0 0"
       Title="SetPrivacyByType">
 
@@ -16,7 +17,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="130"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
@@ -38,30 +39,36 @@
                 <StackPanel Grid.Row="1" >
                     <RadioButton Foreground="White" Content="Everybody"
                              Name="EverybodyRadio" Checked="EverybodyRadio_Checked"
-                             FontSize="16" IsChecked="False" 
+                             FontSize="16" IsChecked="False"
                              Background="{StaticResource TempActiveTextColor}"                             
-                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Style="{StaticResource MaterialDesignRadioButton}"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="26"
+                             Padding="10 0 0 2" Margin="0 3 0 3"/>
 
                     <RadioButton Foreground="White" Content="Contacts"
                              Name="ContactsRadio" Checked="ContactsRadio_Checked"
                              FontSize="16" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
-                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Style="{StaticResource MaterialDesignRadioButton}"
+                             Padding="10 0 0 2" Margin="0 3 0 3"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="26"/>
 
                     <RadioButton Foreground="White" Content="Nobody"
                              Name="NobodyRadio" Checked="NobodyRadio_Checked"
                              FontSize="16" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
-                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                             Style="{StaticResource MaterialDesignRadioButton}"
+                             Padding="10 0 0 2" Margin="0 3 0 3"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="26"/>
                 </StackPanel>
             </Grid>
 
 
             <Grid Grid.Row="2" Margin="0 0 0 0" Name="MainGrid">
                 <Grid.RowDefinitions>
-                    <RowDefinition Name ="PhoneNumberRow"/>
+                    <RowDefinition Name ="PhoneNumberRow" Height="0"/>
                     <RowDefinition Name = "LastSeenRow" Height="0"/>
-                    <RowDefinition Name = "ProfilePhotosRow" Height="0"/>
+                    <RowDefinition Name = "ProfilePhotosRow" />
                     <RowDefinition Name = "ForwardedMessagesRow" Height="0"/>
                     <RowDefinition Name = "DateOfBirthRow" Height="0"/>
                     <RowDefinition Name = "BIORow" Height="0"/>
@@ -77,8 +84,8 @@
                     <Grid Grid.Row="0" Name="PhoneEverybodyGrid">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="75"/>
-                            <RowDefinition Height="40"/>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
                             <RowDefinition Height="55"/>
                         </Grid.RowDefinitions>
 
@@ -109,7 +116,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="75"/>
                             <RowDefinition Height="40"/>
-                            <RowDefinition Height="65"/>
+                            <RowDefinition Height="75"/>
                             <RowDefinition Height="55"/>
                         </Grid.RowDefinitions>
 
@@ -219,7 +226,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="90"/>
                                 <RowDefinition Height="30"/>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="60"/>
                             </Grid.RowDefinitions>
 
@@ -243,13 +250,12 @@
 
                         </Grid>
 
-
                         <!--Height - 720 for Contacts; 690 for Nobody-->
                         <Grid Grid.Row="1" Name="LastSeenOtherGrid">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="90"/>
                                 <RowDefinition Height="40"/>
-                                <RowDefinition Height="65" Name="ExecLastSeenButs"/>
+                                <RowDefinition Height="80" Name="ExecLastSeenButs"/>
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="40"/>
                                 <RowDefinition Height="90"/>
@@ -313,7 +319,7 @@
                                 <RowDefinition Height="40" Name="PubPhotoButRow"/>
                                 <RowDefinition Height="60" Name="ProfPhotoTextRow"/>
                                 <RowDefinition Height="40"/>
-                                <RowDefinition Height="65" Name="ShareButsRow"/>
+                                <RowDefinition Height="80" Name="ShareButsRow"/>
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
 
@@ -354,7 +360,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
                             <RowDefinition Height="40"/>
-                            <RowDefinition Height="65" Name="ForewarMesSHardButsRow"/>
+                            <RowDefinition Height="80" Name="ForewarMesSHardButsRow"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
@@ -386,7 +392,7 @@
                 <Grid Grid.Row="4" Name="DateOfBirthBorder">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="65" Name="BirtDateShardButsRow"/>
+                        <RowDefinition Height="80" Name="BirtDateShardButsRow"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
 
@@ -414,7 +420,7 @@
                 <Grid Grid.Row="5" Name="BioGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="65" Name="BioShardButsRow"/>
+                        <RowDefinition Height="80" Name="BioShardButsRow"/>
                         <RowDefinition Height="60"/>
                     </Grid.RowDefinitions>
 

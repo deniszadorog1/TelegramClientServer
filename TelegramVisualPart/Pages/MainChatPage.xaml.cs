@@ -62,6 +62,10 @@ namespace TelegramVisualPart.Pages
 
             await SetActiveChats();
 
+            SetColorToSettingsButs();
+
+            SliderLogin.Text = _system.LoggedUser.Login;
+
             SearchControl.SetSearchType += SetSearchedParams;
 
             SignalRService.UpdateUserImage += AddedUserImage;
@@ -74,6 +78,33 @@ namespace TelegramVisualPart.Pages
             SignalRService.MediaMessageReceived += SetMediaMessage;
         }
 
+        public void SetColorToSettingsButs()
+        {
+            List<MenuIconTextBut> buts = SlideMenuPanel.Children.OfType<MenuIconTextBut>().ToList();
+            for (int i = 0; i < buts.Count(); i++)
+            {
+                SetColorToSettingBut(buts[i]);
+            }
+        }
+
+        private readonly SolidColorBrush _textColor = new SolidColorBrush(Colors.White);
+        public void SetColorToSettingBut(MenuIconTextBut but)
+        {
+            const int iconSize = 27;
+
+            but.IconType.Foreground = _textColor;
+            but.ButName.Foreground = _textColor;
+
+            but.IconType.Width = iconSize;
+            but.IconType.Height = iconSize;
+
+            //but.ButName.FontWeight = FontWeights.SemiBold;
+            but.Margin = new Thickness(0, 0, 0, 0);
+            but.Height = 45;
+            but.ButName.FontSize = 19;
+            but.FontFamily = new FontFamily("Calibri");
+            
+        }
         public void SetMediaMessage(TelegramLib.MainClasses.User user,
             MediaAction media)
         {

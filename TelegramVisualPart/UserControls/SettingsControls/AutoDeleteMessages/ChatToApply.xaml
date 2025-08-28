@@ -17,11 +17,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="100" Width="35" Height="35" 
+        <Border CornerRadius="100" Width="42" Height="42" 
                 Name="ChosenChatIconBorder"         
                 Background="Transparent">
-            <Ellipse Height="33" 
-                     Width="33">
+            <Ellipse Height="40" 
+                     Width="40">
                 <Ellipse.Fill>
                     <ImageBrush x:Name="UserImageBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                 </Ellipse.Fill>
@@ -37,11 +37,11 @@
             <TextBlock Name="TypeName" Grid.Row="0"
                        Text="There gona be chat name"
                        VerticalAlignment="Center" Foreground="White"
-                       FontSize="14" Margin="5 0 0 0"/>
+                       FontSize="17" Margin="5 0 0 0"/>
 
             <TextBlock Name="AutoDeletionType" Grid.Row="1"
                        Text="There gona be deleteion type"
-                       VerticalAlignment="Center" Foreground="White"
+                       VerticalAlignment="Center" Foreground="Gray"
                        FontSize="14" Margin="5 0 0 0"/>
         </Grid>
     </Grid>

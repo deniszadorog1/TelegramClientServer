@@ -35,8 +35,26 @@ namespace TelegramVisualPart.Pages.Settings
             _system = system;
             InitializeComponent();
             SetButtonsView();
-        
+
             SetUserInfo();
+
+            SetColorToSettingsButs();
+        }
+
+        public void SetColorToSettingsButs()
+        {
+            List<MenuIconTextBut> buts = SettingsButs.Children.OfType<MenuIconTextBut>().ToList();
+            for (int i = 0; i < buts.Count(); i++)
+            {
+                SetColorToSettingBut(buts[i]);
+            }
+        }
+
+        private readonly SolidColorBrush _textColor = new SolidColorBrush(Colors.White);
+        public void SetColorToSettingBut(MenuIconTextBut but)
+        {
+            but.IconType.Foreground = _textColor;
+            but.ButName.Foreground = _textColor;
         }
 
         public void SetUserInfo()
@@ -72,7 +90,7 @@ namespace TelegramVisualPart.Pages.Settings
             }
         }
 
-        public Page GetPageByIcon(MenuIconTextBut icon)
+        public Page? GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
                 icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_system) :

@@ -18,15 +18,29 @@
 
     <materialDesign:DrawerHost x:Name="MainDrawerHost">
         <materialDesign:DrawerHost.LeftDrawerContent>
-            <StackPanel Background="{StaticResource DarkThemeOne}" Width="275">
+            <StackPanel Background="{StaticResource DarkThemeOne}" Width="320"
+                        Name="SlideMenuPanel">
 
-                <Ellipse Name ="LoggedUserImage" Width="50" Height="50"
-                         HorizontalAlignment="Left" Margin="10">
-                    <Ellipse.Fill>
-                        <ImageBrush x:Name="UserImage"  ImageSource="pack://application:,,,/Visuals/Images/UserImages/Minato.jpg"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Ellipse Name ="LoggedUserImage" Width="50" Height="50"
+                             HorizontalAlignment="Left" Margin="10"
+                             Grid.Column="0">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="UserImage"  ImageSource="pack://application:,,,/Visuals/Images/UserImages/Minato.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
 
+                    <TextBlock Grid.Column="1" Name="SliderLogin" Text="TestLogin"
+                               FontSize="16" Foreground="White" 
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"/>
+
+                </Grid>
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
 
@@ -93,10 +107,12 @@
                     <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
                                                  Width="35" Height="35" Foreground="Gray" 
                                                  Visibility="Hidden"/>
+
+
                 </Grid>
 
                 <ListBox Grid.Row="1" x:Name="ChatsBox" Visibility="Hidden">
-                   <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
+                    <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                 </ListBox>
 
@@ -109,8 +125,8 @@
                     <WrapPanel Name ="AllMediasElements"
                                Background="Transparent" 
                                VerticalAlignment="Top"
-                               HorizontalAlignment="Left"> 
-                        
+                               HorizontalAlignment="Left">
+
                     </WrapPanel>
                 </StackPanel>
 

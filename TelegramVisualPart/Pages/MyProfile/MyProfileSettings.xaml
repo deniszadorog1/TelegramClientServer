@@ -9,21 +9,21 @@
       xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.MyProfileControls"
 
       mc:Ignorable="d" 
-      d:DesignHeight="655" d:DesignWidth="400"
+      d:DesignHeight="690" d:DesignWidth="400"
       
-      Height="655" Width="400" Margin="0 50 0 0"
+      Height="690" Width="400" Margin="0 50 0 0"
       HorizontalAlignment="Center" VerticalAlignment="Top"     
       
       Title="MyProfileSettings">
 
-    <Border Height="655" Width="400" Background="{StaticResource DarkThemeOne}" CornerRadius="10">
+    <Border Height="690" Width="400" Background="{StaticResource DarkThemeOne}" CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="200"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="105"/>
                 <RowDefinition Height="135"/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="70"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
@@ -46,7 +46,8 @@
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
 
                     <TextBlock Grid.Column="1" Text="Info" VerticalAlignment="Center"
-                               Margin="10 0 0 0" Foreground="White" FontSize="20"/>
+                               Margin="10 0 0 0" Foreground="White" FontSize="20"
+                               FontFamily="Segoe UI"/>
                 </Grid>
 
                 <Grid Grid.Column="1">
@@ -69,13 +70,15 @@
                 </Ellipse>
 
                 <TextBlock Name ="UserName"
-                       Text="There should be name" HorizontalAlignment="Center"
-                       FontSize="16" Foreground="White" Margin="0 5 0 0"/>
+                           Text="There should be name" HorizontalAlignment="Center"
+                           FontSize="18" FontFamily="Segoe UI"
+                           FontWeight="Normal"
+                           Foreground="White" Margin="0 5 0 0"/>
 
                 <TextBlock Name ="LastSeenOnline"
                        Text="There should be last online time" 
                        HorizontalAlignment="Center"
-                       FontSize="16" Foreground="White" Margin="0 5 0 0"/>
+                       FontSize="16" Foreground="Gray" Margin="0 5 0 0"/>
             </StackPanel>
 
             <Grid Grid.Row="2">
@@ -94,16 +97,16 @@
                              materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
                              materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
                              Foreground="White" CaretBrush="White"
-                             VerticalContentAlignment="Center" Margin="10 0 0 0"
-                             FontSize="14" BorderThickness="0"/>
+                             VerticalContentAlignment="Center" Margin="20 0 0 0"
+                             FontSize="16" BorderThickness="0"/>
 
                     <TextBlock Grid.Column="1" x:Name="WordCount" Text="70" TextWrapping="Wrap"
-                           FontSize="14" HorizontalAlignment="Center"
+                           FontSize="16" HorizontalAlignment="Center"
                            VerticalAlignment="Center" Foreground="Gray"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Background="{StaticResource DarkThemeMouseEnterBut}">
-                    <TextBlock Margin="5" FontSize="14" Foreground="Gray"
+                    <TextBlock Margin="20 10 0 0" FontSize="16" Foreground="Gray"
                            TextWrapping="Wrap"
                            Text="Any details such as age, occupation or city.
                            Example: 23 y.o. designer from San Francisco."/>
@@ -117,10 +120,9 @@
             </StackPanel>
 
             <Grid Grid.Row="4" Background="{StaticResource DarkThemeMouseEnterBut}">
-                <TextBlock Margin="5" FontSize="14" Foreground="Gray"
+                <TextBlock Margin="20 12 0 0 " FontSize="16" Foreground="Gray"
                            TextWrapping="Wrap"
-                           Text="Username laet people contact you on Telegram without 
-                           needing your phone number."/>
+                           Text="Username laet people contact you on Telegram without needing your phone number."/>
             </Grid>
 
             <controls:MyProfileSettingsButton  Margin="0 5 0 5" Grid.Row="5" x:Name="PersonalChannelBut"

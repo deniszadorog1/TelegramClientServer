@@ -31,11 +31,11 @@
 
             <TextBlock Grid.Row="0" Text="Folder name" Name="FolderName"
                        VerticalAlignment="Center"
-                       Foreground="White" FontSize="12"/>
+                       Foreground="White" FontSize="16"/>
 
             <TextBlock Grid.Row="1" Text="Amount of items" Name="AmountOfChats"
                        VerticalAlignment="Center" 
-                       Foreground="Gray" FontSize="12"/>
+                       Foreground="Gray" FontSize="14"/>
         </Grid>
 
         <Grid Grid.Column="2" Name="BucketGrid"

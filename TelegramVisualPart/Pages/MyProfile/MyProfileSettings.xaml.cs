@@ -133,7 +133,7 @@ namespace TelegramVisualPart.Pages.MyProfile
         {
             if (sender is MyProfileSettingsButton but)
             {
-                Page page = GetPageByName(but.Name.ToString());
+                Page? page = GetPageByName(but.Name.ToString());
                 if (page is null) return;
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
             }

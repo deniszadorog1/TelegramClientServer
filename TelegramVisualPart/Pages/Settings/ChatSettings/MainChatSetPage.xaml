@@ -8,8 +8,8 @@
       xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="400"
-      Height="650" Width="400"
+      d:DesignHeight="655" d:DesignWidth="400"
+      Height="655" Width="400"
       Title="MainChatSetPage">
 
     <Page.Resources>
@@ -42,7 +42,7 @@
                 <TextBlock Name="ChatNameBlock" Grid.Column="1" 
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Text="Chat Settings" Margin="10" Foreground="White"
-                           FontSize="16"/>
+                           FontSize="20"/>
 
                 <buts:IconButton Grid.Column="2" Width="30" Margin="0 0 25 0"
                                  HorizontalAlignment="Right" x:Name="CloseBut"
@@ -71,7 +71,7 @@
 
                         <TextBlock Name="ThemesTextBlock" VerticalAlignment="Center"
                                    Foreground="{StaticResource TempActiveTextColor}"
-                                   Text="Themes" FontSize="16" Margin="15 0 0 0"/>
+                                   Text="Themes" FontSize="17" Margin="20 0 0 0"/>
 
                         <WrapPanel Name="ThemesWrap" Orientation="Horizontal"
                                    Grid.Row="1" Margin="5 0 0 0">
@@ -108,8 +108,8 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Theme settings" Margin="15 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
-                                       FontSize="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Theme settings" Margin="20 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
+                                       FontSize="17" VerticalAlignment="Center"/>
 
                             <StackPanel Grid.Row="1" Orientation="Vertical">
                                 <controls:ThemeSetBut x:Name="AutoNightBut" Margin="0 5 0 0" PreviewMouseDown="AutoNightBut_PreviewMouseDown"/>
@@ -126,9 +126,9 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Chat wallpaper" Margin="15 0 0 0" 
+                            <TextBlock Text="Chat wallpaper" Margin="20 0 0 0" 
                                        Foreground="{StaticResource TempActiveTextColor}"
-                                       FontSize="16" VerticalAlignment="Center"/>
+                                       FontSize="17" VerticalAlignment="Center"/>
 
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -147,14 +147,14 @@
 
                                     <TextBlock Text="Choose from gallery" Name="ChooseWallpaperFromGalery"
                                                    Foreground="{StaticResource TempActiveTextColor}"
-                                                   FontSize="15" VerticalAlignment="Center"
+                                                   FontSize="16" VerticalAlignment="Center"
                                                    PreviewMouseDown="ChooseWallpaperFromGalery_PreviewMouseDown"
                                                    MouseEnter="ChatWallpaperTextBlock_MouseEnter"
                                                    MouseLeave="ChatWallpaperTextBlock_MouseLeave"/>
 
                                     <TextBlock Text="Choose from file" Name="ChooseWallpaperFromFile"
                                                    Foreground="{StaticResource TempActiveTextColor}"
-                                                   FontSize="15" VerticalAlignment="Top" Grid.Row="1"
+                                                   FontSize="16" VerticalAlignment="Top" Grid.Row="1"
                                                    PreviewMouseDown="ChooseWallpaperFromFile_PreviewMouseDown"
                                                    MouseEnter="ChatWallpaperTextBlock_MouseEnter"
                                                    MouseLeave="ChatWallpaperTextBlock_MouseLeave"/>
@@ -166,16 +166,19 @@
 
                         <StackPanel Grid.Row="8" Margin="10 0 0 0">
                             <RadioButton Foreground="White" Content="Send with Enter"
-                             Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
-                             FontSize="18" IsChecked="False" 
-                             Background="{StaticResource TempActiveTextColor}"                             
-                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                                 Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
+                                 FontSize="18" IsChecked="False" Padding="3 0 0 2"
+                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                                 Background="{StaticResource TempActiveTextColor}"                             
+                                 Style="{StaticResource MaterialDesignRadioButton}"/>
 
                             <RadioButton Foreground="White" Content="Send with Ctrl+Enter"
-                             Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
-                             FontSize="18" IsChecked="False" 
-                             Background="{StaticResource TempActiveTextColor}"                             
-                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                                 Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
+                                 FontSize="18" IsChecked="False" Padding="3 0 0 2"
+                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                                 Background="{StaticResource TempActiveTextColor}" 
+                                 Margin="0 5 0 0"
+                                 Style="{StaticResource MaterialDesignRadioButton}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

@@ -38,9 +38,10 @@
                                     VerticalAlignment="Center" 
                                     HorizontalAlignment="Center"/>
 
-                <TextBlock Grid.Column="1" Text="Notifications and sounds"
+                <TextBlock Grid.Column="1" Text="Notifications and Sounds"
                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Foreground="White" FontSize="17" Margin="10 0 0 0"/>
+                       Foreground="White" FontSize="21" Margin="5 0 0 0"
+                           FontWeight="Normal" FontFamily="Segoe UI" />
 
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
@@ -60,7 +61,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Global settings" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                       FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           FontFamily="Segoe UI"
+                           FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <butToggleIcon:ToggleIconBut x:Name="DeskTopNotifs"/>
@@ -76,7 +78,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Notification for chat" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                       FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           FontFamily="Segoe UI"
+                           FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <butToggleIcon:ToggleIconBut x:Name="PrivateChat"/>
@@ -90,7 +93,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Events" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                       FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           FontFamily="Segoe UI"
+                           FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <StackPanel Grid.Row="1">
                     <butToggleIcon:ToggleIconBut x:Name="PinnedMessages"/>

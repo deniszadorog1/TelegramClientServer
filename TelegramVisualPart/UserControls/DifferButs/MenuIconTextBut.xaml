@@ -19,12 +19,12 @@
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
                                  Foreground="Gray"
-                                 Width="30" Height="35"
+                                 Width="28" Height="28"
                                  Name="IconType"/>
         
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Foreground="Gray" Margin="15 0 0 0"/>
+                   Foreground="Gray" Margin="15 0 0 0" FontSize="14"/>
 
     </Grid>
 </UserControl>

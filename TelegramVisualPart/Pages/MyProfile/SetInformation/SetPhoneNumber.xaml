@@ -10,21 +10,24 @@
       Height="230" Width="350"
       HorizontalAlignment="Center" VerticalAlignment="Center"
       Title="SetPhoneNumber">
-    <Grid Background="{StaticResource DarkThemeOne}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="180"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <TextBlock Margin="15" FontSize="22" Foreground="White" TextWrapping="Wrap"
+    <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid  Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="170"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Margin="15" FontSize="21" Foreground="White" TextWrapping="Wrap"
                    Text="You can only change your phone number using mobile Telegram apps. Please use an official Telegram app on your phone to update your numer."/>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Right" 
-                    VerticalAlignment="Bottom" Margin="10" Orientation="Horizontal">
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="Ok"
-                    Content="ok" Background="Transparent" BorderThickness="0"
+            <StackPanel Grid.Row="1" HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" Margin="0 0 10 10" Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="Ok"
+                    Content="OK" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
                     Foreground="{StaticResource TempActiveTextColor}"
+                    FontSize="16"
                     Click ="Ok_Click"/>
-        </StackPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Page>

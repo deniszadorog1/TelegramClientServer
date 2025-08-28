@@ -93,5 +93,20 @@ namespace TelegramVisualPart.Pages
             UserImage.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
+
+        private void UserNameBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            UserNameBlock.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void UserNameBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            UserNameBlock.TextDecorations = null;
+        }
+
+        private void UserNameBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetText(UserNameBlock.Text);
+        }
     }
 }

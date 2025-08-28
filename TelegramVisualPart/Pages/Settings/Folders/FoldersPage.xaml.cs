@@ -42,8 +42,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void SetTestObject()
         {
-            TestThing.FolderName.Text = "There should be folder name";
-            TestThing.AmountOfChats.Text = "And there is amount of users";
+            TestThing.FolderName.Text = "Folder Name";
+            TestThing.AmountOfChats.Text = "Amount of Users";
             TestThing.BucketIcon.Visibility = Visibility.Hidden;
         }
 

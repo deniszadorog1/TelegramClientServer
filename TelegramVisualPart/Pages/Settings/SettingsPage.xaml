@@ -13,6 +13,13 @@
       Height="550" Width="345"
       Title="SettingsPage">
 
+    <Page.Resources>
+        <Style TargetType="{x:Type menuIconTextBut:MenuIconTextBut}" x:Key="SettingsBut">
+            <Setter Property="Margin" Value="0 5 5 0"/>
+        </Style>
+    </Page.Resources>
+
+
     <Border Background="{StaticResource DarkThemeOne}" CornerRadius="15">
         <Grid>
             <Grid.RowDefinitions>
@@ -87,16 +94,16 @@
 
             <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
 
-            <StackPanel Grid.Row="3">
-                <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="PrivacySecurity" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Folders" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Advanced" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Language" PreviewMouseDown="Buts_PreviewMouseDown"/>
+            <StackPanel Grid.Row="3" x:Name="SettingsButs">
+                <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" Style="{StaticResource SettingsBut}" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="PrivacySecurity" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Folders" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Advanced" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="Language" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
             </StackPanel>
 
             <Grid Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"/>

@@ -11,49 +11,53 @@
       VerticalAlignment="Center"
       HorizontalAlignment="Center"
       Title="SetNameSurname"  
-      Background="{StaticResource DarkThemeOne}">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="90"/>
-            <RowDefinition Height="90"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+      >
 
-        <TextBlock Text="Edit your name" FontSize="24" Margin="30 0 0 0"
+    <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Edit your name" FontSize="22" Margin="25 0 0 0"
                    HorizontalAlignment="Left" VerticalAlignment="Center"
                    Foreground="White"/>
-        
-        <TextBox Grid.Row="1" Name="FirstNameBox"
-                  Foreground="White" Margin="15" FontSize="16"
+
+            <TextBox Grid.Row="1" Name="FirstNameBox" Margin="25 15 15 15"
+                  Foreground="White" FontSize="20"
                   materialDesign:HintAssist.Hint="First name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                  materialDesign:HintAssist.Foreground="Gray"
-                   CaretBrush="White"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-
-        <TextBox Grid.Row="2" Name="LastNameBox"
-                  Foreground="White" Margin="15" FontSize="16"
-                  materialDesign:HintAssist.Hint="Last name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                  materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
                   CaretBrush="White"
-                  materialDesign:HintAssist.Foreground="Gray"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
-        <StackPanel Grid.Row="3" HorizontalAlignment="Right" 
-                    VerticalAlignment="Bottom" Margin="10" Orientation="Horizontal">
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+            <TextBox Grid.Row="2" Name="LastNameBox"
+                  Foreground="White" Margin="25 15 15 15" FontSize="20"
+                  materialDesign:HintAssist.Hint="Last name"
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                  CaretBrush="White"
+                  materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"                              
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right"  
+                    VerticalAlignment="Bottom" Margin="10 10 15 15" Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                     Content="Cancel" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Click="CancelBut_Click"  Margin="0 0 10 0" 
+                    Click="CancelBut_Click"  Margin="0 0 7 0" FontSize="17"
                     Foreground="{StaticResource TempActiveTextColor}"/>
 
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                     Content="Save" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
                     Foreground="{StaticResource TempActiveTextColor}"
+                    FontSize="17"
                     Click="SaveBut_Click"/>
-        </StackPanel>
+            </StackPanel>
 
-    </Grid>
+        </Grid>
+    </Border>
 </Page>

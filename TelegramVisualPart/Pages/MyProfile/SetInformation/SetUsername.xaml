@@ -11,49 +11,53 @@
       VerticalAlignment="Center" HorizontalAlignment="Center"
       Title="SetUsername">
 
-    <Grid Background="{StaticResource DarkThemeOne}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="150" />
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="150" />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Username" VerticalAlignment="Center"
-                   FontSize="20" Foreground="White" Margin="20 0 0 0"/>
+            <TextBlock Grid.Row="0" Text="Username" VerticalAlignment="Center"
+                   FontSize="20" Foreground="White" Margin="25 0 0 0"/>
 
-        <TextBox Grid.Row="1" Name="UserNameBox"
-                  Foreground="White" Margin="15" FontSize="16"
+            <TextBox Grid.Row="1" Name="UserNameBox"
+                  Foreground="White" Margin="25 15 15 15" FontSize="16"
                   materialDesign:HintAssist.Hint="@username"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                  materialDesign:HintAssist.FloatingScale="0.8"
+                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
                   CaretBrush="White"
-                  materialDesign:HintAssist.Foreground="Gray"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                  materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
+                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
-        <StackPanel Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}">
+            <StackPanel Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}">
 
-            <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="10"
+                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="25 10 20 0"
                        Text="You can choose a username on Telegram. If you do, other people will be able to find you by this username and contact you without knowing your phone number."/>
 
-            <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="10"
+                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="25 10 20 0"
             Text="You can use a-z, 0-9 ad underscores. Minimum length is in 5 characters."/>
-        </StackPanel>
+                
+            </StackPanel>
 
-        <StackPanel Grid.Row="3" HorizontalAlignment="Right" 
-                    VerticalAlignment="Bottom" Margin="10" Orientation="Horizontal">
+            <StackPanel Grid.Row="3" HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" Margin="15" Orientation="Horizontal">
 
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                     Content="Cancel" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
-                    Click="CancelBut_Click"  Margin="0 0 10 0" 
+                    Click="CancelBut_Click"  Margin="0 0 10 0" FontSize="16"
                     Foreground="{StaticResource TempActiveTextColor}"/>
 
-            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                     Content="Save" Background="Transparent" BorderThickness="0"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
                     Foreground="{StaticResource TempActiveTextColor}"
-                    Click="SaveBut_Click"/>
-        </StackPanel>
+                    Click="SaveBut_Click" FontSize="16"/>
+            </StackPanel>
 
-    </Grid>
+        </Grid>
+    </Border>
 </Page>

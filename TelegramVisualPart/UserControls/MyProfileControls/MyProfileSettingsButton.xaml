@@ -12,21 +12,21 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="60"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <materialDesign:PackIcon Kind="AccountCircleOutline" Grid.Row="0" Margin="0 0 0 0"
-                                 Width="30" Height="30" HorizontalAlignment="Right"
+        <materialDesign:PackIcon Kind="AccountCircleOutline" Grid.Row="0" 
+                                 Width="25" Height="25" HorizontalAlignment="Center"
                                  Foreground="White" VerticalAlignment="Center"
                                  Name ="IconVis"/>
         <TextBlock Grid.Column="1" Name="ButName" VerticalAlignment="Center"
                    HorizontalAlignment="Left" Text="There should be button name"
-                   Foreground="White" FontSize="12" Margin="10 0 0 0"/>
+                   Foreground="White" FontSize="16"/>
 
         <TextBlock Grid.Column="2" Name="AdditionalText" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Text="There should be addit text"
-                   Foreground="{StaticResource TempActiveTextColor}" FontSize="12" Margin="0 0 20 0"/>
+                   Foreground="{StaticResource TempActiveTextColor}" FontSize="16" Margin="0 0 20 0"/>
     </Grid>
 </UserControl>

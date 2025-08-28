@@ -202,9 +202,6 @@ namespace TelegramVisualPart.Pages
             //Save chosen contacts
             if (_newAutoDelType is null)
             {
-
-                Console.WriteLine(_sub);
-
                 await SaveChosenContacts();
                 await CallSignalRMethods();
 

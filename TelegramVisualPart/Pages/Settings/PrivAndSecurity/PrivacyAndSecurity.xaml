@@ -8,8 +8,8 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"      
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="650" d:DesignWidth="400"
-      Height="650" Width="400" VerticalAlignment="Top"
+      d:DesignHeight="655" d:DesignWidth="400"
+      Height="655" Width="400" VerticalAlignment="Top"
       Title="PrivacyAndSecurity">
 
     <Border CornerRadius="15" 
@@ -17,11 +17,11 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="250"/>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="70"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="120"/>
+                <RowDefinition Height="305"/>
+                <RowDefinition Height="85"/>
+                <RowDefinition Height="85"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -36,9 +36,10 @@
                                     VerticalAlignment="Center" HorizontalAlignment="Center" 
                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
 
-                <TextBlock Grid.Column="1" Text="Privacy and Security" Margin="10 0 0 0"
+                <TextBlock Grid.Column="1" Text="Privacy and Security" Margin="5 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Foreground="White" FontSize="18"/>
+                           Foreground="White" FontSize="20"
+                           FontFamily="Segoe UI"/>
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
                                     VerticalAlignment="Center"
@@ -47,7 +48,7 @@
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
-            <Line StrokeThickness="5" Stroke="{StaticResource DarkThemeDeviderField}" 
+            <Line StrokeThickness="1" Stroke="{StaticResource DarkThemeDeviderField}" 
                 X1="0" X2="1000" VerticalAlignment="Bottom"/>
 
             <Grid Grid.Row="1">
@@ -59,7 +60,7 @@
                 <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1" Margin="10 0 0 0">
+                <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="LocalPasscode" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="BlockedUsers" PreviewMouseDown="Buts_PreviewMouseDown"/>
                 </StackPanel>
@@ -74,7 +75,7 @@
                 <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1" Margin="10 0 0 0">
+                <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="PhoneNumber" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="LastSeen" PreviewMouseDown="Buts_PreviewMouseDown"/>
                     <enumBut:EnumPrivacyButton x:Name="ProfilePhotos" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -94,7 +95,7 @@
                 <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1" Margin="10 0 0 0">
+                <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="ClearPayments"/>
                 </StackPanel>
             </Grid>
@@ -108,7 +109,7 @@
                 <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="25 0 0 10"
                FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <StackPanel Grid.Row="1" Margin="10 0 0 0">
+                <StackPanel Grid.Row="1">
                     <enumBut:EnumPrivacyButton x:Name="DeleteAway" PreviewMouseDown="Buts_PreviewMouseDown"/>
                 </StackPanel>
             </Grid>
