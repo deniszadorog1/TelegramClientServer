@@ -32,12 +32,28 @@ namespace TelegramVisualPart.Pages
             SettingsBut.IconType.Kind = PackIconKind.LeadPencil;
 
             UserLoginBlock.Text = _user.Login;
-            LastSeenOnline.Text = _user.LastSeenOnline.ToString();
+
+            SetOnlineStatus();
+            //LastSeenOnline.Text = _user.LastSeenOnline.ToString();
+
+       
             PhoneNumberBlock.Text = _user.PhoneNumber;
             UserNameBlock.Text = _user.UserName;
 
             UserImage.ImageSource = 
                 new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+        }
+
+        private void SetOnlineStatus()
+        {
+            if (_system.LoggedUser.IsOnline)
+            {
+                LastSeenOnline.Foreground =
+                    (SolidColorBrush)Application.Current.FindResource("TempActiveTextColor");
+                LastSeenOnline.Text = "Online";
+                return;
+            }
+            LastSeenOnline.Text = $"{_system.LoggedUser.LastSeenOnline.Day}.{_system.LoggedUser.LastSeenOnline.Month}.{_system.LoggedUser.LastSeenOnline.Year}";
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)

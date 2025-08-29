@@ -8,8 +8,8 @@
       xmlns:butToggleIcon ="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="470" d:DesignWidth="400"
-      Height="470" Width="400"
+      d:DesignHeight="500" d:DesignWidth="475"
+      Height="500" Width="475"
       Title="NotAndSoundSettings"
       HorizontalAlignment="Center" 
       >
@@ -18,10 +18,10 @@
             Background="{StaticResource DarkThemeOne}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="160"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="170"/>
                 <RowDefinition Height="80"/>
-                <RowDefinition/>
+                <RowDefinition Height="85"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 

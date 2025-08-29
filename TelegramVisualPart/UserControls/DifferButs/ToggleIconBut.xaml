@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="500">
+             d:DesignHeight="45" d:DesignWidth="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
@@ -21,10 +21,10 @@
                                  Foreground="LightGray"/>
 
         <TextBlock Name ="TextBlock" Grid.Column="1" Text="there gonna be a text" 
-                   VerticalAlignment="Center" Foreground="LightGray" FontSize="16"
+                   VerticalAlignment="Center" Foreground="LightGray" FontSize="18"
                    Margin="10" FontWeight="Normal"/>
 
-        <ToggleButton Name ="Toggle" Grid.Column="2" Width="35"
+        <ToggleButton Name ="Toggle" Grid.Column="2" Width="40" Height="40"
                       HorizontalAlignment="Left" 
               Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
               ToolTip="MaterialDesignSwitchDarkToggleButton"                      

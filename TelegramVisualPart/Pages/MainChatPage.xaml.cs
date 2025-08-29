@@ -160,10 +160,6 @@ namespace TelegramVisualPart.Pages
         {
             Dispatcher.Invoke(async () =>
             {
-                /*                TelegramLib.MainClasses.UserChat? chat =
-                                _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
-                                if (chat is null) return;*/
-
                 ListBoxItem? boxItem = ChatsBox.Items
                     .OfType<ListBoxItem>()
                     .FirstOrDefault(x => x.Content is UserTalkMessage talkControl &&
@@ -177,10 +173,6 @@ namespace TelegramVisualPart.Pages
 
                 await SignalRHelperService.SetContactPhoto(user, chat,
                     talkControl.ImageIcon, talkControl.UserEllipseImage);
-                /*
-                                talkControl.ImageIcon.ImageSource = new BitmapImage(
-                                        new Uri(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
-                                        UriKind.Absolute));*/
             });
         }
 

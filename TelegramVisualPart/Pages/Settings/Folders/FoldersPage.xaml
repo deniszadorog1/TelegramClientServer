@@ -9,8 +9,8 @@
       xmlns:addFolderBut="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="400"
-      Height="450" Width="400"
+      d:DesignHeight="475" d:DesignWidth="475"
+      Height="475" Width="475"
       Title="FoldersPage">
 
     <Border x:Name="BgBorder" CornerRadius="15" 
@@ -19,7 +19,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="150"/>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="175"/>
                 <RowDefinition Height="5"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>

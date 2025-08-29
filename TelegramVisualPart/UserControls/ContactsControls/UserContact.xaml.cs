@@ -13,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
@@ -27,47 +29,87 @@ namespace TelegramVisualPart.UserControls.ContactsControls
         private string _imgSource;
         private string _login;
         private string _contactImgName;
+        private TelegramLib.MainClasses.User _user;
 
         public UserContact()
         {
             InitializeComponent();
+
+            //Update contact vis state
         }
 
-/*        public UserContact(string imgSource, string login,
-            DateTime? lastOnline, string contactImgName)
-        {
-            _imgSource = imgSource;
-            _login = login;
-            _contactImgName = contactImgName;
+        /*        public UserContact(string imgSource, string login,
+                    DateTime? lastOnline, string contactImgName)
+                {
+                    _imgSource = imgSource;
+                    _login = login;
+                    _contactImgName = contactImgName;
 
-            InitializeComponent();
+                    InitializeComponent();
 
-            SetParams();
-            SetUserImage();
-        }*/
+                    SetParams();
+                    SetUserImage();
+                }*/
 
         public UserContact(TelegramLib.MainClasses.User user)
         {
             _imgSource = string.Empty;
             _login = user.Login;
             _contactImgName = user.GetFirstImageName().Name;
+            _user = user;
 
             InitializeComponent();
 
-            SetParams();
+            SetBasicIamge();
             SetUserImage();
 
-            HelperService.SetOnlineStatusInTextBox(LastSennOnline, user.IsOnline, user.LastSeenOnline);
-            SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
+            //HelperService.SetOnlineStatusInTextBox(LastSennOnline, user.IsOnline, user.LastSeenOnline);
+            SetBasicParams();
+
+            //last seen row
+            SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
+
+            //photo allowence
+            SignalRService.UpdateContactPhotoDel += AddedUserImage;
         }
 
-        public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
+        public async Task SetBasicParams()
         {
-            Dispatcher.Invoke(() =>
+            await SetOnlineStatus(_user);
+            await SetActivePhotoImage();
+        }
+
+        public async Task SetActivePhotoImage()
+        {
+            await SignalRHelperService.SetPhotoInEllipse(_user,
+                ImgBrushSource, UserImage);
+        }
+
+        public void AddedUserImage(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.Invoke(async () =>
             {
-                if (toUpdate is null) return;
-                HelperService.SetOnlineStatusInTextBox(LastSennOnline, toUpdate.IsOnline, toUpdate.LastSeenOnline);
+                if (_user is null || user is null || 
+                _user.Id != user.Id) return;
+                await SignalRHelperService.SetPhotoInEllipse(user,
+                    ImgBrushSource, UserImage);
             });
+        }
+
+        public void SetLastVisState(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                await SetOnlineStatus(user);
+            });
+        }
+
+        public async Task SetOnlineStatus(TelegramLib.MainClasses.User user)
+        {
+            if (user is null || _user.Id != user.Id) return;
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
+
+            await SignalRHelperService.SetLastSeenStatus(user, shareType, LastSennOnline);
         }
 
         public void SetUserImage()
@@ -76,7 +118,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls
                 FilesAction.GetUserImagePath(_contactImgName), UriKind.Absolute));
         }
 
-        public void SetParams()
+        public void SetBasicIamge()
         {
             if (_imgSource != string.Empty)
             {

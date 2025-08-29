@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="125" d:DesignWidth="85" 
-             Height="125" Width="85">
+             d:DesignHeight="125" d:DesignWidth="90" 
+             Height="125" Width="90">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

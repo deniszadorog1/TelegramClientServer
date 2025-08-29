@@ -102,9 +102,9 @@ namespace TelegramVisualPart.Pages.Settings
 
         public void SetButtonsView()
         {
-            MoreInfoBut.IconType.Kind = PackIconKind.Logout;
+            MoreInfoBut.IconType.Kind = PackIconKind.DotsVerticalCircleOutline;
             CloseBut.IconType.Kind = PackIconKind.Close;
-            AddImageBut.IconType.Kind = PackIconKind.ImageOutline;
+            //AddImageBut.IconType.Kind = PackIconKind.ImageOutline;
             
             MyAccount.IconType.Kind = PackIconKind.AccountCircleOutline;
             MyAccount.ButName.Text = "My account";

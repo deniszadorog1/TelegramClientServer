@@ -58,7 +58,12 @@ namespace TelegramVisualPart.Services
         IsPrivacyException type, TelegramLib.MainClasses.UserChat chat, TextBlock textBlock)
         {
             if (chat is null || chat.GetChatter().ContactUserId != user.Id) return;
+            await SetLastSeenStatus(user, type, textBlock);
+        }
 
+        public static async Task SetLastSeenStatus(TelegramLib.MainClasses.User user,
+        IsPrivacyException type, TextBlock textBlock)
+        {
             MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
 
             if (type == IsPrivacyException.Share)
@@ -137,6 +142,12 @@ namespace TelegramVisualPart.Services
         {
             if (chat.GetChatter().ContactUserId != user.Id) return;
 
+            await SetPhotoInEllipse(user, brush, ellipse);
+        }
+
+        public static async Task SetPhotoInEllipse(TelegramLib.MainClasses.User user, 
+            ImageBrush brush, Ellipse ellipse)
+        {
             IsPrivacyException shareType =
                 await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
 

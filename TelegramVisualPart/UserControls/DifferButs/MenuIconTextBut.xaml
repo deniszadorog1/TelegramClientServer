@@ -11,7 +11,7 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="60"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -19,12 +19,12 @@
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
                                  Foreground="Gray"
-                                 Width="28" Height="28"
+                                 Width="25" Height="25"
                                  Name="IconType"/>
         
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Foreground="Gray" Margin="15 0 0 0" FontSize="14"/>
+                   Foreground="Gray" Margin="15 0 0 0" FontSize="16"/>
 
     </Grid>
 </UserControl>

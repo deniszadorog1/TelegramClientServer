@@ -141,7 +141,7 @@ namespace TelegramVisualPart.Pages
         {
             for (int i = 0; i < _contacts.Count; i++)
             {
-                ChatToApply contact = new ChatToApply();
+                ChatToApply contact = new ChatToApply(_contacts[i]);
 
                 contact.Tag = _contacts[i].GetFirstImageName().Name;
                 contact.Name = "contact_" + Guid.NewGuid().ToString("N");

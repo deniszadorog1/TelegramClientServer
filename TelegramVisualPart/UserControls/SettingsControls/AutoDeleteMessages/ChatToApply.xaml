@@ -20,7 +20,8 @@
         <Border CornerRadius="100" Width="42" Height="42" 
                 Name="ChosenChatIconBorder"         
                 Background="Transparent">
-            <Ellipse Height="40" 
+            <Ellipse Height="40"
+                     Name="UserImageEllipse"
                      Width="40">
                 <Ellipse.Fill>
                     <ImageBrush x:Name="UserImageBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
@@ -33,7 +34,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
+
             <TextBlock Name="TypeName" Grid.Row="0"
                        Text="There gona be chat name"
                        VerticalAlignment="Center" Foreground="White"

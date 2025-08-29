@@ -12,7 +12,7 @@
              MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="75"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -23,10 +23,10 @@
                                  Name ="IconVis"/>
         <TextBlock Grid.Column="1" Name="ButName" VerticalAlignment="Center"
                    HorizontalAlignment="Left" Text="There should be button name"
-                   Foreground="White" FontSize="16"/>
+                   Foreground="White" FontSize="18"/>
 
         <TextBlock Grid.Column="2" Name="AdditionalText" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Text="There should be addit text"
-                   Foreground="{StaticResource TempActiveTextColor}" FontSize="16" Margin="0 0 20 0"/>
+                   Foreground="{StaticResource TempActiveTextColor}" FontSize="18" Margin="0 0 20 0"/>
     </Grid>
 </UserControl>

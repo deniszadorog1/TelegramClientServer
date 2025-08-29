@@ -28,8 +28,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             InitializeComponent();
             SetIconsSize();
+
+            this.Visibility = Visibility.Hidden;
         }
 
+        public event Action LoadEnd;
         public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
             TelSystem system, UserContactcs contact)
         {
@@ -47,6 +50,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SignalRService.SetPhoneNumVisByExpsDel += SetPhoneNumberVisByExps;
             SignalRService.UpdateBirthDateDel += UpdateBirthDate;
             SignalRService.UpdateContactPhotoDel += UpdateContactPhoto;
+
+            this.Visibility = Visibility.Visible;
+            LoadEnd?.Invoke();
         }
 
         public void UpdateContactPhoto(TelegramLib.MainClasses.User user)

@@ -74,32 +74,32 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-/*        private async Task SetLastSeenString(TelegramLib.MainClasses.User user,
-            IsPrivacyException type)
-        {
+        /*        private async Task SetLastSeenString(TelegramLib.MainClasses.User user,
+                    IsPrivacyException type)
+                {
 
-            if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
+                    if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
 
-            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+                    MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            if (type == IsPrivacyException.Share)
-            {
-                HelperService.SetOnlineStatusInTextBox(
-                    ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
-                return;
-            }
+                    if (type == IsPrivacyException.Share)
+                    {
+                        HelperService.SetOnlineStatusInTextBox(
+                            ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
+                        return;
+                    }
 
-            if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
-                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
-                type == IsPrivacyException.NeverShare)
-            {
-                ChatFriendLastSeen.Foreground = new SolidColorBrush(Colors.Gray);
-                ChatFriendLastSeen.Text = "You cant see this LOOOOLL";
-                return;
-            }
-            HelperService.SetOnlineStatusInTextBox(
-                ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
-        }*/
+                    if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
+                        TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                        type == IsPrivacyException.NeverShare)
+                    {
+                        ChatFriendLastSeen.Foreground = new SolidColorBrush(Colors.Gray);
+                        ChatFriendLastSeen.Text = "You cant see this LOOOOLL";
+                        return;
+                    }
+                    HelperService.SetOnlineStatusInTextBox(
+                        ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
+                }*/
 
         public void ClearChatAction(TelegramLib.MainClasses.User user)
         {
@@ -142,12 +142,12 @@ namespace TelegramVisualPart.UserControls
 
                     if (ChatBox.Items[i] is ChatControls.TextMessage textMes)
                     {
-                        SignalRHelperService.FastSetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);    
+                        SignalRHelperService.FastSetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);
                         //await SignalRHelperService.SetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);    
-                        
-                      /*  textMes.BgBrush.ImageSource =
-                            new BitmapImage(new Uri(FilesAction.GetUserImagePath(
-                                user.GetFirstImageNameInString()), UriKind.Absolute));*/
+
+                        /*  textMes.BgBrush.ImageSource =
+                              new BitmapImage(new Uri(FilesAction.GetUserImagePath(
+                                  user.GetFirstImageNameInString()), UriKind.Absolute));*/
                     }
                     else if (ChatBox.Items[i] is MediaMessage mediaMes)
                     {
@@ -155,10 +155,11 @@ namespace TelegramVisualPart.UserControls
 
                         //await SignalRHelperService.SetContactPhoto(user, _chat, mediaMes.BgBrush, mediaMes.UserEllipseImage);
 
-/*                        mediaMes.BgBrush.ImageSource =
-                            new BitmapImage(new Uri(FilesAction.GetUserImagePath(
-                                user.GetFirstImageNameInString()), UriKind.Absolute));
-                    */}
+                        /*                        mediaMes.BgBrush.ImageSource =
+                                                    new BitmapImage(new Uri(FilesAction.GetUserImagePath(
+                                                        user.GetFirstImageNameInString()), UriKind.Absolute));
+                                            */
+                    }
                 }
             });
         }
@@ -378,7 +379,7 @@ namespace TelegramVisualPart.UserControls
             }
 
             //Set chatter photo image
-            if(_chatMessages.Count > 0) UpdateChatImages(await ApiService.GetUserById(_chat.Chatter.ContactUserId));
+            if (_chatMessages.Count > 0) UpdateChatImages(await ApiService.GetUserById(_chat.Chatter.ContactUserId));
         }
 
         public void SetMediaMessageInChat(MediaAction message, string senderImgName)
@@ -448,7 +449,7 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-       
+
 
         private async void AddTextMessage(string senderImageName)
         {
@@ -768,7 +769,6 @@ namespace TelegramVisualPart.UserControls
         {
             //find message menu
 
-
         }
 
         private void UserInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -783,22 +783,26 @@ namespace TelegramVisualPart.UserControls
 
         public void AddContactInfo()
         {
-            const int _userContactWidth = 400;
+            const int _userContactWidth = 450;
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
-
-            if (windowWidth + _userContactWidth <=
-                SystemParameters.PrimaryScreenWidth)
-            {
-                ((MainWindow)Window.GetWindow(this)).Width =
-                    windowWidth + _userContactWidth;
-            }
 
             ContactInfo info = new ContactInfo();
             info.SetContactInfo(_chat, _system, _system.ChosenChatContact);
-            info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
 
-            UserInfoColumn.Width = new GridLength(_userContactWidth);
-            ContactInfoGrid.Children.Add(info);
+            info.LoadEnd += () =>
+            {
+                if (windowWidth + _userContactWidth <=
+                    SystemParameters.PrimaryScreenWidth)
+                {
+                    ((MainWindow)Window.GetWindow(this)).Width =
+                        windowWidth + _userContactWidth;
+                }
+
+                info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
+
+                UserInfoColumn.Width = new GridLength(_userContactWidth);
+                ContactInfoGrid.Children.Add(info);
+            };
         }
 
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
@@ -817,7 +821,7 @@ namespace TelegramVisualPart.UserControls
             EmojisBoard.ActiveRect.Fill =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
-            TextBlock block = EmojisBoard.TabsPanel.Children.OfType<TextBlock>().Where
+            TextBlock? block = EmojisBoard.TabsPanel.Children.OfType<TextBlock>().Where
                 (x => !CompareColors(x)).FirstOrDefault();
 
             if (block is null) return;
@@ -888,7 +892,10 @@ namespace TelegramVisualPart.UserControls
             Pages.UserInfo info = new Pages.UserInfo(_chat, _system);
             SetUserInfoPageHeight(info);
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+            info.ContactInfo.LoadEnd += () =>
+            {
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+            };
         }
 
         public void SetUserInfoPageHeight(Pages.UserInfo info)

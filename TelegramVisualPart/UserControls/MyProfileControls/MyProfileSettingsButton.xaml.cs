@@ -27,8 +27,7 @@ namespace TelegramVisualPart.UserControls.MyProfileControls
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
-            Background =(SolidColorBrush)Application.Current.FindResource("DarkThemeMouseEnterBut");
-
+            Background = (SolidColorBrush)Application.Current.FindResource("DarkThemeMouseEnterBut");
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
