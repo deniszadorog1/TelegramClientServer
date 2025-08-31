@@ -74,10 +74,10 @@ namespace TelegramVisualPart.Pages.Contacts
             //is addable contact is offline
             
             //for logged user (whicj is online)
-            AddContactIfContactOnline(newContact);
+            await AddContactIfContactOnline(newContact);
 
             //for addable contact(which is offline)
-            AddContactIfContactOffline(newContact);
+            await AddContactIfContactOffline(newContact);
 
         }
 
@@ -92,6 +92,8 @@ namespace TelegramVisualPart.Pages.Contacts
                 _system.LoggedUser.PhoneNumber,
                 _system.LoggedUser.LastSeenOnline, true,
                 _system.LoggedUser.UserImages, null, true);
+
+            contact.ContactUserId = _system.LoggedUser.Id;
 
             //add cotact in db
             await ApiService.AddContact(newContcat.Id, contact);

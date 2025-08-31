@@ -42,6 +42,8 @@ namespace TelegramVisualPart.UserControls.MainPage
                 folder.SetIconKind(FilesAction.GetIconTypeByString(_system.Folders[i].IconName));
                 folder.SetButtonText(_system.Folders[i].Name);
 
+             
+                
                 ListBoxItem item = new ListBoxItem()
                 {
                     Content = folder

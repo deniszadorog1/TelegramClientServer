@@ -7,6 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="390" d:DesignWidth="400"
       Height="390" Width="400"
+      MaxHeight="390"
       Title="PrivacyDeleteAccount">
 
     <Border CornerRadius="15" x:Name="BgBorder"

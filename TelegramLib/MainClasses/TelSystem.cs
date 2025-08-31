@@ -229,7 +229,7 @@ namespace TelegramLib.MainClasses
             return new List<Message>();
             List<Message> res = new List<Message>();
 
-            res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
+/*            res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
             res.Add(new TextMessage(2, -1, DateTime.Now, "Second"));
             res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif", false));
             res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false));
@@ -238,7 +238,7 @@ namespace TelegramLib.MainClasses
             res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4", false));
             res.Add(new TextMessage(8, -1, DateTime.Now, "Four"));
             res.Add(new MediaAction(9, -1, DateTime.Now, "Hand.jpg", false));
-            res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));
+            res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));*/
             return res;
         }
 

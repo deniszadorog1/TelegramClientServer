@@ -247,7 +247,6 @@ namespace TelegramVisualPart.UserControls
 
             message = (TelegramLib.MainClasses.Messages.TextMessage)await ApiService.GetLastChatMessage(_chat.Id);
 
-
             _chatMessages.Add(message);
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
@@ -453,21 +452,29 @@ namespace TelegramVisualPart.UserControls
 
         private async void AddTextMessage(string senderImageName)
         {
+            //Visaul add
             ChatBox.Items.Add(new ChatControls.TextMessage(
                 GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
-            TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
-                            _chatMessages.Count, _system.LoggedUser.Id,
-                            DateTime.Now, CommentTextBox.Text);
+            //system add
 
+            UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.ContactUserId);
+
+            TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
+                            _chatMessages.Count, contact.Id, _system.LoggedUser.Id,
+                            DateTime.Now, CommentTextBox.Text);
+            
+
+            //Adding in DB
             await ApiService.AddMessage(toAdd, _chat);
 
             toAdd = await ApiService.GetLastChatMessage(_chat.Id);
 
             await SendMessageToReceiver((TelegramLib.MainClasses.Messages.TextMessage)toAdd);
 
+            toAdd.SenderId = contact.Id;
             _chatMessages.Add(toAdd);
 
             CommentTextBox.Text = string.Empty;
@@ -484,7 +491,7 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.User receiver =
                 await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
 
-                UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(receiver.Id, _system.LoggedUser.Id);
+                UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, receiver.Id);
 
                 TelegramLib.MainClasses.UserChat chat =
                     await ApiService.GetChatByUserAndSenderId(receiver.Id, contact.Id);
@@ -585,8 +592,8 @@ namespace TelegramVisualPart.UserControls
                                 media.MediaName == Path.GetFileName(fileName))
                             .ToList()
                             .Any()) return;*/
-
-            Message newMediaMes = new MediaAction(-1,
+            
+            Message newMediaMes = new MediaAction(-1, _chat.Chatter.Id, 
                              _system.LoggedUser.Id, DateTime.Now, fileName, isSticker);
 
             if (isAdd)
@@ -901,7 +908,7 @@ namespace TelegramVisualPart.UserControls
         public void SetUserInfoPageHeight(Pages.UserInfo info)
         {
             double windowHeight = ((MainWindow)Window.GetWindow(this)).ActualHeight;
-            info.Height = windowHeight <= info.Height ? info.Height : windowHeight - 250;
+            info.Height = windowHeight <= info.Height ? info.Height : windowHeight - 230;
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)

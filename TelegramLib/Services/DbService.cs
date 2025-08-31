@@ -569,7 +569,7 @@ namespace TelegramLib.Services
                 model.User user = new model.User();
 
                 user.Name = name;
-                user.IsOnline = true;
+                user.IsOnline = false;
                 user.Surname = surname;
                 user.PhoneNumber = phoneNumber;
                 user.Birthday = birthdate;

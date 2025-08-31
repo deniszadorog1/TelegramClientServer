@@ -12,6 +12,7 @@
       d:DesignHeight="700" d:DesignWidth="475"
       
       Height="700" Width="475" Margin="0 50 0 0"
+      MaxHeight="700"
       HorizontalAlignment="Center" VerticalAlignment="Top"     
       
       Title="MyProfileSettings">

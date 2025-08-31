@@ -5,20 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
+             xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatButsControls"
              mc:Ignorable="d" 
-             d:DesignHeight="240" d:DesignWidth="250"
-             Height="240" Width="250">
+             d:DesignHeight="195" d:DesignWidth="250"
+             Height="195" Width="250">
     <Border Name="BgBorder" CornerRadius="10"
             Background="{StaticResource DarkThemeOne}">
-        <StackPanel Margin="0 5 0 5">
-            <otherButs:MenuIconTextBut x:Name="MuteNotifsBut" Margin="0 5 0 5"/>
-            <Grid Height="10" Background="{StaticResource DarkThemeDeviderField}"/>
-            <otherButs:MenuIconTextBut x:Name="ViewProfileBut" PreviewMouseDown="ViewProfileBut_PreviewMouseDown"/>
-            <otherButs:MenuIconTextBut x:Name="SetWallpaperBut" PreviewMouseDown="SetWallpaperBut_PreviewMouseDown"/>
-            <otherButs:MenuIconTextBut x:Name="ExportHistoryBut"/>
-            <otherButs:MenuIconTextBut x:Name="ClearChatBut" PreviewMouseDown="ClearChatBut_PreviewMouseDown"/>
-            <otherButs:MenuIconTextBut x:Name="DeleteChatBut" PreviewMouseDown="DeleteChatBut_PreviewMouseDown"/>
+        <StackPanel Margin="0 10 0 10">
+            <!--<otherButs:UserChatMenuButton x:Name="MuteNotifsBut" Margin="0 5 0 5"/>
+            <Grid Height="10" Background="{StaticResource DarkThemeDeviderField}"/>-->
+            <otherButs:UserChatMenuButton x:Name="ViewProfileBut" PreviewMouseDown="ViewProfileBut_PreviewMouseDown"/>
+            <otherButs:UserChatMenuButton x:Name="SetWallpaperBut" PreviewMouseDown="SetWallpaperBut_PreviewMouseDown"/>
+            <otherButs:UserChatMenuButton x:Name="ExportHistoryBut"/>
+            <otherButs:UserChatMenuButton x:Name="ClearChatBut" PreviewMouseDown="ClearChatBut_PreviewMouseDown"/>
+            <otherButs:UserChatMenuButton x:Name="DeleteChatBut" PreviewMouseDown="DeleteChatBut_PreviewMouseDown"/>
         </StackPanel>
     </Border>
 </UserControl>

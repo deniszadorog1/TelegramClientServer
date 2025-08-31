@@ -47,9 +47,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetBasicBlocks()
         {
-            MuteNotifsBut.IconType.Kind = PackIconKind.VolumeMute;
+/*            MuteNotifsBut.IconType.Kind = PackIconKind.VolumeMute;
             MuteNotifsBut.ButName.Text = "Mute notifications";
-
+*/
             ViewProfileBut.IconType.Kind = PackIconKind.AccountCircleOutline;
             ViewProfileBut.ButName.Text = "View profile";
 
@@ -73,7 +73,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new UserInfo(_chat, _system));
+            UserInfo info = new UserInfo(_chat, _system);
+
+            info.ContactInfo.LoadEnd += () =>
+            {
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+            };
         }
 
         private async void DeleteChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

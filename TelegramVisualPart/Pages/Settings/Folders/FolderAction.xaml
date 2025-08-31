@@ -10,6 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="435"
       Height="600" Width="465"
+      MaxHeight="600"
       Title="FolderAction">
 
     <Border x:Name="BgBorder" CornerRadius="15" 

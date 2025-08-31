@@ -6,8 +6,9 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages"
       xmlns:UserInfo="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="450"
-      Width="450" Height="450"
+      d:DesignHeight="855" d:DesignWidth="450"
+      Width="450" Height="855"
+      MaxHeight="855"
       Title="UserInfo">
 
     <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">

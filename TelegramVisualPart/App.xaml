@@ -19,6 +19,8 @@
 
             <SolidColorBrush x:Key="TempActiveTextColor" Color="#5DB2F2"/>
 
+            <SolidColorBrush x:Key="ToBlockContact" Color="#E7544D"/>
+
             
             <SolidColorBrush x:Key="DarkThemeOne" Color="#17212B"/>
             <SolidColorBrush x:Key="DarkThemeSecond" Color="#0E1621"/>

@@ -8,6 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="450"
       Width="450" Height="450"
+      MaxHeight="450"
       Title="ChatSetPalette">
 
     <Border x:Name="BgBorder" CornerRadius="15" 

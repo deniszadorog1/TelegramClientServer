@@ -46,10 +46,10 @@ namespace TelegramLib.MainClasses
             return Messages.Where(x => x.Id == message.Id).First().Id;
         }
 
-        public void AddSticker(string name, int senderId)
+/*        public void AddSticker(string name, int senderId)
         {
             Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
-        }
+        }*/
 
         public ChatBackground GetBackground()
         {

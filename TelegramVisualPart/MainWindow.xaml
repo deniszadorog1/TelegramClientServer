@@ -14,9 +14,10 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         
-        WindowState="Maximized"
+        WindowState="Normal"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
+        
         AllowsTransparency="True"
         Background="White"
         

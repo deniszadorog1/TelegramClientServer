@@ -61,13 +61,15 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="85"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition MinWidth="50" x:Name="ChatsColumn" />
                 <ColumnDefinition Width="3"/>
                 <ColumnDefinition MinWidth="250"/>
             </Grid.ColumnDefinitions>
 
-            <leftButs:LeftButtons x:Name="LeftButtons" OnMenuClick="LeftButtons_OnMenuClick"  Background="{StaticResource DarkThemeSecond}"/>
+            <leftButs:LeftButtons x:Name="LeftButtons" 
+                                  OnMenuClick="LeftButtons_OnMenuClick"  
+                                  Background="{StaticResource DarkThemeSecond}"/>
 
             <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" 
                   Name ="ChatsGrid" 

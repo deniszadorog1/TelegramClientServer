@@ -10,6 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="475"
       Height="500" Width="475"
+      MaxHeight="500"
       Title="NotAndSoundSettings"
       HorizontalAlignment="Center" 
       >

@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.IdentityModel.Tokens;
+using System.Data.Entity.Core.EntityClient;
 using System.Formats.Tar;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,7 @@ namespace TelegramVisualPart
 
             ///Visuals/Images/UserImages/Minato.jpg"
             SetLoginPage();
+            SetWindowSizeState();
 
             SignalRService.UpdateContactDel += UpdateUserSignalR;
         }
@@ -126,6 +128,8 @@ namespace TelegramVisualPart
             }
             SecondaryFrame.Content = page;
             SetBlurEffectToFrame(MainFrame);
+
+            SetFramePageHeight(page);
         }
 
         public void SetBlurEffectToFrame(Frame frame)
@@ -254,13 +258,37 @@ namespace TelegramVisualPart
             this.WindowState = WindowState.Minimized;
         }
 
+        private bool _isMax = false;
+        private const int _normalSizeParam = 600;
+
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState == WindowState.Normal)
-                this.WindowState = WindowState.Maximized;
-            else
-                this.WindowState = WindowState.Normal;
+            SetWindowSizeState();
+        }
 
+        public void SetWindowSizeState()
+        {
+            if (!_isMax)
+            {
+                this.Height = SystemParameters.WorkArea.Height;
+                this.Width = SystemParameters.WorkArea.Width;
+
+                this.Left = SystemParameters.WorkArea.Left;
+                this.Top = SystemParameters.WorkArea.Top;
+
+                _isMax = true;
+            }
+            else
+            {
+                this.Height = _normalSizeParam;
+                this.Width = _normalSizeParam;
+
+                this.Left = (SystemParameters.WorkArea.Width - this.Width) / 2 + SystemParameters.WorkArea.Left;
+                this.Top = (SystemParameters.WorkArea.Height - this.Height) / 2 + SystemParameters.WorkArea.Top;
+
+                this.WindowState = WindowState.Normal;
+                _isMax = false;
+            }
             SetMainPageOnWindowSizeChange();
         }
 
@@ -331,7 +359,25 @@ namespace TelegramVisualPart
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            //Set page size for second and third frame pages
+            if (SecondaryFrame.Content is Page page) SetFramePageHeight(page);
+        }
 
+        private void SetFramePageHeight(Page page)
+        {
+            if (this.Height <= page.ActualHeight || 
+
+                (this.Height > page.ActualHeight && 
+                this.Height <= page.MaxHeight && 
+                page.MaxHeight != double.PositiveInfinity ))
+            {
+                page.Height = this.Height - 100;
+            }
+            else if(this.Height >= page.MaxHeight &&
+                page.MaxHeight != double.PositiveInfinity)
+            {
+                page.Height = page.MaxHeight;
+            }
         }
 
         private System.Windows.Point _mouseDownPosition;

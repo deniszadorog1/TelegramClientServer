@@ -9,8 +9,9 @@
       xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="760" d:DesignWidth="400"
-      Height="760" Width="400"
+      d:DesignHeight="800" d:DesignWidth="400"
+      Height="800" Width="400"
+      MaxHeight="800"
       Title="AdvancedPage">
 
     <Border Name="BgBorder" CornerRadius="15"
@@ -49,7 +50,7 @@
                 </Grid>
             </Grid>
 
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="150"/>

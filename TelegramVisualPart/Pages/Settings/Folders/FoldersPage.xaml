@@ -11,6 +11,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="475" d:DesignWidth="475"
       Height="475" Width="475"
+      MaxHeight="475"
       Title="FoldersPage">
 
     <Border x:Name="BgBorder" CornerRadius="15" 
@@ -26,7 +27,7 @@
 
             <Grid Grid.Row="0" Name ="UpperPart">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="65"/>
+                    <ColumnDefinition Width="0"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -35,9 +36,9 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Width="25" Height="25"
-                                    PreviewMouseDown="BackBut_PreviewMouseDown"/>
+                                    PreviewMouseDown="BackBut_PreviewMouseDown"/> 
 
-                <TextBlock Grid.Column="1" Text="Folders" Margin="10 0 0 0"
+                <TextBlock Grid.Column="1" Text="Folders" Margin="25 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="White" FontSize="22"/>
 

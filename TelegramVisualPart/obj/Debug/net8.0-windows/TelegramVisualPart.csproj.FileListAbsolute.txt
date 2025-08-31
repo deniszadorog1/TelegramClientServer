@@ -297,3 +297,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Micro
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.Diagnostics.DiagnosticSource.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.Net.ServerSentEvents.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\System.Threading.Channels.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\UserChatMenuButton.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\UserChatMenuButton.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LogOutMenu.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LogOutMenu.baml

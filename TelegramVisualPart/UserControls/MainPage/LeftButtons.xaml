@@ -14,10 +14,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <iconBut:IconButton x:Name="HamburgMenu" Grid.Row="0" Width="30" Height="30"
-                                Foreground="Gray" PreviewMouseDown="ShowMenu_PreviewMouseDown"/>
+        <iconBut:IconButton x:Name="HamburgMenu" Grid.Row="0" Width="30" Height="30" 
+                            HorizontalAlignment="Center" Margin="5 0 0 0"
+                            Foreground="Gray" PreviewMouseDown="ShowMenu_PreviewMouseDown"/>
         
-        <ListBox Name="FoldersBox"  Grid.Row="1" HorizontalContentAlignment="Center">
+        <ListBox Name="FoldersBox"  Grid.Row="1" HorizontalContentAlignment="Center" Margin="5 0 0 0">
             <ListBoxItem Name="AllChatsItem" PreviewMouseDown="AllChatsItem_PreviewMouseDown">
                 <local:LeftButtonsButton x:Name="AllChats"/>
             </ListBoxItem>

@@ -339,6 +339,8 @@ namespace TelegramVisualPart.Pages
             HideAllChatBlocks();
             SearchMessageGrid.Visibility = Visibility.Visible;
 
+            SearchMessage.SetUserImage(_system.LoggedUser.GetFirstImageNameInString());
+
             _chosenChat = _system.GetChosenChat();
         }
 
@@ -353,6 +355,7 @@ namespace TelegramVisualPart.Pages
         public void SetMessagesForSearch()
         {
             SearchedMessageslistBox.Items.Clear();
+
             NothingFoundSearch.Visibility = Visibility.Hidden;
 
             List<TextMessage> messages = _chosenChat.GetMessagesWithGivenText(SarchBox.Text);
@@ -366,8 +369,6 @@ namespace TelegramVisualPart.Pages
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
-
-
 
                 if (sender is not null) message.FriendLogin.Text = sender.Name;
                 else if (_system.IsUserIsSameId(i) is not null) message.FriendLogin.Text = _system.LoggedUser.Name;
@@ -679,6 +680,7 @@ namespace TelegramVisualPart.Pages
         {
             HideAllChatBlocks();
             SearchBoxGrid.Visibility = Visibility.Visible;
+           
             SearchControl.SetContacts(_system);
             ChatsColumn.MinWidth = 300;
             SearchControl.UpdateColors();

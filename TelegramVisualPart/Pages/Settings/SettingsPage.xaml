@@ -8,10 +8,13 @@
       xmlns:butsControls="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:menuIconTextBut ="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
+      xmlns:EditMenu="clr-namespace:TelegramVisualPart.UserControls.SettingsControls"
       mc:Ignorable="d" 
       d:DesignHeight="580" d:DesignWidth="345"
       Height="580" Width="345"
-      Title="SettingsPage">
+      MaxHeight="580"
+      Title="SettingsPage"
+      PreviewMouseDown="Page_PreviewMouseDown">
 
     <Page.Resources>
         <Style TargetType="{x:Type menuIconTextBut:MenuIconTextBut}" x:Key="SettingsBut">
@@ -22,90 +25,97 @@
 
 
     <Border Background="{StaticResource DarkThemeOne}" CornerRadius="15">
+
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="110"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition />
-               <!-- <RowDefinition Height="5"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="110"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition />
+                    <!-- <RowDefinition Height="5"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="5"/> -->
-            </Grid.RowDefinitions>
+                </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                            FontSize="22" Foreground="White" Text="Settings" Margin="10 0 0 0"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1"
+                    <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                    <!--<iconBut:IconButton x:Name="AddImageBut" 
+                        <!--<iconBut:IconButton x:Name="AddImageBut" 
                                         Margin="0 0 20 0" Width="30" Height="30"
-                                        PreviewMouseDown="CloseBut_PreviewMouseDown"/>  -->      
-                    
-                    <iconBut:IconButton x:Name="MoreInfoBut"
+                                        PreviewMouseDown="CloseBut_PreviewMouseDown"/>  -->
+
+                        <iconBut:IconButton x:Name="MoreInfoBut"
                                         Margin="0 0 10 0" Width="30" Height="30"
                                         PreviewMouseDown="MoreInfoBut_PreviewMouseDown"/>
 
-                    <iconBut:IconButton x:Name="CloseBut" 
+                        <iconBut:IconButton x:Name="CloseBut" 
                                         Margin="0 0 20 0" Width="30" Height="30"
                                         PreviewMouseDown="CloseBut_PreviewMouseDown"/>
-                </StackPanel>
-            </Grid>
+                    </StackPanel>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
 
-                <Ellipse Grid.Column="0" Name ="UserIcon" 
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Ellipse Grid.Column="0" Name ="UserIcon" 
                          Width="75" Height="75" HorizontalAlignment="Center">
-                    <Ellipse.Fill>
-                        <ImageBrush x:Name="UserImage" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="UserImage" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
 
-                <StackPanel Grid.Column="1" Orientation="Vertical"
+                    <StackPanel Grid.Column="1" Orientation="Vertical"
                             VerticalAlignment="Center">
-                    <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
+                        <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
                                Margin="0 0 0 0"
                                VerticalAlignment="Center" Foreground="White" FontSize="18"/>
 
-                    <TextBlock Grid.Row="1" Name="PhoneNumber" Text="There gona be phone number"
+                        <TextBlock Grid.Row="1" Name="PhoneNumber" Text="There gona be phone number"
                                VerticalAlignment="Center" Foreground="White" FontSize="16"
                                Margin="0 2 0 0"/>
 
-                    <TextBlock Grid.Row="2" Name="UserLogin" Text="There gona be user login"
+                        <TextBlock Grid.Row="2" Name="UserLogin" Text="There gona be user login"
                                VerticalAlignment="Center" Foreground="Gray" FontSize="16"
                                MouseEnter="UserLogin_MouseEnter"
                                MouseLeave="UserLogin_MouseLeave"
                                Margin="0 2 0 0"
                                PreviewMouseDown="UserLogin_PreviewMouseDown"/>
-                </StackPanel>
-            </Grid>
+                    </StackPanel>
+                </Grid>
 
-            <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
+                <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
 
-            <StackPanel Grid.Row="3" x:Name="SettingsButs">
-                <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" Style="{StaticResource SettingsBut}" PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="PrivacySecurity" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Folders" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Advanced" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="Language" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-            </StackPanel>
+                
+                <ScrollViewer Grid.Row="3">
+                    <StackPanel x:Name="SettingsButs">
+                        <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" Style="{StaticResource SettingsBut}" PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="PrivacySecurity" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="Folders" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="Advanced" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="Language" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                    </StackPanel>
+                </ScrollViewer>
 
-           <!-- <Grid Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"/>
+                <!-- <Grid Grid.Row="4" Background="{StaticResource DarkThemeDeviderField}"/>
 
             <Grid Grid.Row="5">
                 <TextBlock Margin="10" Text="So this is very useful info, you must read this"
@@ -115,6 +125,12 @@
             <Grid Grid.Row="6" Background="{StaticResource DarkThemeDeviderField}"/>-->
 
 
+            </Grid>
+            <EditMenu:LogOutMenu x:Name="LogOutMenu"
+                                 Visibility="Hidden"
+                                 VerticalAlignment="Top" 
+                                 HorizontalAlignment="Right" Margin="0 40 40 20"/>
         </Grid>
+
     </Border>
 </Page>

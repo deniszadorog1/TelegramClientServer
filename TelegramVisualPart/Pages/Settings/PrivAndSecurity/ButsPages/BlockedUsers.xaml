@@ -11,6 +11,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="650" d:DesignWidth="400"
       Height="650" Width="400"
+      MaxHeight="650"
       Title="BlockedUsers">
 
     <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">

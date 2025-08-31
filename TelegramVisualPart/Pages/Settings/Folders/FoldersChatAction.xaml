@@ -9,6 +9,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="400"
       Height="550" Width="400"
+      MaxHeight="550"
       Title="FoldersChatAction">
 
     <Border Name="bgBorder" CornerRadius="15" 

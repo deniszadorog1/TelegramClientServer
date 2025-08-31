@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace TelegramVisualPart.Pages.Settings
             SetUserInfo();
 
             SetColorToSettingsButs();
+
+            LogOutMenu.SettSystem(_system);
         }
 
         public void SetColorToSettingsButs()
@@ -71,7 +74,10 @@ namespace TelegramVisualPart.Pages.Settings
         {
             //set info 
             //Log out 
-            ((MainWindow)Window.GetWindow(this)).LogOut();
+            //((MainWindow)Window.GetWindow(this)).LogOut();
+            
+            LogOutMenu.Visibility = LogOutMenu.Visibility == Visibility.Visible ? 
+                Visibility.Hidden : Visibility.Visible;
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -83,7 +89,7 @@ namespace TelegramVisualPart.Pages.Settings
         {
             if (sender is MenuIconTextBut icon)
             {
-                Page page = GetPageByIcon(icon);
+                Page? page = GetPageByIcon(icon);
                 if (page is null) return;
 
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
@@ -154,6 +160,11 @@ namespace TelegramVisualPart.Pages.Settings
         {
             if (sender is not TextBlock block) return;
             Clipboard.SetText(block.Text);
+        }
+
+        private void Page_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            LogOutMenu.Visibility = Visibility.Hidden;
         }
     }
 }

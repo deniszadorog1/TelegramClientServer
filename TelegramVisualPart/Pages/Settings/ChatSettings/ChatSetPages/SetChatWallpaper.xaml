@@ -9,6 +9,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="420"
       Height="450" Width="420"
+      MaxHeight="450"
       Title="SetChatWallpaper">
 
     <Border Name="BorderBg" Background="{StaticResource DarkThemeOne}" CornerRadius="15">

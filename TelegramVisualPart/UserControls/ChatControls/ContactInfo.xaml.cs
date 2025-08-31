@@ -262,8 +262,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetIconSize(ImageIcon);
             SetIconSize(VideoIcon);
-            SetIconSize(FileIcon);
-            SetIconSize(LinkIcon);
+            //SetIconSize(FileIcon);
+            //SetIconSize(LinkIcon);
             SetIconSize(GifIcon);
 
             SetIconSize(SendIcon);

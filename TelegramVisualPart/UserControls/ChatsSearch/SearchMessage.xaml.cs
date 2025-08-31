@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatsSearch
 {
@@ -26,6 +27,12 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             InitializeComponent();
 
             CloseBut.IconType.Kind = PackIconKind.Close; 
+        }
+
+        public void SetUserImage(string userImageName)
+        {
+            ImgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(userImageName), UriKind.Absolute));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
