@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.UserSettings.SettingsTypes;
 
 namespace TelegramLib.UserSettings
@@ -14,6 +15,9 @@ namespace TelegramLib.UserSettings
         public ChatSettings ChatsSettings { get; set; }
         public AdvancedSettings AdvSettings { get; set; }
         public PrivAndSecSettings PrivacySettings { get; set; }
+
+        public bool IsTabsOnTheLeft { get; set; }
+        public int ChosenFolderId { get; set; }
 
         public MainSettings(int id, NotificationSettings notSettings,
             ChatSettings chatSettings, AdvancedSettings advSettings,
@@ -33,6 +37,7 @@ namespace TelegramLib.UserSettings
             ChatsSettings = new ChatSettings();
             AdvSettings = new AdvancedSettings();
             PrivacySettings = new PrivAndSecSettings();
+            IsTabsOnTheLeft = true;
         }
 
         public NotificationSettings GetNotSettings()

@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MahApps.Metro.Controls;
+using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -40,11 +41,14 @@ namespace TelegramVisualPart.Pages
             InitializeComponent();
 
             SetBasicParams();
+
+            FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
         }
 
         public async Task SetBasicParams()
         {
-            LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
+            /*            LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
+                        LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;*/
 
             SetDrawButsStyles();
 
@@ -103,7 +107,7 @@ namespace TelegramVisualPart.Pages
             but.Height = 45;
             but.ButName.FontSize = 19;
             but.FontFamily = new FontFamily("Calibri");
-            
+
         }
         public void SetMediaMessage(TelegramLib.MainClasses.User user,
             MediaAction media)
@@ -257,7 +261,7 @@ namespace TelegramVisualPart.Pages
             return AllMediasElements.Children.IndexOf(img);
         }
 
-        private List<Image> _searchGridImags;
+        private List<Image> _searchGridImags = new List<Image>();
         private void SetAllImagesInPanel()
         {
             AllMediasElements.Children.Clear();
@@ -312,7 +316,7 @@ namespace TelegramVisualPart.Pages
             {
                 SetUserChat(_system.Contacts[i].UserName);
             }
-            
+
             await UpdateUserChatsPanel();
 
         }
@@ -609,6 +613,8 @@ namespace TelegramVisualPart.Pages
                 SetVisibilityForChatObjects(true);
 
                 ChatsBox.Visibility = Visibility.Visible;
+
+                FolderSliderRow.Height = new GridLength(0);
             }
             else
             {
@@ -616,7 +622,11 @@ namespace TelegramVisualPart.Pages
                 ChatsColumn.Width = new GridLength(clamped);
                 SetVisibilityForChatObjects(false);
                 SearchChatBut.Visibility = Visibility.Visible;
+
+                FolderSliderRow.Height = _system.Settings.IsTabsOnTheLeft ? new GridLength(0) :
+                     new GridLength(_folderSliderHeight);
             }
+
             SetSearchPanelWidth();
         }
 
@@ -663,16 +673,9 @@ namespace TelegramVisualPart.Pages
             SearchChatBut.Foreground = Brushes.Gray;
         }
 
-        private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ChatsColumn.Width = new GridLength(300);
-            SetVisibilityForChatObjects(false);
-            //Change border size   
-            SetSearchBoxVisible();
-        }
-
         private void SarchBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            FolderSliderRow.Height = new GridLength(0);
             if (SearchMessageGrid.Visibility != Visibility.Visible) SetSearchBoxVisible();
         }
 
@@ -680,7 +683,7 @@ namespace TelegramVisualPart.Pages
         {
             HideAllChatBlocks();
             SearchBoxGrid.Visibility = Visibility.Visible;
-           
+
             SearchControl.SetContacts(_system);
             ChatsColumn.MinWidth = 300;
             SearchControl.UpdateColors();
@@ -691,6 +694,9 @@ namespace TelegramVisualPart.Pages
             if (SearchMessageGrid.Visibility != Visibility.Visible) HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
             ChatsColumn.MinWidth = 50;
+
+            if (!_system.Settings.IsTabsOnTheLeft)
+                FolderSliderRow.Height = new GridLength(_folderSliderHeight);
         }
 
         private void Page_MouseDown(object sender, MouseButtonEventArgs e)
@@ -876,6 +882,56 @@ namespace TelegramVisualPart.Pages
         public void UpdateFolders()
         {
             LeftButtons.UpdateFolders();
+        }
+
+        private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set variants of action(depends from which IconKind is it)
+
+            ChatsColumn.Width = new GridLength(300);
+            SetVisibilityForChatObjects(false);
+            //Change border size   
+            SetSearchBoxVisible();
+        }
+
+        public void UpdateTabsPlacement()
+        {
+            ChageLeftButsVisState(_system.Settings.IsTabsOnTheLeft);
+        }
+
+        private const int _leftButWidth = 100;
+        private const int _hamburgIconWidth = 65;
+        private const int _folderSliderHeight = 25;
+
+        public void ChageLeftButsVisState(bool isShow)
+        {
+            //Left buttins width
+            LeftButtonsColumn.Width = isShow ? new GridLength(_leftButWidth) :
+                new GridLength(0);
+
+            //hamburger icon height
+            AddHamburgMenuCol.Width = !isShow ? new GridLength(_hamburgIconWidth) :
+                new GridLength(0);
+
+            //Slider vis size
+            FolderSliderRow.Height = !isShow ? new GridLength(_folderSliderHeight) :
+                new GridLength(0);
+
+            //Setting folders
+            if (!isShow)
+                FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
+        }
+
+        private void HamburgerAddGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            HamburgIcon.Foreground = Brushes.White;
+        }
+
+        private void HamburgerAddGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            HamburgIcon.Foreground = Brushes.Gray;
         }
     }
 }

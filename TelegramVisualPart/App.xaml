@@ -17,7 +17,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
+            
             <SolidColorBrush x:Key="TempActiveTextColor" Color="#5DB2F2"/>
+            <SolidColorBrush x:Key="UsualTextColor" Color="White"/>
 
             <SolidColorBrush x:Key="ToBlockContact" Color="#E7544D"/>
 

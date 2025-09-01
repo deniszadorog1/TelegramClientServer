@@ -329,14 +329,29 @@ namespace TelegramVisualPart
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is Button but) but.Background =
+            Cursor = Cursors.Hand;
+            //Check pro
+            if (sender is Button button)
+            {
+                button.Background =
                     (SolidColorBrush)System.Windows.Application.Current.Resources["OtherUpperButColor"];
+            }
+            else if (sender is Grid grid)
+            {
+                grid.Background =
+                    (SolidColorBrush)System.Windows.Application.Current.Resources["OtherUpperButColor"];
+            }
         }
 
         private void UpperBut_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is Button but) but.Background = Brushes.Transparent;
+            Cursor = null;
 
+            if (sender is Button button) button.Background = Brushes.Transparent;
+            else if (sender is Grid grid)
+            {
+                grid.Background = Brushes.Transparent;
+            }
         }
 
         private void CloseWindowBut_MouseEnter(object sender, MouseEventArgs e)
@@ -359,24 +374,39 @@ namespace TelegramVisualPart
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (this.Height != SystemParameters.WorkArea.Height ||
+                this.Width != SystemParameters.WorkArea.Width)
+            {
+                WindowSizerIcon.Kind = PackIconKind.WindowMaximize;
+
+            }
+            else
+            {
+                WindowSizerIcon.Kind = PackIconKind.WindowRestore;
+            }
+
+
             //Set page size for second and third frame pages
             if (SecondaryFrame.Content is Page page) SetFramePageHeight(page);
         }
 
         private void SetFramePageHeight(Page page)
         {
-            if (this.Height <= page.ActualHeight || 
+            if (this.Height <= page.ActualHeight ||
 
-                (this.Height > page.ActualHeight && 
-                this.Height <= page.MaxHeight && 
-                page.MaxHeight != double.PositiveInfinity ))
+                (this.Height > page.ActualHeight &&
+                this.Height <= page.MaxHeight &&
+                page.MaxHeight != double.PositiveInfinity))
             {
                 page.Height = this.Height - 100;
+
+                WindowSizerIcon.Kind = PackIconKind.WindowMaximize;
             }
-            else if(this.Height >= page.MaxHeight &&
+            else if (this.Height >= page.MaxHeight &&
                 page.MaxHeight != double.PositiveInfinity)
             {
                 page.Height = page.MaxHeight;
+                WindowSizerIcon.Kind = PackIconKind.WindowRestore;
             }
         }
 
@@ -550,6 +580,12 @@ namespace TelegramVisualPart
         private void Window_Closed(object sender, EventArgs e)
         {
 
+        }
+
+        public void UpdateTabsStandings()
+        {
+            if (MainFrame.Content is MainChatPage chatPage) 
+                chatPage.UpdateTabsPlacement();
         }
     }
 }

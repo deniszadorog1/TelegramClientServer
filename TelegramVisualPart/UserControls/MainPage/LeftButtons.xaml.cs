@@ -42,11 +42,10 @@ namespace TelegramVisualPart.UserControls.MainPage
                 folder.SetIconKind(FilesAction.GetIconTypeByString(_system.Folders[i].IconName));
                 folder.SetButtonText(_system.Folders[i].Name);
 
-             
-                
                 ListBoxItem item = new ListBoxItem()
                 {
-                    Content = folder
+                    Content = folder,
+                    Tag = _system.Folders[i].Id
                 };
 
                 item.PreviewMouseDown += FolderBut_PreviewMouseDown;
@@ -100,6 +99,7 @@ namespace TelegramVisualPart.UserControls.MainPage
             but.SetActiveColor();
             item.Background = _activeBgColor;
 
+            _system.Settings.ChosenFolderId = -1;
             ((MainWindow)Window.GetWindow(this)).SetAllChatsInMainPage();
         }
 
@@ -107,6 +107,9 @@ namespace TelegramVisualPart.UserControls.MainPage
         {
             if (sender is not ListBoxItem item ||
                 item.Content is not LeftButtonsButton but) return;
+
+            int.TryParse(item.Tag.ToString(), out int check);
+            _system.Settings.ChosenFolderId = check;
 
             ClearButtonsEffects();
 

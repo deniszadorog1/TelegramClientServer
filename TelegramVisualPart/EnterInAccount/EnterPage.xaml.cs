@@ -56,6 +56,8 @@ namespace TelegramVisualPart.EnterInAccount
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
+            _system.Settings.IsTabsOnTheLeft = true;
+
             if (_system is null)
             {
                 MessageBox.Show("No user with such params");

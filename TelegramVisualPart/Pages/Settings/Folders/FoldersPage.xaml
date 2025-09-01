@@ -9,9 +9,9 @@
       xmlns:addFolderBut="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="475" d:DesignWidth="475"
-      Height="475" Width="475"
-      MaxHeight="475"
+      d:DesignHeight="575" d:DesignWidth="475"
+      Height="575" Width="475"
+      MaxHeight="575"
       Title="FoldersPage">
 
     <Border x:Name="BgBorder" CornerRadius="15" 
@@ -22,6 +22,7 @@
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="175"/>
                 <RowDefinition Height="5"/>
+                <RowDefinition Height="95"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -67,13 +68,13 @@
                            Foreground="Gray" FontSize="16" Width="280"/>
             </Grid>
 
-            <Grid Grid.Row="2" Name ="MyFoldersGrid" Margin="0 0 0 0">
+            <Grid Grid.Row="2" Name ="MyFoldersGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
+                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="25 0 0 0"
                FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <ListBox  Grid.Row="1" Name="Folders">
@@ -93,13 +94,42 @@
 
             <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
 
-            <Grid Grid.Row="4" Name ="AddRecomendedFolder">
+            <StackPanel Grid.Row="4" Margin="25 0 0 0">
+
+                <TextBlock Text="My Folder" VerticalAlignment="Center" 
+               FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
+
+                <RadioButton Foreground="White" Content="Tabs on the Left"
+                                 Name="LeftTabs" 
+                             
+                             Checked="LeftTabs_Checked"
+
+                             FontSize="18" IsChecked="False" Padding="3 0 0 2"
+                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                                 Background="{StaticResource TempActiveTextColor}" 
+                                 Margin="0 5 0 0"
+                                 Style="{StaticResource MaterialDesignRadioButton}"/>
+
+                <RadioButton Foreground="White" Content="Tabs at the Top"
+                                 Name="ShitTabs"
+                                    
+                             Checked="ShitTabs_Checked"
+                             
+                                 FontSize="18" IsChecked="False" Padding="3 0 0 2"
+                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                                 Background="{StaticResource TempActiveTextColor}" 
+                                 Margin="0 5 0 0"
+                                 Style="{StaticResource MaterialDesignRadioButton}"/>
+            </StackPanel>
+            
+            
+            <Grid Grid.Row="5" Name ="AddRecomendedFolder">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
+                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="25 0 0 0"
                     FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
 

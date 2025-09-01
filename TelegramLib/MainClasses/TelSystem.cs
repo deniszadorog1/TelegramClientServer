@@ -19,18 +19,14 @@ namespace TelegramLib.MainClasses
     {
         public User LoggedUser { get; set; }
         public MainSettings Settings { get; set; }
-
         public List<UserChat> Chats { get; set; }
-
         public List<UserContactcs> Contacts { get; set; }
-
         public List<Folder> Folders { get; set; }
 
         public TelSystem(User user, MainSettings settings,
             List<UserChat> chats, List<UserContactcs> contacts,
             List<Folder> folders)
         {
-
             LoggedUser = user;
             Settings = settings;
             Chats = chats;
@@ -46,7 +42,7 @@ namespace TelegramLib.MainClasses
             Chats = new List<UserChat>();
             Contacts = new List<UserContactcs>();
             Folders = new List<Folder>();
-
+      
             //SetTestSystemParams();
         }
 

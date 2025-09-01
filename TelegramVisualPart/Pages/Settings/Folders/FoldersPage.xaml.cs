@@ -125,6 +125,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             BackBut.IconType.Kind = PackIconKind.ArrowLeft;
             CloseBut.IconType.Kind = PackIconKind.Close;
+
+            if (_system.Settings.IsTabsOnTheLeft) LeftTabs.IsChecked = true;
+            else ShitTabs.IsChecked = true;
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -170,6 +173,20 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             //Add folder control
             CreateFolderControl(_system.GetFolderByName(action.GetFolderName()));
+        }
+
+        private void ShitTabs_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!_system.Settings.IsTabsOnTheLeft) return;
+                _system.Settings.IsTabsOnTheLeft = false;
+            ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
+        }
+
+        private void LeftTabs_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_system.Settings.IsTabsOnTheLeft) return;
+            _system.Settings.IsTabsOnTheLeft = true;
+            ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
         }
     }
 }

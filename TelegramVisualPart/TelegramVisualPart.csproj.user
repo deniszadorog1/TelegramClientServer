@@ -169,6 +169,9 @@
     <Compile Update="UserControls\ChatControls\Emojis\FullVisualsBlock.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatControls\ItemsSlider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -490,6 +493,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\Emojis\FullVisualsBlock.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ItemsSlider.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml">

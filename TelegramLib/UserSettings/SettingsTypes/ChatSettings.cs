@@ -7,6 +7,7 @@ using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.Helpers;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings;
 using TelegramLib;
+using TelegramLib.MainClasses.ChatFitures;
 
 
 namespace TelegramLib.UserSettings.SettingsTypes
@@ -21,6 +22,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
         public bool IsSendWithEnter { get; set; }
         public ChatWallpaper Wallpaper { get; set; }
         public List<string> PossibleWallpapers { get; set; }
+        public List<Theme> Themes { get; set; }
 
         public ChatSettings(int id, ThemeType theme, ColorHelper color, AutoNightMode nightMode,
                             string fontName, ChatWallpaper wallpaper, bool isSentWithEnter,
