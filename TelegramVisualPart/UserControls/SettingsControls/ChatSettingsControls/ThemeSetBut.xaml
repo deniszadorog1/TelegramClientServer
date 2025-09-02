@@ -19,10 +19,10 @@
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Name="IconTest" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Right"
-                                 Foreground="White" Margin="10"/>
+                                 Foreground="{StaticResource UsualTextColor}" Margin="10"/>
 
         <TextBlock Name="ButName" Grid.Column ="1" Text="But name here" VerticalAlignment="Center"
-                   Foreground="White" FontSize="16"/>
+                   Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
 
         <TextBlock Name="ChosenType" Grid.Column="2" Text="Chosen" 
                    VerticalAlignment="Center" HorizontalAlignment="Right"

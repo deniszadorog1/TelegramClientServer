@@ -18,7 +18,8 @@
 
         <TextBlock Name ="TextBlock" Grid.Column="0" 
                    Text="There gonna be a text" 
-                   VerticalAlignment="Center" Foreground="White" 
+                   VerticalAlignment="Center" 
+                   Foreground="{StaticResource UsualTextColor}" 
                    FontSize="14" Margin="20 0 0 0"  />
 
         <ToggleButton Name ="Toggle" Grid.Column="1" Width="35"

@@ -37,11 +37,10 @@
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
                     
                     <TextBlock Grid.Column="1" Text="Advanced" VerticalAlignment="Center" 
-                               Foreground="White" Margin="10 0 0 0" FontSize="16"/>
+                               Foreground="{StaticResource UsualTextColor}" Margin="10 0 0 0" FontSize="16"/>
                 </Grid>
 
                 <Grid Grid.Column="1">
-
                     <iconBut:IconButton x:Name="CloseBut" Margin="0 0 30 0" 
                                         Width="25" Height="25"
                                         VerticalAlignment="Center" 
@@ -115,26 +114,29 @@
                            FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1" Margin="20 0 0 0" Orientation="Vertical">
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
+                                        Foreground="{StaticResource UsualTextColor}"  
                                         Content="Show chat name" Name="ShowChatNameBox" Margin="0 5 0 0"
                                         Background="{StaticResource TempActiveTextColor}"
                                         IsChecked="False" FontSize="14"    
                                         materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                         Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
+                                        Foreground="{StaticResource UsualTextColor}"  
                                         Content="Total unread count" Name="UnreadCountBox" Margin="0 5 0 0"
                                         Background="{StaticResource TempActiveTextColor}"
                                         IsChecked="False" FontSize="14"                                
                                         materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                         Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
-                                       Content="Use system window frame" Name="WindowFrame" Margin="0 5 0 0"
-                                       Background="{StaticResource TempActiveTextColor}"
-                                       IsChecked="False" FontSize="14"                                
-                                       materialDesign:CheckBoxAssist.CheckBoxSize="22"     
-                                       Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
+                                        Foreground="{StaticResource UsualTextColor}"  
+                                        Content="Use system window frame" Name="WindowFrame" Margin="0 5 0 0"
+                                        Background="{StaticResource TempActiveTextColor}"
+                                        IsChecked="False" FontSize="14"                                
+                                        materialDesign:CheckBoxAssist.CheckBoxSize="22"     
+                                        Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
 
                         </StackPanel>
@@ -154,35 +156,40 @@
                                        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="1" Margin="20 0 0 0">
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
+                                           Foreground="{StaticResource UsualTextColor}"  
                                            Content="Show tray icon" Name="TrayIconBox" Margin="0 5 0 0"
                                            Background="{StaticResource TempActiveTextColor}"
                                            IsChecked="False" FontSize="14"                           
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
+                                           Foreground="{StaticResource UsualTextColor}"  
                                            Content="Show taskbrar icon" Name="TaskBarBox" Margin="0 5 0 0"
                                            Background="{StaticResource TempActiveTextColor}"
                                            IsChecked="False" FontSize="14"                                
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
+                                           Foreground="{StaticResource UsualTextColor}"  
                                            Content="Close to taskbrar" Name="CloseToTaskBarBox" Margin="0 5 0 0"
                                            Background="{StaticResource TempActiveTextColor}"
                                            IsChecked="False" FontSize="14"                                
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
+                                           Foreground="{StaticResource UsualTextColor}"  
                                            Content="Launch Telegram when system starts" Name="AtStartLaunchTelegramBox" Margin="0 5 0 0"
                                            Background="{StaticResource TempActiveTextColor}"
                                            IsChecked="False" FontSize="14"                                
                                            materialDesign:CheckBoxAssist.CheckBoxSize="22"     
                                            Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" Foreground="White"  
+                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
+                                           Foreground="{StaticResource UsualTextColor}"  
                                            Content="Palce Telegram in Send To menu" Name="PalceInSendTo" Margin="0 5 0 0"
                                            Background="{StaticResource DarkThemeProfileButForeGround}"
                                            IsChecked="False" FontSize="14"                                

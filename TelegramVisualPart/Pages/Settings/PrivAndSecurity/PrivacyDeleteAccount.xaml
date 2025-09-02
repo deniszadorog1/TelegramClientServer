@@ -23,45 +23,45 @@
             <TextBlock Grid.Row="0"
                        Text="Add Exceptions" FontSize="20" 
                        VerticalAlignment="Center"
-                       Foreground="White"/>
+                       Foreground="{StaticResource UsualTextColor}"/>
             
             <TextBlock Grid.Row="1" TextWrapping="Wrap"
-                       Foreground="White" FontSize="18"
+                       Foreground="{StaticResource UsualTextColor}" FontSize="18"
                        Padding="0 10 5 0 "
                        Text="If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts."/>
 
             <StackPanel Grid.Row="2" Orientation="Vertical" Name="RadioPanel">
-                <RadioButton Foreground="White" Content="1 month"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="1 month"
                              Name="OneMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="3 month"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="3 month"
                              Name="ThreeMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="6 month"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="6 month"
                              Name="SixRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="12 month"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="12 month"
                              Name="TwelveMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
-                
-                <RadioButton Foreground="White" Content="18 month"
+
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="18 month"
                              Name="EighteenMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="24 month"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="24 month"
                              Name="TwentyfourMonthRadio" Checked="Radio_Checked"
                              FontSize="18" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             

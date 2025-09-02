@@ -67,7 +67,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         {
             ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
 
-            Share.TextBlock.Text = "Share";
+            //Share.TextBlock.Text = "Share";
             Cancel.TextBlock.Text = "Cancel";
             Apply.TextBlock.Text = "Apply";
         }
@@ -178,7 +178,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             FirstMessageTextBlock.Foreground = _whiteStateTextBlockColor;
             SecondMessageTextBlock.Foreground = _whiteStateTextBlockColor;
 
-            Share.TextBlock.Foreground = _whiteStateButTextColor;
+            //Share.TextBlock.Foreground = _whiteStateButTextColor;
             Cancel.TextBlock.Foreground = _whiteStateButTextColor;
             Apply.TextBlock.Foreground = _whiteStateButTextColor;
         }
@@ -198,7 +198,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             FirstMessageTextBlock.Foreground = _darkStateTextBlockColor;
             SecondMessageTextBlock.Foreground = _darkStateTextBlockColor;
 
-            Share.TextBlock.Foreground = activeColor;
+            //Share.TextBlock.Foreground = activeColor;
             Cancel.TextBlock.Foreground = activeColor;
             Apply.TextBlock.Foreground = activeColor;
             ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;

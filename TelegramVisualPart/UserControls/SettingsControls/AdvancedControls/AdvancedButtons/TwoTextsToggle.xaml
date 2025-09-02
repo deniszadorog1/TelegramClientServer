@@ -24,7 +24,7 @@
 
             <TextBlock Name ="FirstTextBlock" Grid.Column="0" 
                    Text="There gonna be a text" 
-                   VerticalAlignment="Center" Foreground="White" 
+                   VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" 
                    FontSize="14"/>
 
             <TextBlock Name ="SecondTextBlock" 

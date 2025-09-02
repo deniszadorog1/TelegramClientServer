@@ -37,7 +37,7 @@
                     </Ellipse>
 
                     <TextBlock Grid.Column="1" Name="SliderLogin" Text="TestLogin"
-                               FontSize="16" Foreground="White" 
+                               FontSize="16" Foreground="{StaticResource UsualTextColor}" 
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left"/>
 
@@ -108,11 +108,11 @@
                         <Grid>
 
                             <TextBox Name="SarchBox" 
-                                 Foreground="White" Margin="10 0 35 0" FontSize="14"
+                                 Foreground="{StaticResource UsualTextColor}" Margin="10 0 35 0" FontSize="14"
                                  materialDesign:HintAssist.Hint="Serch"
                                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                                  materialDesign:HintAssist.Foreground="Gray"
-                                 CaretBrush="White" 
+                                 CaretBrush="{StaticResource UsualTextColor}" 
                                  GotFocus="SarchBox_GotFocus"
                                  LostFocus="SarchBox_LostFocus"
                                  TextChanged="SarchBox_TextChanged"/>

@@ -18,7 +18,8 @@
 
         <TextBlock Grid.Column="0"
                    Name="NamePart" Text="Name is gonna be here" VerticalAlignment="Center"
-                   HorizontalAlignment="Left" Margin="25 0 0 0" FontSize="16" Foreground="White"/>
+                   HorizontalAlignment="Left" Margin="25 0 0 0" FontSize="16" 
+                   Foreground="{StaticResource UsualTextColor}"/>
 
         <TextBlock Grid.Column="1"
                    Name="EnumPart" Text="chosen enum value is here" VerticalAlignment="Center"

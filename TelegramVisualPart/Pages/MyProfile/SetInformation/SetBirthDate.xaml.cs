@@ -221,7 +221,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontSize = 16,
                 Padding = new Thickness(10),
-                Foreground = new SolidColorBrush(Colors.Gray)
+                Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["UsualTextColor"]
             };
         }
 

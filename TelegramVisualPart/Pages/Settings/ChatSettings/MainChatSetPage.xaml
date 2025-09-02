@@ -42,7 +42,7 @@
 
                 <TextBlock Name="ChatNameBlock" Grid.Column="1" 
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Text="Chat Settings" Margin="10" Foreground="White"
+                           Text="Chat Settings" Margin="10" Foreground="{StaticResource UsualTextColor}"
                            FontSize="20"/>
 
                 <buts:IconButton Grid.Column="2" Width="30" Margin="0 0 25 0"
@@ -166,14 +166,14 @@
                         <Grid Grid.Row="7" Background="{StaticResource DarkThemeDeviderField}"/>
 
                         <StackPanel Grid.Row="8" Margin="10 10 0 0">
-                            <RadioButton Foreground="White" Content="Send with Enter"
+                            <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Send with Enter"
                                  Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
                                  FontSize="18" IsChecked="False" Padding="3 0 0 2"
                                  materialDesign:RadioButtonAssist.RadioButtonSize="24"
                                  Background="{StaticResource TempActiveTextColor}"                             
                                  Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                            <RadioButton Foreground="White" Content="Send with Ctrl+Enter"
+                            <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Send with Ctrl+Enter"
                                  Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
                                  FontSize="18" IsChecked="False" Padding="3 0 0 2"
                                  materialDesign:RadioButtonAssist.RadioButtonSize="24"

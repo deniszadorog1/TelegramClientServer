@@ -18,10 +18,10 @@
                                  Width="25" Height="25" 
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
-                                 Foreground="LightGray"/>
+                                 Foreground="{StaticResource UsualTextColor}"/>
 
         <TextBlock Name ="TextBlock" Grid.Column="1" Text="there gonna be a text" 
-                   VerticalAlignment="Center" Foreground="LightGray" FontSize="18"
+                   VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" FontSize="18"
                    Margin="10" FontWeight="Normal"/>
 
         <ToggleButton Name ="Toggle" Grid.Column="2" Width="40" Height="40"

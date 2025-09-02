@@ -24,21 +24,21 @@
 
             <TextBlock Text="Edit your name" FontSize="22" Margin="25 0 0 0"
                    HorizontalAlignment="Left" VerticalAlignment="Center"
-                   Foreground="White"/>
+                   Foreground="{StaticResource UsualTextColor}"/>
 
             <TextBox Grid.Row="1" Name="FirstNameBox" Margin="25 15 15 15"
-                  Foreground="White" FontSize="20"
+                  Foreground="{StaticResource UsualTextColor}" FontSize="20"
                   materialDesign:HintAssist.Hint="First name"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
                   materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
-                  CaretBrush="White"
+                  CaretBrush="{StaticResource UsualTextColor}"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
             <TextBox Grid.Row="2" Name="LastNameBox"
-                  Foreground="White" Margin="25 15 15 15" FontSize="20"
+                  Foreground="{StaticResource UsualTextColor}" Margin="25 15 15 15" FontSize="20"
                   materialDesign:HintAssist.Hint="Last name"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
-                  CaretBrush="White"
+                  CaretBrush="{StaticResource UsualTextColor}"
                   materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"                              
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 

@@ -28,7 +28,7 @@
             <Grid Grid.Row="0">
                 <TextBlock Text="Contacts" Name ="ContactsBlock"
                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                       FontSize="22" Foreground="White" Margin="20 0 0 0"/>
+                       FontSize="22" Foreground="{StaticResource UsualTextColor}" Margin="20 0 0 0"/>
 
                 <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"
                                     HorizontalAlignment="Right"  VerticalAlignment="Center"

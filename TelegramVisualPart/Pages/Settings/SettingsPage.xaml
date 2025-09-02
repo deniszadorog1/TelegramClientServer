@@ -45,7 +45,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                           FontSize="22" Foreground="White" Text="Settings" Margin="10 0 0 0"/>
+                           FontSize="22" Foreground="{StaticResource UsualTextColor}" Text="Settings" Margin="10 0 0 0"/>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -81,10 +81,10 @@
                             VerticalAlignment="Center">
                         <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
                                Margin="0 0 0 0"
-                               VerticalAlignment="Center" Foreground="White" FontSize="18"/>
+                               VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
                         <TextBlock Grid.Row="1" Name="PhoneNumber" Text="There gona be phone number"
-                               VerticalAlignment="Center" Foreground="White" FontSize="16"
+                               VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" FontSize="16"
                                Margin="0 2 0 0"/>
 
                         <TextBlock Grid.Row="2" Name="UserLogin" Text="There gona be user login"

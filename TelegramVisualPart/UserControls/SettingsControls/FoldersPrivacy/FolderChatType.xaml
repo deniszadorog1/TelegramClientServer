@@ -39,7 +39,7 @@
 
         <TextBlock Name="TypeName" Grid.Column="1"
                    Text="There gona be chat type name"
-                   VerticalAlignment="Center" Foreground="White"
+                   VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}"
                    FontSize="14" Margin="15 0 0 0"/>
 
     </Grid>

@@ -22,7 +22,7 @@
 
             <TextBlock Name="ActionType" Text="Messages" Margin="20 0 0 0"
                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                       FontSize="18" Foreground="White"/>
+                       FontSize="18" Foreground="{StaticResource UsualTextColor}"/>
 
             <TextBlock Grid.Row="1" Margin="20 0 0 0"
                        Text="Who can send me messages" FontSize="16" 
@@ -30,13 +30,13 @@
                        Foreground="{StaticResource TempActiveTextColor}"/>
 
             <StackPanel Grid.Row="2" Margin="20 0 0 0">
-                <RadioButton Foreground="White" Content="Everybody"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Everybody"
                              Name="EverybodyRadio" Checked="EverybodyRadio_Checked"
                              FontSize="16" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             
                              Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="My contacts and Premium users"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="My contacts and Premium users"
                              Name="MyContactsRadio" Checked="MyContactsRadio_Checked"
                              FontSize="16" IsChecked="False" 
                              Background="{StaticResource TempActiveTextColor}"                             

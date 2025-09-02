@@ -12,7 +12,8 @@
     <Grid>
         <TextBlock Name="TextBlock" Text="Text is gona be here"
                    VerticalAlignment="Center" Margin="20 0 0 0"
-                   HorizontalAlignment="Left" Foreground="White"
+                   HorizontalAlignment="Left" 
+                   Foreground="{StaticResource UsualTextColor}"
                    FontSize="14"/>
     </Grid>
 </UserControl>

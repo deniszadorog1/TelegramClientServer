@@ -64,5 +64,15 @@ namespace TelegramLib.UserSettings.SettingsTypes
         {
             return Wallpaper.IsBlurred;
         }
+
+        public void SetBasicThemes()
+        {
+            Themes = new List<Theme>();
+
+            Themes.Add(new MainClasses.ChatFitures.Theme(1, ThemeType.Classic, new ColorHelper(-1, 255, 0, 0)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(2, ThemeType.Day, new ColorHelper(-1, 0, 255, 0)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(3, ThemeType.Tinted, new ColorHelper(-1, 0, 0, 255)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(4, ThemeType.Night, new ColorHelper(-1, 255, 0, 255)));
+        }
     }
 }

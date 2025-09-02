@@ -37,7 +37,7 @@
 
             <TextBlock Name="TypeName" Grid.Row="0"
                        Text="There gona be chat name"
-                       VerticalAlignment="Center" Foreground="White"
+                       VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}"
                        FontSize="17" Margin="5 0 0 0"/>
 
             <TextBlock Name="AutoDeletionType" Grid.Row="1"

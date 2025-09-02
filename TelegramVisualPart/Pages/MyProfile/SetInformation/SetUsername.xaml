@@ -21,14 +21,14 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="Username" VerticalAlignment="Center"
-                   FontSize="20" Foreground="White" Margin="25 0 0 0"/>
+                   FontSize="20" Foreground="{StaticResource UsualTextColor}" Margin="25 0 0 0"/>
 
             <TextBox Grid.Row="1" Name="UserNameBox"
-                  Foreground="White" Margin="25 15 15 15" FontSize="16"
+                  Foreground="{StaticResource UsualTextColor}" Margin="25 15 15 15" FontSize="16"
                   materialDesign:HintAssist.Hint="@username"
                   materialDesign:HintAssist.FloatingScale="0.8"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
-                  CaretBrush="White"
+                  CaretBrush="{StaticResource UsualTextColor}"
                   materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 

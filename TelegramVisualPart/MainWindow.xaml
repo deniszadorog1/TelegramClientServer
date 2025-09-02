@@ -14,6 +14,8 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         
+        Icon="pack://application:,,,/TelegramVisualPart;component/Visuals/Icon/TelIcon.ico" 
+        
         WindowState="Normal"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
@@ -24,21 +26,20 @@
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged">
 
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="{StaticResource UpperBangColor}" 
+        <Grid Grid.Row="0" Name="UpperBorder"
+                  Background="{StaticResource UpperBangColor}" 
                   MouseLeftButtonDown="DragWindow"
                   MouseLeftButtonUp="Grid_MouseLeftButtonUp"
                   MouseMove="Grid_MouseMove"
                   VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
-                               
                 <Button Content="—" Width="43" Click="Minimize_Click"  Margin="5 0 5 0"
                                 Background="Transparent" BorderBrush="Transparent"
                                 Name="CloseBut"

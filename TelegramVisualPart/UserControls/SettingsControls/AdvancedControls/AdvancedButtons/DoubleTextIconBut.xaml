@@ -20,12 +20,12 @@
         <materialDesign:PackIcon Kind="CirclesAdd"  Name="IconType"
                          Grid.Column="0" VerticalAlignment="Center"
                          HorizontalAlignment="Center" 
-                         Foreground="Gray"
+                         Foreground="{StaticResource UsualTextColor}"
                          Width="25" Height="25"/>
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="ButName"
                    VerticalAlignment="Center"
-                   Foreground="White" FontSize="14"
+                   Foreground="{StaticResource UsualTextColor}" FontSize="14"
                    HorizontalAlignment="Left"/>
 
         <TextBlock Grid.Column="2" Text="Create new Folder" Name="TempStatusBut"

@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<None Remove="Visuals\Gifs\TestGif.gif" />
+		<None Remove="Visuals\Icon\TelIcon.ico" />
 		<None Remove="Visuals\Images\Stickers\Figure.png" />
 		<None Remove="Visuals\Images\Stickers\Girl.png" />
 		<None Remove="Visuals\Images\UserImages\fray.jpg" />
@@ -49,6 +50,7 @@
 		<Content Include="Visuals\Images\Stickers\Girl.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
+		<Resource Include="Visuals\Icon\TelIcon.ico" />
 		<Resource Include="Visuals\Images\UserImages\fray.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>

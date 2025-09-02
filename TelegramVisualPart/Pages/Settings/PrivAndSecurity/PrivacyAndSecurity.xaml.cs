@@ -142,7 +142,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             }
         }
 
-        private Page GetPageForBut(string name)
+        private Page? GetPageForBut(string name)
         {
             return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system) :
                 name == BlockedUsers.Name.ToString() ? new BlockedUsers(_system) :

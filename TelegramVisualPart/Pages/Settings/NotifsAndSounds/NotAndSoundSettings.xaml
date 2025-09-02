@@ -41,7 +41,7 @@
 
                 <TextBlock Grid.Column="1" Text="Notifications and Sounds"
                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Foreground="White" FontSize="21" Margin="5 0 0 0"
+                       Foreground="{StaticResource UsualTextColor}" FontSize="21" Margin="5 0 0 0"
                            FontWeight="Normal" FontFamily="Segoe UI" />
 
 
@@ -104,7 +104,7 @@
 
             <Grid Grid.Row="4">
                 <materialDesign:PackIcon Kind="SmileyDead" HorizontalAlignment="Center"
-                                     VerticalAlignment="Center" Foreground="White"
+                                     VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}"
                                      Width="75" Height="75"/>
             </Grid>
 

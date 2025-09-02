@@ -7,8 +7,8 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="420"
-      Height="450" Width="420"
+      d:DesignHeight="450" d:DesignWidth="440"
+      Height="450" Width="440"
       MaxHeight="450"
       Title="SetChatWallpaper">
 
@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Name="PageNameBlock" Text="Choose a wallpaper" VerticalAlignment="Center" 
-                       Margin="25 0 0 0" Foreground="White" FontSize="22"/>
+                       Margin="25 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 
             <ScrollViewer Grid.Row="1" Name="WallPapers" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <Grid>
@@ -35,27 +35,30 @@
                           MouseEnter="ChooseFromFileGrid_MouseEnter"
                           MouseLeave="ChooseFromFileGrid_MouseLeave"
                           PreviewMouseDown="ChooseFromFileGrid_PreviewMouseDown">
-                        
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        
+
                         <materialDesign:PackIcon Name="Icon" Kind="Image" Width="30" Height="30"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Foreground="White"/>
+                                                 Foreground="{StaticResource UsualTextColor}"/>
 
                         <TextBlock Grid.Column="1" Name="ChooseFileBlock" Text="Choose from file" 
-                                   VerticalAlignment="Center" Foreground="White" FontSize="16"/>
+                                   VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
                     </Grid>
 
-                    <WrapPanel Grid.Row="1" Name="WallpapersPanel">
-                        <controls:Wallpaper x:Name="OneTest"/>
-                        <controls:Wallpaper x:Name="TwoTest"/>
-                        <controls:Wallpaper x:Name="ThreeTest"/>
-                    </WrapPanel>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel  Name="WallpapersPanel" Margin="5 0 0 0">
+                            <controls:Wallpaper x:Name="OneTest"/>
+                            <controls:Wallpaper x:Name="TwoTest"/>
+                            <controls:Wallpaper x:Name="ThreeTest"/>
+                        </WrapPanel>
+                    </ScrollViewer>
+
                 </Grid>
-                
+
             </ScrollViewer>
 
             <controls:WallpaperBotBut Grid.Row="2" HorizontalAlignment="Right" 

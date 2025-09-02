@@ -1,10 +1,13 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Newtonsoft.Json.Bson;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Permissions;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +27,8 @@ using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
+using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
+using Color = System.Windows.Media.Color;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings
 {
@@ -87,23 +92,28 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             SolidColorBrush setColor = new SolidColorBrush(Color.FromRgb(
                 _chatsSettings.ChosenColor.R, _chatsSettings.ChosenColor.G, _chatsSettings.ChosenColor.B));
 
-            CircleColor chosenOne = ColorCirclesPanel.Children.OfType<CircleColor>().Where(x => CompareColors(x, setColor)).FirstOrDefault();
-            if (chosenOne is null) 
+            CircleColor? chosenOne = ColorCirclesPanel.Children.OfType<CircleColor>().Where(x => CompareColors(x, setColor)).FirstOrDefault();
+            if (chosenOne is null)
             {
                 chosenOne = SetCustomColor();
             };
 
-            CircleColor_MouseDown(chosenOne, new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+            ActivateClickCircleColorByCircle(chosenOne);
+        }
+
+        public void ActivateClickCircleColorByCircle(CircleColor chosenOne)
+        {
+            CircleColor_MouseDown(chosenOne, new MouseButtonEventArgs(
+                Mouse.PrimaryDevice, 0, MouseButton.Left)
             {
                 RoutedEvent = UIElement.MouseDownEvent,
                 Source = chosenOne
             });
-
         }
 
         private CircleColor SetCustomColor()
         {
-            CircleColor last = ColorCirclesPanel.Children.OfType<CircleColor>().LastOrDefault();
+            CircleColor? last = ColorCirclesPanel.Children.OfType<CircleColor>().LastOrDefault();
 
             SolidColorBrush newColor = new SolidColorBrush(
                 Color.FromRgb(
@@ -128,7 +138,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetChatWallpaperParam()
         {
-            ChosenWallpaperImage.Source = new Image
+            ChosenWallpaperImage.Source = new System.Windows.Controls.Image
             {
                 Width = 200,
                 Height = 200,
@@ -154,12 +164,193 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetThemeParam()
         {
-            ThemeCard card = ThemesWrap.Children.OfType<ThemeCard>().Where(x => x.Name ==
-            _chatsSettings.Theme.ToString()).FirstOrDefault();
+            ThemeCard? card = ThemesWrap.Children.OfType<ThemeCard>().FirstOrDefault(x => x.Name ==
+            _chatsSettings.Theme.ToString());
 
             if (card is null) return;
             card.RadioBut.IsChecked = true;
+
+            //Set temp theme params (Color)
+            SetThemesBaseParams();
+
+            //Set events for themes
+            SetThemeEvents();
         }
+
+        public void SetThemeEvents()
+        {
+            List<ThemeCard> cards = ThemesWrap.Children.OfType<ThemeCard>().ToList();
+
+            for (int i = 0; i < cards.Count; i++)
+            {
+                ThemeCard card = cards[i];
+                card.RadioBut.Checked += (sender, e) =>
+                {
+                    int.TryParse(card.Tag.ToString(), out int tagThemeId);
+
+                    //1 - Get specific theme (from system)
+                    TelegramLib.MainClasses.ChatFitures.Theme? theme =
+                        _system.Settings.ChatsSettings.Themes.FirstOrDefault(x => x.Id == tagThemeId);
+                    if (theme is null) return;
+
+                    //1.1 Change theme type
+                    _system.Settings.ChatsSettings.Theme = theme.Type;
+
+                    //2 - Set active text color 
+                    SetActiveTextColor(theme);
+                    Console.WriteLine(_system.Settings.ChatsSettings.Theme);
+
+                    //3 - set additional(inactive) text color(white or black)
+                    SetAdditionalTextColor(theme);
+
+                    UpdateBgColors(theme);
+
+                    //5 - set right circle color (if not exist =>
+                    //set color in last circle and choose it) + 
+                    //+ Update Page with new colors
+                    SetCircleColorByTheme(theme);
+                    Console.WriteLine(_system.Settings.ChatsSettings.Theme);
+
+                    ((MainWindow)Window.GetWindow(this)).SetMainFrame(new MainChatPage(_system));
+                    ((MainWindow)Window.GetWindow(this)).UpdateUpperBorder();
+                };
+            }
+        }
+
+        public void UpdateBgColors(TelegramLib.MainClasses.ChatFitures.Theme theme)
+        {
+            //Night - my basic
+            //Tinted - colored
+            //Day and Classic - White and THE SAME
+
+            Application.Current.Resources["DarkThemeOne"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(23, 33, 43)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 5),
+                    GetColorParam(theme.Color.G, 5), 
+                    GetColorParam(theme.Color.B, 5))) :
+                new SolidColorBrush(Colors.White);
+
+            Application.Current.Resources["DarkThemeMouseEnterBut"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(35, 46, 60)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
+                    GetColorParam(theme.Color.G, 3),
+                    GetColorParam(theme.Color.B, 3))) :
+                new SolidColorBrush(Color.FromRgb(222, 222, 222));
+
+            Application.Current.Resources["DarkThemeDeviderField"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(35, 45, 59)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
+                    GetColorParam(theme.Color.G, 3),
+                    GetColorParam(theme.Color.B, 3))) :
+                new SolidColorBrush(Color.FromRgb(222, 222, 222));
+
+            Application.Current.Resources["DarkThemeSecond"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(14, 22, 33)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 8),
+                    GetColorParam(theme.Color.G, 8),
+                    GetColorParam(theme.Color.B, 8))) :
+                new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 8),
+                    GetColorParam(theme.Color.G, 8),
+                    GetColorParam(theme.Color.B, 8)));
+
+            Application.Current.Resources["UpperBangColor"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(58, 64, 71)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
+                    GetColorParam(theme.Color.G, 3),
+                    GetColorParam(theme.Color.B, 3))) :
+                new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
+                    GetColorParam(theme.Color.G, 3),
+                    GetColorParam(theme.Color.B, 3)));
+
+            //UpperBangColor
+
+        }
+
+        private byte GetColorParam(byte tempColor, int toAdd)
+        {
+            int value = tempColor / toAdd;
+            return (byte)(value > 255 ? 255 : value < 0 ? 0 : value);
+        }
+
+        public void SetAdditionalTextColor(TelegramLib.MainClasses.ChatFitures.Theme theme)
+        {
+            Application.Current.Resources["UsualTextColor"] =
+                _system.Settings.ChatsSettings.Theme == ThemeType.Classic ||
+                _system.Settings.ChatsSettings.Theme == ThemeType.Day
+                ? new SolidColorBrush(Colors.Black) :
+                 new SolidColorBrush(Colors.White);
+        }
+
+        public void SetActiveTextColor(TelegramLib.MainClasses.ChatFitures.Theme theme)
+        {
+            Application.Current.Resources["TempActiveTextColor"] =
+                new SolidColorBrush(Color.FromRgb(theme.Color.R, theme.Color.G, theme.Color.B));
+        }
+
+        public void SetCircleColorByTheme(TelegramLib.MainClasses.ChatFitures.Theme theme)
+        {
+            List<CircleColor> circles =
+                ColorCirclesPanel.Children.OfType<CircleColor>().ToList();
+
+            for (int i = 0; i < circles.Count; i++)
+            {
+                SolidColorBrush? brush =
+                    circles[i].BgBorder.Background as SolidColorBrush;
+
+                if (brush is null) continue;
+
+                if (brush.Color.R == theme.Color.R &&
+                    brush.Color.G == theme.Color.G &&
+                    brush.Color.B == theme.Color.B)
+                {
+                    //found right circle + acivate it
+                    ActivateClickCircleColorByCircle(circles[i]);
+                    return;
+                }
+            }
+
+            //Set cutom color circle
+            if (circles.Count == 0) return;
+            CircleColor last = circles.Last();
+
+            last.BgBorder.Background = new SolidColorBrush(
+                Color.FromRgb(theme.Color.R, theme.Color.G, theme.Color.B));
+
+            ActivateClickCircleColorByCircle(last);
+        }
+
+        public void SetThemesBaseParams()
+        {
+            SetBaseThemeParam(Classic,
+                _system.Settings.ChatsSettings.Themes.FirstOrDefault(x => x.Type == ThemeType.Classic));
+
+            SetBaseThemeParam(Day,
+                _system.Settings.ChatsSettings.Themes.FirstOrDefault(x => x.Type == ThemeType.Day));
+
+            SetBaseThemeParam(Tinted,
+                _system.Settings.ChatsSettings.Themes.FirstOrDefault(x => x.Type == ThemeType.Tinted));
+
+            SetBaseThemeParam(Night,
+                _system.Settings.ChatsSettings.Themes.FirstOrDefault(x => x.Type == ThemeType.Night));
+        }
+
+        public void SetBaseThemeParam(ThemeCard card,
+            TelegramLib.MainClasses.ChatFitures.Theme? theme)
+        {
+            if (card is null || theme is null) return;
+
+            card.Tag = theme.Id;
+            card.CardBg.Background = new SolidColorBrush(
+                Color.FromRgb(theme.Color.R, theme.Color.G, theme.Color.B));
+        }
+
 
         public void SetCheckEventForThemesCards()
         {
@@ -171,36 +362,45 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void Theme_Checked(object sender, RoutedEventArgs e)
         {
-            RadioButton but = sender as RadioButton;
+            RadioButton? but = sender as RadioButton;
 
-            UnCheckRadios(Classic.RadioBut, but);
-            UnCheckRadios(Day.RadioBut, but);
-            UnCheckRadios(Tinted.RadioBut, but);
-            UnCheckRadios(Night.RadioBut, but);
+            if (but is null) return;
+
+            UnCheckRadios(Classic, but);
+            UnCheckRadios(Day, but);
+            UnCheckRadios(Tinted, but);
+            UnCheckRadios(Night, but);
         }
 
-        public void UnCheckRadios(RadioButton toUncheck, RadioButton chosen)
+        public void UnCheckRadios(ThemeCard toUncheck, RadioButton chosen)
         {
-            if (toUncheck == chosen)
+            if (toUncheck.RadioBut == chosen)
             {
-                _chatsSettings.Theme = GetChosenType(chosen);
+                ThemeType? type =
+                   toUncheck == Classic ? ThemeType.Classic :
+                   toUncheck == Day ? ThemeType.Day :
+                   toUncheck == Tinted ? ThemeType.Tinted :
+                   /*toUncheck == Night ? */ThemeType.Night;/*= GetChosenType(chosen);*/
+
+                _chatsSettings.Theme = type is null ? ThemeType.Tinted : (ThemeType)type;
 
                 ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
-            toUncheck.IsChecked = false;
+            toUncheck.RadioBut .IsChecked = false;
         }
 
-        public ThemeType GetChosenType(RadioButton toCheck)
+        public ThemeType? GetChosenType(RadioButton toCheck)
         {
             ThemeCard card = HelperService.FindParent<ThemeCard>(toCheck);
-            if (card is null) return ThemeType.Tinted;
+
+            if (card is null) return null;
             for (int i = 0; i <= (int)ThemeType.Night; i++)
             {
                 if (((ThemeType)i).ToString() == card.CardName.Text)
                     return (ThemeType)i;
             }
-            return ThemeType.Tinted;
+            return null;
         }
 
         public void SetButsParams()
@@ -303,18 +503,44 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 SetNewTempColor(color);
                 SaveChosenColor(color);
 
+                Console.WriteLine(_system.Settings.ChatsSettings.Theme);
+
                 MainWindow wind = ((MainWindow)Window.GetWindow(this));
-                if (wind is not null) wind.UpdateChatSettingsPage();
+                if (wind is not null)
+                {
+                    wind.UpdateChatSettingsPage();
+                }
+                //Set them params
+                UpdateThemeParams();
             }
+        }
+        public void UpdateThemeParams()
+        {
+            //1 - Get Theme
+            TelegramLib.MainClasses.ChatFitures.Theme? theme =
+                _system.Settings.ChatsSettings.Themes
+                    .FirstOrDefault(x => x.Type == _system.Settings.ChatsSettings.Theme);
+
+            if (theme is null) return;
+
+            //2 - Update Color
+            SolidColorBrush brush =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            theme.Color = new TelegramLib.Helpers.ColorHelper(
+                -1, brush.Color.R, brush.Color.G, brush.Color.B);
+
+
+            //3 - Update it in db
         }
 
         private void SaveChosenColor(CircleColor color)
         {
-            SolidColorBrush bg = color.BgBorder.Background as SolidColorBrush;
+            SolidColorBrush? bg = color.BgBorder.Background as SolidColorBrush;
             if (bg is null) return;
 
-           _chatsSettings.ChosenColor = new TelegramLib.Helpers.ColorHelper
-                (_chatsSettings.ChosenColor.Id ,bg.Color.R, bg.Color.G, bg.Color.B);
+            _chatsSettings.ChosenColor = new TelegramLib.Helpers.ColorHelper
+                 (_chatsSettings.ChosenColor.Id, bg.Color.R, bg.Color.G, bg.Color.B);
         }
 
         public void SetNewTempColor(CircleColor color)
@@ -336,7 +562,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void PaletteBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ChatSetPalette(_chatsSettings));
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
+                new ChatSetPalette(_chatsSettings));
         }
 
         private void ChatWallpaperTextBlock_MouseEnter(object sender, MouseEventArgs e)

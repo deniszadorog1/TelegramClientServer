@@ -33,7 +33,7 @@
                 <TextBlock Grid.Column="0" Text="My Profile"
                            FontSize="20" VerticalAlignment="Center"
                            HorizontalAlignment="Left" Margin="25 0 0 0"
-                           Foreground="White" FontFamily="Segoe UI"/>
+                           Foreground="{StaticResource UsualTextColor}" FontFamily="Segoe UI"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
                             HorizontalAlignment="Right" VerticalAlignment="Center" 
@@ -70,7 +70,7 @@
 
                     <TextBlock Grid.Row="0" Name="UserLoginBlock" Text="User login" Margin="5 0 0 5"
                                VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                               FontSize="20" Foreground="White"/>
+                               FontSize="20" Foreground="{StaticResource UsualTextColor}"/>
 
                     <TextBlock Grid.Row="1" Name="LastSeenOnline" Text="Last seen online"
                                Margin="5 0 0 0" Foreground="Gray" FontSize="16" />
@@ -95,7 +95,7 @@
                         <materialDesign:PackIcon Kind="InfoOutline" VerticalAlignment="Center"
                                                  HorizontalAlignment="Center" 
                                                  Width="30" Height="30"
-                                                 Foreground="White"/>
+                                                 Foreground="{StaticResource UsualTextColor}"/>
                     </Grid>
                 </Grid>
 
@@ -108,7 +108,7 @@
                     <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
                         <TextBlock Name="PhoneNumberBlock"
                                    Text="Threre is gona be phone number"
-                                   Foreground="White" FontSize="16"/>
+                                   Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
                         <TextBlock Name="phNumberText"
                                    Text="Mobile" FontSize="16"
                                    Foreground="Gray"/>
@@ -137,7 +137,7 @@
                                          HorizontalAlignment="Center"
                                          VerticalAlignment="Center"
                                          Height="100" Width="100"
-                                         Foreground="White"/>
+                                         Foreground="{StaticResource UsualTextColor}"/>
             </Grid>
         </Grid>
     </Border>

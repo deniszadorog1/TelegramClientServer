@@ -57,6 +57,7 @@ namespace TelegramVisualPart.EnterInAccount
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
             _system.Settings.IsTabsOnTheLeft = true;
+            _system.Settings.ChatsSettings.SetBasicThemes();
 
             if (_system is null)
             {

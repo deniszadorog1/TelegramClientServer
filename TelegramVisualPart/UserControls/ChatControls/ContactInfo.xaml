@@ -25,7 +25,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                           FontSize="22" Foreground="White" Text="User Info"/>
+                           FontSize="22" Text="User Info"
+                           Foreground="{StaticResource UsualTextColor}"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -87,12 +88,12 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
-                                       VerticalAlignment="Center" Foreground="White" 
-                                       FontSize="18"/>
+                                       VerticalAlignment="Center" FontSize="18"
+                                       Foreground="{StaticResource UsualTextColor}"/>
 
                             <TextBlock Grid.Row="1" Name="LastSeenOnline" 
                                        Text="There gona be last seen online" 
-                                       Foreground="White" FontSize="14"/>
+                                       Foreground="Gray" FontSize="14"/>
                         </Grid>
                     </Grid>
 
@@ -117,7 +118,8 @@
 
                             <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="InfoIcon"/>
+                                                 Height="30" Width="30" Name="InfoIcon"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
 
                             <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
                             <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="UserName" VerticalAlignment="Center"/>
@@ -126,9 +128,10 @@
 
                             <materialDesign:PackIcon Kind="BellOutline" Grid.Row="3" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="BellIcon"/>
+                                                 Height="30" Width="30" Name="BellIcon"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
                             <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Text="Notifications"
-                                       Foreground="White" FontSize="16"/>
+                                       Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
                             <ToggleButton Name ="NotificationToggle" Width="35"
                                           Grid.Column="2" Grid.Row="3"
                                           Checked="NotificationToggle_Checked"
@@ -189,11 +192,13 @@
 
                         <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="ImageIcon"/>
+                                                 Height="30" Width="30" Name="ImageIcon"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
 
                         <materialDesign:PackIcon Kind="VideoOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="VideoIcon"/>
+                                                 Height="30" Width="30" Name="VideoIcon"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
 
                         <!--  <materialDesign:PackIcon Kind="FileOutline" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -205,17 +210,18 @@
 -->
                         <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="4" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="GifIcon"/>
+                                                 Height="30" Width="30" Name="GifIcon"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Amount of photos" 
                                    Name="AmountOfPhotosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="Amount of videos" 
                                    Name="AmountOfVideosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
 
                         <!--   <TextBlock Grid.Column="1" Grid.Row="2" Text="Amount of fiels" 
                                    Name="AmountOfFilesTextBlock" FontSize="16" 
@@ -230,7 +236,7 @@
                         <TextBlock Grid.Column="1" Grid.Row="4" Text="Amount of GIFs" 
                                    Name="AmountOfGifsTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="White" MouseEnter="But_MouseEnter"/>
+                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
                     </Grid>
                     <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"/>
 
@@ -263,13 +269,13 @@
 
                         <materialDesign:PackIcon Kind="ShareOutline" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="SendIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="SendIcon"/>
                         <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="PenIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="PenIcon"/>
                         <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name ="CanIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name ="CanIcon"/>
                         <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource ToBlockContact}"/>
@@ -277,13 +283,13 @@
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="Share this contact" 
                                        FontSize="16"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="Edit contact" FontSize="16"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
                         <TextBlock Grid.Column="1" Grid.Row="2" Text="Delete contact" FontSize="16"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="White" MouseEnter="But_MouseEnter" />
+                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
                         <TextBlock Grid.Column="1" Grid.Row="3" Text="Block user" FontSize="16"
                                    FontWeight="SemiBold"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"

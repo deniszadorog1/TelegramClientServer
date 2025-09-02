@@ -22,8 +22,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Name ="ControlName" Text="Forward to..."
-                       VerticalAlignment="Center" Margin="20 0 0 0" Foreground="White"
-                       FontSize="16"/>
+                       VerticalAlignment="Center" Margin="20 0 0 0" 
+                       Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -37,10 +37,10 @@
                                          Width="30" Height="30" />
 
                 <TextBox Grid.Column="1"
-                  Foreground="White" Margin="10 0 10 0" FontSize="16"
+                  Foreground="{StaticResource UsualTextColor}" Margin="10 0 10 0" FontSize="16"
                   materialDesign:HintAssist.Hint="Search"
                   materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                  CaretBrush="White" Name="SearchTextBox"
+                  CaretBrush="{StaticResource UsualTextColor}" Name="SearchTextBox"
                   materialDesign:HintAssist.Foreground="Gray"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 

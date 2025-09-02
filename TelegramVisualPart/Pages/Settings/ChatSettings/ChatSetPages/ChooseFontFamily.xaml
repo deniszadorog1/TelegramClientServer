@@ -16,19 +16,19 @@
     <Border Name="BorderBg" Background="{StaticResource DarkThemeOne}" CornerRadius="15">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="70"/>
                 <RowDefinition Height="150"/>
                 <RowDefinition/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
             <TextBlock Name="PageNameBlock" Text="Choose font famaly"
-                       Margin="10" Foreground="White" FontSize="18"
-                       FontWeight="SemiBold"/>
+                       Margin="15 15 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="22"
+                       FontWeight="Normal"/>
 
             <Grid Grid.Row="1" Background="{StaticResource DarkThemeSecond}">
                 <TextBlock Name ="CheckFontBlock" VerticalAlignment="Center" HorizontalAlignment="Center"
-                           TextWrapping="Wrap" Foreground="White" Width="250" FontSize="18"
+                           TextWrapping="Wrap" Foreground="{StaticResource UsualTextColor}" Width="250" FontSize="18"
                            Text="Ah, you kids today with techno music! You should enjoy the classics, like Hasselhoff!"/>
             </Grid>
 
@@ -50,10 +50,10 @@
                                          VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Margin="15 0 0 0" Grid.Column="0"/>
                     <TextBox Name="SearchBox" Grid.Row="2" Grid.Column="1"
-                             Foreground="White" Margin="10 0 10 0" FontSize="16"
+                             Foreground="{StaticResource UsualTextColor}" Margin="10 0 10 0" FontSize="16"
                              materialDesign:HintAssist.Hint="Search"
                              materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                             CaretBrush="White"
+                             CaretBrush="{StaticResource UsualTextColor}"
                              materialDesign:HintAssist.Foreground="Gray"
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 

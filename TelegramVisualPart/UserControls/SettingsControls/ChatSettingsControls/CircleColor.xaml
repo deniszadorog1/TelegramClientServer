@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls"
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="25"
-             Height="30" Width="30">
+             Height="30" Width="30"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Border Name="BgBorder" Background="Red" CornerRadius="100"/>
         

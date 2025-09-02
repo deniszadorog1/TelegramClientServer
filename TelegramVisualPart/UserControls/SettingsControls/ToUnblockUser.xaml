@@ -27,11 +27,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock Name="ChaterLogin" Text="login should be there"
-                       Foreground="White" VerticalAlignment="Center"/>
+                       Foreground="{StaticResource UsualTextColor}" VerticalAlignment="Center"/>
 
             <TextBlock Name="UserName" Text="There should be username"
                        Grid.Row="1"
-                       Foreground="White" VerticalAlignment="Center"/>
+                       Foreground="Gray" VerticalAlignment="Center"/>
         </Grid>
 
         <TextBlock Name="UnblockBut" PreviewMouseDown="UnblockBut_PreviewMouseDown"

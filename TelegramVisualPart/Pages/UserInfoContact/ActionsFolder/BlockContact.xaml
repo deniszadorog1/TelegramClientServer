@@ -17,10 +17,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Name="UpperBlock" Text="Block User" Foreground="White" 
+            <TextBlock Name="UpperBlock" Text="Block User" Foreground="{StaticResource UsualTextColor}" 
                        FontSize="16" Margin="15"/>
             <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
-                       Foreground="White" FontSize="16" Margin="15">
+                       Foreground="{StaticResource UsualTextColor}" FontSize="16" Margin="15">
                 
                 <Run Text="Do you want to block "/>
                 <Run Name="UserContactName"  Text ="USERNAME"/>

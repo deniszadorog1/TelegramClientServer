@@ -24,5 +24,15 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls
         {
             InitializeComponent();
         }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

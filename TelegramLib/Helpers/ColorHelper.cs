@@ -1,4 +1,5 @@
-﻿using System.Data.SqlTypes;
+﻿using Microsoft.Identity.Client;
+using System.Data.SqlTypes;
 
 namespace TelegramLib.Helpers
 {
@@ -47,7 +48,5 @@ namespace TelegramLib.Helpers
             G = 255;
             B = 128;
         }
-
-
     }
 }

@@ -659,13 +659,13 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             }
         }
 
-        private void AddUserImage(string userImageName)
+        private async Task AddUserImage(string userImageName)
         {
             //add image in db
-            ApiService.AddUserImage(_system.LoggedUser, userImageName);
+            await ApiService.AddUserImage(_system.LoggedUser, userImageName);
 
             //Update this with signalR
-            SignalRService.AddUserImage(_system.LoggedUser);
+            await SignalRService.AddUserImage(_system.LoggedUser);
         }
     }
 }

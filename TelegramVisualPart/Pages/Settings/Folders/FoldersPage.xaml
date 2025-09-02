@@ -41,7 +41,7 @@
 
                 <TextBlock Grid.Column="1" Text="Folders" Margin="25 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Foreground="White" FontSize="22"/>
+                           Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 
                 <iconBut:IconButton x:Name="CloseBut" Grid.Column="2"
                                     HorizontalAlignment="Right"
@@ -99,7 +99,7 @@
                 <TextBlock Text="My Folder" VerticalAlignment="Center" 
                FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <RadioButton Foreground="White" Content="Tabs on the Left"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs on the Left"
                                  Name="LeftTabs" 
                              
                              Checked="LeftTabs_Checked"
@@ -110,7 +110,7 @@
                                  Margin="0 5 0 0"
                                  Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="White" Content="Tabs at the Top"
+                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs at the Top"
                                  Name="ShitTabs"
                                     
                              Checked="ShitTabs_Checked"
@@ -139,7 +139,7 @@
                     <TextBlock Text="So this is very interesting and useful info, so read this!!!" 
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               TextWrapping="Wrap" Foreground="White" FontSize="14"/>
+                               TextWrapping="Wrap" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
 
                 </Grid>
                 

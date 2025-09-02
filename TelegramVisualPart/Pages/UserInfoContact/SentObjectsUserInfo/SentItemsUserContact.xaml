@@ -31,7 +31,7 @@
                                      MouseDown="BackBut_MouseDown"/>
                 <TextBlock Grid.Column="1" Name="PageName"
                            Text="Shared links" VerticalAlignment="Center"
-                           Foreground="White" FontSize="16" Margin="5"/>
+                           Foreground="{StaticResource UsualTextColor}" FontSize="16" Margin="5"/>
                 <controls:IconButton x:Name="CloseBut" Width="30" Height="30" 
                                      Grid.Column ="2" MouseDown="CloseBut_MouseDown"/>
             </Grid>

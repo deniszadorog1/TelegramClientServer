@@ -1845,7 +1845,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                Theme theme = model.Theme.Where(x => x.Id == themeId).FirstOrDefault();
+                model.Theme theme = model.Theme.Where(x => x.Id == themeId).FirstOrDefault();
                 if (theme is null) return ThemeType.Classic;
 
                 for (int i = 1; i <= (int)ThemeType.Night; i++)

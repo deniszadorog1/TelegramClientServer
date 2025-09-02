@@ -32,7 +32,7 @@
             <TextBlock Grid.Row="0" Name ="UserLogin"
                        Text="Here is gonna be user login"
                        VerticalAlignment="Center" Margin="10 0 0 0"
-                       Foreground="White" />
+                       Foreground="{StaticResource UsualTextColor}" />
 
             <TextBlock Grid.Row="1" Name ="LastSennOnline"
                        Text="Last seen online"

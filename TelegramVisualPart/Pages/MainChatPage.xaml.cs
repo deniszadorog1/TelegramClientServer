@@ -91,14 +91,14 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        private readonly SolidColorBrush _textColor = new SolidColorBrush(Colors.White);
+        //private readonly SolidColorBrush _textColor = new SolidColorBrush(Colors.White);
         public void SetColorToSettingBut(MenuIconTextBut but)
         {
             const int iconSize = 27;
 
-            but.IconType.Foreground = _textColor;
+/*            but.IconType.Foreground = _textColor;
             but.ButName.Foreground = _textColor;
-
+*/
             but.IconType.Width = iconSize;
             but.IconType.Height = iconSize;
 

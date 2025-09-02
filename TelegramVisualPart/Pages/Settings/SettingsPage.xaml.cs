@@ -46,6 +46,7 @@ namespace TelegramVisualPart.Pages.Settings
 
         public void SetColorToSettingsButs()
         {
+            return;
             List<MenuIconTextBut> buts = SettingsButs.Children.OfType<MenuIconTextBut>().ToList();
             for (int i = 0; i < buts.Count(); i++)
             {

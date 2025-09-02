@@ -30,7 +30,7 @@
 
                 <TextBlock Grid.Column="0" Text="Wallpaper preview" Name="PageName" 
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Margin="20 0 0 0" Foreground="White" FontSize="18"/>
+                           Margin="20 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
                  <iconButton:IconButton Grid.Column="1" x:Name="ChangeLightState"
                                         HorizontalAlignment="Right" Width="35" Margin="0 0 10 0"
@@ -70,7 +70,8 @@
                             <TextBlock Text="Ah, you kids today with techno music!             
                                        You should enjoy the classic, licke Hasselhoff!"
                                        Name="FirstMessageTextBlock"
-                                       TextWrapping="Wrap" Foreground="White"
+                                       TextWrapping="Wrap" 
+                                       Foreground="{StaticResource UsualTextColor}"
                                        FontSize="14" Padding="10"/>
                         </Border>
 
@@ -79,7 +80,8 @@
                                  Background="{StaticResource DarkThemeOne}">
                             <TextBlock Text="I cant even take you seriously right now."
                                        Name="SecondMessageTextBlock"
-                                       TextWrapping="Wrap" Foreground="White"
+                                       TextWrapping="Wrap" 
+                                       Foreground="{StaticResource UsualTextColor}"
                                        FontSize="14" Padding="10"/>
                         </Border>
 
@@ -96,6 +98,7 @@
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <CheckBox x:Name="IsBlurCheckBox" Content="Blurred"
+                                      Padding="5 0 0 1"
                                       Foreground="White" FontSize="14"
                                       Background="White" />
                         </StackPanel>
@@ -110,11 +113,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" HorizontalAlignment="Left" 
+                <!--<StackPanel Grid.Column="0" HorizontalAlignment="Left" 
                             VerticalAlignment="Center">
                     <controls:WallpaperBotBut Grid.Row="2" x:Name="Share" Width="75" Margin="10 0 0 0"
                                               PreviewMouseDown="Share_PreviewMouseDown"/>
-                </StackPanel>
+                </StackPanel> -->
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 10 0"
                             VerticalAlignment="Center" Orientation="Horizontal">

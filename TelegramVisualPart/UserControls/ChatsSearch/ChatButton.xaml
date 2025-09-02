@@ -23,9 +23,10 @@
             </Ellipse>
 
             <TextBlock Name="ChatName" Grid.Row="1" TextWrapping="Wrap" FontSize="12"
-                   TextTrimming="CharacterEllipsis"
-                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                   Text="There gonna be chat name" Foreground="White"/>
+                       TextTrimming="CharacterEllipsis"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Text="There gonna be chat name" 
+                       Foreground="{StaticResource UsualTextColor}"/>
         </Grid>
     </Border>
 </UserControl>

@@ -31,7 +31,7 @@
 
             <TextBlock Grid.Row="0" Text="Folder name" Name="FolderName"
                        VerticalAlignment="Center"
-                       Foreground="White" FontSize="16"/>
+                       Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
 
             <TextBlock Grid.Row="1" Text="Amount of items" Name="AmountOfChats"
                        VerticalAlignment="Center" 

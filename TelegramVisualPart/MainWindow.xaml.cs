@@ -207,6 +207,11 @@ namespace TelegramVisualPart
             ClearShadowGridsAndEffects();
         }
 
+        public void UpdateUpperBorder()
+        {
+            UpperBorder.Background = (SolidColorBrush)Application.Current.Resources["UpperBangColor"];
+        }
+
         public void SetThirdFrame(Page page)
         {
             //ThirdFrame.Visibility = Visibility.Visible;

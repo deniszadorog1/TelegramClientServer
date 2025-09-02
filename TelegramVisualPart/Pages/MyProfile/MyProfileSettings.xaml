@@ -47,7 +47,7 @@
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
 
                     <TextBlock Grid.Column="1" Text="Info" VerticalAlignment="Center"
-                               Margin="10 0 0 0" Foreground="White" FontSize="20"
+                               Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="20"
                                FontFamily="Segoe UI"/>
                 </Grid>
 
@@ -74,7 +74,7 @@
                            Text="There should be name" HorizontalAlignment="Center"
                            FontSize="20" FontFamily="Segoe UI"
                            FontWeight="Normal"
-                           Foreground="White" Margin="0 5 0 0"/>
+                           Foreground="{StaticResource UsualTextColor}" Margin="0 5 0 0"/>
 
                 <TextBlock Name ="LastSeenOnline"
                        Text="There should be last online time" 
@@ -97,7 +97,7 @@
                     <TextBox x:Name="BioTextBox" MaxLength="70" TextChanged="BioTextBox_TextChanged"
                              materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
                              materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
-                             Foreground="White" CaretBrush="White"
+                             Foreground="{StaticResource UsualTextColor}" CaretBrush="{StaticResource UsualTextColor}"
                              VerticalContentAlignment="Center" Margin="20 0 0 0"
                              FontSize="18" BorderThickness="0"/>
 

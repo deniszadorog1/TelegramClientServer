@@ -39,7 +39,7 @@
                 
                 <TextBlock Grid.Column="1" Text="Blocked users"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Foreground="White" FontSize="18"/>
+                           Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
                 <iconBut:IconButton x:Name="CloseBut" Grid.Column="2" 
                                     VerticalAlignment="Center"

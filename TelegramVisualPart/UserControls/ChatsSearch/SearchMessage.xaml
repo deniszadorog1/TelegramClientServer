@@ -38,7 +38,7 @@
                     </Ellipse.Fill>
                 </Ellipse>
 
-                <TextBlock Name="ThisChatBlock" Foreground="Gray" VerticalAlignment="Center" 
+                <TextBlock Name="ThisChatBlock" Foreground="{StaticResource UsualTextColor}" VerticalAlignment="Center" 
                            Text="This chat" FontSize="16" Margin="10 0 0 0"/>
             </StackPanel>
 

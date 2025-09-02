@@ -10,22 +10,22 @@ namespace TelegramLib.MainClasses.ChatFitures
 {
     public class Theme
     {
+        public int Id { get; set; }
         public ThemeType Type { get; set; }
         public ColorHelper Color { get; set; }
-        public bool IsChosen { get; set; }
 
-        public Theme(ThemeType type, ColorHelper color, bool isChosen)
+        public Theme(int id, ThemeType type, ColorHelper color)
         {
+            Id = id;
             Type = type;
             Color = color;
-            IsChosen = isChosen;
         }
 
         public Theme()
         {
+            Id = -1;
             Type = ThemeType.Night;
             Color = new ColorHelper();
-            IsChosen = false;
         }
     }
 }

@@ -19,11 +19,11 @@
 
         <materialDesign:PackIcon Kind="AccountCircleOutline" Grid.Row="0" 
                                  Width="25" Height="25" HorizontalAlignment="Center"
-                                 Foreground="White" VerticalAlignment="Center"
+                                 Foreground="{StaticResource UsualTextColor}" VerticalAlignment="Center"
                                  Name ="IconVis"/>
         <TextBlock Grid.Column="1" Name="ButName" VerticalAlignment="Center"
                    HorizontalAlignment="Left" Text="There should be button name"
-                   Foreground="White" FontSize="18"/>
+                   Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
         <TextBlock Grid.Column="2" Name="AdditionalText" VerticalAlignment="Center"
                    HorizontalAlignment="Right" Text="There should be addit text"

@@ -26,7 +26,7 @@
 
             <TextBlock x:Name="PageName" Text="New Folder" 
                                VerticalAlignment="Center" Margin="20 0 0 0"
-                               Foreground="White" FontSize="18"/>
+                               Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
             <ListBox Grid.Row="1" Name="MainListBox" HorizontalAlignment="Stretch"
                      BorderThickness="0">
@@ -38,10 +38,12 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBox  Grid.Column="0" MaxLength="12"
-                             Foreground="White" Margin="20 0 0 0" FontSize="16"
+                             Foreground="{StaticResource UsualTextColor}" 
+                             Margin="20 0 0 0" FontSize="16"
                              materialDesign:HintAssist.Hint="Folder name"
                              materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
-                             CaretBrush="White" Name="FolderNameBox"
+                             CaretBrush="{StaticResource UsualTextColor}" 
+                             Name="FolderNameBox"
                              materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
                              materialDesign:TextFieldAssist.CharacterCounterVisibility="Collapsed"                              
                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" />

@@ -10,7 +10,7 @@
              Height="40">
     <StackPanel>
 
-        <RadioButton Foreground="White" Content="There should be font name"
+        <RadioButton Foreground="{StaticResource UsualTextColor}" Content="There should be font name"
                              Name="FontName" 
                              materialDesign:RadioButtonAssist.RadioButtonSize="26"
                              FontSize="20" IsChecked="False" Padding="20 0 0 0"

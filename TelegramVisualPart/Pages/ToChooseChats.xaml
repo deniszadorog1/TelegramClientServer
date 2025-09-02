@@ -24,7 +24,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"
                        Margin="20 0 0 0"
-                       Foreground="White"
+                       Foreground="{StaticResource UsualTextColor}"
                        FontSize="20"
                        Text="Auto-Delete Messages"/>
             <ScrollViewer Grid.Row="1"

@@ -35,7 +35,7 @@
 
                 <TextBlock Grid.Column="1" Text="Privacy and Security" Margin="5 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
-                           Foreground="White" FontSize="20"
+                           Foreground="{StaticResource UsualTextColor}" FontSize="20"
                            FontFamily="Segoe UI"/>
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"

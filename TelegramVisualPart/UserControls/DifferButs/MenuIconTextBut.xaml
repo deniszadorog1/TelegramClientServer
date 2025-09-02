@@ -18,13 +18,13 @@
         <materialDesign:PackIcon Kind="ProgressDownload" Margin="15 0 0 0"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"
-                                 Foreground="Gray"
+                                 Foreground="{StaticResource UsualTextColor}"
                                  Width="25" Height="25"
                                  Name="IconType"/>
         
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Foreground="Gray" Margin="15 0 0 0" FontSize="16"/>
+                   Foreground="{StaticResource UsualTextColor}" Margin="15 0 0 0" FontSize="16"/>
 
     </Grid>
 </UserControl>

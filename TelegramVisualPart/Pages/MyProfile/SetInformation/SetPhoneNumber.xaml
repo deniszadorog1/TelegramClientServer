@@ -16,7 +16,8 @@
                 <RowDefinition Height="170"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Margin="15" FontSize="21" Foreground="White" TextWrapping="Wrap"
+            <TextBlock Margin="15" FontSize="21" Foreground="{StaticResource UsualTextColor}"
+                       TextWrapping="Wrap"
                    Text="You can only change your phone number using mobile Telegram apps. Please use an official Telegram app on your phone to update your numer."/>
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Right" 

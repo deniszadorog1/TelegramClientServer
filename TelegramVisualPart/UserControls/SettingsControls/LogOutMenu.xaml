@@ -27,9 +27,9 @@
                                          Width="25" Height="25"
                                          VerticalAlignment="Center"
                                          Margin="15 0 15 0"
-                                         Foreground="White"/>
+                                         Foreground="{StaticResource UsualTextColor}"/>
                 <TextBlock Text="Edit profile" VerticalAlignment="Center"
-                           Foreground="White" FontSize="16"/>
+                           Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Grid.Row="1"

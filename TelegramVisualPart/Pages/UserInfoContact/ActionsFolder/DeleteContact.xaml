@@ -30,12 +30,12 @@
                     </Ellipse.Fill>
                 </Ellipse>
 
-                <TextBlock Grid.Column="1" Foreground="White" FontSize="16" 
+                <TextBlock Grid.Column="1" Foreground="{StaticResource UsualTextColor}" FontSize="16" 
                            VerticalAlignment="Center" Text="Delete Contact" />
             </Grid>
 
             <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
-                       Foreground="White" FontSize="16" Margin="15">            
+                       Foreground="{StaticResource UsualTextColor}" FontSize="16" Margin="15">            
                 <Run Text="Are you sure you want to delete"/>
                 <Run x:Name="UsernamePlace"  Text="USERNAME"/>
                 <Run Text="from your contact list?"/>
