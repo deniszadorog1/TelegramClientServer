@@ -40,6 +40,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetChosenContacts()
         {
+            AmountOfAddedChats.Text = _chosenContacts.Count.ToString();
             foreach (UserContactcs contact in _chosenContacts)
             {
                 FolderChatType control = GetFolderChatTypeByContactName(contact.Name);
@@ -51,7 +52,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public FolderChatType GetFolderChatTypeByContactName(string name)
         {
-            ListBoxItem item = ListContacts.Items.OfType<ListBoxItem>()
+            ListBoxItem? item = ListContacts.Items.OfType<ListBoxItem>()
                 .Where(x => x.Content is FolderChatType folder && folder.TypeName.Text == name)
                 .FirstOrDefault();
 
@@ -88,6 +89,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetBasicBlocks()
         {
+            PageNameText.Text = _type == FolderChatActionType.ExcludeChat ? 
+                "Exclude Chats" : "Include Chats";
+
             ContactsChats.IconType.Kind = PackIconKind.Account;
             ContactsChats.TypeName.Text = "Contacts";
             ContactsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
@@ -171,9 +175,15 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (contact is null) return;
 
             if (_chosenContacts.Contains(contact))
+            {
                 _chosenContacts.Remove(contact);
+            }
             else
+            {
                 _chosenContacts.Add(contact);
+            }
+
+            AmountOfAddedChats.Text = _chosenContacts.Count().ToString();
         }
 
         public List<UserContactcs> GetChosenContacts()

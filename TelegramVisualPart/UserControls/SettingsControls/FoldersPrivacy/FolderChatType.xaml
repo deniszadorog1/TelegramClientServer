@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="400"
-             Height="40" Width="1400"
+             d:DesignHeight="45" d:DesignWidth="400"
+             Height="45" Width="1400"
              Background="{StaticResource DarkThemeProfileButEnter}"
              MouseEnter="UserControl_MouseEnter" 
              MouseLeave="UserControl_MouseLeave"
@@ -20,12 +20,12 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Border CornerRadius="100" Width="35" Height="35" Name="ChosenChatIconBorder"
+        <Border CornerRadius="100" Width="40" Height="40" Name="ChosenChatIconBorder"
                 Background="Transparent">
-            <Border CornerRadius="100" Width="33" Height="33" 
+            <Border CornerRadius="100" Width="38" Height="38" 
                 Background="{StaticResource DarkThemeProfileButEnter}">
                 <Grid>
-                    <Ellipse Width="30" Height="30" Name="ChatEllipse"
+                    <Ellipse Width="35" Height="35" Name="ChatEllipse"
                              Fill="{StaticResource TempActiveTextColor}"/>
                     
                         <materialDesign:PackIcon Name="IconType" Visibility="Visible"
@@ -40,7 +40,7 @@
         <TextBlock Name="TypeName" Grid.Column="1"
                    Text="There gona be chat type name"
                    VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}"
-                   FontSize="14" Margin="15 0 0 0"/>
+                   FontSize="16" Margin="15 0 0 0"/>
 
     </Grid>
 </UserControl>

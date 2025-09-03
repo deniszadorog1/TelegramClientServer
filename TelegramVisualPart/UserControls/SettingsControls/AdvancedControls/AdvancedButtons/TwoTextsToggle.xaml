@@ -25,14 +25,14 @@
             <TextBlock Name ="FirstTextBlock" Grid.Column="0" 
                    Text="There gonna be a text" 
                    VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" 
-                   FontSize="14"/>
+                   FontSize="16"/>
 
             <TextBlock Name ="SecondTextBlock" 
                        Grid.Column="0" Grid.Row="1"
                        Text="There gonna be a text" 
                        VerticalAlignment="Center" 
                        Foreground="Gray" 
-                       FontSize="13" />
+                       FontSize="16" />
             
         </Grid>
 

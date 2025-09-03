@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.AdvancedButtons"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="400"
-             Height="30"
+             d:DesignHeight="45" d:DesignWidth="400"
+             Height="45"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">
     <Grid>
@@ -25,14 +25,14 @@
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="ButName"
                    VerticalAlignment="Center"
-                   Foreground="{StaticResource UsualTextColor}" FontSize="14"
+                   Foreground="{StaticResource UsualTextColor}" FontSize="17"
                    HorizontalAlignment="Left"/>
 
         <TextBlock Grid.Column="2" Text="Create new Folder" Name="TempStatusBut"
                    VerticalAlignment="Center" Margin="0 0 20 0" 
                    HorizontalAlignment="Right"
                    Foreground="{StaticResource TempActiveTextColor}" 
-                   FontSize="14"/>
+                   FontSize="17"/>
 
     </Grid>
 </UserControl>

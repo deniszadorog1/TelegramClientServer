@@ -6,19 +6,20 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="800"
+             d:DesignHeight="40"
+             Height="40"
              
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave"
              MouseDown="UserControl_PreviewMouseDown">
     <Grid>
         <TextBlock Name="ButName" Text="There gona be text name" VerticalAlignment="Center"
-                   HorizontalAlignment="Left" Foreground="White" FontSize="15"/>
+                   HorizontalAlignment="Left" Foreground="White" FontSize="16"/>
 
         <RadioButton Name="RadioButton" 
                      HorizontalAlignment="Right" VerticalAlignment="Center" 
                      Background="{StaticResource TempActiveTextColor}" 
                      IsChecked="False" 
-                     materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+                     materialDesign:RadioButtonAssist.RadioButtonSize="27"/>
     </Grid>
 </UserControl>

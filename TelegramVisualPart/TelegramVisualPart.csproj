@@ -20,6 +20,7 @@
 		<None Remove="Visuals\Icon\TelIcon.ico" />
 		<None Remove="Visuals\Images\Stickers\Figure.png" />
 		<None Remove="Visuals\Images\Stickers\Girl.png" />
+		<None Remove="Visuals\Images\SystemImages\kchau.jpg" />
 		<None Remove="Visuals\Images\UserImages\fray.jpg" />
 		<None Remove="Visuals\Images\UserImages\Minato.jpg" />
 		<None Remove="Visuals\Images\UserImages\WhiteCat.png" />
@@ -51,6 +52,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 		<Resource Include="Visuals\Icon\TelIcon.ico" />
+		<Resource Include="Visuals\Images\SystemImages\kchau.jpg">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
 		<Resource Include="Visuals\Images\UserImages\fray.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>

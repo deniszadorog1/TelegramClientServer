@@ -99,7 +99,7 @@
                 <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
 
                 
-                <ScrollViewer Grid.Row="3">
+                <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
                     <StackPanel x:Name="SettingsButs">
                         <menuIconTextBut:MenuIconTextBut x:Name="MyAccount" Style="{StaticResource SettingsBut}" PreviewMouseDown="Buts_PreviewMouseDown"/>
                         <menuIconTextBut:MenuIconTextBut x:Name="NotifsSounds" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>

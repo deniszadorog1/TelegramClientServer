@@ -9,20 +9,16 @@
       xmlns:addFolderBut="clr-namespace:TelegramVisualPart.UserControls"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="575" d:DesignWidth="475"
-      Height="575" Width="475"
-      MaxHeight="575"
+      d:DesignHeight="630" d:DesignWidth="475"
+      Height="630" Width="475"
+      MaxHeight="900"
       Title="FoldersPage">
 
     <Border x:Name="BgBorder" CornerRadius="15" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="175"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="95"/>
+                <RowDefinition Height="75"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -37,9 +33,9 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Width="25" Height="25"
-                                    PreviewMouseDown="BackBut_PreviewMouseDown"/> 
+                                    PreviewMouseDown="BackBut_PreviewMouseDown"/>
 
-                <TextBlock Grid.Column="1" Text="Folders" Margin="25 0 0 0"
+                <TextBlock Grid.Column="1" Text="Folders" Margin="35 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 
@@ -51,99 +47,113 @@
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
-            <Grid Grid.Row="1" Name="FolderDevider" 
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="175"/>
+                        <RowDefinition x:Name="FoldersColumn" Height="150"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition Height="105"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0" Name="FolderDevider" 
                   Background="{StaticResource DarkThemeDeviderField}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="90"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                <materialDesign:PackIcon 
+                        <materialDesign:PackIcon 
                            Kind="FolderOutline" VerticalAlignment="Center"
                             HorizontalAlignment="Center" Foreground="Gray"
                             Width="75" Height="75" Margin="10"/>
 
-                <TextBlock Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap"
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" TextWrapping="Wrap"
                            Text="Create folders for different groups of chats and quickly switch between them."
                            Foreground="Gray" FontSize="16" Width="280"/>
-            </Grid>
+                    </Grid>
 
-            <Grid Grid.Row="2" Name ="MyFoldersGrid">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+                    <Grid Grid.Row="1" Name ="MyFoldersGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="25 0 0 0"
-               FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
+                        <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="20 0 0 0"
+                            FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <ListBox  Grid.Row="1" Name="Folders">
-                    
-                    <ListBoxItem  HorizontalContentAlignment="Stretch" Padding="0">
-                        <folderBut:FolderLittleInfo x:Name="TestThing" Padding="0 5 5 5"/>
-                    </ListBoxItem>
+                        <StackPanel Grid.Row="1" Name="Folders"
+                                    Orientation="Vertical">
+                            <folderBut:FolderLittleInfo x:Name="TestThing" Padding="0 5 5 5"/>
 
-                    <ListBoxItem x:Name="AddFolderBoxItem" HorizontalContentAlignment="Stretch" Padding="0">
-                        <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="0 5 5 5"
+                            <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="0 5 5 5"
                                                 PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown"/>
-                    </ListBoxItem>
-                    
-                </ListBox>
+                        </StackPanel>
 
-            </Grid>
+                    </Grid>
 
-            <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
+                    <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}"/>
 
-            <StackPanel Grid.Row="4" Margin="25 0 0 0">
+                    <StackPanel Grid.Row="3" Margin="20 0 0 0">
 
-                <TextBlock Text="My Folder" VerticalAlignment="Center" 
+                        <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="0 0 0 10"
                FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
-                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs on the Left"
-                                 Name="LeftTabs" 
+                        <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs on the Left"
+                             Name="LeftTabs"
+                             
+                             MouseEnter="TabsRadio_MouseEnter"
+                             MouseLeave="TabsRadio_MouseLeave"
                              
                              Checked="LeftTabs_Checked"
 
-                             FontSize="18" IsChecked="False" Padding="3 0 0 2"
-                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
-                                 Background="{StaticResource TempActiveTextColor}" 
-                                 Margin="0 5 0 0"
-                                 Style="{StaticResource MaterialDesignRadioButton}"/>
+                             FontSize="18" IsChecked="False" Padding="10 0 0 2"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                             Background="{StaticResource TempActiveTextColor}" 
+                             Margin="-2 5 10 0"
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
 
-                <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs at the Top"
-                                 Name="ShitTabs"
-                                    
+                        <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Tabs at the Top"
+                             Name="ShitTabs"
+                             
+                             MouseEnter="TabsRadio_MouseEnter"
+                             MouseLeave="TabsRadio_MouseLeave"
+                             
                              Checked="ShitTabs_Checked"
                              
-                                 FontSize="18" IsChecked="False" Padding="3 0 0 2"
-                                 materialDesign:RadioButtonAssist.RadioButtonSize="24"
-                                 Background="{StaticResource TempActiveTextColor}" 
-                                 Margin="0 5 0 0"
-                                 Style="{StaticResource MaterialDesignRadioButton}"/>
-            </StackPanel>
-            
-            
-            <Grid Grid.Row="5" Name ="AddRecomendedFolder">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+                             FontSize="18" IsChecked="False" Padding="10 0 0 2"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="24"
+                             Background="{StaticResource TempActiveTextColor}" 
+                             Margin="-2 5 0 0"
+                             Style="{StaticResource MaterialDesignRadioButton}"/>
+                    </StackPanel>
 
-                <TextBlock Text="My Folder" VerticalAlignment="Center" Margin="25 0 0 0"
+
+                    <Grid Grid.Row="4" Name ="AddRecomendedFolder">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="ITS Kchau" VerticalAlignment="Center" Margin="20 0 0 0"
                     FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
 
-                <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"
+                        <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"
                       Margin="10">
 
-                    <TextBlock Text="So this is very interesting and useful info, so read this!!!" 
+                            <Image Name="KchauImg" Stretch="Uniform"  Margin="20"
+                                Source="pack://application:,,,/TelegramVisualPart;component/Visuals/Images/SystemImages/kchau.jpg"/>
+
+                            <!-- <TextBlock Text="So this is very interesting and useful info, so read this!!!" 
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                TextWrapping="Wrap" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
+                        -->
+                        </Grid>
 
-                </Grid>
-                
-              <!--  <Grid Grid.Row="1">
+                        <!--  <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="125"/>
@@ -174,9 +184,9 @@
                 </Grid> -->
 
 
-            </Grid>
-
-
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
         </Grid>
     </Border>
 </Page>

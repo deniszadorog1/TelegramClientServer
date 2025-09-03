@@ -14,6 +14,6 @@
                    VerticalAlignment="Center" Margin="20 0 0 0"
                    HorizontalAlignment="Left" 
                    Foreground="{StaticResource UsualTextColor}"
-                   FontSize="14"/>
+                   FontSize="17"/>
     </Grid>
 </UserControl>

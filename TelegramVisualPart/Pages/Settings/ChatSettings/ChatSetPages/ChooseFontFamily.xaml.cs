@@ -33,23 +33,29 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
             SetClassParams();
         }
-
         public void SetClassParams()
         {
-            FontToChoose chosen = FontsPanel.Children.OfType<FontToChoose>().Where(
+            FontToChoose? chosen = FontsPanel.Children.OfType<FontToChoose>().Where(
                 x => x.FontName.Content.ToString() == _settings.FontName).FirstOrDefault();
             if (chosen is null) return;
             chosen.FontName.IsChecked = true;
 
-            FontFamily font = Fonts.SystemFontFamilies.Where(f => f.Source.ToString() ==
-                _settings.FontName).FirstOrDefault();
-
+            FontFamily? font = Fonts.SystemFontFamilies
+                .FirstOrDefault(f => f.Source.ToString() == _settings.FontName);
             if (font is null) return;
+
+            //Set chosen in first place
+            FontsPanel.Children.Remove(chosen);
+            FontsPanel.Children.Insert(0, chosen);
+
             CheckFontBlock.FontFamily = font;
         }
 
+        private List<FontToChoose> _fonts = new List<FontToChoose>();
         public void SetFontRadio()
         {
+            _fonts.Clear();
+
             ClearSearch.IconType.Kind = PackIconKind.Close;
 
             var fontFamilies = Fonts.SystemFontFamilies;
@@ -60,8 +66,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 toChoose.FontName.Content = font.Source;
                 toChoose.FontName.Checked += ToChoose_Checked;
 
+                _fonts.Add(toChoose);
+            }
 
-                FontsPanel.Children.Add(toChoose);
+            foreach(FontToChoose font in _fonts)
+            {
+                FontsPanel.Children.Add(font);
             }
         }
 
@@ -120,6 +130,19 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void ClearSearch_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             SearchBox.Text = string.Empty;
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FontsPanel.Children.Clear();
+
+            foreach(FontToChoose font in _fonts)
+            {
+                if(font.FontName.Content.ToString().Contains(SearchBox.Text))
+                {
+                    FontsPanel.Children.Add(font);
+                }
+            }
         }
     }
 }

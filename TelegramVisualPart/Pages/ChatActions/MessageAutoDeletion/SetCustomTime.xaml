@@ -22,17 +22,17 @@
             <Grid Grid.Row="0">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
                            Text="Auto-Delete Messages" Foreground="White"
-                           FontSize="18" FontWeight="SemiBold" Margin="20 0 0 0"/>
+                           FontSize="18" FontWeight="SemiBold" Margin="30 5 0 0"/>
             </Grid>
 
             <Grid Grid.Row="1">
                 <autoDelControls:SpecialListBox x:Name="TimesToChoose"/>
             </Grid>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 10">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
@@ -40,7 +40,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                             Content="Save" Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
-                            HorizontalAlignment="Left" FontSize="14"
+                            HorizontalAlignment="Left" FontSize="16"
                             Click="SaveBut_Click"  Margin="5 0 5 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>

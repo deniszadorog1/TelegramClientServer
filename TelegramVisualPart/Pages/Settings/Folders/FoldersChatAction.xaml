@@ -24,9 +24,9 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Name="PageNameText" Text="There gona be page name"
-                           VerticalAlignment="Center" Margin="20 0 0 0" 
+                           VerticalAlignment="Center" Margin="25 0 0 0" 
                            Foreground="{StaticResource UsualTextColor}"
-                           FontSize="18"/>
+                           FontSize="21"/>
                 <StackPanel Orientation="Horizontal" Margin="10 5 0 0">
                     <TextBlock Name="AmountOfAddedChats" Text="0" VerticalAlignment="Center" FontSize="16" Foreground="Gray"/>
                     <TextBlock Name="AmountOfChatsDevider" Text="/" VerticalAlignment="Center" FontSize="16" Foreground="Gray"/>
@@ -41,12 +41,12 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="60"/>
                 </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Kind="Magnify" Width="35" Height="35" Foreground="Gray"
+                <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25" Foreground="Gray"
                                          VerticalAlignment="Center" HorizontalAlignment="Center"
                                          Margin="15 0 0 0" Grid.Column="0"/>
 
                 <TextBox MaxLength="12" Grid.Column="1"
-                         Foreground="{StaticResource UsualTextColor}" Margin="20 0 0 0" FontSize="16"
+                         Foreground="{StaticResource UsualTextColor}" Margin="5 0 0 0" FontSize="16"
                          materialDesign:HintAssist.Hint="Search"
                          materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
                          CaretBrush="{StaticResource UsualTextColor}" Name="ChatSearchBox"
@@ -156,10 +156,10 @@
                 </Grid>
             </ScrollViewer> -->
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 10">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 10 0"
+                            HorizontalAlignment="Right" Margin="0 0 10 0" FontSize="16"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
@@ -167,7 +167,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                             Content="Save" Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                            HorizontalAlignment="Left" 
+                            HorizontalAlignment="Left" FontSize="16"
                             Click="SaveBut_Click"  Margin="10 0 20 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>

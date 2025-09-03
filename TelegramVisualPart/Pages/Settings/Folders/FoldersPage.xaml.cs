@@ -70,16 +70,21 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             info.BucketClicked += FolderBucket_Clicked;
 
-            ListBoxItem item = new ListBoxItem()
-            {
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Padding = new Thickness(0),
-                Content = info,
-            };
+            info.HorizontalAlignment = HorizontalAlignment.Stretch;
+            info.Padding = new Thickness(0);
 
-            item.PreviewMouseDown += EnterToFolderSettings_PreviewMouseDown;
+            info.PreviewMouseDown += EnterToFolderSettings_PreviewMouseDown;
 
-            Folders.Items.Insert(Folders.Items.IndexOf(AddFolderBoxItem), item);
+            //Ad page height for adding folder control
+            CorrectHeightByFolderAction(info.Height);
+
+            Folders.Children.Insert(Folders.Children.IndexOf(CreateNewFolderBut), info);
+        }
+
+        public void CorrectHeightByFolderAction(double addHeight)
+        {
+            FoldersColumn.Height = new GridLength(FoldersColumn.Height.Value + addHeight);
+            this.Height = this.Height + addHeight;
         }
 
         private async void FolderBucket_Clicked(object sender, EventArgs e)
@@ -90,8 +95,12 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             await ApiService.RemoveFolder(folder, _system.LoggedUser.Id);
 
-            ListBoxItem item = ItemsControl.ContainerFromElement(Folders, folderInfo) as ListBoxItem;
-            Folders.Items.Remove(item);
+            //ListBoxItem item = ItemsControl.ContainerFromElement(Folders, folderInfo) as ListBoxItem;
+            
+            //Making page smaller (couse removing folder)
+            CorrectHeightByFolderAction(-folderInfo.Height);
+
+            Folders.Children.Remove(folderInfo);
 
             _system.RemoveFolder(folder);
 
@@ -187,6 +196,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (_system.Settings.IsTabsOnTheLeft) return;
             _system.Settings.IsTabsOnTheLeft = true;
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
+        }
+
+        private void TabsRadio_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void TabsRadio_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
     }
 }

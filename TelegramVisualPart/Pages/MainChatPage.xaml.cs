@@ -462,8 +462,8 @@ namespace TelegramVisualPart.Pages
             CallsDrawBut.IconType.Kind = PackIconKind.TelephoneInTalk;
             CallsDrawBut.ButName.Text = "Calls";
 
-            SavedMessagesDrawBut.IconType.Kind = PackIconKind.ContentSaveOutline;
-            SavedMessagesDrawBut.ButName.Text = "Saved Messages";
+            //SavedMessagesDrawBut.IconType.Kind = PackIconKind.ContentSaveOutline;
+            //SavedMessagesDrawBut.ButName.Text = "Saved Messages";
 
             SettingsDrawBut.IconType.Kind = PackIconKind.SettingsOutline;
             SettingsDrawBut.ButName.Text = "Settings";

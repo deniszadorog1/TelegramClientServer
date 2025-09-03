@@ -19,7 +19,7 @@
 
             
             <SolidColorBrush x:Key="TempActiveTextColor" Color="#5DB2F2"/>
-            <SolidColorBrush x:Key="UsualTextColor" Color="Black"/>
+            <SolidColorBrush x:Key="UsualTextColor" Color="White"/>
 
             <SolidColorBrush x:Key="ToBlockContact" Color="#E7544D"/>
 

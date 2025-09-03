@@ -11,7 +11,7 @@
       Title="ClearChatHistory">
 
     <Border Name="BorderBg" Background="{StaticResource DarkThemeOne}" CornerRadius="10">
-        <Grid Margin="15 10 15 0">
+        <Grid Margin="25 20 25 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="55"/>
                 <RowDefinition Height="40"/>
@@ -21,24 +21,23 @@
             </Grid.RowDefinitions>
 
             <TextBlock Margin="0 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap" 
-                       Foreground="White" FontSize="14">
-                
+                       Foreground="White" FontSize="17">
                 <Run Text="Are you sure you want to delete all message history with"/>
                 <Run Name="UsernameBlock" Text="USERNAME"/>
             </TextBlock>
 
             <TextBlock Grid.Row="1" Foreground="White" TextWrapping="Wrap"
-                       VerticalAlignment="Bottom" FontSize="14"
+                       VerticalAlignment="Bottom" FontSize="17"
                        Text="This action cannot be undone."/>
 
             <StackPanel Grid.Row="2" Margin="0 5 0 0" Height="20" Orientation="Horizontal">
                 <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
-                            Name="ShowChatNameBox" 
+                            Name="ShowChatNameBox" Padding="5 0 0 0" 
                             Background="{StaticResource TempActiveTextColor}"
-                            IsChecked="False"                               
+                            IsChecked="False" FontSize="17"                              
                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
 
-                <TextBlock FontSize="14" Foreground="White" >
+                <TextBlock FontSize="17" Foreground="White" >
                     <Run Text="Also delete for "/>
                     <Run Name="UsernameCheckBoxBlock" Text="USERNAME "/>
                 </TextBlock>
@@ -47,14 +46,14 @@
 
 
             <TextBlock Grid.Row="3" Text="Enable Auto-Delete" VerticalAlignment="Center"
-                       Foreground="{StaticResource TempActiveTextColor}" FontSize="14"
+                       Foreground="{StaticResource TempActiveTextColor}" FontSize="17"
                        Name="EnAutoDelete" PreviewMouseDown="EnAutoDelete_PreviewMouseDown"
                        MouseEnter="EnAutoDelete_MouseEnter" MouseLeave="EnAutoDelete_MouseLeave"/>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
                             MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
@@ -63,7 +62,7 @@
                             Content="Delete" Background="Transparent" BorderThickness="0"
                             MouseEnter="DeleteBut_MouseEnter"  
                             MouseLeave="DeleteBut_MouseLeave"
-                            HorizontalAlignment="Left" FontSize="14"
+                            HorizontalAlignment="Left" FontSize="16"
                             Click="DeleteBut_Click"  Margin="5 0 5 0" 
                             Foreground="{StaticResource CloseWindowColor}"/>
             </StackPanel>

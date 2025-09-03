@@ -271,6 +271,20 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
             //UpperBangColor
 
+
+            Application.Current.Resources["DarkThemeProfileButEnter"] =
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(29, 42, 57)) : //Basic Dark 
+                theme.Type == ThemeType.Tinted ? new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 4),
+                    GetColorParam(theme.Color.G, 4),
+                    GetColorParam(theme.Color.B, 4))) :
+                new SolidColorBrush(
+                    Color.FromRgb(GetColorParam(theme.Color.R, 4),
+                    GetColorParam(theme.Color.G, 4),
+                    GetColorParam(theme.Color.B, 4)));
+
+
+            
         }
 
         private byte GetColorParam(byte tempColor, int toAdd)

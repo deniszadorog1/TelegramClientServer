@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion"
       xmlns:autoDelControls="clr-namespace:TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls"
       mc:Ignorable="d" 
-      d:DesignHeight="410" d:DesignWidth="300"
-      Height="410" Width="400"
+      d:DesignHeight="410" d:DesignWidth="350"
+      Height="410" Width="350"
       Title="NewMessagesDeletion"
       Loaded="Page_Loaded">
 
@@ -22,21 +22,21 @@
             CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="200"/>
                 <RowDefinition/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="10">
+            <StackPanel Grid.Row="0" Margin="25 15 25 0">
                 <TextBlock Name="PageNameBlock" Style="{StaticResource UpperTextStyle}" 
-                           Text="Auto-delete messages" FontSize="18" FontWeight="SemiBold"/>
+                           Text="Auto-delete messages" FontSize="20" FontWeight="SemiBold"/>
 
-                <TextBlock Style="{StaticResource UpperTextStyle}" FontSize="16"
+                <TextBlock Style="{StaticResource UpperTextStyle}" FontSize="17"
                            Margin="0 10 0 0"
                            Text="Automatically delete new messages for you and USERNAME after a certain period of time."/>
 
                 <TextBlock Style="{StaticResource UpperTextStyle}" 
-                   FontSize="16" 
+                   FontSize="17" 
                    Margin="0 20 0 0"
                    TextWrapping="Wrap">
                         <Run Text="You can also set a default "/>
@@ -54,10 +54,10 @@
                 <autoDelControls:SpecialListBox x:Name="SpecialList"/>
             </Grid>
 
-            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 10 10">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
@@ -65,7 +65,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
                             Content="Save" Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
-                            HorizontalAlignment="Left" FontSize="14"
+                            HorizontalAlignment="Left" FontSize="16"
                             Click="SaveBut_Click"  Margin="5 0 5 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>

@@ -85,8 +85,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             CreateNewFolderBut.NewFolderText.Text = "Add chat";
             ChatToExcludeBut.NewFolderText.Text = "Add Chats to Exclude";
 
-            CreateInviteLinkBut.NewFolderText.Text = "Create an Invite Link";
-            CreateInviteLinkBut.IconType.Kind = PackIconKind.LinkVariant;
+            //CreateInviteLinkBut.NewFolderText.Text = "Create an Invite Link";
+            //CreateInviteLinkBut.IconType.Kind = PackIconKind.LinkVariant;
 
             ChatToExcludeBut.IconType.Kind = PackIconKind.Minus;
         }

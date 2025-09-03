@@ -8,14 +8,14 @@
       xmlns:chooseFolderIcon="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
       xmlns:folderBut="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="435"
-      Height="600" Width="465"
-      MaxHeight="600"
+      d:DesignHeight="550" d:DesignWidth="435"
+      Height="550" Width="465"
+      MaxHeight="550"
       Title="FolderAction">
 
     <Border x:Name="BgBorder" CornerRadius="15" 
             Background="{StaticResource DarkThemeOne}">
-        <Grid Width="{Binding ActualWidth, ElementName=BgBorder}" 
+        <Grid Width="{Binding ActualWidth, ElementName=BgBorder}"
                       Height="{Binding ActualHeight, ElementName=BgBorder}" 
                       HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
@@ -25,8 +25,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="PageName" Text="New Folder" 
-                               VerticalAlignment="Center" Margin="20 0 0 0"
-                               Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
+                               VerticalAlignment="Center" Margin="30 5 0 0"
+                               Foreground="{StaticResource UsualTextColor}" FontSize="20"/>
 
             <ListBox Grid.Row="1" Name="MainListBox" HorizontalAlignment="Stretch"
                      BorderThickness="0">
@@ -53,7 +53,7 @@
                               Margin="0 0 20 0" Name ="ToChooseFolderIcon" 
                               MouseEnter="ToChooseFolderIcon_MouseEnter"
                               MouseLeave="ToChooseFolderIcon_MouseLeave">
-                            <materialDesign:PackIcon Kind="Folder" Width="40" Height="40"
+                            <materialDesign:PackIcon Kind="Folder" Width="35" Height="35"
                                                  x:Name="ChosenFolderIcon"
                                                  VerticalAlignment="Center" 
                                                  HorizontalAlignment="Center"
@@ -73,47 +73,50 @@
                 <ListBoxItem>
                     <TextBlock Name ="WhoCanUseBlock" Text="Included chats" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
+                               FontWeight="SemiBold"
+                           VerticalAlignment="Center" FontSize="17" Margin="20 5 0 5"/>
                 </ListBoxItem>
 
-                <ListBoxItem Name="ToMakeNewFolderListBoxItem"
+                <ListBoxItem Name="ToMakeNewFolderListBoxItem" Margin="0 5 0 5"
                     Padding="0 0 0 3" PreviewMouseDown="CreateNewFolderBut_PreviewMouseDown">
-                    <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="7"
+                    <folderBut:AddFolderBut x:Name="CreateNewFolderBut" Padding="7" 
                                             Width="{Binding ActualWidth, ElementName=MainListBox}"/>
                 </ListBoxItem>
 
                 <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
-                    <TextBlock Margin="0 5 0 0" HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                    <TextBlock Margin="0 0 0 0" HorizontalAlignment="Stretch" TextWrapping="Wrap"
                                    Text="Choose chats or types of chats that will appear in this folder."
-                                   Foreground="Gray" FontSize="14" Padding="20 0 0 0"/>
+                                   Foreground="Gray" FontSize="16" Padding="20 5 20 5"/>
                 </ListBoxItem>
 
                 <ListBoxItem>
                     <TextBlock Name ="ExcludedChatsBlock" Text="Excluded chats" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>
+                               FontWeight="SemiBold"
+                           VerticalAlignment="Center" FontSize="17" Margin="20 5 0 5"/>
                 </ListBoxItem>
 
                 <ListBoxItem Padding="0 0 0 3" PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown"
                              HorizontalAlignment="Stretch" Name="ToExcludeListBox">
                     <folderBut:AddFolderBut x:Name="ChatToExcludeBut" HorizontalAlignment="Stretch"
+                                            Margin="0 5 0 5"
                                             Padding="7" Width="{Binding ActualWidth, ElementName=MainListBox}"/>
                 </ListBoxItem>
 
                 <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
-                    <TextBlock Padding = "20 10 10 10"   HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                    <TextBlock Padding = "20 5 20 5"   HorizontalAlignment="Stretch" TextWrapping="Wrap"
                                 Text="Choose chats or types of chats that will NOT appear in this folder."
-                                Foreground="Gray" FontSize="14" />
+                                Foreground="Gray" FontSize="16" />
                 </ListBoxItem>
 
-                <ListBoxItem>
+               <!-- <ListBoxItem>
                     <TextBlock Name ="ShareFolderBlock" Text="Share folder" TextWrapping="Wrap"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           VerticalAlignment="Center" FontSize="16" Margin="20 0 0 0"/>                    
+                           VerticalAlignment="Center" FontSize="16" Margin="20 5 0 5"/>                    
                 </ListBoxItem>
 
                 <ListBoxItem Padding="0 0 0 3" PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown">
-                    <folderBut:AddFolderBut x:Name="CreateInviteLinkBut" Padding="7"
+                    <folderBut:AddFolderBut x:Name="CreateInviteLinkBut" Padding="7" Margin="0 5 0 5"
                                             Width="{Binding ActualWidth, ElementName=MainListBox}"/>                    
                 </ListBoxItem>
 
@@ -121,7 +124,7 @@
                     <TextBlock HorizontalAlignment="Stretch" TextWrapping="Wrap" 
                                Text="Share Accessto some of this folders groups and channels with others."
                                Foreground="Gray" FontSize="14" Padding="30 10 20 10"/>                    
-                </ListBoxItem>
+                </ListBoxItem> -->
              
             </ListBox>
 
@@ -133,10 +136,11 @@
                                                 MouseLeave="FolderIcon_MouseLeave"/>
             </Grid>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right"
+                        Margin="0 0 10 10">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 10 0"
+                            HorizontalAlignment="Right" Margin="0 0 10 0" FontSize="16"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
@@ -144,7 +148,7 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CreateBut"
                             Content="Create" Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                            HorizontalAlignment="Left" 
+                            HorizontalAlignment="Left" FontSize="16"
                             Click="CreateBut_Click"  Margin="10 0 20 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>

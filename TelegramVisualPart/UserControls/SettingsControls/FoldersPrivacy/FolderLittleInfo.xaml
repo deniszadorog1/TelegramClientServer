@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"      
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="400"
+             d:DesignHeight="50" d:DesignWidth="400"
+             Height="50"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">
     <Grid>
