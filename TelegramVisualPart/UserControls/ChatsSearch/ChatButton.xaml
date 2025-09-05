@@ -5,24 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatsSearch"
              mc:Ignorable="d" 
-             d:DesignHeight="70" d:DesignWidth="50"
-             Height="70" Width="50">
+             d:DesignHeight="70" d:DesignWidth="55"
+             Height="70" Width="55">
     <Border CornerRadius="10" Name="UserChat"
             MouseEnter="UserChat_MouseEnter"
             MouseLeave="UserChat_MouseLeave">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Ellipse Grid.Row="0" Name ="ChatImage" 
-                 Width="40" Height="40" HorizontalAlignment="Center">
+                 Width="45" Height="45" HorizontalAlignment="Center">
                 <Ellipse.Fill>
                     <ImageBrush x:Name="UserImgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <TextBlock Name="ChatName" Grid.Row="1" TextWrapping="Wrap" FontSize="12"
+            <TextBlock Name="ChatName" Grid.Row="1" TextWrapping="Wrap" FontSize="14"
                        TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Center" HorizontalAlignment="Center"
                        Text="There gonna be chat name" 

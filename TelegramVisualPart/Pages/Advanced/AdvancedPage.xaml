@@ -9,17 +9,37 @@
       xmlns:differButs="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
-      d:DesignHeight="875" d:DesignWidth="450"
-      Height="875" Width="450"
-      MaxHeight="875"
+      d:DesignHeight="1080" d:DesignWidth="450"
+      Height="1080" Width="450"
+      MaxHeight="1080"
       Title="AdvancedPage">
+
+    <Page.Resources>
+        <Style x:Key="CheckBoxStyle" TargetType="CheckBox"
+           BasedOn="{StaticResource MaterialDesignCheckBox}">
+            <Setter Property="Padding" Value="10 2 0 0"/>
+            <Setter Property="Margin" Value="-3 7 0 7"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="{StaticResource UsualTextColor}"/>
+            <Setter Property="Background" Value="{StaticResource TempActiveTextColor}"/>
+            <Setter Property="materialDesign:CheckBoxAssist.CheckBoxSize" Value="30"/>
+            <Setter Property="IsChecked"  Value="False"/>
+            
+            <EventSetter Event="Checked" Handler="CheckBox_Checked"/>
+            <EventSetter Event="Unchecked" Handler="CheckBox_Unchecked"/>
+            <EventSetter Event="MouseEnter" Handler="CheckBox_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="CheckBox_MouseLeave"/>
+
+
+        </Style>
+    </Page.Resources>
+
 
     <Border Name="BgBorder" CornerRadius="15"
             Background="{StaticResource DarkThemeOne}">
-        <Grid>
+        <Grid Margin="-1,0,1,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-
+                <RowDefinition Height="60"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -27,7 +47,7 @@
                 <Grid Grid.Column="0">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="60"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     
@@ -38,7 +58,7 @@
                     
                     <TextBlock Grid.Column="1" Text="Advanced" VerticalAlignment="Center" 
                                Foreground="{StaticResource UsualTextColor}" 
-                               Margin="10 0 0 0" FontSize="22"/>
+                               Margin="20 0 0 0" FontSize="22"/>
                 </Grid>
 
                 <Grid Grid.Column="1">
@@ -57,9 +77,9 @@
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="145"/>
+                        <RowDefinition Height="205"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="170"/>
+                        <RowDefinition Height="290"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
@@ -72,8 +92,8 @@
 
 
                         <TextBlock Text="Data and storage" VerticalAlignment="Center" Margin="20 0 0 0"
-                           Name="DataStorageText"
-                           FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           Name="DataStorageText" FontWeight="SemiBold"
+                           FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Name="DataStorageStack" Grid.Row="1">
                             <buts:DoubleTextIconBut x:Name="DownloadPathBut" Margin="0 5 0 0"/>
@@ -92,8 +112,8 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="Automatic media download" VerticalAlignment="Center" Margin="20 0 0 0"
-                           Name="MediaDownloadText"
-                           FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           Name="MediaDownloadText" FontWeight="SemiBold"
+                           FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1" Orientation="Vertical">
                             <buts:IconTextButAdvanced x:Name="PrivateChatsBut" Margin="0 5 0 0"
@@ -106,40 +126,25 @@
 
                     <Grid Grid.Row="4" Name="TitleBarGrid" Margin="0 5 0 0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Window title bar" VerticalAlignment="Center" Margin="20 0 0 0"
-                           Name="TitleBarText"
-                           FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                        <TextBlock Text="Window title bar" VerticalAlignment="Center" 
+                                   Margin="20 0 0 0"
+                           Name="TitleBarText" FontWeight="SemiBold"
+                           FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1" Margin="20 0 0 0" Orientation="Vertical">
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
-                                        Foreground="{StaticResource UsualTextColor}"  
-                                        Content="Show chat name" Name="ShowChatNameBox" Margin="0 5 0 0"
-                                        Background="{StaticResource TempActiveTextColor}"
-                                        IsChecked="False" FontSize="17"    
-                                        materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                        Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                        Content="Show chat name" Name="ShowChatNameBox"
+                                        Margin="-3 10 7 7"/>
 
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
-                                        Foreground="{StaticResource UsualTextColor}"  
-                                        Content="Total unread count" Name="UnreadCountBox" Margin="0 5 0 0"
-                                        Background="{StaticResource TempActiveTextColor}"
-                                        IsChecked="False" FontSize="17"                                
-                                        materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                        Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                        Content="Total unread count" Name="UnreadCountBox"/>
 
-                            <CheckBox   Style="{StaticResource MaterialDesignCheckBox}" 
-                                        Foreground="{StaticResource UsualTextColor}"  
-                                        Content="Use system window frame" Name="WindowFrame" Margin="0 5 0 0"
-                                        Background="{StaticResource TempActiveTextColor}"
-                                        IsChecked="False" FontSize="17"                                
-                                        materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                        Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-
-
+                            <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                        Content="Use system window frame" Name="WindowFrame"/>
                         </StackPanel>
                     </Grid>
 
@@ -148,55 +153,33 @@
                     <Grid Grid.Row="6">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="System integration" VerticalAlignment="Center" Margin="20 0 0 0"
-                                       Name="SysIntegration"
-                                       FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                            <TextBlock Text="System integration" VerticalAlignment="Center" 
+                                       Margin="20 0 0 0"
+                                       Name="SysIntegration" FontWeight="SemiBold"
+                                       FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="1" Margin="20 0 0 0">
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
-                                           Foreground="{StaticResource UsualTextColor}"  
-                                           Content="Show tray icon" Name="TrayIconBox" Margin="0 5 0 0"
-                                           Background="{StaticResource TempActiveTextColor}"
-                                           IsChecked="False" FontSize="17"                           
-                                           materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                           Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0" 
+                                           Content="Show tray icon" Name="TrayIconBox"
+                                           Margin="-3 10 7 7"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
-                                           Foreground="{StaticResource UsualTextColor}"  
-                                           Content="Show taskbrar icon" Name="TaskBarBox" Margin="0 5 0 0"
-                                           Background="{StaticResource TempActiveTextColor}"
-                                           IsChecked="False" FontSize="17"                                
-                                           materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                           Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                           Content="Show taskbrar icon" Name="TaskBarBox"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
-                                           Foreground="{StaticResource UsualTextColor}"  
-                                           Content="Close to taskbrar" Name="CloseToTaskBarBox" Margin="0 5 0 0"
-                                           Background="{StaticResource TempActiveTextColor}"
-                                           IsChecked="False" FontSize="17"                                
-                                           materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                           Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                           Content="Close to taskbrar" Name="CloseToTaskBarBox"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
-                                           Foreground="{StaticResource UsualTextColor}"  
-                                           Content="Launch Telegram when system starts" Name="AtStartLaunchTelegramBox" Margin="0 5 0 0"
-                                           Background="{StaticResource TempActiveTextColor}"
-                                           IsChecked="False" FontSize="17"                                
-                                           materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                           Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                           Content="Launch Telegram when system starts" 
+                                           Name="AtStartLaunchTelegramBox"/>
 
-                                <CheckBox  Style="{StaticResource MaterialDesignCheckBox}" 
-                                           Foreground="{StaticResource UsualTextColor}"  
-                                           Content="Palce Telegram in Send To menu" Name="PalceInSendTo" Margin="0 5 0 0"
-                                           Background="{StaticResource DarkThemeProfileButForeGround}"
-                                           IsChecked="False" FontSize="17"                                
-                                           materialDesign:CheckBoxAssist.CheckBoxSize="26"     
-                                           Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-
+                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
+                                           Content="Palce Telegram in Send To menu" 
+                                           Name="PalceInSendTo"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -207,11 +190,12 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40"/>
                             <RowDefinition/>
+                            <RowDefinition Height="15"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Versions and updates" VerticalAlignment="Center" Margin="20 0 0 0"
-                           Name="VersionsText"
-                           FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                           Name="VersionsText" FontWeight="SemiBold"
+                           FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
                             <buts:TwoTextsToggle x:Name="VersionBut"

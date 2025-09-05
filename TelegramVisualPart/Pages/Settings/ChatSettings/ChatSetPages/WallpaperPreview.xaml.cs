@@ -151,6 +151,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ChangeLightState.IconType.Kind = ChangeLightState.IconType.Kind == _moonIconKind ?
                 PackIconKind.WeatherSunny : _moonIconKind;
 
+            
+
             if (ChangeLightState.IconType.Kind == _moonIconKind)
             {
                 SetLightState();
@@ -170,6 +172,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void SetLightState()
         {
+            ChangeLightState.IconType.Foreground = Brushes.DarkGray;
+
             BorderBg.Background = _whiteStateBgColor;
             FirstMessageBorder.Background = _whiteStateBgColor;
             SecondMessageBorder.Background = _whiteStateBgColor;
@@ -187,6 +191,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public void SetDarkState()
         {
+            ChangeLightState.IconType.Foreground = Brushes.Gray;
+
             SolidColorBrush darkBg = (SolidColorBrush)System.Windows.Application.Current.Resources["DarkThemeOne"];
             SolidColorBrush activeColor = new SolidColorBrush(Colors.White);
 

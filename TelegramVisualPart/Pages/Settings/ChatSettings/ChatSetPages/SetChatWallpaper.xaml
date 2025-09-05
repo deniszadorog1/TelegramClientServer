@@ -7,8 +7,8 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:controls="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="440"
-      Height="450" Width="440"
+      d:DesignHeight="450" d:DesignWidth="450"
+      Height="450" Width="450"
       MaxHeight="450"
       Title="SetChatWallpaper">
 
@@ -23,8 +23,7 @@
             <TextBlock Name="PageNameBlock" Text="Choose a wallpaper" VerticalAlignment="Center" 
                        Margin="25 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 
-            <ScrollViewer Grid.Row="1" Name="WallPapers" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <Grid>
+                <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
                         <RowDefinition/>
@@ -49,21 +48,18 @@
                                    VerticalAlignment="Center" Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
                     </Grid>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                        <WrapPanel  Name="WallpapersPanel" Margin="5 0 0 0">
-                            <controls:Wallpaper x:Name="OneTest"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <WrapPanel  Name="WallpapersPanel" Margin="5 0 0 0">
+                        <!-- <controls:Wallpaper x:Name="OneTest"/>
                             <controls:Wallpaper x:Name="TwoTest"/>
-                            <controls:Wallpaper x:Name="ThreeTest"/>
-                        </WrapPanel>
-                    </ScrollViewer>
-
-                </Grid>
-
-            </ScrollViewer>
+                            <controls:Wallpaper x:Name="ThreeTest"/> -->
+                    </WrapPanel>
+                </ScrollViewer>
+            </Grid>
 
             <controls:WallpaperBotBut Grid.Row="2" HorizontalAlignment="Right" 
-                                      Width="75" 
-                                      VerticalAlignment="Center" Margin="0 0 20 0" 
+                                      Width="75" Height="35" 
+                                      VerticalAlignment="Center" Margin="0 0 25 0" 
                                       PreviewMouseDown="WallpaperBotBut_PreviewMouseDown"/>
         </Grid>
     </Border>

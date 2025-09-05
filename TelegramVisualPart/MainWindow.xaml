@@ -18,13 +18,20 @@
         
         WindowState="Normal"
         WindowStyle="None"
-        ResizeMode="CanResizeWithGrip"
         
+        ResizeMode="CanResize"
+       
         AllowsTransparency="True"
         Background="White"
         
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                          ResizeBorderThickness="5"
+                          GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -32,7 +39,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Name="UpperBorder"
+        <Grid Grid.Row="0" Name="UpperBorder" 
                   Background="{StaticResource UpperBangColor}" 
                   MouseLeftButtonDown="DragWindow"
                   MouseLeftButtonUp="Grid_MouseLeftButtonUp"

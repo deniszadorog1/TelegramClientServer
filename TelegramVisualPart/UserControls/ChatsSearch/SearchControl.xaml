@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <Style x:Key="Tabs" TargetType="TextBlock">
             <Setter Property="Foreground" Value="Gray"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Margin" Value="10 0 0 0"/>
@@ -41,7 +41,7 @@
 
             <Grid Grid.Row="1" Name="RectGrid">
                 <Rectangle Name="ActiveRect" 
-                           Fill="{StaticResource TempActiveTextColor}" Width="35"
+                           Fill="{StaticResource TempActiveTextColor}" Width="40"
                            Height="4"
                            HorizontalAlignment="Left" Margin="10 0 0 0"
                            VerticalAlignment="Top">
@@ -59,10 +59,11 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}">
-                <TextBlock Name="FrqContactsBlockName" Text=" Frquent contacts" 
+                <TextBlock Name="FrqContactsBlockName" Text=" Frquent contacts" FontSize="16"
                            VerticalAlignment="Center" Margin="15 0 0 0" Foreground="Gray"/>
                 <Grid PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent">
                     <TextBlock Text="show all" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               FontSize="16"
                         Background="Transparent" Foreground="Gray" Name="ShowFreqChats" Margin="0 0 10 0"/>
                 </Grid>
             </Grid>

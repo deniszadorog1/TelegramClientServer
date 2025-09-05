@@ -145,5 +145,15 @@ namespace TelegramVisualPart.Pages.Advanced
         {
             ApiService.UpdateAdvanced(_system.Settings.AdvSettings);
         }
+
+        private void CheckBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void CheckBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

@@ -28,7 +28,7 @@
             <Grid Grid.Row="0">
                 <TextBlock Text="Contacts" Name ="ContactsBlock"
                            HorizontalAlignment="Left" VerticalAlignment="Center"
-                       FontSize="22" Foreground="{StaticResource UsualTextColor}" Margin="20 0 0 0"/>
+                       FontSize="22" Foreground="{StaticResource UsualTextColor}" Margin="30 0 0 0"/>
 
                 <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"
                                     HorizontalAlignment="Right"  VerticalAlignment="Center"
@@ -74,13 +74,13 @@
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="AddContactBut"
                     Content="Add Contact" Background="Transparent" BorderThickness="0"
                     MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Left" FontSize="16"
                     Click="AddContactBut_Click"  Margin="20 0 0 0" 
                     Foreground="{StaticResource TempActiveTextColor}"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CloseBut"
                 Content="Close" Background="Transparent" BorderThickness="0"
-                HorizontalAlignment="Right" Margin="0 0 20 0"
+                HorizontalAlignment="Right" Margin="0 0 20 0" FontSize="16"
                 MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                 Foreground="{StaticResource TempActiveTextColor}"
                 Click="CloseBut_Click"/>

@@ -6,13 +6,16 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.SetWallpapersControls"
              mc:Ignorable="d" 
              d:DesignHeight="25" d:DesignWidth="45"
-             Height="25" Width="45">
+             Height="25" Width="45"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
     <Grid>
-        <Border Name="BorderBg" CornerRadius="10" Background="Transparent"
+        <Border Name="BorderBg" CornerRadius="5" Background="Transparent"
             MouseEnter="BorderBg_MouseEnter"
             MouseLeave="BorderBg_MouseLeave"
             PreviewMouseDown="BorderBg_PreviewMouseDown">
-            <TextBlock Text="Close" Background="Transparent" Name="TextBlock" 
+            <TextBlock Text="Close" Background="Transparent" Name="TextBlock"
+                       FontSize="16"
                    VerticalAlignment="Center" HorizontalAlignment="Center" 
                        Foreground="{StaticResource TempActiveTextColor}"/>
         </Border>

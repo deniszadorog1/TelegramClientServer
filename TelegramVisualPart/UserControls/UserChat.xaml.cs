@@ -226,7 +226,7 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(sender.Id);
                 if (chat is null) return;
 
-                if (_chat is null || chat.Id != _chat.Id) AddTextMessageinUNChosenChat(chat, message);
+                if (_chat is null || chat.Id != _chat.Id) AddTextMessageInUnChosenChat(chat, message);
                 else AddTextMessageInChosenChat(message, sender);
 
                 //Is temp chat is chosen
@@ -236,10 +236,19 @@ namespace TelegramVisualPart.UserControls
         private async void AddTextMessageInChosenChat(TelegramLib.MainClasses.Messages.TextMessage message,
             TelegramLib.MainClasses.User sender)
         {
-            ChatBox.Items.Add(new ChatControls.TextMessage(
+/*            ChatBox.Items.Add(new ChatControls.TextMessage(
+                GetConvertedStringMessage(message.Text),
+                *//*sender.GetFirstImageNameInString()*//* await SignalRHelperService.GetUserPhotoToSet(sender),
+                _system.Settings.GetChatSettings().FontName)); //Change on sender image 
+*/
+
+            ChatControls.TextMessage text = new ChatControls.TextMessage(
                 GetConvertedStringMessage(message.Text),
                 /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
-                _system.Settings.GetChatSettings().FontName)); //Change on sender image 
+                _system.Settings.GetChatSettings().FontName);
+
+            AddTextControl(text);
+
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -251,8 +260,16 @@ namespace TelegramVisualPart.UserControls
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
 
+        public void AddTextControl(ChatControls.TextMessage text)
+        {
+            ListBoxItem item = new ListBoxItem()
+            {
+                Content = text
+            };
+            ChatBox.Items.Add(item);
+        }
 
-        private async void AddTextMessageinUNChosenChat(TelegramLib.MainClasses.UserChat chat,
+        private async void AddTextMessageInUnChosenChat(TelegramLib.MainClasses.UserChat chat,
             TelegramLib.MainClasses.Messages.TextMessage message)
         {
             //Add in system 
@@ -425,7 +442,9 @@ namespace TelegramVisualPart.UserControls
                 senderImageName, _system.Settings.GetChatSettings().FontName);
             newMes.SetTime(message.SentTime);
 
-            ChatBox.Items.Add(newMes);
+            //ChatBox.Items.Add(newMes);
+            AddTextControl(newMes);
+
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
         }
 
@@ -453,8 +472,12 @@ namespace TelegramVisualPart.UserControls
         private async void AddTextMessage(string senderImageName)
         {
             //Visaul add
-            ChatBox.Items.Add(new ChatControls.TextMessage(
+/*            ChatBox.Items.Add(new ChatControls.TextMessage(
                 GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
+*/
+            ChatControls.TextMessage text = new ChatControls.TextMessage(
+                GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName);
+            AddTextControl(text);
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
@@ -465,7 +488,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, contact.Id, _system.LoggedUser.Id,
                             DateTime.Now, CommentTextBox.Text);
-            
+
 
             //Adding in DB
             await ApiService.AddMessage(toAdd, _chat);
@@ -592,8 +615,8 @@ namespace TelegramVisualPart.UserControls
                                 media.MediaName == Path.GetFileName(fileName))
                             .ToList()
                             .Any()) return;*/
-            
-            Message newMediaMes = new MediaAction(-1, _chat.Chatter.Id, 
+
+            Message newMediaMes = new MediaAction(-1, _chat.Chatter.Id,
                              _system.LoggedUser.Id, DateTime.Now, fileName, isSticker);
 
             if (isAdd)
@@ -1107,6 +1130,42 @@ namespace TelegramVisualPart.UserControls
             else if (message is TelegramLib.MainClasses.Messages.MediaAction media)
             {
                 await SignalRService.SendMediaMessage(_system.LoggedUser, media);
+            }
+        }
+
+        public void SetMessagesPosition(bool isGluedToLeft)
+        {
+            //Set that in chat can be ONLY MESSAGES
+            for (int i = 0; i < ChatBox.Items.Count; i++)
+            {
+                if (ChatBox.Items[i] is not ListBoxItem item) continue; 
+
+                if (_chatMessages[i].SenderUserId == _system.LoggedUser.Id &&
+                    item.Content is UserControl ctrl)
+                {
+                    if (isGluedToLeft) 
+                    {
+                        item.HorizontalAlignment = HorizontalAlignment.Left;
+                        item.Margin = new Thickness(0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        item.HorizontalAlignment = HorizontalAlignment.Right;
+                        item.Margin = new Thickness(0, 0, 0, 0);
+                    }
+
+                    if(item.Content is ChatControls.TextMessage text)
+                    {
+                        if(!isGluedToLeft) text.UserEllipseImage.Visibility = Visibility.Hidden;
+                        else text.UserEllipseImage.Visibility = Visibility.Visible;
+                    }
+                    else if (item.Content is ChatControls.MediaMessage media)
+                    {
+
+                    }
+
+                }
+                
             }
         }
 

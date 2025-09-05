@@ -5,18 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ContactsControls"
              mc:Ignorable="d" 
-             d:DesignHeight="45" d:DesignWidth="300"
-             Height="45"
+             d:DesignHeight="50" d:DesignWidth="300"
+             Height="50"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave"
              >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="55"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Ellipse Grid.Column="0" Name="UserImage" Width="40" Height="40">
+        <Ellipse Grid.Column="0" Name="UserImage" Width="45" Height="45">
             <Ellipse.Fill>
                 <ImageBrush x:Name="ImgBrushSource" 
                             ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
@@ -29,13 +29,13 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Name ="UserLogin"
+            <TextBlock Grid.Row="0" Name ="UserLogin" FontSize="16"
                        Text="Here is gonna be user login"
                        VerticalAlignment="Center" Margin="10 0 0 0"
                        Foreground="{StaticResource UsualTextColor}" />
 
             <TextBlock Grid.Row="1" Name ="LastSennOnline"
-                       Text="Last seen online"
+                       Text="Last seen online" FontSize="15"
                        VerticalAlignment="Top" Margin="10 0 0 0"
                        Foreground="Gray" />
         </Grid>

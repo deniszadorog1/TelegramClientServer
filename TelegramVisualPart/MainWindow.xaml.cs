@@ -389,10 +389,60 @@ namespace TelegramVisualPart
             {
                 WindowSizerIcon.Kind = PackIconKind.WindowRestore;
             }
-
-
             //Set page size for second and third frame pages
             if (SecondaryFrame.Content is Page page) SetFramePageHeight(page);
+
+
+            //Set Window Parts Visisbility
+            //if (MainFrame.Content is not MainChatPage chatPage) return;
+
+            SetMainChatPagePartsSize();
+        }
+
+        public void SetMainChatPagePartsSize()
+        {
+            //From The most
+
+            //Temp chat messages glues to one part(left)
+            if (MainFrame.Content is MainChatPage firstLevel && 
+                this.Width < 1800 && this.Width > 1700)
+            {
+                firstLevel.SetWindowSizerAction(Enums.SizerActionType.FirstLevel);
+            }
+            //Temp chat messages in glued to differ borders
+            else if (MainFrame.Content is MainChatPage secondLevel && 
+                this.Width < 1700 && this.Width > 1500 )
+            {
+                secondLevel.SetWindowSizerAction(Enums.SizerActionType.SecondLevel);
+            }
+
+
+            //AllChats Closing
+            else if(MainFrame.Content is MainChatPage third && 
+                this.Width < 1500 && this.Width > 1300)
+            {
+
+            }
+
+            //Temp chat is closing
+            else if(MainFrame.Content is MainChatPage closeChat && 
+                this.Width < 1300 && this.Width > 1000)
+            {
+                closeChat.SetWindowSizerAction(Enums.SizerActionType.FourthLevel);
+            }
+            //Tabs is going to top
+            else if(MainFrame.Content is MainChatPage lastLevel)
+            {
+                lastLevel.SetWindowSizerAction(Enums.SizerActionType.LastLevel);
+            }
+
+
+            //Optional (the smallest one)
+            //page which is not on secondary frame moves to main frame
+            //When window getting bigger it moves to Secondary frame
+
+
+
         }
 
         private void SetFramePageHeight(Page page)
@@ -589,7 +639,7 @@ namespace TelegramVisualPart
 
         public void UpdateTabsStandings()
         {
-            if (MainFrame.Content is MainChatPage chatPage) 
+            if (MainFrame.Content is MainChatPage chatPage)
                 chatPage.UpdateTabsPlacement();
         }
     }

@@ -270,7 +270,16 @@ namespace TelegramVisualPart.Services
             return res;
         }
 
+        public static async Task<bool> AddWallpaper(string imgName)
+        {
+            var data = new { ImgName = imgName };
 
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Settings/AddWallpaper", content);
+
+            return response.IsSuccessStatusCode;
+        }
 
         //SETTINGS
         //Advanced setting

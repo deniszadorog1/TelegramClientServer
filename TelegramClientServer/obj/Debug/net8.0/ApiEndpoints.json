@@ -1,6 +1,28 @@
 [
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "AddWallpaper",
+    "RelativePath": "api/Settings/AddWallpaper",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newPaper",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BAddWallpaperDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "GetLastSeenVisState",
     "RelativePath": "api/Settings/GetLastSeenVisState",
     "HttpMethod": "GET",

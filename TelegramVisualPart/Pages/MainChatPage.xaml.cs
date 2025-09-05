@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -96,9 +97,9 @@ namespace TelegramVisualPart.Pages
         {
             const int iconSize = 27;
 
-/*            but.IconType.Foreground = _textColor;
-            but.ButName.Foreground = _textColor;
-*/
+            /*            but.IconType.Foreground = _textColor;
+                        but.ButName.Foreground = _textColor;
+            */
             but.IconType.Width = iconSize;
             but.IconType.Height = iconSize;
 
@@ -933,5 +934,57 @@ namespace TelegramVisualPart.Pages
             Cursor = null;
             HamburgIcon.Foreground = Brushes.Gray;
         }
+
+        public void SetWindowSizerAction(SizerActionType type)
+        {
+            switch (type)
+            {
+                case SizerActionType.FirstLevel:
+                    {
+                        //The most window level
+                        //clear every modified param
+                        UserChat.SetMessagesPosition(true);
+
+                        return;
+                    }
+                case SizerActionType.SecondLevel:
+                    {
+                        //in active user chat messages should be
+                        //glued on difference siders
+                        if (UserChat.Visibility == Visibility.Hidden) return;
+
+                        UserChat.SetMessagesPosition(false);
+                        return;
+                    }
+                case SizerActionType.ThirdLevel:
+                    {
+                        return;
+                    }
+                case SizerActionType.FourthLevel:
+                    {
+                        SetClosingChatColumn();
+                        return;
+                    }
+                case SizerActionType.LastLevel:
+                    {
+                        //Top tabs + secondary frame
+                        ChageLeftButsVisState(false);
+                        return;
+                    }
+            }
+        }
+
+        public void SetClosingChatColumn()
+        {
+            UserChat.Visibility = Visibility.Hidden;
+            ChatColumn.MinWidth = 0;
+            ChatColumn.Width = new GridLength(0);
+
+            ChatsColumn.Width = new GridLength(
+                this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
+
+            ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
+        }
+
     }
 }

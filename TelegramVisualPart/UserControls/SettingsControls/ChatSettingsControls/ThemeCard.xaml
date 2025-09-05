@@ -16,7 +16,7 @@
         <Border Name="CardBg" CornerRadius="10" Background="LightGreen">
             <RadioButton Foreground="White" Name="RadioBut"
                          IsChecked="False" Margin="10"
-                         Background="{StaticResource DarkThemeProfileButForeGround}"                             
+                         Background="Black"                       
                          Style="{StaticResource MaterialDesignRadioButton}"
                          materialDesign:RadioButtonAssist.RadioButtonSize="24"
                          VerticalAlignment="Bottom" HorizontalAlignment="Center"/>

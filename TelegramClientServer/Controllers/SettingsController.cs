@@ -83,5 +83,15 @@ namespace TelegramClientServer.Controllers
             return DbService.GetSettingsByUserId(userId);
         }
 
+        [HttpPost("AddWallpaper")]
+        public void AddWallpaper([FromBody] AddWallpaperDTO newPaper)
+        {
+            DbService.AddWallpaper(newPaper.ImgName);
+        }
+        public class AddWallpaperDTO()
+        {
+            public string ImgName { get; set; }
+        }
+
     }
 }

@@ -63,9 +63,9 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="LeftButtonsColumn" Width="100"/>
-                <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" />
-                <ColumnDefinition Width="3"/>
-                <ColumnDefinition MinWidth="250"/>
+                <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" Width="*" />
+                <ColumnDefinition Width="3" x:Name="GridSplitterColumn"/>
+                <ColumnDefinition x:Name="ChatColumn" MinWidth="250" Width="*"/>
             </Grid.ColumnDefinitions>
 
             <leftButs:LeftButtons x:Name="LeftButtons" 
@@ -108,7 +108,8 @@
                         <Grid>
 
                             <TextBox Name="SarchBox" 
-                                 Foreground="{StaticResource UsualTextColor}" Margin="10 0 35 0" FontSize="14"
+                                 Foreground="{StaticResource UsualTextColor}" 
+                                 Margin="10 0 35 0" FontSize="16"
                                  materialDesign:HintAssist.Hint="Serch"
                                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                                  materialDesign:HintAssist.Foreground="Gray"
@@ -155,7 +156,6 @@
                             Orientation="Vertical">
                     <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
-
                     <WrapPanel Name ="AllMediasElements"
                                Background="Transparent" 
                                VerticalAlignment="Top"

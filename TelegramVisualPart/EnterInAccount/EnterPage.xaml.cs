@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
 
@@ -56,8 +57,6 @@ namespace TelegramVisualPart.EnterInAccount
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
-            _system.Settings.IsTabsOnTheLeft = true;
-            _system.Settings.ChatsSettings.SetBasicThemes();
 
             if (_system is null)
             {
@@ -66,6 +65,7 @@ namespace TelegramVisualPart.EnterInAccount
                 return;
             }
 
+
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
             if (isOnline)
             {
@@ -73,6 +73,11 @@ namespace TelegramVisualPart.EnterInAccount
                 ClearBoxes();
                 return;
             }
+
+            _system.Settings.ChatsSettings.SetBasicThemes();
+            _system.Settings.IsTabsOnTheLeft = true;
+            _system.Settings.ChatsSettings.PossibleWallpapers = 
+                FilesAction.GetAllWallpaperNames();
 
             await SetOnlineStatus();
 

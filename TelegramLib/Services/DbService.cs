@@ -2849,7 +2849,22 @@ namespace TelegramLib.Services
 
                 return res.IsHideReadTime;
             }
+        }
 
+        public static void AddWallpaper(string imgName)
+        {
+            using(var model = new TelegramModel())
+            {
+                if (model.ChatBG.Where(x => x.Name == imgName).Any()) return;
+
+                ChatBG toAdd = new ChatBG();
+                toAdd.Name = imgName;
+                toAdd.IsBlurred = false;
+
+                model.ChatBG.Add(toAdd);
+
+                model.SaveChanges();
+            }
         }
 
     }

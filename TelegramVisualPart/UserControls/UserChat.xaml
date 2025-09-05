@@ -15,7 +15,7 @@
              >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" Name="UpperRow"/>
+            <RowDefinition Height="60" Name="UpperRow"/>
             <RowDefinition/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
@@ -38,12 +38,13 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" x:Name="ChatFriendLogin" Text="FriendLogin" FontSize="16"
+                <TextBlock Grid.Row="0" x:Name="ChatFriendLogin" Text="FriendLogin" 
+                           FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Center" 
                            Foreground="{StaticResource UsualTextColor}"/>
                 <TextBlock Grid.Row="1" x:Name="ChatFriendLastSeen" 
                            Text="Last seen time" FontSize="16"
-                           HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray"/>
+                           HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
 
             </Grid>
 
@@ -85,7 +86,8 @@
             <Grid Name="CustomBg" Background="Transparent"/>
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
-                     VerticalAlignment="Bottom"/>
+                     VerticalAlignment="Bottom">
+            </ListBox>
         </Grid>
 
         <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">

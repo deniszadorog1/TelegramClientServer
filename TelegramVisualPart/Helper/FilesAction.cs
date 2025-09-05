@@ -1,6 +1,7 @@
 ﻿using FFMpegCore;
 using FFMpegCore.Pipes;
 using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -175,6 +176,19 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(wallPaperPath, fileName);
         }
 
+        public static List<string?> GetAllWallpaperNames()
+        {
+            List<string?> resNames = new List<string?>();
+            string wallPaperPath = Path.Combine(GetImagesPath(), "Wallpapers");
+
+            if (Directory.Exists(wallPaperPath))
+            {
+                var files = Directory.GetFiles(wallPaperPath);
+                resNames = files.Select(Path.GetFileName).ToList();
+            }
+            return resNames;
+        }
+
         public static List<Image> GetUserImages(List<string> names)
         {
             List<Image> res = new List<Image>();
@@ -253,6 +267,18 @@ namespace TelegramVisualPart.Helper
 
             string fileName = Path.GetFileName(path);
             string destinationPath = Path.Combine(userImagePath, fileName);
+
+            if (Path.Exists(destinationPath)) return;
+
+            File.Copy(path, destinationPath, overwrite: true);
+        }
+
+        public static void AddNewWallpaper(string path)
+        {
+            string wallPaperPath = Path.Combine(GetImagesPath(), "Wallpapers");
+
+            string fileName = Path.GetFileName(path);
+            string destinationPath = Path.Combine(wallPaperPath, fileName);
 
             if (Path.Exists(destinationPath)) return;
 

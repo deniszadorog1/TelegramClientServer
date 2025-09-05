@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Win32;
 using Newtonsoft.Json.Bson;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,10 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
@@ -29,6 +32,7 @@ using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 using Color = System.Windows.Media.Color;
+using Path = System.IO.Path;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings
 {
@@ -198,7 +202,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
                     //2 - Set active text color 
                     SetActiveTextColor(theme);
-                    Console.WriteLine(_system.Settings.ChatsSettings.Theme);
 
                     //3 - set additional(inactive) text color(white or black)
                     SetAdditionalTextColor(theme);
@@ -209,7 +212,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                     //set color in last circle and choose it) + 
                     //+ Update Page with new colors
                     SetCircleColorByTheme(theme);
-                    Console.WriteLine(_system.Settings.ChatsSettings.Theme);
 
                     ((MainWindow)Window.GetWindow(this)).SetMainFrame(new MainChatPage(_system));
                     ((MainWindow)Window.GetWindow(this)).UpdateUpperBorder();
@@ -227,7 +229,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(23, 33, 43)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
                     Color.FromRgb(GetColorParam(theme.Color.R, 5),
-                    GetColorParam(theme.Color.G, 5), 
+                    GetColorParam(theme.Color.G, 5),
                     GetColorParam(theme.Color.B, 5))) :
                 new SolidColorBrush(Colors.White);
 
@@ -282,11 +284,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                     Color.FromRgb(GetColorParam(theme.Color.R, 4),
                     GetColorParam(theme.Color.G, 4),
                     GetColorParam(theme.Color.B, 4)));
-
-
-            
         }
-
         private byte GetColorParam(byte tempColor, int toAdd)
         {
             int value = tempColor / toAdd;
@@ -401,7 +399,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
-            toUncheck.RadioBut .IsChecked = false;
+            toUncheck.RadioBut.IsChecked = false;
         }
 
         public ThemeType? GetChosenType(RadioButton toCheck)
@@ -584,6 +582,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         {
             if (sender is TextBlock text)
             {
+                Cursor = Cursors.Hand;
                 text.TextDecorations = TextDecorations.Underline;
             }
         }
@@ -592,6 +591,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         {
             if (sender is TextBlock text)
             {
+                Cursor = null;
                 text.TextDecorations = null;
             }
         }
@@ -616,7 +616,29 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            //Set Add file 
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Title = "Choose wallpaper";
+            dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            dlg.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Visuals", "Images");
 
+            if (dlg.ShowDialog() == true)
+            {
+                //Get file name (is it an image)
+                string selectedFile = dlg.FileName;
+                string fileName = Path.GetFileName(selectedFile);
+
+                if (!FilesAction.IsFileIsImage(selectedFile)) return;
+
+                //if an image -> add in db
+                ApiService.AddWallpaper(fileName);
+
+                //Add in wallpapers folder
+                FilesAction.AddNewWallpaper(selectedFile);
+
+                //Add in system
+                _system.Settings.ChatsSettings.PossibleWallpapers.Add(fileName);
+            }
         }
 
         private void AutoNightBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -627,6 +649,60 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
 
             ApiService.UpdateChatSettings(_chatsSettings);
+
+            SetAutoNightTimer(_chatsSettings.NightMode);
+        }
+
+        private readonly DateTime _startNight = DateTime.Today.AddHours(23);
+        private readonly DateTime _endNight = DateTime.Today.AddDays(1).AddHours(6);
+
+        private DispatcherTimer _nightTimer = new DispatcherTimer();
+        private void SetAutoNightTimer(AutoNightMode type)
+        {
+            if (!SetAutoNightModeType(type)) return;
+
+            _nightTimer.Interval = TimeSpan.FromSeconds(10000);
+            _nightTimer.Tick += NightTypeTimer_Tick;
+
+            _nightTimer.Start();
+        }
+
+        public void NightTypeTimer_Tick(object sender, EventArgs e)
+        {
+            if (IsNightNow())
+            {
+                //Set it on start (when is base initioation)
+                 
+                //Set night theme
+                //Get set timer activation
+            }
+        }
+
+        public bool SetAutoNightModeType(AutoNightMode type)
+        {
+            if (type == AutoNightMode.Off)
+            {
+                _nightTimer.Tick -= NightTypeTimer_Tick;
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsNightNow()
+        {
+            DateTime now = DateTime.Now;
+            return (now >= _startNight || now < _endNight);
+        }
+
+
+        private void RadioButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void RadioButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
     }
 }
