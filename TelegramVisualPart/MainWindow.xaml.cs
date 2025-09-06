@@ -379,6 +379,7 @@ namespace TelegramVisualPart
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+
             if (this.Height != SystemParameters.WorkArea.Height ||
                 this.Width != SystemParameters.WorkArea.Width)
             {
@@ -393,50 +394,70 @@ namespace TelegramVisualPart
             if (SecondaryFrame.Content is Page page) SetFramePageHeight(page);
 
 
-            //Set Window Parts Visisbility
+            //Set Window Parts Visibility
             //if (MainFrame.Content is not MainChatPage chatPage) return;
 
             SetMainChatPagePartsSize();
         }
 
+        private Enums.SizerActionType? _chosenWindowSizeType;
+
+        public Enums.SizerActionType? GetWindowSizeType()
+        {
+            return _chosenWindowSizeType;
+        }
+
+        public void SetWindowSizeType(Enums.SizerActionType? type)
+        {
+            _chosenWindowSizeType = type;
+        }
+
         public void SetMainChatPagePartsSize()
         {
             //From The most
-
-            //Temp chat messages glues to one part(left)
-            if (MainFrame.Content is MainChatPage firstLevel && 
-                this.Width < 1800 && this.Width > 1700)
+            if (MainFrame.Content is MainChatPage mainChatPage)
             {
-                firstLevel.SetWindowSizerAction(Enums.SizerActionType.FirstLevel);
+                Enums.SizerActionType? tempSizer = GetWindowSizeType();
+
+                //Temp chat messages glues to one part(left)
+                if (this.Width < 1800 && this.Width > 1700)
+                {
+                    bool isClearPrev = tempSizer is null ? false :
+                        ((int)tempSizer) > ((int)Enums.SizerActionType.FirstLevel);
+
+                    SetWindowSizeType(Enums.SizerActionType.FirstLevel);
+                    mainChatPage.SetWindowSizerAction();
+                }
+                //Temp chat messages in glued to differ borders
+                else if (this.Width < 1700 && this.Width > 1500)
+                {
+                    bool isClearPrev = tempSizer is null ? false :
+                        ((int)tempSizer) > ((int)Enums.SizerActionType.SecondLevel);
+
+                    SetWindowSizeType(Enums.SizerActionType.SecondLevel);
+                    mainChatPage.SetWindowSizerAction(isClearPrev);
+                }
+                //AllChats Closing
+                else if (this.Width < 1500 && this.Width > 1300)
+                {
+                    bool isClearPrev = tempSizer is null ? false :
+                        ((int)tempSizer) > ((int)Enums.SizerActionType.ThirdLevel);
+
+
+                    SetWindowSizeType(Enums.SizerActionType.ThirdLevel);
+                    mainChatPage.SetWindowSizerAction(isClearPrev);
+                }
+                //Temp chat is closing + Tabs is going to top
+                else if (this.Width < 1300 && this.Width > 1000)
+                {
+
+                    SetWindowSizeType(Enums.SizerActionType.FourthLevel);
+                    mainChatPage.SetWindowSizerAction();
+                }
             }
-            //Temp chat messages in glued to differ borders
-            else if (MainFrame.Content is MainChatPage secondLevel && 
-                this.Width < 1700 && this.Width > 1500 )
-            {
-                secondLevel.SetWindowSizerAction(Enums.SizerActionType.SecondLevel);
-            }
 
 
-            //AllChats Closing
-            else if(MainFrame.Content is MainChatPage third && 
-                this.Width < 1500 && this.Width > 1300)
-            {
-
-            }
-
-            //Temp chat is closing
-            else if(MainFrame.Content is MainChatPage closeChat && 
-                this.Width < 1300 && this.Width > 1000)
-            {
-                closeChat.SetWindowSizerAction(Enums.SizerActionType.FourthLevel);
-            }
-            //Tabs is going to top
-            else if(MainFrame.Content is MainChatPage lastLevel)
-            {
-                lastLevel.SetWindowSizerAction(Enums.SizerActionType.LastLevel);
-            }
-
-
+            return;
             //Optional (the smallest one)
             //page which is not on secondary frame moves to main frame
             //When window getting bigger it moves to Secondary frame
@@ -469,8 +490,8 @@ namespace TelegramVisualPart
         private bool _isMouseDown = false;
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
-        {
-            SetMainPageOnWindowSizeChange();
+        {            
+            //SetMainPageOnWindowSizeChange();
             if (e.ButtonState == MouseButtonState.Pressed)
             {
                 _mouseDownPosition = e.GetPosition(this);

@@ -78,6 +78,8 @@ namespace TelegramVisualPart.EnterInAccount
             _system.Settings.IsTabsOnTheLeft = true;
             _system.Settings.ChatsSettings.PossibleWallpapers = 
                 FilesAction.GetAllWallpaperNames();
+            _system.Settings.ChatsSettings.Theme = 
+                TelegramLib.Enums.Settings.ChatSettings.ThemeType.Night;
 
             await SetOnlineStatus();
 

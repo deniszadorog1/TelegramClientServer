@@ -8,10 +8,9 @@ namespace TelegramVisualPart.Enums
 {
     public enum SizerActionType
     {
-        FirstLevel,
+        FirstLevel = 0,
         SecondLevel,
         ThirdLevel,
         FourthLevel,
-        LastLevel,
     }
 }

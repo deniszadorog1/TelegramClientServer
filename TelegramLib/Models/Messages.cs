@@ -25,7 +25,7 @@ namespace TelegramLib.Models
 
         public int? VideoId { get; set; }
 
-        [Column(TypeName = "date")]
+        [Column(TypeName = "datetime2")]
         public DateTime? SentDate { get; set; }
 
         public virtual Chat Chat { get; set; }

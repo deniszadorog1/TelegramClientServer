@@ -164,11 +164,6 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-        public void GetImageSource()
-        {
-            //Is
-        }
-
         public void UpdateOnlineStatus(TelegramLib.MainClasses.User toUpdate)
         {
             Dispatcher.InvokeAsync(async () =>
@@ -440,6 +435,7 @@ namespace TelegramVisualPart.UserControls
             ChatControls.TextMessage newMes =
                 new ChatControls.TextMessage(GetConvertedStringMessage(message.Text),
                 senderImageName, _system.Settings.GetChatSettings().FontName);
+
             newMes.SetTime(message.SentTime);
 
             //ChatBox.Items.Add(newMes);
@@ -485,7 +481,7 @@ namespace TelegramVisualPart.UserControls
 
             UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.ContactUserId);
 
-            TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
+            TelegramLib.MainClasses.Messages.Message  toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, contact.Id, _system.LoggedUser.Id,
                             DateTime.Now, CommentTextBox.Text);
 
@@ -1169,5 +1165,27 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            BackButIcon.Foreground = Brushes.LightGray;
+        }
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            BackButIcon.Foreground = Brushes.DarkGray;
+        }
+
+        public void SetVisibilityToBackBut(bool isVisible)
+        {
+            BackButColumn.Width = isVisible ? new GridLength(50) : 
+                new GridLength(0);
+        }
+
+        public event Action BackButton_MouseDown;
+        private void BackButGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            BackButton_MouseDown?.Invoke();
+        }
     }
 }

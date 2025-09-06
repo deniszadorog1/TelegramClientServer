@@ -5,6 +5,7 @@ using TelegramClientServer.SignalRHubs;
 
 namespace TelegramClientServer
 {
+
     public class Program
     {
         public static void Main(string[] args)
@@ -16,8 +17,6 @@ namespace TelegramClientServer
                 {
                     options.SerializerSettings.TypeNameHandling = TypeNameHandling.All;
                 });
-
-
 
             builder.Services.AddSignalR();
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();

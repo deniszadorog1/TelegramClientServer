@@ -21,6 +21,7 @@ namespace TelegramLib.Models
             Settings = new HashSet<Settings>();
             UserColor = new HashSet<UserColor>();
             UserImage = new HashSet<UserImage>();
+            UserTheme = new HashSet<UserTheme>();
         }
 
         public int Id { get; set; }
@@ -80,5 +81,8 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserImage> UserImage { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserTheme> UserTheme { get; set; }
     }
 }

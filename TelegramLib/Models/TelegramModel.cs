@@ -8,7 +8,7 @@ namespace TelegramLib.Models
     public partial class TelegramModel : DbContext
     {
         public TelegramModel()
-            : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
+             : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
         }
 
@@ -42,10 +42,13 @@ namespace TelegramLib.Models
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
+        public virtual DbSet<ThemeColor> ThemeColor { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserColor> UserColor { get; set; }
         public virtual DbSet<UserImage> UserImage { get; set; }
+        public virtual DbSet<UserTheme> UserTheme { get; set; }
         public virtual DbSet<WhoCanSeeType> WhoCanSeeType { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -169,6 +172,16 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Messages)
                 .WithOptional(e => e.StickerImage)
                 .HasForeignKey(e => e.StickerId);
+
+            modelBuilder.Entity<Theme>()
+                .HasMany(e => e.UserTheme)
+                .WithOptional(e => e.Theme)
+                .HasForeignKey(e => e.TypeId);
+
+            modelBuilder.Entity<ThemeColor>()
+                .HasMany(e => e.UserTheme)
+                .WithOptional(e => e.ThemeColor)
+                .HasForeignKey(e => e.ColorId);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Contacts)

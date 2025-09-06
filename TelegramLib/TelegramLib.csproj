@@ -220,11 +220,14 @@
     <Compile Include="Models\ProfilePhotoSettings.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\StickerImage.cs" />
+    <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\TelegramModel.cs" />
     <Compile Include="Models\Theme.cs" />
+    <Compile Include="Models\ThemeColor.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserColor.cs" />
     <Compile Include="Models\UserImage.cs" />
+    <Compile Include="Models\UserTheme.cs" />
     <Compile Include="Models\WhoCanSeeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DbService.cs" />

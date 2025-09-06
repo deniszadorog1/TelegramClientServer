@@ -21,6 +21,8 @@ namespace TelegramLib.Models
 
         public int? UserId { get; set; }
 
+        public bool? IsFolderTabsIsLeft { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdvancedSettings> AdvancedSettings { get; set; }
 

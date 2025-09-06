@@ -13,6 +13,7 @@ namespace TelegramLib.Models
         public Theme()
         {
             ChatSettings = new HashSet<ChatSettings>();
+            UserTheme = new HashSet<UserTheme>();
         }
 
         public int Id { get; set; }
@@ -22,5 +23,8 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChatSettings> ChatSettings { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserTheme> UserTheme { get; set; }
     }
 }

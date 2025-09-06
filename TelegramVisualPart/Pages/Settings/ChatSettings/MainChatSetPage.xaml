@@ -111,7 +111,10 @@
                             <controls:CircleColor x:Name="Gray" Style="{StaticResource CircleColorStyle}"/>
                             <controls:CircleColor x:Name="Yellow" Style="{StaticResource CircleColorStyle}"/>
 
-                            <Grid PreviewMouseDown="PaletteBut_PreviewMouseDown" Background="Transparent">
+                            <Grid PreviewMouseDown="PaletteBut_PreviewMouseDown" 
+                                  Background="Transparent"
+                                  MouseEnter="Grid_MouseEnter"
+                                  MouseLeave="Grid_MouseLeave">
                                 <materialDesign:PackIcon Kind="PaletteOutline"  Foreground="Aqua"
                                                      Width="35" Height="35"
                                                      Name="PaletteBut" Margin="10 10 0 0"/>

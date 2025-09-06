@@ -31,8 +31,10 @@ using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
+using static MaterialDesignThemes.Wpf.Theme;
 using Color = System.Windows.Media.Color;
 using Path = System.IO.Path;
+using RadioButton = System.Windows.Controls.RadioButton;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings
 {
@@ -52,8 +54,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             InitializeComponent();
 
             SetBasicBlocks();
-
-            //PaletteBut.BgBorder.Background = Brushes.Aqua;
         }
 
         private void SetBasicBlocks()
@@ -105,10 +105,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             ActivateClickCircleColorByCircle(chosenOne);
         }
 
+        private const int _timeSpan = 1234;
+
         public void ActivateClickCircleColorByCircle(CircleColor chosenOne)
         {
             CircleColor_MouseDown(chosenOne, new MouseButtonEventArgs(
-                Mouse.PrimaryDevice, 0, MouseButton.Left)
+                Mouse.PrimaryDevice, _timeSpan, MouseButton.Left)
             {
                 RoutedEvent = UIElement.MouseDownEvent,
                 Source = chosenOne
@@ -168,8 +170,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetThemeParam()
         {
-            ThemeCard? card = ThemesWrap.Children.OfType<ThemeCard>().FirstOrDefault(x => x.Name ==
-            _chatsSettings.Theme.ToString());
+            ThemeCard? card = ThemesWrap.Children.OfType<ThemeCard>()
+                .FirstOrDefault(x => x.Name == _chatsSettings.Theme.ToString());
 
             if (card is null) return;
             card.RadioBut.IsChecked = true;
@@ -336,8 +338,9 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 Color.FromRgb(theme.Color.R, theme.Color.G, theme.Color.B));
 
             ActivateClickCircleColorByCircle(last);
-        }
 
+        }
+        
         public void SetThemesBaseParams()
         {
             SetBaseThemeParam(Classic,
@@ -362,7 +365,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             card.CardBg.Background = new SolidColorBrush(
                 Color.FromRgb(theme.Color.R, theme.Color.G, theme.Color.B));
         }
-
 
         public void SetCheckEventForThemesCards()
         {
@@ -396,6 +398,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
                 _chatsSettings.Theme = type is null ? ThemeType.Tinted : (ThemeType)type;
 
+             
                 ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
@@ -496,7 +499,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
-
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -507,15 +509,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         private void CircleColor_MouseDown(object sender, MouseButtonEventArgs e)
         {
             HideChosenColorCircle();
-
             if (sender is CircleColor color)
             {
                 color.WhiteCircle.Visibility = Visibility.Visible;
 
                 SetNewTempColor(color);
                 SaveChosenColor(color);
-
-                Console.WriteLine(_system.Settings.ChatsSettings.Theme);
 
                 MainWindow wind = ((MainWindow)Window.GetWindow(this));
                 if (wind is not null)
@@ -524,8 +523,20 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 }
                 //Set them params
                 UpdateThemeParams();
+
+                if(e.Timestamp != _timeSpan) ActiveThemeParams();
             }
         }
+
+        public void ActiveThemeParams()
+        {
+            if (_system.Settings.ChatsSettings.Theme == ThemeType.Tinted)
+            {
+                Tinted.RadioBut.IsChecked = false;
+                Tinted.RadioBut.IsChecked = true;
+            }
+        }
+
         public void UpdateThemeParams()
         {
             //1 - Get Theme
@@ -541,7 +552,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
             theme.Color = new TelegramLib.Helpers.ColorHelper(
                 -1, brush.Color.R, brush.Color.G, brush.Color.B);
-
 
             //3 - Update it in db
         }
@@ -701,6 +711,16 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         }
 
         private void RadioButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = null;
         }

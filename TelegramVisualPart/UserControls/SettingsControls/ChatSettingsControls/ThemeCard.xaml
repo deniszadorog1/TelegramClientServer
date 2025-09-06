@@ -19,7 +19,9 @@
                          Background="Black"                       
                          Style="{StaticResource MaterialDesignRadioButton}"
                          materialDesign:RadioButtonAssist.RadioButtonSize="24"
-                         VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                         VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                         MouseEnter="RadioBut_MouseEnter"
+                         MouseLeave="RadioBut_MouseLeave"/>
         </Border>
 
         <TextBlock Grid.Row="1" Name="CardName" FontSize="15"

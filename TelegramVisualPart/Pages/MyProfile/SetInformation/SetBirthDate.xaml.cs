@@ -14,7 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using static System.Net.Mime.MediaTypeNames;
+using User = TelegramLib.MainClasses.User;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -93,7 +95,6 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             }));
 
         }
-
         public void SetBasicParams()
         {
             SetDays();
@@ -213,7 +214,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private TextBlock GetTextBlock(string text)
         {
-            return new TextBlock()
+            TextBlock block = new TextBlock()
             {
                 Text = text,
                 Height = 40,
@@ -223,7 +224,38 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
                 Padding = new Thickness(10),
                 Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["UsualTextColor"]
             };
+
+            block.PreviewMouseDown += ChooseBlock_PreviewMouseDown;
+            
+            return block;
         }
+
+/*        private bool _isSelecting = false;
+        private double _baseY;
+        private int _baseIndex;*/
+        public void ChooseBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            /*            if (e.OriginalSource is TextBlock tb)
+                        {
+                            _isSelecting = true;
+                            Mouse.Capture(this, CaptureMode.Element);
+
+                            _baseY = e.GetPosition(this).Y;
+                            _baseIndex = ChatBox.SelectedIndex = ChatBox.Items.IndexOf(tb.Text);
+                        }*/
+
+            if (sender is not TextBlock block ||
+                string.IsNullOrWhiteSpace(block.Text)) return;
+            CenterElementInScrollViewer(block, GetScrollViewerByTextBlock(block));
+        }
+
+        public ScrollViewer GetScrollViewerByTextBlock(TextBlock block)
+        {
+            return DaysPanel.Children.Contains(block) ? DaysScroll :
+                MonthPanel.Children.Contains(block) ? MonthScroll :
+                YearScroll;
+        }
+
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {

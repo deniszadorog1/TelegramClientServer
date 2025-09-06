@@ -99,7 +99,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-            SolidColorBrush bg = FirstColorRect.Fill as SolidColorBrush;
+            SolidColorBrush? bg = FirstColorRect.Fill as SolidColorBrush;
 
             _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(-1,
                 bg.Color.R,

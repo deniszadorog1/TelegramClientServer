@@ -27,10 +27,26 @@
 
         <Grid Grid.Row="0" Background="{StaticResource DarkThemeOne}">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="BackButColumn" Width="0"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="170"/>
             </Grid.ColumnDefinitions>
-            <Grid Name="UserInforGrid" Grid.Column="0" HorizontalAlignment="Stretch" Margin="10 0 0 0"
+
+            <Grid Grid.Column="0" 
+                  Background="Transparent"
+                  Name="BackButGrid"
+                  MouseEnter="Grid_MouseEnter"
+                  MouseLeave="Grid_MouseLeave"
+                  PreviewMouseDown="BackButGrid_PreviewMouseDown">
+                <materialDesign:PackIcon Kind="ArrowLeft"
+                                     Name="BackButIcon"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Foreground="DarkGray"
+                                     Width="25" Height="25"/>
+            </Grid>
+            
+            <Grid Name="UserInforGrid" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10 0 0 0"
                   MouseEnter="UserInforGrid_MouseEnter" MouseLeave="UserInforGrid_MouseLeave"
                   MouseDown="UserInforGrid_MouseDown" Background="Transparent" >
                 <Grid.RowDefinitions>
@@ -48,7 +64,7 @@
 
             </Grid>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2"
                         MouseEnter="StackPanel_MouseEnter">
                 <Grid Margin="5" Name="FindMessageBut" Background="Transparent"
                       PreviewMouseDown="FindMessage_PreviewMouseDown"

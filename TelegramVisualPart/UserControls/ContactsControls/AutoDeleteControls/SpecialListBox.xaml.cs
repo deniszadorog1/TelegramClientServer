@@ -129,21 +129,39 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         {
             foreach (var val in _voc)
             {
-                TextBlock asd = new TextBlock()
-                {
-                    Text = val.Value,
-                    Height = 40,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    FontSize = 16,
-                    Padding = new Thickness(10),
-                    Foreground = new SolidColorBrush(Colors.Gray)
-                };
-                CheckPanel.Children.Add(asd);
+                TextBlock block =  GetTextBlock(val.Value);
+                CheckPanel.Children.Add(block);
             }
 
             //DaysListBox.SelectedIndex = 2;
             //ScrollView.Scroll(DaysListBox.SelectedItem);
+        }
+
+        private TextBlock GetTextBlock(string text)
+        {
+            TextBlock res = new TextBlock()
+            {
+                Text = text,
+                Height = 40,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 16,
+                Padding = new Thickness(10),
+                Foreground = new SolidColorBrush(Colors.Gray)
+            };
+
+            return res;
+        }
+
+        public void SetListWithBlocks(List<string> toAdd)
+        {
+            CheckPanel.Children.Clear();
+
+            for (int i = 0; i < toAdd.Count; i++)
+            {
+                TextBlock block = GetTextBlock(toAdd[i]);
+                CheckPanel.Children.Add(block);
+            }
         }
     }
 }

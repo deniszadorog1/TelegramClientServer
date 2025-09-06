@@ -25,5 +25,15 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls
         {
             InitializeComponent();
         }
+
+        private void RadioBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void RadioBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

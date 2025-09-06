@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="450" Width="800"
-        MinHeight="700" MinWidth="800"
+        MinHeight="700" MinWidth="550"
         
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"

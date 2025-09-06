@@ -58,6 +58,7 @@ namespace TelegramVisualPart.Pages
             LeftButtons.SetSystemParam(_system);
 
             UserChat.SetSystemParam(_system);
+            UserChat.BackButton_MouseDown += BackButton_MouseDown;
 
             SetUserImage();
 
@@ -317,9 +318,7 @@ namespace TelegramVisualPart.Pages
             {
                 SetUserChat(_system.Contacts[i].UserName);
             }
-
             await UpdateUserChatsPanel();
-
         }
 
         public void SetUserImage()
@@ -552,6 +551,17 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetUserChat(
                 _system.GetUserChatByChatterName(talkControl.FriendLogin.Text));
+
+            SetSizerActionWithUserChatMouseDown();
+        }
+
+        private void UserChat_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+        private void UserChat_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
 
         public void ShowChatControl()
@@ -739,6 +749,8 @@ namespace TelegramVisualPart.Pages
                 item.Content = await GetTalkMessage(i);
 
                 item.PreviewMouseDown += UserChat_PreviewMouseDown;
+                item.MouseEnter += UserChat_MouseEnter;
+                item.MouseLeave += UserChat_MouseLeave;
                 ChatsBox.Items.Add(item);
             }
         }
@@ -786,7 +798,6 @@ namespace TelegramVisualPart.Pages
         public void UpdateUserTalkChat()
         {
             //Check with preload messages + chats
-
 
             //Get User talk control(by system control)
             //Get by chosen chat in system 
@@ -872,7 +883,8 @@ namespace TelegramVisualPart.Pages
                      };
 
                 item.PreviewMouseDown += UserChat_PreviewMouseDown;
-
+                item.MouseEnter += UserChat_MouseEnter;
+                item.MouseLeave += UserChat_MouseLeave;
                 ChatsBox.Items.Add(item);
             }
 
@@ -935,10 +947,19 @@ namespace TelegramVisualPart.Pages
             HamburgIcon.Foreground = Brushes.Gray;
         }
 
-        public void SetWindowSizerAction(SizerActionType type)
+        public void SetWindowSizerAction(bool isToClearFromPrevLevel = false)
         {
+            SizerActionType? type = 
+                ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
+
+            if (isToClearFromPrevLevel) ClearPrevSizerChanges(type);
+
             switch (type)
             {
+                case null:
+                    {
+                        return;
+                    }
                 case SizerActionType.FirstLevel:
                     {
                         //The most window level
@@ -958,20 +979,154 @@ namespace TelegramVisualPart.Pages
                     }
                 case SizerActionType.ThirdLevel:
                     {
+                        SetThirdLevel();
                         return;
                     }
                 case SizerActionType.FourthLevel:
                     {
+                        _system.Settings.IsTabsOnTheLeft = false;
+                        ChageLeftButsVisState(false);
                         SetClosingChatColumn();
                         return;
                     }
-                case SizerActionType.LastLevel:
-                    {
-                        //Top tabs + secondary frame
-                        ChageLeftButsVisState(false);
-                        return;
-                    }
             }
+        }
+
+        public void ClearPrevSizerChanges(Enums.SizerActionType? tempSizeType)
+        {
+            if (tempSizeType is null ||
+                tempSizeType == SizerActionType.FourthLevel) return;
+
+            if(tempSizeType == SizerActionType.ThirdLevel)
+            {
+                _system.Settings.IsTabsOnTheLeft = true;
+                ChageLeftButsVisState(true);
+
+                ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+                ChatColumn.Width = new GridLength(0);
+
+            }
+            else if(tempSizeType == SizerActionType.SecondLevel)
+            {
+                //Set min width for chats column
+                SetColumnWidth(ChatsColumn, 450);
+
+                //Set grid splitter width
+                SetColumnWidth(GridSplitterColumn, 3);
+
+                //Set chat column width
+                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+
+                //Set back button on user chat
+                UserChat.SetVisibilityToBackBut(false);
+            }
+            else if(tempSizeType == SizerActionType.FirstLevel)
+            {
+                //Set glued pos
+                UserChat.SetMessagesPosition(true);
+            }
+
+        }
+
+        public void SetThirdLevel()
+        {
+            //If chosen chat is exist => ChatColumn.Width = 0
+            //else UserChatColumn.Width = 0 
+            if (UserChat.Visibility == Visibility.Visible)
+            {
+                //Hide chats column 
+                SetColumnWidth(ChatsColumn, 0);
+
+                //Show Back but on user chat
+                UserChat.SetVisibilityToBackBut(true);
+
+                //Set gridSplitter column width
+                SetColumnWidth(GridSplitterColumn, 0);
+
+                //Set User Chat Column Width
+                /*                double newUserChatColumn = this.ActualWidth - LeftButtons.ActualWidth;
+                                SetColumnWidth(ChatColumn, newUserChatColumn);*/
+            }
+            else
+            {
+                //Hide Back Button
+                UserChat.SetVisibilityToBackBut(false);
+
+                //Set gridSplitter column width
+                SetColumnWidth(GridSplitterColumn, 0);
+
+                // Set UserChat column as Zero
+                SetColumnMinWidth(ChatColumn, 0);
+                SetColumnWidth(ChatColumn, 0);
+
+                ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+            }
+        }
+
+        public void BackButton_MouseDown()
+        {
+            // Clear chosen chat
+            _chosenChatControl = null;
+            _chosenChat = null;
+            ChosoeChatBorder.Visibility = Visibility.Visible;
+            UserChat.Visibility = Visibility.Hidden;
+
+            // Set UserChat column as Zero
+            SetColumnMinWidth(ChatColumn, 0);
+            SetColumnWidth(ChatColumn, 0);
+
+            //Set Splitter grid as zero
+            SetColumnWidth(GridSplitterColumn, 0);
+
+            // Set Chats column Width as a star
+            ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+        }
+
+        public void SetSizerActionWithUserChatMouseDown()
+        {
+            SizerActionType? type = 
+                ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
+
+            if (type is null) return;
+
+            if(type == SizerActionType.ThirdLevel)
+            {
+                UserChat.SetVisibilityToBackBut(true);
+
+                //Set chatS column.Width = 0
+                SetColumnMinWidth(ChatsColumn, 0);
+                SetColumnWidth(ChatsColumn, 0);
+
+                //Set TempChat column.Width = Star
+                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+            }
+            else if(type == SizerActionType.FourthLevel)
+            {
+                UserChat.SetVisibilityToBackBut(true);
+
+                //Set chatS column.Width = 0
+                SetColumnMinWidth(ChatsColumn, 0);
+                SetColumnWidth(ChatsColumn, 0);
+
+                //Set leftButtons column.Width = 0
+                SetColumnMinWidth(LeftButtonsColumn, 0);
+                
+                //Set Grid Splitter column.Width = 0
+                SetColumnMinWidth(GridSplitterColumn, 0);
+
+                //Set TempChat column.Width = Star
+                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+            }
+        }
+
+        public void SetColumnMinWidth(ColumnDefinition column, double minWidth)
+        {
+            column.MinWidth = minWidth;
+        }
+
+        public void SetColumnWidth(ColumnDefinition column, double width)
+        {
+            column.Width = new GridLength(width);
         }
 
         public void SetClosingChatColumn()
@@ -980,10 +1135,10 @@ namespace TelegramVisualPart.Pages
             ChatColumn.MinWidth = 0;
             ChatColumn.Width = new GridLength(0);
 
-            ChatsColumn.Width = new GridLength(
-                this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
+            ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+                //this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
 
-            ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
+           // ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
         }
 
     }

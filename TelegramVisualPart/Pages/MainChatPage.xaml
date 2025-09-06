@@ -81,9 +81,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-
                 <Grid Grid.Row="0">
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Name="AddHamburgMenuCol" Width="0"/>
                         <ColumnDefinition/>
