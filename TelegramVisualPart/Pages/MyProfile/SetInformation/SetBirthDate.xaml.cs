@@ -54,9 +54,17 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             InitializeComponent();
 
             SetBasicParams();
+
+            //By temp item thing
             SetStartDate();
+            FillListsWithCustomControl();
+        }
+
+        public void FillListsWithCustomControl()
+        {
 
         }
+
 
         public void SetStartDate()
         {

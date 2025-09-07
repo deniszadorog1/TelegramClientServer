@@ -25,7 +25,8 @@
         Background="White"
         
         PreviewMouseDown="Window_MouseDown"
-        SizeChanged="Window_SizeChanged">
+        SizeChanged="Window_SizeChanged"
+        LayoutUpdated="Window_LayoutUpdated">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"

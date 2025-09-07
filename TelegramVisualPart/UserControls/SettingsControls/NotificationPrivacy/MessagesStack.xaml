@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy.MessagesStack"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="100"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"
+             Background="Transparent"
+             Margin="5">
+    <Grid>
+        <StackPanel Name ="MesStack" Visibility="Hidden">
+            <local:MonitorMessage Height="20"  
+                                  VerticalAlignment="Bottom"/>
+        </StackPanel>
+
+        <Grid Name="BaseGrid" Visibility="Visible" Opacity="0.4">
+            <local:MonitorMessage Height="20" 
+                                  VerticalAlignment="Bottom"/>
+        </Grid>
+    </Grid>
+</UserControl>

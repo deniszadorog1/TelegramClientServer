@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="CustWindows\ToastWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EnterInAccount\EnterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -316,6 +319,15 @@
     <Compile Update="UserControls\SettingsControls\LogOutMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\NotificationPrivacy\MessagesStack.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\NotificationPrivacy\MonitorMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsControls\NotificationPrivacy\WindowMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\ToUnblockUser.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -330,6 +342,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="CustWindows\ToastWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="EnterInAccount\EnterPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -640,6 +655,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\LogOutMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\NotificationPrivacy\MessagesStack.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\NotificationPrivacy\MonitorMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\NotificationPrivacy\WindowMessage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\ToUnblockUser.xaml">

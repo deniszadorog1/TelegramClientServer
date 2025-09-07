@@ -1,4 +1,6 @@
-﻿namespace TelegramLib.UserSettings.SettingsTypes
+﻿using TelegramLib.Enums.Settings.Notifs;
+
+namespace TelegramLib.UserSettings.SettingsTypes
 {
     public class NotificationSettings
     {
@@ -8,6 +10,10 @@
         public bool IsAllowSounds { get; set; }
         public bool IsPrivateChats { get; set; }
         public bool IsPinnedMessages { get; set; }
+
+        public NotifMessageSide SideType { get; set; }
+        public int AmountOfMonMessages { get; set; }
+
 
         public NotificationSettings(int id, bool desktop, bool taskBar, bool allowSounds,
                                     bool privateChats, bool pinnedMessages)

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy.MonitorMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy"
+             mc:Ignorable="d" 
+             d:DesignHeight="20" d:DesignWidth="100"
+             Height="40" Width="100">
+             
+    <Border CornerRadius="2"
+            Background="Red">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Ellipse Grid.Column="0" Fill="{StaticResource TempActiveTextColor}"
+                     Width="17" Height="17"/>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                
+                <Border CornerRadius="1" Background="Gray" Height="3" Margin="5 3 40 0"/>
+                
+                <Border CornerRadius="1" Background="White" Height="3" Margin="5 3 10 0"/>
+                <Border CornerRadius="1" Background="White" Height="3" Margin="5 3 10 0"/>
+
+            </StackPanel>
+            
+
+        </Grid>
+    </Border>
+</UserControl>

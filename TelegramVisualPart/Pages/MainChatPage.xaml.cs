@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
+using System.Security.Permissions;
 using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
@@ -953,7 +954,11 @@ namespace TelegramVisualPart.Pages
                 ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
 
             if (isToClearFromPrevLevel) ClearPrevSizerChanges(type);
-
+/*            if (((MainWindow)Window.GetWindow(this)).IsWindowIsMaxSize() &&
+                ((MainWindow)Window.GetWindow(this)).GetMaxState())
+            {
+                ClearAllLevels();
+            }*/
             switch (type)
             {
                 case null:
@@ -999,33 +1004,48 @@ namespace TelegramVisualPart.Pages
 
             if(tempSizeType == SizerActionType.ThirdLevel)
             {
-                _system.Settings.IsTabsOnTheLeft = true;
-                ChageLeftButsVisState(true);
-
-                ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
-                ChatColumn.Width = new GridLength(0);
-
+                ClearThirdLevelState();
             }
             else if(tempSizeType == SizerActionType.SecondLevel)
             {
-                //Set min width for chats column
-                SetColumnWidth(ChatsColumn, 450);
-
-                //Set grid splitter width
-                SetColumnWidth(GridSplitterColumn, 3);
-
-                //Set chat column width
-                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
-
-                //Set back button on user chat
-                UserChat.SetVisibilityToBackBut(false);
+                ClearSecondLevelState();
             }
             else if(tempSizeType == SizerActionType.FirstLevel)
             {
                 //Set glued pos
                 UserChat.SetMessagesPosition(true);
             }
+        }
 
+        public void ClearAllLevels()
+        {
+            ClearThirdLevelState();
+            ClearSecondLevelState();
+            UserChat.SetMessagesPosition(true);
+        }
+
+        private void ClearThirdLevelState() 
+        {
+            _system.Settings.IsTabsOnTheLeft = true;
+            ChageLeftButsVisState(true);
+
+            ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+            ChatColumn.Width = new GridLength(0);
+        }
+
+        private void ClearSecondLevelState()
+        {
+            //Set min width for chats column
+            SetColumnWidth(ChatsColumn, 450);
+
+            //Set grid splitter width
+            SetColumnWidth(GridSplitterColumn, 3);
+
+            //Set chat column width
+            ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+
+            //Set back button on user chat
+            UserChat.SetVisibilityToBackBut(false);
         }
 
         public void SetThirdLevel()

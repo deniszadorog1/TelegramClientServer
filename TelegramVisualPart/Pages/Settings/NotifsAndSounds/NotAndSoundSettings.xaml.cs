@@ -1,4 +1,6 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MahApps.Metro.Controls;
+using MaterialDesignThemes.Wpf;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +13,18 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Settings.Notifs;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 {
@@ -38,6 +44,77 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             SetBasicParams();
 
             SetToggleEvents();
+
+            SetBaseMonitorMessages();
+        }
+
+        public void SetBaseMonitorMessages()
+        {
+            //Base grid vertical positions
+            SetBaseGridsAlignment();
+
+            //Set MouseDown event
+            SetEventsMonitorBordersGrids();
+        }
+
+        private ToastWindow _toast;
+        public void SetEventsMonitorBordersGrids()
+        {
+            for(int i = 0; i < MonitorBordersGrid.Children.Count; i++)
+            {
+                if (MonitorBordersGrid.Children[i] is MessagesStack stack)
+                {
+                    stack.PreviewMouseDown += (sender, e) =>
+                    {
+                        if (sender is not MessagesStack stack) return;
+                        SetSideParam(stack);
+                        SetMessagesInMonitor();
+                    };
+
+                    stack.MouseEnter += (sender, e) =>
+                    {
+                        if (sender is not MessagesStack stack) return;
+                        NotifMessageSide side =  GetSideByStack(stack);
+
+                        _toast = new ToastWindow(
+                            _system.Settings.NotSettings.AmountOfMonMessages,
+                            side);
+                        _toast.Show();
+                    };
+
+                    stack.MouseLeave += (sender, e) =>
+                    {
+                        _toast.Close();
+                        _toast = null;
+                    };
+                }
+            }
+        }
+
+        private NotifMessageSide GetSideByStack(MessagesStack stack)
+        {
+            return stack == TopLeftStack ? NotifMessageSide.TopLeft :
+                stack == TopRightStack ? NotifMessageSide.TopRight :
+                stack == BottomLeftStack ? NotifMessageSide.BottomLeft :
+                NotifMessageSide.BottomRight;
+        }
+
+        public void SetSideParam(MessagesStack stack)
+        {
+            _system.Settings.NotSettings.SideType =
+                stack == TopLeftStack ? NotifMessageSide.TopLeft :
+                stack == TopRightStack ? NotifMessageSide.TopRight :
+                stack == BottomLeftStack ? NotifMessageSide.BottomLeft :
+                /*stack == BottomRightStack ?*/ NotifMessageSide.BottomRight;
+        } 
+
+        public void SetBaseGridsAlignment()
+        {
+            TopLeftStack.BaseGrid.VerticalAlignment = VerticalAlignment.Top;
+            TopRightStack.BaseGrid.VerticalAlignment = VerticalAlignment.Top;
+
+            BottomLeftStack.BaseGrid.VerticalAlignment = VerticalAlignment.Bottom;
+            BottomRightStack.BaseGrid.VerticalAlignment = VerticalAlignment.Bottom;
         }
 
         public void SetToggleEvents()
@@ -138,6 +215,130 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
+        }
+
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not TextBlock block) return;
+            SetAmountOfMessages(block);
+
+            ClearForegroundForTabs();
+
+            block.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            Point targetPos = block.TranslatePoint(new Point(0, 0), RectGrid);
+            double targetWidth = block.ActualWidth;
+
+            var transform = ActiveRect.RenderTransform as TranslateTransform;
+            double currentX = transform?.X ?? 0;
+            double currentWidth = ActiveRect.ActualWidth;
+
+            Duration animDuration = TimeSpan.FromMilliseconds(150);
+
+            var moveAnim = new DoubleAnimation
+            {
+                From = currentX,
+                To = targetPos.X ,
+                Duration = animDuration,
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            var widthAnim = new DoubleAnimation
+            {
+                From = currentWidth,
+                To = targetWidth,
+                Duration = animDuration,
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            transform?.BeginAnimation(TranslateTransform.XProperty, moveAnim);
+            ActiveRect.BeginAnimation(FrameworkElement.WidthProperty, widthAnim);
+        }
+
+        private void SetAmountOfMessages(TextBlock block)
+        {
+            int.TryParse(block.Text, out int amount);
+            _system.Settings.NotSettings.AmountOfMonMessages = amount;
+
+            //Set in monitor
+            SetMessagesInMonitor();
+
+        }
+
+        private void SetMessagesInMonitor()
+        {
+            //Get chosen stack
+            MessagesStack stack = GetChosenMessageStack();
+
+            //Set amount of messages
+            ClearAllStacks();
+            stack.MesStack.Visibility = Visibility.Visible;
+            stack.BaseGrid.Visibility = Visibility.Hidden;
+
+            for (int i = 0; i < _system.Settings.NotSettings.AmountOfMonMessages; i++)
+            {
+                MonitorMessage message = new MonitorMessage()
+                {
+                    Height = 20,
+                    Margin = new Thickness(0, 0, 0, 5),
+                };
+
+                if(stack == BottomLeftStack || 
+                    stack == BottomRightStack)
+                {
+                    message.VerticalAlignment = VerticalAlignment.Bottom;
+                }
+
+                stack.MesStack.Children.Add(message);
+            }
+
+        }
+
+        public void ClearAllStacks()
+        {
+            for(int i = 0; i < MonitorBordersGrid.Children.Count; i++)
+            {
+                if (MonitorBordersGrid.Children[i] is MessagesStack stack)
+                {
+                    stack.MesStack.Children.Clear();
+                    stack.MesStack.Visibility = Visibility.Hidden;
+                    stack.BaseGrid.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        public MessagesStack GetChosenMessageStack()
+        {
+            NotifMessageSide side =
+                _system.Settings.NotSettings.SideType;
+
+            return side == NotifMessageSide.TopLeft ? TopLeftStack :
+                side == NotifMessageSide.TopRight ? TopRightStack :
+                side == NotifMessageSide.BottomLeft ? BottomLeftStack :
+                BottomRightStack;
+        }
+
+
+        public void ClearForegroundForTabs()
+        {
+            for (int i = 0; i < TabsPanel.Children.Count; i++)
+            {
+                if (TabsPanel.Children[i] is TextBlock textBlock)
+                {
+                    textBlock.Foreground = new SolidColorBrush(Colors.Gray);
+                }
+            }
         }
     }
 }

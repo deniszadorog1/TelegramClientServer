@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.IdentityModel.Tokens;
 using System.Data.Entity.Core.EntityClient;
+using System.Diagnostics.Eventing.Reader;
 using System.Formats.Tar;
 using System.Windows;
 using System.Windows.Controls;
@@ -266,9 +267,20 @@ namespace TelegramVisualPart
         private bool _isMax = false;
         private const int _normalSizeParam = 600;
 
+        public bool GetMaxState()
+        {
+            return _isMax;
+        }
+
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
             SetWindowSizeState();
+        }
+
+        public bool IsWindowIsMaxSize()
+        {
+            return this.Height == SystemParameters.WorkArea.Height &&
+                this.Width == SystemParameters.WorkArea.Width;
         }
 
         public void SetWindowSizeState()
@@ -379,9 +391,8 @@ namespace TelegramVisualPart
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-
             if (this.Height != SystemParameters.WorkArea.Height ||
-                this.Width != SystemParameters.WorkArea.Width)
+                this.ActualWidth != SystemParameters.WorkArea.Width)
             {
                 WindowSizerIcon.Kind = PackIconKind.WindowMaximize;
 
@@ -397,6 +408,21 @@ namespace TelegramVisualPart
             //Set Window Parts Visibility
             //if (MainFrame.Content is not MainChatPage chatPage) return;
 
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SetMainChatPagePartsSize();
+
+                if (MainFrame.Content is MainChatPage mainChatPage &&
+                IsWindowIsMaxSize() && GetMaxState())
+                {
+                    mainChatPage.ClearAllLevels();
+                }
+            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
+
+        private void Window_LayoutUpdated(object sender, EventArgs e)
+        {
             SetMainChatPagePartsSize();
         }
 
@@ -420,7 +446,7 @@ namespace TelegramVisualPart
                 Enums.SizerActionType? tempSizer = GetWindowSizeType();
 
                 //Temp chat messages glues to one part(left)
-                if (this.Width < 1800 && this.Width > 1700)
+                if (this.ActualWidth < 1800 /*&& (this.Width > 1700 || !_isMax)*/)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.FirstLevel);
@@ -429,7 +455,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction();
                 }
                 //Temp chat messages in glued to differ borders
-                else if (this.Width < 1700 && this.Width > 1500)
+                if (this.Width < 1700 /*&& (this.Width > 1500 || !_isMax)*/)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.SecondLevel);
@@ -438,24 +464,21 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //AllChats Closing
-                else if (this.Width < 1500 && this.Width > 1300)
+                if (this.Width < 1500 /*&& (this.Width > 1300 || !_isMax)*/)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.ThirdLevel);
-
 
                     SetWindowSizeType(Enums.SizerActionType.ThirdLevel);
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //Temp chat is closing + Tabs is going to top
-                else if (this.Width < 1300 && this.Width > 1000)
+                if (this.ActualWidth < 1300 /*&& (this.Width > 1000 || !_isMax)*/)
                 {
-
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
                 }
             }
-
 
             return;
             //Optional (the smallest one)
@@ -490,7 +513,7 @@ namespace TelegramVisualPart
         private bool _isMouseDown = false;
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
-        {            
+        {
             //SetMainPageOnWindowSizeChange();
             if (e.ButtonState == MouseButtonState.Pressed)
             {
@@ -663,5 +686,6 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage chatPage)
                 chatPage.UpdateTabsPlacement();
         }
+
     }
 }
