@@ -438,8 +438,17 @@ namespace TelegramVisualPart
             _chosenWindowSizeType = type;
         }
 
+        private (double width, double height) _tempSize = (0,0);
+
         public void SetMainChatPagePartsSize()
         {
+/*            if (this.ActualWidth != _tempSize.width ||
+                this.ActualHeight != _tempSize.height)
+            {
+                _tempSize = (this.ActualWidth, this.ActualHeight);
+            }
+            else return;*/
+
             //From The most
             if (MainFrame.Content is MainChatPage mainChatPage)
             {

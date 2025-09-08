@@ -30,11 +30,11 @@
                     <Rectangle Fill="{StaticResource TempActiveTextColor}" Height="2" VerticalAlignment="Bottom" Margin="10,0"/>
                 </Grid>
 
-               <!-- <autoDelControls:SpecialListBox x:Name="DaysSpecial"/>
+                <autoDelControls:SpecialListBox x:Name="DaysSpecial"/>
                 <autoDelControls:SpecialListBox x:Name="MonthsSpecial" Grid.Column="1"/>
                 <autoDelControls:SpecialListBox x:Name="YearSpecial" Grid.Column="2"/>
--->
-                <ScrollViewer Grid.Column="0" Name="DaysScroll"
+
+                <!--<ScrollViewer Grid.Column="0" Name="DaysScroll"
                       PreviewMouseWheel="DaysScroll_PreviewMouseWheel"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Center"
@@ -68,7 +68,7 @@
                     <StackPanel x:Name="YearPanel">
 
                     </StackPanel>
-                </ScrollViewer>
+                </ScrollViewer>-->
             </Grid>
 
 

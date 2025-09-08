@@ -24,6 +24,7 @@
                    FontSize="20" Foreground="{StaticResource UsualTextColor}" Margin="25 0 0 0"/>
 
             <TextBox Grid.Row="1" Name="UserNameBox"
+                  PreviewTextInput="UserNameBox_PreviewTextInput"
                   Foreground="{StaticResource UsualTextColor}" Margin="25 15 15 15" FontSize="16"
                   materialDesign:HintAssist.Hint="@username"
                   materialDesign:HintAssist.FloatingScale="0.8"

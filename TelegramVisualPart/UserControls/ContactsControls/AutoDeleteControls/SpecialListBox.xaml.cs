@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using TelegramLib.Enums.Chat;
 
@@ -12,6 +13,8 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
     /// </summary>
     public partial class SpecialListBox : UserControl
     {
+        public event Action SelectedIndexUpdate;
+
         private const int _borderVal = 2;
         private readonly Dictionary<int, string> _voc = new Dictionary<int, string>()
         {
@@ -78,22 +81,50 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         }
 
         private int _selectedIndex = 2;
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+
+        public int GetSelectedIndex()
+        {
+            return _selectedIndex;
+        }
+
+        public void SetSelectedIndex(int index)
+        {
+            _selectedIndex = index;
+        }
+
+        public void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (CheckPanel.Children.Count == 0)
                 return;
 
-            if (e.Delta < 0)
+            /*            if (e.Delta < 0)
+                            _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
+                        else if (e.Delta > 0)
+                            _selectedIndex = Math.Max(2, _selectedIndex - 1);
+
+                        var selectedElement = CheckPanel.Children[_selectedIndex] as UIElement;
+                        CenterElementInScrollViewer(selectedElement);*/
+
+            UpdateSelectedItem(e.Delta);
+
+            //HighlightSelectedElement(_selectedIndex); 
+            //e.Handled = true;
+        }
+
+        public void UpdateSelectedItem(double delta)
+        {
+            if (delta < 0)
                 _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
-            else if (e.Delta > 0)
+            else if (delta > 0)
                 _selectedIndex = Math.Max(2, _selectedIndex - 1);
 
             var selectedElement = CheckPanel.Children[_selectedIndex] as UIElement;
             CenterElementInScrollViewer(selectedElement);
 
-            //HighlightSelectedElement(_selectedIndex); 
-            e.Handled = true;
+            SelectedIndexUpdate?.Invoke();
         }
+
+
 
         public AutoDeleteType GetChosenAutoDelItem()
         {
@@ -102,8 +133,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
         private void CenterElementInScrollViewer(UIElement element)
         {
-            if (element == null)
-                return;
+            if (element == null) return;
 
             var transform = element.TransformToAncestor(ScrollView);
             Point position = transform.Transform(new Point(0, 0));
@@ -112,7 +142,39 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             double scrollViewerCenter = ScrollView.ViewportHeight / 2;
 
             double offset = ScrollView.VerticalOffset + (elementCenter - scrollViewerCenter);
-            ScrollView.ScrollToVerticalOffset(offset);
+
+            offset = Math.Max(0, Math.Min(offset, ScrollView.ScrollableHeight));
+
+
+            SmoothScrollTo(offset);
+            //ScrollView.ScrollToVerticalOffset(offset);
+        }
+
+        private void SmoothScrollTo(double targetOffset)
+        {
+            double start = ScrollView.VerticalOffset;
+
+            var animation = new DoubleAnimation
+            {
+                From = start,
+                To = targetOffset,
+                Duration = TimeSpan.FromMilliseconds(75),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            var clock = animation.CreateClock();
+
+            clock.CurrentTimeInvalidated += (s, e) =>
+            {
+                if (clock.CurrentProgress.HasValue)
+                {
+                    double progress = clock.CurrentProgress.Value;
+                    double current = start + (targetOffset - start) * progress;
+                    ScrollView.ScrollToVerticalOffset(current);
+                }
+            };
+
+            clock.Controller.Begin();
         }
 
         private void HighlightSelectedElement(int selectedIndex)
@@ -127,9 +189,11 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         }
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
+            if (CheckPanel.Children.Count != 0) return;
+
             foreach (var val in _voc)
             {
-                TextBlock block =  GetTextBlock(val.Value);
+                TextBlock block = GetTextBlock(val.Value);
                 CheckPanel.Children.Add(block);
             }
 
@@ -150,7 +214,80 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
                 Foreground = new SolidColorBrush(Colors.Gray)
             };
 
+            res.MouseLeftButtonDown += TextBlock_MouseLeftButtonDown;
+            res.MouseLeftButtonUp += TextBlock_MouseLeftButtonUp;
+            res.MouseMove += TextBlock_MouseMove;
+
             return res;
+        }
+
+        private bool _isDragging = false;
+        private Point _startPoint;
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isDragging = true;
+            _startPoint = e.GetPosition(ScrollView);
+            (sender as TextBlock).CaptureMouse();
+        }
+
+        private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isDragging = false;
+            (sender as TextBlock).ReleaseMouseCapture();
+
+            //to make here a helper which moves to right pos
+            //(when upped between two values)
+
+            ValueByIndex(1);
+        }
+
+        private void TextBlock_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDragging)
+            {
+                Point currentPoint = e.GetPosition(ScrollView);
+                double delta = currentPoint.Y - _startPoint.Y;
+
+                // Скролим ScrollViewer
+                ScrollView.ScrollToVerticalOffset(ScrollView.VerticalOffset - delta);
+
+                UpdatePressMoveSelectedIndex(delta);
+                //UpdateSelectedItem(delta);
+                //UpdateSelectedItem();
+
+                _startPoint = currentPoint;
+            }
+        }
+
+        private double _accumulatedDelta = 0;
+        private const int _thresholdValue = 30;
+
+        public void UpdatePressMoveSelectedIndex(double delta)
+        {
+            _accumulatedDelta += delta;
+
+            while (_accumulatedDelta <= -_thresholdValue)
+            {
+                //_selectedIndex = Math.Min(CheckPanel.Children.Count - 1, _selectedIndex + 1);
+                _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
+
+                _accumulatedDelta += _thresholdValue;
+                CenterElementInScrollViewer(CheckPanel.Children[_selectedIndex] as UIElement);
+
+                SelectedIndexUpdate?.Invoke();
+            }
+
+            while (_accumulatedDelta >= _thresholdValue)
+            {
+                //_selectedIndex = Math.Max(0, _selectedIndex - 1);
+                _selectedIndex = Math.Max(2, _selectedIndex - 1);
+
+                _accumulatedDelta -= _thresholdValue;
+                CenterElementInScrollViewer(CheckPanel.Children[_selectedIndex] as UIElement);
+
+                SelectedIndexUpdate?.Invoke();
+            }
         }
 
         public void SetListWithBlocks(List<string> toAdd)
@@ -162,6 +299,11 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
                 TextBlock block = GetTextBlock(toAdd[i]);
                 CheckPanel.Children.Add(block);
             }
+        }
+
+        public void ClearCheckPanel()
+        {
+            CheckPanel.Children.Clear();
         }
     }
 }

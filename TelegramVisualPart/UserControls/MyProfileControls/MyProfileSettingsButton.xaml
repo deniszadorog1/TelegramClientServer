@@ -8,6 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="400"
              Height="40"
+             Background="Transparent"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">
     <Grid>

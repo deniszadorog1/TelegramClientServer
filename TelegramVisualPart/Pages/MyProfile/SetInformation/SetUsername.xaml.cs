@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetUsername : Page
     {
+        private const int _minAmountOfSymbols = 5;
         private User _user;
         public SetUsername(User user)
         {
@@ -48,6 +50,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            if (UserNameBox.Text.Count() <= _minAmountOfSymbols) return;
+
             //Set checks if this is exist
             //+ Set Changings in DB
 
@@ -61,6 +65,12 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();
+        }
+
+        private void UserNameBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z0-9_]$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

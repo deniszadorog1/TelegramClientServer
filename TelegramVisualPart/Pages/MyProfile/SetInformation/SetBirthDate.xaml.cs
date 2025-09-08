@@ -53,157 +53,237 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             _user = user;
             InitializeComponent();
 
-            SetBasicParams();
+            //SetBasicParams();
 
             //By temp item thing
-            SetStartDate();
             FillListsWithCustomControl();
+            SetStartDate();
         }
 
         public void FillListsWithCustomControl()
         {
+            //Set year 
+            SetYears();
 
+            //Set month
+            SetMonths();
+
+            //Set day
+            SetDays();
+            SetDaysUpdate();
+        }
+
+        public void SetDaysUpdate()
+        {
+            MonthsSpecial.SelectedIndexUpdate += () =>
+            {
+                SetDays();
+            };
+        }
+
+        public void SetDays()
+        {
+            int chosenMonth = MonthsSpecial.GetSelectedIndex() - 1;
+
+            int days = DateTime.DaysInMonth(_minYear + YearSpecial.GetSelectedIndex(), chosenMonth);
+            DaysSpecial.ClearCheckPanel();
+
+            List<string> daysList = new List<string>();
+            daysList.Add(" ");
+            daysList.Add(" ");
+
+            for (int i = 1; i <= days; i++)
+            {
+                daysList.Add(i.ToString());
+            }
+
+            daysList.Add(" ");
+            daysList.Add(" ");
+
+            DaysSpecial.SetListWithBlocks(daysList);
+        }
+
+
+        public void SetMonths()
+        {
+            List<string> monthsList = new List<string>();
+
+            foreach (var month in _months)
+            {
+                monthsList.Add(month.Value);
+            }
+
+            MonthsSpecial.SetListWithBlocks(monthsList);
+        }
+
+        public void SetYears()
+        {
+            List<string> yearList = new List<string>();
+            //Set values in list
+            yearList.Add(" ");
+            yearList.Add(" ");
+
+            for (int i = _minYear; i <= DateTime.Now.Year; i++)
+            {
+                yearList.Add(i.ToString());
+            }
+
+            yearList.Add(" ");
+            yearList.Add(" ");
+
+            //Set year list with blocks
+            YearSpecial.SetListWithBlocks(yearList);
         }
 
 
         public void SetStartDate()
         {
             if (_user.BirthDay is null) return;
+
+            //DaysSpecial.SetSelectedIndex(1);
+            DaysSpecial.ValueByIndex(_user.BirthDay.Value.Day);
+
+            //MonthsSpecial.SetSelectedIndex(1);
+            MonthsSpecial.ValueByIndex(_user.BirthDay.Value.Month);
+
+            //YearSpecial.SetSelectedIndex(2);
+            YearSpecial.ValueByIndex((_user.BirthDay.Value.Year - _minYear) + 1);
+
             //Set day
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                _selectedDayIndex = _user.BirthDay.Value.Day + 1;
-                DaysScroll_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+            /*            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                        {
+                            DaysSpecial.SetSelectedIndex(_user.BirthDay.Value.Day + 1);
+                            DaysSpecial.ScrollViewer_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+                            {
+                                RoutedEvent = UIElement.PreviewMouseWheelEvent,
+                                Source = DaysSpecial.ScrollView
+                            });
+                        }));
+
+                        //Set month
+                        Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                        {
+                            MonthsSpecial.SetSelectedIndex(_user.BirthDay.Value.Month + 1);
+                            MonthsSpecial.ScrollViewer_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+                            {
+                                RoutedEvent = UIElement.PreviewMouseWheelEvent,
+                                Source = MonthsSpecial.ScrollView
+                            });
+                        }));*/
+
+            /*          //Set Year   
+                      Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                      {
+                          _selectedYearIndex = (_user.BirthDay.Value.Year - _minYear) + 2;
+                          YearScroll_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+                          {
+                              RoutedEvent = UIElement.PreviewMouseWheelEvent,
+                              Source = YearScroll
+                          });
+                      }));*/
+
+        }
+        /*        public void SetBasicParams()
                 {
-                    RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                    Source = DaysScroll
-                });
-            }));
-
-            //Set month
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                _selectedMonthIndex = _user.BirthDay.Value.Month + 1;
-                MonthScroll_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+                    SetDays();
+                    SetMonths();
+                    SetYears();
+                }
+        */
+        /*        public int chosenMonth = 1;
+                public int _selectedDayIndex = 2;
+                public void SetDays()
                 {
-                    RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                    Source = MonthScroll
-                });
-            }));
+                    int days = DateTime.DaysInMonth(_minYear + _selectedYearIndex, chosenMonth);
+                    DaysPanel.Children.Clear();
 
-            //Set Year   
-            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                _selectedYearIndex =  (_user.BirthDay.Value.Year - _minYear) + 2;
-                YearScroll_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
+                    DaysPanel.Children.Add(GetTextBlock(" "));
+                    DaysPanel.Children.Add(GetTextBlock(" "));
+
+                    for (int i = 1; i <= days; i++)
+                    {
+                        DaysPanel.Children.Add(GetTextBlock($"{i}"));
+                    }
+
+                    DaysPanel.Children.Add(GetTextBlock(" "));
+                    DaysPanel.Children.Add(GetTextBlock(" "));
+                }
+
+                private void DaysScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
                 {
-                    RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                    Source = YearScroll
-                });
-            }));
+                    if (DaysPanel.Children.Count == 0)
+                        return;
 
-        }
-        public void SetBasicParams()
-        {
-            SetDays();
-            SetMonths();
-            SetYears();
-        }
+                    if (e.Delta < 0)
+                        _selectedDayIndex = Math.Min(DaysPanel.Children.Count - 1 - 2, _selectedDayIndex + 1);
+                    else if (e.Delta > 0)
+                        _selectedDayIndex = Math.Max(2, _selectedDayIndex - 1);
 
-        public int chosenMonth = 1;
-        public int _selectedDayIndex = 2;
-        public void SetDays()
-        {
-            int days = DateTime.DaysInMonth(_minYear + _selectedYearIndex, chosenMonth);
-            DaysPanel.Children.Clear();
+                    var selectedElement = DaysPanel.Children[_selectedDayIndex] as UIElement;
+                    CenterElementInScrollViewer(selectedElement, DaysScroll);
 
-            DaysPanel.Children.Add(GetTextBlock(" "));
-            DaysPanel.Children.Add(GetTextBlock(" "));
+                    e.Handled = true;
+                }
 
-            for (int i = 1; i <= days; i++)
-            {
-                DaysPanel.Children.Add(GetTextBlock($"{i}"));
-            }
+                public void SetYears()
+                {
+                    YearPanel.Children.Add(GetTextBlock(" "));
+                    YearPanel.Children.Add(GetTextBlock(" "));
 
-            DaysPanel.Children.Add(GetTextBlock(" "));
-            DaysPanel.Children.Add(GetTextBlock(" "));
-        }
+                    for (int i = _minYear; i <= DateTime.Now.Year; i++)
+                    {
+                        YearPanel.Children.Add(GetTextBlock($"{i}"));
+                    }
 
-        private void DaysScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (DaysPanel.Children.Count == 0)
-                return;
+                    YearPanel.Children.Add(GetTextBlock(" "));
+                    YearPanel.Children.Add(GetTextBlock(" "));
+                }
 
-            if (e.Delta < 0)
-                _selectedDayIndex = Math.Min(DaysPanel.Children.Count - 1 - 2, _selectedDayIndex + 1);
-            else if (e.Delta > 0)
-                _selectedDayIndex = Math.Max(2, _selectedDayIndex - 1);
+                public void SetMonths()
+                {
+                    foreach (var month in _months)
+                    {
+                        MonthPanel.Children.Add(GetTextBlock(month.Value));
+                    }
+                }
 
-            var selectedElement = DaysPanel.Children[_selectedDayIndex] as UIElement;
-            CenterElementInScrollViewer(selectedElement, DaysScroll);
+                private int _selectedMonthIndex = 2;
+                private void MonthScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+                {
+                    if (MonthPanel.Children.Count == 0)
+                        return;
 
-            e.Handled = true;
-        }
+                    if (e.Delta < 0)
+                        _selectedMonthIndex = Math.Min(MonthPanel.Children.Count - 1 - 2, _selectedMonthIndex + 1);
+                    else if (e.Delta > 0)
+                        _selectedMonthIndex = Math.Max(2, _selectedMonthIndex - 1);
 
-        public void SetYears()
-        {
-            YearPanel.Children.Add(GetTextBlock(" "));
-            YearPanel.Children.Add(GetTextBlock(" "));
+                    var selectedElement = MonthPanel.Children[_selectedMonthIndex] as UIElement;
+                    CenterElementInScrollViewer(selectedElement, MonthScroll);
 
-            for (int i = _minYear; i <= DateTime.Now.Year; i++)
-            {
-                YearPanel.Children.Add(GetTextBlock($"{i}"));
-            }
+                    e.Handled = true;
 
-            YearPanel.Children.Add(GetTextBlock(" "));
-            YearPanel.Children.Add(GetTextBlock(" "));
-        }
+                    chosenMonth = _selectedMonthIndex - 1;
+                    SetDays();
+                }
 
-        public void SetMonths()
-        {
-            foreach (var month in _months)
-            {
-                MonthPanel.Children.Add(GetTextBlock(month.Value));
-            }
-        }
+                private int _selectedYearIndex = 2;
+                private void YearScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+                {
+                    if (YearPanel.Children.Count == 0)
+                        return;
 
-        private int _selectedMonthIndex = 2;
-        private void MonthScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (MonthPanel.Children.Count == 0)
-                return;
+                    if (e.Delta < 0)
+                        _selectedYearIndex = Math.Min(YearPanel.Children.Count - 1 - 2, _selectedYearIndex + 1);
+                    else if (e.Delta > 0)
+                        _selectedYearIndex = Math.Max(2, _selectedYearIndex - 1);
 
-            if (e.Delta < 0)
-                _selectedMonthIndex = Math.Min(MonthPanel.Children.Count - 1 - 2, _selectedMonthIndex + 1);
-            else if (e.Delta > 0)
-                _selectedMonthIndex = Math.Max(2, _selectedMonthIndex - 1);
+                    var selectedElement = YearPanel.Children[_selectedYearIndex] as UIElement;
+                    CenterElementInScrollViewer(selectedElement, YearScroll);
 
-            var selectedElement = MonthPanel.Children[_selectedMonthIndex] as UIElement;
-            CenterElementInScrollViewer(selectedElement, MonthScroll);
-
-            e.Handled = true;
-
-            chosenMonth = _selectedMonthIndex - 1;
-            SetDays();
-        }
-
-        private int _selectedYearIndex = 2;
-        private void YearScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (YearPanel.Children.Count == 0)
-                return;
-
-            if (e.Delta < 0)
-                _selectedYearIndex = Math.Min(YearPanel.Children.Count - 1 - 2, _selectedYearIndex + 1);
-            else if (e.Delta > 0)
-                _selectedYearIndex = Math.Max(2, _selectedYearIndex - 1);
-
-            var selectedElement = YearPanel.Children[_selectedYearIndex] as UIElement;
-            CenterElementInScrollViewer(selectedElement, YearScroll);
-
-            //HighlightSelectedElement(_selectedIndex); 
-            e.Handled = true;
-        }
+                    //HighlightSelectedElement(_selectedIndex); 
+                    e.Handled = true;
+                }*/
 
         private void CenterElementInScrollViewer(UIElement element, ScrollViewer scroll)
         {
@@ -234,13 +314,13 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             };
 
             block.PreviewMouseDown += ChooseBlock_PreviewMouseDown;
-            
+
             return block;
         }
 
-/*        private bool _isSelecting = false;
-        private double _baseY;
-        private int _baseIndex;*/
+        /*        private bool _isSelecting = false;
+                private double _baseY;
+                private int _baseIndex;*/
         public void ChooseBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             /*            if (e.OriginalSource is TextBlock tb)
@@ -254,23 +334,23 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
             if (sender is not TextBlock block ||
                 string.IsNullOrWhiteSpace(block.Text)) return;
-            CenterElementInScrollViewer(block, GetScrollViewerByTextBlock(block));
+            //CenterElementInScrollViewer(block, GetScrollViewerByTextBlock(block));
         }
 
-        public ScrollViewer GetScrollViewerByTextBlock(TextBlock block)
-        {
-            return DaysPanel.Children.Contains(block) ? DaysScroll :
-                MonthPanel.Children.Contains(block) ? MonthScroll :
-                YearScroll;
-        }
-
+        /*        public ScrollViewer GetScrollViewerByTextBlock(TextBlock block)
+                {
+                    return DaysPanel.Children.Contains(block) ? DaysScroll :
+                        MonthPanel.Children.Contains(block) ? MonthScroll :
+                        YearScroll;
+                }
+        */
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Make check for date
-            int day = _selectedDayIndex - 1;
-            int month = _selectedMonthIndex - 1;
-            int year = _minYear + _selectedYearIndex - 2;
+            int day = DaysSpecial.GetSelectedIndex() - 1;
+            int month = MonthsSpecial.GetSelectedIndex() - 1;
+            int year = _minYear + YearSpecial.GetSelectedIndex() - 2;
 
             _user.BirthDay = new DateTime(year, month, day);
 
