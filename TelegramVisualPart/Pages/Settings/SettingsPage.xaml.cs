@@ -15,13 +15,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
+using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
 using static System.Net.Mime.MediaTypeNames;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.Settings
 {
@@ -166,6 +169,36 @@ namespace TelegramVisualPart.Pages.Settings
         private void Page_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             LogOutMenu.Visibility = Visibility.Hidden;
+        }
+
+        private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            string firstImage = _system.LoggedUser.GetFirstImageName().Name;
+            Image chosen = FilesAction.GetUserImage(firstImage);
+
+            List<Image> imgs = FilesAction.GetUserImages(_system.LoggedUser.GetImagesNames());
+            VisualActionPage page = new VisualActionPage(chosen, imgs);
+            page.SetUserImages(_system.LoggedUser.UserImages, _system, _system.LoggedUser.Name, true, null);
+
+            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+        }
+
+        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
+        }
+
+        private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserIcon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
     }
 }

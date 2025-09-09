@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.Services;
@@ -177,6 +178,18 @@ namespace TelegramVisualPart
             ThirdFrame.Effect = null;
         }
 
+        private void ClearShadowGridEffect(Grid shadowGrid, Frame frame)
+        {
+            SolidColorBrush transparentColor =
+                new SolidColorBrush(Colors.Transparent);
+
+            shadowGrid.Background = transparentColor;
+            frame.Effect = null;
+            /*
+                        FirstFrameShadow.Background = transparentColor;
+                        MainFrame.Effect = null;*/
+        }
+
         public void ClearShadowOfFrame(Frame frame)
         {
             SolidColorBrush trancFrame = new SolidColorBrush(Colors.Transparent);
@@ -199,7 +212,13 @@ namespace TelegramVisualPart
             //SecondaryFrame.Visibility = Visibility.Hidden;
             SecondaryFrame.Content = null;
             MainFrame.Effect = null;
-            ClearShadowGridsAndEffects();
+            //ClearShadowGridsAndEffects();
+
+            /*            MainFrame.Effect = null;
+                        MainFrame.Background = Brushes.Transparent;
+                        FirstFrameShadow.Background = Brushes.Transparent;
+            */
+            ClearShadowGridEffect(FirstFrameShadow, MainFrame);
         }
 
         public void SetMainFrame(Page page)
@@ -225,7 +244,7 @@ namespace TelegramVisualPart
         {
             if (ThirdFrame.Content is null) return;
 
-            UpdatePrivacyAndScurity();
+            UpdatePrivacyAndSecurity();
 
             //ThirdFrame.Visibility = Visibility.Hidden;
             ThirdFrame.Content = null;
@@ -233,10 +252,14 @@ namespace TelegramVisualPart
             SecondaryFrame.Effect = null;
             SecondaryFrame.Background = null;
             MainFrame.Background = Brushes.Transparent;
-            ClearShadowGridsAndEffects();
+            SecondFrameShadow.Background = Brushes.Transparent;
+            SecondaryFrame.Effect = null;
+
+            //ClearShadowGridsAndEffects();
+            ClearShadowGridEffect(ThirdFrameShadow, ThirdFrame);
         }
 
-        public void UpdatePrivacyAndScurity()
+        public void UpdatePrivacyAndSecurity()
         {
             if (SecondaryFrame.Content is PrivacyAndSecurity privSettings)
             {
@@ -423,13 +446,14 @@ namespace TelegramVisualPart
 
         private void Window_LayoutUpdated(object sender, EventArgs e)
         {
-            SetMainChatPagePartsSize();
+            //SetMainChatPagePartsSize();
         }
 
         private Enums.SizerActionType? _chosenWindowSizeType;
 
         public Enums.SizerActionType? GetWindowSizeType()
         {
+            if (_isMax) return null;
             return _chosenWindowSizeType;
         }
 
@@ -438,16 +462,16 @@ namespace TelegramVisualPart
             _chosenWindowSizeType = type;
         }
 
-        private (double width, double height) _tempSize = (0,0);
+        private (double width, double height) _tempSize = (0, 0);
 
         public void SetMainChatPagePartsSize()
         {
-/*            if (this.ActualWidth != _tempSize.width ||
-                this.ActualHeight != _tempSize.height)
-            {
-                _tempSize = (this.ActualWidth, this.ActualHeight);
-            }
-            else return;*/
+            /*            if (this.ActualWidth != _tempSize.width ||
+                            this.ActualHeight != _tempSize.height)
+                        {
+                            _tempSize = (this.ActualWidth, this.ActualHeight);
+                        }
+                        else return;*/
 
             //From The most
             if (MainFrame.Content is MainChatPage mainChatPage)
@@ -490,11 +514,6 @@ namespace TelegramVisualPart
             }
 
             return;
-            //Optional (the smallest one)
-            //page which is not on secondary frame moves to main frame
-            //When window getting bigger it moves to Secondary frame
-
-
 
         }
 

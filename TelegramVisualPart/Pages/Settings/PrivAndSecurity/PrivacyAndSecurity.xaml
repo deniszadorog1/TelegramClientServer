@@ -9,7 +9,7 @@
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
       mc:Ignorable="d" 
       d:DesignHeight="665" d:DesignWidth="400"
-      Height="665" Width="400" VerticalAlignment="Top"
+      Height="665" Width="400" 
       MaxHeight="665"
       Title="PrivacyAndSecurity">
 

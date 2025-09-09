@@ -130,8 +130,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         {
             if(sender is EnumPrivacyButton but)
             {
-                Page page = GetPageForBut(but.Name);
-
+                Page? page = GetPageForBut(but.Name);
                 if (page is null) return;
 
                 if (page is SetLocalCode || page is BlockedUsers)

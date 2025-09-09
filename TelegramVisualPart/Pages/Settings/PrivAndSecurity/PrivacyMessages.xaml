@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity"
       mc:Ignorable="d" 
       d:DesignHeight="250" d:DesignWidth="400"
-      Height="250" Width="400"
-      VerticalAlignment="Top" Margin="0 75 0 0"
+      Height="250" Width="400" 
       Title="PrivacyMessages">
     <Border Name="BgBorder"  CornerRadius="15"
             Background="{StaticResource DarkThemeOne}">

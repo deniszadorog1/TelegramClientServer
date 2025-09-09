@@ -8,9 +8,7 @@
       xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       mc:Ignorable="d" 
       d:DesignHeight="550" d:DesignWidth="475"
-      Height="550" Width="475"
-      VerticalAlignment="Top" HorizontalAlignment="Center"
-      Margin="0 50 0 0"
+      Height="550" Width="475" HorizontalAlignment="Center"
       Title="LoggedUserProfile">
 
     <Border Background="{StaticResource DarkThemeOne}" CornerRadius="10">

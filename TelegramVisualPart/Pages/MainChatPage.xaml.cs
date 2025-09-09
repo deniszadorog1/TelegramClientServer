@@ -910,14 +910,14 @@ namespace TelegramVisualPart.Pages
 
         public void UpdateTabsPlacement()
         {
-            ChageLeftButsVisState(_system.Settings.IsTabsOnTheLeft);
+            ChangeLeftButsVisState(_system.Settings.IsTabsOnTheLeft);
         }
 
         private const int _leftButWidth = 100;
         private const int _hamburgIconWidth = 65;
         private const int _folderSliderHeight = 25;
 
-        public void ChageLeftButsVisState(bool isShow)
+        public void ChangeLeftButsVisState(bool isShow)
         {
             //Left buttins width
             LeftButtonsColumn.Width = isShow ? new GridLength(_leftButWidth) :
@@ -990,7 +990,7 @@ namespace TelegramVisualPart.Pages
                 case SizerActionType.FourthLevel:
                     {
                         _system.Settings.IsTabsOnTheLeft = false;
-                        ChageLeftButsVisState(false);
+                        ChangeLeftButsVisState(false);
                         SetClosingChatColumn();
                         return;
                     }
@@ -1027,7 +1027,7 @@ namespace TelegramVisualPart.Pages
         private void ClearThirdLevelState() 
         {
             _system.Settings.IsTabsOnTheLeft = true;
-            ChageLeftButsVisState(true);
+            ChangeLeftButsVisState(true);
 
             ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
             ChatColumn.Width = new GridLength(0);
@@ -1109,6 +1109,7 @@ namespace TelegramVisualPart.Pages
 
             if (type is null) return;
 
+           
             if(type == SizerActionType.ThirdLevel)
             {
                 UserChat.SetVisibilityToBackBut(true);
@@ -1130,12 +1131,19 @@ namespace TelegramVisualPart.Pages
 
                 //Set leftButtons column.Width = 0
                 SetColumnMinWidth(LeftButtonsColumn, 0);
+                SetColumnWidth(LeftButtonsColumn, 0);
                 
                 //Set Grid Splitter column.Width = 0
                 SetColumnMinWidth(GridSplitterColumn, 0);
 
                 //Set TempChat column.Width = Star
                 ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+
+                SetColumnWidth(ChatsColumn, 0);
+
+                Console.WriteLine(ChatColumn.ActualWidth);
+                Console.WriteLine(ChatsColumn.ActualWidth);
+                Console.WriteLine(LeftButtonsColumn.ActualWidth);
             }
         }
 

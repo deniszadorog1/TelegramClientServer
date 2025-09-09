@@ -26,10 +26,8 @@
 
         <ToggleButton Name ="Toggle" Grid.Column="2" Width="40" Height="40"
                       HorizontalAlignment="Left" 
-              Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
-              ToolTip="MaterialDesignSwitchDarkToggleButton"                      
-              IsChecked="True" Background="{StaticResource TempActiveTextColor}"/>
-
-      
+                      Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
+                      ToolTip="{x:Null}"                      
+                      IsChecked="True" Background="{StaticResource TempActiveTextColor}"/>
     </Grid>
 </UserControl>

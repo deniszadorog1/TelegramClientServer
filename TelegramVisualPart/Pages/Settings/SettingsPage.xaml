@@ -71,6 +71,9 @@
                     </Grid.ColumnDefinitions>
 
                     <Ellipse Grid.Column="0" Name ="UserIcon" 
+                             PreviewMouseDown="UserIcon_PreviewMouseDown"
+                             MouseEnter="UserIcon_MouseEnter"
+                             MouseLeave="UserIcon_MouseLeave"
                          Width="75" Height="75" HorizontalAlignment="Center">
                         <Ellipse.Fill>
                             <ImageBrush x:Name="UserImage" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>

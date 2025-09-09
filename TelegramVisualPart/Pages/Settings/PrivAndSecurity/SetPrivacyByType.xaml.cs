@@ -606,7 +606,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         public void SetToChoosePage(ChooseType shareType, PrivacySub sub)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new ToChooseChats(shareType, _contacts, sub, _settings, _system));
+            ToChooseChats chatsPage = new ToChooseChats(shareType, _contacts, sub,
+                _settings, _system);
+
+            chatsPage.SetExtraPage(this);
+
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(chatsPage);
         }
 
         public PrivacySub GetSettingsTypeByPrivButton(EnumPrivacyButton but)

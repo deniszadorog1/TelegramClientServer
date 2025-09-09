@@ -10,8 +10,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="520" d:DesignWidth="400"
       Height="520" Width="400"
-      MaxHeight="520"
-      VerticalAlignment="Top" Margin="0 50 0 0"
+      MaxHeight="520" 
       Title="SetPrivacyByType">
 
     <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">

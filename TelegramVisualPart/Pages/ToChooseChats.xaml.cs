@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using ControlzEx.Standard;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -95,6 +97,8 @@ namespace TelegramVisualPart.Pages
 
         //Set here chosen contacts
         private PrivAndSecSettings _privSettings;
+        private Page _prevPage = null;
+
         public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub,
             PrivAndSecSettings settings, TelSystem system)
         {
@@ -110,6 +114,11 @@ namespace TelegramVisualPart.Pages
 
             SetContacts();
             SetChosenContacts();
+        }
+
+        public void SetExtraPage(Page page)
+        {
+            _prevPage = page;
         }
 
         private void SetChosenContacts()
@@ -192,6 +201,11 @@ namespace TelegramVisualPart.Pages
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
+            if(_prevPage is not null)
+            {
+                ((MainWindow)Window.GetWindow(this)).SetThirdFrame(_prevPage);
+                return;
+            }
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
@@ -205,9 +219,17 @@ namespace TelegramVisualPart.Pages
                 await SaveChosenContacts();
                 await CallSignalRMethods();
 
-                return;
+                //return;
             }
             else ApplyAutoDeletion();
+
+
+            if (_prevPage is not null)
+            {
+                ((MainWindow)Window.GetWindow(this)).SetThirdFrame(_prevPage);
+                return;
+            }
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
