@@ -19,7 +19,7 @@
         >
     <Border Background="Transparent" CornerRadius="8" Padding="10" Opacity="0.9">
         <StackPanel Name="MessagesStack" Orientation="Vertical">
-            
+
         </StackPanel>
     </Border>
 </Window>

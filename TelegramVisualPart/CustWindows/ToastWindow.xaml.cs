@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.Notifs;
+using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy;
 
 namespace TelegramVisualPart.CustWindows
@@ -26,6 +27,7 @@ namespace TelegramVisualPart.CustWindows
             InitializeComponent();
         }
 
+        //Items notifications
         private int _amountTestMessages;
         private NotifMessageSide _side;
         public ToastWindow(int amountTestMessages, NotifMessageSide side)
@@ -109,6 +111,10 @@ namespace TelegramVisualPart.CustWindows
                 MessagesStack.Children.Add(message);
             }
         }
+
+
+
+
 
     }
 }

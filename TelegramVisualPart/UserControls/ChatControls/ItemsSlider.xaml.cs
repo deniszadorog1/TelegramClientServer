@@ -79,14 +79,27 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 Text = name,
                 Margin = new Thickness(5, 0, 5, 0),
                 HorizontalAlignment = HorizontalAlignment.Left,
+                Background = Brushes.Transparent
             };
 
             block.PreviewMouseDown += SetAnimation_PreviewMouseDown;
+
+            block.MouseEnter += TextBlock_MouseEnter;
+            block.MouseLeave += TextBlock_MouseLeave;
 
             if (isAllChats) block.PreviewMouseDown += SetAllChats_PreviewMouseDown;
             else block.PreviewMouseDown += SetFolderChats_PreviewMouseDown;
 
             TabsPanel.Children.Add(block);
+        }
+
+        public void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+        public void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
         }
 
         public void SetAllChats_PreviewMouseDown(object sender, MouseButtonEventArgs e)

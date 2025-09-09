@@ -18,6 +18,7 @@ using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
@@ -538,7 +539,16 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        private void UserChat_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void UserChat_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.ListBoxItem item ||
+                item.Content is not UserTalkMessage talkControl) return;
+
+            //Set UserControl
+
+        }
+
+        private void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
@@ -689,6 +699,7 @@ namespace TelegramVisualPart.Pages
         {
             FolderSliderRow.Height = new GridLength(0);
             if (SearchMessageGrid.Visibility != Visibility.Visible) SetSearchBoxVisible();
+            CrossSearchColumn.Width = new GridLength(40);
         }
 
         public void SetSearchBoxVisible()
@@ -706,6 +717,7 @@ namespace TelegramVisualPart.Pages
             if (SearchMessageGrid.Visibility != Visibility.Visible) HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
             ChatsColumn.MinWidth = 50;
+            CrossSearchColumn.Width = new GridLength(0);
 
             if (!_system.Settings.IsTabsOnTheLeft)
                 FolderSliderRow.Height = new GridLength(_folderSliderHeight);
@@ -749,7 +761,8 @@ namespace TelegramVisualPart.Pages
 
                 item.Content = await GetTalkMessage(i);
 
-                item.PreviewMouseDown += UserChat_PreviewMouseDown;
+                item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
+                item.PreviewMouseRightButtonDown += TalkMessage_PreviewRightMouseDown;
                 item.MouseEnter += UserChat_MouseEnter;
                 item.MouseLeave += UserChat_MouseLeave;
                 ChatsBox.Items.Add(item);
@@ -883,7 +896,8 @@ namespace TelegramVisualPart.Pages
                          Content = message
                      };
 
-                item.PreviewMouseDown += UserChat_PreviewMouseDown;
+                item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
+                item.PreviewMouseRightButtonDown += TalkMessage_PreviewRightMouseDown;
                 item.MouseEnter += UserChat_MouseEnter;
                 item.MouseLeave += UserChat_MouseLeave;
                 ChatsBox.Items.Add(item);
@@ -892,6 +906,69 @@ namespace TelegramVisualPart.Pages
             HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
         }
+
+        public void TalkMessage_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListBoxItem boxItem) return;
+            if (boxItem.Content is not UserTalkMessage targetElement) return;
+
+
+            //Get Position point
+            Point relativePoint =  e.GetPosition(this);
+
+            //Get point to menu
+            Point point = new Point(relativePoint.X /*+ targetElement.ActualWidth + 5*/, relativePoint.Y - 15);
+
+            AddMenuElement(new UserChatMenu(), point);
+        }
+
+        public void AddSubMenu(ToAddSubMenuType type, Point enteredItemPoint)
+        {
+            //To show subMenu
+
+            //Get cord of main sub menu
+            Point point = GetCordOfMainMenu();
+        
+            //Set subMenu pooint
+            Point subMenuPoint = new Point(point.X + GetMenuWidth(), point.Y + enteredItemPoint.Y);
+
+            //Add new SubMenu
+            UserChatMenu subMenu = new UserChatMenu();
+            subMenu.SetSubMenu(type);
+
+            AddMenuElement(subMenu, subMenuPoint);
+        }
+
+        public double GetMenuWidth()
+        {
+            UserChatMenu? menu =
+                MenusCan.Children.OfType<UserChatMenu>().FirstOrDefault();
+
+            return menu is null ? 100 : menu.ActualWidth;
+        }
+
+        public Point GetCordOfMainMenu()
+        {
+            UserChatMenu? menu =  
+                MenusCan.Children.OfType<UserChatMenu>().FirstOrDefault();
+
+            return menu is null ? new Point() : 
+                new Point(Canvas.GetLeft(menu), Canvas.GetTop(menu));
+        }
+
+        public void AddMenuElement(UserChatMenu menu, Point cordPoint)
+        {
+            MenusCan.Children.Add(menu);
+
+            Canvas.SetLeft(menu, cordPoint.X);
+            Canvas.SetTop(menu, cordPoint.Y);
+        }
+
+        public void ClearMenusCanvas()
+        {
+            MenusCan.Children.Clear();
+        }
+
 
         public void UpdateFolders()
         {
@@ -950,15 +1027,15 @@ namespace TelegramVisualPart.Pages
 
         public void SetWindowSizerAction(bool isToClearFromPrevLevel = false)
         {
-            SizerActionType? type = 
+            SizerActionType? type =
                 ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
 
             if (isToClearFromPrevLevel) ClearPrevSizerChanges(type);
-/*            if (((MainWindow)Window.GetWindow(this)).IsWindowIsMaxSize() &&
-                ((MainWindow)Window.GetWindow(this)).GetMaxState())
-            {
-                ClearAllLevels();
-            }*/
+            /*            if (((MainWindow)Window.GetWindow(this)).IsWindowIsMaxSize() &&
+                            ((MainWindow)Window.GetWindow(this)).GetMaxState())
+                        {
+                            ClearAllLevels();
+                        }*/
             switch (type)
             {
                 case null:
@@ -1002,15 +1079,15 @@ namespace TelegramVisualPart.Pages
             if (tempSizeType is null ||
                 tempSizeType == SizerActionType.FourthLevel) return;
 
-            if(tempSizeType == SizerActionType.ThirdLevel)
+            if (tempSizeType == SizerActionType.ThirdLevel)
             {
                 ClearThirdLevelState();
             }
-            else if(tempSizeType == SizerActionType.SecondLevel)
+            else if (tempSizeType == SizerActionType.SecondLevel)
             {
                 ClearSecondLevelState();
             }
-            else if(tempSizeType == SizerActionType.FirstLevel)
+            else if (tempSizeType == SizerActionType.FirstLevel)
             {
                 //Set glued pos
                 UserChat.SetMessagesPosition(true);
@@ -1024,7 +1101,7 @@ namespace TelegramVisualPart.Pages
             UserChat.SetMessagesPosition(true);
         }
 
-        private void ClearThirdLevelState() 
+        private void ClearThirdLevelState()
         {
             _system.Settings.IsTabsOnTheLeft = true;
             ChangeLeftButsVisState(true);
@@ -1104,13 +1181,13 @@ namespace TelegramVisualPart.Pages
 
         public void SetSizerActionWithUserChatMouseDown()
         {
-            SizerActionType? type = 
+            SizerActionType? type =
                 ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
 
             if (type is null) return;
 
-           
-            if(type == SizerActionType.ThirdLevel)
+
+            if (type == SizerActionType.ThirdLevel)
             {
                 UserChat.SetVisibilityToBackBut(true);
 
@@ -1121,7 +1198,7 @@ namespace TelegramVisualPart.Pages
                 //Set TempChat column.Width = Star
                 ChatColumn.Width = new GridLength(1, GridUnitType.Star);
             }
-            else if(type == SizerActionType.FourthLevel)
+            else if (type == SizerActionType.FourthLevel)
             {
                 UserChat.SetVisibilityToBackBut(true);
 
@@ -1132,7 +1209,7 @@ namespace TelegramVisualPart.Pages
                 //Set leftButtons column.Width = 0
                 SetColumnMinWidth(LeftButtonsColumn, 0);
                 SetColumnWidth(LeftButtonsColumn, 0);
-                
+
                 //Set Grid Splitter column.Width = 0
                 SetColumnMinWidth(GridSplitterColumn, 0);
 
@@ -1164,10 +1241,12 @@ namespace TelegramVisualPart.Pages
             ChatColumn.Width = new GridLength(0);
 
             ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
-                //this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
+            //this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
 
-           // ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
+            // ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
         }
+
+       
 
     }
 }

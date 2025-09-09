@@ -24,7 +24,7 @@
 
             <Grid Grid.Row="0" Name ="UpperPart">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition x:Name="BackButColumn" Width="60"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
@@ -35,7 +35,7 @@
                                     Width="25" Height="25"
                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
 
-                <TextBlock Grid.Column="1" Text="Folders" Margin="35 0 0 0"
+                <TextBlock Grid.Column="1" Text="Folders" Margin="25 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
 

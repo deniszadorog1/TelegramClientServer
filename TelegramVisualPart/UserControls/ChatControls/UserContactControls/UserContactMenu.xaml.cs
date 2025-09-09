@@ -60,7 +60,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
             DeleteContact.IconType.Kind = PackIconKind.TrashCan;
             DeleteContact.ButName.Text = "Delete contact";
-            DeleteContact.IconType.Foreground = 
+            DeleteContact.IconType.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
             DeleteContact.ButName.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
@@ -68,7 +68,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(sender is MenuIconTextBut but)
+            if (sender is MenuIconTextBut but)
             {
                 Page page = GetPageToOpen(but.Name);
                 if (page is null) return;
@@ -82,7 +82,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                    name == DeleteContact.Name.ToString() ? new DeleteContact(_system.ChosenChatContact, _system) :
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, _system.ChosenChatContact) :
                    name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, _system.ChosenChatContact) :
-                   name == AddToFolder.Name.ToString() ? new FoldersPage(_system) : 
+                   name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
                    name == ShareContact.Name.ToString() ? new ShareContact(_system, _system.ChosenChatContact) : null;
         }
     }

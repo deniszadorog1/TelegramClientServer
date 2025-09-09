@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -23,6 +24,36 @@ namespace TelegramVisualPart.UserControls
         public ToggleIconBut()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            Background =
+                (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            Background = Brushes.Transparent;
+
+        }
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Toggle.IsChecked = !Toggle.IsChecked;
+            //Set toggle state Change
+        }
+
+        private void Toggle_Checked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void Toggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

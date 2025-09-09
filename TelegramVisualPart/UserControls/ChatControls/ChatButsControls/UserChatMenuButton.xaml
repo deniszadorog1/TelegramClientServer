@@ -14,6 +14,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Kind="ProgressDownload" Margin="15 0 0 0"
@@ -26,5 +27,7 @@
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
                    Foreground="{StaticResource UsualTextColor}" Margin="15 0 0 0" FontSize="14"/>
+
+
     </Grid>
 </UserControl>

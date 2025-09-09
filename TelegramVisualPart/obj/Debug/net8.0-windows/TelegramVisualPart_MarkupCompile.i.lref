@@ -1,6 +1,8 @@
 ﻿
 
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\ToastWindow.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\NotificationPrivacy\WindowMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatButsControls\UserChatMenuButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\UserChatMenu.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\UserChatsMenuElement.xaml;;
 

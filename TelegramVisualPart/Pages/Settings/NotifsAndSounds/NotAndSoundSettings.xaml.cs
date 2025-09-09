@@ -227,9 +227,30 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             Cursor = null;
         }
 
+        public TextBlock GetTextBlockByBorder(Border border)
+        {
+            return border == OneBorder ? OneMes :
+                border == TwoBorder ? TwoMes :
+                border == ThreeBorder ? ThreeMes :
+                border == FourBorder ? FourMes :
+                FiveMes;
+        }
+
+        private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not Border border) return;
+            TextBlock block = GetTextBlockByBorder(border);
+            SetMesesNotifsChanged(block);
+        }
+
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not TextBlock block) return;
+            SetMesesNotifsChanged(block);
+        }
+
+        public void SetMesesNotifsChanged(TextBlock block)
+        {
             SetAmountOfMessages(block);
 
             ClearForegroundForTabs();
@@ -249,7 +270,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             var moveAnim = new DoubleAnimation
             {
                 From = currentX,
-                To = targetPos.X ,
+                To = targetPos.X,
                 Duration = animDuration,
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };

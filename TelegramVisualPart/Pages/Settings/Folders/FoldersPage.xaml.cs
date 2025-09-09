@@ -28,16 +28,29 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     public partial class FoldersPage : Page
     {
         private TelSystem _system;
-     
-        public FoldersPage(TelSystem system)
+        private bool _isShowTextButton;
+
+        public FoldersPage(TelSystem system, bool isShowBackBut)
         {
             _system = system;
+            _isShowTextButton = isShowBackBut;
             InitializeComponent();
 
             SetBasicParams();
             SetCreatedFolderItems();
 
             SetTestObject();
+            SetBackButVisibility();
+        }
+
+        public void SetBackButVisibility()
+        {
+            if (!_isShowTextButton)
+            {
+                BackButColumn.Width = new GridLength(0);
+                return;
+            }
+            BackButColumn.Width = new GridLength(60);
         }
 
         private void SetTestObject()
@@ -96,7 +109,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             await ApiService.RemoveFolder(folder, _system.LoggedUser.Id);
 
             //ListBoxItem item = ItemsControl.ContainerFromElement(Folders, folderInfo) as ListBoxItem;
-            
+
             //Making page smaller (couse removing folder)
             CorrectHeightByFolderAction(-folderInfo.Height);
 
@@ -187,7 +200,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private void ShitTabs_Checked(object sender, RoutedEventArgs e)
         {
             if (!_system.Settings.IsTabsOnTheLeft) return;
-                _system.Settings.IsTabsOnTheLeft = false;
+            _system.Settings.IsTabsOnTheLeft = false;
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
         }
 

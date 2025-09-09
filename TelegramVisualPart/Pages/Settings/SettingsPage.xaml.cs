@@ -105,7 +105,7 @@ namespace TelegramVisualPart.Pages.Settings
             return icon.Name == MyAccount.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
                 icon.Name == NotifsSounds.Name.ToString() ? new NotifsAndSounds.NotAndSoundSettings(_system) :
                 icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_system) :
-                icon.Name == Folders.Name.ToString() ? new FoldersPage(_system) :
+                icon.Name == Folders.Name.ToString() ? new FoldersPage(_system, true) :
                 icon.Name == Advanced.Name.ToString() ? new AdvancedPage(_system) :
                 icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage(_system) : null;
         }

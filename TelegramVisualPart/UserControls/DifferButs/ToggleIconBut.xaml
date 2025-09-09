@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="45" d:DesignWidth="500">
+             d:DesignHeight="45" d:DesignWidth="500" 
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave"
+             MouseDown="UserControl_MouseDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
@@ -27,7 +30,9 @@
         <ToggleButton Name ="Toggle" Grid.Column="2" Width="40" Height="40"
                       HorizontalAlignment="Left" 
                       Style="{StaticResource MaterialDesignSwitchDarkToggleButton}"
-                      ToolTip="{x:Null}"                      
+                      ToolTip="{x:Null}"
+                      Checked="Toggle_Checked"
+                      Unchecked="Toggle_Unchecked"
                       IsChecked="True" Background="{StaticResource TempActiveTextColor}"/>
     </Grid>
 </UserControl>

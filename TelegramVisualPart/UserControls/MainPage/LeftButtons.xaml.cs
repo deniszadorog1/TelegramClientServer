@@ -75,7 +75,7 @@ namespace TelegramVisualPart.UserControls.MainPage
 
         private void Edit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, false));
         }
 
         public void ClearButtonsEffects()

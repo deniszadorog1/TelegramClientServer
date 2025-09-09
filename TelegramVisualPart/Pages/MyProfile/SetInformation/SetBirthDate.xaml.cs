@@ -79,6 +79,10 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             {
                 SetDays();
             };
+            YearSpecial.SelectedIndexUpdate += () =>
+            {
+                SetDays();
+            };
         }
 
         public void SetDays()

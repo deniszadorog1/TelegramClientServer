@@ -55,140 +55,159 @@
                 <menuIconTextBut:MenuIconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="ContactsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-               <!-- <menuIconTextBut:MenuIconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
-               --> <menuIconTextBut:MenuIconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <!-- <menuIconTextBut:MenuIconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
+               -->
+                <menuIconTextBut:MenuIconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent >
 
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Name="LeftButtonsColumn" Width="100"/>
-                <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" Width="*" />
-                <ColumnDefinition Width="3" x:Name="GridSplitterColumn"/>
-                <ColumnDefinition x:Name="ChatColumn" MinWidth="250" Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Name="LeftButtonsColumn" Width="100"/>
+                    <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" Width="*" />
+                    <ColumnDefinition Width="3" x:Name="GridSplitterColumn"/>
+                    <ColumnDefinition x:Name="ChatColumn" MinWidth="250" Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <leftButs:LeftButtons x:Name="LeftButtons" 
+                <leftButs:LeftButtons x:Name="LeftButtons" 
                                   OnMenuClick="LeftButtons_OnMenuClick"  
                                   Background="{StaticResource DarkThemeSecond}"/>
 
-            <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" 
+                <Grid Grid.Column="1" Background="{StaticResource DarkThemeOne}" 
                   Name ="ChatsGrid" 
                   SizeChanged="ChatsGrid_SizeChanged">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="45"/>
-                    <RowDefinition Name="FolderSliderRow" Height="0"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Name="FolderSliderRow" Height="0"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Name="AddHamburgMenuCol" Width="0"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Name="AddHamburgMenuCol" Width="0"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid Name="HamburgerAddGrid"  Grid.Column="0"
+                        <Grid Name="HamburgerAddGrid"  Grid.Column="0"
                           Margin="5 0 0 0" 
                           Background="Transparent" 
                           MouseEnter="HamburgerAddGrid_MouseEnter"
                           MouseLeave="HamburgerAddGrid_MouseLeave"
                           PreviewMouseDown="LeftButtons_OnMenuClick">
-                        <materialDesign:PackIcon Kind="HamburgerMenu" Name="HamburgIcon" 
+                            <materialDesign:PackIcon Kind="HamburgerMenu" Name="HamburgIcon" 
                                               Width="30" Height="30" Foreground="Gray" 
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Center"
                                               Visibility="Visible"/>
                         </Grid>
-                    
-                    <Border  Margin="10 5 10 0" Grid.Column="1"
+
+                        <Border  Margin="10 5 10 0" Grid.Column="1"
                              CornerRadius="20" Name="SearchBorder"
-                        Background="{StaticResource DarkThemeDeviderField}">
-                        <Grid>
+                             Background="{StaticResource DarkThemeDeviderField}">
+                            <Grid>
 
-                            <TextBox Name="SarchBox" 
-                                 Foreground="{StaticResource UsualTextColor}" 
-                                 Margin="10 0 35 0" FontSize="16"
-                                 materialDesign:HintAssist.Hint="Serch"
-                                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                                 materialDesign:HintAssist.Foreground="Gray"
-                                 CaretBrush="{StaticResource UsualTextColor}" 
-                                 GotFocus="SarchBox_GotFocus"
-                                 LostFocus="SarchBox_LostFocus"
-                                 TextChanged="SarchBox_TextChanged"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition x:Name="CrossSearchColumn" Width="0"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Name="SarchBox" Grid.Column="0"
+                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
 
-                            <menuIconTextBut:IconButton x:Name="ClearTextBut"
+                                     BorderBrush="Transparent"
+                                     BorderThickness="0"
+                                     
+                                     materialDesign:HintAssist.Hint="Search"
+                                     materialDesign:HintAssist.IsFloating="False"
+                                     
+                                     Foreground="{StaticResource UsualTextColor}" 
+                                     Margin="13 0 13 0" FontSize="16"
+
+                                     Padding="0"
+                                     materialDesign:HintAssist.Foreground="Gray"
+                                     CaretBrush="{StaticResource UsualTextColor}" 
+                                     
+                                     GotFocus="SarchBox_GotFocus"
+                                     LostFocus="SarchBox_LostFocus"
+                                     TextChanged="SarchBox_TextChanged"
+                                     
+                                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"/>
+
+                                <menuIconTextBut:IconButton x:Name="ClearTextBut"
+                                                        Grid.Column="1"
                                                  HorizontalAlignment="Right"
                                                  VerticalAlignment="Center"
                                                  Width="25" Height="25"
                                                  Foreground="Gray"
                                                  Margin="0 0 10 0"
                                                  PreviewMouseDown="ClearTextBut_PreviewMouseDown"/>
-                        </Grid>
-                    </Border>
+                            </Grid>
+                        </Border>
 
-                    <Grid 
+                        <Grid 
                       Name="MagnifierGrid"  Grid.Column="1"
                         Background="Transparent" Visibility="Hidden"
                       MouseEnter="MagnifierGrid_MouseEnter"
                       MouseLeave="MagnifierGrid_MouseLeave"
                       PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
 
-                        <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
+                            <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
                                                  Width="35" Height="35" Foreground="Gray" 
                                                  Visibility="Hidden"/>
+                        </Grid>
                     </Grid>
-                </Grid>
 
 
-                <Grid Grid.Row="1" Name="FolderSliderGrid">
-                    <SliderMenu:ItemsSlider x:Name="FolderSliderMenu"/>
-                </Grid>
+                    <Grid Grid.Row="1" Name="FolderSliderGrid">
+                        <SliderMenu:ItemsSlider x:Name="FolderSliderMenu"/>
+                    </Grid>
 
-                <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden">
-                    <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
+                    <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden">
+                        <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
-                </ListBox>
+                    </ListBox>
 
-                <StackPanel Grid.Row="2" Name="SearchBoxGrid" Visibility="Hidden" 
+                    <StackPanel Grid.Row="2" Name="SearchBoxGrid" Visibility="Hidden" 
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
                             Orientation="Vertical">
-                    <searchControl:SearchControl x:Name="SearchControl"
+                        <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
-                    <WrapPanel Name ="AllMediasElements"
+                        <WrapPanel Name ="AllMediasElements"
                                Background="Transparent" 
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left">
 
-                    </WrapPanel>
-                </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
 
-                <StackPanel Grid.Row="2" Name="SearchMessageGrid" Visibility="Hidden"
+                    <StackPanel Grid.Row="2" Name="SearchMessageGrid" Visibility="Hidden"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
                       Margin="0 10 0 0" Background="Transparent" Orientation="Vertical">
 
-                    <searchControl:SearchMessage x:Name="SearchMessage" HorizontalAlignment="Stretch"/>
+                        <searchControl:SearchMessage x:Name="SearchMessage" HorizontalAlignment="Stretch"/>
 
-                    <ListBox Name="SearchedMessageslistBox"/>
+                        <ListBox Name="SearchedMessageslistBox"/>
 
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel Name="NothingFoundSearch" Grid.Row="1" Visibility="Hidden" 
+                    <StackPanel Name="NothingFoundSearch" Grid.Row="1" Visibility="Hidden" 
                             Background="Transparent"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Center"
                             Orientation="Vertical" Margin="0 100 0 0">
-                    <materialDesign:PackIcon Kind="Magnify" Margin="0 10 0 0"
+                        <materialDesign:PackIcon Kind="Magnify" Margin="0 10 0 0"
                                              HorizontalAlignment="Center"
                                                  Width="100" Height="100" Foreground="White"/>
 
-                    <TextBlock Text="Search for messages" FontSize="18"
+                        <TextBlock Text="Search for messages" FontSize="18"
                                Foreground="Gray" Margin="0 15 0 0"/>
 
-                </StackPanel>
+                    </StackPanel>
 
-            </Grid>
+                </Grid>
 
-            <GridSplitter Grid.Column="2"
+                <GridSplitter Grid.Column="2"
                   Width="3" Name="MySplitter"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
@@ -199,21 +218,26 @@
                   ResizeDirection="Columns"
                   Cursor="SizeWE"
                   DragDelta="GridSplitter_DragDelta"/>
-            <Border Name="ChatBg" Grid.Column="3" Background="{StaticResource DarkThemeSecond}">
-                <Grid>
-                    <Grid Name="NotFoundBg" Background="Transparent"/>
-                    <Border Name="ChosoeChatBorder" Visibility="Visible"
+                <Border Name="ChatBg" Grid.Column="3" Background="{StaticResource DarkThemeSecond}">
+                    <Grid>
+                        <Grid Name="NotFoundBg" Background="Transparent"/>
+                        <Border Name="ChosoeChatBorder" Visibility="Visible"
                             Background="Gray" CornerRadius="10" 
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" Margin="0 0 0 100">
-                        <TextBlock Text="Select chat to start messaging" Foreground="White"
+                            <TextBlock Text="Select chat to start messaging" Foreground="White"
                                    FontSize="18" Padding="7" 
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
+                        </Border>
 
-                    <userControls:UserChat x:Name="UserChat" Visibility="Hidden"/>
-                </Grid>
-            </Border>
+                        <userControls:UserChat x:Name="UserChat" Visibility="Hidden"/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Canvas Name="MenusCan">
+
+            </Canvas>
         </Grid>
     </materialDesign:DrawerHost>
 

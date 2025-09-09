@@ -13,7 +13,9 @@ using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.Services;
+using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
+using TelegramVisualPart.Enums;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
@@ -405,6 +407,7 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage page)
             {
                 page.UserChat.UserChatMenu.Visibility = Visibility.Hidden;
+                page.ClearMenusCanvas();
             }
             if (SecondaryFrame.Content is UserInfo info)
             {
@@ -715,5 +718,10 @@ namespace TelegramVisualPart
                 chatPage.UpdateTabsPlacement();
         }
 
+        public void AddSubMenu(ToAddSubMenuType type, Point enteredItemPoint)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.AddSubMenu(type, enteredItemPoint);
+        }
     }
 }
