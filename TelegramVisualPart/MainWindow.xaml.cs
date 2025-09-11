@@ -3,7 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Data.Entity.Core.EntityClient;
 using System.Diagnostics.Eventing.Reader;
 using System.Formats.Tar;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System.Transactions;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -16,6 +20,7 @@ using TelegramLib.Services;
 using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
@@ -33,6 +38,13 @@ namespace TelegramVisualPart
     {
         public TelSystem _system;// = new TelSystem();
 
+        private bool _isOnlyChat = false;
+        private UserChat _onlyChatUserChat;
+
+        List<MainWindow> _chatWindows = new List<MainWindow>();
+        private MainWindow _bossWindow;
+
+        //Basic start
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +55,53 @@ namespace TelegramVisualPart
             SetWindowSizeState();
 
             SignalRService.UpdateContactDel += UpdateUserSignalR;
+        }
+
+        //Chat in other Window
+        public MainWindow(TelSystem system, TelegramLib.MainClasses.UserChat chat,
+            MainWindow boss)
+        {
+            InitializeComponent();
+
+            _isOnlyChat = true;
+            _system = system;
+            _bossWindow = boss;
+            _onlyChatUserChat = chat;
+
+            AddChatMainWindow();
+
+            SetMainPage(system);
+
+            //Set chat page
+        }
+
+        public bool GetIsOnlyChat()
+        {
+            return _isOnlyChat;
+        }
+
+        public UserChat GetOnlyChat()
+        {
+            return _onlyChatUserChat;
+        }
+
+        public UserChat UpdateUserTalkChat()
+        {
+            if (_bossWindow is null ||
+                _bossWindow.MainFrame.Content is not MainChatPage bossChatPage) throw new Exception("Cant be");
+
+            _bossWindow._onlyChatUserChat = _onlyChatUserChat;
+
+            bossChatPage.UpdateUserTalkChat();// bossChatPage.GetChtControlByChatterName(_onlyChatUserChat.Chatter.Name);
+
+            return _onlyChatUserChat;
+        }
+
+        public void SetOnlyChatPage()
+        {
+            if (!_isOnlyChat ||
+                MainFrame.Content is not MainChatPage page) return;
+            page.SetOnlyChatPage(_onlyChatUserChat);
         }
 
         private void UpdateUserSignalR(User updated)
@@ -73,9 +132,16 @@ namespace TelegramVisualPart
             await SignalRService.SetBasicSignalRConnetion();
             SignalRService.UpdateOnlineStatus(_system.LoggedUser);
 
+
+            MainChatPage page = new MainChatPage(_system);
+
+            page.PageLoadedAction += SetOnlyChatPage;
+
             ((MainWindow)Window.GetWindow(this)).
-                SetMainFrameContent(new MainChatPage(_system));
+                SetMainFrameContent(page);
         }
+
+
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -298,7 +364,7 @@ namespace TelegramVisualPart
         }
 
         private void Maximize_Click(object sender, RoutedEventArgs e)
-        {
+        {        
             SetWindowSizeState();
         }
 
@@ -336,7 +402,8 @@ namespace TelegramVisualPart
 
         public void SetMainPageOnWindowSizeChange()
         {
-            if (MainFrame.Content is MainChatPage page)
+            if (MainFrame.Content is MainChatPage page && 
+               !_isOnlyChat)
             {
                 page.ChatsColumn.Width = new GridLength(300);
             }
@@ -344,6 +411,13 @@ namespace TelegramVisualPart
 
         private async void Close_Click(object sender, RoutedEventArgs e)
         {
+            if (_isOnlyChat)
+            {
+                this.Close();
+                RemoveChatMainWindow();
+            }
+
+            ClearAllChatWindows();
             LogOut();
         }
 
@@ -434,7 +508,7 @@ namespace TelegramVisualPart
             //Set Window Parts Visibility
             //if (MainFrame.Content is not MainChatPage chatPage) return;
 
-
+            if (_isOnlyChat) return;
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 SetMainChatPagePartsSize();
@@ -515,9 +589,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction();
                 }
             }
-
             return;
-
         }
 
         private void SetFramePageHeight(Page page)
@@ -723,5 +795,63 @@ namespace TelegramVisualPart
             if (MainFrame.Content is not MainChatPage page) return;
             page.AddSubMenu(type, enteredItemPoint);
         }
+
+        public void ClearSubMenus()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.ClearSubMenus();
+        }
+
+        public void SetSubMenuAction(UserTalkControlButTypes type)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.SetUserTalkMenuAction(type);
+        }
+
+        public void ClearAllChatWindows()
+        {
+            foreach(var window in _chatWindows)
+            {
+                window.Close();
+            }
+            _chatWindows.Clear();
+        }
+
+        public bool ChatIsOnOtherWindow(TelegramLib.MainClasses.UserChat chat)
+        {
+            return _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id) is not null;
+        } 
+        
+        public void SetOtherChatWindowOnFront(TelegramLib.MainClasses.UserChat chat)
+        {
+            MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
+            if (window is null) return;
+
+            //window.Activate();          
+            window.Topmost = true;
+        }
+
+        //from chat window
+        public void AddChatMainWindow()
+        {
+            _bossWindow._chatWindows.Add(this);
+        }
+
+        //from sub window
+        public void RemoveChatMainWindow()
+        {
+            _bossWindow._chatWindows.Remove(this);
+        }
+
+        public void CloseWindowWithGivenChat(TelegramLib.MainClasses.UserChat chat)
+        {
+            MainWindow? toRemove = 
+                _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
+            if (toRemove is null) return;
+
+            toRemove.Close();
+            _chatWindows.Remove(toRemove);
+        }
+
     }
 }

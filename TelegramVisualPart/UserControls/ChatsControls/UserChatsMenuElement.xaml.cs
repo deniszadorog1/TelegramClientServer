@@ -30,7 +30,6 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             Cursor = Cursors.Hand;
             Background =
                 (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
-
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)

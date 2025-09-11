@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Enums.Menus;
 
 namespace TelegramVisualPart.UserControls.ChatsControls
 {
@@ -23,11 +24,27 @@ namespace TelegramVisualPart.UserControls.ChatsControls
     /// </summary>
     public partial class UserChatMenu : UserControl
     {
+        TelegramLib.MainClasses.UserChat _chat = null;
+
         public UserChatMenu()
         {
             InitializeComponent();
 
             SetBasicParams();
+        }
+
+        public UserChatMenu(TelegramLib.MainClasses.UserChat chat)
+        {
+            _chat = chat;
+            InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        private MainWindow _window;
+        public void SetWindow(MainWindow window)
+        {
+            _window = window;
         }
 
         public void SetBasicParams()
@@ -36,6 +53,39 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             HideRightArrowIcons();
             SetBasicColors();
             SetBasicText();
+            SetAddSubMenuEventsToElems();
+
+            SetChangeableIcons();
+        }
+
+        public void SetChangeableIcons()
+        {
+            if (_chat is null) return;
+
+            Unpin.IconElement.Kind = _chat.IsPinned ? 
+                PackIconKind.PinOffOutline : PackIconKind.PinOutline;
+            Unpin.TextElement.Text = _chat.IsPinned ? "Unpin" : "Pin";
+
+            MarkRead.IconElement.Kind = _chat.IsMarked ?
+                PackIconKind.ChatOutline : PackIconKind.ChatAlertOutline;
+            MarkRead.TextElement.Text = _chat.IsMarked ? "Mark as read" :
+                "Mark as unread";
+        } 
+
+        public void SetAddSubMenuEventsToElems()
+        {
+
+            MuteNotifs.MouseEnter += ToAddSubMenu_MouseEnter;
+            MuteNotifs.PreviewMouseDown += UserChatsMenuElement_PreviewMouseDown;
+
+            AddToFolder.MouseEnter += ToAddSubMenu_MouseEnter;
+            AddToFolder.PreviewMouseDown += UserChatsMenuElement_PreviewMouseDown;
+        }
+
+        public void ToAddSubMenu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            UserChatsMenuElement_MouseEnter(sender, e);
+            AddSubMenu_MouseEnter(sender, e);
         }
 
         public void SetBasicText()
@@ -46,13 +96,14 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             MuteNotifs.TextElement.Text = "Mute notifications";
             MarkRead.TextElement.Text = "Mark as unread";
             AddToFolder.TextElement.Text = "Add to folder";
-            LeaveChannel.TextElement.Text = "Leave channel";
+            ClearChat.TextElement.Text = "Clear Chat";
+            DeleteChat.TextElement.Text = "Delete Chat";
         }
 
         public void SetBasicColors()
         {
-            LeaveChannel.IconElement.Foreground = Brushes.Red;
-            LeaveChannel.TextElement.Foreground = Brushes.Red;
+            DeleteChat.IconElement.Foreground = Brushes.Red;
+            DeleteChat.TextElement.Foreground = Brushes.Red;
         }
 
         public void HideRightArrowIcons()
@@ -61,7 +112,8 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             Archive.ArrowRightIcon.Visibility = Visibility.Hidden;
             Unpin.ArrowRightIcon.Visibility = Visibility.Hidden;
             MarkRead.ArrowRightIcon.Visibility = Visibility.Hidden;
-            LeaveChannel.ArrowRightIcon.Visibility = Visibility.Hidden;
+            ClearChat.ArrowRightIcon.Visibility = Visibility.Hidden;
+            DeleteChat.ArrowRightIcon.Visibility = Visibility.Hidden;
         }
 
         public void SetBasicIcons()
@@ -73,7 +125,8 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             MarkRead.IconElement.Kind = PackIconKind.MessageOutline;
             AddToFolder.IconElement.Kind = PackIconKind.FolderOutline;
 
-            LeaveChannel.IconElement.Kind = PackIconKind.ExitToApp;
+            ClearChat.IconElement.Kind = PackIconKind.Broom;
+            DeleteChat.IconElement.Kind = PackIconKind.BucketOutline;
 
         }
 
@@ -84,10 +137,9 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 sender == AddToFolder ? ToAddSubMenuType.Folder : null;
             if (type is null) return;
 
-
             Point enteredElPoint = GetEnteredItemCord((ToAddSubMenuType)type);
 
-            ((MainWindow)Window.GetWindow(this)).AddSubMenu((ToAddSubMenuType)type, enteredElPoint);
+            _window.AddSubMenu((ToAddSubMenuType)type, enteredElPoint);
         }
 
         public Point GetEnteredItemCord(ToAddSubMenuType type)
@@ -96,7 +148,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 type == ToAddSubMenuType.Notification ? MuteNotifs :
                 type == ToAddSubMenuType.Folder ? AddToFolder : null;
 
-            return el is null ? new Point(0,0) :
+            return el is null ? new Point(0, 0) :
                 el.TransformToAncestor(this)
                            .Transform(new Point(0, 0));
         }
@@ -144,5 +196,35 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             MainPanel.Children.Add(toAdd);
         }
 
+        private void UserChatsMenuElement_MouseEnter(object sender, MouseEventArgs e)
+        {
+            _window.ClearSubMenus();
+        }
+
+        private void UserChatsMenuElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserChatsMenuElement but) return;
+
+            //Get menu action
+            UserTalkControlButTypes? type = GetButType(but);
+            if (type is null) return;
+
+            //Set menu Action
+
+            _window.SetSubMenuAction((UserTalkControlButTypes)type);
+        }
+
+        public UserTalkControlButTypes? GetButType(UserChatsMenuElement but)
+        {
+            return
+                but == OpenNewWindow ? UserTalkControlButTypes.OpenInNewWindow :
+                but == Archive ? UserTalkControlButTypes.Archive :
+                but == Unpin ? UserTalkControlButTypes.Unpin :
+                but == MuteNotifs ? UserTalkControlButTypes.MuteNotifs :
+                but == MarkRead ? UserTalkControlButTypes.MarkRead :
+                but == AddToFolder ? UserTalkControlButTypes.AddToFolder :
+                but == ClearChat ? UserTalkControlButTypes.ClearChat :
+                but == DeleteChat ? UserTalkControlButTypes.DeleteChat : null;
+        }
     }
 }

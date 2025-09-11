@@ -65,7 +65,6 @@
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
                                              Foreground="White"/>
-
                 </Grid>
 
 

@@ -10,26 +10,36 @@
              
              Background="{StaticResource DarkThemeOne}">
 
+    <UserControl.Resources>
+        <Style x:Key="ClearSubStyle" TargetType="local:UserChatsMenuElement">
+            <EventSetter Event="MouseEnter" Handler="UserChatsMenuElement_MouseEnter"/>
+            <EventSetter Event="PreviewMouseDown" Handler="UserChatsMenuElement_PreviewMouseDown"/>
+        </Style>
+    </UserControl.Resources>
+
     <Border CornerRadius="5"  BorderBrush="Black"
              BorderThickness="2">
         <Grid>
 
             <StackPanel Name ="MainPanel">
-                <local:UserChatsMenuElement x:Name="OpenNewWindow"/>
-                <local:UserChatsMenuElement x:Name="Archive"/>
-                <local:UserChatsMenuElement x:Name="Unpin"/>
+                <local:UserChatsMenuElement x:Name="OpenNewWindow"
+                                            Style="{StaticResource ClearSubStyle}"/>
+                <local:UserChatsMenuElement x:Name="Archive"
+                                            Style="{StaticResource ClearSubStyle}"/>
+                <local:UserChatsMenuElement x:Name="Unpin"
+                                            Style="{StaticResource ClearSubStyle}"/>
 
-                <local:UserChatsMenuElement x:Name="MuteNotifs" 
-                                    MouseEnter="AddSubMenu_MouseEnter"/>
+                <local:UserChatsMenuElement x:Name="MuteNotifs"/>
 
-                <local:UserChatsMenuElement x:Name="MarkRead"/>
+                <local:UserChatsMenuElement x:Name="MarkRead"
+                                            Style="{StaticResource ClearSubStyle}"/>
 
+                <local:UserChatsMenuElement x:Name="AddToFolder"/>
 
-                <local:UserChatsMenuElement x:Name="AddToFolder"
-                                    MouseEnter="AddSubMenu_MouseEnter"/>
-
-
-                <local:UserChatsMenuElement x:Name="LeaveChannel"/>
+                <local:UserChatsMenuElement x:Name="ClearChat"
+                                            Style="{StaticResource ClearSubStyle}"/>
+                <local:UserChatsMenuElement x:Name="DeleteChat"
+                                            Style="{StaticResource ClearSubStyle}"/>
             </StackPanel>
         </Grid>
     </Border>

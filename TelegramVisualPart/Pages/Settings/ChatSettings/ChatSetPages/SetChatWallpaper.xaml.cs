@@ -32,10 +32,13 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             SetClickEventToWallpapers();
         }
 
-        public SetChatWallpaper(ChatBackground background, UserChat chat)
+        public SetChatWallpaper(ChatBackground background, UserChat chat,
+            TelegramLib.UserSettings.SettingsTypes.ChatSettings settings)
         {
             _chosenBackground = background;
             _chat = chat;
+            _settings = settings;
+
             InitializeComponent();
 
             SetWallpapers();

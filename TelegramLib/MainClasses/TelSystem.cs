@@ -23,6 +23,9 @@ namespace TelegramLib.MainClasses
         public List<UserContactcs> Contacts { get; set; }
         public List<Folder> Folders { get; set; }
 
+        public List<UserChat> ChatInNewWindow = new List<UserChat>();
+        
+
         public TelSystem(User user, MainSettings settings,
             List<UserChat> chats, List<UserContactcs> contacts,
             List<Folder> folders)
@@ -347,6 +350,20 @@ namespace TelegramLib.MainClasses
             return res;
         }
 
+        public bool IsChatContainsInOtherWidowList(UserChat chat)
+        {
+            return ChatInNewWindow.Contains(chat);
+        }
+
+        public void AddChatInOtherWindow(UserChat chat)
+        {
+            ChatInNewWindow.Add(chat);
+        }
+
+        public void RemoveChatFromOtherWindow(UserChat chat)
+        {
+            ChatInNewWindow.Remove(chat);
+        }
 
     }
 }

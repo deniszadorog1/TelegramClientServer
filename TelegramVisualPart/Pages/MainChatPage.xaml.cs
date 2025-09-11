@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
+using System;
 using System.Security.Permissions;
 using System.Security.RightsManagement;
 using System.Windows;
@@ -8,11 +9,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
+using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.VisualPages;
@@ -22,6 +26,8 @@ using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using static MaterialDesignThemes.Wpf.Theme;
+using ListBoxItem = System.Windows.Controls.ListBoxItem;
 
 namespace TelegramVisualPart.Pages
 {
@@ -59,7 +65,7 @@ namespace TelegramVisualPart.Pages
 
             LeftButtons.SetSystemParam(_system);
 
-            UserChat.SetSystemParam(_system);
+            UserChat.SetSystemAndMainWindowParam(_system, (MainWindow)Window.GetWindow(this));
             UserChat.BackButton_MouseDown += BackButton_MouseDown;
 
             SetUserImage();
@@ -545,7 +551,6 @@ namespace TelegramVisualPart.Pages
                 item.Content is not UserTalkMessage talkControl) return;
 
             //Set UserControl
-
         }
 
         private void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
@@ -553,16 +558,20 @@ namespace TelegramVisualPart.Pages
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
 
+            talkControl.SetVisibilityToUnreadEllipse(false);
+
+            TelegramLib.MainClasses.UserChat chat =
+                _system.GetUserChatByChatterName(talkControl.FriendLogin.Text);
+
+            if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
+            {
+                //Set window on the front
+                ((MainWindow)Window.GetWindow(this)).SetOtherChatWindowOnFront(chat);
+                return;
+            }
+            UserChat.SetUserChat(chat);
+
             ShowChatControl();
-
-            //Set temp background
-            //(if chats is unset but general been changed)
-
-            //_system.SetGeneralBgToChatsBg();
-
-            UserChat.SetUserChat(
-                _system.GetUserChatByChatterName(talkControl.FriendLogin.Text));
-
             SetSizerActionWithUserChatMouseDown();
         }
 
@@ -759,6 +768,7 @@ namespace TelegramVisualPart.Pages
                     Tag = _system.Chats[i].Id
                 };
 
+
                 item.Content = await GetTalkMessage(i);
 
                 item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
@@ -784,6 +794,9 @@ namespace TelegramVisualPart.Pages
                 Width = ChatsGrid.ActualWidth
             };
 
+            chatControl.SetVisibilityToPinBlock(chat.IsPinned);
+            chatControl.SetVisibilityToUnreadEllipse(chat.IsMarked);
+
             chatControl.FriendLogin.Text = chat.GetChatter().Name;
 
             DateTime? date = chat.GetLastMessageDateTime();
@@ -802,8 +815,11 @@ namespace TelegramVisualPart.Pages
 
         public void ClearChosenUserTalkValue()
         {
+            TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+            if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
+
             UserTalkMessage message =
-                GetChtControlByChatterName(_system.GetChosenChat().Chatter.Name);
+                GetChtControlByChatterName(chat.Chatter.Name);
             if (message is null) return;
 
             message.SetDefaultValues();
@@ -815,16 +831,25 @@ namespace TelegramVisualPart.Pages
 
             //Get User talk control(by system control)
             //Get by chosen chat in system 
+
+            if (((MainWindow)Window.GetWindow(this)).GetIsOnlyChat())
+            {
+                ((MainWindow)Window.GetWindow(this)).UpdateUserTalkChat();
+                return;
+            }
+
+            TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+            if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
+
             UserTalkMessage message =
-                GetChtControlByChatterName(_system.GetChosenChat().Chatter.Name);
+                GetChtControlByChatterName(chat.Chatter.Name);
+
             if (message is null) return;
 
             //Get chat
-            message.LastMessage.Text =
-                _system.GetChosenChat().GetLastMessage();
+            message.LastMessage.Text = chat.GetLastMessage();
 
-            message.LastMessageTime.Text =
-                _system.GetChosenChat().Messages.Last().GetSentTimeInString();
+            message.LastMessageTime.Text = chat.Messages.Last().GetSentTimeInString();
         }
 
         public UserTalkMessage GetChtControlByChatterName(string name)
@@ -907,28 +932,35 @@ namespace TelegramVisualPart.Pages
             ChatsBox.Visibility = Visibility.Visible;
         }
 
+        private UserTalkMessage _menuChatterTalk = null;
         public void TalkMessage_PreviewRightMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem boxItem) return;
             if (boxItem.Content is not UserTalkMessage targetElement) return;
 
+            _menuChatterTalk = targetElement;
 
             //Get Position point
-            Point relativePoint =  e.GetPosition(this);
+            Point relativePoint = e.GetPosition(this);
 
             //Get point to menu
             Point point = new Point(relativePoint.X /*+ targetElement.ActualWidth + 5*/, relativePoint.Y - 15);
 
-            AddMenuElement(new UserChatMenu(), point);
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+            AddMenuElement(new UserChatMenu(chat), point);
+        }
+
+        public void ClearMessageUSerTalk()
+        {
+            _menuChatterTalk = null;
         }
 
         public void AddSubMenu(ToAddSubMenuType type, Point enteredItemPoint)
         {
-            //To show subMenu
-
             //Get cord of main sub menu
             Point point = GetCordOfMainMenu();
-        
+
             //Set subMenu pooint
             Point subMenuPoint = new Point(point.X + GetMenuWidth(), point.Y + enteredItemPoint.Y);
 
@@ -937,6 +969,18 @@ namespace TelegramVisualPart.Pages
             subMenu.SetSubMenu(type);
 
             AddMenuElement(subMenu, subMenuPoint);
+        }
+
+        public void ClearSubMenus()
+        {
+            List<UserChatMenu> toRemove = MenusCan.Children.OfType<UserChatMenu>().ToList();
+            if (toRemove.Count() == 0) return;
+            toRemove.RemoveAt(0);
+
+            foreach (var remove in toRemove)
+            {
+                MenusCan.Children.Remove(remove);
+            }
         }
 
         public double GetMenuWidth()
@@ -949,16 +993,23 @@ namespace TelegramVisualPart.Pages
 
         public Point GetCordOfMainMenu()
         {
-            UserChatMenu? menu =  
+            UserChatMenu? menu =
                 MenusCan.Children.OfType<UserChatMenu>().FirstOrDefault();
 
-            return menu is null ? new Point() : 
+            return menu is null ? new Point() :
                 new Point(Canvas.GetLeft(menu), Canvas.GetTop(menu));
         }
 
         public void AddMenuElement(UserChatMenu menu, Point cordPoint)
         {
             MenusCan.Children.Add(menu);
+
+            Window window = Window.GetWindow(menu);
+            if (window is null ||
+                window is not MainWindow) throw new Exception("Its should be Main Window");
+
+            menu.SetWindow(window as MainWindow);
+
 
             Canvas.SetLeft(menu, cordPoint.X);
             Canvas.SetTop(menu, cordPoint.Y);
@@ -1246,7 +1297,162 @@ namespace TelegramVisualPart.Pages
             // ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
         }
 
-       
+        public void SetUserTalkMenuAction(UserTalkControlButTypes type)
+        {
+            if (_menuChatterTalk is null) return;
 
+            switch (type)
+            {
+                case UserTalkControlButTypes.OpenInNewWindow:
+                    {
+                        SetChatInOtherWindowAction();
+                        return;
+                    };
+                case UserTalkControlButTypes.Archive:
+                    break;
+                case UserTalkControlButTypes.Unpin:
+                    {
+                        SetPinAction();
+                        return;
+                    }
+                case UserTalkControlButTypes.MuteNotifs:
+                    break;
+                case UserTalkControlButTypes.MarkRead:
+                    {
+                        SetUnreadMark();
+                        return;
+                    }
+                case UserTalkControlButTypes.AddToFolder:
+                    break;
+                case UserTalkControlButTypes.ClearChat:
+                    break;
+                case UserTalkControlButTypes.DeleteChat:
+                    break;
+            }
+        }
+
+        public void SetPinAction()
+        {
+            Window tempWindow = Window.GetWindow(this);
+            if (tempWindow is not MainWindow main ||
+                _menuChatterTalk is null) return;
+
+            //Set new Window
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+            chat.IsPinned = !chat.IsPinned;
+
+            // Set in upper ChatsBox part
+
+            //Change queue in system chats
+            _system.Chats.Remove(chat);
+            _system.Chats.Insert(0, chat);
+
+            //Update chats talk items
+            UpdateUserChatsPanel();
+        }
+
+        public void SetUnreadMark()
+        {
+            Window tempWindow = Window.GetWindow(this);
+            if (tempWindow is not MainWindow main ||
+                _menuChatterTalk is null) return;
+
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+            _menuChatterTalk.ChangeUnreadEllipseVisOnOposite();
+            chat.IsMarked = !chat.IsMarked;
+
+            //close windows with this chat
+            ((MainWindow)Window.GetWindow(this)).CloseWindowWithGivenChat(chat);
+
+            if (UserChat.IsChatsAreEqual(chat))
+            {
+                UserChat.Visibility = Visibility.Hidden;
+                ChosoeChatBorder.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void SetChatInOtherWindowAction()
+        {
+            Window tempWindow = Window.GetWindow(this);
+            if (tempWindow is not MainWindow main) return;
+
+            //Set new Window
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+            _menuChatterTalk.SetVisibilityToUnreadEllipse(false);
+
+            //If temp chat is on
+            if (_system.GetChosenChat().Id == chat.Id)
+            {
+                //Clear chat
+                UserChat.Visibility = Visibility.Hidden;
+                ChosoeChatBorder.Visibility = Visibility.Visible;
+            }
+            //If chat is already y on main page
+            if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
+            {
+                //Set window on the front
+                ((MainWindow)Window.GetWindow(this)).SetOtherChatWindowOnFront(chat);
+                return;
+            }
+
+
+            MainWindow window = new MainWindow(_system, chat, main);
+
+            window.Show();
+            //SetWindowChat(windChat);
+        }
+        /*        public void SetWindowChat(MainWn windChat)
+                {
+                    //Get chat to Add in new Window
+                    TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+                    //Is already on other window
+                    if (IsChatIsOnOtherWindow(chat)) return;
+
+                    //Add chosen chat in system
+                    _system.AddChatInOtherWindow(chat);
+
+                    //Set chat in new Window
+                    windChat.SetUserChat(chat, _system);
+                }*/
+
+        public bool IsChatIsOnOtherWindow(TelegramLib.MainClasses.UserChat chat)
+        {
+            return _system.IsChatContainsInOtherWidowList(chat);
+        }
+
+        public TelegramLib.MainClasses.UserChat GetChosenUserChat()
+        {
+            return _system.GetUserChatByChatterName(_menuChatterTalk.FriendLogin.Text);
+
+            /*UserChat.SetUserChat(
+             _system.GetUserChatByChatterName(_menuChatterTalk.FriendLogin.Text));*/
+        }
+
+
+        public void SetOnlyChatPage(TelegramLib.MainClasses.UserChat chat)
+        {
+            SetColumnMinWidth(LeftButtonsColumn, 0);
+            SetColumnWidth(LeftButtonsColumn, 0);
+
+            SetColumnMinWidth(ChatsColumn, 0);
+            SetColumnWidth(ChatsColumn, 0);
+
+            SetColumnMinWidth(GridSplitterColumn, 0);
+            SetColumnWidth(GridSplitterColumn, 0);
+
+            ShowChatControl();
+            UserChat.SetUserChat(chat);
+        }
+
+
+        public event Action PageLoadedAction;
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            PageLoadedAction?.Invoke();
+        }
     }
 }

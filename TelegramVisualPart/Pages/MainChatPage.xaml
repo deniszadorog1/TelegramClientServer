@@ -14,7 +14,9 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainChatPage" PreviewMouseDown="Page_MouseDown"
-      PreviewKeyDown="Page_PreviewKeyDown">
+      PreviewKeyDown="Page_PreviewKeyDown"
+      
+      Loaded="Page_Loaded">
 
 
     <materialDesign:DrawerHost x:Name="MainDrawerHost">

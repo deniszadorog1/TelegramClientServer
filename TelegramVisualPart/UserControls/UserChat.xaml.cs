@@ -57,6 +57,12 @@ namespace TelegramVisualPart.UserControls
             SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
         }
 
+        public void SetChatterImageVisibility()
+        {
+            if (((MainWindow)Window.GetWindow(this)).GetIsOnlyChat()) return;
+            UpperChatterImage.Width = new GridLength(0);
+        }
+
         public void UpdateChatterIamge(TelegramLib.MainClasses.User user)
         {
             UpdateChatImages(user);
@@ -277,6 +283,8 @@ namespace TelegramVisualPart.UserControls
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
             if (chat is null) return;
+            SetChatterImageVisibility();
+
             _chat = chat;
 
             await SetOnlineStatus();
@@ -294,6 +302,15 @@ namespace TelegramVisualPart.UserControls
 
             RemoveRightContactInfo();
             SetUserBg();
+
+            SetChatterImage();
+        }
+
+        public void SetChatterImage()
+        {
+            UserImage.ImageSource = new BitmapImage(
+                new Uri(FilesAction.GetUserImagePath(
+                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute)); 
         }
 
         public async Task SetOnlineStatus()
@@ -353,10 +370,14 @@ namespace TelegramVisualPart.UserControls
         }
 
         private TelSystem _system;
-        public void SetSystemParam(TelSystem system)
+        private MainWindow _mainWindow;
+        public void SetSystemAndMainWindowParam(TelSystem system, MainWindow window)
         {
             //Set here chat messages(by ref)
             _system = system;
+            _mainWindow = window;
+
+
             UserChatMenu.SetSystemParam(system);
             SetTestChatMessages();
 
@@ -462,8 +483,6 @@ namespace TelegramVisualPart.UserControls
                 AddTextMessage(_system.LoggedUser.GetFirstImageName().Name);
             }
         }
-
-
 
         private async void AddTextMessage(string senderImageName)
         {
@@ -1186,6 +1205,11 @@ namespace TelegramVisualPart.UserControls
         private void BackButGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             BackButton_MouseDown?.Invoke();
+        }
+
+        public bool IsChatsAreEqual(TelegramLib.MainClasses.UserChat chat)
+        {
+            return _chat is null ? false : _chat.Id == chat.Id;
         }
     }
 }

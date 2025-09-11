@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="1000">
+             d:DesignHeight="60" d:DesignWidth="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
@@ -28,7 +29,7 @@
                 <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
                            Text="UserLogin" Margin="10 0 0 0" Foreground="Gray" FontSize="16"/>
                 <TextBlock x:Name="LastMessageTime" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                           Text="mestime" Margin="10 10 25 10" Foreground="Gray" FontSize="14"/>
+                           Text="mestime" Margin="10 5 25 5" Foreground="Gray" FontSize="14"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
@@ -38,6 +39,21 @@
                        TextWrapping="NoWrap"
                        Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"/>
 
+            <Grid Grid.Row="1" HorizontalAlignment="Right"
+                  Margin="0 0 25 5">
+
+                <materialDesign:PackIcon Kind="PinOutline" Name="PinBlock"
+                                         Visibility="Hidden"
+                                         Width="20" Height="20"
+                                         Foreground="Gray"/>
+
+                <Ellipse Name="UnreadEllipse" Visibility="Hidden"
+                         Width="20" Height="20"
+                    Fill="{StaticResource TempActiveTextColor}">
+
+                </Ellipse>
+            </Grid>
+            
         </Grid>
 
     </Grid>

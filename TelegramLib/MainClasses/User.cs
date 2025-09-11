@@ -103,7 +103,6 @@ namespace TelegramLib.MainClasses
                 return "fray.jpg";
             }
             return UserImages.First().Name;
-
         }
 
         public List<string> GetImagesNames()

@@ -60,5 +60,27 @@ namespace TelegramVisualPart.UserControls
             LastMessage.Text = "no messages";
             LastMessageTime.Text = "message time";
         }
+
+        public void SetVisibilityToPinBlock(bool isVisible)
+        {
+            PinBlock.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void ChangePinVisOnOposit()
+        {
+            PinBlock.Visibility = PinBlock.Visibility == Visibility.Hidden ? 
+                Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void SetVisibilityToUnreadEllipse(bool isVisible)
+        {
+            UnreadEllipse.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void ChangeUnreadEllipseVisOnOposite()
+        {
+            UnreadEllipse.Visibility = UnreadEllipse.Visibility == Visibility.Hidden ?
+                Visibility.Visible : Visibility.Hidden;
+        }
     }
 }
