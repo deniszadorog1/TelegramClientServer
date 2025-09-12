@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +17,10 @@ namespace TelegramLib.UserSettings
         public ChatSettings ChatsSettings { get; set; }
         public AdvancedSettings AdvSettings { get; set; }
         public PrivAndSecSettings PrivacySettings { get; set; }
-
+        public SoundSettings SoundNotifSettings { get; set; }
         public bool IsTabsOnTheLeft { get; set; }
         public int ChosenFolderId { get; set; }
-
+        
         public MainSettings(int id, NotificationSettings notSettings,
             ChatSettings chatSettings, AdvancedSettings advSettings,
             PrivAndSecSettings privacySettings)
@@ -28,6 +30,7 @@ namespace TelegramLib.UserSettings
             ChatsSettings = chatSettings;
             AdvSettings = advSettings;
             PrivacySettings = privacySettings;
+            SoundNotifSettings = new SoundSettings();
         }
 
         public MainSettings()
@@ -38,6 +41,7 @@ namespace TelegramLib.UserSettings
             AdvSettings = new AdvancedSettings();
             PrivacySettings = new PrivAndSecSettings();
             IsTabsOnTheLeft = true;
+            SoundNotifSettings = new SoundSettings();
         }
 
         public NotificationSettings GetNotSettings()
@@ -59,5 +63,6 @@ namespace TelegramLib.UserSettings
         {
             return PrivacySettings;
         }
+
     }
 }

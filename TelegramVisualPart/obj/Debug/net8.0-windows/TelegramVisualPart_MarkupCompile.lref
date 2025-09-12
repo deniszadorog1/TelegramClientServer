@@ -1,4 +1,4 @@
-﻿
+﻿B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\ToastWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml;;
@@ -12,6 +12,9 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAuto
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\CustomMute.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\MuteDuration.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\SelectSoundTone.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\LoggedUserProfile.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\MyProfileSettings.xaml;;
@@ -57,6 +60,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emo
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\FullVisualsBlock.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ItemsSlider.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\LittleMenusContols\AddSoundControl.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\LittleMenusContols\MuteDurationBox.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionMenuButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\MediaMenu.xaml;;

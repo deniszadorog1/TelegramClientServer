@@ -1,0 +1,148 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.LittleMenuPages.SelectSoundTone"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.LittleMenuPages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:menuControl="clr-namespace:TelegramVisualPart.UserControls.ChatControls.LittleMenusContols"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="450" Width="450"
+      Title="SelectSoundTone">
+
+    <Page.Resources>
+        <Style x:Key="RadiButStyle" TargetType="RadioButton"        
+           BasedOn="{StaticResource MaterialDesignRadioButton}">
+            <Setter Property="Margin" Value="25 7 0 0"/>
+            <Setter Property="IsChecked" Value="False"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="{StaticResource UsualTextColor}"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="27"/>
+
+            <Setter Property="materialDesign:RadioButtonAssist.RadioButtonSize" Value="24"/>
+        </Style>
+    </Page.Resources>
+
+    <Border Background="{StaticResource DarkThemeOne}" CornerRadius="10">
+        <Grid Margin="-1,0,1,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Name="UpperRow" Height="60"/>
+                <RowDefinition Name="WorkRow"/>
+
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="PageNameBlock" Grid.Row="0"
+                       Foreground="White" Text="Notification Sound"
+                       VerticalAlignment="Center" Margin="35 0 0 0" 
+                       FontSize="20" FontWeight="SemiBold"/>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name="RadioRow"/>
+                        <RowDefinition Name="VolumeRow"  Height="90"/>
+                        <RowDefinition Name="TextRow" Height="100"/>
+                        <RowDefinition Name="ButsRow" Height="60"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Name="SoundsPanel"
+                        Orientation="Vertical">
+                        <TextBlock Text="Choose your tone" Foreground="{StaticResource TempActiveTextColor}"
+                           Margin="25 0 0 0" FontSize="16" FontWeight="SemiBold" Name ="StackNameBlock"
+                               Height="25"/>
+
+                        <StackPanel Name="RadioStack">
+                            <RadioButton Style="{StaticResource RadiButStyle}" 
+                                     Content="Default.mp3"
+                                     Padding="10 0 0 2"
+                                     
+                                     MouseEnter="But_MouseEnter"
+                                     MouseLeave="But_MouseLeave"
+                                     Click="RadioBut_Checked"/>
+
+                            <RadioButton Style="{StaticResource RadiButStyle}" 
+                                     Name="NouSound"
+                                     Content="NoSound"   
+                                     Padding="10 0 0 2"
+                                     
+                                     MouseEnter="But_MouseEnter"
+                                     MouseLeave="But_MouseLeave"
+                                     Checked="NouSound_Checked"/>
+
+
+                            <menuControl:AddSoundControl x:Name="AddSound" 
+                                                     Margin="0 7 0 0"
+                                                     PreviewMouseDown="AddSound_PreviewMouseDown"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock  
+                           Text="Volume" Foreground="{StaticResource TempActiveTextColor}"
+                           Margin="25 0 0 0" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                        <Grid Grid.Row="1" Margin="25 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="75"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Slider Grid.Column="0"
+                                  Name ="PersSlider"
+                                  ValueChanged="Slider_ValueChanged"
+                                  VerticalAlignment="Center"
+                                  TickFrequency="1"
+                                  IsSnapToTickEnabled="True"
+                                  Orientation="Horizontal"
+                                  Minimum="1"
+                                  Maximum="100"
+                                  Value="100" 
+                                  MouseEnter="PersSlider_MouseEnter"
+                                  MouseLeave="PersSlider_MouseLeave"
+                                  Foreground="{StaticResource TempActiveTextColor}"/>
+
+                            <TextBlock Grid.Column="1"
+                               Foreground="{StaticResource TempActiveTextColor}"
+                               FontSize="16" Margin="0 0 10 0"
+                               VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Run Name="PercentsNumberBlock" Text="100"/><Run Name="PercentsThingBlock" Text="%"/>
+                            </TextBlock>
+                        </Grid>
+                    </Grid>
+
+
+                    <Grid Grid.Row="2" Background="{StaticResource DarkThemeSecond}">
+                        <TextBlock TextWrapping="Wrap" Margin="25 15 40 10"
+                           FontSize="17" Foreground="Gray"
+                           
+                           Text="Right click on any short voice note or MP3 file in chat and select 'Save for Notification'. It will apper here."
+                           />
+                    </Grid>
+
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right"
+                        Margin="0 0 10 10">
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            Foreground="{StaticResource TempActiveTextColor}"
+                            Click="CancelBut_Click"/>
+
+                        <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="SaveBut"
+                            Content="Save" Background="Transparent" BorderThickness="0"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Left" FontSize="16"
+                            Click="SaveBut_Click"  Margin="5 0 5 0" 
+                            Foreground="{StaticResource TempActiveTextColor}"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Page>

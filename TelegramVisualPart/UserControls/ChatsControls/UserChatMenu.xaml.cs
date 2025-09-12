@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 
@@ -25,16 +27,19 @@ namespace TelegramVisualPart.UserControls.ChatsControls
     public partial class UserChatMenu : UserControl
     {
         TelegramLib.MainClasses.UserChat _chat = null;
+        private TelSystem _system;
 
-        public UserChatMenu()
+        public UserChatMenu(TelSystem system)
         {
+            _system = system;
             InitializeComponent();
 
             SetBasicParams();
         }
 
-        public UserChatMenu(TelegramLib.MainClasses.UserChat chat)
+        public UserChatMenu(TelegramLib.MainClasses.UserChat chat, TelSystem system)
         {
+            _system = system;
             _chat = chat;
             InitializeComponent();
 
@@ -50,9 +55,10 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         public void SetBasicParams()
         {
             SetBasicIcons();
-            HideRightArrowIcons();
             SetBasicColors();
             SetBasicText();
+            HideRightArrowIcons();
+
             SetAddSubMenuEventsToElems();
 
             SetChangeableIcons();
@@ -62,7 +68,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         {
             if (_chat is null) return;
 
-            Unpin.IconElement.Kind = _chat.IsPinned ? 
+            Unpin.IconElement.Kind = _chat.IsPinned ?
                 PackIconKind.PinOffOutline : PackIconKind.PinOutline;
             Unpin.TextElement.Text = _chat.IsPinned ? "Unpin" : "Pin";
 
@@ -70,20 +76,28 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 PackIconKind.ChatOutline : PackIconKind.ChatAlertOutline;
             MarkRead.TextElement.Text = _chat.IsMarked ? "Mark as read" :
                 "Mark as unread";
-        } 
+        }
 
         public void SetAddSubMenuEventsToElems()
         {
-
             MuteNotifs.MouseEnter += ToAddSubMenu_MouseEnter;
             MuteNotifs.PreviewMouseDown += UserChatsMenuElement_PreviewMouseDown;
 
             AddToFolder.MouseEnter += ToAddSubMenu_MouseEnter;
             AddToFolder.PreviewMouseDown += UserChatsMenuElement_PreviewMouseDown;
+
+            Archive.PreviewMouseDown += Archive_PreviewMouseDown;
         }
+
+        public void Archive_PreviewMouseDown(object sender, MouseEventArgs e)
+        {
+            _system.Settings.SoundNotifSettings.ToMirrorArchive();
+        }
+
 
         public void ToAddSubMenu_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (_system.Settings.SoundNotifSettings.IsForeverMuted()) return;
             UserChatsMenuElement_MouseEnter(sender, e);
             AddSubMenu_MouseEnter(sender, e);
         }
@@ -91,7 +105,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         public void SetBasicText()
         {
             OpenNewWindow.TextElement.Text = "Open in Window";
-            Archive.TextElement.Text = "Archive";
+            Archive.TextElement.Text = _system.Settings.SoundNotifSettings.IsArchived ? "UnArchived" : "Archive";
             Unpin.TextElement.Text = "Unpin";
             MuteNotifs.TextElement.Text = "Mute notifications";
             MarkRead.TextElement.Text = "Mark as unread";
@@ -114,6 +128,14 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             MarkRead.ArrowRightIcon.Visibility = Visibility.Hidden;
             ClearChat.ArrowRightIcon.Visibility = Visibility.Hidden;
             DeleteChat.ArrowRightIcon.Visibility = Visibility.Hidden;
+
+            if (_system is not null && 
+                _system.Settings.SoundNotifSettings.IsForeverMuted())
+            {
+                MuteNotifs.ArrowRightIcon.Visibility = Visibility.Hidden;
+                MuteNotifs.TextElement.Text = "Unmute";
+            }
+
         }
 
         public void SetBasicIcons()
@@ -127,7 +149,6 @@ namespace TelegramVisualPart.UserControls.ChatsControls
 
             ClearChat.IconElement.Kind = PackIconKind.Broom;
             DeleteChat.IconElement.Kind = PackIconKind.BucketOutline;
-
         }
 
         private void AddSubMenu_MouseEnter(object sender, MouseEventArgs e)
@@ -153,15 +174,110 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                            .Transform(new Point(0, 0));
         }
 
+
+        private string _setToneTag = "SetTone";
+        private string _disableSoundTag = "DisSound";
+        private string _muteDurationTag = "MuteFor";
+        private string _muteForeverTag = "MuteForever";
         private void SetMuteNotifsSubMenu()
         {
             MainPanel.Children.Clear();
 
-            AddItemToMainPanel(PackIconKind.MusicNoteEighth, "Select Tone");
-            AddItemToMainPanel(PackIconKind.MusicOff, "Disable Sound");
-            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute for");
-            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute forever");
+            AddItemToMainPanel(PackIconKind.MusicNoteEighth, "Select Tone", _setToneTag);
+            AddItemToMainPanel(PackIconKind.MusicOff, "Disable Sound", _disableSoundTag);
+            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute for", _muteDurationTag);
+            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute forever", _muteForeverTag);
+
+            NotSubMenuMouseDownEvent();
         }
+
+        public void NotSubMenuMouseDownEvent()
+        {
+            List<UserChatsMenuElement> els =
+                MainPanel.Children.OfType<UserChatsMenuElement>().ToList();
+
+            foreach (var el in els)
+            {
+                SetNotifSubMenuMouseDownEvents(el);
+            }
+        }
+
+        public void PaintElement(SolidColorBrush color, 
+            UserChatsMenuElement el)
+        {
+            el.IconElement.Foreground = color;
+            el.TextElement.Foreground = color;
+        }
+
+
+        public void SetNotifSubMenuMouseDownEvents(UserChatsMenuElement item)
+        {
+            if (item.Tag.ToString() == _setToneTag)
+            {
+                item.PreviewMouseDown += AddChooseTonePage_PreviewMouseDown;
+
+            }
+            else if (item.Tag.ToString() == _disableSoundTag)
+            {
+                item.PreviewMouseDown += DisableSound_PreviewMouseDown;
+
+                //Set base
+                SetIsMusicEnStatus(item);
+            }
+            else if (item.Tag.ToString() == _muteDurationTag)
+            {
+                item.PreviewMouseDown += SetMuteDuration_PreviewMouseDown;
+            }
+            else if (item.Tag.ToString() == _muteForeverTag)
+            {
+                item.PreviewMouseDown += MuteForever_PreviewMouseDown;
+                PaintElement(new SolidColorBrush(Colors.Red), item);
+            }
+        }
+
+        public void SetMuteDuration_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow window = ((MainWindow)Window.GetWindow(this));
+
+            if (window is null) window = _window;
+
+            window.SetSecondaryFrame(
+                 new Pages.LittleMenuPages.MuteDuration(_system));
+        }
+
+        public void MuteForever_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserChatsMenuElement menuElem) return;
+            _system.Settings.SoundNotifSettings.ToMirrorEnStatus();
+            _system.Settings.SoundNotifSettings.ToMuteForever();
+        }
+
+        public void DisableSound_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserChatsMenuElement menuElem) return;
+
+            _system.Settings.SoundNotifSettings.ToMirrorEnStatus();
+
+            SetIsMusicEnStatus(menuElem);
+        }
+
+        public void SetIsMusicEnStatus( UserChatsMenuElement menuElem)
+        {
+            bool isEnabled = _system.Settings.SoundNotifSettings.IsEnabled;
+
+            menuElem.IconElement.Kind = isEnabled ? PackIconKind.MusicOff : PackIconKind.Music;
+            menuElem.TextElement.Text = isEnabled ? "Disable sound" : "Enable sound";
+        }
+
+        public void AddChooseTonePage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow window = ((MainWindow)Window.GetWindow(this));
+            if (window is null) window = _window;
+            window.SetSecondaryFrame(
+                 new Pages.LittleMenuPages.SelectSoundTone(_system));
+        }
+
+
 
         private void SetAddToFolderSubMenu()
         {
@@ -174,6 +290,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             {
                 case ToAddSubMenuType.Notification:
                     {
+                        if (_system.Settings.SoundNotifSettings.IsForeverMuted()) return;
                         SetMuteNotifsSubMenu();
                         return;
                     }
@@ -185,10 +302,11 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             }
         }
 
-        public void AddItemToMainPanel(PackIconKind kind, string text)
+        public void AddItemToMainPanel(PackIconKind kind, string text, string tag)
         {
             UserChatsMenuElement toAdd = new UserChatsMenuElement();
 
+            toAdd.Tag = tag;
             toAdd.IconElement.Kind = kind;
             toAdd.TextElement.Text = text;
             toAdd.ArrowRightIcon.Visibility = Visibility.Hidden;
@@ -210,6 +328,11 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             if (type is null) return;
 
             //Set menu Action
+            if (_system.Settings.SoundNotifSettings.IsForeverMuted())
+            {
+                _system.Settings.SoundNotifSettings.MuteTime = null;
+            }
+
 
             _window.SetSubMenuAction((UserTalkControlButTypes)type);
         }

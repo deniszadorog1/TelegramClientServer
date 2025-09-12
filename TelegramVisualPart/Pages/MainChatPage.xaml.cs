@@ -18,6 +18,7 @@ using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
@@ -948,7 +949,7 @@ namespace TelegramVisualPart.Pages
 
             TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
 
-            AddMenuElement(new UserChatMenu(chat), point);
+            AddMenuElement(new UserChatMenu(chat, _system), point);
         }
 
         public void ClearMessageUSerTalk()
@@ -965,7 +966,7 @@ namespace TelegramVisualPart.Pages
             Point subMenuPoint = new Point(point.X + GetMenuWidth(), point.Y + enteredItemPoint.Y);
 
             //Add new SubMenu
-            UserChatMenu subMenu = new UserChatMenu();
+            UserChatMenu subMenu = new UserChatMenu(_system);
             subMenu.SetSubMenu(type);
 
             AddMenuElement(subMenu, subMenuPoint);
@@ -1316,7 +1317,10 @@ namespace TelegramVisualPart.Pages
                         return;
                     }
                 case UserTalkControlButTypes.MuteNotifs:
-                    break;
+                    {
+                        //Nothing there
+                        return;
+                    }
                 case UserTalkControlButTypes.MarkRead:
                     {
                         SetUnreadMark();
@@ -1325,10 +1329,30 @@ namespace TelegramVisualPart.Pages
                 case UserTalkControlButTypes.AddToFolder:
                     break;
                 case UserTalkControlButTypes.ClearChat:
-                    break;
+                    {
+                        SetClearChat();
+                        return;
+                    }
                 case UserTalkControlButTypes.DeleteChat:
-                    break;
+                    {
+                        SetDeleteChat();
+                        return;
+                    }
             }
+        }
+
+        public async Task SetDeleteChat()
+        {
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                    new DeleteChat(await ApiService.GetUserById(chat.GetChatter().ContactUserId)));
+
+        }
+
+        public void SetClearChat()
+        {
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(chat, _system));
         }
 
         public void SetPinAction()
@@ -1343,7 +1367,6 @@ namespace TelegramVisualPart.Pages
             chat.IsPinned = !chat.IsPinned;
 
             // Set in upper ChatsBox part
-
             //Change queue in system chats
             _system.Chats.Remove(chat);
             _system.Chats.Insert(0, chat);

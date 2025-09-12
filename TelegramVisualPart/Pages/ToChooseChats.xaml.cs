@@ -189,12 +189,14 @@ namespace TelegramVisualPart.Pages
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
         {
+            Cursor = Cursors.Hand;
             if (sender is System.Windows.Controls.Button but) but.Background =
                 (SolidColorBrush)Application.Current.Resources["OtherButMouseEnter"];
         }
 
         private void But_MouseLeave(object sender, MouseEventArgs e)
         {
+            Cursor = null;
             if (sender is System.Windows.Controls.Button but) 
                 but.Background = new SolidColorBrush(Colors.Transparent);
         }

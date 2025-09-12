@@ -2,11 +2,13 @@
 using FFMpegCore.Pipes;
 using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 using Path = System.IO.Path;
@@ -265,12 +267,46 @@ namespace TelegramVisualPart.Helper
         {
             string userImagePath = Path.Combine(GetImagesPath(), "UserImages");
 
-            string fileName = Path.GetFileName(path);
+            CopyFileToAnotherFolder(path, userImagePath);
+/*            string fileName = Path.GetFileName(path);
             string destinationPath = Path.Combine(userImagePath, fileName);
 
             if (Path.Exists(destinationPath)) return;
 
+            File.Copy(path, destinationPath, overwrite: true);*/
+        }
+
+        public static void AddNewNotifSound(string path)
+        {
+            string notifPath = Path.Combine(GetSoundsPath(), "NotifSounds");
+
+            CopyFileToAnotherFolder(path, notifPath);
+/*            string fileName = Path.GetFileName(path);
+            string destinationPath = Path.Combine(notifPath, fileName);
+            if (Path.Exists(destinationPath)) return;
+            File.Copy(path, destinationPath, overwrite: true);*/
+        }
+
+        public static string GetSoundPath(string fileName)
+        {
+            string notifPath = Path.Combine(GetSoundsPath(), "NotifSounds");
+
+            return Path.Combine(notifPath, fileName);
+        }
+
+        private static void CopyFileToAnotherFolder(string path, string destFolderPath)
+        {
+            string fileName = Path.GetFileName(path);
+            string destinationPath = Path.Combine(destFolderPath, fileName);
+
+            if (Path.Exists(destinationPath)) return;
+
             File.Copy(path, destinationPath, overwrite: true);
+        }
+
+        private static string GetSoundsPath()
+        {
+            return Path.Combine(GetVisualPath(), "Sounds");
         }
 
         public static void AddNewWallpaper(string path)
@@ -435,6 +471,7 @@ namespace TelegramVisualPart.Helper
 
             return res;
         }
+
 
     }
 }

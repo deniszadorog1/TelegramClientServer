@@ -25,6 +25,15 @@
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\LittleMenuPages\CustomMute.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\LittleMenuPages\MuteDuration.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\LittleMenuPages\SelectSoundTone.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ToChooseChats.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -173,6 +182,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ItemsSlider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\LittleMenusContols\AddSoundControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\LittleMenusContols\MuteDurationBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml.cs">
@@ -369,6 +384,15 @@
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\LittleMenuPages\CustomMute.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\LittleMenuPages\MuteDuration.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\LittleMenuPages\SelectSoundTone.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ToChooseChats.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -517,6 +541,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ItemsSlider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\LittleMenusContols\AddSoundControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\LittleMenusContols\MuteDurationBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MediaActions\ActionMenuButton.xaml">

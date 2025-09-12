@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ChatControls.LittleMenusContols.MuteDurationBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.LittleMenusContols"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="100"
+             Height="30" Width="100">
+    <Grid>
+        
+        <TextBox MaxLength="2" 
+                 Name="TimeBox"
+                 materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}"
+                 Foreground="White" 
+                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                 Padding="13 1 0 0"
+                 CaretBrush="White"
+                 materialDesign:HintAssist.Hint="11"
+                 TextAlignment="Left"
+                 VerticalContentAlignment="Center"
+                 FontSize="16"
+                 
+                 PreviewTextInput="TimeBox_PreviewTextInput"
+                 TextChanged="TimeBox_TextChanged"/>
+
+
+        <TextBlock Text="Minutes" 
+                   Name ="AdditionalTextBlock"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left" Foreground="White"
+                   Opacity="0.5"
+                   FontSize="16"
+                   Margin="35 0 0 0"/>
+
+    </Grid>
+</UserControl>
