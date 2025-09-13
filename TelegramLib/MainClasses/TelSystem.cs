@@ -365,5 +365,20 @@ namespace TelegramLib.MainClasses
             ChatInNewWindow.Remove(chat);
         }
 
+        public void AddContactToFolder(string folderName, UserContactcs contact)
+        {
+            Folder folder = GetFolderByName(folderName);
+            if (folder is null) return;
+
+            folder.AddContact(contact);
+        }
+
+        public void RemoveContactFromFolder(string folderName, UserContactcs contact)
+        {
+            Folder folder = GetFolderByName(folderName);
+            if (folder is null) return;
+
+            folder.RemoveContactById(contact.Id);
+        }
     }
 }

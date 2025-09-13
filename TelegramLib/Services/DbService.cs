@@ -820,9 +820,11 @@ namespace TelegramLib.Services
 
                 res.Id = setting.Id;
 
+                res.IsTabsOnTheLeft = (bool)setting.IsFolderTabsIsLeft;
+
                 res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
 
-                res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id);
+                res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id, userId);
                 res.AdvSettings = GetAdvansedSettingsById(setting.Id);
                 res.PrivacySettings = GetPrivacySettings(setting.Id);
             }
@@ -1088,7 +1090,7 @@ namespace TelegramLib.Services
             return res;
         }
 
-        public static UserSettings.SettingsTypes.ChatSettings GetChatSettingsBySettingsId(int settingsId)
+        public static UserSettings.SettingsTypes.ChatSettings GetChatSettingsBySettingsId(int settingsId, int userId)
         {
             UserSettings.SettingsTypes.ChatSettings res = new UserSettings.SettingsTypes.ChatSettings();
 
@@ -1105,10 +1107,90 @@ namespace TelegramLib.Services
                 res.IsSendWithEnter = (bool)settings.IsSentWithEnter;
                 res.Wallpaper = GetChatWallpaperByChatSettingsId(res.Id);// GetChatWallpaperById(settings.Bg);
                 res.PossibleWallpapers = GetPossibleWallpapersForChatSetting(settingsId); // CHECK IF USERID === SETTINGID
+                res.Themes = GetThemesByUserId(userId);
             }
             return res;
         }
 
+        private static List<mainClass.ChatFitures.Theme> GetThemesByUserId(int userId)
+        {
+            List<mainClass.ChatFitures.Theme> res = new List<mainClass.ChatFitures.Theme>();
+            using (var model = new TelegramModel())
+            {
+                List<model.UserTheme> themes = model.UserTheme.Where(x => x.UserId == userId).ToList();
+
+                foreach (var theme in themes)
+                {
+                    mainClass.ChatFitures.Theme toAdd = new mainClass.ChatFitures.Theme();
+
+                    toAdd.Id = theme.Id;
+                    toAdd.Type = GetThemeTypeById((int)theme.TypeId);
+                    toAdd.Color = GetThemeColor(theme.Id);
+                    res.Add(toAdd);
+                }
+            }
+            return res;
+        }
+
+        private static ColorHelper GetThemeColor(int themeId)
+        {
+            ColorHelper res = new ColorHelper();
+            using (var model = new TelegramModel())
+            {
+                ThemeColor color = model.ThemeColor.FirstOrDefault(x => x.Id == themeId);
+                if (color is null) return res;
+
+                res.R = (byte)color.R;
+                res.G = (byte)color.G;
+                res.B = (byte)color.B;
+            }
+            return res;
+        }
+
+        private static ThemeType GetThemeTypeById(int typeId)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var type in model.Theme)
+                {
+                    if (type.Id == typeId)
+                    {
+                        return (ThemeType)type.Id;
+                    }
+                }
+            }
+            return ThemeType.Night;
+        }
+
+        private static int GetThemeIdByType(ThemeType type)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.Theme res = model.Theme.FirstOrDefault(x => x.Name == type.ToString());
+                return res is null ? 4 : res.Id;
+            }
+        }
+
+        public static void UpdateTheme(mainClass.ChatFitures.Theme theme)
+        {
+            using (var model = new TelegramModel())
+            {
+/*                int? id = GetThemeIdByType(theme.Type);
+                if (id is null) return;
+
+                UserTheme toUpdate = model.UserTheme.FirstOrDefault(x => x.Id == theme.Id && x.TypeId == (int)id);
+                if (toUpdate is null) return;*/
+
+                ThemeColor color = model.ThemeColor.FirstOrDefault(x => x.Id == theme.Id);
+                if (color is null) return;
+
+                color.R = theme.Color.R;
+                color.G = theme.Color.G;
+                color.B = theme.Color.B;
+
+                model.SaveChanges();
+            }
+        }
 
         private static ChatWallpaper GetChatWallpaperByChatSettingsId(int chatSettingId)
         {
@@ -1253,6 +1335,8 @@ namespace TelegramLib.Services
                 Settings settings = new Settings();
 
                 settings.UserId = userId;
+                settings.IsFolderTabsIsLeft = true;
+
                 model.Settings.Add(settings);
 
                 model.SaveChanges();
@@ -1275,9 +1359,51 @@ namespace TelegramLib.Services
                 settings.IsSentWithEnter = true;
 
                 model.ChatSettings.Add(settings);
+
+                //Add Themes
+                AddThemes(newSettingId);
+
                 model.SaveChanges();
             }
         }
+        
+        private static void AddThemes(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                for(int i = 1; i <= (int)ThemeType.Night; i++)
+                {
+                    //Add new color
+                    AddThemeColor();
+                    //Get temp theme id
+                    int themeId =  GetIdByTheme((ThemeType)i);
+
+                    UserTheme toAdd = new UserTheme();
+                    toAdd.UserId = userId;
+                    toAdd.TypeId = themeId;
+                    toAdd.ColorId = model.UserColor.FirstOrDefault().Id;
+
+                    model.UserTheme.Add(toAdd);
+                }                             
+                model.SaveChanges();
+            }
+        }
+
+        private static void AddThemeColor()
+        {
+            using(var model = new TelegramModel())
+            {
+                ThemeColor color = new ThemeColor();
+                color.R = 128;
+                color.G = 128;
+                color.B = 256;
+
+                model.ThemeColor.Add(color);
+
+                model.SaveChanges();
+            }
+        }
+        
 
         public static void UpdateChatSettings(UserSettings.SettingsTypes.ChatSettings settings)
         {
@@ -2853,7 +2979,7 @@ namespace TelegramLib.Services
 
         public static void AddWallpaper(string imgName)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 if (model.ChatBG.Where(x => x.Name == imgName).Any()) return;
 
@@ -2863,6 +2989,18 @@ namespace TelegramLib.Services
 
                 model.ChatBG.Add(toAdd);
 
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateTabsPosType(bool isOnTheLeft, int settingId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Settings toUpdate = model.Settings.FirstOrDefault(x => x.Id == settingId);
+                if (toUpdate is null) return;
+
+                toUpdate.IsFolderTabsIsLeft = isOnTheLeft;
                 model.SaveChanges();
             }
         }

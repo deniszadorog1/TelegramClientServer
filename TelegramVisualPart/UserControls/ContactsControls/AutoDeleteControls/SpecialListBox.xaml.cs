@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.CodeDom;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -85,6 +86,15 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         public int GetSelectedIndex()
         {
             return _selectedIndex;
+        }
+
+        public string GetValueBySelectedIndex()
+        {
+            if(CheckPanel.Children[_selectedIndex] is TextBlock block)
+            {
+                return block.Text;
+            }
+            throw new Exception("Impossible");
         }
 
         public void SetSelectedIndex(int index)

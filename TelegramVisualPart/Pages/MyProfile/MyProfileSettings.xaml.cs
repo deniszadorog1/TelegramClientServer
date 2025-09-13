@@ -65,7 +65,9 @@ namespace TelegramVisualPart.Pages.MyProfile
             BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty : 
                 (((DateTime)_user.BirthDay).Day + " " + 
                 ((DateTime)_user.BirthDay).Month + " " + 
-                ((DateTime)_user.BirthDay).Year).ToString();
+                (((DateTime)_user.BirthDay).Year == 1 ? " " : 
+                ((DateTime)_user.BirthDay).Year))
+            .ToString();
         }
 
         public void SetButtonsView()

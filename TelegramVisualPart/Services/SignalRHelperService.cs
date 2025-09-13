@@ -118,8 +118,11 @@ namespace TelegramVisualPart.Services
 
             MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            string birthString = user.BirthDay is null ? "Not born yeat" :
-                $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{user.BirthDay.Value.Year}";
+            string yearStr = user.BirthDay is null ? " " : 
+                user.BirthDay.Value.Year == 1 ? " " : user.BirthDay.Value.Year.ToString();
+
+            string birthString = user.BirthDay is null ? "Not born year" :
+                $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{yearStr}";
 
             if (shareType == IsPrivacyException.Share)
             {

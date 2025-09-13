@@ -36,5 +36,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
             Background = Brushes.Transparent;
             Cursor = null;
         }
+
+        public void SetArrowColumn(double size)
+        {
+            ArrowColumn.Width = new GridLength(size);
+        }
     }
 }

@@ -518,12 +518,13 @@ namespace TelegramVisualPart
                 {
                     mainChatPage.ClearAllLevels();
                 }
-            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+            }), System.Windows.Threading.DispatcherPriority.Render);
         }
 
         private void Window_LayoutUpdated(object sender, EventArgs e)
         {
-            //SetMainChatPagePartsSize();
+/*            if (_isOnlyChat) return;
+            SetMainChatPagePartsSize();*/
         }
 
         private Enums.SizerActionType? _chosenWindowSizeType;

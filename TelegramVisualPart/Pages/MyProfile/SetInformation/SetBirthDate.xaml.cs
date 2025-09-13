@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramVisualPart.Services;
 using static System.Net.Mime.MediaTypeNames;
 using User = TelegramLib.MainClasses.User;
 
@@ -120,6 +121,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             MonthsSpecial.SetListWithBlocks(monthsList);
         }
 
+        private const string _emptyYear = "---";
         public void SetYears()
         {
             List<string> yearList = new List<string>();
@@ -131,6 +133,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             {
                 yearList.Add(i.ToString());
             }
+
+            yearList.Add(_emptyYear);
 
             yearList.Add(" ");
             yearList.Add(" ");
@@ -151,7 +155,9 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             MonthsSpecial.ValueByIndex(_user.BirthDay.Value.Month);
 
             //YearSpecial.SetSelectedIndex(2);
-            YearSpecial.ValueByIndex((_user.BirthDay.Value.Year - _minYear) + 1);
+
+            int yearIndex = _user.BirthDay.Value.Year == 1 ? DateTime.Now.Year - _minYear + 2 : (_user.BirthDay.Value.Year - _minYear) + 1;
+            YearSpecial.ValueByIndex(yearIndex);
 
             //Set day
             /*            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
@@ -354,12 +360,24 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             //Make check for date
             int day = DaysSpecial.GetSelectedIndex() - 1;
             int month = MonthsSpecial.GetSelectedIndex() - 1;
-            int year = _minYear + YearSpecial.GetSelectedIndex() - 2;
+
+            int year = GetYear();
 
             _user.BirthDay = new DateTime(year, month, day);
 
+            ApiService.UpdateUser(_user);
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();
+        }
+
+        public int GetYear()
+        {
+            if (YearSpecial.GetValueBySelectedIndex() == _emptyYear)
+            {
+                return 1;
+            }
+            return _minYear + YearSpecial.GetSelectedIndex() - 2;
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

@@ -30,11 +30,11 @@
 
                 <TextBlock Name ="Message" Text="test" VerticalAlignment="Top"
                            Grid.Row="0"
-                       Margin="5 -10 5 5" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
+                       Margin="10 -10 7 5" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
 
                 <TextBlock Name ="SentTime" Grid.Row="1" Text="time"
-                           HorizontalAlignment="Right" Margin="0 0 10 5"
-                           Foreground="Gray" FontSize="12" VerticalAlignment="Bottom"/>
+                           HorizontalAlignment="Right" Margin="0 0 7 5"
+                           Foreground="Gray" FontSize="13" VerticalAlignment="Bottom"/>
             </Grid>
         </Border>
     </Grid>

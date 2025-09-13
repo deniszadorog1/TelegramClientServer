@@ -769,7 +769,6 @@ namespace TelegramVisualPart.Pages
                     Tag = _system.Chats[i].Id
                 };
 
-
                 item.Content = await GetTalkMessage(i);
 
                 item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
@@ -965,8 +964,12 @@ namespace TelegramVisualPart.Pages
             //Set subMenu pooint
             Point subMenuPoint = new Point(point.X + GetMenuWidth(), point.Y + enteredItemPoint.Y);
 
+            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
             //Add new SubMenu
-            UserChatMenu subMenu = new UserChatMenu(_system);
+            UserChatMenu subMenu = new UserChatMenu(chat, _system);
+
+            subMenu.SetWindow((MainWindow)Window.GetWindow(this));
             subMenu.SetSubMenu(type);
 
             AddMenuElement(subMenu, subMenuPoint);

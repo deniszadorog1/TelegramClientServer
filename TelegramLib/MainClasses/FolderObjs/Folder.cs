@@ -47,6 +47,7 @@ namespace TelegramLib.MainClasses.FolderObjs
 
         public void AddContact(UserContactcs contact)
         {
+            if (!(Contacts.FirstOrDefault(x => x.Id == contact.Id) is null)) return; 
             Contacts.Add(contact);
         }
 
@@ -58,6 +59,14 @@ namespace TelegramLib.MainClasses.FolderObjs
         public void RemoveContactByName(string name)
         {
             Contacts.Remove(Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault());
+        }
+
+        public void RemoveContactById(int contactId)
+        {
+            UserContactcs toRemove =  Contacts.FirstOrDefault(x => x.Id == contactId);
+            if (toRemove is null) return;
+
+            Contacts.Remove(toRemove);
         }
 
         public void SetContacts(List<UserContactcs> contacts)

@@ -16,8 +16,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
+using TelegramVisualPart.Pages.Settings.Folders;
+using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Application;
 
 namespace TelegramVisualPart.UserControls.ChatsControls
 {
@@ -97,7 +101,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
 
         public void ToAddSubMenu_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (_system.Settings.SoundNotifSettings.IsForeverMuted()) return;
+            if (sender == MuteNotifs && _system.Settings.SoundNotifSettings.IsForeverMuted()) return;
             UserChatsMenuElement_MouseEnter(sender, e);
             AddSubMenu_MouseEnter(sender, e);
         }
@@ -277,11 +281,87 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                  new Pages.LittleMenuPages.SelectSoundTone(_system));
         }
 
-
-
         private void SetAddToFolderSubMenu()
         {
+            if (_chat is null) return;
             MainPanel.Children.Clear();
+
+            //Folders elements
+            for(int i = 0; i < _system.Folders.Count; i++)
+            {
+                UserContactcs? isIncluded = 
+                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
+                   
+                AddFolderElement(_system.Folders[i].Name, isIncluded is not null);
+            }
+
+            //To Add Folder element
+            AddFolderElement();
+        }
+
+        public void AddFolderElement()
+        {
+            UserChatsMenuElement toAdd = new UserChatsMenuElement();
+
+            //Is included
+            toAdd.IconElement.Kind = PackIconKind.Folder;
+            toAdd.IconElement.Foreground =
+                (SolidColorBrush)Application.Current.Resources["UsualTextColor"];
+
+            //folder name
+            toAdd.TextElement.Text = "Create new folder";
+
+            //Set folder icon
+            toAdd.ArrowRightIcon.Visibility = Visibility.Hidden;
+
+            //Set events
+            toAdd.PreviewMouseDown += AddNewFolder_PreviewMouseDown;
+
+            MainPanel.Children.Add(toAdd);
+        }
+
+        public void AddNewFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _window.SetSecondaryFrame(new FolderAction(_system));
+        }
+
+        public void AddFolderElement(string folderName, bool isIncluded)
+        {
+            UserChatsMenuElement toAdd = new UserChatsMenuElement();
+
+            //Is included
+            toAdd.IconElement.Kind = isIncluded ? PackIconKind.Tick : PackIconKind.None;
+            toAdd.IconElement.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            //folder name
+            toAdd.TextElement.Text = folderName;
+
+            //Set folder icon
+            toAdd.ArrowRightIcon.Kind = PackIconKind.FolderOutline;
+            toAdd.ArrowRightIcon.Foreground = 
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            toAdd.ArrowColumn.Width = new GridLength(60);
+            //Set events
+            toAdd.PreviewMouseDown += FolderElement_PreviewMouseDown;
+
+            MainPanel.Children.Add(toAdd);
+        }
+
+        public void FolderElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserChatsMenuElement el) return;
+            
+            //Set add in folder
+            if(el.IconElement.Kind == PackIconKind.None)
+            {
+                _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
+                return;
+            }
+            //Set remove from folder
+            _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter);
+
         }
 
         public void SetSubMenu(ToAddSubMenuType type)

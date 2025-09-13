@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="45"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="35"/>
+            <ColumnDefinition Name="ArrowColumn" Width="35"/>
         </Grid.ColumnDefinitions>
 
         <materialDesign:PackIcon Width="25" Height="25"
