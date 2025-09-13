@@ -64,7 +64,7 @@ namespace TelegramVisualPart.Pages.Contacts
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = toAdd[i].UserName 
+                    Tag = toAdd[i].Login 
                 };
                 ContactsListBox.Items.Add(item);
             }

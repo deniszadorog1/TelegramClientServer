@@ -18,7 +18,7 @@
         {
             FileName = string.Empty;
             IsBlurred = false;
-            IsGeneral = true;
+            IsGeneral = false;
         }
 
         public void SetPath(string path)

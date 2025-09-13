@@ -56,10 +56,10 @@ namespace TelegramLib.MainClasses.FolderObjs
             ExcludedContacts.Add(contact);
         }
 
-        public void RemoveContactByName(string name)
+/*        public void RemoveContactByName(string name)
         {
             Contacts.Remove(Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault());
-        }
+        }*/
 
         public void RemoveContactById(int contactId)
         {

@@ -11,6 +11,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
 {
     public class SoundSettings
     {
+        public int Id { get; set; }
         public List<string> MesSounds { get; set; }
         public string ChosenSound { get; set; }
         public int Volume { get; set; }

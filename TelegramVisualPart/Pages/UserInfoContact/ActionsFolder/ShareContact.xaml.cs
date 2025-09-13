@@ -90,7 +90,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private async void AddContactIfOffline(User user, User toAdd)
         {
             //Add conatct in system
-            UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.UserName, toAdd.BirthDay,
+            UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.Login, toAdd.BirthDay,
                 toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null, true);
 
             contact.ContactUserId = toAdd.Id;
@@ -135,6 +135,23 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            ClearText.Foreground = Brushes.White;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            ClearText.Foreground = Brushes.Gray;
+        }
+
+        private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SearchTextBox.Text = string.Empty;
         }
     }
 }

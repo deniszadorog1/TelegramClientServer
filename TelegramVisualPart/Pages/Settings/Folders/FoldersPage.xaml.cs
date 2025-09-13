@@ -122,8 +122,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void EnterToFolderSettings_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not ListBoxItem item ||
-                item.Content is not FolderLittleInfo info) return;
+            if (sender is not /*ListBoxItem item ||
+                item.Content is not */FolderLittleInfo info) return;
 
             if (IsBucketIsClicked(e, info)) return;
 

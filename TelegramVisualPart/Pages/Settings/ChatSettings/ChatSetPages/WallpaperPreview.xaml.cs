@@ -109,7 +109,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             if (_settings is not null)
             {
                 _settings.Wallpaper.SetBlurParam(ImageGrid.Effect is not null);
-                _settings.Wallpaper.WallpaperName = TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString());
+                _settings.Wallpaper.WallpaperName = 
+                    TestThing.GetTestParams.GetWallpaperPath(_img.Tag.ToString());
 
                 _settings.Wallpaper.Id = 
                     await ApiService.GetChatBgIdByName(_settings.Wallpaper.WallpaperName);
@@ -124,7 +125,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 _chatBackground.SetIsGeneral(false);
 
                 //Set chat wallpaper in db
-
                 await ApiService.SetChatWallpaper(_chatBackground, _chat.Id);
             }
 

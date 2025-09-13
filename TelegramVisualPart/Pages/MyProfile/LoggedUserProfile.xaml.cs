@@ -38,7 +38,7 @@ namespace TelegramVisualPart.Pages
 
        
             PhoneNumberBlock.Text = _user.PhoneNumber;
-            UserNameBlock.Text = _user.UserName;
+            UserNameBlock.Text = _user.Login;
 
             UserImage.ImageSource = 
                 new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));

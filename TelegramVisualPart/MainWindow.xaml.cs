@@ -50,6 +50,8 @@ namespace TelegramVisualPart
             InitializeComponent();
             Loaded += MainWindow_Loaded;
 
+            OutWindowBorder.BorderThickness = new Thickness(0);
+
             ///Visuals/Images/UserImages/Minato.jpg"
             SetLoginPage();
             SetWindowSizeState();
@@ -364,7 +366,7 @@ namespace TelegramVisualPart
         }
 
         private void Maximize_Click(object sender, RoutedEventArgs e)
-        {        
+        {
             SetWindowSizeState();
         }
 
@@ -402,7 +404,7 @@ namespace TelegramVisualPart
 
         public void SetMainPageOnWindowSizeChange()
         {
-            if (MainFrame.Content is MainChatPage page && 
+            if (MainFrame.Content is MainChatPage page &&
                !_isOnlyChat)
             {
                 page.ChatsColumn.Width = new GridLength(300);
@@ -491,15 +493,16 @@ namespace TelegramVisualPart
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (this.Height != SystemParameters.WorkArea.Height ||
-                this.ActualWidth != SystemParameters.WorkArea.Width)
+            if (this.ActualHeight < SystemParameters.WorkArea.Height ||
+                this.ActualWidth < SystemParameters.WorkArea.Width)
             {
                 WindowSizerIcon.Kind = PackIconKind.WindowMaximize;
-
+                _isMax = false;
             }
             else
             {
                 WindowSizerIcon.Kind = PackIconKind.WindowRestore;
+                _isMax = true;
             }
             //Set page size for second and third frame pages
             if (SecondaryFrame.Content is Page page) SetFramePageHeight(page);
@@ -523,8 +526,8 @@ namespace TelegramVisualPart
 
         private void Window_LayoutUpdated(object sender, EventArgs e)
         {
-/*            if (_isOnlyChat) return;
-            SetMainChatPagePartsSize();*/
+            /*            if (_isOnlyChat) return;
+                        SetMainChatPagePartsSize();*/
         }
 
         private Enums.SizerActionType? _chosenWindowSizeType;
@@ -557,7 +560,7 @@ namespace TelegramVisualPart
                 Enums.SizerActionType? tempSizer = GetWindowSizeType();
 
                 //Temp chat messages glues to one part(left)
-                if (this.ActualWidth < 1800 /*&& (this.Width > 1700 || !_isMax)*/)
+                if (this.ActualWidth < 1800)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.FirstLevel);
@@ -566,7 +569,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction();
                 }
                 //Temp chat messages in glued to differ borders
-                if (this.Width < 1700 /*&& (this.Width > 1500 || !_isMax)*/)
+                if (this.Width < 1700)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.SecondLevel);
@@ -575,7 +578,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //AllChats Closing
-                if (this.Width < 1500 /*&& (this.Width > 1300 || !_isMax)*/)
+                if (this.Width < 1500)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.ThirdLevel);
@@ -584,7 +587,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //Temp chat is closing + Tabs is going to top
-                if (this.ActualWidth < 1300 /*&& (this.Width > 1000 || !_isMax)*/)
+                if (this.ActualWidth < 1300)
                 {
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
@@ -811,7 +814,7 @@ namespace TelegramVisualPart
 
         public void ClearAllChatWindows()
         {
-            foreach(var window in _chatWindows)
+            foreach (var window in _chatWindows)
             {
                 window.Close();
             }
@@ -821,8 +824,8 @@ namespace TelegramVisualPart
         public bool ChatIsOnOtherWindow(TelegramLib.MainClasses.UserChat chat)
         {
             return _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id) is not null;
-        } 
-        
+        }
+
         public void SetOtherChatWindowOnFront(TelegramLib.MainClasses.UserChat chat)
         {
             MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
@@ -846,7 +849,7 @@ namespace TelegramVisualPart
 
         public void CloseWindowWithGivenChat(TelegramLib.MainClasses.UserChat chat)
         {
-            MainWindow? toRemove = 
+            MainWindow? toRemove =
                 _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
             if (toRemove is null) return;
 

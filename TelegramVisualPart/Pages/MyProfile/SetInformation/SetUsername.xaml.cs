@@ -34,7 +34,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         public void SetBasicParams()
         {
-            UserNameBox.Text = _user.UserName;
+            UserNameBox.Text = _user.Login;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
@@ -55,7 +55,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             //Set checks if this is exist
             //+ Set Changings in DB
 
-            _user.UserName = UserNameBox.Text;
+            _user.Login = UserNameBox.Text;
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();

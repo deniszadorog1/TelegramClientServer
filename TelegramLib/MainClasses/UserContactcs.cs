@@ -15,7 +15,7 @@ namespace TelegramLib.MainClasses
 
         public string Name { get; set; }
         public string Surname { get; set; }
-        public string UserName { get; set; }
+        public string Login { get; set; }
         public DateTime? BirthDate { get; set; }
         public string BIO { get; set; }
         public string PhoneNumber { get; set; }
@@ -35,7 +35,7 @@ namespace TelegramLib.MainClasses
         {
             Id = id;
             Name = name;
-            UserName = userName;
+            Login = userName;
             BirthDate = birthDate;
             BIO = bio;
             PhoneNumber = phoneNumber;
@@ -51,7 +51,7 @@ namespace TelegramLib.MainClasses
             return;
             Id = -1;
             Name = "testNAME";
-            UserName = "testUSERNAME";
+            Login = "testUSERNAME";
             BirthDate = DateTime.Now;
             BIO = "testBIO";
             LastSeen = DateTime.Now;
@@ -82,10 +82,10 @@ namespace TelegramLib.MainClasses
             IsNotificationsIsOn = state;
         }
 
-        public bool IsNamesAreEqual(string name)
+/*        public bool IsNamesAreEqual(string name)
         {
             return Name == name;
-        }
+        }*/
 
         public string GetPhoneNumber()
         {
@@ -94,7 +94,12 @@ namespace TelegramLib.MainClasses
 
         public string GetUserName()
         {
-            return UserName;
+            return Login;
+        }
+
+        public bool UserLoginsAreEqual(string login)
+        {
+            return Login == login;
         }
 
         public string GetBirthDate()
@@ -147,7 +152,7 @@ namespace TelegramLib.MainClasses
         public void UpdateByUser(User user)
         {
             Name = user.Name;
-            UserName = user.UserName;
+            Login = user.Login;
             BirthDate = user.BirthDay;
             BIO = user.BIO;
             PhoneNumber = user.PhoneNumber;

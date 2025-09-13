@@ -17,6 +17,7 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
@@ -27,15 +28,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
     public partial class UserContactMenu : UserControl
     {
         private TelSystem _system;
+        private TelegramLib.MainClasses.UserChat _chat;
+
         public UserContactMenu()
         {
             InitializeComponent();
             SetBasicBlocks();
         }
 
-        public void SetTelSystemParam(TelSystem system)
+        public void SetTelSystemParam(TelSystem system, TelegramLib.MainClasses.UserChat chat)
         {
             _system = system;
+            _chat = chat;
         }
 
         public void SetBasicBlocks()
@@ -68,22 +72,22 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is MenuIconTextBut but)
+            if (sender is UserChatMenuButton but)
             {
-                Page page = GetPageToOpen(but.Name);
+                Page? page = GetPageToOpen(but.Name);
                 if (page is null) return;
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
             }
         }
 
-        private Page GetPageToOpen(string name)
+        private Page? GetPageToOpen(string name)
         {
-            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(_system.GetChosenChat(), _system) :
-                   name == DeleteContact.Name.ToString() ? new DeleteContact(_system.ChosenChatContact, _system) :
-                   name == BlockUser.Name.ToString() ? new BlockContact(_system, _system.ChosenChatContact) :
-                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, _system.ChosenChatContact) :
+            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
+                   name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */_chat.Chatter, _system) :
+                   name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
+                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/_chat.Chatter) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
-                   name == ShareContact.Name.ToString() ? new ShareContact(_system, _system.ChosenChatContact) : null;
+                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) : null;
         }
     }
 }

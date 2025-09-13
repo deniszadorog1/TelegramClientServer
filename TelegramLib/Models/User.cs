@@ -18,9 +18,11 @@ namespace TelegramLib.Models
             Contacts1 = new HashSet<Contacts>();
             Folder = new HashSet<Folder>();
             Messages = new HashSet<Messages>();
+            MonitorNotifs = new HashSet<MonitorNotifs>();
             Settings = new HashSet<Settings>();
             UserColor = new HashSet<UserColor>();
             UserImage = new HashSet<UserImage>();
+            UserSounds = new HashSet<UserSounds>();
             UserTheme = new HashSet<UserTheme>();
         }
 
@@ -50,9 +52,6 @@ namespace TelegramLib.Models
         [StringLength(1024)]
         public string BIO { get; set; }
 
-        [StringLength(32)]
-        public string Username { get; set; }
-
         public bool? IsOnline { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -74,6 +73,9 @@ namespace TelegramLib.Models
         public virtual ICollection<Messages> Messages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MonitorNotifs> MonitorNotifs { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Settings> Settings { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -81,6 +83,9 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserImage> UserImage { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserSounds> UserSounds { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserTheme> UserTheme { get; set; }

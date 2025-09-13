@@ -832,7 +832,8 @@ namespace TelegramVisualPart.UserControls
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
             ContactInfo info = new ContactInfo();
-            info.SetContactInfo(_chat, _system, _system.ChosenChatContact);
+            
+            info.SetContactInfo(_chat, _system, _chat.Chatter /*_system.ChosenChatContact*/);
 
             info.LoadEnd += () =>
             {
@@ -1008,6 +1009,9 @@ namespace TelegramVisualPart.UserControls
 
         public void SetBackground()
         {
+            if (_chat is null || 
+                _chat.ChatBg is null) throw new Exception("Chat cant be null");
+
             //set local
             if (_chat is not null && !_chat.GetBackground().IsGeneral)
             {
@@ -1056,6 +1060,7 @@ namespace TelegramVisualPart.UserControls
 
         public ImageBrush GetBgImageBrush(string fileName)
         {
+            //System.UnauthorizedAccessException: "Access to the path 'B:\GitHub\TelegramClientServer\TelegramVisualPart\Visuals\Images\Wallpapers' is denied."
             return new ImageBrush()
             {
                 ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(fileName), UriKind.Absolute)), // или Relative

@@ -34,6 +34,8 @@ namespace TelegramLib.Models
         public virtual DbSet<Messages> Messages { get; set; }
         public virtual DbSet<MessagesSettings> MessagesSettings { get; set; }
         public virtual DbSet<MessageVideo> MessageVideo { get; set; }
+        public virtual DbSet<MonitorNotifs> MonitorNotifs { get; set; }
+        public virtual DbSet<MonitorSidesType> MonitorSidesType { get; set; }
         public virtual DbSet<NotificatioonsAndSound> NotificatioonsAndSound { get; set; }
         public virtual DbSet<PhoneNumberSettings> PhoneNumberSettings { get; set; }
         public virtual DbSet<PossibleChatBGs> PossibleChatBGs { get; set; }
@@ -41,13 +43,14 @@ namespace TelegramLib.Models
         public virtual DbSet<PrivacySettingType> PrivacySettingType { get; set; }
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+        public virtual DbSet<Sounds> Sounds { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
         public virtual DbSet<ThemeColor> ThemeColor { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserColor> UserColor { get; set; }
         public virtual DbSet<UserImage> UserImage { get; set; }
+        public virtual DbSet<UserSounds> UserSounds { get; set; }
         public virtual DbSet<UserTheme> UserTheme { get; set; }
         public virtual DbSet<WhoCanSeeType> WhoCanSeeType { get; set; }
 
@@ -128,6 +131,11 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.MessageVideo)
                 .HasForeignKey(e => e.VideoId);
 
+            modelBuilder.Entity<MonitorSidesType>()
+                .HasMany(e => e.MonitorNotifs)
+                .WithOptional(e => e.MonitorSidesType)
+                .HasForeignKey(e => e.Type);
+
             modelBuilder.Entity<PhoneNumberSettings>()
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.PhoneNumberSettings)
@@ -167,6 +175,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.Settings)
                 .HasForeignKey(e => e.SettingId);
+
+            modelBuilder.Entity<Sounds>()
+                .HasMany(e => e.UserSounds)
+                .WithOptional(e => e.Sounds)
+                .HasForeignKey(e => e.ChosenSoundId);
 
             modelBuilder.Entity<StickerImage>()
                 .HasMany(e => e.Messages)

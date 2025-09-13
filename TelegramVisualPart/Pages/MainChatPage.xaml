@@ -161,7 +161,7 @@
                     </Grid>
 
 
-                    <Grid Grid.Row="1" Name="FolderSliderGrid">
+                    <Grid Grid.Row="1" Name="FolderSliderGrid" Margin="0 5 0 0">
                         <SliderMenu:ItemsSlider x:Name="FolderSliderMenu"/>
                     </Grid>
 
@@ -175,6 +175,7 @@
                             Orientation="Vertical">
                         <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
+                        
                         <WrapPanel Name ="AllMediasElements"
                                Background="Transparent" 
                                VerticalAlignment="Top"

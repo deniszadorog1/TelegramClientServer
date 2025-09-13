@@ -103,7 +103,7 @@ namespace TelegramLib.MainClasses
         public UserChat GetChosenChat()
         {
             if (ChosenChatContact is null) return null;
-            return Chats.Where(x => x.GetChatter().Name == ChosenChatContact.Name).FirstOrDefault();
+            return Chats.FirstOrDefault(x => x.GetChatter().Name == ChosenChatContact.Name);
         }
 
         public int GetChatsAmount()
@@ -121,9 +121,10 @@ namespace TelegramLib.MainClasses
             return !(ChosenChatContact is null);
         }
 
-        public UserChat GetUserChatByChatterName(string chatterName)
+        public UserChat GetUserChatByChatterId(int id)
         {
-            UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
+            //UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
+            UserChat chat = Chats.FirstOrDefault(x => x.IsChatterIdsAreEqual(id) /*IsUserLoginsAreEqual(chatterLogin)*/);
 
             //Get tel system
             if (!(chat is null))
@@ -164,14 +165,19 @@ namespace TelegramLib.MainClasses
                 (wallpaper.WallpaperName, wallpaper.IsBlurred, true);
         }
 
-        public UserContactcs GetContactByName(string name)
+/*        public UserContactcs GetContactByName(string name)
         {
             return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
         }
-
+*/
         public UserContactcs GetContactById(int id)
         {
-            return Contacts.Where(x => x.IsSendersIdsAreEqual(id)).FirstOrDefault();
+            return Contacts.FirstOrDefault(x => x.IsSendersIdsAreEqual(id));
+        }
+
+        public UserContactcs GetContactByLogin(string login)
+        {
+            return Contacts.FirstOrDefault(x => x.UserLoginsAreEqual(login));
         }
 
         public User IsUserIsSameId(int id)
@@ -323,6 +329,11 @@ namespace TelegramLib.MainClasses
         public UserChat GetChatByChatterId(int id)
         {
             return Chats.FirstOrDefault(x => x.Chatter.ContactUserId == id);
+        }
+
+        public UserChat GetChatById(int id)
+        {
+            return Chats.FirstOrDefault(x => x.Id == id);
         }
 
         public List<MediaAction> GetAllImageMessages()

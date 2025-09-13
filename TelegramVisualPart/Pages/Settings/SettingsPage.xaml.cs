@@ -69,7 +69,7 @@ namespace TelegramVisualPart.Pages.Settings
             UserImage.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
 
-            Username.Text = _system.LoggedUser.UserName;
+            Username.Text = _system.LoggedUser.Login;
             PhoneNumber.Text = _system.LoggedUser.PhoneNumber;
             UserLogin.Text = _system.LoggedUser.Login;
         }

@@ -17,7 +17,6 @@ namespace TelegramLib.MainClasses
         public string BIO { get; set; }
 
         public string PhoneNumber { get; set; }
-        public string UserName { get; set; }
         public DateTime? BirthDay { get; set; }
 
         public ColorHelper MainColor { get; set; }
@@ -29,8 +28,7 @@ namespace TelegramLib.MainClasses
 
         public User(int id, string login, string password, string name,
                     string surname, string bio,
-                    ColorHelper color, string phoneNumber,
-                    string userName, DateTime? birthDay,
+                    ColorHelper color, string phoneNumber, DateTime? birthDay,
                     List<UserContactcs> blockedContacts,
                     List<UserImage> userImages, DateTime lastSeen, 
                     bool isOnline)
@@ -45,7 +43,6 @@ namespace TelegramLib.MainClasses
             MainColor = color;
 
             PhoneNumber = phoneNumber;
-            UserName = userName;
             BirthDay = birthDay;
 
             BlockedContacts = blockedContacts;
@@ -69,7 +66,6 @@ namespace TelegramLib.MainClasses
             MainColor = new ColorHelper(-1, 255, 0, 0);
 
             PhoneNumber = "emptyPhoneNumber";
-            UserName = "emptyUserName";
 
             BirthDay = new DateTime(2000, 1, 1);
             BlockedContacts = new List<UserContactcs>();

@@ -29,7 +29,7 @@ namespace TelegramVisualPart.Pages
             _chat = chat;
             InitializeComponent();
 
-            ContactInfo.SetContactInfo(_chat, _system, _system.ChosenChatContact);
+            ContactInfo.SetContactInfo(_chat, _system, chat.Chatter /*_system.ChosenChatContact*/);
         }
     }
 }

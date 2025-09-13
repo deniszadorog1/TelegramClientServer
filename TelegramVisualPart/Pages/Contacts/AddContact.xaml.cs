@@ -86,7 +86,7 @@ namespace TelegramVisualPart.Pages.Contacts
             //Add conatct in system
             UserContactcs contact = new UserContactcs(-1, 
                 _system.LoggedUser.Name,
-                _system.LoggedUser.UserName,
+                _system.LoggedUser.Login,
                 _system.LoggedUser.BirthDay, 
                 _system.LoggedUser.BIO,
                 _system.LoggedUser.PhoneNumber,
@@ -106,7 +106,7 @@ namespace TelegramVisualPart.Pages.Contacts
 
         public async Task AddContactIfContactOnline(User newContact)
         {
-            UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.UserName, newContact.BirthDay,
+            UserContactcs contact = new UserContactcs(-1, NameBox.Text, newContact.Login, newContact.BirthDay,
                 newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null, false);
 
             contact.ContactUserId = newContact.Id;

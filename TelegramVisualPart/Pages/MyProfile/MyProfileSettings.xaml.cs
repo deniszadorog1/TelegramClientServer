@@ -59,7 +59,7 @@ namespace TelegramVisualPart.Pages.MyProfile
 
             Name.AdditionalText.Text = _user.Name;
             PhoneNumber.AdditionalText.Text = _user.PhoneNumber;
-            Username.AdditionalText.Text = _user.UserName;
+            Username.AdditionalText.Text = _user.Login;
 
             PersonalChannelBut.AdditionalText.Text = "Not invented!";
             BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty : 

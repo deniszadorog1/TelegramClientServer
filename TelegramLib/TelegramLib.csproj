@@ -214,6 +214,8 @@
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\MessagesSettings.cs" />
     <Compile Include="Models\MessageVideo.cs" />
+    <Compile Include="Models\MonitorNotifs.cs" />
+    <Compile Include="Models\MonitorSidesType.cs" />
     <Compile Include="Models\NotificatioonsAndSound.cs" />
     <Compile Include="Models\PhoneNumberSettings.cs" />
     <Compile Include="Models\PossibleChatBGs.cs" />
@@ -221,14 +223,15 @@
     <Compile Include="Models\PrivacySettingType.cs" />
     <Compile Include="Models\ProfilePhotoSettings.cs" />
     <Compile Include="Models\Settings.cs" />
+    <Compile Include="Models\Sounds.cs" />
     <Compile Include="Models\StickerImage.cs" />
-    <Compile Include="Models\sysdiagrams.cs" />
     <Compile Include="Models\TelegramModel.cs" />
     <Compile Include="Models\Theme.cs" />
     <Compile Include="Models\ThemeColor.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserColor.cs" />
     <Compile Include="Models\UserImage.cs" />
+    <Compile Include="Models\UserSounds.cs" />
     <Compile Include="Models\UserTheme.cs" />
     <Compile Include="Models\WhoCanSeeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

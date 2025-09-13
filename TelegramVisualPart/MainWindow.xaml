@@ -34,61 +34,63 @@
                           GlassFrameThickness="0" />
     </WindowChrome.WindowChrome>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <Border BorderBrush="White" BorderThickness="1" Name="OutWindowBorder">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Name="UpperBorder" 
+            <Grid Grid.Row="0" Name="UpperBorder" 
                   Background="{StaticResource UpperBangColor}" 
                   MouseLeftButtonDown="DragWindow"
                   MouseLeftButtonUp="Grid_MouseLeftButtonUp"
                   MouseMove="Grid_MouseMove"
                   VerticalAlignment="Top">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
-                <Button Content="—" Width="43" Click="Minimize_Click"  Margin="5 0 5 0"
+                    <Button Content="—" Width="43" Click="Minimize_Click"  Margin="5 0 5 0"
                                 Background="Transparent" BorderBrush="Transparent"
                                 Name="CloseBut"
                                 MouseEnter="UpperBut_MouseEnter"
                                 MouseLeave="UpperBut_MouseLeave"/>
 
-                <Grid Width="50" PreviewMouseDown="Maximize_Click"  Margin="5 0 5 0"
+                    <Grid Width="50" PreviewMouseDown="Maximize_Click"  Margin="5 0 5 0"
                                 Background="Transparent" 
                                 Name="WholeWindowBut"
                                 MouseEnter="UpperBut_MouseEnter"
                                 MouseLeave="UpperBut_MouseLeave">
 
-                    <materialDesign:PackIcon Kind="WindowRestore" Name="WindowSizerIcon"
+                        <materialDesign:PackIcon Kind="WindowRestore" Name="WindowSizerIcon"
                                              Height="20" Width="20"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
                                              Foreground="White"/>
-                </Grid>
+                    </Grid>
 
 
-                <Button Content="✕" Width="43" Click="Close_Click" Margin="5 0 10 0"
+                    <Button Content="✕" Width="43" Click="Close_Click" Margin="5 0 10 0"
                                 Background="Transparent"  BorderBrush="Transparent"
                                 Name ="CloseWindowBut" 
                                 MouseEnter="CloseWindowBut_MouseEnter"
                                 MouseLeave="UpperBut_MouseLeave"/>
-            </StackPanel>
-        </Grid>
+                </StackPanel>
+            </Grid>
 
-        <Grid Grid.Row="1">
-            <Frame Name="MainFrame" PreviewMouseDown="MainFrame_PreviewMouseDown"
+            <Grid Grid.Row="1">
+                <Frame Name="MainFrame" PreviewMouseDown="MainFrame_PreviewMouseDown"
                     NavigationUIVisibility="Hidden"/>
-            <Grid Name="FirstFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
+                <Grid Name="FirstFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
-            <Frame Name="SecondaryFrame" NavigationUIVisibility="Hidden"
+                <Frame Name="SecondaryFrame" NavigationUIVisibility="Hidden"
                PreviewMouseDown="SecondaryFrame_PreviewMouseDown"/>
-            <Grid Name="SecondFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
+                <Grid Name="SecondFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
-            <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
+                <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
                PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
-            <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
+                <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
+            </Grid>
         </Grid>
-    </Grid>
+    </Border>
 </Window>

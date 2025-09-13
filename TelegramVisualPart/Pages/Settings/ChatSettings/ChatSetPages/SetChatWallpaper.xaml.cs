@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using System.IO;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 {
@@ -94,7 +95,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         {
             if (sender is not Wallpaper wallpaper) return;
 
-            Page page = _settings is null ?
+            Page page = _chosenBackground is not null ?
                 new WallpaperPreview(_chosenBackground, wallpaper.WallpaperImage, _chat) :
                 new WallpaperPreview(_settings, wallpaper.WallpaperImage);
 

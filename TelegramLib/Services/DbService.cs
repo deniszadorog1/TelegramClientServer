@@ -47,6 +47,8 @@ using System.Text.Json.Serialization.Metadata;
 using System.IO;
 using System.Security.Permissions;
 using System.Data.OleDb;
+using TelegramLib.Enums.Settings.Notifs;
+using System.Security.Policy;
 
 namespace TelegramLib.Services
 {
@@ -63,6 +65,8 @@ namespace TelegramLib.Services
             system.Chats = GetUserChatsByUserId(user.Id);
             system.Contacts = GetUserContactsByUserId(user.Id);
             system.Folders = GetFoldersByUserId(user.Id);
+
+
 
             return system;
         }
@@ -508,7 +512,7 @@ namespace TelegramLib.Services
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
                         new Helpers.ColorHelper(user.Id), user.PhoneNumber,
-                        user.Username, user.Birthday, GetBlockedContactsByUserId(user.Id),
+                        user.Birthday, GetBlockedContactsByUserId(user.Id),
                         GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline, (bool)user.IsOnline));
                 }
             }
@@ -532,7 +536,7 @@ namespace TelegramLib.Services
                 res.BIO = user.BIO;
 
                 res.PhoneNumber = user.PhoneNumber;
-                res.UserName = user.Username;
+                //res.UserName = user.Username;
                 res.BirthDay = user.Birthday;
 
                 res.MainColor = GetUserColorByUserId(user.Id);
@@ -619,7 +623,7 @@ namespace TelegramLib.Services
                 toUpdate.Password = user.Password;
                 toUpdate.LastOnline = user.LastSeenOnline;
                 toUpdate.BIO = user.BIO;
-                toUpdate.Username = user.UserName;
+                //toUpdate.Username = user.UserName;
 
                 UpdateColor(user.MainColor);
 
@@ -651,7 +655,7 @@ namespace TelegramLib.Services
                     toAdd.Id = tempContact.Id;
                     toAdd.IsOnline = IsContactOnlineByUserId((int)tempContact.FriendId);
                     toAdd.Name = tempContact.Name;
-                    toAdd.UserName = tempContact.User.Name;
+                    toAdd.Login = tempContact.User.Name;
                     toAdd.BirthDate = tempContact.User.Birthday;
                     toAdd.BIO = tempContact.User.BIO;
                     toAdd.PhoneNumber = tempContact.User.PhoneNumber;
@@ -698,7 +702,7 @@ namespace TelegramLib.Services
                 toAdd.Name = contact.Name;
                 toAdd.ContactUserId = (int)contact.FriendId;
                 toAdd.IsOnline = IsContactOnlineByUserId((int)contact.FriendId);
-                toAdd.UserName = user.Username;// contact.User.Name;
+                toAdd.Login = user.Login;// contact.User.Name;
                 toAdd.BirthDate = user.Birthday;//  contact.User.Birthday;
                 toAdd.BIO = user.BIO;// contact.User.BIO;
                 toAdd.PhoneNumber = user.PhoneNumber;// contact.User.PhoneNumber;
@@ -742,7 +746,7 @@ namespace TelegramLib.Services
                 res.IsOnline = IsContactOnlineByUserId((int)contact.FriendId);
                 res.Name = contact.Name;
                 res.Surname = contact.LastName;
-                res.UserName = user.UserName;
+                res.Login = user.Login;
                 res.BirthDate = user.BirthDay;
                 res.BIO = user.BIO;
                 res.PhoneNumber = user.PhoneNumber;
@@ -766,7 +770,7 @@ namespace TelegramLib.Services
                 toAdd.FriendId = contact.ContactUserId;
 
                 toAdd.Name = contact.Name;
-                toAdd.LastName = contact.UserName;
+                toAdd.LastName = contact.Login;
                 toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
                 toAdd.IsBlocked = contact.IsBlockedUserBlocked;
 
@@ -820,13 +824,16 @@ namespace TelegramLib.Services
 
                 res.Id = setting.Id;
 
-                res.IsTabsOnTheLeft = (bool)setting.IsFolderTabsIsLeft;
+                res.IsTabsOnTheLeft = setting.IsFolderTabsIsLeft is null ?
+                     true : (bool)setting.IsFolderTabsIsLeft;
 
                 res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
 
                 res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id, userId);
                 res.AdvSettings = GetAdvansedSettingsById(setting.Id);
                 res.PrivacySettings = GetPrivacySettings(setting.Id);
+
+                res.SoundNotifSettings = GetSoundIdByName
             }
             return res;
         }
@@ -1107,7 +1114,7 @@ namespace TelegramLib.Services
                 res.IsSendWithEnter = (bool)settings.IsSentWithEnter;
                 res.Wallpaper = GetChatWallpaperByChatSettingsId(res.Id);// GetChatWallpaperById(settings.Bg);
                 res.PossibleWallpapers = GetPossibleWallpapersForChatSetting(settingsId); // CHECK IF USERID === SETTINGID
-                res.Themes = GetThemesByUserId(userId);
+                                                                                          // res.Themes = GetThemesByUserId(userId);
             }
             return res;
         }
@@ -1175,11 +1182,11 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-/*                int? id = GetThemeIdByType(theme.Type);
-                if (id is null) return;
+                /*                int? id = GetThemeIdByType(theme.Type);
+                                if (id is null) return;
 
-                UserTheme toUpdate = model.UserTheme.FirstOrDefault(x => x.Id == theme.Id && x.TypeId == (int)id);
-                if (toUpdate is null) return;*/
+                                UserTheme toUpdate = model.UserTheme.FirstOrDefault(x => x.Id == theme.Id && x.TypeId == (int)id);
+                                if (toUpdate is null) return;*/
 
                 ThemeColor color = model.ThemeColor.FirstOrDefault(x => x.Id == theme.Id);
                 if (color is null) return;
@@ -1326,6 +1333,13 @@ namespace TelegramLib.Services
             //Notifications and sounds settings
             AddNotificationSettings(userId);
 
+            //Add not monitor
+            AddNotifMonitor(userId);
+
+            //Add Sounds
+            AddUserSound(userId);
+
+
         }
 
         public static void AddBaseSettings(int userId)
@@ -1366,17 +1380,17 @@ namespace TelegramLib.Services
                 model.SaveChanges();
             }
         }
-        
+
         private static void AddThemes(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                for(int i = 1; i <= (int)ThemeType.Night; i++)
+                for (int i = 1; i <= (int)ThemeType.Night; i++)
                 {
                     //Add new color
                     AddThemeColor();
                     //Get temp theme id
-                    int themeId =  GetIdByTheme((ThemeType)i);
+                    int themeId = GetIdByTheme((ThemeType)i);
 
                     UserTheme toAdd = new UserTheme();
                     toAdd.UserId = userId;
@@ -1384,14 +1398,14 @@ namespace TelegramLib.Services
                     toAdd.ColorId = model.UserColor.FirstOrDefault().Id;
 
                     model.UserTheme.Add(toAdd);
-                }                             
+                }
                 model.SaveChanges();
             }
         }
 
         private static void AddThemeColor()
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 ThemeColor color = new ThemeColor();
                 color.R = 128;
@@ -1403,7 +1417,7 @@ namespace TelegramLib.Services
                 model.SaveChanges();
             }
         }
-        
+
 
         public static void UpdateChatSettings(UserSettings.SettingsTypes.ChatSettings settings)
         {
@@ -2995,7 +3009,7 @@ namespace TelegramLib.Services
 
         public static void UpdateTabsPosType(bool isOnTheLeft, int settingId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Settings toUpdate = model.Settings.FirstOrDefault(x => x.Id == settingId);
                 if (toUpdate is null) return;
@@ -3004,6 +3018,136 @@ namespace TelegramLib.Services
                 model.SaveChanges();
             }
         }
+
+        //Monitor notification stuff
+        private static void AddNotifMonitor(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                MonitorNotifs notif = model.MonitorNotifs.FirstOrDefault(x => x.UserId == userId);
+                if (notif is null) return;
+
+                notif.Type = 31;
+                notif.MessagesAmount = 5;
+
+                model.MonitorNotifs.Add(notif);
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateWindowNotifcation(NotifMessageSide side,
+            int mesAmount, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                MonitorNotifs notif = model.MonitorNotifs.FirstOrDefault(x => x.UserId == userId);
+                if (notif is null) return;
+
+                notif.Type = GetSideIdByType(side);
+                notif.MessagesAmount = mesAmount;
+
+                model.SaveChanges();
+            }
+        }
+
+        private static int GetSideIdByType(NotifMessageSide side)
+        {
+            using (var model = new TelegramModel())
+            {
+                MonitorSidesType type =
+                    model.MonitorSidesType.FirstOrDefault(x => x.Name == side.ToString());
+
+                return type is null ? -1 : type.Id;
+            }
+        }
+
+        //Sound stuff
+
+        public static void AddSound(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                Sounds toAdd = new Sounds();
+                toAdd.Name = name;
+
+                model.Sounds.Add(toAdd);
+
+                model.Sounds.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        public static void UpdateSounds(int userId, string soundName,
+            int vol, bool isDefault)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserSounds sound = model.UserSounds.FirstOrDefault(x => x.UserId == userId);
+                if (sound is null) return;
+
+                sound.Volume = vol;
+                sound.IsDefaultSound = isDefault;
+                if (!isDefault) sound.ChosenSoundId = GetSoundIdByName(soundName);
+
+                model.SaveChanges();
+            }
+        }
+
+        private static int GetSoundIdByName(string name)
+        {
+            using (var model = new TelegramModel())
+            {
+                Sounds sound = model.Sounds.FirstOrDefault(x => x.Name == name);
+
+                return sound is null ? -1 : sound.Id;
+            }
+        }
+
+        private static void AddUserSound(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserSounds sound = new UserSounds();
+
+                sound.Volume = 100;
+                sound.IsDefaultSound = true;
+                sound.ChosenSoundId = -1;
+
+                model.UserSounds.Add(sound);
+
+                model.SaveChanges();
+            }
+        }
+
+        private static string GetSoundInText(int soundId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Sounds sound = model.Sounds.FirstOrDefault(x => x.Id == soundId);
+                return sound is null ? "Default" : sound.Name; 
+            }
+        }
+
+        private static SoundSettings GetUserSound(int userId)
+        {
+            SoundSettings res = new SoundSettings();
+
+            using (var model = new TelegramModel())
+            {
+                UserSounds sound = model.UserSounds.FirstOrDefault(x => x.Id == userId);
+                if (sound is null) return res;
+
+                res.Volume = (int)sound.Volume;
+                res.Id = sound.Id;
+
+                res.ChosenSound = !(sound.IsDefaultSound is null) && (bool)sound.IsDefaultSound ? "Default" :
+                    GetSoundInText(userId);
+
+
+                return res;
+            }
+        }
+
 
     }
 }

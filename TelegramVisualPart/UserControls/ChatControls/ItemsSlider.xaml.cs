@@ -73,13 +73,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TextBlock block = new TextBlock()
             {
                 Foreground = Brushes.Gray,
-                FontSize = 14,
+                FontSize = 17,
                 FontWeight = FontWeights.SemiBold,
                 TextWrapping = TextWrapping.Wrap,
                 Text = name,
-                Margin = new Thickness(5, 0, 5, 0),
+                Margin = new Thickness(10, 0, 10, 0),
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Background = Brushes.Transparent
+                Background = Brushes.Transparent,
             };
 
             block.PreviewMouseDown += SetAnimation_PreviewMouseDown;

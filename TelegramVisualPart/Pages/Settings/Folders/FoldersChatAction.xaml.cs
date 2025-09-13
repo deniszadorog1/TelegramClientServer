@@ -66,6 +66,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 string contactPath = _system.Contacts[i].GetFirstImageName().Name;
 
                 FolderChatType control = new FolderChatType();
+                control.Tag = _system.Contacts[i].Id;
+
 
                 control.TypeName.Text = _system.Contacts[i].Name;
                 control.HideIcon();
@@ -79,7 +81,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 {
                     Content = control,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Padding = new Thickness(0)
+                    Padding = new Thickness(0), 
+                    Tag = _system.Contacts[i].Id
                 };
                 item.PreviewMouseDown += ChatTypes_PreviewMouseDown;
 
@@ -171,7 +174,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (sender is not ListBoxItem item ||
                 item.Content is not FolderChatType control) return;
 
-            UserContactcs contact = _system.GetContactByName(control.TypeName.Text);
+            int.TryParse(item.Tag.ToString(), out int id);
+            UserContactcs contact = _system.GetContactById(id);// _system.GetContactByLogin(control.TypeName.Text);
+
             if (contact is null) return;
 
             if (_chosenContacts.Contains(contact))

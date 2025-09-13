@@ -93,10 +93,15 @@ namespace TelegramLib.MainClasses
         {
             return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
         }
-        
-        public bool IsNamesAreEqual(string chatterName)
+
+        /*        public bool IsNamesAreEqual(string chatterName)
+                {
+                    return Chatter.IsNamesAreEqual(chatterName);
+                }*/
+
+        public bool IsUserLoginsAreEqual(string login)
         {
-            return Chatter.IsNamesAreEqual(chatterName);
+            return Chatter.UserLoginsAreEqual(login);
         }
 
         public List<TextMessage> GetMessagesWithGivenText(string text)
@@ -170,6 +175,11 @@ namespace TelegramLib.MainClasses
                         return MediaType.Unknown;
                     }
             }
+        }
+
+        public bool IsChatterIdsAreEqual(int chatterId) 
+        {
+            return Chatter.Id == chatterId;
         }
     }
 }

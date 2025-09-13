@@ -133,7 +133,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 if (_contact.ContactUserId != updated.Id) return;
 
-                Username.Text = updated.UserName;
+                Username.Text = updated.Login;
 
                 await SetUserPhoneNumber(updated);
                 //MobileNumber.UpperText.Text = updated.PhoneNumber;
@@ -328,11 +328,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void MenuButGrid_MouseEnter(object sender, MouseEventArgs e)
         {
+            Cursor = Cursors.Hand;
             MoreInfoBut.Foreground = Brushes.White;
         }
 
         private void MenuButGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Cursor = null;
             MoreInfoBut.Foreground = Brushes.Gray;
         }
 
@@ -391,7 +393,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_isMenuOpen)
             {
                 ContactMenu.Visibility = Visibility.Visible;
-                ContactMenu.SetTelSystemParam(_system);
+                ContactMenu.SetTelSystemParam(_system, _chat);
             }
             else
             {

@@ -96,8 +96,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_chat is null) return;
 
-            TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
-
+            //TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+            if (_chat is null) return;
+            if(_chat.ChatBg is null)
+            {
+                _chat.ChatBg = new TelegramLib.MainClasses.ChatFitures.ChatBackground();
+            }
             
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new SetChatWallpaper(_chat.GetBackground(), _chat,
