@@ -828,12 +828,14 @@ namespace TelegramLib.Services
                      true : (bool)setting.IsFolderTabsIsLeft;
 
                 res.NotSettings = GetNotifSettingsBySettingsId(setting.Id);
+                (res.NotSettings.SideType, res.NotSettings.AmountOfMonMessages) =
+                    GetMonitorParams(userId);
 
                 res.ChatsSettings = GetChatSettingsBySettingsId(setting.Id, userId);
                 res.AdvSettings = GetAdvansedSettingsById(setting.Id);
                 res.PrivacySettings = GetPrivacySettings(setting.Id);
 
-                res.SoundNotifSettings = GetSoundIdByName
+                res.SoundNotifSettings = GetUserSoundByUserId(userId);
             }
             return res;
         }
@@ -1338,8 +1340,6 @@ namespace TelegramLib.Services
 
             //Add Sounds
             AddUserSound(userId);
-
-
         }
 
         public static void AddBaseSettings(int userId)
@@ -3020,15 +3020,15 @@ namespace TelegramLib.Services
         }
 
         //Monitor notification stuff
-        private static void AddNotifMonitor(int userId)
+        public static void AddNotifMonitor(int userId)
         {
             using (var model = new TelegramModel())
             {
-                MonitorNotifs notif = model.MonitorNotifs.FirstOrDefault(x => x.UserId == userId);
-                if (notif is null) return;
+                MonitorNotifs notif = new MonitorNotifs();
 
-                notif.Type = 31;
+                notif.Type = 3;
                 notif.MessagesAmount = 5;
+                notif.UserId = userId;
 
                 model.MonitorNotifs.Add(notif);
                 model.SaveChanges();
@@ -3061,20 +3061,63 @@ namespace TelegramLib.Services
             }
         }
 
+        private static NotifMessageSide GetMonitorSideById(int id)
+        {
+            using (var model = new TelegramModel())
+            {
+                MonitorSidesType type =
+                      model.MonitorSidesType.FirstOrDefault(x => x.Id == id);
+                if (type is null) return NotifMessageSide.BottomRight;
+
+                for (int i = (int)NotifMessageSide.TopLeft;
+                    i <= (int)NotifMessageSide.BottomLeft; i++)
+                {
+                    if (((NotifMessageSide)i).ToString() == type.Name)
+                    {
+                        return (NotifMessageSide)i;
+                    }
+                }
+            }
+            return NotifMessageSide.BottomRight;
+        }
+
+        private static (NotifMessageSide, int) GetMonitorParams(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                MonitorNotifs notif = model.MonitorNotifs.FirstOrDefault(x => x.UserId == userId);
+
+                return notif is null ? (NotifMessageSide.BottomRight, 5) :
+                    (GetMonitorSideById((int)notif.Type), (int)notif.MessagesAmount);
+            }
+        }
+
         //Sound stuff
 
         public static void AddSound(string name)
         {
             using (var model = new TelegramModel())
             {
+                if (model.Sounds.Any(x => x.Name == name)) return;
                 Sounds toAdd = new Sounds();
                 toAdd.Name = name;
 
                 model.Sounds.Add(toAdd);
-
-                model.Sounds.Add(toAdd);
                 model.SaveChanges();
             }
+        }
+
+        public static List<string> GetAllSounds()
+        {
+            List<string> res = new List<string>();
+            using (var model = new TelegramModel())
+            {
+                foreach(var sound in model.Sounds)
+                {
+                    res.Add(sound.Name);
+                }
+            }
+            return res;
         }
 
         public static void UpdateSounds(int userId, string soundName,
@@ -3111,10 +3154,10 @@ namespace TelegramLib.Services
 
                 sound.Volume = 100;
                 sound.IsDefaultSound = true;
-                sound.ChosenSoundId = -1;
+                sound.ChosenSoundId = 2;
+                sound.UserId = userId;
 
                 model.UserSounds.Add(sound);
-
                 model.SaveChanges();
             }
         }
@@ -3124,11 +3167,11 @@ namespace TelegramLib.Services
             using (var model = new TelegramModel())
             {
                 Sounds sound = model.Sounds.FirstOrDefault(x => x.Id == soundId);
-                return sound is null ? "Default" : sound.Name; 
+                return sound is null ? "Default" : sound.Name;
             }
         }
 
-        private static SoundSettings GetUserSound(int userId)
+        private static SoundSettings GetUserSoundByUserId(int userId)
         {
             SoundSettings res = new SoundSettings();
 
@@ -3140,11 +3183,24 @@ namespace TelegramLib.Services
                 res.Volume = (int)sound.Volume;
                 res.Id = sound.Id;
 
-                res.ChosenSound = !(sound.IsDefaultSound is null) && (bool)sound.IsDefaultSound ? "Default" :
-                    GetSoundInText(userId);
+                res.MesSounds = GetAllSounds();
 
+                res.ChosenSound = !(sound.IsDefaultSound is null) && (bool)sound.IsDefaultSound ? "Default.mp3" :
+                    GetSoundInText((int)sound.ChosenSoundId);
 
                 return res;
+            }
+        }
+
+        public static void UpdateFolderPosition(int userId, bool isLeft)
+        {
+            using(var model = new TelegramModel())
+            {
+                Settings toUpdate = model.Settings.FirstOrDefault(x => x.UserId == userId);
+                if (toUpdate is null) return;
+                toUpdate.IsFolderTabsIsLeft = isLeft;
+
+                model.SaveChanges();
             }
         }
 

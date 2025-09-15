@@ -265,6 +265,9 @@
     <Compile Update="UserControls\DifferButs\ToggleIconBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\PhotoEllipse.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -622,6 +625,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DifferButs\ToggleIconBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\PhotoEllipse.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml">

@@ -201,13 +201,24 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             if (!_system.Settings.IsTabsOnTheLeft) return;
             _system.Settings.IsTabsOnTheLeft = false;
+
+            UpdateFolderPosition(false);
+
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
+        }
+
+        public async Task UpdateFolderPosition(bool isLeft)
+        {
+            await ApiService.UpdateFolderPosition(_system.LoggedUser.Id, isLeft);
         }
 
         private void LeftTabs_Checked(object sender, RoutedEventArgs e)
         {
             if (_system.Settings.IsTabsOnTheLeft) return;
             _system.Settings.IsTabsOnTheLeft = true;
+
+            UpdateFolderPosition(true);
+
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
         }
 

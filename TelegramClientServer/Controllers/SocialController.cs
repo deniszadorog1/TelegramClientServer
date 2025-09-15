@@ -282,5 +282,8 @@ namespace TelegramClientServer.Controllers
             public TelegramLib.MainClasses.User User { get; set; }
             public string UserImageName { get; set; }
         }
+
+
+
     }
 }

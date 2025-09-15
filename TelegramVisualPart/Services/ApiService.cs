@@ -611,5 +611,70 @@ namespace TelegramVisualPart.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public static async Task<bool> UpdateMonitor(int userId,
+            TelegramLib.Enums.Settings.Notifs.NotifMessageSide side, int mesAmount)
+        {
+            //var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault }
+            var data = new { Side = side, MessagesAmount = mesAmount, UserId = userId };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Settings/UpdateNotifMonitor", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdateSound(int userId, string sound,
+            int volume, bool isDefault)
+        {
+            //var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault }
+            var data = new {Sound = sound, Volume = volume, UserId = userId, IsDefault = isDefault};
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Settings/UpdateSound", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdateFolderPosition(int userId, bool state)
+        {
+            //var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault }
+            var data = new { UserId = userId, State = state };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Settings/UpdateFoldersPosition", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<List<string>> GetAllSounds()
+        {
+            var response = await _client.GetAsync($"api/Settings/GetAllSounds");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            List<string>? allSounds = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<List<string>>(jsonResponse);
+            return allSounds;
+        }
+
+        public static async Task<bool> AddNewUser(string name)
+        {
+            var data = new
+            {
+                Name = name
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Settings/AddSound", content);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

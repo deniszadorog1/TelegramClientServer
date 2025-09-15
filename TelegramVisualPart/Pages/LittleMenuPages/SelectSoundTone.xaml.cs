@@ -9,6 +9,8 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using MaterialDesignThemes.Wpf.Internal;
 using System.Security.AccessControl;
+using TelegramVisualPart.Services;
+using System.Data.Entity.Core.Mapping;
 
 namespace TelegramVisualPart.Pages.LittleMenuPages
 {
@@ -38,13 +40,15 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
             //Set Radio row height
             SetWindowHeight();
+
+            Console.WriteLine(_system.Settings.SoundNotifSettings.ChosenSound);
         }
 
         public void SetWindowHeight()
         {
             double height = StackNameBlock.Height;
 
-            for(int i = 0; i < RadioStack.Children.Count; i++)
+            for (int i = 0; i < RadioStack.Children.Count; i++)
             {
                 if (RadioStack.Children[i] is RadioButton but)
                 {
@@ -78,13 +82,13 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         public void SetBasicSound()
         {
-            if(_tempChosenSound is null)
+            if (_tempChosenSound is null)
             {
                 NouSound.IsChecked = true;
-            } 
-            for(int i = 0; i < RadioStack.Children.Count; i++)
+            }
+            for (int i = 0; i < RadioStack.Children.Count; i++)
             {
-                if (RadioStack.Children[i] is RadioButton radioBut && 
+                if (RadioStack.Children[i] is RadioButton radioBut &&
                     radioBut.Content.ToString() == _tempChosenSound)
                 {
                     radioBut.IsChecked = true;
@@ -97,6 +101,9 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             //Set default + no sound
             for (int i = 0; i < _system.Settings.SoundNotifSettings.MesSounds.Count; i++)
             {
+                string name = _system.Settings.SoundNotifSettings.MesSounds[i];
+
+                if (name == "Default.mp3" || name == "NoSound") continue;
                 AddSoundRadio(_system.Settings.SoundNotifSettings.MesSounds[i]);
             }
 
@@ -156,6 +163,8 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             _system.Settings.SoundNotifSettings.SetChosenSound(_tempChosenSound);
             _system.Settings.SoundNotifSettings.SetVolume(_tempChosenVol);
 
+            ApiService.UpdateSound(_system.LoggedUser.Id, _tempChosenSound, _tempChosenVol, _tempChosenSound == "NoSound");
+
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
@@ -187,6 +196,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
                 _system.Settings.SoundNotifSettings.AddSound(Path.GetFileName(filePath));
 
                 //Set it in db            
+                ApiService.AddNewUser(Path.GetFileName(filePath));
             }
         }
 
@@ -213,10 +223,10 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             //Play it
             VisHelper.PlaySound(path, (double)vol / 100);
         }
-        
+
         public void PlayOnChangedSound(string soundName)
         {
-            if(_tempChosenSound != soundName) return;
+            if (_tempChosenSound != soundName) return;
             PlaySound();
         }
 

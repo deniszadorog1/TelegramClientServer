@@ -37,6 +37,7 @@ namespace TelegramVisualPart.Pages.Settings
         public SettingsPage(TelSystem system)
         {
             _system = system;
+
             InitializeComponent();
             SetButtonsView();
 
@@ -79,8 +80,8 @@ namespace TelegramVisualPart.Pages.Settings
             //set info 
             //Log out 
             //((MainWindow)Window.GetWindow(this)).LogOut();
-            
-            LogOutMenu.Visibility = LogOutMenu.Visibility == Visibility.Visible ? 
+
+            LogOutMenu.Visibility = LogOutMenu.Visibility == Visibility.Visible ?
                 Visibility.Hidden : Visibility.Visible;
         }
 
@@ -115,7 +116,7 @@ namespace TelegramVisualPart.Pages.Settings
             MoreInfoBut.IconType.Kind = PackIconKind.DotsVerticalCircleOutline;
             CloseBut.IconType.Kind = PackIconKind.Close;
             //AddImageBut.IconType.Kind = PackIconKind.ImageOutline;
-            
+
             MyAccount.IconType.Kind = PackIconKind.AccountCircleOutline;
             MyAccount.ButName.Text = "My account";
 

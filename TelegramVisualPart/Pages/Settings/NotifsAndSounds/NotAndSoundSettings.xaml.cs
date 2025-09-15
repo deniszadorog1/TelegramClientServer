@@ -2,6 +2,7 @@
 using MaterialDesignThemes.Wpf;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,6 +47,40 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             SetToggleEvents();
 
             SetBaseMonitorMessages();
+
+            ActivateChosenParams();
+        }
+
+        public void ActivateChosenParams()
+        {
+            SetChosenStack();
+            SetChosenNumberPfMessages();
+        }
+
+        public void SetChosenNumberPfMessages()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                TextBlock? chosenBlock = TabsPanel.Children
+                    .OfType<TextBlock>()
+                    .FirstOrDefault(x => x.Text == _system.Settings.NotSettings.AmountOfMonMessages.ToString());
+
+                if (chosenBlock is null) return;
+                SetMesesNotifsChanged(chosenBlock);
+
+            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
+
+        public void SetChosenStack()
+        {
+/*            MessagesStack chosenStack =
+                _system.Settings.NotSettings.SideType == NotifMessageSide.TopLeft ? TopLeftStack :
+                _system.Settings.NotSettings.SideType == NotifMessageSide.TopRight ? TopRightStack :
+                _system.Settings.NotSettings.SideType == NotifMessageSide.BottomRight ? BottomRightStack :
+                BottomLeftStack;
+
+            SetSideParam(chosenStack);*/
+            SetMessagesInMonitor();
         }
 
         public void SetBaseMonitorMessages()
@@ -60,7 +95,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
         private ToastWindow _toast;
         public void SetEventsMonitorBordersGrids()
         {
-            for(int i = 0; i < MonitorBordersGrid.Children.Count; i++)
+            for (int i = 0; i < MonitorBordersGrid.Children.Count; i++)
             {
                 if (MonitorBordersGrid.Children[i] is MessagesStack stack)
                 {
@@ -74,7 +109,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                     stack.MouseEnter += (sender, e) =>
                     {
                         if (sender is not MessagesStack stack) return;
-                        NotifMessageSide side =  GetSideByStack(stack);
+                        NotifMessageSide side = GetSideByStack(stack);
 
                         _toast = new ToastWindow(
                             _system.Settings.NotSettings.AmountOfMonMessages,
@@ -106,7 +141,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                 stack == TopRightStack ? NotifMessageSide.TopRight :
                 stack == BottomLeftStack ? NotifMessageSide.BottomLeft :
                 /*stack == BottomRightStack ?*/ NotifMessageSide.BottomRight;
-        } 
+        }
 
         public void SetBaseGridsAlignment()
         {
@@ -247,6 +282,15 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
         {
             if (sender is not TextBlock block) return;
             SetMesesNotifsChanged(block);
+
+            UpdateMonitorInDB();
+        }
+
+        public async Task UpdateMonitorInDB()
+        {
+            await ApiService.UpdateMonitor(_system.LoggedUser.Id,
+                 _system.Settings.NotSettings.SideType,
+                 _system.Settings.NotSettings.AmountOfMonMessages);
         }
 
         public void SetMesesNotifsChanged(TextBlock block)
@@ -315,7 +359,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                     Margin = new Thickness(0, 0, 0, 5),
                 };
 
-                if(stack == BottomLeftStack || 
+                if (stack == BottomLeftStack ||
                     stack == BottomRightStack)
                 {
                     message.VerticalAlignment = VerticalAlignment.Bottom;
@@ -328,7 +372,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         public void ClearAllStacks()
         {
-            for(int i = 0; i < MonitorBordersGrid.Children.Count; i++)
+            for (int i = 0; i < MonitorBordersGrid.Children.Count; i++)
             {
                 if (MonitorBordersGrid.Children[i] is MessagesStack stack)
                 {
@@ -360,6 +404,17 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                     textBlock.Foreground = new SolidColorBrush(Colors.Gray);
                 }
             }
+        }
+
+        public void UpdateSide_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _system.Settings.NotSettings.SideType =
+                sender == TopLeftStack ? NotifMessageSide.TopLeft :
+                sender == TopRightStack ? NotifMessageSide.TopRight :
+                sender == BottomLeftStack ? NotifMessageSide.BottomLeft :
+               /* sender == TopLeftStack ?*/ NotifMessageSide.TopLeft;
+
+            UpdateMonitorInDB();
         }
     }
 }

@@ -91,6 +91,7 @@
                                        VerticalAlignment="Center" FontSize="18"
                                        Foreground="{StaticResource UsualTextColor}"/>
 
+
                             <TextBlock Grid.Row="1" Name="LastSeenOnline" 
                                        Text="There gona be last seen online" 
                                        Foreground="Gray" FontSize="14"/>

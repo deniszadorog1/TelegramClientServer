@@ -53,6 +53,8 @@ namespace TelegramVisualPart.Pages
             SetBasicParams();
 
             FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
+
+            UpdateTabsPlacement();
         }
 
         public async Task SetBasicParams()

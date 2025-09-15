@@ -1,6 +1,28 @@
 [
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "AddSound",
+    "RelativePath": "api/Settings/AddSound",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sound",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BAddSoundDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "AddWallpaper",
     "RelativePath": "api/Settings/AddWallpaper",
     "HttpMethod": "POST",
@@ -17,6 +39,26 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "GetAllSounds",
+    "RelativePath": "api/Settings/GetAllSounds",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -115,6 +157,50 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "UpdateFoldersPosition",
+    "RelativePath": "api/Settings/UpdateFoldersPosition",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "folderPos",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BUpdateFolderPositionDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "UpdateNotifMonitor",
+    "RelativePath": "api/Settings/UpdateNotifMonitor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "notMonitor",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BNotifMonitorDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "UpdateNotification",
     "RelativePath": "api/Settings/UpdateNotifsAndSounds",
     "HttpMethod": "POST",
@@ -146,6 +232,28 @@
       {
         "Name": "privSets",
         "Type": "TelegramClientServer.Controllers.SettingsController\u002BPrivacySettingsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "UpdateSound",
+    "RelativePath": "api/Settings/UpdateSound",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "soundUpdate",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BUpdateSoundDTO",
         "IsRequired": true
       }
     ],

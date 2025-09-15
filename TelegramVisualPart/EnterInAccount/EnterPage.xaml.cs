@@ -75,7 +75,7 @@ namespace TelegramVisualPart.EnterInAccount
             }
 
             _system.Settings.ChatsSettings.SetBasicThemes();
-            _system.Settings.IsTabsOnTheLeft = true;
+
             _system.Settings.ChatsSettings.PossibleWallpapers = 
                 FilesAction.GetAllWallpaperNames();
             _system.Settings.ChatsSettings.Theme = 

@@ -70,6 +70,8 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
+                   <!-- <butsControls:PhotoEllipse x:Name="LoggedUserImg"/> -->
+                    
                     <Ellipse Grid.Column="0" Name ="UserIcon" 
                              PreviewMouseDown="UserIcon_PreviewMouseDown"
                              MouseEnter="UserIcon_MouseEnter"
@@ -78,7 +80,7 @@
                         <Ellipse.Fill>
                             <ImageBrush x:Name="UserImage" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                         </Ellipse.Fill>
-                    </Ellipse>
+                    </Ellipse> 
 
                     <StackPanel Grid.Column="1" Orientation="Vertical"
                             VerticalAlignment="Center">
