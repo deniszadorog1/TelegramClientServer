@@ -66,8 +66,9 @@
                                     HorizontalAlignment="Center"/>
 
                 <TextBlock Grid.Column="1" Text="Notifications and Sounds"
-                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Foreground="{StaticResource UsualTextColor}" FontSize="21" Margin="5 0 0 0"
+                           Name="PageName"
+                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Foreground="{StaticResource UsualTextColor}" FontSize="21" Margin="5 0 0 0"
                            FontWeight="Normal" FontFamily="Segoe UI" />
 
 
@@ -98,7 +99,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Global settings" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                           FontFamily="Segoe UI"
+                           FontFamily="Segoe UI" Name="GlobSubMenu"
                            FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
@@ -115,7 +116,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Notification for chat" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                           FontFamily="Segoe UI"
+                           FontFamily="Segoe UI" Name="NotForChatbMenu"
                            FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
@@ -130,7 +131,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Events" VerticalAlignment="Bottom" Margin="25 10 10 10"
-                           FontFamily="Segoe UI"
+                           FontFamily="Segoe UI" Name="EventsMenu"
                            FontSize="18" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
@@ -148,7 +149,7 @@
                            Text="Location On Screen"
                            Foreground="{StaticResource TempActiveTextColor}"
                            FontFamily="Segoe UI"
-                           FontSize="18"
+                           FontSize="18" Name="ScreenLocMenu"
                            Margin="25 10 10 10"/>
 
                         <Border Grid.Row="1" CornerRadius="15" Background="White"
@@ -202,7 +203,7 @@
                             <TextBlock Grid.Row="0"
                            Text="Location On Screen"
                            Foreground="{StaticResource TempActiveTextColor}"
-                           FontFamily="Segoe UI"
+                           FontFamily="Segoe UI" Name="MessAmountMenu"
                            FontSize="18"
                            Margin="25 10 10 10"/>
 

@@ -41,6 +41,8 @@ namespace TelegramVisualPart.Pages.MyProfile
             SetUserParams();
 
             SetUserImage();
+
+            SetLanguageText.SetMyProfileSettings(this);
         }
 
         public void SetUserImage()
@@ -61,7 +63,7 @@ namespace TelegramVisualPart.Pages.MyProfile
             PhoneNumber.AdditionalText.Text = _user.PhoneNumber;
             Username.AdditionalText.Text = _user.Login;
 
-            PersonalChannelBut.AdditionalText.Text = "Not invented!";
+            PersonalChannelBut.AdditionalText.Text = VisConstParamsJsonService.GetStringByName("NotInvented"); ;
             BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty : 
                 (((DateTime)_user.BirthDay).Day + " " + 
                 ((DateTime)_user.BirthDay).Month + " " + 

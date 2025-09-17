@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using Point = System.Windows.Point;
 
 namespace TelegramVisualPart.UserControls.ChatsSearch
@@ -53,13 +55,12 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
                 but.UserImgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
-
                 ChatsPanel.Children.Add(but);
             }
         }
 
-        const string _showAll = "show all";
-        const string _collapse = "collapse";
+        private string _showAll = VisConstParamsJsonService.GetStringByName("ShowFreqChats");
+        private string _collapse = VisConstParamsJsonService.GetStringByName("ShowFreqChatsCollapse");
         private void ShowFreqChats_Click(object sender, RoutedEventArgs e)
         {
 
@@ -106,7 +107,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             ActiveRect.Fill =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
-            TextBlock block = TabsPanel.Children.OfType<TextBlock>().Where
+            TextBlock? block = TabsPanel.Children.OfType<TextBlock>().Where
                 (x => !CompareColors(x)).FirstOrDefault();
 
             if (block is null) return;

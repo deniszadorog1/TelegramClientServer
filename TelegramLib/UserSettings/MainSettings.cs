@@ -18,6 +18,7 @@ namespace TelegramLib.UserSettings
         public AdvancedSettings AdvSettings { get; set; }
         public PrivAndSecSettings PrivacySettings { get; set; }
         public SoundSettings SoundNotifSettings { get; set; }
+        public SysLanguage LanguageSettings { get; set; }
         public bool IsTabsOnTheLeft { get; set; }
         public int ChosenFolderId { get; set; }
         
@@ -31,6 +32,7 @@ namespace TelegramLib.UserSettings
             AdvSettings = advSettings;
             PrivacySettings = privacySettings;
             SoundNotifSettings = new SoundSettings();
+            LanguageSettings = new SysLanguage();
         }
 
         public MainSettings()
@@ -42,6 +44,7 @@ namespace TelegramLib.UserSettings
             PrivacySettings = new PrivAndSecSettings();
             IsTabsOnTheLeft = true;
             SoundNotifSettings = new SoundSettings();
+            LanguageSettings = new SysLanguage();
         }
 
         public NotificationSettings GetNotSettings()

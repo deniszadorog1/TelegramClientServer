@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
@@ -31,6 +32,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             _chat = chat;
             _system = system;
             InitializeComponent();
+
+            SetLanguageText.SetMessDeletion(this);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

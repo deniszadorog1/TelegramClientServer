@@ -40,7 +40,6 @@
 
                         <TextBox Grid.Row="0"  Name="SarchBox" 
                           Foreground="White" Margin="35 0 10 0" FontSize="14"
-                          materialDesign:HintAssist.Hint="Serch"
                           materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                           materialDesign:HintAssist.Foreground="Gray"
                           CaretBrush="White" MaxLength="10"/>

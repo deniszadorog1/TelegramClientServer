@@ -31,6 +31,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
             SetWallpapers();
             SetClickEventToWallpapers();
+
+            SetLanguageText.SetChatWallpaper(this);
         }
 
         public SetChatWallpaper(ChatBackground background, UserChat chat,
@@ -44,6 +46,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
             SetWallpapers();
             SetClickEventToWallpapers();
+
+            SetLanguageText.SetChatWallpaper(this); 
         }
 
         public void SetWallpapers()

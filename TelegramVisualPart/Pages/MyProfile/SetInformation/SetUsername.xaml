@@ -20,8 +20,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Username" VerticalAlignment="Center"
-                   FontSize="20" Foreground="{StaticResource UsualTextColor}" Margin="25 0 0 0"/>
+            <TextBlock Grid.Row="0" VerticalAlignment="Center"
+                       Name="PageName"
+                       FontSize="20" Foreground="{StaticResource UsualTextColor}" 
+                       Margin="25 0 0 0"/>
 
             <TextBox Grid.Row="1" Name="UserNameBox"
                   PreviewTextInput="UserNameBox_PreviewTextInput"
@@ -35,11 +37,13 @@
 
             <StackPanel Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}">
 
-                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="25 10 20 0"
-                       Text="You can choose a username on Telegram. If you do, other people will be able to find you by this username and contact you without knowing your phone number."/>
+                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16"
+                           Margin="25 10 20 0" Name="FirstTextInfo"
+                           Text="You can choose a username on Telegram. If you do, other people will be able to find you by this username and contact you without knowing your phone number."/>
 
-                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" Margin="25 10 20 0"
-            Text="You can use a-z, 0-9 ad underscores. Minimum length is in 5 characters."/>
+                <TextBlock TextWrapping="Wrap" Foreground="Gray" FontSize="16" 
+                           Margin="25 10 20 0" Name ="SecTextInfo"
+                           Text="You can use a-z, 0-9 ad underscores. Minimum length is in 5 characters."/>
                 
             </StackPanel>
 

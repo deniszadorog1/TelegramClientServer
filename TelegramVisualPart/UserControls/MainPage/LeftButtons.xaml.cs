@@ -57,14 +57,16 @@ namespace TelegramVisualPart.UserControls.MainPage
         public void SetBasicParams()
         {
             AllChats.ButIcon.Kind = PackIconKind.Wechat;
-            AllChats.ButText.Text = "All chats";
+            //AllChats.ButText.Text = "All chats";
 
             Personal.ButIcon.Kind = PackIconKind.AccountCircle;
-            Personal.ButText.Text = "Personal";
+            //Personal.ButText.Text = "Personal";
 
             Edit.ButIcon.Kind = PackIconKind.PlaylistEdit;
-            Edit.ButText.Text = "Edit";
+            //Edit.ButText.Text = "Edit";
         }
+
+        
 
         public event EventHandler? OnMenuClick;
 

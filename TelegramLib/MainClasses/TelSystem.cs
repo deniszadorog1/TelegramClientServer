@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace TelegramLib.MainClasses
         public List<Folder> Folders { get; set; }
 
         public List<UserChat> ChatInNewWindow = new List<UserChat>();
-        
+
+       
 
         public TelSystem(User user, MainSettings settings,
             List<UserChat> chats, List<UserContactcs> contacts,

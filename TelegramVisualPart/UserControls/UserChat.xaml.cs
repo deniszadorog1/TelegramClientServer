@@ -30,6 +30,7 @@ using System.Drawing;
 using Brushes = System.Windows.Media.Brushes;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
+using TelegramLib.UserSettings.SettingsTypes;
 
 
 namespace TelegramVisualPart.UserControls
@@ -382,6 +383,9 @@ namespace TelegramVisualPart.UserControls
             SetTestChatMessages();
 
             EmojisBoard.SetSystem(_system);
+
+            SetLanguageText.SetUserChat(this);
+
         }
 
         public void SetTestChatMessages()

@@ -29,13 +29,13 @@ namespace TelegramVisualPart.Services
         {
             if (isOnline)
             {
-                block.Text = "online";
+                block.Text = VisConstParamsJsonService.GetStringByName("OnlineStat");
                 block.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
                 return;
             }
 
             block.Foreground = new SolidColorBrush(Colors.Gray);
-            block.Text = lastSeenOnline is null ? "recently" :  
+            block.Text = lastSeenOnline is null ? VisConstParamsJsonService.GetStringByName("RecentlyStat") :  
                 $"{lastSeenOnline.Value.Day}.{lastSeenOnline.Value.Month}.{lastSeenOnline.Value.Year}";
         }
     }

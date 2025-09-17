@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
 using static System.Data.Entity.Infrastructure.Design.Executor;
@@ -46,6 +47,8 @@ namespace TelegramVisualPart.Pages.Contacts
             SetBasicParams();
 
             SetContactsParams();
+
+            SetLanguageText.SetUserContacts(this);
         }
 
         public async Task SetContactsParams()

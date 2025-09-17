@@ -25,8 +25,7 @@
                        HorizontalAlignment="Left"
                        Margin="20 0 0 0"
                        Foreground="{StaticResource UsualTextColor}"
-                       FontSize="20"
-                       Text="Auto-Delete Messages"/>
+                       FontSize="20"/>
             <ScrollViewer Grid.Row="1"
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Hidden">
@@ -60,14 +59,14 @@
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right"
                         Margin="0 0 10 10">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
-                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                             Background="Transparent" BorderThickness="0"
                             HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="ApplyBut"
-                            Content="Apply" Background="Transparent" BorderThickness="0"
+                            Background="Transparent" BorderThickness="0"
                             MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
                             HorizontalAlignment="Left" FontSize="16"
                             Click="ApplyBut_Click"  Margin="5 0 5 0" 

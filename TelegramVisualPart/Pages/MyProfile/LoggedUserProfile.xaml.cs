@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages
 {
@@ -24,6 +25,8 @@ namespace TelegramVisualPart.Pages
 
             InitializeComponent();
             SetBasicParams();
+
+            SetLanguageText.SetLoggedUserProfile(this);
         }
 
         public void SetBasicParams()
@@ -50,7 +53,7 @@ namespace TelegramVisualPart.Pages
             {
                 LastSeenOnline.Foreground =
                     (SolidColorBrush)Application.Current.FindResource("TempActiveTextColor");
-                LastSeenOnline.Text = "Online";
+                LastSeenOnline.Text = VisConstParamsJsonService.GetStringByName("OnlineStat");
                 return;
             }
             LastSeenOnline.Text = $"{_system.LoggedUser.LastSeenOnline.Day}.{_system.LoggedUser.LastSeenOnline.Month}.{_system.LoggedUser.LastSeenOnline.Year}";

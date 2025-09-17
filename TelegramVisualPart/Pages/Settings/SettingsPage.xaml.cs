@@ -20,6 +20,7 @@ using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
+using TelegramVisualPart.Pages.Settings.Language;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
@@ -97,6 +98,12 @@ namespace TelegramVisualPart.Pages.Settings
                 Page? page = GetPageByIcon(icon);
                 if (page is null) return;
 
+                if(page is LanguagePage langPage)
+                {
+                    ((MainWindow)Window.GetWindow(this)).SetThirdFrame(langPage);
+                    return;
+                }
+
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
             }
         }
@@ -108,7 +115,8 @@ namespace TelegramVisualPart.Pages.Settings
                 icon.Name == PrivacySecurity.Name.ToString() ? new PrivAndSecurity.PrivacyAndSecurity(_system) :
                 icon.Name == Folders.Name.ToString() ? new FoldersPage(_system, true) :
                 icon.Name == Advanced.Name.ToString() ? new AdvancedPage(_system) :
-                icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage(_system) : null;
+                icon.Name == ChatSettings.Name.ToString() ? new MainChatSetPage(_system) :
+                icon.Name == Language.Name.ToString() ? new LanguagePage(_system) : null;
         }
 
         public void SetButtonsView()

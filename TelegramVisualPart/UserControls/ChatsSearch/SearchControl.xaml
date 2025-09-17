@@ -32,11 +32,11 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" Name="TabsPanel">
-                <TextBlock Style="{StaticResource Tabs}" Name="ChatTab" Text="Chats" Foreground="{StaticResource FolderContactColor}"/>
-                <TextBlock Style="{StaticResource Tabs}" Name="PhotosTab" Text="Photos"/>
-                <TextBlock Style="{StaticResource Tabs}" Name="VideosTab" Text="Videos"/>
-                <TextBlock Style="{StaticResource Tabs}" Name="DownloadsTab" Text="Downloads"/>
-                <TextBlock Style="{StaticResource Tabs}" Name="LinksTab" Text="Links"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="ChatTab" Foreground="{StaticResource FolderContactColor}"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="PhotosTab"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="VideosTab"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="DownloadsTab"/>
+                <TextBlock Style="{StaticResource Tabs}" Name="LinksTab"/>
             </StackPanel>
 
             <Grid Grid.Row="1" Name="RectGrid">
@@ -59,10 +59,10 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="{StaticResource DarkThemeDeviderField}">
-                <TextBlock Name="FrqContactsBlockName" Text=" Frquent contacts" FontSize="16"
+                <TextBlock Name="FrqContactsBlockName" FontSize="16"
                            VerticalAlignment="Center" Margin="15 0 0 0" Foreground="Gray"/>
                 <Grid PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent">
-                    <TextBlock Text="show all" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
                                FontSize="16"
                         Background="Transparent" Foreground="Gray" Name="ShowFreqChats" Margin="0 0 10 0"/>
                 </Grid>

@@ -41,14 +41,14 @@
                         <ColumnDefinition Width="65"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <iconBut:IconButton Grid.Column="0" x:Name="GetBackBut"
                                         Width="25" Height="25"
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
 
-                    <TextBlock Grid.Column="1" Text="Info" VerticalAlignment="Center"
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center"
                                Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="20"
-                               FontFamily="Segoe UI"/>
+                               FontFamily="Segoe UI" Name="PageName"/>
                 </Grid>
 
                 <Grid Grid.Column="1">
@@ -108,7 +108,7 @@
 
                 <Grid Grid.Row="1" Background="{StaticResource DarkThemeMouseEnterBut}">
                     <TextBlock Margin="20 10 0 0" FontSize="18" Foreground="Gray"
-                           TextWrapping="Wrap"
+                           TextWrapping="Wrap" Name ="InfoText"
                            Text="Any details such as age, occupation or city.
                            Example: 23 y.o. designer from San Francisco."/>
                 </Grid>
@@ -122,7 +122,7 @@
 
             <Grid Grid.Row="4" Background="{StaticResource DarkThemeMouseEnterBut}">
                 <TextBlock Margin="20 12 0 0 " FontSize="18" Foreground="Gray"
-                           TextWrapping="Wrap"
+                           TextWrapping="Wrap" Name="SecondInfoText"
                            Text="Username laet people contact you on Telegram without needing your phone number."/>
             </Grid>
 

@@ -22,13 +22,13 @@
 
             <TextBlock Margin="0 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Foreground="White" FontSize="17">
-                <Run Text="Are you sure you want to delete all message history with"/>
+                <Run Name="FirstInfoText" />
                 <Run Name="UsernameBlock" Text="USERNAME"/>
             </TextBlock>
 
             <TextBlock Grid.Row="1" Foreground="White" TextWrapping="Wrap"
                        VerticalAlignment="Bottom" FontSize="17"
-                       Text="This action cannot be undone."/>
+                       Name="SecondInfoText"/>
 
             <StackPanel Grid.Row="2" Margin="0 5 0 0" Height="20" Orientation="Horizontal">
                 <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
@@ -38,14 +38,14 @@
                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
 
                 <TextBlock FontSize="17" Foreground="White" >
-                    <Run Text="Also delete for "/>
+                    <Run Name ="CheckBoxText"/>
                     <Run Name="UsernameCheckBoxBlock" Text="USERNAME "/>
                 </TextBlock>
 
             </StackPanel>
 
 
-            <TextBlock Grid.Row="3" Text="Enable Auto-Delete" VerticalAlignment="Center"
+            <TextBlock Grid.Row="3" VerticalAlignment="Center"
                        Foreground="{StaticResource TempActiveTextColor}" FontSize="17"
                        Name="EnAutoDelete" PreviewMouseDown="EnAutoDelete_PreviewMouseDown"
                        MouseEnter="EnAutoDelete_MouseEnter" MouseLeave="EnAutoDelete_MouseLeave"/>

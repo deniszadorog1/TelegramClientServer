@@ -14,7 +14,7 @@
             MouseEnter="BorderBg_MouseEnter"
             MouseLeave="BorderBg_MouseLeave"
             PreviewMouseDown="BorderBg_PreviewMouseDown">
-            <TextBlock Text="Close" Background="Transparent" Name="TextBlock"
+            <TextBlock Background="Transparent" Name="TextBlock"
                        FontSize="16"
                    VerticalAlignment="Center" HorizontalAlignment="Center" 
                        Foreground="{StaticResource TempActiveTextColor}"/>

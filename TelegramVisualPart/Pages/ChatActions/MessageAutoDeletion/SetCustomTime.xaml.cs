@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 {
@@ -26,6 +27,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         public SetCustomTime()
         {
             InitializeComponent();
+
+            SetLanguageText.SetCustomTimer(this);
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

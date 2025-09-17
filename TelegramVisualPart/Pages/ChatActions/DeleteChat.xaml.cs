@@ -28,6 +28,8 @@ namespace TelegramVisualPart.Pages.ChatActions
             InitializeComponent();
 
             SetBasicParams();
+
+            SetLanguageText.SetDeleteChat(this);
         }
         public void SetBasicParams()
         {

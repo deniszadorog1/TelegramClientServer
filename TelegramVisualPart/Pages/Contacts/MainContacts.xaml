@@ -12,9 +12,7 @@
       Height="650" Width="450"
       VerticalAlignment="Center"
       HorizontalAlignment="Center"
-      Title="MainContacts"
-      
-      >
+      Title="MainContacts">
 
     <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
         <Grid>

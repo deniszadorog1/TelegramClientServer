@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
@@ -46,6 +47,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 BgImage.Source = bgImage.Source; 
                 _img = bgImage;
             }
+            SetLanguageText.SetWallpaperPreview(this);
         }
 
         public WallpaperPreview(ChatBackground background, Image? img, UserChat chat)
@@ -61,6 +63,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 BgImage.Source = img.Source;
                 _img = img;
             }
+            SetLanguageText.SetWallpaperPreview(this);
         }
 
         public void SetBasicParams()
@@ -68,8 +71,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
 
             //Share.TextBlock.Text = "Share";
-            Cancel.TextBlock.Text = "Cancel";
-            Apply.TextBlock.Text = "Apply";
+            //Cancel.TextBlock.Text = "Cancel";
+            //Apply.TextBlock.Text = "Apply";
         }
 
         private void BlurGrid_MouseEnter(object sender, MouseEventArgs e)

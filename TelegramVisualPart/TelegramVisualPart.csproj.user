@@ -34,6 +34,9 @@
     <Compile Update="Pages\LittleMenuPages\SelectSoundTone.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Settings\Language\LanguagePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ToChooseChats.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -340,6 +343,9 @@
     <Compile Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\SettingsControls\LanguageControls\LangRadioBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\SettingsControls\LogOutMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -394,6 +400,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\LittleMenuPages\SelectSoundTone.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\Language\LanguagePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ToChooseChats.xaml">
@@ -700,6 +709,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\SettingsControls\LanguageControls\LangRadioBut.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\SettingsControls\LogOutMenu.xaml">

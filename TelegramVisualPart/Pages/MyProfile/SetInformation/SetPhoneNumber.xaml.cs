@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -26,6 +27,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
         {
             _user = user;
             InitializeComponent();
+
+            SetLanguageText.SetPhoneNumber(this);
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)

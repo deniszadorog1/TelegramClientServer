@@ -27,7 +27,8 @@
 
             <Grid Grid.Row="0">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                           Text="Auto-Delete Messages" Foreground="White"
+                           Foreground="White"
+                           Name="PageNameBlock"
                            FontSize="20" FontWeight="SemiBold" Margin="20 0 0 0"/>
 
                 <closeBut:IconButton x:Name="CloseBut" Height="25" Width="25" Margin="0 0 25 0"
@@ -65,9 +66,8 @@
 
                     <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}">
                         <TextBlock FontSize="16" TextWrapping="Wrap" Foreground="Gray" Margin="20 5 15 0">
-                            <Run Text="If enabled, all new messages in chats you start will be automaticlly deleted for everyone at some point after they sent. you can also" />
+                            <Run Name="InActiveInfoText"/>
                             <Run Name="SetAutoDeleteToContact" 
-                                 Text="apply this settings for your existing chats." 
                                  Foreground="{StaticResource TempActiveTextColor}"
                                  MouseEnter="SetAutoDeleteToContact_MouseEnter"
                                  MouseLeave="SetAutoDeleteToContact_MouseLeave"

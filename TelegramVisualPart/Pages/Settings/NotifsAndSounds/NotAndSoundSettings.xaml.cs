@@ -22,6 +22,7 @@ using TelegramLib.Enums.Settings.Notifs;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.CustWindows;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
@@ -49,6 +50,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             SetBaseMonitorMessages();
 
             ActivateChosenParams();
+
+            SetLanguageText.SetNotsAndSounds(this);
         }
 
         public void ActivateChosenParams()
@@ -227,19 +230,19 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             CloseBut.IconType.Kind = PackIconKind.Close;
 
             DeskTopNotifs.Icon.Kind = PackIconKind.BellOutline;
-            DeskTopNotifs.TextBlock.Text = "Desktop notifications";
+            //DeskTopNotifs.TextBlock.Text = "Desktop notifications";
 
             FlashBarIcon.Icon.Kind = PackIconKind.Barcode;
-            FlashBarIcon.TextBlock.Text = "Flash the taskbar icon";
+            //FlashBarIcon.TextBlock.Text = "Flash the taskbar icon";
 
             AllowSound.Icon.Kind = PackIconKind.Speakerphone;
-            AllowSound.TextBlock.Text = "Allow sound";
+            //AllowSound.TextBlock.Text = "Allow sound";
 
             PrivateChat.Icon.Kind = PackIconKind.AccountCircleOutline;
-            PrivateChat.TextBlock.Text = "Private chats";
+            //PrivateChat.TextBlock.Text = "Private chats";
 
             PinnedMessages.Icon.Kind = PackIconKind.PinOutline;
-            PinnedMessages.TextBlock.Text = "Pinned messages";
+            //PinnedMessages.TextBlock.Text = "Pinned messages";
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

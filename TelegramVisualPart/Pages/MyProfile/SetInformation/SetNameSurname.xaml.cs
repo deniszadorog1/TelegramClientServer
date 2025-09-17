@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -28,6 +29,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             InitializeComponent();
 
             SetBasicParams();
+
+            SetLanguageText.SetNameSurname(this);
         }
 
         private void SetBasicParams()

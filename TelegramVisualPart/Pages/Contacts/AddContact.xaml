@@ -26,7 +26,7 @@
 
             <TextBlock Grid.Row="0" Text="New Contact" FontSize="20" Foreground="White" 
                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Margin="15 0 0 0"/>
+                   Margin="30 5 0 0" Name="PageName"/>
 
 
             <Grid Grid.Row="1" Margin="10 0 40 5">

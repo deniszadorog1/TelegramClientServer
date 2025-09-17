@@ -11,12 +11,15 @@ namespace TelegramVisualPart.Services
     public static class VisConstParamsJsonService
     {
         private static Dictionary<string, string> _dict = null;
-        private  static void SetStringParams(string fileName)
+        private static string _fileName = string.Empty;
+        private  static void SetStringParams()
         {
+
             DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
-            string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
-            string jsonFilePath = Path.Combine(tempPath, fileName);
+            string libPath = Path.Combine(parentPath, "TelegramVisualPart");
+            string langsPath = Path.Combine(libPath, "LanguageFiles");
+            string jsonFilePath = Path.Combine(langsPath, _fileName);
 
             string json = File.ReadAllText(jsonFilePath);
             _dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
@@ -24,18 +27,22 @@ namespace TelegramVisualPart.Services
 
         public static int GetNumByName(string name)
         {
-            const string _fileName = "VisParams.json";
-            SetStringParams(_fileName);
+            SetStringParams();
             int.TryParse(_dict[name], out int res);
-
             return res;
         }
 
         public static string GetStringByName(string name)
         {
-            const string _fileName = "VisParams.json";
-            SetStringParams(_fileName);
+            SetStringParams();
             return _dict[name];
         }
+
+        public static void SetFileName(string fileName)
+        {
+            _fileName = fileName;
+        }
+
+
     }
 }

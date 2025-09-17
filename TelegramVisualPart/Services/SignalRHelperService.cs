@@ -78,7 +78,7 @@ namespace TelegramVisualPart.Services
                 type == IsPrivacyException.NeverShare)
             {
                 textBlock.Foreground = new SolidColorBrush(Colors.Gray);
-                textBlock.Text = "You cant see this LOOOOLL";
+                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
             HelperService.SetOnlineStatusInTextBox(
@@ -102,7 +102,7 @@ namespace TelegramVisualPart.Services
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 type == IsPrivacyException.NeverShare)
             {
-                textBlock.Text = "You cant see this LOOOOLL";
+                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
             textBlock.Text = user.PhoneNumber.ToString();
@@ -121,7 +121,7 @@ namespace TelegramVisualPart.Services
             string yearStr = user.BirthDay is null ? " " : 
                 user.BirthDay.Value.Year == 1 ? " " : user.BirthDay.Value.Year.ToString();
 
-            string birthString = user.BirthDay is null ? "Not born year" :
+            string birthString = user.BirthDay is null ? VisConstParamsJsonService.GetStringByName("BirthDatNotSet") :
                 $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{yearStr}";
 
             if (shareType == IsPrivacyException.Share)
@@ -134,7 +134,7 @@ namespace TelegramVisualPart.Services
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 shareType == IsPrivacyException.NeverShare)
             {
-                textBlock.Text = "You cant see this LOOOOLL";
+                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
             textBlock.Text = birthString;

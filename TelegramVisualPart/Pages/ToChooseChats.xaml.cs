@@ -10,6 +10,7 @@ using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
@@ -36,6 +37,8 @@ namespace TelegramVisualPart.Pages
             InitializeComponent();
 
             SetActionContacts();
+
+            SetLanguageText.SetToChooseChat(this);
         }
 
         public void SetActionContacts()
@@ -158,11 +161,10 @@ namespace TelegramVisualPart.Pages
 
                 DateTime? lastSeen = _contacts[i].LastSeen;
 
-                string lastSeenStr = lastSeen is null ? "recently" :
+                string lastSeenStr = lastSeen is null ? VisConstParamsJsonService.GetStringByName("RecentlyStat") :
                     $"{((DateTime)lastSeen).Day}.{((DateTime)lastSeen).Month}.{((DateTime)lastSeen).Year}";
 
                 contact.SetParams(_contacts[i].GetFirstImageName().Name, _contacts[i].Name, lastSeenStr);
-
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
 
                 ChatsPanelToChoose.Children.Add(contact);
@@ -183,8 +185,9 @@ namespace TelegramVisualPart.Pages
 
         public void SetParams()
         {
-            PageName.Text = _type == ChooseType.AlwaysShare ? "Always share with" :
-                "Never share with";
+            PageName.Text = _type == ChooseType.AlwaysShare ?
+                VisConstParamsJsonService.GetStringByName("AlwayShareWith") :
+                VisConstParamsJsonService.GetStringByName("NeverShareWith");
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

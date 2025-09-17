@@ -45,25 +45,25 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         public void SetBasicBlocks()
         {
             AutoDelete.IconType.Kind = PackIconKind.AvTimer;
-            AutoDelete.ButName.Text = "Auto-Delete";
+            //AutoDelete.ButName.Text = "Auto-Delete";
 
             ShareContact.IconType.Kind = PackIconKind.ShareOutline;
-            ShareContact.ButName.Text = "Share this contact";
+            //ShareContact.ButName.Text = "Share this contact";
 
             EditContact.IconType.Kind = PackIconKind.PencilOutline;
-            EditContact.ButName.Text = "Edit contact";
+            //EditContact.ButName.Text = "Edit contact";
 
             ExportHistory.IconType.Kind = PackIconKind.Export;
-            ExportHistory.ButName.Text = "Export chat history";
+            //ExportHistory.ButName.Text = "Export chat history";
 
             AddToFolder.IconType.Kind = PackIconKind.FolderOutline;
-            AddToFolder.ButName.Text = "Add to folder";
+            //AddToFolder.ButName.Text = "Add to folder";
 
             BlockUser.IconType.Kind = PackIconKind.Hand;
-            BlockUser.ButName.Text = "Block user";
+            //BlockUser.ButName.Text = "Block user";
 
             DeleteContact.IconType.Kind = PackIconKind.TrashCan;
-            DeleteContact.ButName.Text = "Delete contact";
+            //DeleteContact.ButName.Text = "Delete contact";
             DeleteContact.IconType.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
             DeleteContact.ButName.Foreground =

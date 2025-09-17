@@ -20,6 +20,7 @@ using TelegramLib.MainClasses.FolderObjs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages.Settings.Folders;
+using TelegramVisualPart.Services;
 using static System.Net.Mime.MediaTypeNames;
 using Application = System.Windows.Application;
 
@@ -74,12 +75,15 @@ namespace TelegramVisualPart.UserControls.ChatsControls
 
             Unpin.IconElement.Kind = _chat.IsPinned ?
                 PackIconKind.PinOffOutline : PackIconKind.PinOutline;
-            Unpin.TextElement.Text = _chat.IsPinned ? "Unpin" : "Pin";
+            Unpin.TextElement.Text = _chat.IsPinned ?
+                VisConstParamsJsonService.GetStringByName("ToUnpin") : 
+                VisConstParamsJsonService.GetStringByName("ToPin");
 
             MarkRead.IconElement.Kind = _chat.IsMarked ?
                 PackIconKind.ChatOutline : PackIconKind.ChatAlertOutline;
-            MarkRead.TextElement.Text = _chat.IsMarked ? "Mark as read" :
-                "Mark as unread";
+            MarkRead.TextElement.Text = _chat.IsMarked ?
+                VisConstParamsJsonService.GetStringByName("ToMarkRead") :
+                VisConstParamsJsonService.GetStringByName("ToMarkUnRead");
         }
 
         public void SetAddSubMenuEventsToElems()
@@ -108,14 +112,18 @@ namespace TelegramVisualPart.UserControls.ChatsControls
 
         public void SetBasicText()
         {
-            OpenNewWindow.TextElement.Text = "Open in Window";
-            Archive.TextElement.Text = _system.Settings.SoundNotifSettings.IsArchived ? "UnArchived" : "Archive";
-            Unpin.TextElement.Text = "Unpin";
-            MuteNotifs.TextElement.Text = "Mute notifications";
-            MarkRead.TextElement.Text = "Mark as unread";
-            AddToFolder.TextElement.Text = "Add to folder";
-            ClearChat.TextElement.Text = "Clear Chat";
-            DeleteChat.TextElement.Text = "Delete Chat";
+            OpenNewWindow.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToOpenNewWindow");
+
+            Archive.TextElement.Text = _system.Settings.SoundNotifSettings.IsArchived ?
+                VisConstParamsJsonService.GetStringByName("ToUnArchive") : 
+                VisConstParamsJsonService.GetStringByName("ToArchive");
+
+            Unpin.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToUnpin");
+            MuteNotifs.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToMuteNotifs");
+            MarkRead.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToMarkUnRead");
+            AddToFolder.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToAddToFolder");
+            ClearChat.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToClearChat");
+            DeleteChat.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToDeleteChat");
         }
 
         public void SetBasicColors()
@@ -137,7 +145,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 _system.Settings.SoundNotifSettings.IsForeverMuted())
             {
                 MuteNotifs.ArrowRightIcon.Visibility = Visibility.Hidden;
-                MuteNotifs.TextElement.Text = "Unmute";
+                MuteNotifs.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToUnMuteNotifs"); 
             }
 
         }
@@ -179,18 +187,22 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         }
 
 
-        private string _setToneTag = "SetTone";
-        private string _disableSoundTag = "DisSound";
-        private string _muteDurationTag = "MuteFor";
-        private string _muteForeverTag = "MuteForever";
+        private string _setToneTag = VisConstParamsJsonService.GetStringByName("SetTone");
+        private string _disableSoundTag = VisConstParamsJsonService.GetStringByName("DisSound");
+        private string _muteDurationTag = VisConstParamsJsonService.GetStringByName("MuteDur");
+        private string _muteForeverTag = VisConstParamsJsonService.GetStringByName("MFor");
         private void SetMuteNotifsSubMenu()
         {
             MainPanel.Children.Clear();
 
-            AddItemToMainPanel(PackIconKind.MusicNoteEighth, "Select Tone", _setToneTag);
-            AddItemToMainPanel(PackIconKind.MusicOff, "Disable Sound", _disableSoundTag);
-            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute for", _muteDurationTag);
-            AddItemToMainPanel(PackIconKind.VolumeOff, "Mute forever", _muteForeverTag);
+            AddItemToMainPanel(PackIconKind.MusicNoteEighth,
+                VisConstParamsJsonService.GetStringByName("SelectTone"), _setToneTag);
+            AddItemToMainPanel(PackIconKind.MusicOff,
+                VisConstParamsJsonService.GetStringByName("DisableSound"), _disableSoundTag);
+            AddItemToMainPanel(PackIconKind.VolumeOff,
+                VisConstParamsJsonService.GetStringByName("MuteFor"), _muteDurationTag);
+            AddItemToMainPanel(PackIconKind.VolumeOff,
+                VisConstParamsJsonService.GetStringByName("MuteForever"), _muteForeverTag);
 
             NotSubMenuMouseDownEvent();
         }
@@ -270,7 +282,9 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             bool isEnabled = _system.Settings.SoundNotifSettings.IsEnabled;
 
             menuElem.IconElement.Kind = isEnabled ? PackIconKind.MusicOff : PackIconKind.Music;
-            menuElem.TextElement.Text = isEnabled ? "Disable sound" : "Enable sound";
+            menuElem.TextElement.Text = isEnabled ?
+                VisConstParamsJsonService.GetStringByName("DisableSound") :
+                VisConstParamsJsonService.GetStringByName("EnableSound");
         }
 
         public void AddChooseTonePage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -309,7 +323,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 (SolidColorBrush)Application.Current.Resources["UsualTextColor"];
 
             //folder name
-            toAdd.TextElement.Text = "Create new folder";
+            toAdd.TextElement.Text = VisConstParamsJsonService.GetStringByName("CreateNewFolder");
 
             //Set folder icon
             toAdd.ArrowRightIcon.Visibility = Visibility.Hidden;

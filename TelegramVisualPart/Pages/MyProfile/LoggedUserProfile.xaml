@@ -28,9 +28,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="My Profile"
+                <TextBlock Grid.Column="0" 
+                           Name = "PageName"
                            FontSize="20" VerticalAlignment="Center"
                            HorizontalAlignment="Left" Margin="25 0 0 0"
+                           FontWeight="SemiBold"
                            Foreground="{StaticResource UsualTextColor}" FontFamily="Segoe UI"/>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal"
@@ -39,7 +41,7 @@
 
                     <iconBut:IconButton Width="30" Height="30" x:Name="SettingsBut"
                                         PreviewMouseDown="SettingsBut_PreviewMouseDown"/>
-                    
+
                     <iconBut:IconButton Width="30" Height="30" x:Name="CloseBut" Margin="20 0 0 0"
                                         PreviewMouseDown="CloseBut_PreviewMouseDown"/>
                 </StackPanel>
@@ -120,7 +122,7 @@
                                    MouseEnter="UserNameBlock_MouseEnter"
                                    MouseLeave="UserNameBlock_MouseLeave"
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
-                        
+
                         <TextBlock Name="LoginText" 
                                    FontSize="16"
                                    Text="Username" VerticalAlignment="Center"

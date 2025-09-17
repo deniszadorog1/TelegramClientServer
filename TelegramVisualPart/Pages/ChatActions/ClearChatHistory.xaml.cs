@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Services;
 
@@ -34,6 +35,8 @@ namespace TelegramVisualPart.Pages.ChatActions
             InitializeComponent();
 
             SetBasicParams();
+
+            SetLanguageText.ClearChatHistory(this);
         }
 
         public async Task SetBasicParams()

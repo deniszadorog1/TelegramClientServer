@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using static System.Net.Mime.MediaTypeNames;
 using User = TelegramLib.MainClasses.User;
@@ -59,6 +60,8 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             //By temp item thing
             FillListsWithCustomControl();
             SetStartDate();
+
+            SetLanguageText.SetBirthDate(this);
         }
 
         public void FillListsWithCustomControl()

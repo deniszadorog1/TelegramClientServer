@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.Contacts
@@ -27,6 +28,8 @@ namespace TelegramVisualPart.Pages.Contacts
         {
             _system = system;
             InitializeComponent();
+
+            SetLanguageText.SetAddContact(this);
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

@@ -138,7 +138,6 @@
                      Background="{StaticResource DarkThemeOne}" Foreground="White" 
                      VerticalContentAlignment="Center" CaretBrush="White"
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                     materialDesign:HintAssist.Hint="Enter message here..."  
                      BorderThickness="0" FontSize="16" />
 
             <Grid Grid.Column="2" Name="EmojisGrid" 

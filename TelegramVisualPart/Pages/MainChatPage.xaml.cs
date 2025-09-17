@@ -55,7 +55,16 @@ namespace TelegramVisualPart.Pages
             FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
 
             UpdateTabsPlacement();
+            SetLangText();
         }
+
+        public void SetLangText() 
+        {
+            VisConstParamsJsonService.SetFileName("EnglishLang.json");
+            SetLanguageText.SetMainChatPageParams(this);
+        }
+
+
 
         public async Task SetBasicParams()
         {
@@ -456,28 +465,28 @@ namespace TelegramVisualPart.Pages
             ClearTextBut.IconType.Kind = PackIconKind.Close;
 
             MyProfileDrawBut.IconType.Kind = PackIconKind.AccountCircleOutline;
-            MyProfileDrawBut.ButName.Text = "My Profile";
+            //MyProfileDrawBut.ButName.Text = "My Profile";
 
             WalletDrawBut.IconType.Kind = PackIconKind.AccountBalanceWalletOutline;
-            WalletDrawBut.ButName.Text = "Wallet";
+            //WalletDrawBut.ButName.Text = "Wallet";
 
             NewGroupDrawBut.IconType.Kind = PackIconKind.Users;
-            NewGroupDrawBut.ButName.Text = "New Group";
+            //NewGroupDrawBut.ButName.Text = "New Group";
 
             NewChannelDrawBut.IconType.Kind = PackIconKind.Megaphone;
-            NewChannelDrawBut.ButName.Text = "New Channel";
+            //NewChannelDrawBut.ButName.Text = "New Channel";
 
             ContactsDrawBut.IconType.Kind = PackIconKind.Account;
-            ContactsDrawBut.ButName.Text = "Contacts";
+            //ContactsDrawBut.ButName.Text = "Contacts";
 
             CallsDrawBut.IconType.Kind = PackIconKind.TelephoneInTalk;
-            CallsDrawBut.ButName.Text = "Calls";
+            //CallsDrawBut.ButName.Text = "Calls";
 
             //SavedMessagesDrawBut.IconType.Kind = PackIconKind.ContentSaveOutline;
             //SavedMessagesDrawBut.ButName.Text = "Saved Messages";
 
             SettingsDrawBut.IconType.Kind = PackIconKind.SettingsOutline;
-            SettingsDrawBut.ButName.Text = "Settings";
+            //SettingsDrawBut.ButName.Text = "Settings";
         }
 
         private void LeftBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1301,10 +1310,6 @@ namespace TelegramVisualPart.Pages
                 ChatColumn.Width = new GridLength(1, GridUnitType.Star);
 
                 SetColumnWidth(ChatsColumn, 0);
-
-                Console.WriteLine(ChatColumn.ActualWidth);
-                Console.WriteLine(ChatsColumn.ActualWidth);
-                Console.WriteLine(LeftButtonsColumn.ActualWidth);
             }
         }
 

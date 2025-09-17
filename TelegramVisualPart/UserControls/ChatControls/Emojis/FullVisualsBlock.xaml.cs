@@ -182,5 +182,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         {
             Cursor = null;
         }
+
+        private void TextBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void TextBut_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

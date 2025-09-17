@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
@@ -35,6 +36,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             _system = system;
             InitializeComponent();
 
+            SetLanguageText.SetSelfDestTimer(this);
             SetBasicParams();
 
             //_typesToChose = null;
@@ -47,11 +49,11 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
             CloseBut.IconType.Kind = PackIconKind.Close;
 
-            OffRadioBut.ButName.Text = "Off";
+/*            OffRadioBut.ButName.Text = "Off";
             OneDayBut.ButName.Text = "After 1 day";
             OneWeekBut.ButName.Text = "After 1 week";
             OneMonthBut.ButName.Text = "After 1 month";
-            CustomTimeBut.ButName.Text = "Set Custom Time";
+            CustomTimeBut.ButName.Text = "Set Custom Time";*/
             CustomTimeBut.RadioButton.Visibility = Visibility.Hidden;
 
             _typesToChose.Add(AutoDeleteType.Nothing);

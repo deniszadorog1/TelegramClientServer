@@ -47,6 +47,8 @@ namespace TelegramVisualPart
         //Basic start
         public MainWindow()
         {
+
+            VisConstParamsJsonService.SetFileName("EnglishLang.json");
             InitializeComponent();
             Loaded += MainWindow_Loaded;
 

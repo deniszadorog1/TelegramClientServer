@@ -53,6 +53,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             this.Visibility = Visibility.Visible;
             LoadEnd?.Invoke();
+
+            SetLanguageText.SetContactInfo(this);
         }
 
         public void UpdateContactPhoto(TelegramLib.MainClasses.User user)
@@ -140,7 +142,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
 
                 UserName.UpperText.Text = updated.Name;
-                Birthdate.UpperText.Text = updated.BirthDay is null ? "Never been" :
+                Birthdate.UpperText.Text = updated.BirthDay is null ? VisConstParamsJsonService.GetStringByName("BirthdayNeverBeen") :
                 $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
         }
@@ -157,7 +159,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             UserName.SetUpperText(_chat.GetChatter().GetUserName());
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
-            UserName.SetBottomText("Username");
+            //UserName.SetBottomText("Username");
 
             /*Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
             Birthdate.SetBottomText("Date of Birth");*/
@@ -191,7 +193,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
 
-            Birthdate.SetBottomText("Date of Birth");
+            //Birthdate.SetBottomText("Date of Birth");
         }
 
         public async Task SetMobilePhoneNumber()
@@ -205,7 +207,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SignalRHelperService.SetPhoneNumber(user, shareType, _chat, MobileNumber.UpperText);
 
-            MobileNumber.SetBottomText("Mobile");
+            //MobileNumber.SetBottomText("Mobile");
         }
 
         public async Task SetOnlineStatus()
@@ -238,15 +240,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetTextForTextBlock(AmountOfPhotosTextBlock,
                 FilesAction.GetImagesFromMediaAction(medias),
-                "Amount of photos");
+                VisConstParamsJsonService.GetStringByName("AmountOfPhotosTextBlock"));
 
             SetTextForTextBlock(AmountOfVideosTextBlock,
                 FilesAction.GetVideosAmount(medias),
-                "Amount of videos");
+                VisConstParamsJsonService.GetStringByName("AmountOfVideosTextBlock"));
 
             SetTextForTextBlock(AmountOfGifsTextBlock,
                 FilesAction.GetGifsAmount(medias),
-                "Amount of GIFs");
+                VisConstParamsJsonService.GetStringByName("AmountOfGifsTextBlock"));
         }
 
         private void SetTextForTextBlock(TextBlock block, int amount, string baseString)

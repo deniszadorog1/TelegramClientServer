@@ -51,19 +51,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
             MuteNotifsBut.ButName.Text = "Mute notifications";
 */
             ViewProfileBut.IconType.Kind = PackIconKind.AccountCircleOutline;
-            ViewProfileBut.ButName.Text = "View profile";
+            //ViewProfileBut.ButName.Text = "View profile";
 
             SetWallpaperBut.IconType.Kind = PackIconKind.PaintbrushOutline;
-            SetWallpaperBut.ButName.Text = "Set Wallpaper";
+            //SetWallpaperBut.ButName.Text = "Set Wallpaper";
 
             ExportHistoryBut.IconType.Kind = PackIconKind.Export;
-            ExportHistoryBut.ButName.Text = "Export chat history";
+            //ExportHistoryBut.ButName.Text = "Export chat history";
 
             ClearChatBut.IconType.Kind = PackIconKind.Broom;
-            ClearChatBut.ButName.Text = "Clear history";
+            //ClearChatBut.ButName.Text = "Clear history";
 
             DeleteChatBut.IconType.Kind = PackIconKind.TrashCanOutline;
-            DeleteChatBut.ButName.Text = "Delete chat";
+            //DeleteChatBut.ButName.Text = "Delete chat";
 
             DeleteChatBut.IconType.Foreground = 
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
