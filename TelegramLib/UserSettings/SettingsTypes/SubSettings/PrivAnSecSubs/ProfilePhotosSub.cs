@@ -11,8 +11,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
     public class ProfilePhotosSub : PrivacySub
     {
         public string PublicPhotoPath { get; set; }
-        public ProfilePhotosSub(ShareWith type, List<UserContactcs> shareWithExps,
-            List<UserContactcs> neverShareExps, string photoPath) : base(type, shareWithExps, neverShareExps)
+        public ProfilePhotosSub(ShareWith type, List<User> shareWithExps,
+            List<User> neverShareExps, string photoPath) : base(type, shareWithExps, neverShareExps)
         {
             PublicPhotoPath = photoPath;
         }

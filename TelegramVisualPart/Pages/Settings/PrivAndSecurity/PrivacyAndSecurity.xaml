@@ -36,7 +36,7 @@
                 <TextBlock Grid.Column="1" Text="Privacy and Security" Margin="5 0 0 0"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            Foreground="{StaticResource UsualTextColor}" FontSize="20"
-                           FontFamily="Segoe UI"/>
+                           FontFamily="Segoe UI" Name="PageName"/>
 
                 <iconBut:IconButton Grid.Column="2" x:Name="CloseBut"
                                     VerticalAlignment="Center"
@@ -57,7 +57,7 @@
                     </Grid.RowDefinitions>
 
                     <Line StrokeThickness="1" Stroke="{StaticResource DarkThemeDeviderField}" 
-         X1="0" X2="1000" VerticalAlignment="Bottom"/>
+                          X1="0" X2="1000" VerticalAlignment="Bottom"/>
 
                     <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
@@ -65,8 +65,9 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Sucurity" VerticalAlignment="Bottom" Margin="25 0 0 10"
-        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                        <TextBlock Text="Sucurity" VerticalAlignment="Bottom" 
+                                   Margin="25 0 0 10" Name="SecBlock"
+                                   FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
                             <enumBut:EnumPrivacyButton x:Name="LocalPasscode" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -80,8 +81,9 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Privacy" VerticalAlignment="Bottom" Margin="25 0 0 10"
-        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                        <TextBlock Text="Privacy" VerticalAlignment="Bottom"
+                                   Margin="25 0 0 10" Name="PrivBlock"
+                            FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
                             <enumBut:EnumPrivacyButton x:Name="PhoneNumber" PreviewMouseDown="Buts_PreviewMouseDown"/>
@@ -101,7 +103,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Bots and websites" VerticalAlignment="Bottom" Margin="25 0 0 10"
-        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                                   FontSize="16" Name="BotsWebBlock"
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
                             <enumBut:EnumPrivacyButton x:Name="ClearPayments"/>
@@ -115,7 +118,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Delete my account" VerticalAlignment="Bottom" Margin="25 0 0 10"
-        FontSize="16" Foreground="{StaticResource TempActiveTextColor}"/>
+                                   FontSize="16"  Name="DeletAccBlock"
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
 
                         <StackPanel Grid.Row="1">
                             <enumBut:EnumPrivacyButton x:Name="DeleteAway" PreviewMouseDown="Buts_PreviewMouseDown"/>

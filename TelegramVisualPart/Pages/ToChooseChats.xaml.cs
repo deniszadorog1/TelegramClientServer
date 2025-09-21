@@ -23,7 +23,7 @@ namespace TelegramVisualPart.Pages
     public partial class ToChooseChats : Page
     {
         private TelSystem _system;
-        private List<UserContactcs> _contacts;
+        private List<User> _contacts;
         private ChooseType _type;
         private PrivacySub _sub;
 
@@ -31,7 +31,7 @@ namespace TelegramVisualPart.Pages
         public ToChooseChats(TelSystem system, AutoDeleteType type)
         {
             _system = system;
-            _contacts = _system.Contacts;
+            //_contacts = _system.Contacts;
             _newAutoDelType = type;
 
             InitializeComponent();
@@ -105,7 +105,7 @@ namespace TelegramVisualPart.Pages
         public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub,
             PrivAndSecSettings settings, TelSystem system)
         {
-            _contacts = contacts;
+            //_contacts = contacts;
             _type = type;
             _sub = sub;
             _privSettings = settings;
@@ -126,7 +126,7 @@ namespace TelegramVisualPart.Pages
 
         private void SetChosenContacts()
         {
-            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
+            List<User> contacts = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
 
             for (int i = 0; i < contacts.Count; i++)
             {
@@ -159,7 +159,7 @@ namespace TelegramVisualPart.Pages
                 contact.Name = "contact_" + Guid.NewGuid().ToString("N");
                 // (i + 1).ToString();
 
-                DateTime? lastSeen = _contacts[i].LastSeen;
+                DateTime? lastSeen = _contacts[i].LastSeenOnline;
 
                 string lastSeenStr = lastSeen is null ? VisConstParamsJsonService.GetStringByName("RecentlyStat") :
                     $"{((DateTime)lastSeen).Day}.{((DateTime)lastSeen).Month}.{((DateTime)lastSeen).Year}";
@@ -290,10 +290,10 @@ namespace TelegramVisualPart.Pages
 
         public void RemoveChosenContacts()
         {
-            List<UserContactcs> removeFrom = _type == ChooseType.AlwaysShare ? _sub.NeverShareExps : _sub.ShareWithExps;
-            List<UserContactcs> toRemove = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
+            List<User> removeFrom = _type == ChooseType.AlwaysShare ? _sub.NeverShareExps : _sub.ShareWithExps;
+            List<User> toRemove = _type == ChooseType.AlwaysShare ? _sub.ShareWithExps : _sub.NeverShareExps;
 
-            List<UserContactcs> remove = removeFrom.Where(x => toRemove.Select(y => y.Name).Contains(x.Name)).ToList();
+            List<User> remove = removeFrom.Where(x => toRemove.Select(y => y.Name).Contains(x.Name)).ToList();
 
             foreach (var contact in remove)
             {
@@ -301,7 +301,7 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        private List<UserContactcs> GetContactsFromChosenChats(List<UserContactcs> chosenContacts)
+        private List<User> GetContactsFromChosenChats(List<User> chosenContacts)
         {
             List<string> names = ChatsPanel.Children.OfType<ChosenChat>().Select(x => x.UserName.Text).ToList();
 
@@ -376,11 +376,11 @@ namespace TelegramVisualPart.Pages
 
         public void RemoveContact(string name)
         {
-            List<UserContactcs> contacts = _type == ChooseType.AlwaysShare ?
+            List<User> contacts = _type == ChooseType.AlwaysShare ?
                 _sub.ShareWithExps : _sub.NeverShareExps;
             if (contacts.Count == 0) return;
 
-            UserContactcs? contact = contacts.FirstOrDefault(x => x.Name == name);
+            User? contact = contacts.FirstOrDefault(x => x.Name == name);
             if (contact is null) return;
             contacts.Remove(contact);
         }

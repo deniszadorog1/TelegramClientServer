@@ -58,7 +58,7 @@
                     
                     <TextBlock Grid.Column="1" Text="Advanced" VerticalAlignment="Center" 
                                Foreground="{StaticResource UsualTextColor}" 
-                               Margin="20 0 0 0" FontSize="22"/>
+                               Margin="20 0 0 0" FontSize="22" Name="PageName"/>
                 </Grid>
 
                 <Grid Grid.Column="1">

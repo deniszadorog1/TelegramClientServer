@@ -11,8 +11,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
     public class LastSeenSub : PrivacySub
     {
         public bool IsHideReadAction { get; set; } 
-        public LastSeenSub(ShareWith type, List<UserContactcs> shareWithExps,
-               List<UserContactcs> neverShareExps, bool isHideReadAction) :
+        public LastSeenSub(ShareWith type, List<User> shareWithExps,
+               List<User> neverShareExps, bool isHideReadAction) :
                base(type, shareWithExps, neverShareExps)
         {
             IsHideReadAction = isHideReadAction;

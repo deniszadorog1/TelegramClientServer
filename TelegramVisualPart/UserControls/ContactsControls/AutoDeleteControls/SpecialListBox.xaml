@@ -14,9 +14,7 @@
                       Width="150"
                       Height="200"
                       VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="CheckPanel">
-
-            </StackPanel>
+            <StackPanel x:Name="CheckPanel"/>
         </ScrollViewer>
         
         <Grid VerticalAlignment="Center" Height="40" IsHitTestVisible="False">

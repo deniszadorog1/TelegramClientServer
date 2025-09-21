@@ -21,7 +21,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Choose accent color" VerticalAlignment="Center" Margin="15" 
-                   Foreground="{StaticResource UsualTextColor}" FontSize="22"/>
+                       Foreground="{StaticResource UsualTextColor}" FontSize="22"
+                       Name="PageName"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>

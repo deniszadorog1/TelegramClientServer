@@ -54,7 +54,7 @@ namespace TelegramVisualPart.Pages.Contacts
         public async Task SetContactsParams()
         {
             List<UserContactcs> toAdd = !_isBlock ? _system.Contacts : 
-                _system.Contacts.Where(x => !_system.LoggedUser.BlockedContacts.Select(y => y.Name).Contains(x.Name)).ToList();
+                _system.Contacts.Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Name).Contains(x.Name)).ToList();
 
             for(int i = 0; i < toAdd.Count; i++)
             {
@@ -79,10 +79,12 @@ namespace TelegramVisualPart.Pages.Contacts
 
             if (_isBlock) //block in logic
             {
-                UserContactcs toBlock = 
+               /* UserContactcs toBlock = 
                     _system.Contacts.Where(x => x.Name == contact.UserLogin.Text).First();
 
-                _system.LoggedUser.BlockedContacts.Add(toBlock);
+                _system.GetUserById
+
+                _system.LoggedUser.BlockedUsers.Add(toBlock);*/
 
                 ContactClicked?.Invoke(sender, EventArgs.Empty);
                 ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();

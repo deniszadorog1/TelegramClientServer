@@ -20,7 +20,8 @@
                      VerticalAlignment="Center" 
                      HorizontalAlignment="Center"
                      materialDesign:RadioButtonAssist.RadioButtonSize="28"
-                     Background="{StaticResource TempActiveTextColor}"/>
+                     Background="{StaticResource TempActiveTextColor}"
+                     IsChecked="False"/>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>

@@ -23,10 +23,12 @@ using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
+using TelegramVisualPart.Pages.MyProfile.SetInformation;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatControls;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace TelegramVisualPart
@@ -562,7 +564,7 @@ namespace TelegramVisualPart
                 Enums.SizerActionType? tempSizer = GetWindowSizeType();
 
                 //Temp chat messages glues to one part(left)
-                if (this.ActualWidth < 1800)
+                if (this.ActualWidth < 1500)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.FirstLevel);
@@ -571,7 +573,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction();
                 }
                 //Temp chat messages in glued to differ borders
-                if (this.Width < 1700)
+                if (this.Width < 1200)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.SecondLevel);
@@ -580,7 +582,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //AllChats Closing
-                if (this.Width < 1500)
+                if (this.Width < 1000)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.ThirdLevel);
@@ -589,7 +591,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //Temp chat is closing + Tabs is going to top
-                if (this.ActualWidth < 1300)
+                if (this.ActualWidth < 800)
                 {
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
@@ -857,6 +859,26 @@ namespace TelegramVisualPart
 
             toRemove.Close();
             _chatWindows.Remove(toRemove);
+        }
+
+        public void UpdateContactParams(UserContactcs contact)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+
+            page.UpdateContact(contact);
+          
+            //Checked in open page
+            if(SecondaryFrame.Content is UserInfo info)
+            {
+                info.UpdateContact(contact);
+            }
+            //check in UserChat thing
+        }
+
+        public void UpdateDeletedUser(UserContactcs contact)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.UpdateVisAfterContactDeletion(contact);
         }
 
     }

@@ -303,7 +303,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             //Folders elements
             for(int i = 0; i < _system.Folders.Count; i++)
             {
-                UserContactcs? isIncluded = 
+                User? isIncluded = 
                     _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
                    
                 AddFolderElement(_system.Folders[i].Name, isIncluded is not null);

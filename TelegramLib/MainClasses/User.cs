@@ -24,12 +24,12 @@ namespace TelegramLib.MainClasses
         public List<UserImage> UserImages { get; set; }
 
         //Blcoked users cant sent messages to Logged user
-        public List<UserContactcs> BlockedContacts { get; set; }
+        public List<User> BlockedUsers { get; set; }
 
         public User(int id, string login, string password, string name,
                     string surname, string bio,
                     ColorHelper color, string phoneNumber, DateTime? birthDay,
-                    List<UserContactcs> blockedContacts,
+                    List<User> blockedContacts,
                     List<UserImage> userImages, DateTime lastSeen, 
                     bool isOnline)
         {
@@ -45,7 +45,7 @@ namespace TelegramLib.MainClasses
             PhoneNumber = phoneNumber;
             BirthDay = birthDay;
 
-            BlockedContacts = blockedContacts;
+            BlockedUsers = blockedContacts;
             UserImages = userImages;
 
             LastSeenOnline = lastSeen;
@@ -68,7 +68,7 @@ namespace TelegramLib.MainClasses
             PhoneNumber = "emptyPhoneNumber";
 
             BirthDay = new DateTime(2000, 1, 1);
-            BlockedContacts = new List<UserContactcs>();
+            BlockedUsers = new List<User>();
 
             IsOnline = false;
 
@@ -121,16 +121,16 @@ namespace TelegramLib.MainClasses
 
         public void RemoveBlockedContcatByContact(UserContactcs contact) 
         {
-            UserContactcs toRemove = BlockedContacts.Where(x => x.Id == contact.Id).FirstOrDefault();
+            User toRemove = BlockedUsers.FirstOrDefault(x => x.Id == contact.Id);
             if (toRemove is null) return;
-            BlockedContacts.Remove(toRemove);
+            BlockedUsers.Remove(toRemove);
         }
 
-        public void AddBlockedContact(UserContactcs contact)
+        public void AddBlockedContact(User contact)
         {
-            if (!(BlockedContacts.FirstOrDefault(x => x.Id == contact.Id) is null)) return;
+            if (!(BlockedUsers.FirstOrDefault(x => x.Id == contact.Id) is null)) return;
 
-            BlockedContacts.Add(contact);
+            BlockedUsers.Add(contact);
 
 
         }

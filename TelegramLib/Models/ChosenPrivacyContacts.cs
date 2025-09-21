@@ -18,7 +18,7 @@ namespace TelegramLib.Models
 
         public int? SttingId { get; set; }
 
-        public virtual Contacts Contacts { get; set; }
+        public virtual User User { get; set; }
 
         public virtual PrivacySettingType PrivacySettingType { get; set; }
 

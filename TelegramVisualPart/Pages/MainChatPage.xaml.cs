@@ -58,7 +58,7 @@ namespace TelegramVisualPart.Pages
             SetLangText();
         }
 
-        public void SetLangText() 
+        public void SetLangText()
         {
             VisConstParamsJsonService.SetFileName("EnglishLang.json");
             SetLanguageText.SetMainChatPageParams(this);
@@ -387,7 +387,7 @@ namespace TelegramVisualPart.Pages
             for (int i = 0; i < messages.Count; i++)
             {
                 //If sender is null, check logged user
-                UserContactcs sender = _system.GetContactById(messages[i].SenderId);
+                UserContactcs sender = _system.GetUserById(messages[i].SenderUserId);
 
                 UserTalkMessage message = new UserTalkMessage(sender.GetFirstImageName().Name)
                 {
@@ -575,7 +575,7 @@ namespace TelegramVisualPart.Pages
             talkControl.SetVisibilityToUnreadEllipse(false);
 
             TelegramLib.MainClasses.UserChat chat = _system.GetChatById(id);
-                //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
+            //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
             chat.IsMarked = false;
 
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
@@ -807,20 +807,21 @@ namespace TelegramVisualPart.Pages
                 _system.GetChatByIndex(chatIndex);
 
 
-            TelegramLib.MainClasses.User chatterUser = await ApiService.GetUserById(chat.Chatter.ContactUserId);
+            TelegramLib.MainClasses.User chatterUser = await ApiService.GetUserById(chat.Chatter.Id);
             string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser);
 
             UserTalkMessage chatControl = new UserTalkMessage(imageName /*chat.GetChatter().GetFirstImageName().Name*/)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Width = ChatsGrid.ActualWidth, 
+                Width = ChatsGrid.ActualWidth,
                 Tag = chat.Id
             };
 
             chatControl.SetVisibilityToPinBlock(chat.IsPinned);
             chatControl.SetVisibilityToUnreadEllipse(chat.IsMarked);
 
-            chatControl.FriendLogin.Text = chat.GetChatter().Name;
+            UserContactcs cont = _system.GetContactByUserId(chat.GetChatter().Id);
+            chatControl.FriendLogin.Text = cont is null ? chat.GetChatter().Name : cont.Name;
 
             DateTime? date = chat.GetLastMessageDateTime();
 
@@ -879,19 +880,19 @@ namespace TelegramVisualPart.Pages
         {
             for (int i = 0; i < ChatsBox.Items.Count; i++)
             {
-                if(ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
+                if (ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
                     item.Content is UserTalkMessage message)
                 {
                     int.TryParse(item.Tag.ToString(), out int id);
                     if (id == chatId) return message;
                 }
 
-/*                if (ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
-                    item.Content is UserTalkMessage message &&
-                    message.GetFriendName() == name)
-                {
-                    return message;
-                }*/
+                /*                if (ChatsBox.Items[i] is System.Windows.Controls.ListBoxItem item &&
+                                    item.Content is UserTalkMessage message &&
+                                    message.GetFriendName() == name)
+                                {
+                                    return message;
+                                }*/
             }
             return null;
         }
@@ -928,7 +929,7 @@ namespace TelegramVisualPart.Pages
         public void SetChosenFolder(TelegramLib.MainClasses.FolderObjs.Folder chosenFolder)
         {
             ChatsBox.Items.Clear();
-            foreach (UserContactcs contact in chosenFolder.Contacts)
+            foreach (TelegramLib.MainClasses.User contact in chosenFolder.Contacts)
             {
                 TelegramLib.MainClasses.UserChat chat =
                     _system.GetUserChatByChatterId(contact.Id);
@@ -940,7 +941,8 @@ namespace TelegramVisualPart.Pages
                     Tag = chat.Id
                 };
 
-                message.FriendLogin.Text = chat.GetChatter().Name;
+                UserContactcs cont = _system.GetContactByUserId(chat.GetChatter().Id);
+                message.FriendLogin.Text = cont is null ? chat.GetChatter().Name : cont.Name;
 
                 DateTime? date = chat.GetLastMessageDateTime();
 
@@ -1382,7 +1384,7 @@ namespace TelegramVisualPart.Pages
         {
             TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                    new DeleteChat(await ApiService.GetUserById(chat.GetChatter().ContactUserId)));
+                    new DeleteChat(await ApiService.GetUserById(chat.GetChatter().Id)));
 
         }
 
@@ -1444,7 +1446,7 @@ namespace TelegramVisualPart.Pages
             _menuChatterTalk.SetVisibilityToUnreadEllipse(false);
 
             //If temp chat is on
-            if (_system.GetChosenChat() is not null && 
+            if (_system.GetChosenChat() is not null &&
                 _system.GetChosenChat().Id == chat.Id)
             {
                 //Clear chat
@@ -1516,5 +1518,68 @@ namespace TelegramVisualPart.Pages
         {
             PageLoadedAction?.Invoke();
         }
+
+        public void UpdateContact(UserContactcs contact)
+        {
+            //Update chatTalk(ChatsBox) (If contains)
+            UpdateUserTalk(contact);
+            
+            //Update Update UserChat (If chosen)
+            UserChat.UpdateChatterName(contact);
+
+            //Check in userChat
+            if(UserChat.Visibility == Visibility.Visible)
+            {
+                UserChat.UpdateContactInfoBlock(contact);
+            }
+        }
+
+        public void UpdateUserTalk(UserContactcs contact)
+        {
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByUserId(contact);
+            if (chat is null) return;
+
+            for (int i = 0; i < ChatsBox.Items.Count; i++)
+            {
+                if (ChatsBox.Items[i] is ListBoxItem item &&
+                    item.Tag.ToString() == chat.Id.ToString())
+                {
+                    if (item.Content is not UserTalkMessage mes) return;
+                    mes.FriendLogin.Text = contact.Name;
+                }
+            }
+        }
+
+        public void UpdateVisAfterContactDeletion(UserContactcs contact)
+        {
+            //Clear temp chat
+            UserChat.Visibility = Visibility.Hidden;
+            ChosoeChatBorder.Visibility = Visibility.Visible;
+
+            //Clear contact from Chatsbox
+            //RemoveFromChatsBoxByContact(contcat);
+
+            _system.RemoveContact(contact);
+
+            //Update folders
+            //UpdateFolders();
+            
+            //UpdateChatsVis
+            UpdateUserChatsPanel();
+
+            UserChat.SetNameSurnameInUserParams();
+        }
+
+        public void RemoveFromChatsBoxByContact(UserContactcs contact)
+        {
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByUserId(contact);
+            if (chat is null) return;
+
+            ChatsBox.Items
+                .Remove(ChatsBox.Items
+                    .OfType<ListBoxItem>()
+                    .Where(x => x.Tag.ToString() == chat.Id.ToString()).First());
+        }
+
     }
 }

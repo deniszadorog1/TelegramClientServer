@@ -18,6 +18,7 @@ using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
 using System.Data.Entity.Core.Common.CommandTrees;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 {
@@ -33,6 +34,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             InitializeComponent();
 
             SetParam();
+
+            SetLanguageText.SetAccountDeletion(this);
         }
 
         public void SetParam()

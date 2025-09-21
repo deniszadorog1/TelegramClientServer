@@ -11,7 +11,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="95"/>
         </Grid.ColumnDefinitions>
 
         <Ellipse Height="50" Width="50">
@@ -26,17 +26,17 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Name="ChaterLogin" Text="login should be there"
+            <TextBlock Name="ChaterLogin" Text="login should be there" FontSize="16"
                        Foreground="{StaticResource UsualTextColor}" VerticalAlignment="Center"/>
 
             <TextBlock Name="UserName" Text="There should be username"
-                       Grid.Row="1"
+                       Grid.Row="1" FontSize="16"
                        Foreground="Gray" VerticalAlignment="Center"/>
         </Grid>
 
         <TextBlock Name="UnblockBut" PreviewMouseDown="UnblockBut_PreviewMouseDown"
                    MouseEnter="UnblockBut_MouseEnter"  MouseLeave="UnblockBut_MouseLeave"
-                   Grid.Column="2" Text="Unblock" Margin="10"
+                   Grid.Column="2" Text="Unblock" Margin="0 0 25 0" FontSize="16"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
                    Foreground="{StaticResource TempActiveTextColor}"/>
 

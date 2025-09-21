@@ -10,8 +10,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
 {
     public class BioSub : PrivacySub
     {
-        public BioSub(ShareWith type, List<UserContactcs> shareWithExps,
-            List<UserContactcs> neverShareExps) : base(type, shareWithExps, neverShareExps)
+        public BioSub(ShareWith type, List<User> shareWithExps,
+            List<User> neverShareExps) : base(type, shareWithExps, neverShareExps)
         {
 
         }

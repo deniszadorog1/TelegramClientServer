@@ -40,7 +40,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
         {
             BlockedUsersPanel.Items.Clear();
 
-            List<UserContactcs> blocked = _system.LoggedUser.BlockedContacts;
+            List<User> blocked = _system.LoggedUser.BlockedUsers;
             for (int i = 0; i < blocked.Count; i++)
             {   
                 ToUnblockUser blockedControl = new ToUnblockUser();
@@ -59,15 +59,15 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
                 blockedControl.UnblockBut.PreviewMouseDown += (sender, e) =>
                 {
-                    UserContactcs contact =
-                    _system.LoggedUser.BlockedContacts.Where(
+                    User contact =
+                    _system.LoggedUser.BlockedUsers.Where(
                         x => x.Name == blockedControl.ChaterLogin.Text).First();
 
-                    _system.LoggedUser.BlockedContacts.Remove(contact);
+                    _system.LoggedUser.BlockedUsers.Remove(contact);
 
                     BlockedUsersPanel.Items.Remove(item);
 
-                    AmountNum.Text = _system.LoggedUser.BlockedContacts.Count.ToString();
+                    AmountNum.Text = _system.LoggedUser.BlockedUsers.Count.ToString();
                 };
 
                 BlockedUsersPanel.Items.Add(item);

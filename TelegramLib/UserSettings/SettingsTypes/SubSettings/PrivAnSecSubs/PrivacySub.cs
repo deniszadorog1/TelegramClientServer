@@ -11,11 +11,11 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
     public class PrivacySub
     {
         public ShareWith ShareType { get; set; }
-        public List<UserContactcs> ShareWithExps { get; set; }
-        public List<UserContactcs> NeverShareExps { get; set; }
+        public List<User> ShareWithExps { get; set; }
+        public List<User> NeverShareExps { get; set; }
     
-        public PrivacySub(ShareWith type, List<UserContactcs> shareWith,
-            List<UserContactcs> neverShare)
+        public PrivacySub(ShareWith type, List<User> shareWith,
+            List<User> neverShare)
         {
             ShareType = type;
             ShareWithExps = shareWith;
@@ -25,8 +25,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
         public PrivacySub()
         {
             ShareType = ShareWith.Contacts;
-            ShareWithExps = new List<UserContactcs>();
-            NeverShareExps = new List<UserContactcs>();
+            ShareWithExps = new List<User>();
+            NeverShareExps = new List<User>();
         }
     }
 }

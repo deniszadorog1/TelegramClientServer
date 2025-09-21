@@ -14,8 +14,8 @@ namespace TelegramLib.Models
 
         public int? BlockedContactId { get; set; }
 
-        public virtual Contacts Contacts { get; set; }
-
         public virtual User User { get; set; }
+
+        public virtual User User1 { get; set; }
     }
 }

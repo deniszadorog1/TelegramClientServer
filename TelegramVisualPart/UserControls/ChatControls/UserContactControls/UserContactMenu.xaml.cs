@@ -82,12 +82,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private Page? GetPageToOpen(string name)
         {
+            UserContactcs contact = _system.GetContactByUserId(_chat.Chatter.Id);
+
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
-                   name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */_chat.Chatter, _system) :
+                   name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
-                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/_chat.Chatter) :
+                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
-                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) : null;
+                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) : null;
         }
     }
 }

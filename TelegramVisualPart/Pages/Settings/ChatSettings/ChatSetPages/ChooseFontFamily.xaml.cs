@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.FontFamilyChoose;
 
 namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
@@ -32,6 +33,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             SetFontRadio();
 
             SetClassParams();
+
+            SetLanguageText.SetFontFamily(this);
         }
         public void SetClassParams()
         {

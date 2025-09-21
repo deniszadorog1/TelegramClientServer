@@ -73,7 +73,7 @@ namespace TelegramVisualPart.UserControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
-                if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
+                if (_chat is null || _chat.GetChatter().Id != user.Id) return;
 
                 IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
 
@@ -112,7 +112,7 @@ namespace TelegramVisualPart.UserControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
-                TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.ContactUserId == user.Id);
+                TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.Id == user.Id);
                 if (chat is null) return;
 
                 //Is temp is Chosen -> clear vis
@@ -139,7 +139,7 @@ namespace TelegramVisualPart.UserControls
             {
                 TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
 
-                if (chat is null || chat.Chatter.ContactUserId != user.Id) return;
+                if (chat is null || chat.Chatter.Id != user.Id) return;
 
                 await SignalRHelperService.SetFastParamsForPhotoUpdate(user);
 
@@ -284,8 +284,8 @@ namespace TelegramVisualPart.UserControls
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
             if (chat is null) return;
-            SetChatterImageVisibility();
-
+            SetChatterImageVisibility();            
+           
             _chat = chat;
 
             await SetOnlineStatus();
@@ -317,7 +317,7 @@ namespace TelegramVisualPart.UserControls
         public async Task SetOnlineStatus()
         {
             if (_chat is null) return;
-            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+            TelegramLib.MainClasses.User user = await ApiService.GetUserById(_chat.GetChatter().Id);
             if (user is null) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
@@ -356,9 +356,11 @@ namespace TelegramVisualPart.UserControls
         }
 
         private string _lastSeenDefault = "recently";
-        public void SetChatParams(UserContactcs contact)
+        public void SetChatParams(TelegramLib.MainClasses.User contact)
         {
-            ChatFriendLogin.Text = contact.Name;
+            UserContactcs? cont = _system.Contacts.FirstOrDefault(x => x.ContactUserId == contact.Id);
+            ChatFriendLogin.Text =  cont is null ? contact.Name : cont.Name;
+            ChatFriendSurname.Text = cont is null ? contact.Surname : cont.Surname;
             /*
                         ChatFriendLastSeen.Text = contact.LastSeen is null ? _lastSeenDefault :
                             $"{contact.LastSeen.Value.Month}.{contact.LastSeen.Value.Day}.{contact.LastSeen.Value.Year}";
@@ -399,7 +401,7 @@ namespace TelegramVisualPart.UserControls
         {
             for (int i = 0; i < _chatMessages.Count; i++)
             {
-                string imgName = _chatMessages[i].SenderId == _system.LoggedUser.Id ?
+                string imgName = _chatMessages[i].SenderUserId == _system.LoggedUser.Id ?
                     _system.LoggedUser.GetFirstImageName().Name : _chat.GetChatter().GetFirstImageName().Name;
 
                 if (_chatMessages[i] is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -415,7 +417,7 @@ namespace TelegramVisualPart.UserControls
             }
 
             //Set chatter photo image
-            if (_chatMessages.Count > 0) UpdateChatImages(await ApiService.GetUserById(_chat.Chatter.ContactUserId));
+            if (_chatMessages.Count > 0) UpdateChatImages(await ApiService.GetUserById(_chat.Chatter.Id));
         }
 
         public void SetMediaMessageInChat(MediaAction message, string senderImgName)
@@ -502,10 +504,10 @@ namespace TelegramVisualPart.UserControls
 
             //system add
 
-            UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.ContactUserId);
+           // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
 
             TelegramLib.MainClasses.Messages.Message  toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
-                            _chatMessages.Count, contact.Id, _system.LoggedUser.Id,
+                            _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, CommentTextBox.Text);
 
 
@@ -516,7 +518,7 @@ namespace TelegramVisualPart.UserControls
 
             await SendMessageToReceiver((TelegramLib.MainClasses.Messages.TextMessage)toAdd);
 
-            toAdd.SenderId = contact.Id;
+            //toAdd.SenderId = contact.Id;
             _chatMessages.Add(toAdd);
 
             CommentTextBox.Text = string.Empty;
@@ -526,17 +528,17 @@ namespace TelegramVisualPart.UserControls
 
         private async Task SendMessageToReceiver(Message toAdd)
         {
-            bool isReceiverOnline = await ApiService.IsUserOnline(_chat.GetChatter().ContactUserId);
+            bool isReceiverOnline = await ApiService.IsUserOnline(_chat.GetChatter().Id);
 
             if (!isReceiverOnline)
             {
                 TelegramLib.MainClasses.User receiver =
-                await ApiService.GetUserById(_chat.GetChatter().ContactUserId);
+                await ApiService.GetUserById(_chat.GetChatter().Id);
 
-                UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, receiver.Id);
+                //UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, receiver.Id);
 
                 TelegramLib.MainClasses.UserChat chat =
-                    await ApiService.GetChatByUserAndSenderId(receiver.Id, contact.Id);
+                    await ApiService.GetChatByUserAndSenderId(receiver.Id, _system.LoggedUser.Id);
                 await ApiService.AddMessage(toAdd, chat);
 
                 return;
@@ -635,8 +637,7 @@ namespace TelegramVisualPart.UserControls
                             .ToList()
                             .Any()) return;*/
 
-            Message newMediaMes = new MediaAction(-1, _chat.Chatter.Id,
-                             _system.LoggedUser.Id, DateTime.Now, fileName, isSticker);
+            Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now, fileName, isSticker);
 
             if (isAdd)
             {
@@ -837,7 +838,7 @@ namespace TelegramVisualPart.UserControls
 
             ContactInfo info = new ContactInfo();
             
-            info.SetContactInfo(_chat, _system, _chat.Chatter /*_system.ChosenChatContact*/);
+            info.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id));
 
             info.LoadEnd += () =>
             {
@@ -853,6 +854,18 @@ namespace TelegramVisualPart.UserControls
                 UserInfoColumn.Width = new GridLength(_userContactWidth);
                 ContactInfoGrid.Children.Add(info);
             };
+        }
+
+        public void UpdateContactInfoBlock(UserContactcs contact)
+        {
+            if (!ContactInfoGrid.Children.OfType<ContactInfo>().Any()) return;
+
+            ContactInfo info = 
+                ContactInfoGrid.Children
+                .OfType<ContactInfo>()
+                .First();
+
+            info.UpdateParams(contact);
         }
 
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
@@ -1013,8 +1026,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetBackground()
         {
-            if (_chat is null || 
-                _chat.ChatBg is null) throw new Exception("Chat cant be null");
+         /*   if (_chat is null || 
+                _chat.ChatBg is null) throw new Exception("Chat cant be null");*/
 
             //set local
             if (_chat is not null && !_chat.GetBackground().IsGeneral)
@@ -1141,10 +1154,10 @@ namespace TelegramVisualPart.UserControls
             //Where sender is receiver; receiver is sender
 
             //Get contact where senderId is friendId, UserId - receiverId
-            UserContactcs contcat = await ApiService.GetContactByUserAndFriendIds(_chat.Chatter.ContactUserId, _system.LoggedUser.Id);
+            UserContactcs contcat = await ApiService.GetContactByUserAndFriendIds(_chat.Chatter.Id, _system.LoggedUser.Id);
             if (contcat is null) return;
 
-            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.ContactUserId, contcat.Id);
+            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, contcat.Id);
             if (chat is null) return;
 
             if (message is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -1220,5 +1233,21 @@ namespace TelegramVisualPart.UserControls
         {
             return _chat is null ? false : _chat.Id == chat.Id;
         }
+
+        public void UpdateChatterName(UserContactcs contact)
+        {
+            if (_chat.Chatter.Id != contact.ContactUserId) return;
+
+            ChatFriendLogin.Text = contact.Name;
+            ChatFriendSurname.Text = contact.Surname;
+        }
+
+        public void SetNameSurnameInUserParams()
+        {
+            ChatFriendLogin.Text = _chat.Chatter.Name;
+            ChatFriendSurname.Text = _chat.Chatter.Surname;
+        }
     }
+
+
 }

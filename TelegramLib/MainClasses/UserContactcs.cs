@@ -26,7 +26,7 @@ namespace TelegramLib.MainClasses
 
         public AutoDeleteDuration AutoDeletion { get; set; }
 
-        public UserContactcs(int id, string name, string userName,
+        public UserContactcs(int id, string name, string surname, string userName,
             DateTime? birthDate,
             string bio, string phoneNumber,
             DateTime? lastSeen, bool isNotsOn,
@@ -35,6 +35,7 @@ namespace TelegramLib.MainClasses
         {
             Id = id;
             Name = name;
+            Surname = surname;
             Login = userName;
             BirthDate = birthDate;
             BIO = bio;

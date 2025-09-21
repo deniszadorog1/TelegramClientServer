@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Pages.Settings.Language
 {
@@ -28,6 +29,8 @@ namespace TelegramVisualPart.Pages.Settings.Language
             InitializeComponent();
 
             SetBasicParams();
+
+            SetLanguageText.SetLanguagePage(this);
         }
 
         public void SetBasicParams()

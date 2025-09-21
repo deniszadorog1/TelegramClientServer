@@ -15,7 +15,10 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Margin" Value="10 0 0 0"/>
+            
             <EventSetter Event="PreviewMouseDown" Handler="TextBlock_PreviewMouseDown"/>
+            <EventSetter Event="MouseEnter" Handler="TextBlock_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="TextBlock_MouseLeave"/>
         </Style>
     </UserControl.Resources>
 

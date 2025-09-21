@@ -190,5 +190,15 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
                 }
             }
         }
+
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

@@ -219,6 +219,184 @@
   "NotSoundPinnedMessages": "Pinned messages",
 
 
+  "_commentChatSetPage": "ChatSetPagePARAMS--------------------------------------------",
+  "ChatSetPageName": "Chat Settings",
+  "ChatSetThemesTextBlock": "Themes",
+
+  "ChatSetThemesClassicCard": "Classic",
+  "ChatSetThemesDayCard": "Day",
+  "ChatSetThemesTintedCard": "Tinted",
+  "ChatSetThemesNightCard": "Night",
+
+  "ChatSetThemeSettingsBlock": "Theme settings",
+
+  "ChatSetAutoNightBut": "Auto-night mode",
+  "ChatSetFontFamalyBut": "Font family",
+
+  "ChatWalpsBlock": "Chat wallpaper",
+
+  "ChatSetChooseWallpaperFromGalery": "Choose from gallery",
+  "ChatSetChooseWallpaperFromFile": "Choose from file",
+
+  "ChatSetSendEnterRadio": "Send with Enter",
+  "ChatSetSendCtrlEnterRadio": "Send with Ctrl+Enter",
+
+  "_commentChatSetPalette": "ChatSetPalettePARAMS--------------------------------------------",
+  "ChatSetPalettePageName": "Choose accent color",
+
+  "_commentChooseFontFamily": "ChooseFontFamilyPARAMS--------------------------------------------",
+  "FontFamPageNameBlock": "Choose font famaly",
+
+  "FontFamCheckFontBlock": "Ah, you kids today with techno music! You should enjoy the classics, like Hasselhoff!",
+  "FontFamSearchBoxHint": "Search",
+
+  "_commentAdvancedPage": "AdvancedPagePARAMS--------------------------------------------",
+  "AdvPagePageName": "Advanced",
+
+  "AdvPageDataStorageBlock": "Data and storage",
+  "AdvPageMediaDownloadBlock": "Automatic media download",
+  "AdvPageTitleBarBlock": "Window title bar",
+  "AdvPageSysIntegrationBlock": "System integration",
+  "AdvPageVersionsTextBlock": "Versions and updates",
+
+
+  "AdvPageDownloadPathButButName": "Download path",
+  "AdvPageDownloadPathButTempStatusBut": "Default folder",
+
+  "AdvPageDownloadsButName": "Downloads",
+
+  "AdvPageIsAskDownloadPathTextBlock": "Ask download path for each file",
+
+  "AdvPagePrivateChatsButButName": "In private chats",
+
+  "AdvPageShowChatNameBox": "Show chat name",
+  "AdvPageUnreadCountBox": "Total unread count",
+  "AdvPageWindowFrame": "Use system window frame",
+
+  "AdvPageTrayIconBox": "Show tray icon",
+  "AdvPageTaskBarBox": "Show taskbrar icon",
+  "AdvPageCloseToTaskBarBox": "Close to taskbrar",
+  "AdvPageAtStartLaunchTelegramBox": "Launch Telegram when system starts",
+  "AdvPagePalceInSendTo": "Palce Telegram in Send To menu",
+
+  "AdvPageVersionButFirstTextBlock": "Update automatically",
+  "AdvPageSecondTextBlock": "temp version",
+
+  "AdvPageInstalBetaButTextBlock": "Install beta version",
+  "AdvPageCheckForUpdatesTextBlock": "Check for updates",
+
+
+  "_commentFoldersPage": "FoldersPagePARAMS--------------------------------------------",
+  "FoldersPageName": "Folders",
+
+  "FoldersPageInfoText": "Create folders for different groups of chats and quickly switch between them.",
+  "FoldersPageFoldersBlock": "My Folder",
+
+  "FoldersPageTestThingFolderName": "Folder Name",
+  "FoldersPageTestThingAmountOfChats": "Amount of Users",
+
+  "FoldersPageCreateNewFolderBut": "Create new Folder",
+
+  "FoldersPageFolderBlock": "My Folder",
+
+  "FoldersPageLeftTabs": "Tabs on the Left",
+  "FoldersPageShitTabs": "Tabs at the Top",
+
+  "FoldersPageKchau": "ITS Kchau",
+
+  "_commentFoldersAction": "FoldersActionPARAMS--------------------------------------------",
+  "FolActionPageName": "New Folder",
+
+  "FolActionFolderNameBoxHint": "Folder name",
+
+  "FolActionWhoCanUseBlock": "Included chats",
+
+  "FolActionCreateNewFolderBut": "Add chat",
+
+  "FolActionInfoText": "Choose chats or types of chats that will appear in this folder.",
+  "FolActionExcludedChatsBlock": "Excluded chats",
+
+  "FolActionChatToExcludeBut": "Add chat to Exclude",
+  "FolActionSecondInfoText": "Choose chats or types of chats that will NOT appear in this folder.",
+
+
+  "_commentFoldersChatAction": "FoldersChatActionPARAMS--------------------------------------------",
+  "FolChatActChatSearchBoxHint": "Search",
+
+  "FolChatActContactsChats": "Contacts",
+  "FolChatActNoneContactsChats": "Non-Contacts",
+  "FolChatActGroupsChats": "Groups",
+  "FolChatActChannelsChats": "Channels",
+  "FolChatActBotsChats": "Bots",
+
+  "FolChatChatsTextBlock": "Chats",
+
+  "IncludeChats": "Include Chats",
+  "ExcludeChats": "Exclude Chats",
+
+  "_commentLangPage": "LangPagePARAMS--------------------------------------------",
+  "LangPagePageName": "Language",
+
+  "LangPageSarchBoxHint": "Search",
+
+  "_commentPrivacyAndSecurity": "PrivacyAndSecurityPARAMS--------------------------------------------",
+  "PrivAndSecPageName": "Privacy and Security",
+
+  "PrivAndSecSecBlock": "Sucurity",
+
+  "PrivAndSecLocalPasscodeNamePart": "Local passcode",
+  "PrivAndSecLocalPasscodeEnumPart": "STATUS",
+
+  "PrivAndSecBlockedUsersNamePart": "Blocked users",
+  "PrivAndSecBlockedUsersEnumPart": "AMOUNT",
+
+  "PrivAndSecPrivBlock": "Privacy",
+
+  "PrivAndSecPhoneNumberNamePart": "Phone number",
+  "PrivAndSecPhoneNumberEnumPart": "STATUS",
+
+  "PrivAndSecLastSeenNamePart": "Last seen & online",
+  "PrivAndSecLastSeenEnumPart": "STATUS",
+
+  "PrivAndSecProfilePhotosNamePart": "Profile photos",
+  "PrivAndSecProfilePhotosEnumPart": "STATUS",
+
+  "PrivAndSecForwardedMessagesNamePart": "Forwarded messages",
+  "PrivAndSecForwardedMessagesEnumPart": "STATUS",
+
+  "PrivAndSecMessagesNamePart": "Messages",
+  "PrivAndSecMessagesEnumPart": "STATUS",
+
+  "PrivAndSecDateOfBirthNamePart": "Date of Birth",
+  "PrivAndSecDateOfBirthEnumPart": "STATUS",
+
+  "PrivAndSecBioButNamePart": "Forwarded messages",
+  "PrivAndSecBioButEnumPart": "BIO",
+
+  "PrivAndSecBotsWebBlock": "Bots and websites",
+
+  "PrivAndSecClearPaymentsNamePart": "Clear Payments and Shipping Info",
+  "PrivAndSecClearPaymentsEnumPart": "STATUS",
+
+  "PrivAndSecDeletAccBlockk": "Delete my account",
+
+  "PrivAndSecDeleteAwayNamePart": "If away for...",
+  "PrivAndSecDeleteAwayEnumPart": "BIO",
+
+
+  "_commentDeleteAccount": "DeleteAccountPARAMS--------------------------------------------",
+  "DeleteAccPageName": "Add Exceptions",
+
+  "DeleteAccInfoText": "If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts.",
+
+  "DeleteOneMonthRadio": "1 month",
+  "DeleteThreeMonthRadio": "3 month",
+  "DeleteSixMonthRadio": "6 month",
+  "DeleteTwelveMonthRadio": "12 month",
+  "DeleteEighteenMonthRadio": "18 month",
+  "DeleteTwentyfourMonthRadio": "24 month",
+
+
 
 
 

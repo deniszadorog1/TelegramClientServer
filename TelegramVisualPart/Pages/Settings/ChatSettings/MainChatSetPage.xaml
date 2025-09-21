@@ -129,8 +129,10 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Theme settings" Margin="20 0 0 0" Foreground="{StaticResource TempActiveTextColor}"
-                                       FontSize="17" VerticalAlignment="Center"/>
+                            <TextBlock Text="Theme settings" Margin="20 0 0 0" 
+                                       Foreground="{StaticResource TempActiveTextColor}"
+                                       FontSize="17" VerticalAlignment="Center"
+                                       Name="ThemeSettingsBlock"/>
 
                             <StackPanel Grid.Row="1" Orientation="Vertical">
                                 <controls:ThemeSetBut x:Name="AutoNightBut" 
@@ -150,7 +152,8 @@
 
                             <TextBlock Text="Chat wallpaper" Margin="20 0 0 0" 
                                        Foreground="{StaticResource TempActiveTextColor}"
-                                       FontSize="17" VerticalAlignment="Center"/>
+                                       FontSize="17" VerticalAlignment="Center"
+                                       Name ="ChatWalpsBlock"/>
 
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -189,14 +192,14 @@
                         <StackPanel Grid.Row="8" Margin="10 10 0 0">
                             <RadioButton Foreground="{StaticResource UsualTextColor}" 
                                          Content="Send with Enter" Padding="15 0 0 0"
-                                 Name="SendEnterRadio" Checked="SendEnterRadio_Checked"
-                            
-                                 Style="{StaticResource RadioStyle}"/>
+                                         Name="SendEnterRadio" Checked="SendEnterRadio_Checked"   
+                                         Style="{StaticResource RadioStyle}"/>
 
-                            <RadioButton Foreground="{StaticResource UsualTextColor}" Content="Send with Ctrl+Enter"
-                                 Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
-                                 Margin="0 10 0 0" Padding="15 0 0 0"
-                                 Style="{StaticResource RadioStyle}"/>
+                            <RadioButton Foreground="{StaticResource UsualTextColor}" 
+                                         Content="Send with Ctrl+Enter"
+                                         Name="SendCtrlEnterRadio" Checked="SendCtrlEnterRadio_Checked"
+                                         Margin="0 10 0 0" Padding="15 0 0 0"
+                                         Style="{StaticResource RadioStyle}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

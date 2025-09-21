@@ -34,5 +34,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.LanguageControls
         {
             Background = new SolidColorBrush(Colors.Transparent);
         }
+
+
     }
 }

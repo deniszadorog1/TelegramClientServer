@@ -8,16 +8,25 @@ using System.Security.Cryptography.Xml;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Xps.Packaging;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Pages;
+using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.MyProfile.SetInformation;
+using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
+using TelegramVisualPart.Pages.Settings.Folders;
+using TelegramVisualPart.Pages.Settings.Language;
 using TelegramVisualPart.Pages.Settings.NotifsAndSounds;
+using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
+using TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
 
@@ -264,7 +273,7 @@ namespace TelegramVisualPart.Helper
             page.SaveBut.Content = VisConstParamsJsonService.GetStringByName("SaveButName");
         }
 
-        public static void SetUserContacts(MainContacts page) 
+        public static void SetUserContacts(MainContacts page)
         {
             page.ContactsBlock.Text = VisConstParamsJsonService.GetStringByName("UsContsPageName");
 
@@ -298,13 +307,227 @@ namespace TelegramVisualPart.Helper
             page.EventsMenu.Text = VisConstParamsJsonService.GetStringByName("EventsMenuSubMenu");
             page.ScreenLocMenu.Text = VisConstParamsJsonService.GetStringByName("ScreenLocMenuSubMenu");
             page.MessAmountMenu.Text = VisConstParamsJsonService.GetStringByName("MessAmountMenuSubMenu");
-        
-            
+
+
             page.DeskTopNotifs.TextBlock.Text = VisConstParamsJsonService.GetStringByName("NotSoundDesktopNotif");
             page.FlashBarIcon.TextBlock.Text = VisConstParamsJsonService.GetStringByName("NotSoundFlashBarIconFlashBarIcon");
             page.AllowSound.TextBlock.Text = VisConstParamsJsonService.GetStringByName("NotSoundAllowSound");
             page.PrivateChat.TextBlock.Text = VisConstParamsJsonService.GetStringByName("NotSoundPrivateChat");
             page.PinnedMessages.TextBlock.Text = VisConstParamsJsonService.GetStringByName("NotSoundPinnedMessages");
+        }
+
+        public static void SetChatSetPage(MainChatSetPage page)
+        {
+            page.ChatNameBlock.Text = VisConstParamsJsonService.GetStringByName("ChatSetPageName");
+
+            page.ThemesTextBlock.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemesTextBlock");
+
+            page.Classic.CardName.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemesClassicCard");
+            page.Day.CardName.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemesDayCard");
+            page.Tinted.CardName.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemesTintedCard");
+            page.Night.CardName.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemesNightCard");
+
+            page.ThemeSettingsBlock.Text = VisConstParamsJsonService.GetStringByName("ChatSetThemeSettingsBlock");
+
+            page.AutoNightBut.ButName.Text = VisConstParamsJsonService.GetStringByName("ChatSetAutoNightBut");
+            page.FontFamalyBut.ButName.Text = VisConstParamsJsonService.GetStringByName("ChatSetFontFamalyBut");
+
+            page.ChatWalpsBlock.Text = VisConstParamsJsonService.GetStringByName("ChatWalpsBlock");
+
+            page.ChooseWallpaperFromGalery.Text = VisConstParamsJsonService.GetStringByName("ChatSetChooseWallpaperFromGalery");
+            page.ChooseWallpaperFromFile.Text = VisConstParamsJsonService.GetStringByName("ChatSetChooseWallpaperFromFile");
+
+            page.SendEnterRadio.Content = VisConstParamsJsonService.GetStringByName("ChatSetSendEnterRadio");
+            page.SendCtrlEnterRadio.Content = VisConstParamsJsonService.GetStringByName("ChatSetSendCtrlEnterRadio");
+        }
+
+        public static void SetChatSetPalette(ChatSetPalette page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("ChatSetPalettePageName");
+
+            page.CancelBut.Content = VisConstParamsJsonService.GetStringByName("CancelButName");
+            page.SaveBut.Content = VisConstParamsJsonService.GetStringByName("SaveButName");
+        }
+
+        public static void SetFontFamily(ChooseFontFamily page)
+        {
+            HintAssist.SetHint(page.SearchBox,
+                VisConstParamsJsonService.GetStringByName("AddContFirstNameHint"));
+
+            page.PageNameBlock.Text = VisConstParamsJsonService.GetStringByName("FontFamPageNameBlock");
+
+            page.CancelBut.Content = VisConstParamsJsonService.GetStringByName("CancelButName");
+            page.SaveBut.Content = VisConstParamsJsonService.GetStringByName("SaveButName");
+        }
+
+        public static void SetAdvancedPage(AdvancedPage page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("AdvPagePageName");
+
+            page.DataStorageText.Text = VisConstParamsJsonService.GetStringByName("AdvPageDataStorageBlock");
+            page.MediaDownloadText.Text = VisConstParamsJsonService.GetStringByName("AdvPageMediaDownloadBlock");
+            page.TitleBarText.Text = VisConstParamsJsonService.GetStringByName("AdvPageTitleBarBlock");
+            page.SysIntegration.Text = VisConstParamsJsonService.GetStringByName("AdvPageSysIntegrationBlock");
+            page.VersionsText.Text = VisConstParamsJsonService.GetStringByName("AdvPageVersionsTextBlock");
+
+            page.DownloadPathBut.ButName.Text = VisConstParamsJsonService.GetStringByName("AdvPageDownloadPathButButName");
+            page.DownloadPathBut.TempStatusBut.Text = VisConstParamsJsonService.GetStringByName("AdvPageDownloadPathButTempStatusBut");
+
+            page.Downloads.ButName.Text = VisConstParamsJsonService.GetStringByName("AdvPageDownloadsButName");
+
+            page.IsAskDownloadPath.TextBlock.Text = VisConstParamsJsonService.GetStringByName("AdvPageIsAskDownloadPathTextBlock");
+
+            page.PrivateChatsBut.ButName.Text = VisConstParamsJsonService.GetStringByName("AdvPagePrivateChatsButButName");
+
+            page.PrivateChatsBut.ButName.Text = VisConstParamsJsonService.GetStringByName("AdvPagePrivateChatsButButName");
+
+            page.ShowChatNameBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageShowChatNameBox");
+            page.UnreadCountBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageUnreadCountBox");
+            page.WindowFrame.Content = VisConstParamsJsonService.GetStringByName("AdvPageWindowFrame");
+
+            page.TrayIconBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageTrayIconBox");
+            page.TaskBarBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageTaskBarBox");
+            page.CloseToTaskBarBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageCloseToTaskBarBox");
+            page.AtStartLaunchTelegramBox.Content = VisConstParamsJsonService.GetStringByName("AdvPageAtStartLaunchTelegramBox");
+            page.PalceInSendTo.Content = VisConstParamsJsonService.GetStringByName("AdvPagePalceInSendTo");
+
+
+            page.VersionBut.FirstTextBlock.Text = VisConstParamsJsonService.GetStringByName("AdvPageVersionButFirstTextBlock");
+            page.VersionBut.SecondTextBlock.Text = VisConstParamsJsonService.GetStringByName("AdvPageSecondTextBlock");
+
+            page.InstalBetaBut.TextBlock.Text = VisConstParamsJsonService.GetStringByName("AdvPageInstalBetaButTextBlock");
+            page.CheckForUpdates.TextBlock.Text = VisConstParamsJsonService.GetStringByName("AdvPageCheckForUpdatesTextBlock");
+
+        }
+
+        public static void SetFoldersPage(FoldersPage page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("FoldersPageName");
+
+            page.InfoText.Text = VisConstParamsJsonService.GetStringByName("FoldersPageInfoText");
+
+            page.FoldersBlock.Text = VisConstParamsJsonService.GetStringByName("FoldersPageFoldersBlock");
+
+            page.TestThing.FolderName.Text = VisConstParamsJsonService.GetStringByName("FoldersPageTestThingFolderName");
+            page.TestThing.AmountOfChats.Text = VisConstParamsJsonService.GetStringByName("FoldersPageTestThingAmountOfChats");
+
+            page.CreateNewFolderBut.NewFolderText.Text = VisConstParamsJsonService.GetStringByName("FoldersPageCreateNewFolderBut");
+
+            page.FolderBlock.Text = VisConstParamsJsonService.GetStringByName("FoldersPageFolderBlock");
+
+            page.LeftTabs.Content = VisConstParamsJsonService.GetStringByName("FoldersPageLeftTabs");
+            page.ShitTabs.Content = VisConstParamsJsonService.GetStringByName("FoldersPageShitTabs");
+
+            page.Kchau.Text = VisConstParamsJsonService.GetStringByName("FoldersPageKchau");
+        }
+
+        public static void SetFolderAction(FolderAction page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("FolActionPageName");
+
+            HintAssist.SetHint(page.FolderNameBox,
+                 VisConstParamsJsonService.GetStringByName("FolActionFolderNameBoxHint"));
+
+            page.WhoCanUseBlock.Text = VisConstParamsJsonService.GetStringByName("FolActionWhoCanUseBlock");
+
+            page.CreateNewFolderBut.NewFolderText.Text = VisConstParamsJsonService.GetStringByName("FolActionCreateNewFolderBut");
+
+            page.InfoText.Text = VisConstParamsJsonService.GetStringByName("FolActionInfoText");
+            page.ExcludedChatsBlock.Text = VisConstParamsJsonService.GetStringByName("FolActionExcludedChatsBlock");
+
+            page.ChatToExcludeBut.NewFolderText.Text = VisConstParamsJsonService.GetStringByName("FolActionChatToExcludeBut");
+
+            page.SecondInfoText.Text = VisConstParamsJsonService.GetStringByName("FolActionSecondInfoText");
+
+            page.CancelBut.Content = VisConstParamsJsonService.GetStringByName("CancelButName");
+            page.CreateBut.Content = VisConstParamsJsonService.GetStringByName("CreateButName");
+        }
+
+        public static void SetFolderChatAction(FoldersChatAction page)
+        {
+            HintAssist.SetHint(page.ChatSearchBox,
+                 VisConstParamsJsonService.GetStringByName("FolChatActChatSearchBoxHint"));
+
+            page.ContactsChats.TypeName.Text = VisConstParamsJsonService.GetStringByName("FolChatActContactsChats");
+            page.NoneContactsChats.TypeName.Text = VisConstParamsJsonService.GetStringByName("FolChatActNoneContactsChats");
+            page.GroupsChats.TypeName.Text = VisConstParamsJsonService.GetStringByName("FolChatActGroupsChats");
+            page.ChannelsChats.TypeName.Text = VisConstParamsJsonService.GetStringByName("FolChatActChannelsChats");
+            page.BotsChats.TypeName.Text = VisConstParamsJsonService.GetStringByName("FolChatActBotsChats");
+
+            page.ChatsTextBlock.Text = VisConstParamsJsonService.GetStringByName("FolChatChatsTextBlock");
+
+            page.CancelBut.Content = VisConstParamsJsonService.GetStringByName("CancelButName");
+            page.SaveBut.Content = VisConstParamsJsonService.GetStringByName("SaveButName");
+
+        }
+
+        public static void SetLanguagePage(LanguagePage page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("LangPagePageName");
+
+            HintAssist.SetHint(page.SarchBox,
+                 VisConstParamsJsonService.GetStringByName("LangPageSarchBoxHint"));
+
+            page.OkBut.Content = VisConstParamsJsonService.GetStringByName("OkButName");
+        }
+
+        public static void SetPrivAndSecurity(PrivacyAndSecurity page)
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPageName");
+
+            page.SecBlock.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecSecBlock");
+
+            page.LocalPasscode.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecLocalPasscodeNamePart");
+            page.LocalPasscode.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecLocalPasscodeEnumPart");
+
+            page.BlockedUsers.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBlockedUsersNamePart");
+            page.BlockedUsers.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBlockedUsersEnumPart");
+
+            page.PrivBlock.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPrivBlock");
+            
+            page.PhoneNumber.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPhoneNumberNamePart");
+            page.PhoneNumber.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPhoneNumberEnumPart");
+
+            page.LastSeen.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecLastSeenNamePart");
+            page.LastSeen.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecLastSeenEnumPart");
+
+            page.ProfilePhotos.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecProfilePhotosNamePart");
+            page.ProfilePhotos.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecProfilePhotosEnumPart");
+
+            page.ForwardedMessages.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecForwardedMessagesNamePart");
+            page.ForwardedMessages.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecForwardedMessagesEnumPart");
+
+            page.Messages.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecMessagesNamePart");
+            page.Messages.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecMessagesEnumPart");
+
+            page.DateOfBirth.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecDateOfBirthNamePart");
+            page.DateOfBirth.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecDateOfBirthEnumPart");
+
+            page.BioBut.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBioButNamePart");
+            page.BioBut.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBioButEnumPart");
+
+            page.BotsWebBlock.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBotsWebBlock");
+
+            page.ClearPayments.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecClearPaymentsNamePart");
+
+            page.DeleteAway.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecDeleteAwayNamePart");
+            page.DeleteAway.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecDeleteAwayEnumPart");
+        }
+
+        public static void SetAccountDeletion(PrivacyDeleteAccount page) 
+        {
+            page.PageName.Text = VisConstParamsJsonService.GetStringByName("DeleteAccPageName");
+            page.InfoText.Text = VisConstParamsJsonService.GetStringByName("DeleteAccInfoText");
+
+            page.OneMonthRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteOneMonthRadio");
+            page.ThreeMonthRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteThreeMonthRadio");
+            page.SixRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteSixMonthRadio");
+            page.TwelveMonthRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteTwelveMonthRadio");
+            page.EighteenMonthRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteEighteenMonthRadio");
+            page.TwentyfourMonthRadio.Content = VisConstParamsJsonService.GetStringByName("DeleteTwentyfourMonthRadio");
+
+            page.CancelBut.Content = VisConstParamsJsonService.GetStringByName("CancelButName");
+            page.SaveBut.Content = VisConstParamsJsonService.GetStringByName("SaveButName");
         }
 
     }

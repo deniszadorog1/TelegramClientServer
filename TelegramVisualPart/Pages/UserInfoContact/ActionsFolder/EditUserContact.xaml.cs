@@ -72,6 +72,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             await ApiService.UpdateContact(_user.Id, _contact);
 
+            //Update Contact name - surname
+            ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

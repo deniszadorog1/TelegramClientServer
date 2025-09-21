@@ -22,12 +22,12 @@
 
             <TextBlock Grid.Row="0"
                        Text="Add Exceptions" FontSize="20" 
-                       VerticalAlignment="Center"
+                       VerticalAlignment="Center" Name="PageName"
                        Foreground="{StaticResource UsualTextColor}"/>
             
             <TextBlock Grid.Row="1" TextWrapping="Wrap"
                        Foreground="{StaticResource UsualTextColor}" FontSize="18"
-                       Padding="0 10 5 0 "
+                       Padding="0 10 5 0 " Name="InfoText"
                        Text="If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts."/>
 
             <StackPanel Grid.Row="2" Orientation="Vertical" Name="RadioPanel">

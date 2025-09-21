@@ -172,8 +172,8 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             return;
             //set text
-            SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
-                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.Id)].Name;
+/*            SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
+                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.Id)].Name;*/
         }
 
         public void SetImgIndex()

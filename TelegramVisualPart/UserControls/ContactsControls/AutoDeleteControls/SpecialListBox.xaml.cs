@@ -134,8 +134,6 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             SelectedIndexUpdate?.Invoke();
         }
 
-
-
         public AutoDeleteType GetChosenAutoDelItem()
         {
             return (AutoDeleteType)_selectedIndex - 1;
@@ -227,7 +225,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             res.MouseLeftButtonDown += TextBlock_MouseLeftButtonDown;
             res.MouseLeftButtonUp += TextBlock_MouseLeftButtonUp;
             res.MouseMove += TextBlock_MouseMove;
-
+         
             return res;
         }
 
@@ -236,6 +234,15 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //move by click to another el
+            if (sender is TextBlock tb)
+            {
+                int index = CheckPanel.Children.IndexOf(tb);
+                _selectedIndex = index + 1;
+                ValueByIndex(0);
+            }
+
+
             _isDragging = true;
             _startPoint = e.GetPosition(ScrollView);
             (sender as TextBlock).CaptureMouse();
@@ -245,9 +252,6 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
         {
             _isDragging = false;
             (sender as TextBlock).ReleaseMouseCapture();
-
-            //to make here a helper which moves to right pos
-            //(when upped between two values)
 
             ValueByIndex(1);
         }

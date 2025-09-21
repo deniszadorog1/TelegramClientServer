@@ -67,10 +67,15 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" x:Name="ChatFriendLogin" Text="FriendLogin" 
+                <TextBlock Grid.Row="0"  
                            FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Center" 
-                           Foreground="{StaticResource UsualTextColor}"/>
+                           Foreground="{StaticResource UsualTextColor}">
+                    <Run x:Name="ChatFriendLogin" Text="Name"/>
+                    <Run x:Name="ChatFriendSurname" Text="Surname"/>
+
+                </TextBlock>
+
                 <TextBlock Grid.Row="1" x:Name="ChatFriendLastSeen" 
                            Text="Last seen time" FontSize="16"
                            HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>

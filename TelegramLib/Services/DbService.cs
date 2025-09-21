@@ -49,6 +49,7 @@ using System.Security.Permissions;
 using System.Data.OleDb;
 using TelegramLib.Enums.Settings.Notifs;
 using System.Security.Policy;
+using System.Runtime.Remoting.Contexts;
 
 namespace TelegramLib.Services
 {
@@ -140,7 +141,6 @@ namespace TelegramLib.Services
                 toAdd.Name = folder.Name;
                 toAdd.IconId = GetFolderIconIdByName(folder.IconName);
 
-
                 model.Folder.Add(toAdd);
                 model.SaveChanges();
 
@@ -158,7 +158,7 @@ namespace TelegramLib.Services
         }
 
         public static void AddManyContactInContcatsInFolder(int folderId,
-            List<UserContactcs> contacts, bool isExclude)
+            List<mainClass.User> contacts, bool isExclude)
         {
             for (int i = 0; i < contacts.Count; i++)
             {
@@ -167,7 +167,7 @@ namespace TelegramLib.Services
         }
 
         public static void AddContactInCOntcatsInFolder(int folderId,
-            UserContactcs contact, bool isExclude)
+            mainClass.User contact, bool isExclude)
         {
             using (var model = new TelegramModel())
             {
@@ -215,7 +215,7 @@ namespace TelegramLib.Services
             return true;
         }
 
-        private static void AddExtraContacts(int folderId, List<UserContactcs> contacts, bool isExclude)
+        private static void AddExtraContacts(int folderId, List<mainClass.User> contacts, bool isExclude)
         {
             using (var model = new TelegramModel())
             {
@@ -239,7 +239,7 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void RemoveExtraContacts(int folderId, List<UserContactcs> contacts, bool isExclude)
+        private static void RemoveExtraContacts(int folderId, List<mainClass.User> contacts, bool isExclude)
         {
             //Get contacts to remove 
             //Remove
@@ -279,9 +279,9 @@ namespace TelegramLib.Services
         }
 
 
-        private static List<UserContactcs> GetContactsForFolder(int folderId, bool isExclude)
+        private static List<mainClass.User> GetContactsForFolder(int folderId, bool isExclude)
         {
-            List<UserContactcs> res = new List<UserContactcs>();
+            List<mainClass.User> res = new List<mainClass.User>();
             using (var model = new TelegramModel())
             {
                 foreach (var canFold in model.ContactsInFolder)
@@ -289,7 +289,7 @@ namespace TelegramLib.Services
                     if (canFold.FolderId == folderId &&
                         canFold.IsExclude == isExclude)
                     {
-                        UserContactcs toAdd = GetContactById((int)canFold.ContactId);
+                        mainClass.User toAdd = GetUserById((int)canFold.ContactId);
                         if (toAdd is null) continue;
                         res.Add(toAdd);
                     }
@@ -349,8 +349,9 @@ namespace TelegramLib.Services
                     if (userId == chat.UserId)
                     {
                         UserChat toAdd = new UserChat(chat.Id,
-                            GetUserContactById((int)chat.ChatterId),
-                            GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id),
+                            GetUserById((int)chat.ChatterId),
+                            GetMessagesByChatId(chat.Id), 
+                            GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(chat.AutoDeleteId));
 
                         res.Add(toAdd);
@@ -390,8 +391,8 @@ namespace TelegramLib.Services
                     {
                         ChatBackground toAdd = GetChatBgById((int)chatBG.ChatBgId);
                         toAdd.IsGeneral = toAdd.IsGeneral;// Set general
+                        toAdd.IsBlurred = chatBG.IsBlurred is null ? false : (bool)chatBG.IsBlurred;
                         if (toAdd is null) continue;
-
                         res.Add(toAdd);
                     }
                 }
@@ -409,7 +410,6 @@ namespace TelegramLib.Services
                 if (bg is null) return null;
 
                 res.FileName = bg.Name;
-                res.IsBlurred = (bool)bg.IsBlurred;
                 res.IsGeneral = false;
             }
 
@@ -433,7 +433,7 @@ namespace TelegramLib.Services
 
                         toAdd.Id = mes.Id;
                         toAdd.SenderUserId = (int)mes.SenderId;
-                        toAdd.SenderId = (int)mes.SenderId;
+                        //toAdd.SenderId = (int)mes.SenderId;
                         toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
 
                         if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
@@ -640,7 +640,6 @@ namespace TelegramLib.Services
         }
 
         //Contacts
-
         public static void GetUsersContacts(int userId)
         {
             using (var model = new TelegramModel())
@@ -708,23 +707,23 @@ namespace TelegramLib.Services
                 toAdd.PhoneNumber = user.PhoneNumber;// contact.User.PhoneNumber;
                 toAdd.LastSeen = contact.User.LastOnline;
                 toAdd.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
-                toAdd.Surname = user.Surname;
+                toAdd.Surname = contact.LastName;
 
                 toAdd.UserImages = GetUserImagesByUserId((int)contact.FriendId);
                 return toAdd;
             }
         }
 
-        private static List<UserContactcs> GetBlockedContactsByUserId(int userId)
+        private static List<TelegramLib.MainClasses.User> GetBlockedContactsByUserId(int userId)
         {
-            List<UserContactcs> res = new List<UserContactcs>();
+            List<mainClass.User> res = new List<mainClass.User>();
             using (var model = new TelegramModel())
             {
                 foreach (var blockedItem in model.BlockedContacts)
                 {
                     if (blockedItem.Id == userId)
                     {
-                        res.Add(GetContactById((int)blockedItem.BlockedContactId));
+                        res.Add(GetUserById((int)blockedItem.BlockedContactId));
                     }
                 }
             }
@@ -739,7 +738,7 @@ namespace TelegramLib.Services
                 Contacts contact = model.Contacts.Where(x => x.Id == contactId).FirstOrDefault();
                 if (contact is null) return null;
 
-                mainClass.User user = GetUserById((int)contact.UserId);
+                mainClass.User user = GetUserById((int)contact.FriendId);//Or userId
 
                 res.Id = contact.Id;
                 res.ContactUserId = (int)contact.FriendId;
@@ -770,7 +769,7 @@ namespace TelegramLib.Services
                 toAdd.FriendId = contact.ContactUserId;
 
                 toAdd.Name = contact.Name;
-                toAdd.LastName = contact.Login;
+                toAdd.LastName = contact.Surname;
                 toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
                 toAdd.IsBlocked = contact.IsBlockedUserBlocked;
 
@@ -1222,7 +1221,6 @@ namespace TelegramLib.Services
                     {
                         res.Id = temp.Id;
                         res.WallpaperName = temp.Name;
-                        res.IsBlurred = (bool)temp.IsBlurred;
                     }
                 }
             }
@@ -1369,7 +1367,7 @@ namespace TelegramLib.Services
                 settings.UserColorId = 1;// new ColorHelper();
                 settings.AutoNightId = 1;
                 settings.Font = "Time New Roman";
-                settings.BgName = null; ///
+                settings.BgName = 1; ///
                 settings.IsSentWithEnter = true;
 
                 model.ChatSettings.Add(settings);
@@ -1642,7 +1640,7 @@ namespace TelegramLib.Services
         }
 
         private static void UpdateChosenPrivContacts(int settingId, int settingTypeId,
-            List<UserContactcs> contacts, bool isShare)
+            List<mainClass.User> contacts, bool isShare)
         {
             //Remove all rows that confirm conditions
             List<ChosenPrivacyContacts> toRemove = new List<ChosenPrivacyContacts>();// GetChosenPrivContaactWithCondition(settingId, settingTypeId, isShare);
@@ -1675,7 +1673,7 @@ namespace TelegramLib.Services
         }
 
         private static void AddChosenPrivContactsByUserContacts(
-            List<UserContactcs> contacts, int settingTypeId, bool isShare, int settingId)
+            List<mainClass.User> contacts, int settingTypeId, bool isShare, int settingId)
         {
             using (var model = new TelegramModel())
             {
@@ -2028,7 +2026,6 @@ namespace TelegramLib.Services
 
                 res.Id = bg.Id;
                 res.WallpaperName = bg.Name;
-                res.IsBlurred = (bool)bg.IsBlurred;
             }
 
             return res;
@@ -2088,9 +2085,9 @@ namespace TelegramLib.Services
             return AllOrNone.Contacts;
         }
 
-        private static List<UserContactcs> GetChosenShareContacts(bool isShare, int settingId, SubSettingType type)
+        private static List<mainClass.User> GetChosenShareContacts(bool isShare, int settingId, SubSettingType type)
         {
-            List<UserContactcs> res = new List<UserContactcs>();
+            List<mainClass.User> res = new List<mainClass.User>();
             int subSettingId = GetSubSettingTypeByEnum(type);
 
             using (var model = new TelegramModel())
@@ -2101,7 +2098,7 @@ namespace TelegramLib.Services
                         contact.SettingTypeId == subSettingId &&
                         contact.SttingId == settingId)
                     {
-                        res.Add(GetContactById((int)contact.ContactId));
+                        res.Add(GetUserById((int)contact.ContactId));
                     }
                 }
             }
@@ -2265,7 +2262,8 @@ namespace TelegramLib.Services
 
                 toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
                 toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
-                toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
+                //toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
+
 
                 //Update general BG
 
@@ -2537,37 +2535,54 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void RemoveContact(UserContactcs contact)
+        public static void RemoveContact(UserContactcs contact, TelegramLib.MainClasses.User loggedUser)
         {
-            //Remove contact chat messages
-            //RemoveMessagesBySenderId(contact.Id); //CHECK THIS
+            //Get pair contact id => remove pair of chats with this ids => remove all messagges with this ids 
+
+            //contact - first chatter
+            UserContactcs pairContact = GetContactBySenderReceiverUserIds(contact.ContactUserId, loggedUser.Id);
 
             //Remove chat
-            //RemoveChatByChatterId(contact.Id);
+            //RemoveChatsByChatterId(contact.Id);
+            //RemoveChatsByChatterId(pairContact.Id);
 
 
-            //Remove chat and message where chatter is ContactId
-            RemoveChatWhereChatterIsContact(contact.Id);
-
-            //Remove COntactsFolder
-            RemoveContactsInFolderByContactId(contact.Id);
+            //Remove ContactsFolder
+            //RemoveContactsInFolderByContactId(contact.Id);
 
             //Remove contact from blockedContacts
-            RemoveBlockedByContactId(contact.Id);
+            //RemoveBlockedByContactId(contact.Id);
 
             //Remove contact from Chosen contacts
-            RemoveFromChosenPrivacyContactsByContactId(contact.Id);
+            //RemoveFromChosenPrivacyContactsByContactId(contact.Id);
 
             //Remove folder(if they are empty)
-            RemoveEmptyFolders(); //CHECK THIS
+            //RemoveEmptyFolders(); 
 
             //Remove contact
             using (var model = new TelegramModel())
             {
-                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id));
+                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id || x.Id == pairContact.Id));
                 model.SaveChanges();
             }
         }
+
+        private static void RemovePosBgsByChatId(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+
+                List<PossibleChatBGs> toRemove = model.PossibleChatBGs
+                    .Where(x => x.ChatId == chatId)
+                    .ToList();
+
+                foreach(var rem in toRemove)
+                {
+                    model.PossibleChatBGs.Remove(rem);
+                }
+                model.SaveChanges();
+            }
+        } 
 
         private static void RemoveChatWhereChatterIsContact(int contactId)
         {
@@ -2669,20 +2684,31 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void RemoveChatByChatterId(int chatterId)
+        private static void RemoveChatsByChatterId(int chatterId)
         {
             using (var model = new TelegramModel())
             {
-                model.Chat.RemoveRange(model.Chat.Where(x => x.ChatterId == chatterId));
+                List<Chat> toRemove = model.Chat.Where(x => x.ChatterId == chatterId).ToList();
+
+                foreach(var rem in toRemove)
+                {
+                    RemovePosBgsByChatId(rem.Id);
+                    RemoveMessagesByChatId(rem.Id);
+
+
+                    model.Chat.Remove(rem);
+                }
+
+
                 model.SaveChanges();
             }
         }
 
-        private static void RemoveMessagesBySenderId(int senderId)
+        private static void RemoveMessagesBySenderId(int chatId)
         {
             using (var model = new TelegramModel())
             {
-                model.Messages.RemoveRange(model.Messages.Where(x => x.SenderId == senderId));
+                model.Messages.RemoveRange(model.Messages.Where(x => x.ChatId == chatId));
                 model.SaveChanges();
             }
         }
@@ -2796,7 +2822,7 @@ namespace TelegramLib.Services
 
                 toAdd.UserId = userId;
                 toAdd.ChatterId = chatterContactId;
-                toAdd.BgImageId = null;
+                toAdd.BgImageId = 1;
                 toAdd.AutoDeleteId = null;
                 toAdd.IsMute = false;
 
@@ -2809,9 +2835,12 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId);
+/*                Contacts contact = model.Contacts.FirstOrDefault(x => x.Id == contactId);
+                if (contact is null) return null;*/
+
+                Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId /*contact.FriendId*/);
                 if (chat is null) return null;
-                return new UserChat(chat.Id, GetUserContactById((int)chat.ChatterId),
+                return new UserChat(chat.Id, GetUserById((int)chat.ChatterId),
                     GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id), GetAutoDelTypeById(chat.AutoDeleteId));
             }
         }
@@ -2900,7 +2929,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                return !(model.User.FirstOrDefault(x => x.Login == login || x.PhoneNumber == phoneNumber) is null);
+                return model.User.Any(x => x.Login == login || x.PhoneNumber == phoneNumber);
             }
         }
 
@@ -2999,7 +3028,6 @@ namespace TelegramLib.Services
 
                 ChatBG toAdd = new ChatBG();
                 toAdd.Name = imgName;
-                toAdd.IsBlurred = false;
 
                 model.ChatBG.Add(toAdd);
 
@@ -3204,6 +3232,16 @@ namespace TelegramLib.Services
             }
         }
 
+        public static bool IsChatIsExist(int userId, int contactId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId);
+                bool res = !(chat is null);
+
+                return res;
+            }
+        }
 
     }
 }

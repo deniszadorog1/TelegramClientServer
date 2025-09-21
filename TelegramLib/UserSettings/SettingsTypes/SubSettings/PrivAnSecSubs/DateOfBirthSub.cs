@@ -10,8 +10,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
 {
     public class DateOfBirthSub : PrivacySub
     {
-        public DateOfBirthSub(ShareWith type, List<UserContactcs> shareWithExps,
-             List<UserContactcs> neverShareExps) : base(type, shareWithExps, neverShareExps)
+        public DateOfBirthSub(ShareWith type, List<User> shareWithExps,
+             List<User> neverShareExps) : base(type, shareWithExps, neverShareExps)
         {
 
         }

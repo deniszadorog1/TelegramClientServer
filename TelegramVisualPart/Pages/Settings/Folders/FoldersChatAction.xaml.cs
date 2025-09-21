@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
@@ -18,13 +19,13 @@ namespace TelegramVisualPart.Pages.Settings.Folders
     {
         public event EventHandler ToSetContacts;
 
-        public List<UserContactcs> _chosenContacts = new List<UserContactcs>();
+        public List<User> _chosenContacts = new List<User>();
 
         private FolderChatActionType _type;
         private TelSystem _system;
 
         public FoldersChatAction(FolderChatActionType type, TelSystem system,
-            List<UserContactcs> chosenContacts)
+            List<User> chosenContacts)
         {
             _system = system;
             _type = type;
@@ -36,12 +37,14 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             SetContacts();
             SetChosenContacts();
+
+            SetLanguageText.SetFolderChatAction(this);
         }
 
         public void SetChosenContacts()
         {
             AmountOfAddedChats.Text = _chosenContacts.Count.ToString();
-            foreach (UserContactcs contact in _chosenContacts)
+            foreach (User contact in _chosenContacts)
             {
                 FolderChatType control = GetFolderChatTypeByContactName(contact.Name);
                 if (control is null) continue;
@@ -92,27 +95,28 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetBasicBlocks()
         {
-            PageNameText.Text = _type == FolderChatActionType.ExcludeChat ? 
-                "Exclude Chats" : "Include Chats";
-
+            PageNameText.Text = _type == FolderChatActionType.ExcludeChat ?
+                VisConstParamsJsonService.GetStringByName("ExcludeChats") :
+                VisConstParamsJsonService.GetStringByName("IncludeChats");
+            
             ContactsChats.IconType.Kind = PackIconKind.Account;
-            ContactsChats.TypeName.Text = "Contacts";
+            //ContactsChats.TypeName.Text = "Contacts";
             ContactsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
 
             NoneContactsChats.IconType.Kind = PackIconKind.QuestionMarkCircle;
-            NoneContactsChats.TypeName.Text = "Non-Contacts";
+            //NoneContactsChats.TypeName.Text = "Non-Contacts";
             NoneContactsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderNonContactColor"];
 
             GroupsChats.IconType.Kind = PackIconKind.UserGroup;
-            GroupsChats.TypeName.Text = "Groups";
+            //GroupsChats.TypeName.Text = "Groups";
             GroupsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderGroupColor"];
 
             ChannelsChats.IconType.Kind = PackIconKind.AirHorn;
-            ChannelsChats.TypeName.Text = "Channels";
+            //ChannelsChats.TypeName.Text = "Channels";
             ChannelsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderChannelsColor"];
 
             BotsChats.IconType.Kind = PackIconKind.Android;
-            BotsChats.TypeName.Text = "Bots";
+            //BotsChats.TypeName.Text = "Bots";
             BotsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
 
             /*
@@ -132,11 +136,13 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void ClearSearchBoxGrid_MouseEnter(object sender, MouseEventArgs e)
         {
+            Cursor = Cursors.Hand;
             ClearSearchBoxBut.Foreground = Brushes.White;
         }
 
         private void ClearSearchBoxGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Cursor = null;
             ClearSearchBoxBut.Foreground = Brushes.Gray;
         }
 
@@ -175,11 +181,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 item.Content is not FolderChatType control) return;
 
             int.TryParse(item.Tag.ToString(), out int id);
-            UserContactcs contact = _system.GetContactById(id);// _system.GetContactByLogin(control.TypeName.Text);
-
+            UserContactcs contact = _system.GetUserById(id);// _system.GetContactByLogin(control.TypeName.Text);
             if (contact is null) return;
 
-            if (_chosenContacts.Contains(contact))
+
+/*            if (_chosenContacts.Contains(contact))
             {
                 _chosenContacts.Remove(contact);
             }
@@ -187,11 +193,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             {
                 _chosenContacts.Add(contact);
             }
-
+*/
             AmountOfAddedChats.Text = _chosenContacts.Count().ToString();
         }
 
-        public List<UserContactcs> GetChosenContacts()
+        public List<User> GetChosenContacts()
         {
             return _chosenContacts;
         }

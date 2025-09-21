@@ -17,7 +17,7 @@ namespace TelegramLib.Models
 
         public bool? IsExclude { get; set; }
 
-        public virtual Contacts Contacts { get; set; }
+        public virtual User User { get; set; }
 
         public virtual Folder Folder { get; set; }
     }

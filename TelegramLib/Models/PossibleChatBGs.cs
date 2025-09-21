@@ -16,6 +16,8 @@ namespace TelegramLib.Models
 
         public bool? IsGeneral { get; set; }
 
+        public bool? IsBlurred { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatBG ChatBG { get; set; }

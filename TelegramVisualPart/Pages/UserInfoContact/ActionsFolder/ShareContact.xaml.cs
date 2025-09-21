@@ -90,7 +90,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private async void AddContactIfOffline(User user, User toAdd)
         {
             //Add conatct in system
-            UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.Login, toAdd.BirthDay,
+            UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.Surname, toAdd.Login, toAdd.BirthDay,
                 toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null, true);
 
             contact.ContactUserId = toAdd.Id;

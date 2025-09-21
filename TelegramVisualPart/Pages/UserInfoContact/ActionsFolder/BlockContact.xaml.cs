@@ -23,9 +23,9 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
     public partial class BlockContact : Page
     {
         private TelSystem _system;
-        private UserContactcs _contact;
+        private User _contact;
 
-        public BlockContact(TelSystem system, UserContactcs contact)
+        public BlockContact(TelSystem system, User contact)
         {
             _system = system;
             _contact = contact;

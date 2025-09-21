@@ -55,10 +55,11 @@
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
 
                 <Grid Grid.Column="2" Margin="0 0 15 0" Name ="ClearSearchBoxGrid"
+                      Background="Transparent"
                       MouseEnter="ClearSearchBoxGrid_MouseEnter"
                       MouseLeave="ClearSearchBoxGrid_MouseLeave"
                       PreviewMouseDown="ClearSearchBoxGrid_PreviewMouseDown">
-                    <materialDesign:PackIcon Kind="Close" Width="35" Height="35" Foreground="Gray"
+                    <materialDesign:PackIcon Kind="Close" Width="30" Height="30" Foreground="Gray"
                                              VerticalAlignment="Center" HorizontalAlignment="Center"
                                              x:Name="ClearSearchBoxBut"/>
                 </Grid>
@@ -93,7 +94,7 @@
 
                 <ListBoxItem  HorizontalAlignment="Stretch" Background="{StaticResource DarkThemeDeviderField}">
                     <TextBlock Text="Chats" VerticalAlignment="Center" Padding="20 0 0 0" 
-                               Foreground="Gray" FontSize="16"/>
+                               Foreground="Gray" FontSize="16" Name="ChatsTextBlock"/>
                 </ListBoxItem>
 
 

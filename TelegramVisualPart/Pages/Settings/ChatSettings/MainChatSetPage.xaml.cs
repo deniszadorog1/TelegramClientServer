@@ -54,6 +54,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             InitializeComponent();
 
             SetBasicBlocks();
+
+            SetLanguageText.SetChatSetPage(this);
         }
 
         private void SetBasicBlocks()
@@ -421,11 +423,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         public void SetButsParams()
         {
             AutoNightBut.IconTest.Kind = PackIconKind.ShieldMoonOutline;
-            AutoNightBut.ButName.Text = "Auto-night mode";
+            //AutoNightBut.ButName.Text = "Auto-night mode";
             AutoNightBut.PreviewMouseDown += AutoNight_PreviewMouseDown;
 
             FontFamalyBut.IconTest.Kind = PackIconKind.FormatFont;
-            FontFamalyBut.ButName.Text = "Font family";
+            //FontFamalyBut.ButName.Text = "Font family";
             FontFamalyBut.PreviewMouseDown += FontFamily_PreviewMouseDown;
         }
 
@@ -472,16 +474,16 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         private void SetColorCards()
         {
             Classic.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardClassic"];
-            Classic.CardName.Text = "Classic";
+            //Classic.CardName.Text = "Classic";
 
             Day.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardDay"];
-            Day.CardName.Text = "Day";
+            //Day.CardName.Text = "Day";
 
             Tinted.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardTinted"];
-            Tinted.CardName.Text = "Tinted";
+            //Tinted.CardName.Text = "Tinted";
 
             Night.CardBg.Background = (SolidColorBrush)Application.Current.Resources["ColorCardNight"];
-            Night.CardName.Text = "Night";
+            //Night.CardName.Text = "Night";
         }
 
         private const int _iconSize = 30;

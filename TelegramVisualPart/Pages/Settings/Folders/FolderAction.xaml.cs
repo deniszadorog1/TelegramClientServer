@@ -23,8 +23,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         private TelSystem _system;
         private Folder _folder;
 
-        private List<UserContactcs> _toExcludeContacts = new List<UserContactcs>();
-        private List<UserContactcs> _toAddContacts = new List<UserContactcs>();
+        private List<User> _toExcludeContacts = new List<User>();
+        private List<User> _toAddContacts = new List<User>();
 
         public FolderAction(TelSystem system)
         {
@@ -34,6 +34,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             SetBlocks();
 
             FolderIcon.NewIconChosenEvent += NewIcon_Event;
+
+            SetLanguageText.SetFolderAction(this);
         }
 
         public FolderAction(TelSystem system, Folder folder)
@@ -49,6 +51,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             SetChosenFolderParams();
 
             SetUpdateBlocks();
+            SetLanguageText.SetFolderAction(this);
         }
 
         public void SetUpdateBlocks()
@@ -68,7 +71,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             _toExcludeContacts = _folder.ExcludedContacts;
             SetContactsInListBox(_toExcludeContacts, ToExcludeListBox);
 
-            CreateBut.Content = "Save";
+            //CreateBut.Content = "Save";
         }
 
         public void NewIcon_Event(object sender, EventArgs e)
@@ -82,8 +85,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void SetBlocks()
         {
-            CreateNewFolderBut.NewFolderText.Text = "Add chat";
-            ChatToExcludeBut.NewFolderText.Text = "Add Chats to Exclude";
+            //CreateNewFolderBut.NewFolderText.Text = "Add chat";
+            //ChatToExcludeBut.NewFolderText.Text = "Add Chats to Exclude";
 
             //CreateInviteLinkBut.NewFolderText.Text = "Create an Invite Link";
             //CreateInviteLinkBut.IconType.Kind = PackIconKind.LinkVariant;
@@ -208,7 +211,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             SetContactsInListBox(_toExcludeContacts, ToExcludeListBox);
         }
 
-        public void ClearAlreadyChosenItems(List<UserContactcs> chosenContacts)
+        public void ClearAlreadyChosenItems(List<User> chosenContacts)
         {
             List<ListBoxItem> itemsToRemove = MainListBox.Items
                 .OfType<ListBoxItem>()
@@ -222,7 +225,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             }
         }
 
-        public void ClearAlreadyChosenContacts(List<UserContactcs> chosen, List<UserContactcs> toClear)
+        public void ClearAlreadyChosenContacts(List<User> chosen, List<User> toClear)
         {
             toClear.RemoveAll(contact => chosen.Any(x => x.Name == contact.Name));
 
@@ -237,7 +240,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                         }*/
         }
 
-        public void SetContactsInListBox(List<UserContactcs> contacts, ListBoxItem addFolder)
+        public void SetContactsInListBox(List<User> contacts, ListBoxItem addFolder)
         {
             int butIndex = MainListBox.Items.IndexOf(addFolder);
             UpdateFolderChats(butIndex);
@@ -280,7 +283,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             MainListBox.Items.Remove(item);
         }
 
-        public void RemoveUserContact(List<UserContactcs> contacts, string contactName)
+        public void RemoveUserContact(List<User> contacts, string contactName)
         {
             contacts.Remove(contacts.Where(x => x.Name == contactName).FirstOrDefault());
         }

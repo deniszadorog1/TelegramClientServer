@@ -24,7 +24,7 @@
                                  Width="35" Height="35"
                                  Name="IconType"/>
         <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
-                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16"
                    Foreground="{StaticResource TempActiveTextColor}" Margin="5 0 0 0"/>
         
     </Grid>

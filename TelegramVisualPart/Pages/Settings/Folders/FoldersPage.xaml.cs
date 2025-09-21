@@ -41,6 +41,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             SetTestObject();
             SetBackButVisibility();
+
+            SetLanguageText.SetFoldersPage(this);
         }
 
         public void SetBackButVisibility()
@@ -55,8 +57,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void SetTestObject()
         {
-            TestThing.FolderName.Text = "Folder Name";
-            TestThing.AmountOfChats.Text = "Amount of Users";
+            //TestThing.FolderName.Text = "Folder Name";
+            //TestThing.AmountOfChats.Text = "Amount of Users";
             TestThing.BucketIcon.Visibility = Visibility.Hidden;
         }
 

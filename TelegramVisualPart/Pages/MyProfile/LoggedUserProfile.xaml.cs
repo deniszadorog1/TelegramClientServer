@@ -34,7 +34,7 @@ namespace TelegramVisualPart.Pages
             CloseBut.IconType.Kind = PackIconKind.Close;
             SettingsBut.IconType.Kind = PackIconKind.LeadPencil;
 
-            UserLoginBlock.Text = _user.Login;
+            UserLoginBlock.Text = _user.Name;
 
             SetOnlineStatus();
             //LastSeenOnline.Text = _user.LastSeenOnline.ToString();
@@ -42,9 +42,36 @@ namespace TelegramVisualPart.Pages
        
             PhoneNumberBlock.Text = _user.PhoneNumber;
             UserNameBlock.Text = _user.Login;
+            BioBlock.Text = _user.BIO;
+            if(_user.BirthDay is not null)BirthdayBlock.Text = $"{_user.BirthDay.Value.Day}.{_user.BirthDay.Value.Month}.{_user.BirthDay.Value.Year}";
+
 
             UserImage.ImageSource = 
                 new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            
+            BlocksSize();
+        }
+
+        public void BlocksSize()
+        {
+            SetRowHeight(BioColumn, BioBlock, BioRowIcon);
+            SetRowHeight(BirthDayColumn, BirthdayBlock, BirthRowIcon);
+        }
+
+        public void SetRowHeight(RowDefinition row, TextBlock block, RowDefinition iconRow)
+        {
+            if (block.Text == string.Empty)
+            {
+                row.Height = new GridLength(0);
+                iconRow.Height = new GridLength(0);
+                BlockColumn.Height = new GridLength(BlockColumn.Height.Value);
+            }
+            else
+            {
+                row.Height = new GridLength(1, GridUnitType.Star);
+                iconRow.Height = new GridLength(1, GridUnitType.Star);
+                BlockColumn.Height = new GridLength(BlockColumn.Height.Value + 40);
+            }
         }
 
         private void SetOnlineStatus()

@@ -87,9 +87,12 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Name="Username" Text="There gona be username"
+                            <TextBlock Grid.Row="0" Name="Username" 
                                        VerticalAlignment="Center" FontSize="18"
-                                       Foreground="{StaticResource UsualTextColor}"/>
+                                       Foreground="{StaticResource UsualTextColor}">
+                                <Run Name="ContName" Text="Name"/>
+                                <Run Name="ContSurname" Text="Surnmae"/>
+                            </TextBlock>
 
 
                             <TextBlock Grid.Row="1" Name="LastSeenOnline" 
@@ -156,7 +159,9 @@
                                        FontSize="16" Name="SendMesBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource TempActiveTextColor}"
-                                       FontWeight="SemiBold" MouseEnter="But_MouseEnter" />
+                                       FontWeight="SemiBold" MouseEnter="But_MouseEnter"
+                                       MouseLeave="But_MouseLeave"
+                                       PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
                         </Grid>
                     </Grid>
 
@@ -183,62 +188,44 @@
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                               PreviewMouseDown="Line_PreviewMouseDown"/>
                         <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" Name="FilesLine"
-                              MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                              PreviewMouseDown="Line_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="3" Background="Transparent" Name="LinksLine"
-                              MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                              PreviewMouseDown="Line_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="4" Background="Transparent" Name="GIFsLine"
-                              MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
+                              MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="Line_PreviewMouseDown"/>
 
                         <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="ImageIcon"
-                                                 Foreground="{StaticResource UsualTextColor}"/>
+                                                 MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"
+                                                 MouseLeave="But_MouseLeave" Foreground="{StaticResource UsualTextColor}"/>
 
                         <materialDesign:PackIcon Kind="VideoOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="VideoIcon"
-                                                 Foreground="{StaticResource UsualTextColor}"/>
+                                                 Foreground="{StaticResource UsualTextColor}"
+                                                 MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <!--  <materialDesign:PackIcon Kind="FileOutline" Grid.Row="2" Grid.Column="0"
-                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="FileIcon"/>
-
-                        <materialDesign:PackIcon Kind="Link" Grid.Row="3" Grid.Column="0"
-                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="White" Name="LinkIcon"/>
--->
                         <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="4" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="GifIcon"
+                                                 MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"
                                                  Foreground="{StaticResource UsualTextColor}"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="0" 
                                    Name="AmountOfPhotosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
+                                   Foreground="{StaticResource UsualTextColor}"
+                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="1" 
                                    Name="AmountOfVideosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
-
-                        <!--   <TextBlock Grid.Column="1" Grid.Row="2" Text="Amount of fiels" 
-                                   Name="AmountOfFilesTextBlock" FontSize="16" 
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="White" MouseEnter="But_MouseEnter"/>
-                       
-                        <TextBlock Grid.Column="1" Grid.Row="3" Text="Amount of shared links" 
-                                   Name="AmountOfLinksTextBlock" FontSize="16"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="White" MouseEnter="But_MouseEnter"/> -->
+                                   Foreground="{StaticResource UsualTextColor}" 
+                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="4"
                                    Name="AmountOfGifsTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter"/>
+                                   Foreground="{StaticResource UsualTextColor}" 
+                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
                     </Grid>
                     <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"/>
 
@@ -271,34 +258,51 @@
 
                         <materialDesign:PackIcon Kind="ShareOutline" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="SendIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="SendIcon"
+                                                 MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
+                        
                         <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="PenIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="PenIcon"
+                                                 MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
+                                                 PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
+                        
                         <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name ="CanIcon"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name ="CanIcon"
+                                                 MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
+                                                 PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
+                        
                         <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                 Height="30" Width="30" Foreground="{StaticResource ToBlockContact}"/>
+                                                 Height="30" Width="30" Foreground="{StaticResource ToBlockContact}"
+                                                 MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
+                                                 PreviewMouseDown="BlockLine_PreviewMouseDown"/>
 
                         <TextBlock Grid.Column="1" Grid.Row="0" 
                                        FontSize="16" Name="ShareContactBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
+                                       Foreground="{StaticResource UsualTextColor}" 
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
+                        
                         <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16"
-                                   Name="EditContactBlock"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
+                                      Name="EditContactBlock"
+                                      VerticalAlignment="Center" HorizontalAlignment="Left"
+                                      Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
+                                      MouseLeave="But_MouseLeave" PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
+                        
                         <TextBlock Grid.Column="1" Grid.Row="2" FontSize="16"
                                    Name="DeleteContactBlock"                                       
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" />
+                                   Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
+                                   MouseLeave="But_MouseLeave" PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
+                        
                         <TextBlock Grid.Column="1" Grid.Row="3" FontSize="16"
                                    Name="BlockContactBlock"                                                                          
                                    FontWeight="SemiBold" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Left"
-                                       Foreground="{StaticResource ToBlockContact}" MouseEnter="But_MouseEnter" />
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="{StaticResource ToBlockContact}" MouseEnter="But_MouseEnter" 
+                                   MouseLeave="But_MouseLeave" PreviewMouseDown="BlockLine_PreviewMouseDown"/>
                     </Grid>
 
                 </Grid>

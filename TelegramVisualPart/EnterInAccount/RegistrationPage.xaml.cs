@@ -51,12 +51,16 @@ namespace TelegramVisualPart.EnterInAccount
             //if params are exist
             //login, password, phone number
 
+            bool isExist = await ApiService.IsUserRegistrationParamsAreExist(LoginBox.Text, PhoneBox.Text);
+
             //is somthing is emty
             if (string.IsNullOrWhiteSpace(LoginBox.Text) ||
                string.IsNullOrWhiteSpace(PasswordBox.Text) ||
                string.IsNullOrWhiteSpace(PhoneBox.Text) ||
-               PhoneBox.Text.Where( x => char.IsLetter(x)).Any() || //problems with boxes
-               await ApiService.IsUserRegistrationParamsAreExist(LoginBox.Text, PhoneBox.Text)) //params are exist
+               string.IsNullOrWhiteSpace(NameBox.Text) ||
+               string.IsNullOrWhiteSpace(SurnameBox.Text) ||
+               PhoneBox.Text.Where(x => char.IsLetter(x)).Any() || //problems with boxes
+               isExist) //params are exist
             {
                 MessageBox.Show("Cant be add!");
                 ClearBoxes();
@@ -69,7 +73,7 @@ namespace TelegramVisualPart.EnterInAccount
         {
             User user = new User();
 
-            await ApiService.AddNewUser(LoginBox.Text, PasswordBox.Text, null, null, PhoneBox.Text, null);
+            await ApiService.AddNewUser(LoginBox.Text, PasswordBox.Text, NameBox.Text, SurnameBox.Text, PhoneBox.Text, null);
 
             user = await ApiService.GetUser(LoginBox.Text, PasswordBox.Text);
 
@@ -87,6 +91,8 @@ namespace TelegramVisualPart.EnterInAccount
             LoginBox.Text = string.Empty;
             PasswordBox.Text = string.Empty;
             PhoneBox.Text = string.Empty;
+            NameBox.Text = string.Empty;
+            SurnameBox.Text = string.Empty;
         }
 
     }

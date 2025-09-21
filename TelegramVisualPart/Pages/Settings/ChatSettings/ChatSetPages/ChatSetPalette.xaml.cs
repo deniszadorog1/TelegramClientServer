@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.PaletteControls;
 
 
@@ -38,6 +39,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ColorPickerLine.SpecialConditionTriggered += MyUserControl_SpecialConditionTriggered;
 
             Hex.Number.Padding = new Thickness(20, 0, 0, 0);
+
+            SetLanguageText.SetChatSetPalette(this);
         }
 
         private void MyUserControl_SpecialConditionTriggered(object sender, EventArgs e)

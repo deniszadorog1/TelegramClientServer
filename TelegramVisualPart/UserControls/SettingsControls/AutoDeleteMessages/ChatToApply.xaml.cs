@@ -26,7 +26,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
     public partial class ChatToApply : UserControl
     {
         private UserContactcs _contact;
-
+        private TelegramLib.MainClasses.User _user;
         public ChatToApply()
         {
             InitializeComponent();
@@ -37,6 +37,16 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
         public ChatToApply(UserContactcs contact)
         {
             _contact = contact;
+            InitializeComponent();
+
+            SetAutoDeleteParams();
+
+            SetActions();
+        }
+
+        public ChatToApply(TelegramLib.MainClasses.User user)
+        {
+            _user = user;
             InitializeComponent();
 
             SetAutoDeleteParams();
@@ -56,8 +66,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
 
         public async Task SetActivePhotoImage()
         {
+            int userId = _contact is null ? _user.Id : _contact.Id;
+
             TelegramLib.MainClasses.User user = 
-                await ApiService.GetUserById(_contact.ContactUserId);
+                await ApiService.GetUserById(userId);
             if (user is null) return;
 
             await SignalRHelperService.SetPhotoInEllipse(user,
@@ -68,16 +80,21 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
         {
             Dispatcher.Invoke(async () =>
             {
-                if (_contact is null || user is null ||
-                _contact.ContactUserId!= user.Id) return;
+                int id = GetUserId();
+                if ( user is null || id != user.Id) return;
                 await SignalRHelperService.SetPhotoInEllipse(user,
                     UserImageBrush, UserImageEllipse);
             });
         }
 
+        public int GetUserId()
+        {
+            return _contact is null ? _user.Id : _contact.Id;
+        }
+
         public async Task SetBasicLastSeenState()
         {
-            await SetLastSeenText(await ApiService.GetUserById(_contact.ContactUserId));
+            await SetLastSeenText(await ApiService.GetUserById(GetUserId()));
         }
 
         public void SetLastVisState(TelegramLib.MainClasses.User user)
@@ -90,7 +107,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
 
         public async Task SetLastSeenText(TelegramLib.MainClasses.User user)
         {
-            if (user is null || _contact.ContactUserId != user.Id) return;
+            int id = GetUserId();
+            if (user is null || id != user.Id) return;
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
 
             await SignalRHelperService.SetLastSeenStatus(user, shareType, AutoDeletionType);
@@ -99,7 +117,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
 
         private void SetAutoDeleteParams()
         {
-            UserImageBrush.ImageSource = new BitmapImage(new Uri(
+/*            UserImageBrush.ImageSource = new BitmapImage(new Uri(
                     FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
             TypeName.Text = _contact.Name;
 
@@ -115,7 +133,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
             AutoDeletionType.Foreground = (_contact.AutoDeletion is null ||
                 _contact.AutoDeletion.Type == TelegramLib.Enums.Chat.AutoDeleteType.Nothing) ?
                 new SolidColorBrush(Colors.Gray) :
-                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];*/
         }
 
         public void SetParams(string imgName, string upperText, string bottomText)

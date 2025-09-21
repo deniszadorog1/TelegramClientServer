@@ -85,15 +85,16 @@
 
                 <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
                     <TextBlock Margin="0 0 0 0" HorizontalAlignment="Stretch" TextWrapping="Wrap"
-                                   Text="Choose chats or types of chats that will appear in this folder."
-                                   Foreground="Gray" FontSize="16" Padding="20 5 20 5"/>
+                               Text="Choose chats or types of chats that will appear in this folder."
+                               Name="InfoText"
+                               Foreground="Gray" FontSize="16" Padding="20 5 20 5"/>
                 </ListBoxItem>
 
                 <ListBoxItem>
                     <TextBlock Name ="ExcludedChatsBlock" Text="Excluded chats" TextWrapping="Wrap"
-                           Foreground="{StaticResource TempActiveTextColor}"
+                               Foreground="{StaticResource TempActiveTextColor}"
                                FontWeight="SemiBold"
-                           VerticalAlignment="Center" FontSize="17" Margin="20 5 0 5"/>
+                               VerticalAlignment="Center" FontSize="17" Margin="20 5 0 5"/>
                 </ListBoxItem>
 
                 <ListBoxItem Padding="0 0 0 3" PreviewMouseDown="ChatToExcludeBut_PreviewMouseDown"
@@ -105,8 +106,9 @@
 
                 <ListBoxItem Background="{StaticResource DarkThemeDeviderField}" >
                     <TextBlock Padding = "20 5 20 5"   HorizontalAlignment="Stretch" TextWrapping="Wrap"
-                                Text="Choose chats or types of chats that will NOT appear in this folder."
-                                Foreground="Gray" FontSize="16" />
+                               Text="Choose chats or types of chats that will NOT appear in this folder."
+                               Foreground="Gray" FontSize="16" 
+                               Name="SecondInfoText" />
                 </ListBoxItem>
 
                <!-- <ListBoxItem>

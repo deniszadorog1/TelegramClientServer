@@ -11,12 +11,12 @@ namespace TelegramLib.MainClasses.FolderObjs
         public int Id { get; set; }
         public string Name { get; set; }
         public string IconName { get; set; }
-        public List<UserContactcs> Contacts { get; set; }
-        public List<UserContactcs> ExcludedContacts { get; set; }
+        public List<User> Contacts { get; set; }
+        public List<User> ExcludedContacts { get; set; }
 
         public Folder(int id, string name, string iconName,
-            List<UserContactcs> contacts,
-            List<UserContactcs> excludedContacts)
+            List<User> contacts,
+            List<User> excludedContacts)
         {
             Id = id;
             Name = name;
@@ -30,8 +30,8 @@ namespace TelegramLib.MainClasses.FolderObjs
             Id = -1;
             Name = string.Empty;
             IconName = string.Empty;
-            Contacts = new List<UserContactcs>();
-            ExcludedContacts = new List<UserContactcs>();
+            Contacts = new List<User>();
+            ExcludedContacts = new List<User>();
         }
 
         public void SetName(string name)
@@ -45,13 +45,13 @@ namespace TelegramLib.MainClasses.FolderObjs
             IconName = name;
         }
 
-        public void AddContact(UserContactcs contact)
+        public void AddContact(User contact)
         {
             if (!(Contacts.FirstOrDefault(x => x.Id == contact.Id) is null)) return; 
             Contacts.Add(contact);
         }
 
-        public void AddExcludedContacts(UserContactcs contact)
+        public void AddExcludedContacts(User contact)
         {
             ExcludedContacts.Add(contact);
         }
@@ -63,18 +63,18 @@ namespace TelegramLib.MainClasses.FolderObjs
 
         public void RemoveContactById(int contactId)
         {
-            UserContactcs toRemove =  Contacts.FirstOrDefault(x => x.Id == contactId);
+            User toRemove =  Contacts.FirstOrDefault(x => x.Id == contactId);
             if (toRemove is null) return;
 
             Contacts.Remove(toRemove);
         }
 
-        public void SetContacts(List<UserContactcs> contacts)
+        public void SetContacts(List<User> contacts)
         {
             Contacts = contacts;
         }
 
-        public void SetExcludeContacts(List<UserContactcs> contacts)
+        public void SetExcludeContacts(List<User> contacts)
         {
             ExcludedContacts = contacts;
         }

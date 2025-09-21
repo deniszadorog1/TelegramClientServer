@@ -331,9 +331,9 @@ namespace TelegramVisualPart.Services
             var response = await _client.SendAsync(request);
         }
 
-        public static async Task RemoveContact(UserContactcs contact)
+        public static async Task RemoveContact(UserContactcs contact, TelegramLib.MainClasses.User loggedUser)
         {
-            var data = new { Contact = contact };
+            var data = new { Contact = contact, LoggedUser = loggedUser };
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -578,6 +578,16 @@ namespace TelegramVisualPart.Services
 
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+        }
+
+        public static async Task<bool> IsChatExist(int userId, int contactId)
+        {
+            var response = await _client.GetAsync($"api/Social/IsChatExist?userId={userId}&contactId={contactId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
+
+            return JsonConvert.DeserializeObject<bool>(jsonResponse);
         }
 
         public static async Task<UserContactcs> GetContactByUserAndFriendIds(int userId, int friendId)

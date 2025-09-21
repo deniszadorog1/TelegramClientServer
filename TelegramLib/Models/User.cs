@@ -13,9 +13,13 @@ namespace TelegramLib.Models
         public User()
         {
             BlockedContacts = new HashSet<BlockedContacts>();
+            BlockedContacts1 = new HashSet<BlockedContacts>();
             Chat = new HashSet<Chat>();
+            Chat1 = new HashSet<Chat>();
+            ChosenPrivacyContacts = new HashSet<ChosenPrivacyContacts>();
             Contacts = new HashSet<Contacts>();
             Contacts1 = new HashSet<Contacts>();
+            ContactsInFolder = new HashSet<ContactsInFolder>();
             Folder = new HashSet<Folder>();
             Messages = new HashSet<Messages>();
             MonitorNotifs = new HashSet<MonitorNotifs>();
@@ -58,13 +62,25 @@ namespace TelegramLib.Models
         public virtual ICollection<BlockedContacts> BlockedContacts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BlockedContacts> BlockedContacts1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Chat> Chat1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChosenPrivacyContacts> ChosenPrivacyContacts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contacts> Contacts { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contacts> Contacts1 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactsInFolder> ContactsInFolder { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Folder> Folder { get; set; }

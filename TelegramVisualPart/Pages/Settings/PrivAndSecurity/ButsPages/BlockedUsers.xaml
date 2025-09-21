@@ -19,7 +19,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="70"/>
+                <RowDefinition Height="90"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -34,7 +34,7 @@
                 <iconBut:IconButton x:Name="BackBut" 
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right" 
-                                    Width="30" Height="30" Margin="10"
+                                    Width="30" Height="30" Margin="0 0 20 0"
                                     PreviewMouseDown="BackBut_PreviewMouseDown"/>
                 
                 <TextBlock Grid.Column="1" Text="Blocked users"
@@ -44,25 +44,24 @@
                 <iconBut:IconButton x:Name="CloseBut" Grid.Column="2" 
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Width="30" Height="30" Margin="10"
+                                    Width="30" Height="30" Margin="10 0 15 0"
                                     PreviewMouseDown="CloseBut_PreviewMouseDown"/>
             </Grid>
 
             <Grid Grid.Row="1">
-                <buts:IconTextBut x:Name="ToBlockBut"  
+                <buts:IconTextBut x:Name="ToBlockBut" Padding="10 0 0 0"  
                                   PreviewMouseDown="ToBlockBut_PreviewMouseDown"
                                   HorizontalAlignment="Stretch"/>
             </Grid>
 
             <Grid Grid.Row="2" Background="{StaticResource DarkThemeDeviderField}">
-                <TextBlock TextWrapping="Wrap" Margin="5" Foreground="Gray"
-                           FontSize="14"
-                           Text="Blocked users can`t send you messages ar add you to groups. 
-                           They will not see your profile photos, stories, online and lat seen status."/>
+                <TextBlock TextWrapping="Wrap" Margin="20 10 15 0" Foreground="Gray"
+                           FontSize="16" 
+                           Text="Blocked users can`t send you messages ar add you to groups.They will not see your profile photos, stories, online and lat seen status."/>
             </Grid>
 
-            <Grid Grid.Row="3" Background="{StaticResource DarkThemeProfileButEnter}">
-                <TextBlock Margin="10 0 0 5" VerticalAlignment="Bottom" FontSize="14"
+            <Grid Grid.Row="3" >
+                <TextBlock Margin="25 0 0 0" VerticalAlignment="Center" FontSize="16"
                            Foreground="{StaticResource TempActiveTextColor}"
                            FontWeight="DemiBold">
                     <Run Text="AMOUNT" Name="AmountNum"/>
@@ -70,7 +69,7 @@
                 </TextBlock>
             </Grid>
 
-            <ListBox Grid.Row="4" Name="BlockedUsersPanel">
+            <ListBox Grid.Row="4" Name="BlockedUsersPanel" Padding="10 0 10 0">
                 <ListBoxItem 
                     HorizontalContentAlignment="Stretch">
                     <UnbanControl:ToUnblockUser/>

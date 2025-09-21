@@ -17,7 +17,7 @@
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="10"/>
-                <RowDefinition Height="140"/>
+                <RowDefinition Name="BlockColumn" Height="140"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -89,6 +89,8 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition Name="BioRowIcon"/>
+                        <RowDefinition Name="BirthRowIcon"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
@@ -101,15 +103,17 @@
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="65"/>
                         <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Name="BioColumn"/>
+                        <RowDefinition Name="BirthDayColumn"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
                         <TextBlock Name="PhoneNumberBlock"
                                    Text="Threre is gona be phone number"
                                    Foreground="{StaticResource UsualTextColor}" FontSize="16"/>
-                        <TextBlock Name="phNumberText"
+                        <TextBlock Name="phNumberText" 
                                    Text="Mobile" FontSize="16"
                                    Foreground="Gray"/>
                     </StackPanel>
@@ -124,10 +128,44 @@
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
 
                         <TextBlock Name="LoginText" 
-                                   FontSize="16"
+                                   FontSize="16" 
                                    Text="Username" VerticalAlignment="Center"
                                    Foreground="Gray"/>
                     </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Vertical"
+                                Name="BioPanel">
+                        <TextBlock Name="BioBlock"          
+                                   Text="Threre is gonna be user logindd"
+                                   FontSize="16" 
+                                   Foreground="{StaticResource TempActiveTextColor}"
+                                   MouseEnter="UserNameBlock_MouseEnter"
+                                   MouseLeave="UserNameBlock_MouseLeave"
+                                   PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
+
+                        <TextBlock Name="BioText" 
+                                   FontSize="16" 
+                                   Text="Bio" VerticalAlignment="Center"
+                                   Foreground="Gray"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Orientation="Vertical"
+                                Name="BirthdayPanel">
+                        <TextBlock Name="BirthdayBlock"          
+                                   Text=""
+                                   FontSize="16"
+                                   Foreground="{StaticResource TempActiveTextColor}"
+                                   MouseEnter="UserNameBlock_MouseEnter"
+                                   MouseLeave="UserNameBlock_MouseLeave"
+                                   PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
+
+                        <TextBlock Name="BirthdayText" 
+                                   FontSize="16"
+                                   Text="Bio" VerticalAlignment="Center"
+                                   Foreground="Gray"/>
+                    </StackPanel>
+
+
                 </Grid>
             </Grid>
 

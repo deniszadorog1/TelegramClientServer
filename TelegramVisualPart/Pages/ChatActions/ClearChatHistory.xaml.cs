@@ -42,7 +42,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         public async Task SetBasicParams()
         {
             TelegramLib.MainClasses.User user =
-                await ApiService.GetUserById(_chat.Chatter.ContactUserId);
+                await ApiService.GetUserById(_chat.Chatter.Id);
             UsernameBlock.Text = user.Login;
             UsernameCheckBoxBlock.Text = user.Login;
         }
@@ -67,8 +67,8 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         public async Task ClearForChatter()
         {
-            bool isChatterOnline = await ApiService.IsUserOnline(_chat.Chatter.ContactUserId);
-            TelegramLib.MainClasses.User chatter = await ApiService.GetUserById(_chat.Chatter.ContactUserId);
+            bool isChatterOnline = await ApiService.IsUserOnline(_chat.Chatter.Id);
+            TelegramLib.MainClasses.User chatter = await ApiService.GetUserById(_chat.Chatter.Id);
 
             if (isChatterOnline)
             {

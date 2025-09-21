@@ -22,11 +22,10 @@ namespace TelegramLib.MainClasses
         public MainSettings Settings { get; set; }
         public List<UserChat> Chats { get; set; }
         public List<UserContactcs> Contacts { get; set; }
+
         public List<Folder> Folders { get; set; }
 
         public List<UserChat> ChatInNewWindow = new List<UserChat>();
-
-       
 
         public TelSystem(User user, MainSettings settings,
             List<UserChat> chats, List<UserContactcs> contacts,
@@ -47,12 +46,12 @@ namespace TelegramLib.MainClasses
             Chats = new List<UserChat>();
             Contacts = new List<UserContactcs>();
             Folders = new List<Folder>();
-      
+
             //SetTestSystemParams();
         }
 
         public void AddFolder(string name, string iconName,
-            List<UserContactcs> contacts, List<UserContactcs> excludedContacts)
+            List<User> contacts, List<User> excludedContacts)
         {
             Folder toAdd = new Folder(Folders.Count + 1, name, iconName, contacts, excludedContacts);
             Folders.Add(toAdd);
@@ -96,10 +95,10 @@ namespace TelegramLib.MainClasses
             folder.SetName(newName);
         }
 
-        public UserContactcs ChosenChatContact;
+        public User ChosenChatContact;
         public void SetTempChatter(string login)
         {
-            ChosenChatContact = Contacts.Where(x => x.Name == login).FirstOrDefault();
+            //ChosenChatContact = Chatters.Where(x => x.Name == login).FirstOrDefault();
         }
 
         public UserChat GetChosenChat()
@@ -142,15 +141,15 @@ namespace TelegramLib.MainClasses
 
             throw new Exception("cant be chat should be set!!!");
 
-          /*  UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
-                new ChatFitures.ChatBackground("fray.jpg", false, true));
+            /*  UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
+                  new ChatFitures.ChatBackground("fray.jpg", false, true));
 
-            Chats.Add(newChat);
+              Chats.Add(newChat);
 
-            ChosenChatContact = newChat.Chatter;
-            SetChatBg();
+              ChosenChatContact = newChat.Chatter;
+              SetChatBg();
 
-            return newChat;*/
+              return newChat;*/
         }
 
         public void SetChatBg()
@@ -167,14 +166,19 @@ namespace TelegramLib.MainClasses
                 (wallpaper.WallpaperName, wallpaper.IsBlurred, true);
         }
 
-/*        public UserContactcs GetContactByName(string name)
+        /*        public UserContactcs GetContactByName(string name)
+                {
+                    return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
+                }
+        */
+        public UserContactcs GetUserById(int id)
         {
-            return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
+            return Contacts.FirstOrDefault(x => x.ContactUserId == id);/*x.IsSendersIdsAreEqual(id)*/
         }
-*/
-        public UserContactcs GetContactById(int id)
+
+        public UserContactcs GetContactByUserId(int userId)
         {
-            return Contacts.FirstOrDefault(x => x.IsSendersIdsAreEqual(id));
+            return Contacts.FirstOrDefault(x => x.ContactUserId == userId);
         }
 
         public UserContactcs GetContactByLogin(string login)
@@ -197,15 +201,18 @@ namespace TelegramLib.MainClasses
 
         public void SetTestLoggedUserParams()
         {
-            List<UserContactcs> blockedContacts = new List<UserContactcs>();
-            blockedContacts.Add(Contacts[0]);
+/*            List<User> blockedContacts = new List<User>();
 
-            LoggedUser.BlockedContacts = blockedContacts;
+
+
+            //blockedContacts.Add(Contacts[0]);
+
+            LoggedUser.BlockedContacts = blockedContacts;*/
         }
 
         public void SetTestFolders()
         {
-            Folders.Add(new Folder(1, "FirstTest", "Folder",
+/*            Folders.Add(new Folder(1, "FirstTest", "Folder",
                 new List<UserContactcs>() { Contacts[0], Contacts[1] },
                 new List<UserContactcs>()));
 
@@ -215,7 +222,7 @@ namespace TelegramLib.MainClasses
 
             Folders.Add(new Folder(1, "BellTest", "Bell",
                 new List<UserContactcs>() { Contacts[0], Contacts[2] },
-                new List<UserContactcs>()));
+                new List<UserContactcs>()));*/
         }
 
 
@@ -226,9 +233,9 @@ namespace TelegramLib.MainClasses
             imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
             imageNames.Add(new UserImage("WhiteCat.png", DateTime.Now));
 
-            Contacts.Add(new UserContactcs(1, "FirstName", "FirstUserName", DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames, null, false));
-            Contacts.Add(new UserContactcs(2, "SecondName", "SecondUserName", DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames, null, false));
-            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdUserName", DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames, null, false));
+            Contacts.Add(new UserContactcs(1, "FirstName", "FirstSurname", "FirstUserName", DateTime.Now, "FirstBIO", "FirstPhoneNumber", DateTime.Now, true, imageNames, null, false));
+            Contacts.Add(new UserContactcs(2, "SecondName", "SecondSurname", "SecondUserName", DateTime.Now, "SecondBIO", "SecondPhoneNumber", null, false, imageNames, null, false));
+            Contacts.Add(new UserContactcs(3, "ThirdName", "ThirdSurname", "ThirdUserName", DateTime.Now, "ThirdBIO", "ThirdPhoneNumber", DateTime.Now, true, imageNames, null, false));
         }
 
         public List<Message> GetTestMessages()
@@ -236,16 +243,16 @@ namespace TelegramLib.MainClasses
             return new List<Message>();
             List<Message> res = new List<Message>();
 
-/*            res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
-            res.Add(new TextMessage(2, -1, DateTime.Now, "Second"));
-            res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif", false));
-            res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false));
-            res.Add(new TextMessage(5, -1, DateTime.Now, "Three"));
-            res.Add(new MediaAction(6, -1, DateTime.Now, "Cow.jpg", false));
-            res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4", false));
-            res.Add(new TextMessage(8, -1, DateTime.Now, "Four"));
-            res.Add(new MediaAction(9, -1, DateTime.Now, "Hand.jpg", false));
-            res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));*/
+            /*            res.Add(new TextMessage(1, -1, DateTime.Now, "First"));
+                        res.Add(new TextMessage(2, -1, DateTime.Now, "Second"));
+                        res.Add(new MediaAction(3, -1, DateTime.Now, "TestGif.gif", false));
+                        res.Add(new MediaAction(4, -1, DateTime.Now, "Mine.jpg", false));
+                        res.Add(new TextMessage(5, -1, DateTime.Now, "Three"));
+                        res.Add(new MediaAction(6, -1, DateTime.Now, "Cow.jpg", false));
+                        res.Add(new MediaAction(7, -1, DateTime.Now, "TestVideo.mp4", false));
+                        res.Add(new TextMessage(8, -1, DateTime.Now, "Four"));
+                        res.Add(new MediaAction(9, -1, DateTime.Now, "Hand.jpg", false));
+                        res.Add(new MediaAction(10, -1, DateTime.Now, "TestGif.gif", false));*/
             return res;
         }
 
@@ -267,26 +274,26 @@ namespace TelegramLib.MainClasses
         public void RemoveContact(UserContactcs contact)
         {
             //Remove chat with messages where contact is
-            RemoveChatsWithContact(contact);
+            //RemoveChatsWithContact(contact);
 
             //remove from folder where contact is
-            RemoveContactFromFolderContacts(contact);
+            //RemoveContactFromFolderContacts(contact);
 
             //Remvoe empty folders
-            RemoveEmptyFolders();
+            //RemoveEmptyFolders();
 
             //Remove from blocked contacts
-            LoggedUser.RemoveBlockedContcatByContact(contact);
+            //LoggedUser.RemoveBlockedContcatByContact(contact);
 
-            Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).FirstOrDefault());
+            Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).First());
         }
 
-      
+
 
         private void RemoveEmptyFolders()
         {
             List<Folder> toRemove = new List<Folder>();
-            for(int i = 0; i < Folders.Count; i++)
+            for (int i = 0; i < Folders.Count; i++)
             {
                 if (Folders[i].Contacts.Count == 0)
                 {
@@ -294,7 +301,7 @@ namespace TelegramLib.MainClasses
                 }
             }
 
-            foreach(var remove in toRemove)
+            foreach (var remove in toRemove)
             {
                 Folders.Remove(remove);
             }
@@ -303,9 +310,9 @@ namespace TelegramLib.MainClasses
 
         private void RemoveContactFromFolderContacts(UserContactcs contact)
         {
-            for(int i = 0; i < Folders.Count; i++)
+            for (int i = 0; i < Folders.Count; i++)
             {
-                UserContactcs toRemove = Folders[i].Contacts.FirstOrDefault(x => x.Id == contact.Id);
+                User toRemove = Folders[i].Contacts.FirstOrDefault(x => x.Id == contact.Id);
                 if (!(toRemove is null)) Folders[i].Contacts.Remove(toRemove);
 
                 toRemove = Folders[i].ExcludedContacts.FirstOrDefault(x => x.Id == contact.Id);
@@ -316,8 +323,8 @@ namespace TelegramLib.MainClasses
         private void RemoveChatsWithContact(UserContactcs contact)
         {
             List<UserChat> toRemove = Chats.Where(x => x.Chatter.Id == contact.Id).ToList();
-            
-            foreach(var remove in toRemove)
+
+            foreach (var remove in toRemove)
             {
                 Chats.Remove(remove);
             }
@@ -330,7 +337,7 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChatByChatterId(int id)
         {
-            return Chats.FirstOrDefault(x => x.Chatter.ContactUserId == id);
+            return Chats.FirstOrDefault(x => x.Chatter.Id == id);
         }
 
         public UserChat GetChatById(int id)
@@ -351,13 +358,13 @@ namespace TelegramLib.MainClasses
         private List<MediaAction> GetMesagesByType(MediaType type)
         {
             List<MediaAction> res = new List<MediaAction>();
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
-                for(int j = 0; j < Chats[i].Messages.Count; j++)
+                for (int j = 0; j < Chats[i].Messages.Count; j++)
                 {
                     if (!(Chats[i].Messages[j] is MediaAction media)) continue;
                     if (type == MediaType.Image && media.IsImage()) res.Add(media);
-                    else if(type == MediaType.Video && media.IsVideo()) res.Add(media);
+                    else if (type == MediaType.Video && media.IsVideo()) res.Add(media);
                 }
             }
             return res;
@@ -378,7 +385,7 @@ namespace TelegramLib.MainClasses
             ChatInNewWindow.Remove(chat);
         }
 
-        public void AddContactToFolder(string folderName, UserContactcs contact)
+        public void AddContactToFolder(string folderName, User contact)
         {
             Folder folder = GetFolderByName(folderName);
             if (folder is null) return;
@@ -386,12 +393,21 @@ namespace TelegramLib.MainClasses
             folder.AddContact(contact);
         }
 
-        public void RemoveContactFromFolder(string folderName, UserContactcs contact)
+        public void RemoveContactFromFolder(string folderName, User contact)
         {
             Folder folder = GetFolderByName(folderName);
             if (folder is null) return;
 
             folder.RemoveContactById(contact.Id);
+        }
+
+        public UserChat GetChatByUserId(UserContactcs contact)
+        {
+            for (int i = 0; i < Chats.Count; i++)
+            {
+                if (Chats[i].Chatter.Id == contact.ContactUserId) return Chats[i];
+            }
+            return null;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace TelegramLib.MainClasses
     public class UserChat
     {
         public int Id { get; set; }
-        public UserContactcs Chatter { get; set; }
+        public User Chatter { get; set; }
         public List<Message> Messages { get; set; }
         public ChatBackground ChatBg { get; set; }
         public AutoDeleteType AutoDel { get; set; }
@@ -22,7 +22,7 @@ namespace TelegramLib.MainClasses
         public bool IsPinned { get; set; }
         public bool IsMarked { get; set; }
 
-        public UserChat(int id, UserContactcs chatter, List<Message> messages, 
+        public UserChat(int id, User chatter, List<Message> messages, 
             ChatBackground bg, AutoDeleteType type)
         {
             Id = id;
@@ -64,9 +64,15 @@ namespace TelegramLib.MainClasses
             Messages.Clear();
         }
 
-        public UserContactcs GetChatter()
+        public User GetChatter()
         {
             return Chatter;
+        }
+
+        public string GetLastSeen()
+        {
+            string lastSeen = $"{Chatter.LastSeenOnline.Day}.{Chatter.LastSeenOnline.Month}.{Chatter.LastSeenOnline.Year}";
+            return lastSeen;
         }
 
         public List<Message> GetChatMessages()
@@ -101,7 +107,7 @@ namespace TelegramLib.MainClasses
 
         public bool IsUserLoginsAreEqual(string login)
         {
-            return Chatter.UserLoginsAreEqual(login);
+            return Chatter.Login == login;
         }
 
         public List<TextMessage> GetMessagesWithGivenText(string text)

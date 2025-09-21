@@ -45,9 +45,14 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
         private async void DeleteBut_Click(object sender, RoutedEventArgs e)
         {
-            await ApiService.RemoveContact(_contact);
-            _system.RemoveContact(_contact);
+            await ApiService.RemoveContact(_contact, _system.LoggedUser);
 
+            //_system.RemoveContact(_contact);
+
+            //update window after contact remove 
+            ((MainWindow)Window.GetWindow(this)).UpdateDeletedUser(_contact);
+
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

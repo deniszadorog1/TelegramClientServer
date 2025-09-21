@@ -38,7 +38,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            SpecialList.SetAutoDeletionValue(_chat.GetChatter().AutoDeletion);     
+            //SpecialList.SetAutoDeletionValue(_chat.GetChatter().AutoDeletion);     
         }
 
         public static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
@@ -95,7 +95,10 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             AutoDeleteType type = SpecialList.GetChosenAutoDelItem();
-            _chat.GetChatter().AutoDeletion = new AutoDeleteDuration(type);
+
+            UserContactcs contact = _system.GetContactByUserId(_chat.GetChatter().Id);
+            if(contact is not null) contact.AutoDeletion = new AutoDeleteDuration(type);
+
             _chat.AutoDel = type;
 
             //Set Auto Del in DB

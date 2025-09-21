@@ -12,8 +12,8 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
     {
         public AllOrNone WhoCanSearch { get; set; }
 
-        public PhoneNumberSub(ShareWith type, List<UserContactcs> shareWithExps,
-            List<UserContactcs> neverShareExps, AllOrNone whoSearch) : 
+        public PhoneNumberSub(ShareWith type, List<User> shareWithExps,
+            List<User> neverShareExps, AllOrNone whoSearch) : 
             base(type, shareWithExps, neverShareExps)
         {
             WhoCanSearch = whoSearch;

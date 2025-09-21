@@ -10,8 +10,8 @@ namespace TelegramLib.MainClasses.Messages
     {
         public string Text { get; set; }
 
-        public TextMessage(int id, int senderId, int senderUserId, DateTime sentTime, string text) :
-            base(id, senderId, senderUserId, sentTime)
+        public TextMessage(int id, int senderUserId, DateTime sentTime, string text) :
+            base(id, senderUserId, sentTime)
         {
             Text = text;
         }

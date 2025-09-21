@@ -81,26 +81,6 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.ChatImage)
                 .HasForeignKey(e => e.ImageId);
 
-            modelBuilder.Entity<Contacts>()
-                .HasMany(e => e.BlockedContacts)
-                .WithOptional(e => e.Contacts)
-                .HasForeignKey(e => e.BlockedContactId);
-
-            modelBuilder.Entity<Contacts>()
-                .HasMany(e => e.Chat)
-                .WithOptional(e => e.Contacts)
-                .HasForeignKey(e => e.ChatterId);
-
-            modelBuilder.Entity<Contacts>()
-                .HasMany(e => e.ChosenPrivacyContacts)
-                .WithOptional(e => e.Contacts)
-                .HasForeignKey(e => e.ContactId);
-
-            modelBuilder.Entity<Contacts>()
-                .HasMany(e => e.ContactsInFolder)
-                .WithOptional(e => e.Contacts)
-                .HasForeignKey(e => e.ContactId);
-
             modelBuilder.Entity<DateOfBirthSettings>()
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.DateOfBirthSettings)
@@ -197,6 +177,31 @@ namespace TelegramLib.Models
                 .HasForeignKey(e => e.ColorId);
 
             modelBuilder.Entity<User>()
+                .HasMany(e => e.BlockedContacts)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.BlockedContactId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.BlockedContacts1)
+                .WithOptional(e => e.User1)
+                .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Chat)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.ChatterId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Chat1)
+                .WithOptional(e => e.User1)
+                .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.ChosenPrivacyContacts)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.ContactId);
+
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.Contacts)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.FriendId);
@@ -205,6 +210,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.Contacts1)
                 .WithOptional(e => e.User1)
                 .HasForeignKey(e => e.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.ContactsInFolder)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.ContactId);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Folder)

@@ -133,11 +133,12 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("RemoveContact")]
         public void RemoveContact([FromBody] RemoveContactDTO contact)
         {
-            DbService.RemoveContact(contact.Contact);
+            DbService.RemoveContact(contact.Contact, contact.LoggedUser);
         }
         public class RemoveContactDTO()
         {
             public UserContactcs Contact { get; set; }
+            public TelegramLib.MainClasses.User LoggedUser { get; set; }
         }
 
 
@@ -215,6 +216,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
+        [HttpGet("IsChatExist")]
+        public bool IsChatExist(int userId, int contactId)
+        {
+            return DbService.IsChatIsExist(userId, contactId);
+        }
+
         [HttpGet("ContactBySenderAndReceiverIds")]
         public UserContactcs GetContactBySenderAndReceiverIds(int senderId, int receiverId)
         {
@@ -272,7 +279,7 @@ namespace TelegramClientServer.Controllers
             public UserContactcs? ToCheck { get; set; }
         }
 
-        [HttpPost ("AddUserImage")]
+        [HttpPost("AddUserImage")]
         public void AddUserImage([FromBody] ToAddUserImage toAddUserImage)
         {
             DbService.AddUserImage(toAddUserImage.User, toAddUserImage.UserImageName);
