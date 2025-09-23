@@ -863,12 +863,16 @@ namespace TelegramVisualPart
 
         public void UpdateContactParams(UserContactcs contact)
         {
+            if (_bossWindow is not null)
+            {
+                _bossWindow.UpdateContactParams(contact);
+            }
             if (MainFrame.Content is not MainChatPage page) return;
 
             page.UpdateContact(contact);
-          
+
             //Checked in open page
-            if(SecondaryFrame.Content is UserInfo info)
+            if (SecondaryFrame.Content is UserInfo info)
             {
                 info.UpdateContact(contact);
             }
@@ -877,9 +881,58 @@ namespace TelegramVisualPart
 
         public void UpdateDeletedUser(UserContactcs contact)
         {
-            if (MainFrame.Content is not MainChatPage page) return;
-            page.UpdateVisAfterContactDeletion(contact);
+            //correct in mainChatPage
+            if (MainFrame.Content is MainChatPage page)
+            {
+                page.UpdateVisAfterContactDeletion(contact);
+            }
+
+            //Correct in SecFrame(user info)
+            if(SecondaryFrame.Content is UserInfo info)
+            {
+                info.ContactRemoveAction();
+            }
         }
 
+        public void UpdateUserTalkMessage(UserContactcs contact)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+
+            page.UpdateTalkMessage(contact);
+        }
+
+        public void SetFramesAfterBlockingContact()
+        {
+            //Update user info (SecFrame)
+            if (SecondaryFrame.Content is UserInfo info)
+            {
+                info.UpdateBlockAction();
+            }
+
+            //Update mainframe (Chat stuff)
+
+            if (MainFrame.Content is MainChatPage page)
+            {
+                page.UpdateChatBlockVis();
+            }
+        }
+
+        public void ClearTempPageFrame(Page page)
+        {
+            if (SecondaryFrame.Content == page) ClearSecFrame();
+            else if (ThirdFrame.Content == page) ClearThirdFrame();
+        }
+
+        public void SetPageOnSameFrame(Page toCheck, Page toSet)
+        {
+            if (SecondaryFrame.Content == toCheck) SetSecondaryFrame(toSet);
+            else if (ThirdFrame.Content == toCheck) SetThirdFrame(toSet);
+        }
+
+        public void ClearPageFrame(Page page)
+        {
+            if (SecondaryFrame.Content == page) ClearSecFrame();
+            else if (ThirdFrame.Content == page) ClearThirdFrame();
+        }
     }
 }

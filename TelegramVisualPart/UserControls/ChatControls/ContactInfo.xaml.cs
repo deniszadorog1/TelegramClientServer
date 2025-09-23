@@ -36,14 +36,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
 
         public event Action LoadEnd;
+        private bool _isSetMaxHeight;
+
         public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
-            TelSystem system, TelegramLib.MainClasses.UserContactcs contact)
+            TelSystem system, TelegramLib.MainClasses.UserContactcs contact, bool isSetMaxHeight = true)
         {
             _system = system;
             _chat = chat;
             _contact = contact;
+            _isSetMaxHeight = isSetMaxHeight;
 
-            await SetUserParams();
+            if (!_isSetMaxHeight) MaxHeight = double.MaxValue;
+
+            await SetInfoVisibility();
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -58,6 +63,112 @@ namespace TelegramVisualPart.UserControls.ChatControls
             LoadEnd?.Invoke();
 
             SetLanguageText.SetContactInfo(this);
+
+            BlockButVisibility();
+        }
+
+        public async Task SetInfoVisibility()
+        {
+            SetBlocksVisibility();
+            await SetUserParams();
+        }
+
+
+        public void BlockButVisibility()
+        {
+            bool isBlocked = _system.LoggedUser.IsUserIsBlockedById(_chat.Chatter.Id);
+            BlockContactBlock.Text = isBlocked ? "Unblock contact" : "Block contact";
+        }
+
+        public void SetBlocksVisibility()
+        {
+            SetIsContactRemovedVis();
+            SetMediasGridsVisibility();
+        }
+
+        public void SetInfoLinesVisibility()
+        {
+            if (Birthdate.UpperText.Text ==
+                VisConstParamsJsonService.GetStringByName("CantSeeStuff") || 
+                
+                Birthdate.UpperText.Text ==
+                VisConstParamsJsonService.GetStringByName("BirthDatNotSet"))
+            {
+                InfoRow.Height = new GridLength(
+                    InfoRow.Height.Value - 
+                    BirthdatRow.Height.Value);
+
+                MaxHeight -= BirthdatRow.Height.Value;
+                BirthdatRow.Height = new GridLength(0);
+            }
+        }
+
+        public void SetMediasGridsVisibility()
+        {
+            List<MediaAction> medias = _chat.GetMediaMessages();
+
+            //is photo amount == 0
+            if (FilesAction.GetImagesFromMediaAction(medias) == 0)
+            {
+                PhotosLine.Visibility = Visibility.Hidden;
+                MaxHeight -= PhotoRow.Height.Value;
+                PhotoRow.Height = new GridLength(0);
+            }
+
+            //is videos amount == 0
+            if (FilesAction.GetVideosAmount(medias) == 0)
+            {
+                VideosLine.Visibility = Visibility.Hidden;
+                MaxHeight -= VideosRow.Height.Value;
+                VideosRow.Height = new GridLength(0);
+            }
+
+            //is gifs amount == 0
+            if (FilesAction.GetGifsAmount(medias) == 0)
+            {
+                FilesLine.Visibility = Visibility.Hidden;
+                MaxHeight -= GifRow.Height.Value;
+                GifRow.Height = new GridLength(0);
+            }
+
+            SetMediasRowVisibility();
+        }
+
+        public void SetMediasRowVisibility()
+        {
+            MediasRow.Height = new GridLength(
+                PhotoRow.Height.Value + VideosRow.Height.Value + GifRow.Height.Value + 10);
+
+            MaxHeight += 5;
+
+            if (MediasRow.Height.Value == 0) DivRow.Height = new GridLength(0);
+        }
+
+        public const int _hiddenParasHeight = 150;
+        public void SetIsContactRemovedVis()
+        {
+            if (!_isSetMaxHeight)
+            {
+                return;
+            }
+            if (_contact is null)
+            {
+                //Hide lines
+                ShareRow.Height = new GridLength(0);
+                EditRow.Height = new GridLength(0);
+                DeleteRow.Height = new GridLength(0);
+
+                //Set page height
+                ToBeHiddenButs.Height = new GridLength(50);
+
+                MaxHeight -= _hiddenParasHeight;
+            }
+            //lines are not hidden
+        }
+
+        public int GetHiddenParamsHeight()
+        {
+            return _hiddenParasHeight;
         }
 
         public void UpdateContactPhoto(TelegramLib.MainClasses.User user)
@@ -67,8 +178,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 if (user.Id == _system.LoggedUser.Id) return;
 
                 Console.WriteLine(_system.Settings.PrivacySettings.ProfPhotoPrivacy);
-                
-                await SignalRHelperService.SetContactPhoto(user, 
+
+                await SignalRHelperService.SetContactPhoto(user,
                     _chat, ContactImgBrush, UserIcon);
             });
         }
@@ -175,9 +286,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SentObjsParams();
 
             await SetContactPhoto();
-         /*   UserContactcs contact = _chat.GetChatter();
-            ContactImgBrush.ImageSource = new BitmapImage(new Uri
-                (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));*/
+            /*   UserContactcs contact = _chat.GetChatter();
+               ContactImgBrush.ImageSource = new BitmapImage(new Uri
+                   (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));*/
         }
 
 
@@ -186,7 +297,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_contact is null)
             {
                 ContName.Text = _chat.Chatter.Name;
-                ContSurname.Text =_chat.Chatter.Surname;
+                ContSurname.Text = _chat.Chatter.Surname;
             }
             else
             {
@@ -206,21 +317,25 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             TelegramLib.MainClasses.User? user = await GetChatterUser();
             if (user is null) return;
-            
+
             await SignalRHelperService.SetContactPhoto(user,
                 _chat, ContactImgBrush, UserIcon);
         }
 
+        public event Action UpdateAction;
+
         public async Task SetBirtDate()
         {
-            TelegramLib.MainClasses.User? user = await GetChatterUser(); 
+            TelegramLib.MainClasses.User? user = _chat.Chatter;//  await GetChatterUser();
             if (user is null) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.PhoneNumber);
 
             await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
 
-            //Birthdate.SetBottomText("Date of Birth");
+            SetInfoLinesVisibility();
+
+            UpdateAction?.Invoke();
         }
 
         public async Task SetMobilePhoneNumber()
@@ -250,7 +365,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async Task<TelegramLib.MainClasses.User?> GetChatterUser()
         {
             if (_chat is null) return null;
-            TelegramLib.MainClasses.User user = 
+            TelegramLib.MainClasses.User user =
                 await ApiService.GetUserById(_chat.GetChatter().Id);
             return user;
         }
@@ -355,7 +470,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 el == ImageIcon || el == AmountOfPhotosTextBlock ? PhotosLine :
                 el == VideoIcon || el == AmountOfVideosTextBlock ? VideosLine :
-                el == GifIcon || el == AmountOfGifsTextBlock ? FilesLine : 
+                el == GifIcon || el == AmountOfGifsTextBlock ? FilesLine :
                 el == SendMesBlock ? SendMessageBut : null;
 
         }
@@ -405,8 +520,23 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void BlockLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
-                new Pages.UserInfoContact.ActionsFolder.BlockContact(_system, _chat.GetChatter()));
+            bool isBlocked = _system.LoggedUser.IsUserIsBlockedById(_chat.Chatter.Id);
+
+            if (isBlocked)//unblock action
+            {
+                // unblock in db
+                ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
+
+                //unblock in system
+                _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
+            }
+            else
+            {
+                //Set to block page
+                ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
+                    new Pages.UserInfoContact.ActionsFolder.BlockContact(_system, _chat.GetChatter()));
+            }
+            ((MainWindow)Window.GetWindow(this)).SetFramesAfterBlockingContact();
         }
 
         private void DeleteLine_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -476,7 +606,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_chat is null) return;
             UserContactcs contact = _system.GetContactByUserId(_chat.GetChatter().Id);
-            if(contact is not null) contact.SetNotifState(false);
+            if (contact is not null) contact.SetNotifState(false);
 
             await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
         }
@@ -511,6 +641,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             ContName.Text = contact.Name;
             ContSurname.Text = contact.Surname;
+        }
+
+        public void ContactRemovedAction()
+        {
+            ContName.Text = _chat.Chatter.Name;
+            ContSurname.Text = _chat.Chatter.Surname;
         }
     }
 }

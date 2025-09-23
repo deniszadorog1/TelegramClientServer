@@ -12,6 +12,9 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAuto
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\CustomMute.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\MuteDuration.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\SelectSoundTone.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\LoggedUserProfile.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MyProfile\MyProfileSettings.xaml;;
@@ -29,6 +32,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\ChatSettings\M
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FolderAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersChatAction.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\FoldersPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Language\LanguagePage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.xaml;;
@@ -57,6 +61,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emo
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\FullVisualsBlock.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ItemsSlider.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\LittleMenusContols\AddSoundControl.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\LittleMenusContols\MuteDurationBox.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\ActionMenuButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\MediaMenu.xaml;;
@@ -83,6 +89,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\Toggl
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtonsButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MyProfileControls\MyProfileSettingsButton.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\PhotoEllipse.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.xaml;;
@@ -107,6 +114,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\FoldersChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\FoldersPrivacy\IconForFolder.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\LanguageControls\LangRadioBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\LogOutMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\NotificationPrivacy\MessagesStack.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\NotificationPrivacy\MonitorMessage.xaml;;

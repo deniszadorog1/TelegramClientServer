@@ -515,6 +515,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             {
                 color.WhiteCircle.Visibility = Visibility.Visible;
 
+                AddColorInDb(color);
+
                 SetNewTempColor(color);
                 SaveChosenColor(color);
 
@@ -528,6 +530,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
                 if(e.Timestamp != _timeSpan) ActiveThemeParams();
             }
+        }
+
+        public async Task AddColorInDb(CircleColor color)
+        {
+            SolidColorBrush brush = color.BgBorder.Background as SolidColorBrush;
+            await ApiService.AddUserColor(brush.Color.R, brush.Color.G, brush.Color.B, _system.LoggedUser.Id);
         }
 
         public void ActiveThemeParams()
@@ -587,7 +595,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         private void PaletteBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
-                new ChatSetPalette(_chatsSettings));
+                new ChatSetPalette(_chatsSettings, _system));
         }
 
         private void ChatWallpaperTextBlock_MouseEnter(object sender, MouseEventArgs e)

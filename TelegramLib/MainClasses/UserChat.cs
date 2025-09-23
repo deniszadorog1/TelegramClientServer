@@ -90,6 +90,18 @@ namespace TelegramLib.MainClasses
             return Messages.Count == 0 ? null : Messages.First().GetSentDate();
         }
 
+        public string GetLastMesDateInString()
+        {
+            string res = string.Empty;
+            if(Messages.Count != 0)
+            {
+                DateTime? time = Messages.Last().GetSentDate();
+                if (time is null) return res;
+                res = $"{time.Value.Day}.{time.Value.Month}.{time.Value.Year}";
+            }
+            return res;
+        }
+
         public void RemoveFirstMessage()
         {
             Messages.RemoveAt(0);

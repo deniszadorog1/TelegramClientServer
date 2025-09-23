@@ -156,14 +156,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
-            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+/*            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();*/
         }
 
         private void BackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
-            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+/*            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SettingsPage(_system));
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();*/
+            ((MainWindow)Window.GetWindow(this)).SetPageOnSameFrame(this, new SettingsPage(_system));
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -188,7 +190,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             action.FolderCreated += Folder_Created;
 
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(action);
+            ((MainWindow)Window.GetWindow(this)).SetPageOnSameFrame(this, action);
+            //((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(action);
         }
 
         public void Folder_Created(object sender, EventArgs e)

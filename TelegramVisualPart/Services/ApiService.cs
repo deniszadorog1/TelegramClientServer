@@ -125,6 +125,24 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<bool> AddUserColor(int r, int g, int b, int userId)
+        {
+            var data = new
+            {
+                R = r,
+                G = g,
+                B = b,
+                UserId = userId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Settings/AddUserColor", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
         // Get User
         public static async Task<TelegramLib.MainClasses.User> GetUser(string login, string password)
         {
@@ -449,6 +467,23 @@ namespace TelegramVisualPart.Services
             bool contact = JsonConvert.DeserializeObject<bool>(jsonResponse);
             return contact;
         }
+
+        public static async Task<bool> IsUserColorExist(int userId)
+        {
+            var response = await _client.GetAsync($"api/Settings/IsUserColorExist?userId={userId}");
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return res;
+        }
+
+        public static async Task<int> GetUserColorId(int userId)
+        {
+            var response = await _client.GetAsync($"api/Settings/GetUserColorId?userId={userId}");
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            int res = JsonConvert.DeserializeObject<int>(jsonResponse);
+            return res;
+        }
+
 
         //Update User color
         public static async Task<bool> UpdateUserColor(ColorHelper chosenColor)

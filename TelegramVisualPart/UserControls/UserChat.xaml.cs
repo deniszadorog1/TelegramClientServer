@@ -31,6 +31,7 @@ using Brushes = System.Windows.Media.Brushes;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 using TelegramLib.UserSettings.SettingsTypes;
+using System;
 
 
 namespace TelegramVisualPart.UserControls
@@ -60,8 +61,13 @@ namespace TelegramVisualPart.UserControls
 
         public void SetChatterImageVisibility()
         {
-            if (((MainWindow)Window.GetWindow(this)).GetIsOnlyChat()) return;
-            UpperChatterImage.Width = new GridLength(0);
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                MainWindow window = (MainWindow)Window.GetWindow(this);
+
+                if (window.GetIsOnlyChat()) return;
+                UpperChatterImage.Width = new GridLength(0);
+            }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
         public void UpdateChatterIamge(TelegramLib.MainClasses.User user)
@@ -184,7 +190,8 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-        public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.MediaAction message)
+        public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender,
+            TelegramLib.MainClasses.Messages.MediaAction message)
         {
             Dispatcher.Invoke(() =>
             {
@@ -238,11 +245,11 @@ namespace TelegramVisualPart.UserControls
         private async void AddTextMessageInChosenChat(TelegramLib.MainClasses.Messages.TextMessage message,
             TelegramLib.MainClasses.User sender)
         {
-/*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(message.Text),
-                *//*sender.GetFirstImageNameInString()*//* await SignalRHelperService.GetUserPhotoToSet(sender),
-                _system.Settings.GetChatSettings().FontName)); //Change on sender image 
-*/
+            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
+                            GetConvertedStringMessage(message.Text),
+                            *//*sender.GetFirstImageNameInString()*//* await SignalRHelperService.GetUserPhotoToSet(sender),
+                            _system.Settings.GetChatSettings().FontName)); //Change on sender image 
+            */
 
             ChatControls.TextMessage text = new ChatControls.TextMessage(
                 GetConvertedStringMessage(message.Text),
@@ -284,15 +291,18 @@ namespace TelegramVisualPart.UserControls
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
             if (chat is null) return;
-            SetChatterImageVisibility();            
-           
+            SetChatterImageVisibility();
+
             _chat = chat;
+
+            SetUnblockGridVis();
 
             await SetOnlineStatus();
 
             //_chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
 
             UserChatMenu.SetChatParam(_chat);
+
 
             ClearChat();
 
@@ -307,11 +317,21 @@ namespace TelegramVisualPart.UserControls
             SetChatterImage();
         }
 
+        public void SetUnblockGridVis()
+        {
+            if (_chat is null && _system is null) return;
+
+            bool isBlocked = 
+                _system.LoggedUser.IsUserIsBlockedById(_chat.Chatter.Id);
+
+            UnBlockBorder.Visibility = isBlocked ? Visibility.Visible : Visibility.Hidden; 
+        }
+
         public void SetChatterImage()
         {
             UserImage.ImageSource = new BitmapImage(
                 new Uri(FilesAction.GetUserImagePath(
-                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute)); 
+                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));
         }
 
         public async Task SetOnlineStatus()
@@ -359,7 +379,7 @@ namespace TelegramVisualPart.UserControls
         public void SetChatParams(TelegramLib.MainClasses.User contact)
         {
             UserContactcs? cont = _system.Contacts.FirstOrDefault(x => x.ContactUserId == contact.Id);
-            ChatFriendLogin.Text =  cont is null ? contact.Name : cont.Name;
+            ChatFriendLogin.Text = cont is null ? contact.Name : cont.Name;
             ChatFriendSurname.Text = cont is null ? contact.Surname : cont.Surname;
             /*
                         ChatFriendLastSeen.Text = contact.LastSeen is null ? _lastSeenDefault :
@@ -493,9 +513,9 @@ namespace TelegramVisualPart.UserControls
         private async void AddTextMessage(string senderImageName)
         {
             //Visaul add
-/*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
-*/
+            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
+                            GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
+            */
             ChatControls.TextMessage text = new ChatControls.TextMessage(
                 GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName);
             AddTextControl(text);
@@ -504,9 +524,9 @@ namespace TelegramVisualPart.UserControls
 
             //system add
 
-           // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
+            // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
 
-            TelegramLib.MainClasses.Messages.Message  toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
+            TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, CommentTextBox.Text);
 
@@ -831,14 +851,12 @@ namespace TelegramVisualPart.UserControls
             RemoveRightContactInfo();
         }
 
-        public void AddContactInfo()
+        public async Task AddContactInfo()
         {
             const int _userContactWidth = 450;
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
             ContactInfo info = new ContactInfo();
-            
-            info.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id));
 
             info.LoadEnd += () =>
             {
@@ -854,18 +872,19 @@ namespace TelegramVisualPart.UserControls
                 UserInfoColumn.Width = new GridLength(_userContactWidth);
                 ContactInfoGrid.Children.Add(info);
             };
+
+            /*await*/ info.SetContactInfo(_chat, _system,
+                _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
         }
 
         public void UpdateContactInfoBlock(UserContactcs contact)
         {
             if (!ContactInfoGrid.Children.OfType<ContactInfo>().Any()) return;
 
-            ContactInfo info = 
+            ContactInfo info =
                 ContactInfoGrid.Children
                 .OfType<ContactInfo>()
                 .First();
-
-            info.UpdateParams(contact);
         }
 
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
@@ -963,8 +982,12 @@ namespace TelegramVisualPart.UserControls
 
         public void SetUserInfoPageHeight(Pages.UserInfo info)
         {
+            UserContactcs contact =
+                _system.GetContactByUserId(_chat.Chatter.Id);
+
             double windowHeight = ((MainWindow)Window.GetWindow(this)).ActualHeight;
-            info.Height = windowHeight <= info.Height ? info.Height : windowHeight - 230;
+            info.Height = windowHeight <= info.Height ? info.Height : windowHeight - 230
+            - (contact is null ? info.GetHiddenLineIfContactNull() : 0);
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
@@ -1026,8 +1049,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetBackground()
         {
-         /*   if (_chat is null || 
-                _chat.ChatBg is null) throw new Exception("Chat cant be null");*/
+            /*   if (_chat is null || 
+                   _chat.ChatBg is null) throw new Exception("Chat cant be null");*/
 
             //set local
             if (_chat is not null && !_chat.GetBackground().IsGeneral)
@@ -1175,12 +1198,12 @@ namespace TelegramVisualPart.UserControls
             //Set that in chat can be ONLY MESSAGES
             for (int i = 0; i < ChatBox.Items.Count; i++)
             {
-                if (ChatBox.Items[i] is not ListBoxItem item) continue; 
+                if (ChatBox.Items[i] is not ListBoxItem item) continue;
 
                 if (_chatMessages[i].SenderUserId == _system.LoggedUser.Id &&
                     item.Content is UserControl ctrl)
                 {
-                    if (isGluedToLeft) 
+                    if (isGluedToLeft)
                     {
                         item.HorizontalAlignment = HorizontalAlignment.Left;
                         item.Margin = new Thickness(0, 0, 0, 0);
@@ -1191,9 +1214,9 @@ namespace TelegramVisualPart.UserControls
                         item.Margin = new Thickness(0, 0, 0, 0);
                     }
 
-                    if(item.Content is ChatControls.TextMessage text)
+                    if (item.Content is ChatControls.TextMessage text)
                     {
-                        if(!isGluedToLeft) text.UserEllipseImage.Visibility = Visibility.Hidden;
+                        if (!isGluedToLeft) text.UserEllipseImage.Visibility = Visibility.Hidden;
                         else text.UserEllipseImage.Visibility = Visibility.Visible;
                     }
                     else if (item.Content is ChatControls.MediaMessage media)
@@ -1202,7 +1225,7 @@ namespace TelegramVisualPart.UserControls
                     }
 
                 }
-                
+
             }
         }
 
@@ -1219,7 +1242,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetVisibilityToBackBut(bool isVisible)
         {
-            BackButColumn.Width = isVisible ? new GridLength(50) : 
+            BackButColumn.Width = isVisible ? new GridLength(50) :
                 new GridLength(0);
         }
 
@@ -1247,7 +1270,35 @@ namespace TelegramVisualPart.UserControls
             ChatFriendLogin.Text = _chat.Chatter.Name;
             ChatFriendSurname.Text = _chat.Chatter.Surname;
         }
+
+        private void UnblockGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            UnblockGrid.Background =
+                (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
+
+        }
+
+        private void UnblockGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            UnblockGrid.Background =
+                (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
+        }
+
+        private void UnblockGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
+
+            _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
+            UnBlockBorder.Visibility = Visibility.Hidden;
+        }
+
+        public void RemoveContactAction()
+        {
+            ChatFriendLogin.Text = _chat.Chatter.Name;
+            ChatFriendSurname.Text = _chat.Chatter.Name;            
+        }
+
     }
-
-
 }

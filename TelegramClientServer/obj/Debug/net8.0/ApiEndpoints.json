@@ -23,6 +23,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "AddUserColor",
+    "RelativePath": "api/Settings/AddUserColor",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "colorToAdd",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BAddUserColorDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "AddWallpaper",
     "RelativePath": "api/Settings/AddWallpaper",
     "HttpMethod": "POST",
@@ -102,6 +124,58 @@
     "ReturnTypes": [
       {
         "Type": "TelegramLib.UserSettings.MainSettings",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "GetUserColorId",
+    "RelativePath": "api/Settings/GetUserColorId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "IsUserColorExist",
+    "RelativePath": "api/Settings/IsUserColorExist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
         "MediaTypes": [
           "text/plain",
           "application/json",

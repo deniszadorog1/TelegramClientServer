@@ -124,6 +124,7 @@
             </ListBox>
         </Grid>
 
+
         <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -162,6 +163,25 @@
                                      MouseLeave="EmojisBoard_MouseLeave"/>
         </Grid>
 
+
+        <Border Grid.Row="2" BorderThickness="0 1 0 0" BorderBrush="Black"
+                Name="UnBlockBorder" Visibility="Hidden">
+            <Grid  Background="{StaticResource DarkThemeSecond}"
+              Name="UnblockGrid"
+              MouseEnter="UnblockGrid_MouseEnter"
+              MouseLeave="UnblockGrid_MouseLeave"
+              PreviewMouseDown="UnblockGrid_PreviewMouseDown">
+                <TextBlock VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Name="UnblockBlock"
+                       Text="Unblock"
+                       FontSize="22"
+                       Foreground="Red"
+                       FontWeight="SemiBold"/>
+
+            </Grid>
+        </Border>
+        
         <buts:UserChatInfoMenu x:Name="UserChatMenu"
                 Grid.Row="0" Grid.RowSpan="3"  
                 HorizontalAlignment="Right"

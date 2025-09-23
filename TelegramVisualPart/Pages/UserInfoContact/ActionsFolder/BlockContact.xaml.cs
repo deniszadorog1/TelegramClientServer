@@ -47,6 +47,9 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             //Add in db
             await ApiService.AddBlockedContact(_system.LoggedUser.Id, _contact.Id);
+
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).SetFramesAfterBlockingContact();
         }
 
         private void BlockBut_MouseEnter(object sender, MouseEventArgs e)

@@ -119,20 +119,22 @@ namespace TelegramLib.MainClasses
             UserImages.RemoveAt(index);
         }
 
-        public void RemoveBlockedContcatByContact(UserContactcs contact) 
-        {
-            User toRemove = BlockedUsers.FirstOrDefault(x => x.Id == contact.Id);
-            if (toRemove is null) return;
-            BlockedUsers.Remove(toRemove);
-        }
-
         public void AddBlockedContact(User contact)
         {
             if (!(BlockedUsers.FirstOrDefault(x => x.Id == contact.Id) is null)) return;
-
             BlockedUsers.Add(contact);
+        }
 
+        public void UnblockUserById(int id)
+        {
+            User toUnblock = BlockedUsers.FirstOrDefault(x => x.Id == id);
+            if (toUnblock is null) return;
+            BlockedUsers.Remove(toUnblock);
+        }
 
+        public bool IsUserIsBlockedById(int userId)
+        {
+            return BlockedUsers.Any(x => x.Id == userId);
         }
     }
 }

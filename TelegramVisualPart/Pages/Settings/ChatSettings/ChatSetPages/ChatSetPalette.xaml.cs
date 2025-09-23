@@ -13,8 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.PaletteControls;
 
 
@@ -27,10 +29,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
     {
         public event EventHandler CustomMouseMoved;
         private TelegramLib.UserSettings.SettingsTypes.ChatSettings _settings;
+        private TelegramLib.MainClasses.TelSystem _system;
 
-        public ChatSetPalette(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings)
+        public ChatSetPalette(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings, TelSystem system)
         {
             _settings = settings;
+            _system = system;
 
             InitializeComponent();
             SetBasicBlocks();
@@ -100,17 +104,35 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             SolidColorBrush? bg = FirstColorRect.Fill as SolidColorBrush;
 
-            _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(-1,
+            //Get Get color id;
+
+            int id = await GetColorId(bg);
+
+            _settings.ChosenColor = new TelegramLib.Helpers.ColorHelper(id,
                 bg.Color.R,
                 bg.Color.G,
                 bg.Color.B);
 
+
             ((MainWindow)Window.GetWindow(this)).UpdateChatSettingsPage();
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+        }
+
+        public async Task<int> GetColorId(SolidColorBrush color)
+        {
+            //Is color exist in db
+            bool isExist =  await ApiService.IsUserColorExist(_system.LoggedUser.Id);
+
+            //if no => add it
+            if (!isExist) await ApiService.AddUserColor(color.Color.R, color.Color.G, color.Color.B, _system.LoggedUser.Id);
+
+            int res = await ApiService.GetUserColorId(_system.LoggedUser.Id);
+
+            return res;
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

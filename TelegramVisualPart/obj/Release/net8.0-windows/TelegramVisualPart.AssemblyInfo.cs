@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TelegramVisualPart")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f08a3f0bd48b7c05bc2df950af7a9c091123147")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33d401065f158c500df03e6a62a117d84cc86c3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("TelegramVisualPart")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TelegramVisualPart")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

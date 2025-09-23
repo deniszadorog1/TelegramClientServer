@@ -10,7 +10,7 @@
              xmlns:menu="clr-namespace:TelegramVisualPart.UserControls.ChatControls.UserContactControls"
              mc:Ignorable="d" 
              d:DesignHeight="855" d:DesignWidth="450"
-             Width="450">
+             MaxHeight="855" Width="450" >
     <Border Name="BgBorder" CornerRadius="15" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
@@ -57,11 +57,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="115"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="275"/>
+                        <RowDefinition Height="270" Name="InfoRow"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="155"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="155" Name="MediasRow"/>
+                        <RowDefinition Height="10" Name="DivRow"/>
+                        <RowDefinition Height="200" x:Name="ToBeHiddenButs"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" VerticalAlignment="Top" Margin="10 5 0 0">
@@ -113,11 +113,11 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="55"/>
+                                <RowDefinition Height="55"/>
+                                <RowDefinition Height="55" Name="BirthdatRow"/>
+                                <RowDefinition Height="55"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
                             <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
@@ -169,11 +169,11 @@
 
                     <Grid Grid.Row="4" Margin="0 5 0 5">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition Name="PhotoRow" Height="50"/>
+                            <RowDefinition Name="VideosRow" Height="50"/>
                             <!--<RowDefinition/>
                             <RowDefinition/> -->
-                            <RowDefinition/>
+                            <RowDefinition Name="GifRow" Height="50"/>
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
@@ -236,10 +236,10 @@
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition x:Name="ShareRow"/>
+                            <RowDefinition x:Name="EditRow"/>
+                            <RowDefinition x:Name="DeleteRow"/>
+                            <RowDefinition x:Name="BlockRow"/>
                         </Grid.RowDefinitions>
 
                         <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="ShareLine"

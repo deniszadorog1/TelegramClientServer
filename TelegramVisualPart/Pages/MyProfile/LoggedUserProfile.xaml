@@ -138,7 +138,7 @@
                         <TextBlock Name="BioBlock"          
                                    Text="Threre is gonna be user logindd"
                                    FontSize="16" 
-                                   Foreground="{StaticResource TempActiveTextColor}"
+                                   Foreground="{StaticResource UsualTextColor}"
                                    MouseEnter="UserNameBlock_MouseEnter"
                                    MouseLeave="UserNameBlock_MouseLeave"
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
@@ -154,14 +154,14 @@
                         <TextBlock Name="BirthdayBlock"          
                                    Text=""
                                    FontSize="16"
-                                   Foreground="{StaticResource TempActiveTextColor}"
+                                   Foreground="{StaticResource UsualTextColor}"
                                    MouseEnter="UserNameBlock_MouseEnter"
                                    MouseLeave="UserNameBlock_MouseLeave"
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
 
                         <TextBlock Name="BirthdayText" 
                                    FontSize="16"
-                                   Text="Bio" VerticalAlignment="Center"
+                                   Text="Birthday" VerticalAlignment="Center"
                                    Foreground="Gray"/>
                     </StackPanel>
 

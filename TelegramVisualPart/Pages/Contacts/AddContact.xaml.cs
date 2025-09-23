@@ -136,6 +136,10 @@ namespace TelegramVisualPart.Pages.Contacts
 
             //Add backwards (add temp user in added user contact);
             await SignalRService.AddContact(newContact, _system.LoggedUser);
+
+            //To update chat(UserTalkMessage)
+
+            ((MainWindow)Window.GetWindow(this)).UpdateUserTalkMessage(contact);
         }
 
         private async void AddChatInTelSystem(int userId, int contactId)

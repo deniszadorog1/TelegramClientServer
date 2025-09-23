@@ -721,7 +721,7 @@ namespace TelegramLib.Services
             {
                 foreach (var blockedItem in model.BlockedContacts)
                 {
-                    if (blockedItem.Id == userId)
+                    if (blockedItem.UserId == userId)
                     {
                         res.Add(GetUserById((int)blockedItem.BlockedContactId));
                     }
@@ -1500,6 +1500,42 @@ namespace TelegramLib.Services
                 model.SaveChanges();
             }
         }
+
+        public static void AddUserColor(int r, int g, int b, int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                UserColor toAdd = new UserColor();
+
+                toAdd.R = r;
+                toAdd.G = g;
+                toAdd.B = b;
+                toAdd.UserId = userId;
+
+                model.UserColor.Add(toAdd);
+
+                model.SaveChanges();
+            }
+        }
+
+        public static bool IsUserColorExist(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                return model.UserColor.Any(x => x.UserId == userId);
+            }
+        }
+
+        public static int GetUserColorIdByUserId(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                UserColor res = model.UserColor.FirstOrDefault(x => x.UserId == userId);
+
+                return res is null ? -1 : res.Id;
+            }
+        }
+
         public static void UpdateNotificationSoundsSettings(/*int settingsId,*/ NotificationSettings newSettings)
         {
             using (var model = new TelegramModel())
@@ -2493,7 +2529,7 @@ namespace TelegramLib.Services
 
         public static void AddBlockedContact(int userId, int contactId)
         {
-            if (IsContactIsBlocked(userId, contactId)) return;
+            //if (IsContactIsBlocked(userId, contactId)) return;
             using (var model = new TelegramModel())
             {
                 BlockedContacts toBlock = new BlockedContacts();
@@ -2501,6 +2537,7 @@ namespace TelegramLib.Services
                 toBlock.UserId = userId;
                 toBlock.BlockedContactId = contactId;
 
+                model.BlockedContacts.Add(toBlock);
                 model.SaveChanges();
             }
         }
@@ -2517,8 +2554,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                BlockedContacts toRemove = model.BlockedContacts.Where(
-                    x => x.UserId == userId && x.BlockedContactId == contactId).FirstOrDefault();
+                BlockedContacts toRemove = model.BlockedContacts.FirstOrDefault(
+                    x => x.UserId == userId && x.BlockedContactId == contactId);
                 if (toRemove is null) return;
 
                 model.BlockedContacts.Remove(toRemove);
@@ -2530,8 +2567,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                return model.BlockedContacts.Where(
-                    x => x.UserId == userId && x.BlockedContactId == contactId).Any();
+                return model.BlockedContacts.Any(
+                    x => x.UserId == userId && x.BlockedContactId == contactId);
             }
         }
 

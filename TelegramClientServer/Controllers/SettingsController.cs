@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using TelegramLib;
 using TelegramLib.Helpers;
 using TelegramLib.Models;
@@ -134,6 +135,34 @@ namespace TelegramClientServer.Controllers
             public string Name { get; set; }
         }
 
+        [HttpPut("AddUserColor")]
+        public void AddUserColor([FromBody] AddUserColorDTO colorToAdd)
+        {
+            DbService.AddUserColor(colorToAdd.R, 
+                colorToAdd.G, colorToAdd.B, colorToAdd.UserId);
+        }
+        public class AddUserColorDTO()
+        {
+            public int R { get; set; }
+            public int G { get; set; }
+            public int B { get; set; }
+            public int UserId { get; set; }
+        }
+
+        [HttpGet("IsUserColorExist")]
+        public bool IsUserColorExist(int userId)
+        {
+            return DbService.IsUserColorExist(userId);
+        }
+
+        [HttpGet("GetUserColorId")]
+        public int GetUserColorId(int userId)
+        {
+            return DbService.GetUserColorIdByUserId(userId);
+        }
+
+
+
         [HttpGet("GetAllSounds")]
         public List<string> GetAllSounds()
         {
@@ -153,6 +182,5 @@ namespace TelegramClientServer.Controllers
             public int UserId { get; set; }
             public bool State { get; set; }
         }
-
     }
 }

@@ -7,7 +7,7 @@
       xmlns:UserInfo="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
       mc:Ignorable="d" 
       d:DesignHeight="855" d:DesignWidth="450"
-      Width="450" Height="855"
+      Width="450" Height="455"
       MaxHeight="855"
       Title="UserInfo">
 

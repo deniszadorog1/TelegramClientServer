@@ -131,7 +131,9 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             FolderCreated?.Invoke(this, EventArgs.Empty);
 
             ((MainWindow)Window.GetWindow(this)).UpdateFolders();
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, true));
+
+            //((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, true));
+            ((MainWindow)Window.GetWindow(this)).SetPageOnSameFrame(this, new FoldersPage(_system, true));
         }
 
         public async Task<bool> CreateNewFolder()
@@ -149,7 +151,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, true));
+            //((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, true));
+            ((MainWindow)Window.GetWindow(this)).SetPageOnSameFrame(this, new FoldersPage(_system, true));
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

@@ -52,8 +52,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //update window after contact remove 
             ((MainWindow)Window.GetWindow(this)).UpdateDeletedUser(_contact);
 
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
-            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

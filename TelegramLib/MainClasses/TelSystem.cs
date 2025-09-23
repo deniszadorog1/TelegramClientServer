@@ -171,14 +171,15 @@ namespace TelegramLib.MainClasses
                     return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
                 }
         */
-        public UserContactcs GetUserById(int id)
+        public UserContactcs GetContactByUserId(int id)
         {
             return Contacts.FirstOrDefault(x => x.ContactUserId == id);/*x.IsSendersIdsAreEqual(id)*/
         }
 
-        public UserContactcs GetContactByUserId(int userId)
+        public User GetUserById(int userId)
         {
-            return Contacts.FirstOrDefault(x => x.ContactUserId == userId);
+            UserChat chat = Chats.FirstOrDefault(x => x.Id == userId);
+            return chat is null ? null : chat.Chatter;
         }
 
         public UserContactcs GetContactByLogin(string login)
@@ -409,5 +410,12 @@ namespace TelegramLib.MainClasses
             }
             return null;
         }
+
+        public User GetChatterById(int chatterId)
+        {
+            UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
+            return chat is null ? null : chat.Chatter; 
+        }
+
     }
 }

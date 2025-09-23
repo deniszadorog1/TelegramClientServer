@@ -64,15 +64,21 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetContacts()
         {
-            for (int i = 0; i < _system.Contacts.Count; i++)
+            for (int i = 0; i < _system.Chats.Count; i++)
             {
-                string contactPath = _system.Contacts[i].GetFirstImageName().Name;
+                UserContactcs contact = _system.GetContactByUserId(_system.Chats[i].Chatter.Id);
+
+                string contactPath = contact is not null ?
+                    contact.GetFirstImageName().Name :
+                    _system.Chats[i].Chatter.GetFirstImageName().Name;
 
                 FolderChatType control = new FolderChatType();
-                control.Tag = _system.Contacts[i].Id;
+                control.Tag = _system.Chats[i].Chatter.Id;
 
+                control.TypeName.Text = contact is not null ?
+                    contact.Name : 
+                    _system.Chats[i].Chatter.Name;
 
-                control.TypeName.Text = _system.Contacts[i].Name;
                 control.HideIcon();
                 control.ChatEllipse.Fill = new ImageBrush()
                 {
@@ -84,8 +90,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 {
                     Content = control,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Padding = new Thickness(0), 
-                    Tag = _system.Contacts[i].Id
+                    Padding = new Thickness(0),
+                    Tag = contact is not null ? contact.ContactUserId : _system.Chats[i].Chatter.Id
                 };
                 item.PreviewMouseDown += ChatTypes_PreviewMouseDown;
 
@@ -181,11 +187,13 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 item.Content is not FolderChatType control) return;
 
             int.TryParse(item.Tag.ToString(), out int id);
-            UserContactcs contact = _system.GetUserById(id);// _system.GetContactByLogin(control.TypeName.Text);
+
+            //UserContactcs contact = _system.GetContactByUserId(id);// _system.GetContactByLogin(control.TypeName.Text);
+            User contact = _system.GetChatterById(id);
             if (contact is null) return;
 
 
-/*            if (_chosenContacts.Contains(contact))
+            if (_chosenContacts.Contains(contact))
             {
                 _chosenContacts.Remove(contact);
             }
@@ -193,7 +201,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             {
                 _chosenContacts.Add(contact);
             }
-*/
+
             AmountOfAddedChats.Text = _chosenContacts.Count().ToString();
         }
 
