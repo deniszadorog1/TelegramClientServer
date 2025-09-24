@@ -5,6 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace TelegramVisualPart.Services
 {
@@ -21,7 +24,10 @@ namespace TelegramVisualPart.Services
             string langsPath = Path.Combine(libPath, "LanguageFiles");
             string jsonFilePath = Path.Combine(langsPath, _fileName);
 
-            string json = File.ReadAllText(jsonFilePath);
+            string json = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+
+            //File.WriteAllText(jsonFilePath, json, new UTF8Encoding(false));
+
             _dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
 

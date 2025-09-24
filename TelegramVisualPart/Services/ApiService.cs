@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -168,7 +169,6 @@ namespace TelegramVisualPart.Services
             return user;
         }
 
-
         public static async Task<bool> IsUserOnline(int userId)
         {
             var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
@@ -202,6 +202,24 @@ namespace TelegramVisualPart.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync($"api/Social/IsContactContactsInContacts", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return res;
+        }
+
+        public static async Task<bool> UpdateUserLanguage(int userId, TelegramLib.Enums.Settings.Language.LanguageType type)
+        {
+            var data = new
+            {
+                UserId = userId,
+                Type = type
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"api/Settings/UpdateUserLanguage", content);
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);

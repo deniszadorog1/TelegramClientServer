@@ -21,6 +21,7 @@ namespace TelegramLib.Models
             Contacts1 = new HashSet<Contacts>();
             ContactsInFolder = new HashSet<ContactsInFolder>();
             Folder = new HashSet<Folder>();
+            Languages = new HashSet<Languages>();
             Messages = new HashSet<Messages>();
             MonitorNotifs = new HashSet<MonitorNotifs>();
             Settings = new HashSet<Settings>();
@@ -84,6 +85,9 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Folder> Folder { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Languages> Languages { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Messages> Messages { get; set; }

@@ -17,7 +17,9 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.DifferButs;
 
 namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
@@ -90,6 +92,116 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                    name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
                    name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) : null;
+        }
+
+        public void SetFoldersParams()
+        {
+            //Set panel children
+            //Set height
+            //hide upper panel
+            if (_chat is null) return;
+            ButPanel.Children.Clear();
+            Height = 15;
+            Width = 250;
+
+            //Folders elements
+            for (int i = 0; i < _system.Folders.Count; i++)
+            {
+                User? isIncluded =
+                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
+
+                AddFolderElement(_system.Folders[i].Name, isIncluded is not null);
+            }
+
+            //To Add Folder element
+            AddFolderElement();
+        }
+
+        public void AddFolderElement()
+        {
+            UserChatsMenuElement toAdd = new UserChatsMenuElement();
+
+            //Is included
+            toAdd.IconElement.Kind = PackIconKind.Folder;
+            toAdd.IconElement.Foreground =
+                (SolidColorBrush)Application.Current.Resources["UsualTextColor"];
+
+            //folder name
+            toAdd.TextElement.Text = VisConstParamsJsonService.GetStringByName("CreateNewFolder");
+
+            //Set folder icon
+            toAdd.ArrowRightIcon.Visibility = Visibility.Hidden;
+
+            //Set events
+            toAdd.PreviewMouseDown += AddNewFolder_PreviewMouseDown;
+
+            Height += toAdd.Height;
+
+            FoldersMenu.Children.Add(toAdd);
+        }
+
+        public void AddNewFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FolderAction(_system));
+        }
+
+        public void AddFolderElement(string folderName, bool isIncluded)
+        {
+            UserChatsMenuElement toAdd = new UserChatsMenuElement();
+
+            //Is included
+            toAdd.IconElement.Kind = isIncluded ? PackIconKind.Tick : PackIconKind.None;
+            toAdd.IconElement.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            //folder name
+            toAdd.TextElement.Text = folderName;
+
+            //Set folder icon
+            toAdd.ArrowRightIcon.Kind = PackIconKind.FolderOutline;
+            toAdd.ArrowRightIcon.Foreground =
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+
+            toAdd.ArrowColumn.Width = new GridLength(60);
+            //Set events
+            toAdd.PreviewMouseDown += FolderElement_PreviewMouseDown;
+
+            Height += toAdd.Height;
+
+            FoldersMenu.Children.Add(toAdd);
+        }
+
+        public event Action ClearThis;
+        public void FolderElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not UserChatsMenuElement el) return;
+
+            //Set add in folder
+            if (el.IconElement.Kind == PackIconKind.None)
+            {
+                _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
+            }
+           else _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter); //Set remove from folder
+
+
+            //Remove from db
+
+            //Clear from Vis
+            _wind.UpdateFolder();
+
+            //clear element (sub thing)
+            ClearThis?.Invoke();
+        }
+
+        public double GetAddFolderButPos()
+        {
+           return AddToFolder.Height * 6 + 15;
+        }
+
+        MainWindow _wind;
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _wind = Window.GetWindow(this) as MainWindow;
         }
     }
 }

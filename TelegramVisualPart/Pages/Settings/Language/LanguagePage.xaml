@@ -36,7 +36,7 @@
                     <materialDesign:PackIcon Kind="Magnify" VerticalAlignment="Center"
                                              Margin="15 0 0 0" Foreground="Gray"
                                              Width="25" Height="25"/>
-                    
+
                     <TextBox Name="SarchBox" Grid.Column="0"
                               Style="{StaticResource MaterialDesignOutlinedTextBox}"
 
@@ -55,16 +55,13 @@
                                               
                               materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
                               materialDesign:TextFieldAssist.DecorationVisibility="Hidden"/>
-
                 </StackPanel>
-                
+
                 <StackPanel Grid.Row="1">
                     <langBut:LangRadioBut x:Name="EngLanguage" VerticalAlignment="Center"/>
                     <langBut:LangRadioBut x:Name="RusLanguage" VerticalAlignment="Center"/>
                 </StackPanel>
-
             </Grid>
-
 
             <Button Grid.Row="2"
                     Style="{StaticResource MaterialDesignRaisedButton}" Name="OkBut"

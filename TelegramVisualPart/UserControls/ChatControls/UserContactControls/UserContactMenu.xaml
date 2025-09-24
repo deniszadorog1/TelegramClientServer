@@ -8,20 +8,31 @@
              xmlns:buts ="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:otherButs ="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatButsControls"
              mc:Ignorable="d" 
-             d:DesignHeight="260" d:DesignWidth="250"
-             Height="260" Width="250">
-    <Border x:Name="BgBorder" CornerRadius="15"
+             d:DesignHeight="265" d:DesignWidth="230"
+             Height="265" Width="230"
+             Loaded="UserControl_Loaded">
+    <Border x:Name="BgBorder" CornerRadius="5"
+            BorderThickness="1" BorderBrush="Black"
             Background="{StaticResource DarkThemeOne}">
-        <StackPanel x:Name="ButPanel" Margin="0 5 0 0">
-            <otherButs:UserChatMenuButton x:Name="AutoDelete" PreviewMouseDown="But_PreviewMouseDown"/>
-            <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=BgBorder}" Y2="0" 
+        <StackPanel Orientation="Vertical">
+
+            <StackPanel x:Name="ButPanel" Margin="0 5 0 5">
+                <otherButs:UserChatMenuButton x:Name="AutoDelete" PreviewMouseDown="But_PreviewMouseDown"/>
+                <Line X1="0" Y1="0" X2="{Binding ActualWidth, ElementName=BgBorder}" Y2="0" 
                   Stroke="{StaticResource DarkThemeDeviderField}" StrokeThickness="5" Margin="0 5 0 0"/>
-            <otherButs:UserChatMenuButton x:Name="ShareContact" PreviewMouseDown="But_PreviewMouseDown"/>
-            <otherButs:UserChatMenuButton x:Name="EditContact" PreviewMouseDown="But_PreviewMouseDown"/>
-            <otherButs:UserChatMenuButton x:Name="ExportHistory" PreviewMouseDown="But_PreviewMouseDown"/>
-            <otherButs:UserChatMenuButton x:Name="AddToFolder" PreviewMouseDown="But_PreviewMouseDown"/>
-            <otherButs:UserChatMenuButton x:Name="BlockUser" PreviewMouseDown="But_PreviewMouseDown"/>
-            <otherButs:UserChatMenuButton x:Name="DeleteContact" PreviewMouseDown="But_PreviewMouseDown"/>
+                <otherButs:UserChatMenuButton x:Name="ShareContact" PreviewMouseDown="But_PreviewMouseDown"/>
+                <otherButs:UserChatMenuButton x:Name="EditContact" PreviewMouseDown="But_PreviewMouseDown"/>
+                <otherButs:UserChatMenuButton x:Name="ExportHistory" PreviewMouseDown="But_PreviewMouseDown"/>
+                <otherButs:UserChatMenuButton x:Name="AddToFolder"/>
+                <otherButs:UserChatMenuButton x:Name="BlockUser" PreviewMouseDown="But_PreviewMouseDown"/>
+                <otherButs:UserChatMenuButton x:Name="DeleteContact" PreviewMouseDown="But_PreviewMouseDown"/>
+            </StackPanel>
+
+
+            <StackPanel Name="FoldersMenu">
+
+            </StackPanel>
+            
         </StackPanel>
     </Border>
 </UserControl>

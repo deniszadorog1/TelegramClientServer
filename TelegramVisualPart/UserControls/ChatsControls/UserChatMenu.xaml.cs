@@ -33,6 +33,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
     {
         TelegramLib.MainClasses.UserChat _chat = null;
         private TelSystem _system;
+        MainWindow _wind;
 
         public UserChatMenu(TelSystem system)
         {
@@ -46,6 +47,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         {
             _system = system;
             _chat = chat;
+
             InitializeComponent();
 
             SetBasicParams();
@@ -76,7 +78,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             Unpin.IconElement.Kind = _chat.IsPinned ?
                 PackIconKind.PinOffOutline : PackIconKind.PinOutline;
             Unpin.TextElement.Text = _chat.IsPinned ?
-                VisConstParamsJsonService.GetStringByName("ToUnpin") : 
+                VisConstParamsJsonService.GetStringByName("ToUnpin") :
                 VisConstParamsJsonService.GetStringByName("ToPin");
 
             MarkRead.IconElement.Kind = _chat.IsMarked ?
@@ -115,7 +117,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             OpenNewWindow.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToOpenNewWindow");
 
             Archive.TextElement.Text = _system.Settings.SoundNotifSettings.IsArchived ?
-                VisConstParamsJsonService.GetStringByName("ToUnArchive") : 
+                VisConstParamsJsonService.GetStringByName("ToUnArchive") :
                 VisConstParamsJsonService.GetStringByName("ToArchive");
 
             Unpin.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToUnpin");
@@ -141,11 +143,11 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             ClearChat.ArrowRightIcon.Visibility = Visibility.Hidden;
             DeleteChat.ArrowRightIcon.Visibility = Visibility.Hidden;
 
-            if (_system is not null && 
+            if (_system is not null &&
                 _system.Settings.SoundNotifSettings.IsForeverMuted())
             {
                 MuteNotifs.ArrowRightIcon.Visibility = Visibility.Hidden;
-                MuteNotifs.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToUnMuteNotifs"); 
+                MuteNotifs.TextElement.Text = VisConstParamsJsonService.GetStringByName("ToUnMuteNotifs");
             }
 
         }
@@ -218,7 +220,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             }
         }
 
-        public void PaintElement(SolidColorBrush color, 
+        public void PaintElement(SolidColorBrush color,
             UserChatsMenuElement el)
         {
             el.IconElement.Foreground = color;
@@ -277,7 +279,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             SetIsMusicEnStatus(menuElem);
         }
 
-        public void SetIsMusicEnStatus( UserChatsMenuElement menuElem)
+        public void SetIsMusicEnStatus(UserChatsMenuElement menuElem)
         {
             bool isEnabled = _system.Settings.SoundNotifSettings.IsEnabled;
 
@@ -301,11 +303,11 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             MainPanel.Children.Clear();
 
             //Folders elements
-            for(int i = 0; i < _system.Folders.Count; i++)
+            for (int i = 0; i < _system.Folders.Count; i++)
             {
-                User? isIncluded = 
+                User? isIncluded =
                     _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
-                   
+
                 AddFolderElement(_system.Folders[i].Name, isIncluded is not null);
             }
 
@@ -353,7 +355,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
 
             //Set folder icon
             toAdd.ArrowRightIcon.Kind = PackIconKind.FolderOutline;
-            toAdd.ArrowRightIcon.Foreground = 
+            toAdd.ArrowRightIcon.Foreground =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
             toAdd.ArrowColumn.Width = new GridLength(60);
@@ -366,16 +368,33 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         public void FolderElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not UserChatsMenuElement el) return;
-            
+
             //Set add in folder
-            if(el.IconElement.Kind == PackIconKind.None)
+            if (el.IconElement.Kind == PackIconKind.None)
             {
                 _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
-                return;
-            }
-            //Set remove from folder
-            _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter);
 
+            }
+            else
+            {
+                //Set remove from folder
+                _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter);
+            }
+
+            //Update in db
+            UpdateFolderInDb(sender);
+
+            //Remove from Vis
+            _wind.UpdateFolder();
+        }
+
+        public async Task UpdateFolderInDb(object sender)
+        {
+            if (sender is not UserChatsMenuElement el) return;
+            Folder folder = _system.GetFolderByName(el.TextElement.Text);
+            if (folder is null) return;
+
+            await ApiService.UpdateFolder(folder, _system.LoggedUser.Id);
         }
 
         public void SetSubMenu(ToAddSubMenuType type)
@@ -442,6 +461,11 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 but == AddToFolder ? UserTalkControlButTypes.AddToFolder :
                 but == ClearChat ? UserTalkControlButTypes.ClearChat :
                 but == DeleteChat ? UserTalkControlButTypes.DeleteChat : null;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _wind = Window.GetWindow(this) as MainWindow;
         }
     }
 }

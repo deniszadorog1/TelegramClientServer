@@ -149,6 +149,7 @@ namespace TelegramClientServer.Controllers
             public int UserId { get; set; }
         }
 
+
         [HttpGet("IsUserColorExist")]
         public bool IsUserColorExist(int userId)
         {
@@ -161,15 +162,11 @@ namespace TelegramClientServer.Controllers
             return DbService.GetUserColorIdByUserId(userId);
         }
 
-
-
         [HttpGet("GetAllSounds")]
         public List<string> GetAllSounds()
         {
             return DbService.GetAllSounds();
         }
-
-
         
         [HttpPost("UpdateFoldersPosition")]
         public void UpdateFoldersPosition([FromBody] UpdateFolderPositionDTO folderPos)
@@ -181,6 +178,18 @@ namespace TelegramClientServer.Controllers
         {
             public int UserId { get; set; }
             public bool State { get; set; }
+        }
+
+        [HttpPost("UpdateUserLanguage")]
+        public void UpdateUserLanguage([FromBody] UpdateLangDTO lang)
+        {
+            DbService.UpdateLanguage(lang.UserId, lang.Type);
+        }
+
+        public class UpdateLangDTO()
+        {
+            public int UserId { get; set; }
+            public TelegramLib.Enums.Settings.Language.LanguageType Type { get; set; }
         }
     }
 }

@@ -101,6 +101,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FolderAction.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FoldersChatAction.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FoldersPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.g.cs
@@ -157,6 +158,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtons.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtonsButton.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MyProfileControls\MyProfileSettingsButton.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\PhotoEllipse.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.g.cs
@@ -181,6 +183,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\FoldersChat.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\IconForFolder.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LanguageControls\LangRadioBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LogOutMenu.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\NotificationPrivacy\MessagesStack.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\NotificationPrivacy\MonitorMessage.g.cs
@@ -226,6 +229,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FolderAction.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FoldersChatAction.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Folders\FoldersPage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.baml
@@ -282,6 +286,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtons.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MainPage\LeftButtonsButton.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\MyProfileControls\MyProfileSettingsButton.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\PhotoEllipse.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\DoubleTextIconBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\IconTextButAdvanced.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TextBut.baml
@@ -306,6 +311,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\FolderLittleInfo.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\FoldersChat.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\FoldersPrivacy\IconForFolder.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LanguageControls\LangRadioBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LogOutMenu.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\NotificationPrivacy\MessagesStack.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\NotificationPrivacy\MonitorMessage.baml
@@ -325,9 +331,3 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\PhotoEllipse.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\PhotoEllipse.baml
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LanguageControls\LangRadioBut.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.baml
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\SettingsControls\LanguageControls\LangRadioBut.baml

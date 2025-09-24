@@ -211,6 +211,8 @@
     <Compile Include="Models\FolderIcons.cs" />
     <Compile Include="Models\ForwardMessagesSettings.cs" />
     <Compile Include="Models\GIF.cs" />
+    <Compile Include="Models\Languages.cs" />
+    <Compile Include="Models\LanguageType.cs" />
     <Compile Include="Models\LastSeenSettings.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\MessagesSettings.cs" />

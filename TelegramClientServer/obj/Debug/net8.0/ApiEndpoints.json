@@ -362,6 +362,28 @@
     ]
   },
   {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "UpdateUserLanguage",
+    "RelativePath": "api/Settings/UpdateUserLanguage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lang",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BUpdateLangDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "AddBlockedContact",
     "RelativePath": "api/Social/AddBlockedContact",

@@ -61,7 +61,7 @@ namespace TelegramVisualPart.Pages
 
         public void SetLangText()
         {
-            VisConstParamsJsonService.SetFileName("EnglishLang.json");
+            //VisConstParamsJsonService.SetFileName("EnglishLang.json");
             SetLanguageText.SetMainChatPageParams(this);
         }
 
@@ -1600,6 +1600,14 @@ namespace TelegramVisualPart.Pages
         public void UpdateChatBlockVis()
         {
             UserChat.SetUnblockGridVis();
+        }
+
+        public void UpdateFoldersTalkMessages()
+        {
+            TelegramLib.MainClasses.FolderObjs.Folder fold = _system.GetFolderById(_system.Settings.ChosenFolderId);
+            if (fold is null) return;
+
+            ((MainWindow)Window.GetWindow(this)).SetChosenFolderByName(fold.Name);
         }
     }
 }

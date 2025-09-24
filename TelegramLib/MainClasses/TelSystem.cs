@@ -88,6 +88,11 @@ namespace TelegramLib.MainClasses
             return Folders.FirstOrDefault(x => x.Name == name);
         }
 
+        public Folder GetFolderById(int id)
+        {
+            return Folders.FirstOrDefault(x => x.Id == id);
+        }
+
         public void ChangeFoldersName(string tempName, string newName)
         {
             Folder folder = Folders.FirstOrDefault(x => x.Name == tempName);

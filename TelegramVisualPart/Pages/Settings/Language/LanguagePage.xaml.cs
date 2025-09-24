@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.Settings.Language
 {
@@ -30,7 +31,33 @@ namespace TelegramVisualPart.Pages.Settings.Language
 
             SetBasicParams();
 
+            SetCheckEvents();
             SetLanguageText.SetLanguagePage(this);
+        }
+
+        public void SetCheckEvents()
+        {
+            //Set temp in json file(Why?)
+            //Change in db
+            //Log out;
+
+            EngLanguage.RadioBut.Checked += (sender, e) =>
+            {
+                VisConstParamsJsonService.SetFileName("EnglishLang.json");
+
+                ApiService.UpdateUserLanguage(_system.LoggedUser.Id, TelegramLib.Enums.Settings.Language.LanguageType.English);
+
+                ((MainWindow)Window.GetWindow(this)).LogOut();
+            };
+
+            RusLanguage.RadioBut.Checked += (sender, e) =>
+            {
+                VisConstParamsJsonService.SetFileName("RussianLang.json");
+
+                ApiService.UpdateUserLanguage(_system.LoggedUser.Id, TelegramLib.Enums.Settings.Language.LanguageType.Russian);
+
+                ((MainWindow)Window.GetWindow(this)).LogOut();
+            };
         }
 
         public void SetBasicParams()

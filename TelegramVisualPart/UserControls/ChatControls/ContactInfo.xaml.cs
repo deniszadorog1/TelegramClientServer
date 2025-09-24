@@ -14,6 +14,8 @@ using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatControls.UserContactControls;
+using TelegramVisualPart.UserControls.ChatsControls;
 using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -89,13 +91,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetInfoLinesVisibility()
         {
             if (Birthdate.UpperText.Text ==
-                VisConstParamsJsonService.GetStringByName("CantSeeStuff") || 
-                
+                VisConstParamsJsonService.GetStringByName("CantSeeStuff") ||
+
                 Birthdate.UpperText.Text ==
                 VisConstParamsJsonService.GetStringByName("BirthDatNotSet"))
             {
                 InfoRow.Height = new GridLength(
-                    InfoRow.Height.Value - 
+                    InfoRow.Height.Value -
                     BirthdatRow.Height.Value);
 
                 MaxHeight -= BirthdatRow.Height.Value;
@@ -286,10 +288,58 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SentObjsParams();
 
             await SetContactPhoto();
-            /*   UserContactcs contact = _chat.GetChatter();
-               ContactImgBrush.ImageSource = new BitmapImage(new Uri
-                   (FilesAction.GetUserImagePath(contact.GetFirstImageName().Name), UriKind.Absolute));*/
+
+            AddFoldersSubMenu();
         }
+
+        public void AddFoldersSubMenu()
+        {
+            ContactMenu.AddToFolder.MouseEnter += (sender, e) =>
+            {
+                Point relativePoint = e.GetPosition(this);
+                Point point = new Point(relativePoint.X , relativePoint.Y - 15);
+
+                UserContactMenu foldMenu = new UserContactMenu();
+                foldMenu.SetTelSystemParam(_system, _chat);
+
+                foldMenu.SetFoldersParams();
+
+                ContactMenusCanvas.Children.Add(foldMenu);
+
+                foldMenu.MouseLeave += (sender, e) =>
+                {
+                    ContactMenusCanvas.Children.Remove(foldMenu);
+                };
+
+                ContactMenusCanvas.MouseLeave += (sender, e) =>
+                {
+                    ContactMenusCanvas.Children.Remove(foldMenu);
+                };
+
+                foldMenu.ClearThis += () =>
+                {
+                    ContactMenusCanvas.Children.Remove(foldMenu);
+                };
+
+                Canvas.SetLeft(foldMenu, Canvas.GetLeft(ContactMenu) - foldMenu.Width);
+                Canvas.SetTop(foldMenu, Canvas.GetTop(ContactMenu) + ContactMenu.GetAddFolderButPos());
+            };
+        }
+
+        public void AddMenuElement(UserChatMenu menu, Point cordPoint)
+        {
+            //MenusCan.Children.Add(menu);
+
+/*            Window window = Window.GetWindow(menu);
+            if (window is null ||
+                window is not MainWindow) throw new Exception("Its should be Main Window");
+
+            menu.SetWindow(window as MainWindow);*/
+
+            Canvas.SetLeft(menu, cordPoint.X + 100);
+            Canvas.SetTop(menu, cordPoint.Y);
+        }
+
 
 
         public void SetNameSurnameParams()
@@ -418,7 +468,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ContactMenu.Margin = new Thickness(
                 0,
                 UpperRow.Height.Value + 10,
-                20,
+                0,
                 0
                 );
         }
@@ -587,12 +637,44 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 ContactMenu.Visibility = Visibility.Visible;
                 ContactMenu.SetTelSystemParam(_system, _chat);
+
+                //Set 
+                SetMenuPosition(e.GetPosition(this));
             }
             else
             {
                 ContactMenu.Visibility = Visibility.Hidden;
+                RemoveSubMenus();
+
             }
         }
+
+        public void RemoveSubMenus()
+        {
+            List<UIElement> menus = new List<UIElement>();
+
+            for(int i = 0; i < ContactMenusCanvas.Children.Count; i++)
+            {
+                if (ContactMenusCanvas.Children[i] != ContactMenu)
+                {
+                    menus.Add(ContactMenusCanvas.Children[i]);
+                }
+            }
+
+            foreach(var el in menus)
+            {
+                ContactMenusCanvas.Children.Remove(el);
+            }
+        }
+
+        public void SetMenuPosition(Point relativePoint)
+        {
+            Point point = new Point(relativePoint.X, relativePoint.Y);
+
+            Canvas.SetLeft(ContactMenu, point.X - ContactMenu.Width / 1.3);
+            Canvas.SetTop(ContactMenu, point.Y - 50);
+        }
+
 
         private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
         {

@@ -1,55 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TelegramLib.Models;
-
-using model = TelegramLib.Models;
-using mainClass = TelegramLib.MainClasses;
-using privSub = TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
-
-using TelegramLib.MainClasses.Messages;
-using System.Configuration;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Runtime.CompilerServices;
-using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
+using TelegramLib.Enums.Messages;
+using TelegramLib.Enums.Settings.ChatSettings;
+using TelegramLib.Enums.Settings.Notifs;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
-using System.Runtime.Serialization;
+using TelegramLib.Helpers;
+using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.ChatFitures;
+using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
+using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using AdvancedSettings = TelegramLib.Models.AdvancedSettings;
 using ChatSettings = TelegramLib.Models.ChatSettings;
-using TelegramLib.MainClasses;
-using System.Dynamic;
-using TelegramLib.Helpers;
-using System.Diagnostics;
-using TelegramLib.UserSettings;
-using TelegramLib.Enums.Settings.ChatSettings;
-using TelegramLib.UserSettings.SettingsTypes.SubSettings;
-using System.Data.Entity.Migrations.Design;
-using System.CodeDom;
-using System.Runtime;
-using Microsoft.SqlServer.Server;
-using System.Diagnostics.Contracts;
-using TelegramLib.MainClasses.ChatFitures;
-using TelegramLib.MainClasses.FolderObjs;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Net.Configuration;
-using TelegramLib.Enums.Chat;
-using System.Drawing;
-
-using System.Data.Entity;
-using System.Windows.Forms;
-using TelegramLib.Enums.Messages;
-using System.Text.Json.Serialization.Metadata;
-using System.IO;
-using System.Security.Permissions;
-using System.Data.OleDb;
-using TelegramLib.Enums.Settings.Notifs;
-using System.Security.Policy;
-using System.Runtime.Remoting.Contexts;
+using mainClass = TelegramLib.MainClasses;
+using model = TelegramLib.Models;
 
 namespace TelegramLib.Services
 {
@@ -66,8 +35,6 @@ namespace TelegramLib.Services
             system.Chats = GetUserChatsByUserId(user.Id);
             system.Contacts = GetUserContactsByUserId(user.Id);
             system.Folders = GetFoldersByUserId(user.Id);
-
-
 
             return system;
         }
@@ -350,7 +317,7 @@ namespace TelegramLib.Services
                     {
                         UserChat toAdd = new UserChat(chat.Id,
                             GetUserById((int)chat.ChatterId),
-                            GetMessagesByChatId(chat.Id), 
+                            GetMessagesByChatId(chat.Id),
                             GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(chat.AutoDeleteId));
 
@@ -509,9 +476,20 @@ namespace TelegramLib.Services
             {
                 foreach (var user in model.User)
                 {
+                    UserColor color = model.UserColor.FirstOrDefault(x => x.UserId == user.Id);
+
+                    ColorHelper colorHelper = new ColorHelper(user.Id);
+
+                    if (!(color is null))
+                    {
+                        colorHelper.R = (byte)color.R;
+                        colorHelper.G = (byte)color.G;
+                        colorHelper.B = (byte)color.B;
+                    }
+
                     res.Add(new mainClass.User(user.Id, user.Login, user.Password,
                         user.Name, user.Surname, user.BIO,
-                        new Helpers.ColorHelper(user.Id), user.PhoneNumber,
+                        colorHelper, user.PhoneNumber,
                         user.Birthday, GetBlockedContactsByUserId(user.Id),
                         GetUserImagesByUserId(user.Id), (DateTime)user.LastOnline, (bool)user.IsOnline));
                 }
@@ -809,7 +787,6 @@ namespace TelegramLib.Services
 
 
         // SETTINGS OPTIONS
-
         public static MainSettings GetSettingsByUserId(int userId)
         {
             MainSettings res = new MainSettings();
@@ -835,6 +812,8 @@ namespace TelegramLib.Services
                 res.PrivacySettings = GetPrivacySettings(setting.Id);
 
                 res.SoundNotifSettings = GetUserSoundByUserId(userId);
+
+                res.LanguageSettings = GetLanguage(userId);
             }
             return res;
         }
@@ -1338,6 +1317,9 @@ namespace TelegramLib.Services
 
             //Add Sounds
             AddUserSound(userId);
+
+            //Add language
+            AddLanguageForUser(userId);
         }
 
         public static void AddBaseSettings(int userId)
@@ -1503,7 +1485,7 @@ namespace TelegramLib.Services
 
         public static void AddUserColor(int r, int g, int b, int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 UserColor toAdd = new UserColor();
 
@@ -1520,7 +1502,7 @@ namespace TelegramLib.Services
 
         public static bool IsUserColorExist(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.UserColor.Any(x => x.UserId == userId);
             }
@@ -2606,20 +2588,20 @@ namespace TelegramLib.Services
 
         private static void RemovePosBgsByChatId(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
 
                 List<PossibleChatBGs> toRemove = model.PossibleChatBGs
                     .Where(x => x.ChatId == chatId)
                     .ToList();
 
-                foreach(var rem in toRemove)
+                foreach (var rem in toRemove)
                 {
                     model.PossibleChatBGs.Remove(rem);
                 }
                 model.SaveChanges();
             }
-        } 
+        }
 
         private static void RemoveChatWhereChatterIsContact(int contactId)
         {
@@ -2727,7 +2709,7 @@ namespace TelegramLib.Services
             {
                 List<Chat> toRemove = model.Chat.Where(x => x.ChatterId == chatterId).ToList();
 
-                foreach(var rem in toRemove)
+                foreach (var rem in toRemove)
                 {
                     RemovePosBgsByChatId(rem.Id);
                     RemoveMessagesByChatId(rem.Id);
@@ -2872,8 +2854,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-/*                Contacts contact = model.Contacts.FirstOrDefault(x => x.Id == contactId);
-                if (contact is null) return null;*/
+                /*                Contacts contact = model.Contacts.FirstOrDefault(x => x.Id == contactId);
+                                if (contact is null) return null;*/
 
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId /*contact.FriendId*/);
                 if (chat is null) return null;
@@ -3177,7 +3159,7 @@ namespace TelegramLib.Services
             List<string> res = new List<string>();
             using (var model = new TelegramModel())
             {
-                foreach(var sound in model.Sounds)
+                foreach (var sound in model.Sounds)
                 {
                     res.Add(sound.Name);
                 }
@@ -3259,7 +3241,7 @@ namespace TelegramLib.Services
 
         public static void UpdateFolderPosition(int userId, bool isLeft)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Settings toUpdate = model.Settings.FirstOrDefault(x => x.UserId == userId);
                 if (toUpdate is null) return;
@@ -3271,12 +3253,74 @@ namespace TelegramLib.Services
 
         public static bool IsChatIsExist(int userId, int contactId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId);
                 bool res = !(chat is null);
-
                 return res;
+            }
+        }
+
+        public static SysLanguage GetLanguage(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Languages lang = model.Languages.FirstOrDefault(x => x.UserId == userId);
+                if (lang is null) return null;
+
+                SysLanguage res = new SysLanguage();
+
+                res.Id = lang.Id;
+                res.Type = GetLangTypeById((int)lang.TypeId);
+                return res;
+            }
+        }
+
+        private static Enums.Settings.Language.LanguageType GetLangTypeById(int id)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.LanguageType type = model.LanguageType.FirstOrDefault(x => x.Id == id);
+
+                return type.Id == 1 ? Enums.Settings.Language.LanguageType.English :
+                     Enums.Settings.Language.LanguageType.Russian; 
+            }
+        }
+
+        public static void UpdateLanguage(int userId, Enums.Settings.Language.LanguageType type)
+        {
+            using(var model = new TelegramModel())
+            {
+                Languages lang = model.Languages.FirstOrDefault(x => x.UserId == userId);
+                if (lang is null) return;
+
+                int langTypeId = GetLangTypeIdByEnum(type);
+                lang.TypeId = langTypeId == -1 ? 1 : langTypeId;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void AddLanguageForUser(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Languages toAdd = new Languages();
+                toAdd.TypeId = 1;
+                toAdd.UserId = userId;
+
+                model.Languages.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        private static int GetLangTypeIdByEnum(TelegramLib.Enums.Settings.Language.LanguageType type)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.LanguageType res = model.LanguageType.FirstOrDefault(x => x.Name == type.ToString());
+
+                return res is null ? -1 : res.Id;
             }
         }
 

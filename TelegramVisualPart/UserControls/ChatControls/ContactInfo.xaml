@@ -260,19 +260,19 @@
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="SendIcon"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
-                        
+
                         <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="PenIcon"
                                                  MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                                  PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
-                        
+
                         <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name ="CanIcon"
                                                  MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                                  PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
-                        
+
                         <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource ToBlockContact}"
@@ -284,19 +284,19 @@
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource UsualTextColor}" 
                                        MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
-                        
+
                         <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16"
                                       Name="EditContactBlock"
                                       VerticalAlignment="Center" HorizontalAlignment="Left"
                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
                                       MouseLeave="But_MouseLeave" PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
-                        
+
                         <TextBlock Grid.Column="1" Grid.Row="2" FontSize="16"
                                    Name="DeleteContactBlock"                                       
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
                                    MouseLeave="But_MouseLeave" PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
-                        
+
                         <TextBlock Grid.Column="1" Grid.Row="3" FontSize="16"
                                    Name="BlockContactBlock"                                                                          
                                    FontWeight="SemiBold" 
@@ -308,12 +308,17 @@
                 </Grid>
             </ScrollViewer>
 
-            <menu:UserContactMenu x:Name="ContactMenu" 
+
+            <Canvas Grid.RowSpan="100" Name="ContactMenusCanvas">
+                <menu:UserContactMenu x:Name="ContactMenu" 
                                     Grid.Column="1" Grid.RowSpan="3"  
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Panel.ZIndex="100"
                                     Visibility="Hidden"/>
+            </Canvas>
+
+
         </Grid>
     </Border>
 </UserControl>

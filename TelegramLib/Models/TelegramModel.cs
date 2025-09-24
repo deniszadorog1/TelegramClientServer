@@ -30,6 +30,8 @@ namespace TelegramLib.Models
         public virtual DbSet<FolderIcons> FolderIcons { get; set; }
         public virtual DbSet<ForwardMessagesSettings> ForwardMessagesSettings { get; set; }
         public virtual DbSet<GIF> GIF { get; set; }
+        public virtual DbSet<Languages> Languages { get; set; }
+        public virtual DbSet<LanguageType> LanguageType { get; set; }
         public virtual DbSet<LastSeenSettings> LastSeenSettings { get; set; }
         public virtual DbSet<Messages> Messages { get; set; }
         public virtual DbSet<MessagesSettings> MessagesSettings { get; set; }
@@ -95,6 +97,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.ForwardMessagesSettings)
                 .HasForeignKey(e => e.ForwardMesSetId);
+
+            modelBuilder.Entity<LanguageType>()
+                .HasMany(e => e.Languages)
+                .WithOptional(e => e.LanguageType)
+                .HasForeignKey(e => e.TypeId);
 
             modelBuilder.Entity<LastSeenSettings>()
                 .HasMany(e => e.PrivacySetting)

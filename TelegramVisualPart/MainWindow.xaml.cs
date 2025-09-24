@@ -132,6 +132,7 @@ namespace TelegramVisualPart
         public async void SetMainPage(TelSystem system)
         {
             _system = system;
+            SetLanguageFile();
 
             SignalRService.SetSystem(_system);
 
@@ -145,6 +146,16 @@ namespace TelegramVisualPart
 
             ((MainWindow)Window.GetWindow(this)).
                 SetMainFrameContent(page);
+        }
+
+        public void SetLanguageFile()
+        {
+            string fileName = _system.Settings.LanguageSettings.Type ==
+                TelegramLib.Enums.Settings.Language.LanguageType.English ?
+                "EnglishLang.json" : "RussianLang.json";
+
+
+            VisConstParamsJsonService.SetFileName(fileName);
         }
 
 
@@ -933,6 +944,12 @@ namespace TelegramVisualPart
         {
             if (SecondaryFrame.Content == page) ClearSecFrame();
             else if (ThirdFrame.Content == page) ClearThirdFrame();
+        }
+
+        public void UpdateFolder()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.UpdateFoldersTalkMessages();
         }
     }
 }
