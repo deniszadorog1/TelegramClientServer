@@ -53,6 +53,12 @@ namespace TelegramVisualPart.Pages.Contacts
 
         public async Task SetContactsParams()
         {
+            if (_isBlock)
+            {
+                SetUsersToBlock();
+                return;
+            }
+
             List<UserContactcs> toAdd = !_isBlock ? _system.Contacts : 
                 _system.Contacts.Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Name).Contains(x.Name)).ToList();
 
@@ -61,7 +67,6 @@ namespace TelegramVisualPart.Pages.Contacts
                 TelegramLib.MainClasses.User user = await ApiService.GetUserById(toAdd[i].ContactUserId);
                 UserContact contact = new UserContact(user);
 
-                contact.PreviewMouseDown += Contact_PreviewMouseDown;
 
                 ListBoxItem item = new ListBoxItem
                 {
@@ -69,31 +74,60 @@ namespace TelegramVisualPart.Pages.Contacts
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
                     Tag = toAdd[i].Login 
                 };
+                
+                item.PreviewMouseDown += Contact_PreviewMouseDown;
+                ContactsListBox.Items.Add(item);
+            }
+        }
+
+        private void SetUsersToBlock()
+        {
+            List<TelegramLib.MainClasses.User> toAdd =
+                _system.Chats
+                    .Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Id)
+                        .Contains(x.Chatter.Id))
+                    .Select(x => x.Chatter)
+                    .ToList();
+
+            for(int i = 0; i < toAdd.Count; i++)
+            {
+                UserContact contact = new UserContact(toAdd[i]);
+
+                ListBoxItem item = new ListBoxItem
+                {
+                    Content = contact,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                    Tag = toAdd[i].Id
+                };
+                
+                item.PreviewMouseDown += Contact_PreviewMouseDown;
                 ContactsListBox.Items.Add(item);
             }
         }
 
         private void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not UserContact contact) return;
+            if (sender is not ListBoxItem item ||
+                item.Content is not UserContact contact) return;
 
             if (_isBlock) //block in logic
             {
-               /* UserContactcs toBlock = 
-                    _system.Contacts.Where(x => x.Name == contact.UserLogin.Text).First();
+                //Tag is userId
+                TelegramLib.MainClasses.UserChat? chat =
+                    _system.Chats
+                    .FirstOrDefault(x => x.Chatter.Id.ToString() == item.Tag.ToString());
+                if (chat is null) return;
 
-                _system.GetUserById
-
-                _system.LoggedUser.BlockedUsers.Add(toBlock);*/
+                _system.LoggedUser.BlockedUsers.Add(chat.Chatter);
+                ContactsListBox.Items.Remove(item);
 
                 ContactClicked?.Invoke(sender, EventArgs.Empty);
-                ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+                ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
                 return;
             }
             
 
             ContactClicked?.Invoke(sender, EventArgs.Empty);
-
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 

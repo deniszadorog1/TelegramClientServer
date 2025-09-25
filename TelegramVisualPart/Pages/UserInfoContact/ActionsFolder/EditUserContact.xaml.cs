@@ -75,8 +75,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //Update Contact name - surname
             ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);
             
-            //Set in boss page(if chat on other window)
-            
+            //Set in boss page(if chat on other window)          
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

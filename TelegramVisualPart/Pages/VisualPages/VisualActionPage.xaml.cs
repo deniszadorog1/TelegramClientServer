@@ -549,7 +549,7 @@ namespace TelegramVisualPart.Pages.VisualPages
         public void SaveElement()
         {
             if (ImageToShow is not null && _gifPath is not null) SaveElements.SaveGifAs(_gifPath);
-            else if (ImageToShow is not null) SaveElements.SaveImageAs(_img);
+            else if (ImageToShow is not null) SaveElements.SaveImageAs(ImageToShow);
             else if (VideoToShow is not null) SaveElements.SaveVideoAs(VideoToShow);
         }
 

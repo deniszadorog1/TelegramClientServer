@@ -1536,7 +1536,7 @@ namespace TelegramVisualPart.Pages
             //Check in userChat
             if(UserChat.Visibility == Visibility.Visible)
             {
-                UserChat.UpdateContactInfoBlock(contact);
+                UserChat.UpdateContactInfoBlock();
             }
         }
 
@@ -1565,8 +1565,12 @@ namespace TelegramVisualPart.Pages
             UpdateUserChatsPanel();
 
             //Update in temp userChat
-            if (UserChat.Visibility == Visibility.Visible) UserChat.RemoveContactAction();
+            if (UserChat.Visibility == Visibility.Visible)
+            {
+                UpdateChatContactInfo();
 
+               //UserChat.RemoveContactAction();
+            }
             UserChat.SetNameSurnameInUserParams();
         }
 
@@ -1597,9 +1601,19 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void UpdateChatBlockVis()
+        public void UpdateBlockVis()
         {
             UserChat.SetUnblockGridVis();
+
+            UpdateChatContactInfo();
+        }
+
+        public void UpdateChatContactInfo()
+        {
+            if (UserChat.Visibility == Visibility.Visible)
+            {
+                UserChat.UpdateContactInfoBlock();
+            }
         }
 
         public void UpdateFoldersTalkMessages()

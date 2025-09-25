@@ -321,10 +321,10 @@ namespace TelegramVisualPart.UserControls
         {
             if (_chat is null && _system is null) return;
 
-            bool isBlocked = 
+            bool isBlocked =
                 _system.LoggedUser.IsUserIsBlockedById(_chat.Chatter.Id);
 
-            UnBlockBorder.Visibility = isBlocked ? Visibility.Visible : Visibility.Hidden; 
+            UnBlockBorder.Visibility = isBlocked ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void SetChatterImage()
@@ -857,6 +857,10 @@ namespace TelegramVisualPart.UserControls
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
             ContactInfo info = new ContactInfo();
+            ContactInfoGrid.Children.Add(info);
+
+
+            //info.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id)); /*_system.ChosenChatContact*/
 
             info.LoadEnd += () =>
             {
@@ -870,14 +874,13 @@ namespace TelegramVisualPart.UserControls
                 info.CloseButGrid.MouseDown += CloseContactInfo_MouseDown;
 
                 UserInfoColumn.Width = new GridLength(_userContactWidth);
-                ContactInfoGrid.Children.Add(info);
             };
 
-            /*await*/ info.SetContactInfo(_chat, _system,
+            await info.SetContactInfo(_chat, _system,
                 _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
         }
 
-        public void UpdateContactInfoBlock(UserContactcs contact)
+        public void UpdateContactInfoBlock()
         {
             if (!ContactInfoGrid.Children.OfType<ContactInfo>().Any()) return;
 
@@ -885,6 +888,9 @@ namespace TelegramVisualPart.UserControls
                 ContactInfoGrid.Children
                 .OfType<ContactInfo>()
                 .First();
+
+            info.SetContactInfo(_chat, _system,
+                 _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
         }
 
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
@@ -1289,16 +1295,28 @@ namespace TelegramVisualPart.UserControls
         private void UnblockGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
-
+             
             _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
             UnBlockBorder.Visibility = Visibility.Hidden;
+
+            //Update Chat contact info
+            UpdateContactInfoBlock();
         }
 
         public void RemoveContactAction()
         {
             ChatFriendLogin.Text = _chat.Chatter.Name;
-            ChatFriendSurname.Text = _chat.Chatter.Name;            
+            ChatFriendSurname.Text = _chat.Chatter.Name;
         }
 
+        private void ClearStickerPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EmojisBoard.Visibility = Visibility.Hidden;
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            EmojisBoard.Visibility = Visibility.Hidden;
+        }
     }
 }

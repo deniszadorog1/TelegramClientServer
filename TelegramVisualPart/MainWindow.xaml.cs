@@ -5,6 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Formats.Tar;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using System.Text;
 using System.Transactions;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -854,6 +855,12 @@ namespace TelegramVisualPart
         public void AddChatMainWindow()
         {
             _bossWindow._chatWindows.Add(this);
+
+            StringBuilder asd = new StringBuilder();
+
+            (asd[0], asd[1]) = (asd[1], asd[2]);
+
+            asd.Append(asd.ToString());
         }
 
         //from sub window
@@ -899,7 +906,7 @@ namespace TelegramVisualPart
             }
 
             //Correct in SecFrame(user info)
-            if(SecondaryFrame.Content is UserInfo info)
+            if (SecondaryFrame.Content is UserInfo info)
             {
                 info.ContactRemoveAction();
             }
@@ -921,10 +928,9 @@ namespace TelegramVisualPart
             }
 
             //Update mainframe (Chat stuff)
-
             if (MainFrame.Content is MainChatPage page)
             {
-                page.UpdateChatBlockVis();
+                page.UpdateBlockVis();
             }
         }
 

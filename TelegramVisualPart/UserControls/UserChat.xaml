@@ -12,6 +12,8 @@
              d:DesignHeight="450" d:DesignWidth="800" 
              
              KeyDown="UserControl_KeyDown"
+             MouseLeave="UserControl_MouseLeave"
+             
              >
     <Grid>
         <Grid.RowDefinitions>
@@ -116,7 +118,8 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0">
+        <Grid Grid.Row="1" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0"
+              MouseLeave="ClearStickerPanel_MouseLeave">
             <Grid Name="CustomBg" Background="Transparent"/>
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"

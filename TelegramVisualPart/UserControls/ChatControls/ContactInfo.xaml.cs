@@ -48,7 +48,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _contact = contact;
             _isSetMaxHeight = isSetMaxHeight;
 
-            if (!_isSetMaxHeight) MaxHeight = double.MaxValue;
+            if (!_isSetMaxHeight) MaxHeight = int.MaxValue;
 
             await SetInfoVisibility();
 
@@ -62,11 +62,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SignalRService.UpdateContactPhotoDel += UpdateContactPhoto;
 
             this.Visibility = Visibility.Visible;
-            LoadEnd?.Invoke();
 
             SetLanguageText.SetContactInfo(this);
 
             BlockButVisibility();
+            
+            LoadEnd?.Invoke();
         }
 
         public async Task SetInfoVisibility()
@@ -149,10 +150,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public const int _hiddenParasHeight = 150;
         public void SetIsContactRemovedVis()
         {
-            if (!_isSetMaxHeight)
+/*            if (!_isSetMaxHeight)
             {
                 return;
-            }
+            }*/
             if (_contact is null)
             {
                 //Hide lines
@@ -278,12 +279,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             UserName.SetUpperText(_chat.GetChatter().Login);
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
-            //UserName.SetBottomText("Username");
-
-            /*Birthdate.SetUpperText(_chat.GetChatter().GetBirthDate());
-            Birthdate.SetBottomText("Date of Birth");*/
-
-            //NotificationToggle.IsChecked = _chat.GetChatter().GetNotifsState();
 
             SentObjsParams();
 
