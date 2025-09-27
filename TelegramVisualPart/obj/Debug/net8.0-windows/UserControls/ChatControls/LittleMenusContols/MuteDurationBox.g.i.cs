@@ -73,8 +73,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.LittleMenusContols {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/littlemenuscontols/mutedu" +
-                    "rationbox.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/littlemenusconto" +
+                    "ls/mutedurationbox.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\LittleMenusContols\MuteDurationBox.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

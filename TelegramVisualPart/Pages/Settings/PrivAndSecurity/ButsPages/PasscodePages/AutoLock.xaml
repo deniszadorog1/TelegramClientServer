@@ -1,0 +1,79 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePages.AutoLock"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="AutoLock">
+
+    <Border CornerRadius="10"
+            Background="{StaticResource DarkThemeOne}"
+            BorderBrush="Black" BorderThickness="1">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Auto-Lock"
+                       VerticalAlignment="Center"
+                       Margin="20 0 0 0" FontSize="18"
+                       Foreground="{StaticResource UsualTextColor}"/>
+
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="15 15 15 15">
+
+                <RadioButton Name="OneMin" Content=" 1 minute" Margin="0 5 5 5"
+                             Foreground="{StaticResource UsualTextColor}"
+                             FontSize="16"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+
+                <RadioButton Name="FiveMin" Content=" 5 minute" Margin="0 5 5 5"
+                             Foreground="{StaticResource UsualTextColor}"
+                             FontSize="16"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+
+                <RadioButton Name="OneHour" Content=" 1 hour" Margin="0 5 5 5"
+                             Foreground="{StaticResource UsualTextColor}"
+                             FontSize="16"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+
+                <RadioButton Name="OneHours" Content="5 hours" Margin="0 5 5 5"
+                             Foreground="{StaticResource UsualTextColor}"
+                             FontSize="16"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+
+                <Grid Name="CustTimeGrid" Height="50">
+
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <RadioButton Name="Custom" Margin="0 5 5 5"
+                             Foreground="{StaticResource UsualTextColor}"
+                             FontSize="16" Grid.Column="0"
+                             materialDesign:RadioButtonAssist.RadioButtonSize="25"/>
+
+                </Grid>
+                
+                
+            </StackPanel>
+
+            <Grid Grid.Row="3">
+
+                <Button Width="50" Height="30" Content="Ok" Background="Transparent"
+                        BorderThickness="0" Margin="0 0 15 0"
+                        HorizontalAlignment="Right"
+                        Foreground="{StaticResource TempActiveTextColor}"/>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</Page>

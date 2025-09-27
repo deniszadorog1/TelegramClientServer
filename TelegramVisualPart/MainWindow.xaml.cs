@@ -855,12 +855,6 @@ namespace TelegramVisualPart
         public void AddChatMainWindow()
         {
             _bossWindow._chatWindows.Add(this);
-
-            StringBuilder asd = new StringBuilder();
-
-            (asd[0], asd[1]) = (asd[1], asd[2]);
-
-            asd.Append(asd.ToString());
         }
 
         //from sub window
@@ -909,6 +903,8 @@ namespace TelegramVisualPart
             if (SecondaryFrame.Content is UserInfo info)
             {
                 info.ContactRemoveAction();
+
+                //info.UpdateContactVis(null);
             }
         }
 

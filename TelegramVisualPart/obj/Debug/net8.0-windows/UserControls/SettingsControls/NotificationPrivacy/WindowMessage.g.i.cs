@@ -73,8 +73,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/notificationprivacy/w" +
-                    "indowmessage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/notification" +
+                    "privacy/windowmessage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\SettingsControls\NotificationPrivacy\WindowMessage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

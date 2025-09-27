@@ -81,8 +81,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.LanguageControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/languagecontrols/lang" +
-                    "radiobut.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/languagecont" +
+                    "rols/langradiobut.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\SettingsControls\LanguageControls\LangRadioBut.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -28,6 +28,36 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
     {
         private UserContactcs _contact;
         private User _user;
+
+        private TelSystem _system;
+        bool _isAddNewContact = false;
+        public EditUserContact(User user, TelSystem system) //Add new Contact
+        {
+            _isAddNewContact = true;
+            _user = user;
+            _system = system;
+
+            InitializeComponent();
+
+            AddNewUserBasicParams();
+        }
+
+        public void AddNewUserBasicParams()
+        {
+            PageNameBlock.Text = "New Contact";
+
+            BgBrush.ImageSource = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+
+            FirstNameBox.Text = _user.Name;
+            LastNameBox.Text = _user.Surname;
+
+            PhoneNumberBox.Text = _user.PhoneNumber;
+
+            LastSeenBox.Text = /*_user.LastSeenOnline is null ? "recently" :*/
+                $"{_user.LastSeenOnline.Day}.{_user.LastSeenOnline.Month}.{_user.LastSeenOnline.Year}";
+        }
+
         public EditUserContact(User user, UserContactcs contact)
         {
             _contact = contact;
@@ -37,6 +67,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             SetBasicParams();
         }
+
 
         private void SetBasicParams()
         {
@@ -64,24 +95,108 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
         private async void DoneBut_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(FirstNameBox.Text) ||
+            if (_isAddNewContact)
+            {
+                //Add new contact
+
+                ToAddContact(_user);
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(FirstNameBox.Text) ||
                 string.IsNullOrWhiteSpace(LastNameBox.Text)) return;
 
-            _contact.Name = FirstNameBox.Text;
-            _contact.Surname = LastNameBox.Text;
+                _contact.Name = FirstNameBox.Text;
+                _contact.Surname = LastNameBox.Text;
 
-            await ApiService.UpdateContact(_user.Id, _contact);
+                await ApiService.UpdateContact(_user.Id, _contact);
 
-            //Update Contact name - surname
-            ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);
-            
-            //Set in boss page(if chat on other window)          
-            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+                //Update Contact name - surname
+                ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);
+
+                //Set in boss page(if chat on other window)          
+                ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            }
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
+
+        public async Task ToAddContact(User newContact)
+        {
+            bool isUserOnline = await ApiService.IsUserOnline(newContact.Id);
+
+            //is online
+            if (isUserOnline)
+            {
+                await AddContactIfContactOnline(newContact);
+                return;
+            }
+
+            //is addable contact is offline
+
+            //for logged user (which is online)
+            await AddContactIfContactOnline(newContact);
+
+            //for addable contact(which is offline)
+            await AddContactIfContactOffline(newContact);
+
+
+            //Update Contact name - surname
+            ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);
+
+            //Set in boss page(if chat on other window)          
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+
+        }
+
+        public async Task AddContactIfContactOffline(User newContcat)
+        {
+            //Add conatct in system
+            UserContactcs contact = new UserContactcs(-1,
+                _system.LoggedUser.Name,
+                _system.LoggedUser.Surname,
+                _system.LoggedUser.Login,
+                _system.LoggedUser.BirthDay,
+                _system.LoggedUser.BIO,
+                _system.LoggedUser.PhoneNumber,
+                _system.LoggedUser.LastSeenOnline, true,
+                _system.LoggedUser.UserImages, null, true);
+
+            contact.ContactUserId = _system.LoggedUser.Id;
+
+            //add cotact in db
+            await ApiService.AddContact(newContcat.Id, contact);
+
+            //contact = await ApiService.GetLastUserContact(newContcat.Id);
+
+            //Add chat in DB must exist
+        }
+
+        public async Task AddContactIfContactOnline(User newContact)
+        {
+            UserContactcs contact = new UserContactcs(-1, FirstNameBox.Text, LastNameBox.Text, newContact.Login, newContact.BirthDay,
+                newContact.BIO, newContact.PhoneNumber, newContact.LastSeenOnline, true, newContact.UserImages, null, false);
+
+            contact.ContactUserId = newContact.Id;
+
+            await ApiService.AddContact(_system.LoggedUser.Id, contact);
+
+            _contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
+
+            _system.Contacts.Add(contact);
+
+            //Add chat in DB. (MUST EXIST)
+
+            //Add backwards (add temp user in added user contact);
+            await SignalRService.AddContact(newContact, _system.LoggedUser);
+
+            //To update chat(UserTalkMessage)
+
+            //((MainWindow)Window.GetWindow(this)).UpdateUserTalkMessage(contact);
+        }
+
     }
 }

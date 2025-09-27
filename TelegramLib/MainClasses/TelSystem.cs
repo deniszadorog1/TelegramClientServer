@@ -291,7 +291,7 @@ namespace TelegramLib.MainClasses
             //Remove from blocked contacts
             //LoggedUser.RemoveBlockedContcatByContact(contact);
 
-            Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).First());
+            Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).FirstOrDefault());
         }
 
 
@@ -420,6 +420,11 @@ namespace TelegramLib.MainClasses
         {
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
             return chat is null ? null : chat.Chatter; 
+        }
+
+        public bool IsChatterIdIsContact(int chatterId)
+        {
+            return Contacts.Any(x => x.ContactUserId == chatterId);
         }
 
     }

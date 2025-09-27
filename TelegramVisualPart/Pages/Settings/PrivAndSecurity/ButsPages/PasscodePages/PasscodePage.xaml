@@ -1,0 +1,173 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePages.PasscodePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="430"
+      Title="PasscodePage">
+    <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10"
+            Background="{StaticResource DarkThemeOne}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Name="BackGrid"
+                      MouseEnter="BackGrid_MouseEnter"
+                      MouseLeave="BackGrid_MouseLeave"
+                      PreviewMouseDown="BackGrid_PreviewMouseDown">
+                    <materialDesign:PackIcon Name="BackBut"
+                                             Kind="ArrowLeft"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Width="30" Height="30"
+                                             Foreground="Gray"/>
+                </Grid>
+
+                <TextBlock Grid.Column="1" 
+                           Name="PageNameBlock" Text="Local passcode"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource UsualTextColor}"
+                           FontSize="20"/>
+
+                <Grid Grid.Column="2" Name="CloseGrid"
+                      PreviewMouseDown="CloseGrid_PreviewMouseDown">
+
+                    <materialDesign:PackIcon Name="CloseBut"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Width="30" Height="30"
+                                             Foreground="Gray"
+                                             Kind="Close"/>
+                </Grid>
+            </Grid>
+
+            <Line/>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="110"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 HorizontalAlignment="Center"
+                                                 Width="30" Height="30"
+                                                 Foreground="{StaticResource UsualTextColor}"
+                                                 Kind="Lock"/>
+
+                        <TextBlock Grid.Column="1" Text="Change passcode"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource UsualTextColor}"
+                                   FontSize="16"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:PackIcon VerticalAlignment="Center"
+                                                 HorizontalAlignment="Center"
+                                                 Width="30" Height="30"
+                                                 Foreground="{StaticResource UsualTextColor}"
+                                                 Kind="Clock"/>
+
+                        <TextBlock Grid.Column="1" Text="AutoLock is away for.."
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource UsualTextColor}"
+                                   FontSize="16"/>
+
+                        <TextBlock Grid.Column="2" Text="Chosen info"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource TempActiveTextColor}"
+                                   FontSize="16"/>
+
+
+                    </Grid>
+
+                </Grid> 
+                
+                
+                <StackPanel Grid.Row="1" Background="{StaticResource DarkThemeSecond}"
+                            Orientation="Vertical">
+                    <TextBlock  FontSize="15" Foreground="Gray"  TextWrapping="Wrap" Padding="30 10 25 5"
+                        Text="When loacl passcode is set, a lock icon appears, at the top of your chat list"/>
+
+                    <TextBlock  FontSize="15" Foreground="Gray"  TextWrapping="Wrap" Padding="30 5 25 5"
+                        Text="Note: if you forget your passcode, you'll need to logout of Telegram Desktop and log in again"/>
+                </StackPanel>
+
+
+                <Grid Name="SmileGrind" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+
+                    <materialDesign:PackIcon VerticalAlignment="Center" 
+                                             HorizontalAlignment="Center"
+                                             Foreground="{StaticResource UsualTextColor}"
+                                             Width="30" Height="30"
+                                             Kind="Smiley"/>
+
+                    <TextBlock Grid.Column="1" 
+                               Margin="15 0 0 0 "
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Left" 
+                               Foreground="{StaticResource UsualTextColor}"
+                               FontSize="16"
+                               Text="Unlock with window hello"/>
+
+                    <ToggleButton Grid.Column="2" 
+                                  Background="{StaticResource TempActiveTextColor}"/>
+
+                </Grid>
+                
+                <Grid Grid.Row="3" Background="{StaticResource DarkThemeSecond}">
+                    <TextBlock  FontSize="15" Foreground="Gray"  TextWrapping="Wrap" Padding="30 15 25 5"
+                        Text="You need to enter your passcode before unlocking Telegram with Windows Hello."/>
+                </Grid>
+
+                <Grid Grid.Row="4" Margin="20 10 20 10">
+                    <TextBlock Name="RemovePasscode" VerticalAlignment="Center"
+                               Text="Disable passcode" Foreground="Red"
+                               FontSize="16"/>
+                </Grid>
+               
+            </Grid>
+
+        </Grid>
+    </Border>
+</Page>

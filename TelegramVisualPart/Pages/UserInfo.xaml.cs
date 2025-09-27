@@ -35,6 +35,11 @@ namespace TelegramVisualPart.Pages
             ContactInfo.UpdateAction += UpdatePage;
         }
 
+        public async Task UpdateContactVis(UserContactcs contact)
+        {
+            await ContactInfo.SetContactInfo(_chat, _system, contact, isSetMaxHeight: false);
+        }
+
         public void UpdatePage()
         {
             this.MaxHeight = ContactInfo.MaxHeight;
@@ -43,6 +48,9 @@ namespace TelegramVisualPart.Pages
         public void UpdateContact(UserContactcs contact)
         {
             ContactInfo.UpdateParams(contact);
+
+            ContactInfo.SetContactInfo(_chat, _system,
+                _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
         }
 
         public int GetHiddenLineIfContactNull()
@@ -68,6 +76,9 @@ namespace TelegramVisualPart.Pages
         public void ContactRemoveAction()
         {
             ContactInfo.ContactRemovedAction();
+
+            ContactInfo.SetContactInfo(_chat, _system,
+                 _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
         }
     }
 }

@@ -21,6 +21,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row ="0" Text="Edit contact" VerticalAlignment="Center" 
+                       Name="PageNameBlock"
                        Margin="15" Foreground="{StaticResource UsualTextColor}" FontSize="18"/>
 
             <Grid Grid.Row="1">

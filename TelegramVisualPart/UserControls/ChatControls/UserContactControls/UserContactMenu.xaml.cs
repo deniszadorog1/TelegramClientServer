@@ -36,6 +36,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         {
             InitializeComponent();
             SetBasicBlocks();
+
+            AddClearSubMenuAction();
         }
 
         public void SetTelSystemParam(TelSystem system, TelegramLib.MainClasses.UserChat chat)
@@ -44,10 +46,48 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             _chat = chat;
         }
 
+        public void UpdateParamsIsChatterIsNotContact()
+        {
+            //Is chatter is contact  
+            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
+
+            //Set  vis for edit contact + folder + add contact
+            EditContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
+            ShareContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
+            DeleteContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
+
+
+            AddContact.Visibility = isContact ? Visibility.Hidden : Visibility.Visible;
+
+            //Update Height
+            UpdateMenuHeight();
+        }
+
+        public void UpdateMenuHeight()
+        {
+            Height = 0;
+            for(int i = 0; i < ButPanel.Children.Count; i++)
+            {
+                if (ButPanel.Children[i] is UserChatMenuButton but)
+                {
+                    if (but.Visibility == Visibility.Visible)
+                    {
+                        but.Height = AutoDelete.Height;
+                        Height += but.Height;
+                    }
+                    else but.Height = 0;
+                }
+            }
+            Height += ButPanel.Margin.Top + ButPanel.Margin.Bottom + LineDevider.Margin.Top;
+        }
+
         public void SetBasicBlocks()
         {
             AutoDelete.IconType.Kind = PackIconKind.AvTimer;
             //AutoDelete.ButName.Text = "Auto-Delete";
+
+            AddContact.IconType.Kind = PackIconKind.PersonAddOutline;
+            AddContact.ButName.Text = "Add Contact";
 
             ShareContact.IconType.Kind = PackIconKind.ShareOutline;
             //ShareContact.ButName.Text = "Share this contact";
@@ -79,6 +119,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 Page? page = GetPageToOpen(but.Name);
                 if (page is null) return;
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+
+                this.Visibility = Visibility.Hidden;
             }
         }
 
@@ -91,7 +133,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
                    name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
-                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) : null;
+                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) :
+                   name == AddContact.Name.ToString() ? new EditUserContact(_chat.Chatter, _system) : null;
         }
 
         public void SetFoldersParams()
@@ -181,7 +224,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             {
                 _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
             }
-           else _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter); //Set remove from folder
+            else _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter); //Set remove from folder
 
 
             //Remove from db
@@ -195,13 +238,32 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public double GetAddFolderButPos()
         {
-           return AddToFolder.Height * 6 + 15;
+            //Get Amount of VisParapms
+            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
+            return AddToFolder.Height * (isContact ? 6 : 5) + 15;
         }
 
         MainWindow _wind;
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             _wind = Window.GetWindow(this) as MainWindow;
+        }
+
+        public void AddClearSubMenuAction()
+        {
+            AutoDelete.MouseEnter += ClearSubMenu_MouseEnter;
+            AddContact.MouseEnter += ClearSubMenu_MouseEnter;
+            ShareContact.MouseEnter += ClearSubMenu_MouseEnter;
+            EditContact.MouseEnter += ClearSubMenu_MouseEnter;
+            ExportHistory.MouseEnter += ClearSubMenu_MouseEnter;
+            BlockUser.MouseEnter += ClearSubMenu_MouseEnter;
+            DeleteContact.MouseEnter += ClearSubMenu_MouseEnter;
+        }
+
+        public void ClearSubMenu_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //clear element (sub thing)
+            ClearThis?.Invoke();
         }
     }
 }

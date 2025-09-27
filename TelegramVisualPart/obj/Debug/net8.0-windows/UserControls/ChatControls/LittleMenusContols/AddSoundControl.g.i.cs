@@ -57,8 +57,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.LittleMenusContols {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/littlemenuscontols/addsou" +
-                    "ndcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/littlemenusconto" +
+                    "ls/addsoundcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\LittleMenusContols\AddSoundControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

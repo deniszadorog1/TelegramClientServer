@@ -81,8 +81,8 @@ namespace TelegramVisualPart.UserControls.MyProfileControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/myprofilecontrols/myprofilesettingsbut" +
-                    "ton.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/myprofilecontrols/myprofilese" +
+                    "ttingsbutton.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\MyProfileControls\MyProfileSettingsButton.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

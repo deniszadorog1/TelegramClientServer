@@ -75,8 +75,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetBlocksVisibility();
             await SetUserParams();
         }
-
-
         public void BlockButVisibility()
         {
             bool isBlocked = _system.LoggedUser.IsUserIsBlockedById(_chat.Chatter.Id);
@@ -166,7 +164,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 MaxHeight -= _hiddenParasHeight;
             }
-            //lines are not hidden
+            else if(ToBeHiddenButs.Height.Value != 200) //lines are not hidden
+            {
+                ShareRow.Height = new GridLength(50);
+                EditRow.Height = new GridLength(50);
+                DeleteRow.Height = new GridLength(50);
+
+                //Set page height
+                ToBeHiddenButs.Height = new GridLength(200);
+
+                MaxHeight += _hiddenParasHeight;
+            }
+           
         }
 
         public int GetHiddenParamsHeight()
@@ -250,7 +259,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
-                if (_contact.Id != updated.Id) return;
+                if (_contact is null || _contact.Id != updated.Id) return;
 
                 //Username.Text = updated.Login;
                 ContName.Text = updated.Name;
@@ -258,7 +267,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 await SetUserPhoneNumber(updated);
                 //MobileNumber.UpperText.Text = updated.PhoneNumber;
-
 
                 UserName.UpperText.Text = updated.Name;
                 Birthdate.UpperText.Text = updated.BirthDay is null ? VisConstParamsJsonService.GetStringByName("BirthdayNeverBeen") :
@@ -307,6 +315,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 };
 
                 ContactMenusCanvas.MouseLeave += (sender, e) =>
+                {
+                    ContactMenusCanvas.Children.Remove(foldMenu);
+                };
+
+                ContactMenu.ClearThis += () =>
                 {
                     ContactMenusCanvas.Children.Remove(foldMenu);
                 };
@@ -631,7 +644,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_isMenuOpen)
             {
                 ContactMenu.Visibility = Visibility.Visible;
+
                 ContactMenu.SetTelSystemParam(_system, _chat);
+                ContactMenu.UpdateParamsIsChatterIsNotContact();
+
 
                 //Set 
                 SetMenuPosition(e.GetPosition(this));
@@ -640,7 +656,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 ContactMenu.Visibility = Visibility.Hidden;
                 RemoveSubMenus();
-
             }
         }
 
@@ -669,7 +684,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Canvas.SetLeft(ContactMenu, point.X - ContactMenu.Width / 1.3);
             Canvas.SetTop(ContactMenu, point.Y - 50);
         }
-
 
         private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
         {
@@ -717,13 +731,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void UpdateParams(UserContactcs contact)
         {
             ContName.Text = contact.Name;
-            ContSurname.Text = contact.Surname;
+            ContSurname.Text = contact.Surname;          
         }
 
         public void ContactRemovedAction()
         {
             ContName.Text = _chat.Chatter.Name;
             ContSurname.Text = _chat.Chatter.Surname;
+
+            //Set hide action params
         }
     }
 }

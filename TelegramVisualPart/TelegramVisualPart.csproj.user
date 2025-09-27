@@ -37,6 +37,12 @@
     <Compile Update="Pages\Settings\Language\LanguagePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\AutoLock.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\PasscodePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ToChooseChats.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -403,6 +409,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Settings\Language\LanguagePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\AutoLock.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\PasscodePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ToChooseChats.xaml">

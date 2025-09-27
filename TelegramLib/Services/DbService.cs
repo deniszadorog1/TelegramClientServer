@@ -2560,6 +2560,8 @@ namespace TelegramLib.Services
 
             //contact - first chatter
             UserContactcs pairContact = GetContactBySenderReceiverUserIds(contact.ContactUserId, loggedUser.Id);
+            UserContactcs other = GetContactBySenderReceiverUserIds(loggedUser.Id, contact.ContactUserId);
+
 
             //Remove chat
             //RemoveChatsByChatterId(contact.Id);
@@ -2581,7 +2583,7 @@ namespace TelegramLib.Services
             //Remove contact
             using (var model = new TelegramModel())
             {
-                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id || x.Id == pairContact.Id));
+                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id || x.Id == pairContact.Id || x.Id == other.Id));
                 model.SaveChanges();
             }
         }
