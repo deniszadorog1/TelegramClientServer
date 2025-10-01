@@ -18,6 +18,7 @@ namespace TelegramVisualPart.Pages
     {
         private User _user;
         private TelSystem _system;
+
         public LoggedUserProfile(User user, TelSystem system)
         {
             _user = user;
@@ -101,7 +102,7 @@ namespace TelegramVisualPart.Pages
         private void SettingsBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new MyProfile.MyProfileSettings(_user, _system));
+                new MyProfile.MyProfileSettings(_user, _system, this));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

@@ -85,8 +85,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/tounblockuse" +
-                    "r.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/tounblockuser.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\SettingsControls\ToUnblockUser.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

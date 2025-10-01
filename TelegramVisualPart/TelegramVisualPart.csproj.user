@@ -19,10 +19,16 @@
     <Compile Update="Pages\Advanced\AdvancedPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\BlockPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\ClearChatHistory.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\LittleMenuPages\CustomMute.xaml.cs">
@@ -393,10 +399,16 @@
     <Page Update="Pages\Advanced\AdvancedPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\BlockPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ChatActions\ClearChatHistory.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\LittleMenuPages\CustomMute.xaml">

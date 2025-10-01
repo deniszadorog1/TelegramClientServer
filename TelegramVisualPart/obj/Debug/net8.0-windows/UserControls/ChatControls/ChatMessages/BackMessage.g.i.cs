@@ -101,8 +101,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/chatmessages/bac" +
-                    "kmessage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/chatmessages/backmessage." +
+                    "xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\ChatMessages\BackMessage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

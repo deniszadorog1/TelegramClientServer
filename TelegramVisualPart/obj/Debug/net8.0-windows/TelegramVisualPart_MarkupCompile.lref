@@ -5,6 +5,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\BlockPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
@@ -35,6 +36,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Folders\Folder
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\Language\LanguagePage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\AutoLock.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\PasscodePage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Settings\PrivAndSecurity\PrivacyDeleteAccount.xaml;;

@@ -81,8 +81,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/chatsettings" +
-                    "controls/palettecontrols/palettetextbox.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/chatsettingscontrols/" +
+                    "palettecontrols/palettetextbox.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\UserControls\SettingsControls\ChatSettingsControls\PaletteControls\PaletteTextBox.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

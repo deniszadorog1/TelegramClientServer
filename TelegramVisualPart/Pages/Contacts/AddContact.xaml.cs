@@ -81,7 +81,6 @@ namespace TelegramVisualPart.Pages.Contacts
 
             //for addable contact(which is offline)
             await AddContactIfContactOffline(newContact);
-
         }
 
         public async Task AddContactIfContactOffline(User newContcat)
@@ -138,8 +137,7 @@ namespace TelegramVisualPart.Pages.Contacts
             await SignalRService.AddContact(newContact, _system.LoggedUser);
 
             //To update chat(UserTalkMessage)
-
-            ((MainWindow)Window.GetWindow(this)).UpdateUserTalkMessage(contact);
+            //((MainWindow)Window.GetWindow(this)).UpdateUserTalkMessage(contact);
         }
 
         private async void AddChatInTelSystem(int userId, int contactId)

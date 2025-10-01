@@ -204,8 +204,8 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/settings/chatsettings/chatsetpages/w" +
-                    "allpaperpreview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/settings/chatsettings/chatsetpages/wallpaperp" +
+                    "review.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\Pages\Settings\ChatSettings\ChatSetPages\WallpaperPreview.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

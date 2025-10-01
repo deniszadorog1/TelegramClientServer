@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.UserParams;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.MyProfileControls;
@@ -30,10 +31,13 @@ namespace TelegramVisualPart.Pages.MyProfile
     {
         private User _user;
         private TelSystem _system;
-        public MyProfileSettings(User user, TelSystem system)
+        private Page _prevPage;
+
+        public MyProfileSettings(User user, TelSystem system, Page prevPage)
         {
             _user = user;
             _system = system;
+            _prevPage = prevPage;
 
             InitializeComponent();
 
@@ -121,7 +125,16 @@ namespace TelegramVisualPart.Pages.MyProfile
             await SignalRService.UpdateContact(_user);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                new LoggedUserProfile(_user, _system));
+                GetPageForBackButton());
+        }
+
+        public Page GetPageForBackButton()
+        {
+            if(_prevPage is SettingsPage set)
+            {
+                return new SettingsPage(_system);
+            }
+            return new LoggedUserProfile(_user, _system);
         }
 
         private async void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)

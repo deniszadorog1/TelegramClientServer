@@ -28,6 +28,14 @@
                    VerticalAlignment="Center" HorizontalAlignment="Left"
                    Foreground="{StaticResource UsualTextColor}" Margin="15 0 0 0" FontSize="14"/>
 
+        <materialDesign:PackIcon Grid.Column="2" 
+                                 Name="MemeIcon"
+                                 Kind="GuyFawkesMask"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"
+                                 Foreground="{StaticResource UsualTextColor}"
+                                 Width="25" Height="25" Visibility="Hidden"/>
+
 
     </Grid>
 </UserControl>

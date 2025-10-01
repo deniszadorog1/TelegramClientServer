@@ -25,6 +25,7 @@ using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.MyProfile.SetInformation;
+using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
@@ -46,6 +47,9 @@ namespace TelegramVisualPart
 
         List<MainWindow> _chatWindows = new List<MainWindow>();
         private MainWindow _bossWindow;
+
+        DispatcherTimer _blockTimer;
+
 
         //Basic start
         public MainWindow()
@@ -147,6 +151,8 @@ namespace TelegramVisualPart
 
             ((MainWindow)Window.GetWindow(this)).
                 SetMainFrameContent(page);
+
+            SetTimer();
         }
 
         public void SetLanguageFile()
@@ -736,7 +742,7 @@ namespace TelegramVisualPart
 
         public void UpdateLoggedUserPage()
         {
-            SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser, _system));
+            SetSecondaryFrame(new MyProfileSettings(_system.LoggedUser, _system, new SettingsPage(_system)));
         }
 
         public void UpdateChatSettingsPage()
@@ -795,7 +801,6 @@ namespace TelegramVisualPart
         public void SetAllChatsInMainPage()
         {
             if (MainFrame.Content is not MainChatPage page) return;
-
             page.SetActiveChats();
         }
 
@@ -908,6 +913,14 @@ namespace TelegramVisualPart
             }
         }
 
+        public void UpdateChatParamsVis()
+        {
+            if (MainFrame.Content is MainChatPage page)
+            {
+                page.UpdateChatVis();
+            }
+        }
+
         public void UpdateUserTalkMessage(UserContactcs contact)
         {
             if (MainFrame.Content is not MainChatPage page) return;
@@ -952,6 +965,82 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage page) return;
             page.UpdateFoldersTalkMessages();
+        }
+
+        public void ClearBlockFrame()
+        {
+            BlockFrame.Content = null;
+            _blockTimer.Stop();
+        }
+
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_system is not null && BlockFrame.Content is null &&
+               _system.Settings.PrivacySettings.PassCode is not null && 
+               _blockTimer is not null)
+            {
+                _blockTimer.Stop();
+                _blockTimer.Start();
+            }
+        }
+
+        public void StartBlockTimer()
+        {
+            if(_blockTimer is not null)
+            {
+                _blockTimer.Stop();
+                _blockTimer.Start();
+            }
+        }
+
+        public void StopTimer()
+        {
+            if (_blockTimer is not null) _blockTimer.Stop();
+        }
+
+        public void ClearTimer()
+        {
+            if(_blockTimer is not null)
+            {
+                _blockTimer.Stop();
+                _blockTimer = null;
+            }
+        }
+
+        public void SetTimer()
+        {
+            if (_system is null ||
+                _system.Settings.PrivacySettings.PassCode is null ||
+                _system.Settings.PrivacySettings.PassCode.MinutesTimer == -1) return;
+
+            _blockTimer = new DispatcherTimer();
+            int seconds = _system.Settings.PrivacySettings.PassCode.MinutesTimer * 60;
+
+            //if (seconds == 0) seconds = 60;
+
+            seconds = 5;
+
+            _blockTimer.Interval = TimeSpan.FromSeconds(seconds);
+            _blockTimer.Tick += (sender, e) =>
+            {
+                if (_system.Settings.PrivacySettings.PassCode is null) return;
+                _blockTimer.Stop();
+
+                BlockPage page = new BlockPage(_system);
+                BlockFrame.Content = page;
+            };
+            _blockTimer.Start();
+        }
+
+        public void DeleteChat(User chatter)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.DeleteChat(chatter);
+        }
+
+        public void SetVanishingMessage(string message)
+        {
+
         }
     }
 }

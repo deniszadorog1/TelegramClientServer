@@ -42,7 +42,7 @@
                                          VerticalAlignment="Center"
                                          Margin="15 0 15 0"
                                          Foreground="{StaticResource ToBlockContact}"/>
-                <TextBlock Text="Edit profile" VerticalAlignment="Center"
+                <TextBlock Text="Logout" VerticalAlignment="Center"
                            Foreground="{StaticResource ToBlockContact}" FontSize="16"/>
             </StackPanel>
 

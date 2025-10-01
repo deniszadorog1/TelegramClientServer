@@ -835,10 +835,22 @@ namespace TelegramVisualPart.UserControls
             return res;
         }
 
+        public bool _isLoopPressed = false;
         private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //find message menu
+            _isLoopPressed = true;
+        }
 
+        public bool GetLoopState() => _isLoopPressed;
+        public void TurnOfLoopState()
+        {
+            _isLoopPressed = false;
+        }
+
+        public void TurnOnLoopState()
+        {
+            _isLoopPressed = true;
         }
 
         private void UserInfoBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -882,6 +894,15 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateContactInfoBlock()
         {
+            //update blocked bage vis
+            if (_system.LoggedUser.BlockedUsers.Contains(_chat.Chatter))
+            {
+                UnBlockBorder.Visibility = Visibility.Visible;
+            }
+            else UnBlockBorder.Visibility = Visibility.Hidden;
+
+
+            //update contact
             if (!ContactInfoGrid.Children.OfType<ContactInfo>().Any()) return;
 
             ContactInfo info =

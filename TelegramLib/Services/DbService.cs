@@ -245,7 +245,6 @@ namespace TelegramLib.Services
             }
         }
 
-
         private static List<mainClass.User> GetContactsForFolder(int folderId, bool isExclude)
         {
             List<mainClass.User> res = new List<mainClass.User>();
@@ -890,7 +889,6 @@ namespace TelegramLib.Services
                 if (settings is null) return null;
 
                 res.Id = settings.Id;
-                res.LocalPasscode = settings.Passcode;
                 res.SelfDeleteTime = GetAwayForTimeById((int)settings.AwayForTypeId);
 
                 res.PhonePrivacy = GetPhoneNumberSettingsById((int)settings.PhoneNumberSetId, settingId);
@@ -900,6 +898,24 @@ namespace TelegramLib.Services
                 res.MessagesPrivacy = GetMessagesPrivById((int)settings.MessagesSetId);
                 res.DateBirthPrivacy = GetBirthDateById((int)settings.DateOfBirthSetId, settingId);
                 res.BioPrivacy = GetBioById((int)settings.BioSetId, settingId);
+                res.PassCode = GetLocalPasscodeSettings(settingId);
+            }
+            return res;
+        }
+
+        private static PasscodeSettings GetLocalPasscodeSettings(int settingId)
+        {
+            PasscodeSettings res = new PasscodeSettings();
+
+            using (var model = new TelegramModel())
+            {
+                PassCode code = model.PassCode.FirstOrDefault(x => x.Id == settingId);
+                if (code is null) return null;
+
+                res.IsWinUnLock = (bool)code.IsWinUnlock;
+                res.MinutesTimer = (int)code.Minutes;
+                res.Id = (int)code.Id;
+                res.PassCode = code.Passcode1;
             }
             return res;
         }
@@ -1320,6 +1336,24 @@ namespace TelegramLib.Services
 
             //Add language
             AddLanguageForUser(userId);
+
+            //Add passcode
+            AddPassCode(userId);
+        }
+
+        private static void AddPassCode(int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                PassCode toAdd = new PassCode();
+
+                toAdd.Passcode1 = string.Empty;
+                toAdd.Minutes = -1;
+                toAdd.IsWinUnlock = false;
+
+                model.PassCode.Add(toAdd);
+                model.SaveChanges();
+            }
         }
 
         public static void AddBaseSettings(int userId)
@@ -2592,7 +2626,6 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-
                 List<PossibleChatBGs> toRemove = model.PossibleChatBGs
                     .Where(x => x.ChatId == chatId)
                     .ToList();
@@ -2705,7 +2738,7 @@ namespace TelegramLib.Services
             }
         }
 
-        private static void RemoveChatsByChatterId(int chatterId)
+        public static void DeleteChatByChatterId(int chatterId)
         {
             using (var model = new TelegramModel())
             {
@@ -2719,8 +2752,6 @@ namespace TelegramLib.Services
 
                     model.Chat.Remove(rem);
                 }
-
-
                 model.SaveChanges();
             }
         }
@@ -3265,7 +3296,7 @@ namespace TelegramLib.Services
 
         public static SysLanguage GetLanguage(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Languages lang = model.Languages.FirstOrDefault(x => x.UserId == userId);
                 if (lang is null) return null;
@@ -3280,18 +3311,18 @@ namespace TelegramLib.Services
 
         private static Enums.Settings.Language.LanguageType GetLangTypeById(int id)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.LanguageType type = model.LanguageType.FirstOrDefault(x => x.Id == id);
 
                 return type.Id == 1 ? Enums.Settings.Language.LanguageType.English :
-                     Enums.Settings.Language.LanguageType.Russian; 
+                     Enums.Settings.Language.LanguageType.Russian;
             }
         }
 
         public static void UpdateLanguage(int userId, Enums.Settings.Language.LanguageType type)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Languages lang = model.Languages.FirstOrDefault(x => x.UserId == userId);
                 if (lang is null) return;
@@ -3318,11 +3349,41 @@ namespace TelegramLib.Services
 
         private static int GetLangTypeIdByEnum(TelegramLib.Enums.Settings.Language.LanguageType type)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.LanguageType res = model.LanguageType.FirstOrDefault(x => x.Name == type.ToString());
 
                 return res is null ? -1 : res.Id;
+            }
+        }
+
+        public static void UpdatePassCode(PasscodeSettings settings)
+        {
+            using(var model = new TelegramModel())
+            {
+                PassCode code = model.PassCode.FirstOrDefault(x => x.Id == settings.Id);
+                if (code is null) return;
+
+                code.Passcode1 = settings.PassCode;
+                code.IsWinUnlock = settings.IsWinUnLock;
+                code.Minutes = settings.MinutesTimer;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void DeleteUserFromFolder(int folderId, int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                //Get folder
+                ContactsInFolder toRemove = model.ContactsInFolder
+                    .FirstOrDefault(x => x.FolderId == folderId && x.ContactId == userId);
+
+                if (toRemove is null) return;
+                model.ContactsInFolder.Remove(toRemove);
+
+                model.SaveChanges();
             }
         }
 

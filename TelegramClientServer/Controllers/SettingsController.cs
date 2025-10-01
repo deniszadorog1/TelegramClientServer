@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
@@ -9,6 +10,7 @@ using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -191,5 +193,18 @@ namespace TelegramClientServer.Controllers
             public int UserId { get; set; }
             public TelegramLib.Enums.Settings.Language.LanguageType Type { get; set; }
         }
+
+        [HttpPost("UpdateLocalPasscode")]
+        public void UpdateLocalPasscode([FromBody] UpdatePassCodeClass settings)
+        {
+            DbService.UpdatePassCode(settings.Settings);
+        }
+
+        public class UpdatePassCodeClass()
+        {
+            public PasscodeSettings Settings { get; set; }
+        }
+
+
     }
 }

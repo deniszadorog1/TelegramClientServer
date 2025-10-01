@@ -207,28 +207,28 @@ namespace TelegramLib.MainClasses
 
         public void SetTestLoggedUserParams()
         {
-/*            List<User> blockedContacts = new List<User>();
+            /*            List<User> blockedContacts = new List<User>();
 
 
 
-            //blockedContacts.Add(Contacts[0]);
+                        //blockedContacts.Add(Contacts[0]);
 
-            LoggedUser.BlockedContacts = blockedContacts;*/
+                        LoggedUser.BlockedContacts = blockedContacts;*/
         }
 
         public void SetTestFolders()
         {
-/*            Folders.Add(new Folder(1, "FirstTest", "Folder",
-                new List<UserContactcs>() { Contacts[0], Contacts[1] },
-                new List<UserContactcs>()));
+            /*            Folders.Add(new Folder(1, "FirstTest", "Folder",
+                            new List<UserContactcs>() { Contacts[0], Contacts[1] },
+                            new List<UserContactcs>()));
 
-            Folders.Add(new Folder(1, "Android", "Android",
-                new List<UserContactcs>() { Contacts[1], Contacts[2] },
-                new List<UserContactcs>()));
+                        Folders.Add(new Folder(1, "Android", "Android",
+                            new List<UserContactcs>() { Contacts[1], Contacts[2] },
+                            new List<UserContactcs>()));
 
-            Folders.Add(new Folder(1, "BellTest", "Bell",
-                new List<UserContactcs>() { Contacts[0], Contacts[2] },
-                new List<UserContactcs>()));*/
+                        Folders.Add(new Folder(1, "BellTest", "Bell",
+                            new List<UserContactcs>() { Contacts[0], Contacts[2] },
+                            new List<UserContactcs>()));*/
         }
 
 
@@ -419,12 +419,57 @@ namespace TelegramLib.MainClasses
         public User GetChatterById(int chatterId)
         {
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
-            return chat is null ? null : chat.Chatter; 
+            return chat is null ? null : chat.Chatter;
         }
 
         public bool IsChatterIdIsContact(int chatterId)
         {
             return Contacts.Any(x => x.ContactUserId == chatterId);
+        }
+
+        public void DeleteChatByChatter(User chatter)
+        {
+            //Get chat
+            UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatter.Id);
+            if (chat is null) return;
+
+            //Delete from chats
+            //Chats.Remove(chat);
+            chat.ClearChat();
+
+            //Delete from folders
+            for (int i = 0; i < Folders.Count; i++)
+            {
+                if (Folders[i].Contacts.Any(x => x.Id == chatter.Id))
+                {
+                    Folders[i].Contacts.Remove(chatter);
+                }
+            }
+        }
+
+        public List<int> GetFoldersIdWithGivenUserId(int userId)
+        {
+            return Folders
+                .Where(x => x.Contacts.Select(y => y.Id)
+                .Contains(userId)).Select(x => x.Id)
+                .ToList();
+        }
+
+        public List<(TextMessage, int)> GetMessagesChatIdFromChatsWithGivenSubChat(string subString)
+        {
+            List<(TextMessage, int)> res = new List<(TextMessage, int)>();
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                for(int j = 0; j < Chats[i].Messages.Count; j++)
+                {
+                    if (Chats[i].Messages[j] is TextMessage text &&
+                        text.Text.Contains(subString))
+                    {
+                        res.Add((text, Chats[i].Id));
+                    }
+                }
+            }
+            return res;
         }
 
     }

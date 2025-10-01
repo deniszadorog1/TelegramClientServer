@@ -10,6 +10,7 @@ namespace TelegramLib.Models
         public TelegramModel()
              : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
+
         }
 
         public virtual DbSet<AdvancedSettings> AdvancedSettings { get; set; }
@@ -39,6 +40,7 @@ namespace TelegramLib.Models
         public virtual DbSet<MonitorNotifs> MonitorNotifs { get; set; }
         public virtual DbSet<MonitorSidesType> MonitorSidesType { get; set; }
         public virtual DbSet<NotificatioonsAndSound> NotificatioonsAndSound { get; set; }
+        public virtual DbSet<PassCode> PassCode { get; set; }
         public virtual DbSet<PhoneNumberSettings> PhoneNumberSettings { get; set; }
         public virtual DbSet<PossibleChatBGs> PossibleChatBGs { get; set; }
         public virtual DbSet<PrivacySetting> PrivacySetting { get; set; }

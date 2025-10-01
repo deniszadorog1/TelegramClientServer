@@ -35,8 +35,7 @@ namespace TelegramLib.Models
 
         public int? AwayForTypeId { get; set; }
 
-        [StringLength(32)]
-        public string Passcode { get; set; }
+        public int? PassCodeId { get; set; }
 
         public virtual AwayForType AwayForType { get; set; }
 
@@ -52,6 +51,8 @@ namespace TelegramLib.Models
         public virtual LastSeenSettings LastSeenSettings { get; set; }
 
         public virtual MessagesSettings MessagesSettings { get; set; }
+
+        public virtual PassCode PassCode { get; set; }
 
         public virtual PhoneNumberSettings PhoneNumberSettings { get; set; }
 

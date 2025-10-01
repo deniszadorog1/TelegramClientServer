@@ -174,14 +174,20 @@
                             Orientation="Vertical">
                         <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
-                        
+
                         <WrapPanel Name ="AllMediasElements"
                                Background="Transparent" 
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left">
-
                         </WrapPanel>
                     </StackPanel>
+
+                    <ListBox Grid.Row="2" Name="GlobalMessageSearch" MaxHeight="500"
+                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             Visibility="Hidden" 
+                             VerticalAlignment="Top"
+                             Margin="0 20 0 0"/>
+
 
                     <StackPanel Grid.Row="2" Name="SearchMessageGrid" Visibility="Hidden"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"

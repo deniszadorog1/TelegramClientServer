@@ -1,9 +1,11 @@
 ﻿using ControlzEx.Standard;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 using TelegramLib.Services;
@@ -31,7 +33,7 @@ namespace TelegramVisualPart.Pages
         public ToChooseChats(TelSystem system, AutoDeleteType type)
         {
             _system = system;
-            //_contacts = _system.Contacts;
+            SetContactsUsers();
             _newAutoDelType = type;
 
             InitializeComponent();
@@ -39,6 +41,22 @@ namespace TelegramVisualPart.Pages
             SetActionContacts();
 
             SetLanguageText.SetToChooseChat(this);
+        }
+
+        public void SetContactsUsers()
+        {
+            _contacts = new List<User>();
+            _contacts.Clear();
+
+            for (int i = 0; i < _system.Contacts.Count; i++)
+            {
+                UserChat? chat = _system.Chats
+                    .FirstOrDefault(x => x.Chatter.Id == _system.Contacts[i].ContactUserId);
+                if (chat is null) continue;
+
+                _contacts.Add(chat.Chatter);
+            }
+
         }
 
         public void SetActionContacts()
@@ -51,10 +69,23 @@ namespace TelegramVisualPart.Pages
                 contact.Tag = _contacts[i].GetFirstImageName().Name;
                 contact.Name = "contact_" + Guid.NewGuid().ToString("N");
 
+                SetContactParams(contact, _contacts[i]);
+
                 contact.PreviewMouseDown += AutoDeleteContact_PreviewMouseDown;
 
                 ChatsPanelToChoose.Children.Add(contact);
             }
+        }
+
+        public void SetContactParams(ChatToApply toAddParams, User contactUser)
+        {
+            toAddParams.TypeName.Text = contactUser.Name;
+            toAddParams.AutoDeletionType.Text = "auto - delete";
+
+            string name = contactUser.GetFirstImageNameInString();
+            string imgPath = FilesAction.GetUserImagePath(name);
+
+            toAddParams.UserImageBrush.ImageSource = new BitmapImage(new Uri(imgPath, UriKind.Absolute));
         }
 
         private void AutoDeleteContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -105,7 +136,7 @@ namespace TelegramVisualPart.Pages
         public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub,
             PrivAndSecSettings settings, TelSystem system)
         {
-            //_contacts = contacts;
+            SetContactsUsers();
             _type = type;
             _sub = sub;
             _privSettings = settings;
@@ -200,13 +231,13 @@ namespace TelegramVisualPart.Pages
         private void But_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = null;
-            if (sender is System.Windows.Controls.Button but) 
+            if (sender is System.Windows.Controls.Button but)
                 but.Background = new SolidColorBrush(Colors.Transparent);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            if(_prevPage is not null)
+            if (_prevPage is not null)
             {
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(_prevPage);
                 return;
@@ -242,7 +273,7 @@ namespace TelegramVisualPart.Pages
         {
             await SignalRService.SetPhoneNumVisByExps(_system.LoggedUser);
             await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
-            
+
             await SignalRService.UpdateBirtDate(_system.LoggedUser);
             await SignalRService.UpdateContactPhotoVis(_system.LoggedUser);
         }

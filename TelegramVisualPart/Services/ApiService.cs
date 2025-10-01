@@ -10,11 +10,13 @@ using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
+using System.Net.WebSockets;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +32,7 @@ using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls.ContactsControls;
 
@@ -286,10 +289,10 @@ namespace TelegramVisualPart.Services
         // Get TelSystem
         public static async Task<TelSystem> GetTelSystem(string login, string password)
         {
-/*            var date = new { Login = login, Password = password };
+            /*            var date = new { Login = login, Password = password };
 
-            var json = JsonConvert.SerializeObject(date);
-            var contact = new StringContent(json, Encoding.UTF8, "application/json");*/
+                        var json = JsonConvert.SerializeObject(date);
+                        var contact = new StringContent(json, Encoding.UTF8, "application/json");*/
             var response = await _client.GetAsync($"api/StartPage/GetTelSystem?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -390,6 +393,8 @@ namespace TelegramVisualPart.Services
 
             return response.IsSuccessStatusCode;
         }
+
+
 
         //Add contact
         public static async Task<bool> AddContact(int userId, UserContactcs contact)
@@ -528,7 +533,7 @@ namespace TelegramVisualPart.Services
             var response = await _client.PostAsync("api/Social/AddUserImage", contact);
 
             return response.IsSuccessStatusCode;
-        } 
+        }
 
         //Add folder
         public static async Task<bool> AddFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
@@ -553,6 +558,37 @@ namespace TelegramVisualPart.Services
             };
             var response = await _client.SendAsync(request);
         }
+
+        public static async Task<bool> DeleteChatByChatterId(int chatterId)
+        {
+            var data = new { ChatterId = chatterId };
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteChatByChatterId"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+
+            var response = await _client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> DeleteContactFromFolder(int folderId, int userId)
+        {
+            var data = new { FolderId = folderId, UserId = userId };
+            var request = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteContactFromFolder"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+
+            var response = await _client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
 
         //Update folder
         public static async Task<bool> UpdateFolder(TelegramLib.MainClasses.FolderObjs.Folder folder, int userId)
@@ -692,7 +728,7 @@ namespace TelegramVisualPart.Services
             int volume, bool isDefault)
         {
             //var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault }
-            var data = new {Sound = sound, Volume = volume, UserId = userId, IsDefault = isDefault};
+            var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault = isDefault };
 
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -709,6 +745,17 @@ namespace TelegramVisualPart.Services
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Settings/UpdateFoldersPosition", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdatePasscode(PasscodeSettings settings)
+        {
+            var data = new { Settings = settings };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Settings/UpdateLocalPasscode", content);
 
             return response.IsSuccessStatusCode;
         }

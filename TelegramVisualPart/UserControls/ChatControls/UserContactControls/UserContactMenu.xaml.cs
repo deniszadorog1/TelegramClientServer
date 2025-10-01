@@ -100,6 +100,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
             AddToFolder.IconType.Kind = PackIconKind.FolderOutline;
             //AddToFolder.ButName.Text = "Add to folder";
+            AddToFolder.MemeIcon.Visibility = Visibility.Visible;
 
             BlockUser.IconType.Kind = PackIconKind.Hand;
             //BlockUser.ButName.Text = "Block user";

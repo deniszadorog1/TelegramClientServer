@@ -194,8 +194,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/littlemenupages/selectsoundtone.xaml" +
-                    "", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/littlemenupages/selectsoundtone.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Pages\LittleMenuPages\SelectSoundTone.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

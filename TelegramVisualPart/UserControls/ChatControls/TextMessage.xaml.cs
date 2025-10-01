@@ -61,7 +61,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _minMessageWidth = 30;
         private void SetWidth(string fontName)
         {
-            double blockSize = GetStringWidth(fontFamily: fontName);
+            double blockSize = GetStringWidth(fontFamily: fontName) + 10;
 
             if (blockSize < _minMessageWidth) blockSize = _minMessageWidth;
 

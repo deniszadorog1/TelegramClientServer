@@ -1,0 +1,69 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.ChatActions.SendMedia.SendMediaPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions.SendMedia"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="500"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      Title="SendMediaPage">
+
+    <Border CornerRadius="10"
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Name="UpperRowGrid">
+                <TextBlock Grid.Column="1" Margin="30 0 0 0"
+                           Name="PageNameBlock" Text="Local passcode"
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource UsualTextColor}"
+                           FontSize="20"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Name="MeidaRowGrid">
+                <Grid Margin="30 0 30 0" Background="{StaticResource DarkThemeSecond}">
+                    
+                </Grid>
+
+                <Canvas Name="MediaButsPanel"/>
+            </Grid>
+
+
+
+            <Grid Grid.Row="4">
+
+                <Button  Height="30" Content="Add" Background="Transparent"
+                        BorderThickness="0" Margin="30 0 0 0"
+                        HorizontalAlignment="Left"
+                        Name="AddBut" 
+                        Foreground="{StaticResource TempActiveTextColor}"/>
+
+                <StackPanel HorizontalAlignment="Right" 
+                            VerticalAlignment="Center"
+                            Margin="0 0 20 0"
+                            Orientation="Horizontal">
+                    <Button  Height="30" Content="Cancel" Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalAlignment="Right"
+                        Name="CancelBut" Margin="0 0 10 0"
+                        Foreground="{StaticResource TempActiveTextColor}"/>
+                    
+                    <Button  Height="30" Content="Send" Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalAlignment="Right"
+                        Name="SendBut"
+                        Foreground="{StaticResource TempActiveTextColor}"/>
+                </StackPanel>
+            </Grid>
+            
+        </Grid>
+    </Border>
+</Page>

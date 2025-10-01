@@ -220,6 +220,7 @@
     <Compile Include="Models\MonitorNotifs.cs" />
     <Compile Include="Models\MonitorSidesType.cs" />
     <Compile Include="Models\NotificatioonsAndSound.cs" />
+    <Compile Include="Models\PassCode.cs" />
     <Compile Include="Models\PhoneNumberSettings.cs" />
     <Compile Include="Models\PossibleChatBGs.cs" />
     <Compile Include="Models\PrivacySetting.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\ForwardedMessagesSub.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\LastSeenSub.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\MessagesSub.cs" />
+    <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\PasscodeSettings.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\PhoneNumberSub.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\PrivacySub.cs" />
     <Compile Include="UserSettings\SettingsTypes\SubSettings\PrivAnSecSubs\ProfilePhotosSub.cs" />

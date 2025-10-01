@@ -42,10 +42,12 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <iconBut:IconButton Grid.Column="0" x:Name="GetBackBut"
+                    <Grid>
+                        <iconBut:IconButton Grid.Column="0" x:Name="GetBackBut"
                                         Width="25" Height="25"
                                         PreviewMouseDown="GetBackBut_PreviewMouseDown"/>
-
+                    </Grid>
+                    
                     <TextBlock Grid.Column="1" VerticalAlignment="Center"
                                Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" FontSize="20"
                                FontFamily="Segoe UI" Name="PageName"/>

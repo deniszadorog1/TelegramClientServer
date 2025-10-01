@@ -81,8 +81,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.MediaActions {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/mediaactions/act" +
-                    "ionbutton.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/mediaactions/actionbutton" +
+                    ".xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\MediaActions\ActionButton.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

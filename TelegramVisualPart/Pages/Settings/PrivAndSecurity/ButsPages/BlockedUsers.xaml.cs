@@ -68,6 +68,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
                     BlockedUsersPanel.Items.Remove(item);
 
                     AmountNum.Text = _system.LoggedUser.BlockedUsers.Count.ToString();
+
+                    //Update if its temp chat 
+                    ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
                 };
 
                 BlockedUsersPanel.Items.Add(item);

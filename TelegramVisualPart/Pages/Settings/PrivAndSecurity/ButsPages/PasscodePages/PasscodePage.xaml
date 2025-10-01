@@ -7,6 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="430"
+      Height="450" Width="430"
       Title="PasscodePage">
     <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10"
             Background="{StaticResource DarkThemeOne}">
@@ -25,6 +26,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Name="BackGrid"
+                      Background="Transparent"
                       MouseEnter="BackGrid_MouseEnter"
                       MouseLeave="BackGrid_MouseLeave"
                       PreviewMouseDown="BackGrid_PreviewMouseDown">
@@ -43,6 +45,9 @@
                            FontSize="20"/>
 
                 <Grid Grid.Column="2" Name="CloseGrid"
+                      Background="Transparent"
+                      MouseEnter="CloseGrid_MouseEnter"
+                      MouseLeave="CloseGrid_MouseLeave"
                       PreviewMouseDown="CloseGrid_PreviewMouseDown">
 
                     <materialDesign:PackIcon Name="CloseBut"
@@ -71,7 +76,10 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Name="ChangePasscodeGrid"
+                          MouseEnter="Repaint_MouseEnter"
+                          MouseLeave="Repaint_MouseLeave"
+                          PreviewMouseDown="ChangePasscodeGrid_PreviewMouseDown">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition/>
@@ -89,7 +97,10 @@
                                    FontSize="16"/>
                     </Grid>
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Name="AutoLockTimeGrid"
+                          MouseEnter="Repaint_MouseEnter"
+                          MouseLeave="Repaint_MouseLeave"
+                          PreviewMouseDown="AutoLockTimeGrid_PreviewMouseDown">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="75"/>
                             <ColumnDefinition/>
@@ -107,13 +118,12 @@
                                    Foreground="{StaticResource UsualTextColor}"
                                    FontSize="16"/>
 
-                        <TextBlock Grid.Column="2" Text="Chosen info"
+                        <TextBlock Name="ChosenTime"
+                                   Grid.Column="2" Text="Chosen info"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    Foreground="{StaticResource TempActiveTextColor}"
-                                   FontSize="16"/>
-
-
+                                   FontSize="16" Margin="20 0 0 0"/>
                     </Grid>
 
                 </Grid> 
@@ -129,7 +139,10 @@
                 </StackPanel>
 
 
-                <Grid Name="SmileGrind" Grid.Row="2">
+                <Grid Name="SmileGrind" Grid.Row="2"
+                      MouseEnter="Repaint_MouseEnter"
+                      MouseLeave="Repaint_MouseLeave"
+                      >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="75"/>
                         <ColumnDefinition/>
@@ -151,6 +164,9 @@
                                Text="Unlock with window hello"/>
 
                     <ToggleButton Grid.Column="2" 
+                                  Name="WIndowHelloToggle"
+                                  Checked="WIndowHelloToggle_Checked"
+                                  Unchecked="WIndowHelloToggle_Unchecked"
                                   Background="{StaticResource TempActiveTextColor}"/>
 
                 </Grid>
@@ -160,10 +176,14 @@
                         Text="You need to enter your passcode before unlocking Telegram with Windows Hello."/>
                 </Grid>
 
-                <Grid Grid.Row="4" Margin="20 10 20 10">
+                <Grid Grid.Row="4" Margin="0 10 0 10"
+                      Name="DisableCodeGrid"
+                      MouseEnter="Repaint_MouseEnter"
+                      MouseLeave="Repaint_MouseLeave"
+                      PreviewMouseDown="DisableCodeGrid_PreviewMouseDown">
                     <TextBlock Name="RemovePasscode" VerticalAlignment="Center"
                                Text="Disable passcode" Foreground="Red"
-                               FontSize="16"/>
+                               FontSize="16" Margin="30 0 0 0"/>
                 </Grid>
                
             </Grid>

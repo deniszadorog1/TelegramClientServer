@@ -57,7 +57,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls
         private void EdiProfBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_system is null) return;
-            Pages.MyProfile.MyProfileSettings settingsPage = new Pages.MyProfile.MyProfileSettings(_system.LoggedUser, _system);
+            Pages.MyProfile.MyProfileSettings settingsPage =
+                new Pages.MyProfile.MyProfileSettings(_system.LoggedUser, _system, new Pages.Settings.SettingsPage(_system)); ;
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(settingsPage);
         }

@@ -74,6 +74,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Enter
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\EnterInAccount\RegistrationPage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\MainWindow.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Advanced\AdvancedPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\BlockPage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\ClearChatHistory.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\DeleteChat.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.g.cs
@@ -104,6 +105,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\AutoLock.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\PasscodePage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyDeleteAccount.g.cs
@@ -202,6 +205,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Enter
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\EnterInAccount\RegistrationPage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\MainWindow.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Advanced\AdvancedPage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\BlockPage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\ClearChatHistory.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\DeleteChat.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.baml
@@ -232,6 +236,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\Language\LanguagePage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\NotifsAndSounds\NotAndSoundSettings.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\AutoLock.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\PasscodePages\PasscodePage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\ButsPages\SetLocalCode.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyAndSecurity.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\Settings\PrivAndSecurity\PrivacyDeleteAccount.baml

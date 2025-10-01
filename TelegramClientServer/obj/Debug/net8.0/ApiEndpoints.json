@@ -253,6 +253,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
+    "Method": "UpdateLocalPasscode",
+    "RelativePath": "api/Settings/UpdateLocalPasscode",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "settings",
+        "Type": "TelegramClientServer.Controllers.SettingsController\u002BUpdatePassCodeClass",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "UpdateNotifMonitor",
     "RelativePath": "api/Settings/UpdateNotifMonitor",
     "HttpMethod": "POST",
@@ -639,6 +661,50 @@
       {
         "Name": "contact",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BBlockedContactDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "DeleteChatByChatterId",
+    "RelativePath": "api/Social/DeleteChatByChatterId",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatterIdDTO",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteChatByChatterIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "DeleteContactFromFolder",
+    "RelativePath": "api/Social/DeleteContactFromFolder",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BRemoveCOntactFromFolderDTO",
         "IsRequired": true
       }
     ],

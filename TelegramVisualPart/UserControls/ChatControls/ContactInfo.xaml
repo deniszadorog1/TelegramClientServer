@@ -304,7 +304,6 @@
                                    Foreground="{StaticResource ToBlockContact}" MouseEnter="But_MouseEnter" 
                                    MouseLeave="But_MouseLeave" PreviewMouseDown="BlockLine_PreviewMouseDown"/>
                     </Grid>
-
                 </Grid>
             </ScrollViewer>
 

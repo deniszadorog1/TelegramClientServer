@@ -13,7 +13,6 @@ namespace TelegramLib.UserSettings.SettingsTypes
     public class PrivAndSecSettings
     {
         public int Id { get; set; }
-        public string LocalPasscode { get; set; }
         public List<User> BlockedUsers { get; set; }
         
         public AwayForTime SelfDeleteTime { get; set; }
@@ -25,8 +24,9 @@ namespace TelegramLib.UserSettings.SettingsTypes
         public MessagesSub MessagesPrivacy { get; set; }
         public DateOfBirthSub DateBirthPrivacy { get; set; }
         public BioSub BioPrivacy { get; set; }
+        public PasscodeSettings PassCode { get; set; }
 
-        public PrivAndSecSettings(int id, string passCode, AwayForTime destructTime,
+        public PrivAndSecSettings(int id, AwayForTime destructTime,
             List<User> blocked,
             PhoneNumberSub phonePrivacy,
             LastSeenSub lastSeenPrivacy,
@@ -34,10 +34,10 @@ namespace TelegramLib.UserSettings.SettingsTypes
             ForwardedMessagesSub forwardMesPrivacy,
             MessagesSub messPrivacy,
             DateOfBirthSub birthDatePrivacy,
-            BioSub bioPrivacy)
+            BioSub bioPrivacy,
+            PasscodeSettings passCodeSet)
         {
             Id = id;
-            LocalPasscode = passCode;
             SelfDeleteTime = destructTime;
             BlockedUsers = blocked;
 
@@ -48,12 +48,12 @@ namespace TelegramLib.UserSettings.SettingsTypes
             MessagesPrivacy = messPrivacy;
             DateBirthPrivacy = birthDatePrivacy;
             BioPrivacy = bioPrivacy;
+            PassCode = passCodeSet;
         }
 
         public PrivAndSecSettings()
         {
             Id = 1;
-            LocalPasscode = "passcodeTEST";
             SelfDeleteTime = AwayForTime.SixMonths;
             BlockedUsers = new List<User>();
 
@@ -64,6 +64,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
             MessagesPrivacy = new MessagesSub();
             DateBirthPrivacy = new DateOfBirthSub();
             BioPrivacy = new BioSub();
+            PassCode = null;
         }
     }
 }

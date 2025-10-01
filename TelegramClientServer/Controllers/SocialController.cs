@@ -82,6 +82,28 @@ namespace TelegramClientServer.Controllers
             DbService.RemoveFolder(folder.Folder.Id);
         }
 
+        [HttpDelete("DeleteChatByChatterId")]
+        public void DeleteChatByChatterId([FromBody] DeleteChatByChatterIdDTO chatterIdDTO)
+        {
+            DbService.DeleteChatByChatterId(chatterIdDTO.ChatterId);
+        }
+        public class DeleteChatByChatterIdDTO()
+        {
+            public int ChatterId { get; set; }
+        }
+
+        [HttpDelete("DeleteContactFromFolder")]
+        public void DeleteContactFromFolder([FromBody] RemoveCOntactFromFolderDTO dto)
+        {
+            DbService.DeleteUserFromFolder(dto.FolderId, dto.UserId);
+        }
+        public class RemoveCOntactFromFolderDTO()
+        {
+            public int FolderId { get; set; }
+            public int UserId { get; set; }
+        }
+
+
         //Add Message
         [HttpPut("AddMessage")]
         public IActionResult AddMessage(MessageDTO message)

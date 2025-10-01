@@ -41,5 +41,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
         {
             ArrowColumn.Width = new GridLength(size);
         }
+
+        private void PackIcon_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
     }
 }

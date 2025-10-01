@@ -100,8 +100,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/settings/privandsecurity/butspages/b" +
-                    "lockedusers.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/settings/privandsecurity/butspages/blockeduse" +
+                    "rs.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\Pages\Settings\PrivAndSecurity\ButsPages\BlockedUsers.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -73,8 +73,7 @@ namespace TelegramVisualPart.UserControls.MainPage {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/mainpage/leftbuttonsbutton.xa" +
-                    "ml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/mainpage/leftbuttonsbutton.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\MainPage\LeftButtonsButton.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

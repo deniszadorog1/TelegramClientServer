@@ -181,7 +181,6 @@
                        FontSize="22"
                        Foreground="Red"
                        FontWeight="SemiBold"/>
-
             </Grid>
         </Border>
         

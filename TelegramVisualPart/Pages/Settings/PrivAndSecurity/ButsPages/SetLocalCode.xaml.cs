@@ -23,11 +23,29 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     public partial class SetLocalCode : Page
     {
         private TelSystem _system;
-        public SetLocalCode(TelSystem system)
+        private bool _isEnterCode;
+        
+        public SetLocalCode(TelSystem system, bool isEnterCode = false)
         {
             _system = system;
+            _isEnterCode = isEnterCode;
+
             InitializeComponent();
             SetBasicParams();
+
+            SetPassCode();
+        }
+
+        public void SetPassCode()
+        {
+            if (!_isEnterCode) return;
+
+            SecondBoxCode.Visibility = Visibility.Hidden;
+
+            AddPasscode.Content = "Submit";
+
+            BoxesRow.Height = new GridLength(BoxesRow.Height.Value - 60);
+            //Height -= 160;
         }
 
         public void SetBasicParams()
@@ -45,6 +63,35 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new PrivacyAndSecurity(_system));
+        }
+
+        private void AddPasscode_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isEnterCode)
+            {
+                if (FirstCodeBox.Text !=
+                    _system.Settings.PrivacySettings.PassCode.PassCode) return;
+
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
+                    new PasscodePages.PasscodePage(_system));
+                return;
+            }
+
+
+            if (string.IsNullOrWhiteSpace(FirstCodeBox.Text) ||
+               string.IsNullOrWhiteSpace(SecondBoxCode.Text) ||
+               FirstCodeBox.Text != SecondBoxCode.Text)
+            {
+                return;
+            }
+
+            _system.Settings.PrivacySettings.PassCode =
+                new TelegramLib.UserSettings.SettingsTypes.SubSettings
+                .PrivAnSecSubs.PasscodeSettings();
+
+            _system.Settings.PrivacySettings.PassCode.PassCode = FirstCodeBox.Text;
+
+           ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new PasscodePages.PasscodePage(_system));
         }
     }
 }

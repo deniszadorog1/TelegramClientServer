@@ -23,10 +23,11 @@
        
         AllowsTransparency="True"
         Background="White"
-        
+                
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
-        LayoutUpdated="Window_LayoutUpdated">
+        LayoutUpdated="Window_LayoutUpdated"
+        MouseMove="Window_MouseMove">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
@@ -89,6 +90,9 @@
                 <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
                PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
                 <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
+
+
+                <Frame Name="BlockFrame" NavigationUIVisibility="Hidden"/>
 
             </Grid>
         </Grid>

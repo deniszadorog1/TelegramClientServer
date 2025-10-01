@@ -123,6 +123,9 @@ namespace TelegramVisualPart.Pages.Contacts
 
                 ContactClicked?.Invoke(sender, EventArgs.Empty);
                 ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+
+                //Update if its temp chat 
+                ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
                 return;
             }
             
