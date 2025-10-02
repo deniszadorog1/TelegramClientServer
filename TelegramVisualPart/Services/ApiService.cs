@@ -285,7 +285,6 @@ namespace TelegramVisualPart.Services
             return res;
         }
 
-
         // Get TelSystem
         public static async Task<TelSystem> GetTelSystem(string login, string password)
         {

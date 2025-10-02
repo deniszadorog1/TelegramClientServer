@@ -229,6 +229,9 @@
     <Compile Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatsControls\UserChatMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -607,6 +610,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\UserContactControls\UserContactMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatsControls\UserChatMenu.xaml">

@@ -507,20 +507,28 @@ namespace TelegramVisualPart.Pages
             ShowChatControl();
             SetSizerActionWithUserChatMouseDown();
 
-
-            UserChat.UpdateLayout();
-
-            //Scroll to chosen message
-            int? messIndex =
-                chat.GetMessageIndexByText(message.GetLastMessageText());
-            if (messIndex is null) return;
-
-
-            UserChat.Dispatcher.BeginInvoke(new Action(() =>
+            Action tempHandler = null;
+            tempHandler = () =>
             {
-                UserChat.ScrollToChosenItem((int)messIndex);
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                int? messIndex = chat.GetMessageIndexByText(message.GetLastMessageText());
+                if (messIndex is null) return;
 
+                UserChat.ScrollToChosenItem((int)messIndex);
+
+                UserChat.SettingEnded -= tempHandler; 
+            };
+            UserChat.SettingEnded += tempHandler;
+
+
+/*            UserChat.SettingEnded += () =>
+            {
+                //Scroll to chosen message
+                int? messIndex =
+                    chat.GetMessageIndexByText(message.GetLastMessageText());
+                if (messIndex is null) return;
+
+                UserChat.ScrollToChosenItem((int)messIndex);
+            };*/
             //scroll to the message
             //UserChat.ScrollToChosenItem((int)messIndex);
         }
@@ -946,6 +954,7 @@ namespace TelegramVisualPart.Pages
             Keyboard.ClearFocus();
         }
 
+        private Dictionary<int, ListBoxItem> _chatsDict = new Dictionary<int, ListBoxItem>();
 
         public async Task RepaintUserChatsPanel()
         {
@@ -955,6 +964,13 @@ namespace TelegramVisualPart.Pages
 
             for (int i = 0; i < _system.Chats.Count(); i++)
             {
+                if (_chatsDict.ContainsKey(_system.Chats[i].Id))
+                {
+                    _chatsDict.TryGetValue(_system.Chats[i].Id, out ListBoxItem tempItem);
+                    items.Add(tempItem);
+                    continue;
+                }
+
                 System.Windows.Controls.ListBoxItem item = new
                     System.Windows.Controls.ListBoxItem()
                 {
@@ -970,6 +986,8 @@ namespace TelegramVisualPart.Pages
                 item.MouseLeave += UserChat_MouseLeave;
                 //ChatsBox.Items.Add(item);
                 items.Add(item);
+
+                _chatsDict.TryAdd(_system.Chats[i].Id, item);
             }
 
             foreach (var item in items)
@@ -1897,7 +1915,11 @@ namespace TelegramVisualPart.Pages
             {
                 ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
             }
+        }
 
+        public void SetImageMessages(string capture, List<Image> imgs)
+        {
+            UserChat.AddBigMediaImagesMessage(capture, imgs);
         }
     }
 }

@@ -23,6 +23,7 @@ using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages;
+using TelegramVisualPart.Pages.ChatActions.SendMedia;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.MyProfile.SetInformation;
 using TelegramVisualPart.Pages.Settings;
@@ -689,8 +690,17 @@ namespace TelegramVisualPart
             ((MainChatPage)MainFrame.Content).SetMessageGridMagnifier();
         }
 
-        public void AddEmojiInChat(string text)
+        public void AddEmojiOnPage(string text)
         {
+            //Is Media send page
+            if(SecondaryFrame.Content is SendMediaPage media)
+            {
+                media.AddSmileInTextBox(text);
+                return;
+            }
+
+
+            //Is Chat page
             if (MainFrame.Content is MainChatPage chatPage)
             {
                 chatPage.UserChat.AddEmoji(text);
@@ -1038,9 +1048,14 @@ namespace TelegramVisualPart
             page.DeleteChat(chatter);
         }
 
-        public void SetVanishingMessage(string message)
+        public void AddAddMediaPage(string firstMediaPath)
         {
+            SetSecondaryFrame(new SendMediaPage(firstMediaPath));
+        }
 
+        public void SendBigImagesMessage(string capture, List<Image> imgs)
+        {
+            if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs);
         }
     }
 }

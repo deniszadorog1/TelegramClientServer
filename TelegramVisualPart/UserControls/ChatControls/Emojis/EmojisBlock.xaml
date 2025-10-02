@@ -19,7 +19,8 @@
     </UserControl.Resources>
     
     
-    <Border x:Name="BorderBg" Background="{StaticResource DarkThemeOne}">
+    <Border x:Name="BorderBg" Background="{StaticResource DarkThemeOne}"
+            CornerRadius="10" BorderBrush="Black" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="45"/>

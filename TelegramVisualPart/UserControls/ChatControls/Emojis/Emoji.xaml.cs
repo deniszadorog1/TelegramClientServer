@@ -46,7 +46,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).AddEmojiInChat(EmojiBlock.Text);
+            ((MainWindow)Window.GetWindow(this)).AddEmojiOnPage(EmojiBlock.Text);
         }
     }
 }

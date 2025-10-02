@@ -11,6 +11,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\SetCustomTime.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SendMedia\SendMediaPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\CustomMute.xaml;;
@@ -75,6 +76,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Mon
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserContactControls\UserContactMenu.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\UserChatMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\UserChatsMenuElement.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\ChatButton.xaml;;

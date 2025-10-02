@@ -337,3 +337,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\SendMedia\SendMediaPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\SendMedia\SendMediaPage.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.baml

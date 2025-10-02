@@ -288,6 +288,9 @@ namespace TelegramVisualPart.UserControls
         }
 
         private TelegramLib.MainClasses.UserChat _chat;
+
+        public event Action SettingEnded;
+
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
             if (chat is null) return;
@@ -315,6 +318,8 @@ namespace TelegramVisualPart.UserControls
             SetUserBg();
 
             SetChatterImage();
+
+            SettingEnded?.Invoke();
         }
 
         public void SetUnblockGridVis()
@@ -506,18 +511,19 @@ namespace TelegramVisualPart.UserControls
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
-                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name);
+                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name, CommentTextBox.Text);
             }
         }
 
-        private async void AddTextMessage(string senderImageName)
+        private async void AddTextMessage(string senderImageName, string sendText)
         {
             //Visaul add
             /*            ChatBox.Items.Add(new ChatControls.TextMessage(
                             GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
             */
             ChatControls.TextMessage text = new ChatControls.TextMessage(
-                GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName);
+                GetConvertedStringMessage(sendText),
+                senderImageName, _system.Settings.GetChatSettings().FontName);
             AddTextControl(text);
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
@@ -528,7 +534,7 @@ namespace TelegramVisualPart.UserControls
 
             TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
-                            DateTime.Now, CommentTextBox.Text);
+                            DateTime.Now, sendText);
 
 
             //Adding in DB
@@ -536,12 +542,13 @@ namespace TelegramVisualPart.UserControls
 
             toAdd = await ApiService.GetLastChatMessage(_chat.Id);
 
-            await SendMessageToReceiver((TelegramLib.MainClasses.Messages.TextMessage)toAdd);
+            if (toAdd is not TelegramLib.MainClasses.Messages.TextMessage toAddText) return;
+
+            await SendMessageToReceiver(toAddText);
 
             //toAdd.SenderId = contact.Id;
-            _chatMessages.Add(toAdd);
-
-            CommentTextBox.Text = string.Empty;
+            _chatMessages.Add(toAddText);
+            if (CommentTextBox.Text == sendText) CommentTextBox.Text = string.Empty;
 
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
@@ -617,10 +624,12 @@ namespace TelegramVisualPart.UserControls
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
+
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
-                    AddImageMessage(filePath, false, _system.LoggedUser.GetFirstImageName().Name);
-                    AddMediaPath(filePath);
+                    AddMediaPage(filePath);
+                    /*                    AddImageMessage(filePath, false, _system.LoggedUser.GetFirstImageName().Name);
+                                        AddMediaPath(filePath);*/
                 }
                 else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
                 {
@@ -628,6 +637,11 @@ namespace TelegramVisualPart.UserControls
                     AddMediaPath(filePath);
                 }
             }
+        }
+
+        public void AddMediaPage(string fullMediaPath)
+        {
+            ((MainWindow)Window.GetWindow(this)).AddAddMediaPage(fullMediaPath);
         }
 
         public void AddImageMessage(string filePath, bool isSticker, string senderImageName)
@@ -1038,6 +1052,11 @@ namespace TelegramVisualPart.UserControls
 
         public void ScrollToChosenItem(int index)
         {
+            if (ChatBox.Items.Count <= index)
+            {
+                index = ChatBox.Items.Count - 1;
+            }
+
             var item = ChatBox.Items[index];
             ChatBox.ScrollIntoView(item);
 
@@ -1316,7 +1335,7 @@ namespace TelegramVisualPart.UserControls
         private void UnblockGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
-             
+
             _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
             UnBlockBorder.Visibility = Visibility.Hidden;
 
@@ -1338,6 +1357,22 @@ namespace TelegramVisualPart.UserControls
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
         {
             EmojisBoard.Visibility = Visibility.Hidden;
+        }
+
+        public void AddBigMediaImagesMessage(string capture, List<Image> imgs)
+        {
+            if (!string.IsNullOrEmpty(capture))
+            {
+                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name, capture);
+            }
+
+            foreach (var img in imgs)
+            {
+                string fullPath = img.Tag.ToString();
+
+                AddImageMessage(fullPath, false, _system.LoggedUser.GetFirstImageName().Name);
+                AddMediaPath(fullPath);
+            }
         }
     }
 }
