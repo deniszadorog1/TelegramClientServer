@@ -446,7 +446,6 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 _system.Settings.SoundNotifSettings.MuteTime = null;
             }
 
-
             _window.SetSubMenuAction((UserTalkControlButTypes)type);
         }
 

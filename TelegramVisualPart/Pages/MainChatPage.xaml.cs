@@ -2,6 +2,7 @@
 using MaterialDesignThemes.Wpf;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
+using System.Collections;
 using System.Data.Entity.Core.Mapping;
 using System.Diagnostics.Contracts;
 using System.Security.Permissions;
@@ -30,7 +31,9 @@ using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using TelegramVisualPart.UserControls.MainPage.LittleMainControls;
 using static MaterialDesignThemes.Wpf.Theme;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using ListBoxItem = System.Windows.Controls.ListBoxItem;
 
 namespace TelegramVisualPart.Pages
@@ -87,7 +90,8 @@ namespace TelegramVisualPart.Pages
 
             SetNoChatBg();
 
-            await SetActiveChats();
+            /*await */
+            SetActiveChats();
 
             SetColorToSettingsButs();
 
@@ -334,10 +338,9 @@ namespace TelegramVisualPart.Pages
 
         public async Task SetActiveChats()
         {
-            if (ChatsBox.Visibility != Visibility.Visible)
-            {
-                ChatsBox.Visibility = Visibility.Visible;
-            }
+            HideAllChatBlocks();
+            ChatsBox.Visibility = Visibility.Visible;
+
             for (int i = 0; i < _system.Contacts.Count; i++)
             {
                 SetUserChat(_system.Contacts[i].Login);
@@ -437,9 +440,65 @@ namespace TelegramVisualPart.Pages
         {
             GlobalMessageSearch.Items.Clear();
 
-            List<(TextMessage, int)> messages =
-                 _system.GetMessagesChatIdFromChatsWithGivenSubChat(SarchBox.Text);
+            //Set height for global search panel
+            SetGlobalSearchListHeight();
 
+            //Contacts 
+            SetFoundGlobalChats();
+
+            //Set found messages
+            SetFoundGlobalMessages();
+        }
+
+        public void SetGlobalSearchListHeight()
+        {
+            GlobalMessageSearch.Height = Height - 
+                SearchBoxRow.Height.Value - 
+                FolderSliderRow.Height.Value;
+        }
+
+        public void SetFoundGlobalChats()
+        {
+            ChatsBox.Items.Clear();
+            //_chatsDict - all Chats items
+            foreach (var pair in _chatsDict)
+            {
+                ListBoxItem item = pair.Value;
+                if (item.Content is UserTalkMessage mes &&
+                   GetContainedChat(mes))
+                {
+                    GlobalMessageSearch.Items.Add(item);
+                }
+            }
+        }
+
+        public bool GetContainedChat(UserTalkMessage mes)
+        {
+            return mes.FriendLogin.Text.Contains(SarchBox.Text);
+        }
+
+        public void SetFoundGlobalMessages()
+        {
+            List<(TextMessage, int)> messages =
+                _system.GetMessagesChatIdFromChatsWithGivenSubChat(SarchBox.Text);
+
+            //Sent amount of messages block 
+            if (messages.Count > 0)
+            {
+                TotalFoundMessasges total = new TotalFoundMessasges(messages.Count);
+
+                ListBoxItem totalItem = new ListBoxItem()
+                {
+                    Content = total,
+                    Padding = new Thickness(0),
+                    Margin = new Thickness(0),
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                };
+
+                GlobalMessageSearch.Items.Add(totalItem);
+            }
+
+            //Messages
             for (int i = 0; i < messages.Count; i++)
             {
                 TelegramLib.MainClasses.User sender =
@@ -515,20 +574,20 @@ namespace TelegramVisualPart.Pages
 
                 UserChat.ScrollToChosenItem((int)messIndex);
 
-                UserChat.SettingEnded -= tempHandler; 
+                UserChat.SettingEnded -= tempHandler;
             };
             UserChat.SettingEnded += tempHandler;
 
 
-/*            UserChat.SettingEnded += () =>
-            {
-                //Scroll to chosen message
-                int? messIndex =
-                    chat.GetMessageIndexByText(message.GetLastMessageText());
-                if (messIndex is null) return;
+            /*            UserChat.SettingEnded += () =>
+                        {
+                            //Scroll to chosen message
+                            int? messIndex =
+                                chat.GetMessageIndexByText(message.GetLastMessageText());
+                            if (messIndex is null) return;
 
-                UserChat.ScrollToChosenItem((int)messIndex);
-            };*/
+                            UserChat.ScrollToChosenItem((int)messIndex);
+                        };*/
             //scroll to the message
             //UserChat.ScrollToChosenItem((int)messIndex);
         }
@@ -959,6 +1018,7 @@ namespace TelegramVisualPart.Pages
         public async Task RepaintUserChatsPanel()
         {
             ChatsBox.Items.Clear();
+            GlobalMessageSearch.Items.Clear();
 
             List<ListBoxItem> items = new List<ListBoxItem>();
 
@@ -995,12 +1055,6 @@ namespace TelegramVisualPart.Pages
                 ChatsBox.Items.Add(item);
             }
         }
-
-        public void UpdateContactNames()
-        {
-
-        }
-
 
         public async Task<UserTalkMessage> GetTalkMessage(int chatIndex)
         {
@@ -1669,6 +1723,8 @@ namespace TelegramVisualPart.Pages
             //Change queue in system chats
             _system.Chats.Remove(chat);
             _system.Chats.Insert(0, chat);
+
+            _menuChatterTalk.SetVisibilityToPinBlock(chat.IsPinned);
 
             //Update chats talk items
             RepaintUserChatsPanel();

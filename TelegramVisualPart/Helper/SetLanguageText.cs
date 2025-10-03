@@ -91,9 +91,9 @@ namespace TelegramVisualPart.Helper
             info.NotifsBlock.Text = VisConstParamsJsonService.GetStringByName("NotifsBlock");
             info.SendMesBlock.Text = VisConstParamsJsonService.GetStringByName("SendMessage");
 
-            info.AmountOfPhotosTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfPhotosTextBlock");
-            info.AmountOfVideosTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfVideosTextBlock");
-            info.AmountOfGifsTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfGifsTextBlock");
+            //info.AmountOfPhotosTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfPhotosTextBlock");
+            //info.AmountOfVideosTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfVideosTextBlock");
+            //info.AmountOfGifsTextBlock.Text = VisConstParamsJsonService.GetStringByName("AmountOfGifsTextBlock");
 
             info.ShareContactBlock.Text = VisConstParamsJsonService.GetStringByName("ShareContactBlock");
             info.EditContactBlock.Text = VisConstParamsJsonService.GetStringByName("EditContactBlock");

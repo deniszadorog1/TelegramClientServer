@@ -1,6 +1,6 @@
 ﻿
 
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SendMedia\SendMediaPage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\MainChatPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\ShareContactControl.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LittleMainControls\TotalFoundMessasges.xaml;;
 

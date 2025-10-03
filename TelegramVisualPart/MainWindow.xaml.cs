@@ -808,10 +808,10 @@ namespace TelegramVisualPart
             else ClearThirdFrame();
         }
 
-        public void SetAllChatsInMainPage()
+        public async Task SetAllChatsInMainPage()
         {
             if (MainFrame.Content is not MainChatPage page) return;
-            page.SetActiveChats();
+            await page.SetActiveChats();
         }
 
         private void Window_Closed(object sender, EventArgs e)

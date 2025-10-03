@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.MainPage.LittleMainControls.TotalFoundMessasges"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.MainPage.LittleMainControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="800"
+             Height="50">
+    <Grid Background="{StaticResource DarkThemeSecond}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Foreground="{StaticResource UsualTextColor}"
+                   FontSize="16" Margin="20 0 0 0">
+            <Run Text="Amount" Name="MessagesAmount"/>
+            <Run Text="messages found" Name="SecRun"/>
+        </TextBlock>
+
+        <TextBlock Grid.Column="1" 
+                   Text="All Chats"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   Foreground="{StaticResource UsualTextColor}"
+                   FontSize="16" Margin="0 0 20 0"/>
+    </Grid>
+</UserControl>

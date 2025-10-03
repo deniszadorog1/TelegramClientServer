@@ -531,11 +531,9 @@ namespace TelegramVisualPart.UserControls
             //system add
 
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
-
             TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, sendText);
-
 
             //Adding in DB
             await ApiService.AddMessage(toAdd, _chat);
@@ -1373,6 +1371,13 @@ namespace TelegramVisualPart.UserControls
                 AddImageMessage(fullPath, false, _system.LoggedUser.GetFirstImageName().Name);
                 AddMediaPath(fullPath);
             }
+        }
+
+        //The True one
+        public void ShareContact()
+        {
+            //Set send message
+            //Events etc...
         }
     }
 }

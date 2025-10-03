@@ -9,8 +9,8 @@
              xmlns:otherButs="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:menu="clr-namespace:TelegramVisualPart.UserControls.ChatControls.UserContactControls"
              mc:Ignorable="d" 
-             d:DesignHeight="855" d:DesignWidth="450"
-             MaxHeight="855" Width="450" >
+             d:DesignHeight="915" d:DesignWidth="450"
+             MaxHeight="915" Width="450" >
     <Border Name="BgBorder" CornerRadius="0" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
@@ -57,7 +57,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="115"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="270" Name="InfoRow"/>
+                        <RowDefinition Height="280" Name="InfoRow"/>
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="155" Name="MediasRow"/>
                         <RowDefinition Height="10" Name="DivRow"/>
@@ -116,8 +116,9 @@
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="55" Name="BirthdatRow"/>
+                                <RowDefinition Height="*" Name="AddContactRow"/>
                                 <RowDefinition Height="55"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
 
                             <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
@@ -130,15 +131,33 @@
                             <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
 
 
-                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="3" Grid.Column="0"
+                            <Grid Grid.Row="3" Grid.Column="0"                                
+                                  Grid.ColumnSpan="3"
+                                  Background="Transparent"
+                                  Name="AddContactGrid"
+                                  MouseEnter="AddContactGrid_MouseEnter"
+                                  MouseLeave="AddContactGrid_MouseLeave"
+                                  MouseDown="AddContactGrid_MouseDown">
+
+                                <TextBlock Name="AddContactBlock" 
+                                           Text="Add Contact"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="0 0 150 0"
+                                           Foreground="{StaticResource TempActiveTextColor}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"/>
+                            </Grid>
+
+                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="4" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="BellIcon"
                                                  Foreground="{StaticResource UsualTextColor}"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"
+                            <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"
                                        Foreground="{StaticResource UsualTextColor}" FontSize="16"
                                        Name="NotifsBlock"/>
                             <ToggleButton Name ="NotificationToggle" Width="35"
-                                          Grid.Column="2" Grid.Row="3"
+                                          Grid.Column="2" Grid.Row="4"
                                           Checked="NotificationToggle_Checked"
                                           Unchecked="NotificationToggle_Unchecked"
                                           HorizontalAlignment="Right"
@@ -150,12 +169,13 @@
                                           IsChecked="True" 
                                           Background="{StaticResource TempActiveTextColor}"/>
 
-                            <Grid Grid.ColumnSpan="3" Grid.Row="4" Name ="SendMessageBut"
+                            
+                            <Grid Grid.ColumnSpan="3" Grid.Row="5" Name ="SendMessageBut"
                                   MouseEnter="But_MouseEnter"
                                   MouseLeave="But_MouseLeave" Background="Transparent"
                                   PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
 
-                            <TextBlock Grid.Column="1" Grid.Row="4"
+                            <TextBlock Grid.Column="1" Grid.Row="5"
                                        FontSize="16" Name="SendMesBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource TempActiveTextColor}"
@@ -227,7 +247,9 @@
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
                     </Grid>
-                    <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"/>
+                    
+                    <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"
+                          Name="BottomDivideLine"/>
 
                     <Grid Grid.Row="6" Margin="0 5 0 5">
                         <Grid.ColumnDefinitions>

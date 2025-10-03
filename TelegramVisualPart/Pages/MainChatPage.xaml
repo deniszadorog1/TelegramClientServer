@@ -79,7 +79,7 @@
                   Name ="ChatsGrid" 
                   SizeChanged="ChatsGrid_SizeChanged">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="45" Name="SearchBoxRow"/>
                         <RowDefinition Name="FolderSliderRow" Height="0"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -182,12 +182,11 @@
                         </WrapPanel>
                     </StackPanel>
 
-                    <ListBox Grid.Row="2" Name="GlobalMessageSearch" MaxHeight="500"
+                    <ListBox Grid.Row="2" Name="GlobalMessageSearch"
                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                              Visibility="Hidden" 
                              VerticalAlignment="Top"
                              Margin="0 20 0 0"/>
-
 
                     <StackPanel Grid.Row="2" Name="SearchMessageGrid" Visibility="Hidden"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"

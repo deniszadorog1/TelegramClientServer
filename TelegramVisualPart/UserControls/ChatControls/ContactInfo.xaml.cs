@@ -66,7 +66,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetLanguageText.SetContactInfo(this);
 
             BlockButVisibility();
-            
+
             LoadEnd?.Invoke();
         }
 
@@ -132,7 +132,34 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 GifRow.Height = new GridLength(0);
             }
 
+            if (FilesLine.Visibility == Visibility.Hidden &&
+                VideosLine.Visibility == Visibility.Hidden &&
+                PhotosLine.Visibility == Visibility.Hidden)
+            {
+                BottomDivideLine.Visibility = Visibility.Hidden;
+            }
+            else BottomDivideLine.Visibility = Visibility.Visible;
+
             SetMediasRowVisibility();
+            SetAddContactVisibility();
+        }
+
+        public void SetAddContactVisibility()
+        {
+            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
+
+            if (isContact)
+            {
+                AddContactRow.Height = new GridLength(0);
+                //AddContactBlock.Visibility = Visibility.Hidden;
+                //MaxHeight -= InfoRow.Height.Value - 260;
+                InfoRow.Height = new GridLength(280);
+                return;
+            }
+            AddContactRow.Height = new GridLength(50);
+            //AddContactBlock.Visibility = Visibility.Visible;
+            //MaxHeight += 330 - InfoRow.Height.Value;
+            InfoRow.Height = new GridLength(330);
         }
 
         public void SetMediasRowVisibility()
@@ -142,16 +169,23 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             MaxHeight += 5;
 
+            if (BottomDivideLine.Visibility == Visibility.Hidden)
+            {
+                MaxHeight -= 10;
+                DivRow.Height = new GridLength(0);
+            }
+            else DivRow.Height = new GridLength(10);
+
             if (MediasRow.Height.Value == 0) DivRow.Height = new GridLength(0);
         }
 
         public const int _hiddenParasHeight = 150;
         public void SetIsContactRemovedVis()
         {
-/*            if (!_isSetMaxHeight)
-            {
-                return;
-            }*/
+            /*            if (!_isSetMaxHeight)
+                        {
+                            return;
+                        }*/
             if (_contact is null)
             {
                 //Hide lines
@@ -164,7 +198,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 MaxHeight -= _hiddenParasHeight;
             }
-            else if(ToBeHiddenButs.Height.Value != 200) //lines are not hidden
+            else if (ToBeHiddenButs.Height.Value != 200) //lines are not hidden
             {
                 ShareRow.Height = new GridLength(50);
                 EditRow.Height = new GridLength(50);
@@ -175,7 +209,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 MaxHeight += _hiddenParasHeight;
             }
-           
+
         }
 
         public int GetHiddenParamsHeight()
@@ -300,7 +334,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ContactMenu.AddToFolder.MouseEnter += (sender, e) =>
             {
                 Point relativePoint = e.GetPosition(this);
-                Point point = new Point(relativePoint.X , relativePoint.Y - 15);
+                Point point = new Point(relativePoint.X, relativePoint.Y - 15);
 
                 UserContactMenu foldMenu = new UserContactMenu();
                 foldMenu.SetTelSystemParam(_system, _chat);
@@ -338,11 +372,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             //MenusCan.Children.Add(menu);
 
-/*            Window window = Window.GetWindow(menu);
-            if (window is null ||
-                window is not MainWindow) throw new Exception("Its should be Main Window");
+            /*            Window window = Window.GetWindow(menu);
+                        if (window is null ||
+                            window is not MainWindow) throw new Exception("Its should be Main Window");
 
-            menu.SetWindow(window as MainWindow);*/
+                        menu.SetWindow(window as MainWindow);*/
 
             Canvas.SetLeft(menu, cordPoint.X + 100);
             Canvas.SetTop(menu, cordPoint.Y);
@@ -535,12 +569,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetBgToGrid(Grid grid)
         {
+            Cursor = Cursors.Hand;
             grid.Background =
             (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
         }
 
         public void ClearGridBg(Grid grid)
         {
+            Cursor = null;
             grid.Background = Brushes.Transparent;
         }
 
@@ -663,7 +699,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             List<UIElement> menus = new List<UIElement>();
 
-            for(int i = 0; i < ContactMenusCanvas.Children.Count; i++)
+            for (int i = 0; i < ContactMenusCanvas.Children.Count; i++)
             {
                 if (ContactMenusCanvas.Children[i] != ContactMenu)
                 {
@@ -671,7 +707,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 }
             }
 
-            foreach(var el in menus)
+            foreach (var el in menus)
             {
                 ContactMenusCanvas.Children.Remove(el);
             }
@@ -731,7 +767,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void UpdateParams(UserContactcs contact)
         {
             ContName.Text = contact.Name;
-            ContSurname.Text = contact.Surname;          
+            ContSurname.Text = contact.Surname;
         }
 
         public void ContactRemovedAction()
@@ -740,6 +776,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ContSurname.Text = _chat.Chatter.Surname;
 
             //Set hide action params
+        }
+
+        private void AddContactGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Grid grid) SetBgToGrid(grid);
+        }
+
+        private void AddContactGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Grid grid) ClearGridBg(grid);
+        }
+
+        private void AddContactGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set Add Contact Page
+
         }
     }
 }

@@ -181,6 +181,9 @@
     <Compile Update="UserControls\ChatControls\ChatMessages\BackMessage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\ContactInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -275,6 +278,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MainPage\LeftButtonsButton.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\MainPage\LittleMainControls\TotalFoundMessasges.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml.cs">
@@ -564,6 +570,9 @@
     <Page Update="UserControls\ChatControls\ChatMessages\BackMessage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UserControls\ChatControls\ContactInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -658,6 +667,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MainPage\LeftButtonsButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\MainPage\LittleMainControls\TotalFoundMessasges.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MyProfileControls\MyProfileSettingsButton.xaml">
