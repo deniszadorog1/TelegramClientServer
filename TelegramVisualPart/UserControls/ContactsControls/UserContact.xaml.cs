@@ -29,7 +29,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls
         private string _imgSource;
         private string _login;
         private string _contactImgName;
-        private TelegramLib.MainClasses.User _user;
+        public TelegramLib.MainClasses.User _user;
 
         public UserContact()
         {

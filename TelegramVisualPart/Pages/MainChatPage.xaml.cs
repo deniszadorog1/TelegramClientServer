@@ -452,15 +452,44 @@ namespace TelegramVisualPart.Pages
 
         public void SetGlobalSearchListHeight()
         {
-            GlobalMessageSearch.Height = Height - 
-                SearchBoxRow.Height.Value - 
+            GlobalMessageSearch.Height = Height -
+                SearchBoxRow.Height.Value -
                 FolderSliderRow.Height.Value;
         }
 
+        public Dictionary<int, UserTalkMessage> _allContactDict = new Dictionary<int, UserTalkMessage>();
         public void SetFoundGlobalChats()
         {
             ChatsBox.Items.Clear();
-            //_chatsDict - all Chats items
+            //_allContactDict - all contacts
+
+            /* for (int i = 0; i < _system.Contacts.Count; i++)
+             {
+                 if (_allContactDict.ContainsKey(_system.Contacts[i].Id))
+                 {
+                     GlobalMessageSearch.Items.Add(_allContactDict[_system.Contacts[i].Id]);
+                 }
+
+                 System.Windows.Controls.ListBoxItem item = new
+                     System.Windows.Controls.ListBoxItem()
+                 {
+                     HorizontalAlignment = HorizontalAlignment.Stretch,
+                     Tag = _system.Chats[i].Id
+                 };
+
+                 item.Content = await GetTalkMessage(i);
+
+                 item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
+                 item.PreviewMouseRightButtonDown += TalkMessage_PreviewRightMouseDown;
+                 item.MouseEnter += UserChat_MouseEnter;
+                 item.MouseLeave += UserChat_MouseLeave;
+                 //ChatsBox.Items.Add(item);
+                 items.Add(item);
+
+                 _chatsDict.TryAdd(_system.Chats[i].Id, item);
+
+             }*/
+
             foreach (var pair in _chatsDict)
             {
                 ListBoxItem item = pair.Value;
@@ -805,6 +834,24 @@ namespace TelegramVisualPart.Pages
             talkControl.SetVisibilityToUnreadEllipse(false);
 
             TelegramLib.MainClasses.UserChat chat = _system.GetChatById(id);
+
+            if (chat is null)
+            {
+                int.TryParse(talkControl.Tag.ToString(), out int userId);
+
+                //Get contact
+                UserContactcs contact = _system.GetContactByUserId(userId);
+                if (contact is null) return;
+
+                //Add chat if it was deleted 
+                AddChat(contact);
+
+                //change control Tag in new chat id
+                chat = _system.Chats.Last();
+
+                RepaintUserChatsPanel();
+            }
+
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
             chat.IsMarked = false;
 
@@ -1061,15 +1108,15 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByIndex(chatIndex);
 
-
-            TelegramLib.MainClasses.User chatterUser = await ApiService.GetUserById(chat.Chatter.Id);
+            TelegramLib.MainClasses.User chatterUser = chat.Chatter;//  await ApiService.GetUserById(chat.Chatter.Id);
             string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser);
 
             UserTalkMessage chatControl = new UserTalkMessage(imageName /*chat.GetChatter().GetFirstImageName().Name*/)
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Width = ChatsGrid.ActualWidth,
-                Tag = chat.Id
+                //Tag = chat.Id
+                Tag = chatterUser.Id
             };
 
             chatControl.SetVisibilityToPinBlock(chat.IsPinned);
@@ -1252,7 +1299,8 @@ namespace TelegramVisualPart.Pages
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Width = ChatsGrid.ActualWidth,
-                    Tag = chat.Id
+                    //Tag = chat.Id
+                    Tag = chat.Chatter.Id
                 };
 
                 UserContactcs cont = _system.GetContactByUserId(chat.GetChatter().Id);
@@ -1697,6 +1745,11 @@ namespace TelegramVisualPart.Pages
         public async Task SetDeleteChat()
         {
             TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+
+            if (chat is null)
+            {
+                return;
+            }
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                     new DeleteChat(await ApiService.GetUserById(chat.GetChatter().Id)));
 
@@ -1803,10 +1856,10 @@ namespace TelegramVisualPart.Pages
             return _system.IsChatContainsInOtherWidowList(chat);
         }
 
-        public TelegramLib.MainClasses.UserChat GetChosenUserChat()
+        public TelegramLib.MainClasses.UserChat? GetChosenUserChat()
         {
             int.TryParse(_menuChatterTalk.Tag.ToString(), out int id);
-            return _system.GetChatById(id); //_system.GetUserChatByChatterLogin(_menuChatterTalk.FriendLogin.Text);
+            return _system.Chats.FirstOrDefault(x => x.Chatter.Id == id);//.GetChatById(id); //_system.GetUserChatByChatterLogin(_menuChatterTalk.FriendLogin.Text);
 
             /*UserChat.SetUserChat(
              _system.GetUserChatByChatterName(_menuChatterTalk.FriendLogin.Text));*/
@@ -1940,13 +1993,15 @@ namespace TelegramVisualPart.Pages
 
         public void DeleteChat(TelegramLib.MainClasses.User chatter)
         {
+            Console.WriteLine(_system);
+
             //Clear From db (messages + chat)
             DeleteChatFromDb(chatter);
 
             //Clear chat + in Folders in system 
             _system.DeleteChatByChatter(chatter);
 
-            //Delete For Chatter by SignalR
+            //Delete For Chatter by SignalR id need
 
             //Clear from vis(just updated)  
             RepaintUserChatsPanel();
@@ -1956,13 +2011,31 @@ namespace TelegramVisualPart.Pages
             ChosoeChatBorder.Visibility = Visibility.Visible;
         }
 
-        public async Task DeleteChatFromDb(TelegramLib.MainClasses.User chatter)
+        //If chat is absent(Was deleted)
+        public async Task AddChat(UserContactcs contact)
+        {
+            //Add in db
+            await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
+
+            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
+
+            //Add In system
+            _system.AddChat(chat);
+
+            //In visual
+            await RepaintUserChatsPanel();
+        }
+
+        public void DeleteChatFromDb(TelegramLib.MainClasses.User chatter)
         {
             TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(chatter.Id);
 
-            //Check this somthing wierd
+            //Check this something wierd
             //await ApiService.DeleteChatByChatterId(chatter.Id);
-            ApiService.ClearChat(chat);
+            //ApiService.ClearChat(chat);
+
+            //Delete Chats
+            ApiService.DeleteChatById(chat.Id);
 
             //Get Folders which contains User
             List<int> foldersIds = _system.GetFoldersIdWithGivenUserId(chatter.Id);
@@ -1976,6 +2049,36 @@ namespace TelegramVisualPart.Pages
         public void SetImageMessages(string capture, List<Image> imgs)
         {
             UserChat.AddBigMediaImagesMessage(capture, imgs);
+        }
+
+        public void SetShareContactControl(int chatId, UserContactcs contactToSend)
+        {
+            //Get contact params
+            /*            (string name, string phoneNumber, string imgName) contactParams =
+                            _system.GetChatterNameByChatId(chatId);*/
+
+            string senderImgName = _system.LoggedUser.GetFirstImageNameInString();
+
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatById(chatId);
+            if (chat is null) return;
+            chat.IsMarked = false;
+
+            //Add Shared message in system
+            //chat.Messages
+
+
+            //Check this later
+            /*            if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
+                        {
+                            //Set window on the front
+                            ((MainWindow)Window.GetWindow(this)).SetOtherChatWindowOnFront(chat);
+                            return;
+                        }*/
+            UserChat.SetUserChat(chat);
+
+            //UserChat.SettingEnded += 
+
+            UserChat.ShareContact(contactToSend, contactToSend.Name);
         }
     }
 }

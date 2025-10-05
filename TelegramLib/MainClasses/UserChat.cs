@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -198,6 +199,13 @@ namespace TelegramLib.MainClasses
         public bool IsChatterIdsAreEqual(int chatterId) 
         {
             return Chatter.Id == chatterId;
+        }
+
+        public void AddSharedMessage(int senderUserId, 
+            bool isLoggedUSerSent, 
+            DateTime sendTime, string sharedContactName)
+        {
+            
         }
     }
 }

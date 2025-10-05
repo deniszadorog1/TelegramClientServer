@@ -37,7 +37,8 @@ namespace TelegramVisualPart.Pages.Contacts
         private TelSystem _system;
         private bool _isBlock;
 
-        public MainContacts(ContactsPageAction type, TelSystem system, bool isBlock)
+        public MainContacts(ContactsPageAction type, TelSystem system, 
+            bool isBlock)
         {
             _type = type;
             _system = system;
@@ -128,7 +129,14 @@ namespace TelegramVisualPart.Pages.Contacts
                 ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
                 return;
             }
-            
+
+            //is chat exist 
+            if (_system.GetChatByChatterId(contact._user.Id) is null)
+            {
+                UserContactcs toAdd = _system.GetContactByUserId(contact._user.Id);
+                ((MainWindow)Window.GetWindow(this)).AddChatInMainPage(toAdd);
+            }
+
 
             ContactClicked?.Invoke(sender, EventArgs.Empty);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();

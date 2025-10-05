@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TelegramLib.MainClasses.Messages
+{
+    public class ShareContactMessage : Message
+    {
+        public string SharedName { get; set; }
+        
+        public User SharedUser { get; set; }
+
+        public ShareContactMessage(int id, int senderUserId,
+            DateTime sentTime, string sharedContactName, User shared)
+            : base(id, senderUserId, sentTime)
+        {
+            SharedName = sharedContactName;
+            SharedUser = shared;
+        }
+    }
+}

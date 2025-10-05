@@ -50,10 +50,10 @@ namespace TelegramLib.MainClasses
             //SetTestSystemParams();
         }
 
-        public void AddFolder(string name, string iconName,
+        public void AddFolder(int id, string name, string iconName,
             List<User> contacts, List<User> excludedContacts)
         {
-            Folder toAdd = new Folder(Folders.Count + 1, name, iconName, contacts, excludedContacts);
+            Folder toAdd = new Folder(id, name, iconName, contacts, excludedContacts);
             Folders.Add(toAdd);
         }
 
@@ -341,6 +341,7 @@ namespace TelegramLib.MainClasses
             Chats.Add(chat);
         }
 
+
         public UserChat GetChatByChatterId(int id)
         {
             return Chats.FirstOrDefault(x => x.Chatter.Id == id);
@@ -440,11 +441,12 @@ namespace TelegramLib.MainClasses
             //Delete from folders
             for (int i = 0; i < Folders.Count; i++)
             {
-                if (Folders[i].Contacts.Any(x => x.Id == chatter.Id))
-                {
-                    Folders[i].Contacts.Remove(chatter);
-                }
+                User toRemove = Folders[i].Contacts
+                    .FirstOrDefault(x => x.Id == chatter.Id);
+                if (!(toRemove is null)) Folders[i].Contacts.Remove(toRemove);
             }
+
+            Chats.Remove(chat);
         }
 
         public List<int> GetFoldersIdWithGivenUserId(int userId)
@@ -472,6 +474,30 @@ namespace TelegramLib.MainClasses
             return res;
         }
 
+        public (string name, string phoneNumber, string imgName) GetChatterNameByChatId(int chatId)
+        {
+            UserChat chat = Chats.FirstOrDefault(x => x.Id == chatId);
+            if (chat is null) return (string.Empty, string.Empty, string.Empty);
 
+            User chatter = chat.Chatter;
+
+            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
+
+            if (!(contact is null))
+            {
+                return (contact.Name, contact.PhoneNumber, contact.GetFirstImageNameInString());
+            }
+            return (chatter.Name, chatter.PhoneNumber, chatter.GetFirstImageNameInString());
+        }
+
+        public void AddShareMessage(UserContactcs contact)
+        {
+            TelegramLib.MainClasses.User share = GetUserById(contact.ContactUserId);
+            ShareContactMessage toAdd = new ShareContactMessage(-1,
+                LoggedUser.Id, DateTime.Now, contact.Name, share);
+
+            TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);
+            chat.Messages.Add(toAdd);
+        }
     }
 }

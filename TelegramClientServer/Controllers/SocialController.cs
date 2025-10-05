@@ -82,14 +82,14 @@ namespace TelegramClientServer.Controllers
             DbService.RemoveFolder(folder.Folder.Id);
         }
 
-        [HttpDelete("DeleteChatByChatterId")]
-        public void DeleteChatByChatterId([FromBody] DeleteChatByChatterIdDTO chatterIdDTO)
+        [HttpDelete("DeleteChatById")]
+        public void DeleteChatById([FromBody] DeleteChatByChatterIdDTO chatterIdDTO)
         {
-            DbService.DeleteChatByChatterId(chatterIdDTO.ChatterId);
+            DbService.DeleteChatById(chatterIdDTO.ChatId);
         }
         public class DeleteChatByChatterIdDTO()
         {
-            public int ChatterId { get; set; }
+            public int ChatId { get; set; }
         }
 
         [HttpDelete("DeleteContactFromFolder")]
@@ -127,6 +127,12 @@ namespace TelegramClientServer.Controllers
             return Ok(res);
         }
 
+        [HttpGet("GetLastFolderIdByUserId")]
+        public int GetLastFolderIdByUserId(int userId)
+        {
+            return DbService.GetLastFolderIdByOwnerId(userId);
+        }
+
         [HttpGet("GetUsersPhoneNumber")]
         public string GetUsersPhoneNumber()
         {
@@ -162,7 +168,6 @@ namespace TelegramClientServer.Controllers
             public UserContactcs Contact { get; set; }
             public TelegramLib.MainClasses.User LoggedUser { get; set; }
         }
-
 
         [HttpPut("AddChat")]
         public void AddChat([FromBody] AddChatDTO addChat)

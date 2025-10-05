@@ -1057,5 +1057,16 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs);
         }
+
+        public void SetShardContact(int chatId, UserContactcs contact)
+        {
+            if (MainFrame.Content is MainChatPage page) 
+                page.SetShareContactControl(chatId, contact);
+        }
+
+        public void AddChatInMainPage(TelegramLib.MainClasses.UserContactcs contact)
+        {
+            if (MainFrame.Content is MainChatPage page) page.AddChat(contact);
+        }
     }
 }

@@ -5,39 +5,93 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="200">
-    <Border Background="{StaticResource DarkThemeSecond}"
-            CornerRadius="10">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+             d:DesignHeight="110" d:DesignWidth="260"
+             Height="110" Width="260">
 
-            <Grid Grid.Row="0" Name="ContactRow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
+                        Name="SenderEllipseImage" Width="40" Height="40">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Grid>
+        
+        <Border Background="{StaticResource DarkThemeSecond}"
+                CornerRadius="10" Grid.Column="1"
+                BorderBrush="Black"
+                BorderThickness="1">
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Name="InfoRow"/>
-                    <RowDefinition Name="ButRow"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <
-                    
+                <Grid Grid.Row="0" Margin="5"
+                      Background="Transparent"
+                      Name="ContactRow"
+                      MouseEnter="ContactRow_MouseEnter"
+                      MouseLeave="ContactRow_MouseLeave"
+                      PreviewMouseDown="ContactRow_PreviewMouseDown">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name="InfoRow"/>
+                        <RowDefinition Name="ButRow" Height="20"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="45"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="40" Height="40">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <Grid Name="InfoGrid" Grid.Column="1" Margin="10 0 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Name="NameBlock" Text="Name"
+                                   VerticalAlignment="Bottom" 
+                                   Margin="0 0 0 2" FontSize="16"
+                                   Foreground="{StaticResource TempActiveTextColor}"/>
+
+                            <TextBlock Grid.Row="1" Name="PhoneNumberBlock"
+                                   Text="Phone number is here"
+                                   VerticalAlignment="Top"
+                                   Margin="0 2 0 0" FontSize="16"
+                                   Foreground="{StaticResource UsualTextColor}"/>
+                        </Grid>
+
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" Name="MesBut" Text="MESSAGE"
+                          VerticalAlignment="Center" FontSize="16"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource TempActiveTextColor}"/>
+
                 </Grid>
-                
-                <TextBlock Grid.Row="1" Name="MesBut"/>
+
+                <Grid Grid.Row="1" Name="TimeRow">
+                    <TextBlock Name="SendTimeBlock" Text="Time"
+                           Foreground="Gray"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="0 0 13 5"/>
+                </Grid>
 
             </Grid>
-            
-            <Grid Grid.Row="1" Name="TimeRow">
-                
-            </Grid>
-            
-        </Grid>    
-    </Border>
+        </Border>
+    </Grid>
 </UserControl>

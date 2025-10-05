@@ -18,6 +18,7 @@ using System.Net.Http.Headers;
 using System.Net.NetworkInformation;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -558,13 +559,13 @@ namespace TelegramVisualPart.Services
             var response = await _client.SendAsync(request);
         }
 
-        public static async Task<bool> DeleteChatByChatterId(int chatterId)
+        public static async Task<bool> DeleteChatById(int chatId)
         {
-            var data = new { ChatterId = chatterId };
+            var data = new { ChatId = chatId };
             var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Social/DeleteChatByChatterId"),
+                RequestUri = new Uri($"{_host}api/Social/DeleteChatById"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
 
@@ -666,6 +667,14 @@ namespace TelegramVisualPart.Services
 
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+        }
+
+        public static async Task<int> GetLastFolderIdByUserId(int userId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastFolderIdByUserId?userId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<int>(jsonResponse);
         }
 
         public static async Task<bool> IsChatExist(int userId, int contactId)

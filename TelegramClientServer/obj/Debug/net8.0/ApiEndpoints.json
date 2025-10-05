@@ -674,8 +674,8 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "DeleteChatByChatterId",
-    "RelativePath": "api/Social/DeleteChatByChatterId",
+    "Method": "DeleteChatById",
+    "RelativePath": "api/Social/DeleteChatById",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -812,6 +812,32 @@
     "ReturnTypes": [
       {
         "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetLastFolderIdByUserId",
+    "RelativePath": "api/Social/GetLastFolderIdByUserId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
         "MediaTypes": [
           "text/plain",
           "application/json",

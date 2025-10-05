@@ -186,6 +186,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (sender is not ListBoxItem item ||
                 item.Content is not FolderChatType control) return;
 
+            if (item.Tag is null) return;
+
             int.TryParse(item.Tag.ToString(), out int id);
 
             //UserContactcs contact = _system.GetContactByUserId(id);// _system.GetContactByLogin(control.TypeName.Text);

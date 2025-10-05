@@ -32,6 +32,8 @@ using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
 using TelegramLib.UserSettings.SettingsTypes;
 using System;
+using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
+using System.Collections.Frozen;
 
 
 namespace TelegramVisualPart.UserControls
@@ -633,6 +635,8 @@ namespace TelegramVisualPart.UserControls
                 {
                     AddMediaElement(filePath, _system.LoggedUser.GetFirstImageName().Name);
                     AddMediaPath(filePath);
+
+                    UpdateContactInfoBlock();
                 }
             }
         }
@@ -922,7 +926,8 @@ namespace TelegramVisualPart.UserControls
                 .OfType<ContactInfo>()
                 .First();
 
-            info.SetContactInfo(_chat, _system,
+            if (info is null) return;
+            info?.SetContactInfo(_chat, _system,
                  _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
         }
 
@@ -1371,13 +1376,47 @@ namespace TelegramVisualPart.UserControls
                 AddImageMessage(fullPath, false, _system.LoggedUser.GetFirstImageName().Name);
                 AddMediaPath(fullPath);
             }
+
+            UpdateContactInfoBlock();
         }
 
         //The True one
-        public void ShareContact()
+        public void ShareContact(UserContactcs sharedContact,
+            string sharedName)
         {
-            //Set send message
+            //Set send message control
+            ShareContactControl shareContact = 
+                new ShareContactControl();
+
+            //Set control params
+            shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
+            shareContact.SetSharedUserImage(sharedContact.GetFirstImageNameInString());
+            shareContact.SetSharedUserName(sharedName);
+            shareContact.SetSharedUserPhoneNumber(sharedContact.GetPhoneNumber());
+            shareContact.SetSendTime();
+
+            //Add In DB 
+            //ApiService.AddMessage
+
+            //Add in system
+            AddSharedMessageInSystem(sharedContact);
+
             //Events etc...
+            shareContact.SharedClicked += () =>
+            {
+                //Set chat(visability)
+            };
+
+            //Change Chat
+
+            //Add it in chat
+            ChatBox.Items.Add(shareContact);
         }
+
+        public void AddSharedMessageInSystem(UserContactcs contact)
+        {
+            _system.AddShareMessage(contact);
+        }
+
     }
 }

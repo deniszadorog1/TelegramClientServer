@@ -141,10 +141,16 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||
                 _system.IsFolderNameExists(FolderNameBox.Text)) return false;
 
-            _system.AddFolder(FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(),
+            TelegramLib.MainClasses.FolderObjs.Folder toAdd =
+                new Folder(-1, FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(),
                 _toAddContacts, _toExcludeContacts);
+            
+            await ApiService.AddFolder(toAdd, _system.LoggedUser.Id);
 
-            await ApiService.AddFolder(_system.GetLastFolder(), _system.LoggedUser.Id);
+            int newFolderId = await ApiService.GetLastFolderIdByUserId(_system.LoggedUser.Id);
+            toAdd.Id = newFolderId;
+
+            _system.AddFolder(toAdd);
 
             return true;
         }

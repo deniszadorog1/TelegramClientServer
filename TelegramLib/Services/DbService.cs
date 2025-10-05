@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
 using TelegramLib.Enums.Messages;
@@ -77,6 +79,16 @@ namespace TelegramLib.Services
                 }
             }
             return res;
+        }
+
+        public static int GetLastFolderIdByOwnerId(int userIndex)
+        {
+            using (var model = new TelegramModel())
+            {
+                var list = model.Folder.Where(x => x.OwnerId == userIndex).ToList();
+                var last = list.LastOrDefault();
+                return last?.Id ?? -1;
+            }
         }
 
         private static mainClass.FolderObjs.Folder GetFolderById(int id)
@@ -2738,20 +2750,17 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void DeleteChatByChatterId(int chatterId)
+        public static void DeleteChatById(int chatId)
         {
             using (var model = new TelegramModel())
             {
-                List<Chat> toRemove = model.Chat.Where(x => x.ChatterId == chatterId).ToList();
+                Chat toRemove = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                if (toRemove is null) return;
 
-                foreach (var rem in toRemove)
-                {
-                    RemovePosBgsByChatId(rem.Id);
-                    RemoveMessagesByChatId(rem.Id);
+                RemovePosBgsByChatId(toRemove.Id);
+                RemoveMessagesByChatId(toRemove.Id);
 
-
-                    model.Chat.Remove(rem);
-                }
+                model.Chat.Remove(toRemove);
                 model.SaveChanges();
             }
         }
@@ -3359,7 +3368,7 @@ namespace TelegramLib.Services
 
         public static void UpdatePassCode(PasscodeSettings settings)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 PassCode code = model.PassCode.FirstOrDefault(x => x.Id == settings.Id);
                 if (code is null) return;
@@ -3374,7 +3383,7 @@ namespace TelegramLib.Services
 
         public static void DeleteUserFromFolder(int folderId, int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 //Get folder
                 ContactsInFolder toRemove = model.ContactsInFolder
@@ -3387,5 +3396,13 @@ namespace TelegramLib.Services
             }
         }
 
+        public static void AddShareMessage(TelegramLib.MainClasses.User user, 
+            string contactName, int chatId, int sender, string message)
+        {
+            using(var model = new TelegramModel())
+            {
+                //Add share message
+            }
+        }
     }
 }
