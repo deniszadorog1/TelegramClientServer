@@ -33,6 +33,7 @@ namespace TelegramVisualPart.Pages
             SetMaxValue();
 
             ContactInfo.UpdateAction += UpdatePage;
+            ContactInfo.SetMenuVisibility(Visibility.Visible);
         }
 
         public async Task UpdateContactVis(UserContactcs contact)

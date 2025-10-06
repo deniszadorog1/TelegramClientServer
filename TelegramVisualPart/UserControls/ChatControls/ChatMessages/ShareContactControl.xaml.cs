@@ -46,7 +46,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
         public void SetSharedUserImage(string imgName)
         {
-            BgBrush.ImageSource = new BitmapImage(
+            ImageIcon.ImageSource = new BitmapImage(
                 new Uri(FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
         }
 
@@ -62,7 +62,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
         public void SetSendTime()
         {
-            SendTimeBlock.Text = $"{DateTime.Now.Hour}:{DateTime.Now.Minute}";
+            string hours = MakeCorrectTimeString(DateTime.Now.Hour.ToString());
+            string minutes = MakeCorrectTimeString(DateTime.Now.Minute.ToString());
+            
+            SendTimeBlock.Text = $"{hours}:{minutes}";
+        }
+
+        private string MakeCorrectTimeString(string temp)
+        {
+            if (temp.Length < 2) temp = temp.Insert(0, "0");
+            return temp;
         }
 
         private void ContactRow_PreviewMouseDown(object sender, MouseButtonEventArgs e)

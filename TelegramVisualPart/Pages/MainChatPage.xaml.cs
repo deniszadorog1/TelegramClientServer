@@ -44,7 +44,7 @@ namespace TelegramVisualPart.Pages
     public partial class MainChatPage : Page
     {
         private TelSystem _system;
-        private TelegramLib.MainClasses.UserChat _chosenChat;
+        public TelegramLib.MainClasses.UserChat _chosenChat;
 
         public MainChatPage(TelSystem system)
         {
@@ -2051,7 +2051,7 @@ namespace TelegramVisualPart.Pages
             UserChat.AddBigMediaImagesMessage(capture, imgs);
         }
 
-        public void SetShareContactControl(int chatId, UserContactcs contactToSend)
+        public async Task SetShareContactControl(int chatId, UserContactcs contactToSend)
         {
             //Get contact params
             /*            (string name, string phoneNumber, string imgName) contactParams =
@@ -2063,22 +2063,23 @@ namespace TelegramVisualPart.Pages
             if (chat is null) return;
             chat.IsMarked = false;
 
+            //Add shared message in db
+            await ApiService.AddShareContactMessage(contactToSend.ContactUserId,
+                contactToSend.Name, chatId, _system.LoggedUser.Id, null);
+
+            //Get sharedId
+            int sharedId = await ApiService.GetLastSharedMessageIdByChatId(chatId);
+
+            TelegramLib.MainClasses.User sharedUser = 
+                await ApiService.GetUserById(contactToSend.ContactUserId);
+
             //Add Shared message in system
-            //chat.Messages
+            chat.AddSharedMessage(_system.LoggedUser.Id, 
+                sharedId, sharedUser, contactToSend.Name);
 
+            //UserChat.SetUserChat(chat);
 
-            //Check this later
-            /*            if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
-                        {
-                            //Set window on the front
-                            ((MainWindow)Window.GetWindow(this)).SetOtherChatWindowOnFront(chat);
-                            return;
-                        }*/
-            UserChat.SetUserChat(chat);
-
-            //UserChat.SettingEnded += 
-
-            UserChat.ShareContact(contactToSend, contactToSend.Name);
+            //UserChat.ShareContact(contactToSend, contactToSend.Name);
         }
     }
 }

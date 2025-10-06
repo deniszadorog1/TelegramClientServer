@@ -1,6 +1,9 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
@@ -407,6 +410,7 @@ namespace TelegramLib.Services
                     {
                         TelegramLib.MainClasses.Messages.Message toAdd;
                         if (mes.Message is null) toAdd = new MediaAction();
+                        else if (!(mes.ShareContactMessage is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
                         else toAdd = new TextMessage();
 
                         toAdd.Id = mes.Id;
@@ -436,10 +440,18 @@ namespace TelegramLib.Services
                             ((MediaAction)toAdd).MediaName = GetChatStickerNameById((int)mes.StickerId);
                         }
 
+                        if (toAdd is TelegramLib.MainClasses.Messages.ShareContactMessage share &&
+                            !(mes.ShareContactId is null))
+                        {
+                            model.ShareContactMessage message = GetShareModelById((int)mes.ShareContactId);
+
+                            share.SharedName = message.Name;
+                            share.SharedUser = GetUserById((int)message.UserId);
+                        }
+
                         //Set media or text
 
                         //Set message Action
-
 
                         res.Add(toAdd);
                     }
@@ -447,6 +459,15 @@ namespace TelegramLib.Services
             }
             return res;
         }
+
+        private static model.ShareContactMessage GetShareModelById(int id)
+        {
+            using (var model = new TelegramModel())
+            {
+                return model.ShareContactMessage.FirstOrDefault(x => x.Id == id);
+            }
+        }
+
 
         private static string GetChatStickerNameById(int id)
         {
@@ -3396,12 +3417,63 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void AddShareMessage(TelegramLib.MainClasses.User user, 
-            string contactName, int chatId, int sender, string message)
+        public static void AddShareMessage(int userId,
+            string contactName, int chatId, int senderId, string message)
         {
-            using(var model = new TelegramModel())
+            AddShareContactMessage(contactName, userId);
+
+            using (var model = new TelegramModel())
             {
-                //Add share message
+                Messages toAdd = new Messages();
+                toAdd.ChatId = chatId;
+                toAdd.SenderId = senderId;
+                toAdd.Message = message;
+                toAdd.ImageId = null;
+                toAdd.StickerId = null;
+                toAdd.GifId = null;
+                toAdd.VideoId = null;
+                toAdd.SentDate = DateTime.Now;
+                toAdd.ShareContactId = GetLastShareMessageId();
+
+                model.Messages.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        public static int GetLastSharedMessageId(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                List<Messages> mes = model.Messages.Where(x => x.ChatId == chatId).ToList();
+                Messages res = mes.LastOrDefault(x => !(x.ShareContactId is null));
+                return res is null ? -1 : res.Id;
+            }
+        }
+
+        private static int? GetLastShareMessageId()
+        {
+            using (var model = new TelegramModel())
+            {
+                model.ShareContactMessage res =
+                    model.ShareContactMessage.ToList().LastOrDefault();
+
+                if (res is null) return null;
+                return res.Id;
+            }
+        }
+
+        private static void AddShareContactMessage(string name, int userId)
+        {
+            using (var model = new TelegramModel())
+            {
+                model.ShareContactMessage toAdd = new model.ShareContactMessage();
+
+                toAdd.UserId = userId;
+                toAdd.Name = name;
+
+                model.ShareContactMessage.Add(toAdd);
+
+                model.SaveChanges();
             }
         }
     }

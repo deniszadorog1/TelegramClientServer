@@ -10,7 +10,6 @@ namespace TelegramLib.Models
         public TelegramModel()
              : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
-
         }
 
         public virtual DbSet<AdvancedSettings> AdvancedSettings { get; set; }
@@ -47,6 +46,7 @@ namespace TelegramLib.Models
         public virtual DbSet<PrivacySettingType> PrivacySettingType { get; set; }
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+        public virtual DbSet<ShareContactMessage> ShareContactMessage { get; set; }
         public virtual DbSet<Sounds> Sounds { get; set; }
         public virtual DbSet<StickerImage> StickerImage { get; set; }
         public virtual DbSet<Theme> Theme { get; set; }
@@ -164,6 +164,11 @@ namespace TelegramLib.Models
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.Settings)
                 .HasForeignKey(e => e.SettingId);
+
+            modelBuilder.Entity<ShareContactMessage>()
+                .HasMany(e => e.Messages)
+                .WithOptional(e => e.ShareContactMessage)
+                .HasForeignKey(e => e.ShareContactId);
 
             modelBuilder.Entity<Sounds>()
                 .HasMany(e => e.UserSounds)

@@ -6,9 +6,7 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatsControls.ToSendMedias"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="160" d:DesignWidth="300"
-             Height="170" Width="285"
-             MaxHeight="170" MaxWidth="285">
+             d:DesignHeight="170" d:DesignWidth="285">
 
     <Border Background="{StaticResource DarkThemeSecond}"
             CornerRadius="10">

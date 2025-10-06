@@ -12,6 +12,16 @@ namespace TelegramLib.MainClasses.Messages
         
         public User SharedUser { get; set; }
 
+
+        public ShareContactMessage()
+        {
+            Id = -1;
+            SenderUserId = -1;
+            SentTime = DateTime.Now;
+            SharedName = string.Empty;
+            SharedUser = null;
+        }
+
         public ShareContactMessage(int id, int senderUserId,
             DateTime sentTime, string sharedContactName, User shared)
             : base(id, senderUserId, sentTime)

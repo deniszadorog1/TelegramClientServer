@@ -28,6 +28,8 @@ namespace TelegramLib.Models
         [Column(TypeName = "datetime2")]
         public DateTime? SentDate { get; set; }
 
+        public int? ShareContactId { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatImage ChatImage { get; set; }
@@ -35,6 +37,8 @@ namespace TelegramLib.Models
         public virtual GIF GIF { get; set; }
 
         public virtual User User { get; set; }
+
+        public virtual ShareContactMessage ShareContactMessage { get; set; }
 
         public virtual StickerImage StickerImage { get; set; }
 

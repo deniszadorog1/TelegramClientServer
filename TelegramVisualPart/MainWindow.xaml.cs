@@ -1068,5 +1068,11 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is MainChatPage page) page.AddChat(contact);
         }
+
+        public void SetChosenChat(UserChat chat)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page._chosenChat = chat;
+        }
     }
 }

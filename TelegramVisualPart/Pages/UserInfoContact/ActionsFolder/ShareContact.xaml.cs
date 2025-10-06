@@ -49,7 +49,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
                 _checkedContact = await ApiService.GetUserById(_system.Contacts[i].ContactUserId);
                 UserContact toAdd = new UserContact(_checkedContact);
-                toAdd.Tag = _system.Contacts[i].ContactUserId;
+                toAdd.Tag = _system.GetChatByChatterId(_system.Contacts[i].ContactUserId).Id;
 
                 toAdd.MouseEnter += UserControl_MouserEnter;
                 toAdd.MouseLeave += UserControl_MouseLeave;
@@ -65,12 +65,14 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         {
             if (sender is not UserContact contact) return;
 
-            Console.WriteLine(_contact);
             int.TryParse(contact.Tag.ToString(), out int tagId);
 
             //Send share message
             ((MainWindow)Window.GetWindow(this))
                 .SetShardContact(tagId, _contact);
+
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
             return;
             //set in db 
             User user = await ApiService.GetUserById(_contact.ContactUserId);

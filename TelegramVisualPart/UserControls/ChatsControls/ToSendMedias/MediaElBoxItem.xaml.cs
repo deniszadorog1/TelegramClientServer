@@ -25,6 +25,12 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
         public event Action DeleteMedia;
 
         private string _mediaPath;
+
+        public MediaElBoxItem()
+        {
+            InitializeComponent();
+        }
+
         public MediaElBoxItem(string path)
         {
             _mediaPath = path;
@@ -66,6 +72,19 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
         private void DeleteMedia_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             DeleteMedia?.Invoke();
+        }
+
+        private const int _height = 170;
+        private const int _width = 285;
+        public void SetChosenSize()
+        {
+            this.Height = _height;
+            this.Width = _width;
+        }
+
+        public void ClearParams()
+        {
+            Img.Source = null;
         }
     }
 }

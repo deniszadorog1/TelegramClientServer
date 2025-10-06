@@ -441,6 +441,11 @@ namespace TelegramVisualPart.UserControls
                     //Video or photo
                     SetMediaMessageInChat(media, imgName);
                 }
+                else if (_chatMessages[i] is 
+                    TelegramLib.MainClasses.Messages.ShareContactMessage share)
+                {
+                    ShareContact(share.SharedUser, share.SharedName);
+                }
             }
 
             //Set chatter photo image
@@ -1381,7 +1386,7 @@ namespace TelegramVisualPart.UserControls
         }
 
         //The True one
-        public void ShareContact(UserContactcs sharedContact,
+        public void ShareContact(TelegramLib.MainClasses.User sharedContact,
             string sharedName)
         {
             //Set send message control
@@ -1392,19 +1397,29 @@ namespace TelegramVisualPart.UserControls
             shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
             shareContact.SetSharedUserImage(sharedContact.GetFirstImageNameInString());
             shareContact.SetSharedUserName(sharedName);
-            shareContact.SetSharedUserPhoneNumber(sharedContact.GetPhoneNumber());
+            shareContact.SetSharedUserPhoneNumber(sharedContact.PhoneNumber);
             shareContact.SetSendTime();
+            shareContact.Tag = sharedContact.Id;
 
             //Add In DB 
             //ApiService.AddMessage
 
             //Add in system
-            AddSharedMessageInSystem(sharedContact);
+            //AddSharedMessageInSystem(sharedContact);
 
             //Events etc...
             shareContact.SharedClicked += () =>
             {
-                //Set chat(visability)
+                int.TryParse(shareContact.Tag.ToString(), out int tagId);
+                TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(tagId);
+                if (chat is null) return;
+
+                //Set another chat with this 
+                SetUserChat(chat);
+
+                //Set Chosen chat
+                ((MainWindow)Window.GetWindow(this)).SetChosenChat(chat);
+                _system.ChosenChatContact = chat.Chatter;
             };
 
             //Change Chat

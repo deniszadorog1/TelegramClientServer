@@ -201,11 +201,13 @@ namespace TelegramLib.MainClasses
             return Chatter.Id == chatterId;
         }
 
-        public void AddSharedMessage(int senderUserId, 
-            bool isLoggedUSerSent, 
-            DateTime sendTime, string sharedContactName)
+        public void AddSharedMessage(int senderUserId, int id,
+            User sharedUser, string sharedContactName)
         {
-            
+            ShareContactMessage toAdd = new ShareContactMessage(id,
+                senderUserId, DateTime.Now, sharedContactName, sharedUser);
+
+            Messages.Add(toAdd);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Policy;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
@@ -22,10 +23,27 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddContact(contact.Contact, contact.UserId);
         }
-        public class ContactDTO()
+        public class ContactDTO
         {
             public UserContactcs Contact { get; set; }
             public int UserId { get; set; }
+        }
+
+        [HttpPut("AddShareContactMessage")]
+        public void AddShareContactMessage(
+            [FromBody] AddShareContactMessageDTO shareMessage)
+        {
+            DbService.AddShareMessage(shareMessage.SharedUserId, 
+                shareMessage.SharedName, shareMessage.ChatId, 
+                shareMessage.SenderId, shareMessage.Message);
+        }
+        public class AddShareContactMessageDTO
+        {
+            public int SharedUserId { get; set; }
+            public string SharedName { get; set; }
+            public int ChatId { get; set; }
+            public int SenderId { get; set; }
+            public string Message { get; set; }
         }
 
         //update contact
@@ -40,6 +58,13 @@ namespace TelegramClientServer.Controllers
         {
             return DbService.GetLastAddedContactByUser(userId);
         }
+
+        [HttpGet("GetLastSharedMessageIdByChatId")]
+        public int GetLastSharedMessageIdByChatId(int chatId)
+        {
+            return DbService.GetLastSharedMessageId(chatId);
+        }
+
 
         [HttpGet("GetLastChatMessage")]
         public TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
@@ -62,7 +87,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddFolder(folder.Folder, folder.UserId);
         }
-        public class FolderDTO()
+        public class FolderDTO
         {
             public TelegramLib.MainClasses.FolderObjs.Folder Folder { get; set; }
             public int UserId { get; set; }
@@ -97,7 +122,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.DeleteUserFromFolder(dto.FolderId, dto.UserId);
         }
-        public class RemoveCOntactFromFolderDTO()
+        public class RemoveCOntactFromFolderDTO
         {
             public int FolderId { get; set; }
             public int UserId { get; set; }
@@ -111,7 +136,7 @@ namespace TelegramClientServer.Controllers
             bool res = DbService.AddMessage(message.Chat, message.ActionMessage);
             return res ? Ok(true) : NotFound(false);
         }
-        public class MessageDTO()
+        public class MessageDTO
         {
             public UserChat Chat { get; set; }
             public Message ActionMessage { get; set; }
@@ -146,7 +171,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.UpdateChat(chat.Chat);
         }
-        public class ChatDTO()
+        public class ChatDTO
         {
             public UserChat Chat { get; set; }
         }
@@ -163,7 +188,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.RemoveContact(contact.Contact, contact.LoggedUser);
         }
-        public class RemoveContactDTO()
+        public class RemoveContactDTO
         {
             public UserContactcs Contact { get; set; }
             public TelegramLib.MainClasses.User LoggedUser { get; set; }
@@ -174,7 +199,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddChat(addChat.UserId, addChat.ChatterContactId);
         }
-        public class AddChatDTO()
+        public class AddChatDTO
         {
             public int UserId { get; set; }
             public int ChatterContactId { get; set; }
@@ -192,7 +217,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.SetAutoDel(autDel.ChatId, autDel.DelType);
         }
-        public class AutoDelDTO()
+        public class AutoDelDTO
         {
             public int ChatId { get; set; }
             public TelegramLib.Enums.Chat.AutoDeleteType DelType { get; set; }
@@ -206,7 +231,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddChatImage(path.Path);
         }
-        public class PathDTO()
+        public class PathDTO
         {
             public string Path { get; set; }
         }
@@ -224,7 +249,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddBlockedContact(contact.UserId, contact.ContactId);
         }
-        public class BlockedContactDTO()
+        public class BlockedContactDTO
         {
             public int UserId { get; set; }
             public int ContactId { get; set; }
@@ -260,7 +285,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.SetChatWallpaper(toSetPaper.ToSetPaper, toSetPaper.ChatId);
         }
-        public class ChatWallpaperDTO()
+        public class ChatWallpaperDTO
         {
             public ChatBackground ToSetPaper { get; set; }
             public int ChatId { get; set; }
@@ -311,7 +336,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.AddUserImage(toAddUserImage.User, toAddUserImage.UserImageName);
         }
-        public class ToAddUserImage()
+        public class ToAddUserImage
         {
             public TelegramLib.MainClasses.User User { get; set; }
             public string UserImageName { get; set; }

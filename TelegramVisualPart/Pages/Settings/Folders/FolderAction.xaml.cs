@@ -29,6 +29,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         public FolderAction(TelSystem system)
         {
             _system = system;
+
             InitializeComponent();
 
             SetBlocks();
@@ -52,6 +53,12 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             SetUpdateBlocks();
             SetLanguageText.SetFolderAction(this);
+            SetCorrectFolder();
+        }
+        public void SetCorrectFolder()
+        {
+            PageName.Text = "Edit folder";
+            CreateBut.Content = "Edit";
         }
 
         public void SetUpdateBlocks()

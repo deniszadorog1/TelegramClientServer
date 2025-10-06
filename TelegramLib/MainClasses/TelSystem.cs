@@ -183,7 +183,7 @@ namespace TelegramLib.MainClasses
 
         public User GetUserById(int userId)
         {
-            UserChat chat = Chats.FirstOrDefault(x => x.Id == userId);
+            UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == userId);
             return chat is null ? null : chat.Chatter;
         }
 
@@ -493,7 +493,9 @@ namespace TelegramLib.MainClasses
         public void AddShareMessage(UserContactcs contact)
         {
             TelegramLib.MainClasses.User share = GetUserById(contact.ContactUserId);
-            ShareContactMessage toAdd = new ShareContactMessage(-1,
+
+           TelegramLib.MainClasses.Messages.ShareContactMessage toAdd = 
+                new TelegramLib.MainClasses.Messages.ShareContactMessage(-1,
                 LoggedUser.Id, DateTime.Now, contact.Name, share);
 
             TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);

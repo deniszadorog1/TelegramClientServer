@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions.SendMedia"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:Emoji="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
+      xmlns:MediaEls="clr-namespace:TelegramVisualPart.UserControls.ChatsControls.ToSendMedias"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="400"
-      Height="450" Width="400"
+      d:DesignHeight="470" d:DesignWidth="400"
+      Height="470" Width="400"
       Title="SendMediaPage">
 
     <Border CornerRadius="10"
@@ -18,15 +19,15 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="220"/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="50 "/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Name="UpperRowGrid">
                     <TextBlock Grid.Column="1" Margin="30 0 0 0"
-                           Name="PageNameBlock" Text="Local passcode"
+                           Name="PageNameBlock" Text="To Send Media"
                            VerticalAlignment="Center"
                            Foreground="{StaticResource UsualTextColor}"
                            FontSize="20"/>
@@ -47,19 +48,52 @@
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="1" Name="MeidaRowGrid">
+                <Grid Grid.Row="1" Name="MeidaRowGrid" Margin="0 5 0 5">
                     <Grid Margin="30 0 30 0" Background="{StaticResource DarkThemeSecond}">
                         <ListBox Name="MediasBox" Width="300" Height="170"
-                                 Margin="20 10 20 10">
+                                 Margin="10 10 10 10">
 
                             
                         </ListBox>
+
+                        <Grid Name="GroupImgGrid"
+                              Visibility="Hidden">
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="OneMedRow"/>
+                                <RowDefinition x:Name="TwoMedRow"/>
+                                <RowDefinition x:Name="ThreeMedRow"/>
+                                <RowDefinition x:Name="FourMedRow"/>
+                                <RowDefinition x:Name="FiveMedRow"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="OneMedCol"/>
+                                <ColumnDefinition x:Name="TwoMedCol"/>
+                            </Grid.ColumnDefinitions>
+
+                            <MediaEls:MediaElBoxItem x:Name="OneMedia" Grid.Row="0" Grid.Column="0"/>
+                            <MediaEls:MediaElBoxItem x:Name="TwoMedia" Grid.Row="0" Grid.Column="1"/>
+
+                            <MediaEls:MediaElBoxItem x:Name="ThreeMedia" Grid.Row="1" Grid.Column="0"/>
+                            <MediaEls:MediaElBoxItem x:Name="FourMedia" Grid.Row="1" Grid.Column="1"/>
+
+                            <MediaEls:MediaElBoxItem x:Name="FiveMedia" Grid.Row="2" Grid.Column="0"/>
+                            <MediaEls:MediaElBoxItem x:Name="SixMedia" Grid.Row="2" Grid.Column="1"/>
+
+                            <MediaEls:MediaElBoxItem x:Name="SevenMedia" Grid.Row="3" Grid.Column="0"/>
+                            <MediaEls:MediaElBoxItem x:Name="EightMedia" Grid.Row="3" Grid.Column="1"/>
+
+                            <MediaEls:MediaElBoxItem x:Name="NineMedia" Grid.Row="4" Grid.Column="0"/>
+                            <MediaEls:MediaElBoxItem x:Name="TenMedia" Grid.Row="4" Grid.Column="1"/>
+                        </Grid>
+
                     </Grid>
                 </Grid>
 
 
                 <Grid Grid.Row="2" Name="CheckBoxes" Margin="25 0 0 0">
                     <Grid.RowDefinitions>
+                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -69,14 +103,25 @@
                               Background="{StaticResource TempActiveTextColor}"
                               Foreground="{StaticResource UsualTextColor}"
                               FontSize="16"
-                              materialDesign:CheckBoxAssist.CheckBoxSize="25"/>
+                              materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                              Checked="CompressImage_Checked"/>
 
-                    <CheckBox Grid.Row="1" Name="RememberChoice"
-                              Content="Remember this choice"
+                    <CheckBox Grid.Row="1" Name="GroupItems"
+                              Content="Group items"
                               Foreground="{StaticResource UsualTextColor}"
                               Background="{StaticResource TempActiveTextColor}"
                               FontSize="16"
-                              materialDesign:CheckBoxAssist.CheckBoxSize="25"/>
+                              materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                              Checked="GroupItems_Checked"
+                              Unchecked="GroupItems_Unchecked"/>
+
+                    <CheckBox Grid.Row="2" Name="RememberChoice"
+                              Content="Remember this choise"
+                              Foreground="{StaticResource UsualTextColor}"
+                              Background="{StaticResource TempActiveTextColor}"
+                              FontSize="16"
+                              materialDesign:CheckBoxAssist.CheckBoxSize="25"
+                              Checked="RememberChoice_Checked"/>
                 </Grid>
 
                 <Grid Grid.Row="3" Name ="TextBoxGrid" Margin="25 5 20 5">

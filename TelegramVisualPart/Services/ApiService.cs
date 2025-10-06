@@ -36,6 +36,7 @@ using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls.ContactsControls;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -85,6 +86,25 @@ namespace TelegramVisualPart.Services
 
             var response = await _client.PutAsync("api/StartPage/AddUser", content);
 
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> AddShareContactMessage(int sharedUserId, 
+            string shareName, int chatId, int senderId, string message)
+        {
+            var data = new
+            {
+                SharedUserId = sharedUserId,
+                SharedName = shareName,
+                ChatId = chatId,
+                SenderId = senderId,
+                Message = string.Empty
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Social/AddShareContactMessage", content);
             return response.IsSuccessStatusCode;
         }
 
@@ -171,6 +191,14 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
             return user;
+        }
+
+        public static async Task<int> GetLastSharedMessageIdByChatId(int chatId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastSharedMessageIdByChatId?chatId={chatId}");
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<int>(jsonResponse);
         }
 
         public static async Task<bool> IsUserOnline(int userId)

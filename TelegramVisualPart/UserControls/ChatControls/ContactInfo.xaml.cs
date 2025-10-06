@@ -6,12 +6,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
+using System.Xml.Linq;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.Contacts;
+using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.UserContactControls;
@@ -35,6 +38,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetIconsSize();
 
             this.Visibility = Visibility.Hidden;
+            SetMenuVisibility(Visibility.Hidden);
+        }
+
+        public void SetMenuVisibility(Visibility vis)
+        {
+            MenuButGrid.Visibility = vis;
         }
 
         public event Action LoadEnd;
@@ -587,11 +596,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void CloseButGrid_MouseEnter(object sender, MouseEventArgs e)
         {
+            Cursor = Cursors.Hand;
             CloseBut.Foreground = Brushes.White;
         }
 
         private void CloseButGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Cursor = null;
             CloseBut.Foreground = Brushes.Gray;
         }
 
@@ -791,7 +802,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void AddContactGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set Add Contact Page
-
+            EditUserContact contact = 
+                new EditUserContact(_chat.Chatter, _system);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(contact);
         }
     }
 }
