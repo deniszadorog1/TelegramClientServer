@@ -113,6 +113,11 @@ namespace TelegramLib.MainClasses
             return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
         }
 
+        public Message GetLastMessageObj()
+        {
+            return Messages.Last();
+        }
+
         /*        public bool IsNamesAreEqual(string chatterName)
                 {
                     return Chatter.IsNamesAreEqual(chatterName);
@@ -205,9 +210,21 @@ namespace TelegramLib.MainClasses
             User sharedUser, string sharedContactName)
         {
             ShareContactMessage toAdd = new ShareContactMessage(id,
-                senderUserId, DateTime.Now, sharedContactName, sharedUser);
+                senderUserId, DateTime.Now, sharedContactName, sharedUser, false);
 
             Messages.Add(toAdd);
+        }
+
+        public List<Message> GetMessageByGivenIds(List<int> ids)
+        {
+            List<Message> res = new List<Message>();
+            return Messages.Where(x => ids.Contains(x.Id)).ToList();
+        }
+
+        public int GetAmountOfUnreadMessages(int loggedUserId)
+        {
+            return Messages.Where(x => !x.IsRead && 
+            x.SenderUserId != loggedUserId).Count();
         }
     }
 }

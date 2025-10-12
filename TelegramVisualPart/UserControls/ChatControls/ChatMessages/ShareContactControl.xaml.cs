@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
     /// </summary>
     public partial class ShareContactControl : UserControl
     {
-        public event Action SharedClicked;
+        public event Func<Task> SharedClicked;
         public ShareContactControl()
         {
             InitializeComponent();
@@ -79,6 +80,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             SharedClicked?.Invoke();
         }
 
+        private const int _tickColWidth = 25;
+        public void SetTickVis(string iconName)
+        {
+            TickColumn.Width = new GridLength(_tickColWidth);
+            SetVisibility(iconName);
+        }
 
+        public void SetVisibility(string iconName)
+        {
+            TickIcon.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
+        }
     }
 }

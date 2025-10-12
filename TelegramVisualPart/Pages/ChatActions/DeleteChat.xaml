@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="250" d:DesignWidth="350"
-      Height="250" Width="350"
+      d:DesignHeight="270" d:DesignWidth="350"
+      Height="270" Width="350"
       Title="DeleteChat">
 
     <Border Name="BorderBg" Background="{StaticResource DarkThemeOne}" CornerRadius="10">
@@ -15,8 +15,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="55"/>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="50"/>
-                <RowDefinition/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -45,7 +46,7 @@
                        Name="SecInfoText"/>
 
             <StackPanel Grid.Row="3" Orientation="Horizontal" Height="30" Margin="-3 0 0 0"
-                        Visibility="Hidden">
+                        Visibility="Visible">
                 <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
                             Name="ShowChatNameBox" Margin="0 0 5 0"
                             Background="{StaticResource TempActiveTextColor}"
@@ -59,7 +60,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" 
-                        HorizontalAlignment="Right" Margin="0 20 5 5">
+                        HorizontalAlignment="Right" Margin="0 15 10 5">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                             Content="Cancel" Background="Transparent" BorderThickness="0"
                             HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"

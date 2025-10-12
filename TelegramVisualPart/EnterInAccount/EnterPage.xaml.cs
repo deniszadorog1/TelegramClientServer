@@ -65,7 +65,6 @@ namespace TelegramVisualPart.EnterInAccount
                 return;
             }
 
-
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
             if (isOnline)
             {

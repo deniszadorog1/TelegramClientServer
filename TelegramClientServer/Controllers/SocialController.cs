@@ -171,6 +171,7 @@ namespace TelegramClientServer.Controllers
         {
             DbService.UpdateChat(chat.Chat);
         }
+
         public class ChatDTO
         {
             public UserChat Chat { get; set; }
@@ -342,7 +343,30 @@ namespace TelegramClientServer.Controllers
             public string UserImageName { get; set; }
         }
 
+        [HttpPost("ReadMessage")]
+        public void ReadMessage([FromBody] ReadMessageDTO readMessage)
+        {
+            DbService.SetReadMessageAction(readMessage.Id);
+        }
+        public class ReadMessageDTO
+        {
+            public int Id { get; set; }
+        }
 
+        [HttpPost("SetReadStatus")]
+        public void SetReadStatus([FromBody] SetReadStatusDTO readStatDTO)
+        {
+            DbService.SetReadStatusByMessIdBySendTime(readStatDTO.MesId);
+        }
+        public class SetReadStatusDTO
+        {
+            public int MesId { get; set; }
+        }
 
+        [HttpGet("GetReadStatus")]
+        public bool GetReadStatus(int mesId)
+        {
+            return DbService.GetMessageReadStatusById(mesId);
+        }
     }
 }

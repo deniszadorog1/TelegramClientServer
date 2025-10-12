@@ -40,6 +40,11 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? SetPhoneNumVisByExpsDel;
         public static event Action<User>? UpdateBirthDateDel;
         public static event Action<User>? UpdateContactPhotoDel;
+        public static event Action<User>? DeleteChat;
+
+        public static event Action<User>? UpdateReadStatus;
+        public static event Func<User, UserContactcs, Task>? SetShareContactMessage;
+
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -52,7 +57,6 @@ namespace TelegramVisualPart.Services
 
         public static string GetUserId(HubConnectionContext connection)
         {
-            // достаём userId из заголовка
             if (connection.GetHttpContext().Request.Headers.TryGetValue("userId", out var userId))
             {
                 return userId;
@@ -60,8 +64,41 @@ namespace TelegramVisualPart.Services
             return null;
         }
 
+        public static async Task DisconnectAsync()
+        {
+            if (_connection is not null)
+            {
+                await _connection.StopAsync();
+                await _connection.DisposeAsync();
+                _connection = null;
+            }
+            ClearAllEvents();
+        }
+
+        private static void ClearAllEvents()
+        {
+            TextMessageReceived = null;
+
+            MediaMessageReceived = null;
+            UpdateContactDel = null; 
+            UpdateOnlineStatusDel = null; 
+            UpdateUserImage = null;
+            ClearChatDel = null;
+            SetContactPhoneNumberVisibilityDel = null;
+            SetContactLastSeenVisStateDel = null;
+            SetPhoneNumVisByExpsDel = null;
+            UpdateBirthDateDel = null;
+            UpdateContactPhotoDel = null;
+            DeleteChat = null;
+            
+            UpdateReadStatus = null; 
+            SetShareContactMessage = null;
+    }
+
         public static async Task SetSignalRConnection()
         {
+            if (_connection is not null) await DisconnectAsync();
+
             _connection = new HubConnectionBuilder()
             .WithUrl("https://localhost:7164/chatHub", options =>
             {
@@ -93,24 +130,21 @@ namespace TelegramVisualPart.Services
             //Add contacts
             _connection.On<User, User>("AddContact", async (user, toAdd) =>
             {
-
                 //Add conatct in system
                 UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.Surname, toAdd.Login, toAdd.BirthDay,
                     toAdd.BIO, toAdd.PhoneNumber, toAdd.LastSeenOnline, true, toAdd.UserImages, null, true);
 
                 contact.ContactUserId = toAdd.Id;
                 //add cotact in db
-
                 await ApiService.AddContact(_system.LoggedUser.Id, contact);
-
                 contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
 
                 _system.Contacts.Add(contact);
 
                 //Add chat in DB
-                await ApiService.AddNewChat(_system.LoggedUser.Id, contact.Id);
+                await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
 
-                UserChat chatToAdd = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.Id);
+                UserChat chatToAdd = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
                 _system.AddChat(chatToAdd);
                 return;
             });
@@ -175,6 +209,29 @@ namespace TelegramVisualPart.Services
             _connection.On<User>("UpdateContactPhoto", (user) =>
             {
                 UpdateContactPhotoDel?.Invoke(user);
+            });
+
+            _connection.On<User, User>("DeleteChat", (loggedUser, chatter) =>
+            {
+                //logged user is now chatter 
+                //Send logged user become chatter in new one
+
+                DeleteChat?.Invoke(loggedUser);
+            });
+
+            _connection.On<User>("UpdateReadStatus", (loggedUser) =>
+            {
+                UpdateReadStatus?.Invoke(loggedUser);
+            });
+
+            _connection.On<User, User, UserContactcs>("AddShareContactMessage", 
+                (logged, chatter, contactToSend) =>
+            {
+                //chatter is now logged
+                //logged is now chatter
+
+
+                SetShareContactMessage?.Invoke(logged, contactToSend);
             });
 
             await _connection.StartAsync();
@@ -255,6 +312,23 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("UpdateContactPhoto", user);
         }
 
+        public static async Task DeleteChatMethod(User loggedUser, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("DeleteChat", loggedUser, chatter.Id);
+        }
 
+        public static async Task UpdateReadStatusMethod(User loggedUser, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateReadStatus", loggedUser, chatter.Id);
+        }
+
+        public static async Task AddShareContactMessage(User logged, User chatter,
+            UserContactcs contactToSend)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("AddShareContactMessage", logged, chatter, contactToSend);
+        }
     }
 }

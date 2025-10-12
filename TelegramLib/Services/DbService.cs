@@ -7,6 +7,8 @@ using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms;
 using TelegramLib.Enums.Messages;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.Enums.Settings.Notifs;
@@ -417,6 +419,7 @@ namespace TelegramLib.Services
                         toAdd.SenderUserId = (int)mes.SenderId;
                         //toAdd.SenderId = (int)mes.SenderId;
                         toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
+                        toAdd.IsRead = mes.IsRead;
 
                         if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
                         else if (!(mes.ImageId is null))
@@ -2204,12 +2207,7 @@ namespace TelegramLib.Services
 
             return 1;
         }
-
-
-
         //SETTINGS OPTIONS
-
-
         //Chats
         public static bool AddMessage(UserChat chat, TelegramLib.MainClasses.Messages.Message message)
         {
@@ -2222,6 +2220,7 @@ namespace TelegramLib.Services
                 toAdd.ChatId = chat.Id;
                 toAdd.SenderId = message.SenderUserId;
                 toAdd.SentDate = message.SentTime;
+                toAdd.IsRead = false;
 
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
@@ -3434,11 +3433,14 @@ namespace TelegramLib.Services
                 toAdd.VideoId = null;
                 toAdd.SentDate = DateTime.Now;
                 toAdd.ShareContactId = GetLastShareMessageId();
+                toAdd.IsRead = false;
 
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
             }
         }
+
+
 
         public static int GetLastSharedMessageId(int chatId)
         {
@@ -3474,6 +3476,78 @@ namespace TelegramLib.Services
                 model.ShareContactMessage.Add(toAdd);
 
                 model.SaveChanges();
+            }
+        }
+
+        public static void SetReadMessageAction(int messageId)
+        {
+            using (var model = new TelegramModel())
+            {
+                Messages toRead = model.Messages.FirstOrDefault(x => x.Id == messageId);
+                toRead.IsRead = true;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static void SetReadStatusByMessIdBySendTime(int messageId)
+        {
+            using(var model = new TelegramModel())
+            {
+                //Get message 
+                Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
+                if (mes is null) return;
+
+                //Get message with same sendTime (but differ id)
+                var sameTimeMessage = model.Messages
+                .AsEnumerable() 
+                .FirstOrDefault(x =>
+                    x.Id != mes.Id &&
+                    x.SentDate.HasValue && mes.SentDate.HasValue &&
+                    Math.Abs((x.SentDate.Value - mes.SentDate.Value).TotalMilliseconds) < 100);
+
+
+/*                var sameTimeMessage = model.Messages
+                    .FirstOrDefault(x =>
+                        x.Id != mes.Id &&
+                        x.SentDate.HasValue && mes.SentDate.HasValue &&
+                        x.SentDate.Value.Year == mes.SentDate.Value.Year &&
+                        x.SentDate.Value.Month == mes.SentDate.Value.Month &&
+                        x.SentDate.Value.Day == mes.SentDate.Value.Day &&
+                        x.SentDate.Value.Hour == mes.SentDate.Value.Hour &&
+                        x.SentDate.Value.Minute == mes.SentDate.Value.Minute &&
+                        x.SentDate.Value.Second == mes.SentDate.Value.Second &&
+                        x.SentDate.Value.Millisecond == mes.SentDate.Value.Millisecond);*/
+
+                //1 mil sec differ
+                /*  sameTimeMessage = model.Messages
+                     .FirstOrDefault(x => x.Id != mes.Id &&
+                          Math.Abs(((TimeSpan)(x.SentDate - mes.SentDate)).TotalMilliseconds) < 1);*/
+                if (sameTimeMessage is null) return;
+
+                //compare them(read status)
+                if (sameTimeMessage.IsRead) mes.IsRead = true;
+                model.SaveChanges();
+            }
+        }
+
+        public static bool GetMessageReadStatusById(int id)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages mes = model.Messages.FirstOrDefault(x => x.Id == id);
+                return mes is null ? false : mes.IsRead;
+            }
+        }
+
+        public static void SetReadStatusForChat(int chatId, int loggedUserId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                if (chat is null) return;
+            
+                
             }
         }
     }

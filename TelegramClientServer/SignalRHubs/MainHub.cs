@@ -69,5 +69,22 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.All.SendAsync("UpdateContactPhoto", user);
         }
+
+        public async Task DeleteChat(User loggedUser, User chatter, int clientId)
+        {
+            await Clients.User(clientId.ToString()).SendAsync("DeleteChat", loggedUser);
+        }
+
+        public async Task UpdateReadStatus(User loggedUser, int clientId)
+        {
+            await Clients.User(clientId.ToString()).SendAsync("UpdateReadStatus", loggedUser);
+        }
+
+        public async Task AddShareContactMessage(User logged, 
+            User chatter, UserContactcs contactToSend)
+        {
+            await Clients.User(chatter.Id.ToString())
+                .SendAsync("AddShareContactMessage", logged, chatter, contactToSend);
+        }
     }
 }

@@ -77,10 +77,16 @@ namespace TelegramVisualPart.UserControls
             UnreadEllipse.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
         }
 
-        public void ChangeUnreadEllipseVisOnOposite()
+        public void ChangeUnreadEllipseVisOnOtherDirection()
         {
             UnreadEllipse.Visibility = UnreadEllipse.Visibility == Visibility.Hidden ?
                 Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void SetUnreadMessageValue(int amount)
+        {
+            UnredCountBorder.Visibility = amount > 0 ? Visibility.Visible : Visibility.Hidden;
+            MesCounter.Text = amount.ToString();
         }
     }
 }

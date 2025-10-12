@@ -21,6 +21,7 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media.Animation;
 using System.Xml.Linq;
@@ -108,6 +109,27 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+
+        public static async Task<bool> GetMessageReadStatus(int mesId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetReadStatus?mesId={mesId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<bool>(jsonResponse);
+        }
+
+        public static async Task<bool> SetReadStatus(int mesId)
+        {
+            var data = new { MesId = mesId };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Social/SetReadStatus", content);
+            return response.IsSuccessStatusCode;
+        }
+
         public static async Task<bool> UpdateUser(TelegramLib.MainClasses.User user)
         {
             var data = new { User = user };
@@ -116,6 +138,20 @@ namespace TelegramVisualPart.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync("api/StartPage/UpdateUser", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> ReadMessage(int messageId)
+        {
+            var data = new
+            {
+                Id = messageId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var contact = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/ReadMessage", contact);
 
             return response.IsSuccessStatusCode;
         }

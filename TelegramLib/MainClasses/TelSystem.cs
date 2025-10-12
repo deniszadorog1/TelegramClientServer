@@ -496,7 +496,7 @@ namespace TelegramLib.MainClasses
 
            TelegramLib.MainClasses.Messages.ShareContactMessage toAdd = 
                 new TelegramLib.MainClasses.Messages.ShareContactMessage(-1,
-                LoggedUser.Id, DateTime.Now, contact.Name, share);
+                LoggedUser.Id, DateTime.Now, contact.Name, share, false);
 
             TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);
             chat.Messages.Add(toAdd);

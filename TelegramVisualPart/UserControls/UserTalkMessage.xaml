@@ -53,6 +53,15 @@
                     Fill="{StaticResource TempActiveTextColor}">
 
                 </Ellipse>
+
+                <Border Background="Gray" CornerRadius="10"
+                        Name="UnredCountBorder" Visibility="Visible">
+                    <TextBlock Name="MesCounter" Text="0"
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </Border>
+                
             </Grid>
             
         </Grid>

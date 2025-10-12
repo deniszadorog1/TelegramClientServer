@@ -34,6 +34,10 @@ using TelegramLib.UserSettings.SettingsTypes;
 using System;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
 using System.Collections.Frozen;
+using static System.Net.Mime.MediaTypeNames;
+using System.Threading;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
+using Microsoft.AspNetCore.Http.Metadata;
 
 
 namespace TelegramVisualPart.UserControls
@@ -50,14 +54,30 @@ namespace TelegramVisualPart.UserControls
             SetMarginForChatMenu();
             SetAutoDeleteTimer();
 
+            SetBasicSignalRMethods();
+        }
+
+        public void SetBasicSignalRMethods()
+        {
+            SignalRService.TextMessageReceived -= OnTextMessageReceived;
             SignalRService.TextMessageReceived += OnTextMessageReceived;
+
+            SignalRService.MediaMessageReceived -= OnMediaMessageRecived;
             SignalRService.MediaMessageReceived += OnMediaMessageRecived;
 
+            SignalRService.UpdateOnlineStatusDel -= UpdateOnlineStatus;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
+
+            SignalRService.UpdateUserImage -= UpdateUserImage;
             SignalRService.UpdateUserImage += UpdateUserImage;
+
+            SignalRService.ClearChatDel -= ClearChatAction;
             SignalRService.ClearChatDel += ClearChatAction;
 
+            SignalRService.SetContactLastSeenVisStateDel -= SetLastVisState;
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
+
+            SignalRService.UpdateContactPhotoDel -= UpdateChatterIamge;
             SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
         }
 
@@ -231,52 +251,66 @@ namespace TelegramVisualPart.UserControls
 
         private void OnTextMessageReceived(TelegramLib.MainClasses.User sender, TelegramLib.MainClasses.Messages.TextMessage message)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async Task () =>
             {
-                //Get chat wherer Logged is Sender 
-                TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(sender.Id);
+                if (!await ApiService.IsUserOnline(_system.LoggedUser.Id))
+                {
+                    //_chat = null;
+                    //return;
+                }//Get chat where Logged is Sender 
+                TelegramLib.MainClasses.UserChat chat =
+                    _system.GetChatByChatterId(sender.Id);
                 if (chat is null) return;
 
-                if (_chat is null || chat.Id != _chat.Id) AddTextMessageInUnChosenChat(chat, message);
+                if (_chat is null ||
+                chat.Id != _chat.Id) AddTextMessageInUnChosenChat(chat, message);
                 else AddTextMessageInChosenChat(message, sender);
 
                 //Is temp chat is chosen
             });
         }
 
-        private async void AddTextMessageInChosenChat(TelegramLib.MainClasses.Messages.TextMessage message,
+        private async Task AddTextMessageInChosenChat(TelegramLib.MainClasses.Messages.TextMessage message,
             TelegramLib.MainClasses.User sender)
         {
-            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                            GetConvertedStringMessage(message.Text),
-                            *//*sender.GetFirstImageNameInString()*//* await SignalRHelperService.GetUserPhotoToSet(sender),
-                            _system.Settings.GetChatSettings().FontName)); //Change on sender image 
-            */
-
             ChatControls.TextMessage text = new ChatControls.TextMessage(
                 GetConvertedStringMessage(message.Text),
                 /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
                 _system.Settings.GetChatSettings().FontName);
 
-            AddTextControl(text);
-
-
-            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+            //ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
             await ApiService.AddMessage(message, _chat);
 
             message = (TelegramLib.MainClasses.Messages.TextMessage)await ApiService.GetLastChatMessage(_chat.Id);
+            AddTextControl(text, message.Id);
 
             _chatMessages.Add(message);
-            ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
+
+            if (!await ApiService.IsUserOnline(_system.LoggedUser.Id)) return;
+
+            ToUpdateUserControlMessage();
         }
 
-        public void AddTextControl(ChatControls.TextMessage text)
+        public void ToUpdateUserControlMessage()
+        {
+            MainWindow window = ((MainWindow)Window.GetWindow(this));
+
+            if(window is not null)
+            {
+                window.UpdateUserChatTalkControl();
+                return;
+            }
+            //_mainWindow.UpdateUserChatTalkControl();
+        }
+
+        public void AddTextControl(ChatControls.TextMessage text, int mesId)
         {
             ListBoxItem item = new ListBoxItem()
             {
                 Content = text
             };
+            item.Tag = mesId.ToString();
             ChatBox.Items.Add(item);
         }
 
@@ -290,7 +324,6 @@ namespace TelegramVisualPart.UserControls
         }
 
         private TelegramLib.MainClasses.UserChat _chat;
-
         public event Action SettingEnded;
 
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
@@ -308,7 +341,6 @@ namespace TelegramVisualPart.UserControls
 
             UserChatMenu.SetChatParam(_chat);
 
-
             ClearChat();
 
             SetChatParams(_chat.GetChatter());
@@ -322,6 +354,12 @@ namespace TelegramVisualPart.UserControls
             SetChatterImage();
 
             SettingEnded?.Invoke();
+        }
+
+        public bool IsChoseChatIdIsEqual(int id)
+        {
+            if (_chat is null) return false;
+            return _chat.Id == id;
         }
 
         public void SetUnblockGridVis()
@@ -441,10 +479,10 @@ namespace TelegramVisualPart.UserControls
                     //Video or photo
                     SetMediaMessageInChat(media, imgName);
                 }
-                else if (_chatMessages[i] is 
+                else if (_chatMessages[i] is
                     TelegramLib.MainClasses.Messages.ShareContactMessage share)
                 {
-                    ShareContact(share.SharedUser, share.SharedName);
+                    ShareContact(share.SharedUser, share.SharedName, _chatMessages[i]);
                 }
             }
 
@@ -489,7 +527,8 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message, string senderImageName)
+        public void SetTextMessageInChat(TelegramLib.MainClasses.Messages.TextMessage message,
+            string senderImageName)
         {
             ChatControls.TextMessage newMes =
                 new ChatControls.TextMessage(GetConvertedStringMessage(message.Text),
@@ -497,11 +536,18 @@ namespace TelegramVisualPart.UserControls
 
             newMes.SetTime(message.SentTime);
 
-            //ChatBox.Items.Add(newMes);
-            AddTextControl(newMes);
+            ListBoxItem item = new ListBoxItem()
+            {
+                Content = newMes
+            };
+            item.Tag = message.Id.ToString();
+
+            ChatBox.Items.Add(item);
+            SetTickStatusIfCorrectMes(item, message);
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
         }
+
 
         public void SetMarginForChatMenu()
         {
@@ -518,44 +564,70 @@ namespace TelegramVisualPart.UserControls
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
-                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name, CommentTextBox.Text);
+                AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name, CommentTextBox.Text);
             }
         }
 
-        private async void AddTextMessage(string senderImageName, string sendText)
+        private async void AddTextMessageControl(string senderImageName, string sendText)
         {
             //Visaul add
-            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                            GetConvertedStringMessage(CommentTextBox.Text), senderImageName, _system.Settings.GetChatSettings().FontName));
-            */
             ChatControls.TextMessage text = new ChatControls.TextMessage(
                 GetConvertedStringMessage(sendText),
                 senderImageName, _system.Settings.GetChatSettings().FontName);
-            AddTextControl(text);
 
-            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+            ListBoxItem item = new ListBoxItem()
+            {
+                Content = text
+            };
 
             //system add
 
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
             TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
-                            DateTime.Now, sendText);
+                            DateTime.Now, sendText, false);
 
             //Adding in DB
             await ApiService.AddMessage(toAdd, _chat);
 
             toAdd = await ApiService.GetLastChatMessage(_chat.Id);
+            item.Tag = toAdd.Id.ToString();
+            ChatBox.Items.Add(item);
+            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
 
             if (toAdd is not TelegramLib.MainClasses.Messages.TextMessage toAddText) return;
 
-            await SendMessageToReceiver(toAddText);
+            //await SendMessageToReceiver(toAddText);
 
             //toAdd.SenderId = contact.Id;
             _chatMessages.Add(toAddText);
             if (CommentTextBox.Text == sendText) CommentTextBox.Text = string.Empty;
 
+            //Send if user is online 
+            AddTextMessageInDb(toAddText);
+
+            //Set vis tick 
+            SetTickStatusIfCorrectMes(item, toAdd);
+
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
+        }
+
+        public async Task AddTextMessageInDb(TelegramLib.MainClasses.Messages.TextMessage toAddText)
+        {
+            //TO add in both chats if chatter online
+            if (await ApiService.IsUserOnline(_chat.Chatter.Id))
+            {
+                await SignalRService.SendTextMessage(_system.LoggedUser, toAddText);
+                return;
+            }
+            //just to Add in chatters chat in db
+            //Get chat
+            TelegramLib.MainClasses.UserChat chat =
+                await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
+            if (chat is null) return;
+
+            //Add in chats db
+            await ApiService.AddMessage(toAddText, chat);
         }
 
         private async Task SendMessageToReceiver(Message toAdd)
@@ -581,11 +653,6 @@ namespace TelegramVisualPart.UserControls
         public void AddEmoji(string emoji)
         {
             CommentTextBox.Text += emoji;
-
-            /*            ChatBox.Items.Add(new ChatControls.TextMessage(
-                            GetConvertedStringMessage(emoji), _system.LoggedUser.GetFirstImageName().Name));
-
-                        ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);*/
 
             EmojisBoard.Visibility = Visibility.Hidden;
         }
@@ -678,7 +745,8 @@ namespace TelegramVisualPart.UserControls
                             .ToList()
                             .Any()) return;*/
 
-            Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now, fileName, isSticker);
+            Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
+                DateTime.Now, fileName, isSticker, false);
 
             if (isAdd)
             {
@@ -1231,10 +1299,10 @@ namespace TelegramVisualPart.UserControls
             //Where sender is receiver; receiver is sender
 
             //Get contact where senderId is friendId, UserId - receiverId
-            UserContactcs contcat = await ApiService.GetContactByUserAndFriendIds(_chat.Chatter.Id, _system.LoggedUser.Id);
-            if (contcat is null) return;
+            UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_chat.Chatter.Id, _system.LoggedUser.Id);
+            if (contact is null) return;
 
-            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, contcat.Id);
+            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, contact.Id);
             if (chat is null) return;
 
             if (message is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -1371,7 +1439,7 @@ namespace TelegramVisualPart.UserControls
         {
             if (!string.IsNullOrEmpty(capture))
             {
-                AddTextMessage(_system.LoggedUser.GetFirstImageName().Name, capture);
+                AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name, capture);
             }
 
             foreach (var img in imgs)
@@ -1387,10 +1455,10 @@ namespace TelegramVisualPart.UserControls
 
         //The True one
         public void ShareContact(TelegramLib.MainClasses.User sharedContact,
-            string sharedName)
+            string sharedName, Message mes)
         {
             //Set send message control
-            ShareContactControl shareContact = 
+            ShareContactControl shareContact =
                 new ShareContactControl();
 
             //Set control params
@@ -1408,10 +1476,23 @@ namespace TelegramVisualPart.UserControls
             //AddSharedMessageInSystem(sharedContact);
 
             //Events etc...
-            shareContact.SharedClicked += () =>
+            shareContact.SharedClicked += async () =>
             {
                 int.TryParse(shareContact.Tag.ToString(), out int tagId);
                 TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(tagId);
+
+                //If chat is not found -> add it
+                if (chat is null)
+                {
+                    await AddChat(sharedContact);
+
+                    chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, sharedContact.Id);
+                    //chat = _system.GetChatByChatterId(tagId);
+
+                    //Add chat in system
+                    _system.AddChat(chat);
+                }
+
                 if (chat is null) return;
 
                 //Set another chat with this 
@@ -1424,8 +1505,21 @@ namespace TelegramVisualPart.UserControls
 
             //Change Chat
 
+            ListBoxItem item = new ListBoxItem()
+            {
+                Content = shareContact,
+                Tag = mes.Id
+            };
+
+            //Set user tick icon
+            if (mes.SenderUserId == _system.LoggedUser.Id)
+            {
+                string tickVis = mes.IsRead ? _readIconName : _unreadIconName;
+                shareContact.SetTickVis(tickVis);
+            }
+
             //Add it in chat
-            ChatBox.Items.Add(shareContact);
+            ChatBox.Items.Add(item);
         }
 
         public void AddSharedMessageInSystem(UserContactcs contact)
@@ -1433,5 +1527,212 @@ namespace TelegramVisualPart.UserControls
             _system.AddShareMessage(contact);
         }
 
+        public async Task SetReadMessageAction()
+        {
+            //Tag => message Id for every message Control
+            if (_chat is null) return;
+
+            //Not every chat messages should marked as read
+            //only that that is are in visible borders of ListBox
+            List<Message> messages =
+                    _chat.GetMessageByGivenIds(GetIdsByVisibleElems());
+
+            for (int i = 0; i < messages.Count; i++)
+            {
+                if (messages[i].SenderUserId != _system.LoggedUser.Id &&
+                    !messages[i].IsRead)
+                {
+                    messages[i].IsRead = true;
+                    await ApiService.ReadMessage(messages[i].Id);
+
+                    //Update read amount
+                    UpdateUserTalkReadAmount();
+                }
+            }
+
+            //Send signalR To set message as read
+            //var objsInView = Helper.VisHelper.GetVisibleItems(ChatBox);
+
+            await SetChatterMessagesReadStatus();
+        }
+
+        public void UpdateUserTalkReadAmount()
+        {
+            Window window = Window.GetWindow(this);
+            if (window is null || window is not MainWindow main) return;
+
+            if (_chat is null) return;
+            main.UpdateReadCountOfReadMessages(_chat.Id);
+        }
+
+        public async Task SetChatterMessagesReadStatus()
+        {
+            //Is online
+            if (await ApiService.IsUserOnline(_chat.Chatter.Id))
+            {
+                await SignalRService.UpdateReadStatusMethod(_system.LoggedUser, _chat.Chatter);
+                return;
+            }
+            //Set only in db
+        }
+
+        public List<int> GetIdsByVisibleElems()
+        {
+            List<int> res = new List<int>();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                IEnumerable<object> elems = VisHelper.GetVisibleItems(ChatBox);
+                foreach (var el in elems)
+                {
+                    if (el is ListBoxItem item)
+                    {
+                        if (item.Content is ChatControls.TextMessage text)
+                        {
+                            int.TryParse(item.Tag.ToString(), out int id);
+                            res.Add(id);
+                        }
+                        else if(item.Content is ShareContactControl share)
+                        {
+                            int.TryParse(item.Tag.ToString(), out int id);
+                            res.Add(id);
+                        }
+                    }
+                }
+            });
+            return res;
+        }
+
+        public void UpdateReadStatus(TelegramLib.MainClasses.User chatter)
+        {
+            //COMPARE IN DB by SEND TIME
+            //Get chat with chatter
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(chatter.Id);
+
+            List<Message> messages =
+                chat.GetMessageByGivenIds(GetIdsByVisibleElems());
+
+            if (chat is null) return;
+            //Go through it
+            //compare every chat in db(by time)
+            //change read status in db(if need)
+            for (int i = 0; i < messages.Count; i++)
+            {
+                if (!messages[i].IsRead)
+                {
+                    ApiService.SetReadStatus(messages[i].Id);
+
+                    //Get and change status from db
+                    bool updatedStatus =
+                        ApiService.GetMessageReadStatus(messages[i].Id).Result;
+
+                    messages[i].IsRead = updatedStatus;
+                }
+            }
+            UpdateReadStatus(chat);
+            //change vis state
+        }
+
+        public void UpdateReadStatus(TelegramLib.MainClasses.UserChat chat)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.Invoke(() => UpdateReadStatus(chat));
+                return;
+            }
+
+            for (int i = 0; i < ChatBox.Items.Count; i++)
+            {
+                if (ChatBox.Items[i] is ListBoxItem item)
+                {
+                    //make it in one in future
+                    if (item.Content is ChatControls.TextMessage text)
+                    {
+                        //if (text.Tag is null) continue;
+                        int.TryParse(item.Tag.ToString(), out int mesId);
+                        SetVisualReadIconKind(item,
+                            chat.Messages.FirstOrDefault(x => x.Id == mesId));
+                    }
+                    else if (item.Content is ShareContactControl shareControl)
+                    {
+                        int.TryParse(item.Tag.ToString(), out int mesId);
+
+                        SetVisualReadIconKind(item,
+                            chat.Messages.FirstOrDefault(x => x.Id == mesId));
+                    }
+                }
+            }
+        }
+
+        public void SetVisualReadIconKind(ListBoxItem item,
+            TelegramLib.MainClasses.Messages.Message? mes)
+        {
+            if (mes is null ||
+                 mes.SenderUserId != _system.LoggedUser.Id) return;
+
+            string tickVis = mes.IsRead ? _readIconName : _unreadIconName;
+            if (item.Content is ChatControls.TextMessage textMes)
+            {
+                textMes.SetVisibility(tickVis);
+            }
+            else if (item.Content is ShareContactControl shareControl)
+            {
+                shareControl.SetVisibility(tickVis);
+            }
+        }
+
+        public void SetTickStatusIfCorrectMes(ListBoxItem item,
+            TelegramLib.MainClasses.Messages.Message? mes)
+        {
+            if (mes is null ||
+                mes.SenderUserId != _system.LoggedUser.Id) return;
+            SetVisualReadStatusForMessage(item, mes.IsRead);
+        }
+
+        private const string _readIconName = "TickAll";
+        private const string _unreadIconName = "Tick";
+        public void SetVisualReadStatusForMessage(ListBoxItem mes, bool isRead)
+        {
+            string tickVis = isRead ? _readIconName : _unreadIconName;
+            if (mes.Content is ChatControls.TextMessage textMes)
+            {
+                textMes.SetTickVis(tickVis);
+            }
+        }
+
+        private void ChatBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (this.Visibility == Visibility.Hidden) return;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SetReadMessageAction();
+            }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        public void UpdateUserChat(int chatId)
+        {
+            if (chatId != _chat.Id) return;
+
+            //Update whole chat or just add share message control
+        }
+
+        public async Task AddChat(TelegramLib.MainClasses.User toMakeChatWith)
+        {
+            TelegramLib.MainClasses.UserChat firstPartChat = await ApiService.GetChatByUserAndSenderId
+                (_system.LoggedUser.Id, toMakeChatWith.Id);
+
+            if (firstPartChat is null)
+            {
+                await ApiService.AddNewChat(_system.LoggedUser.Id, toMakeChatWith.Id);
+            }
+
+            TelegramLib.MainClasses.UserChat otherPartChat = await ApiService.GetChatByUserAndSenderId
+                (toMakeChatWith.Id, _system.LoggedUser.Id);
+
+            if (otherPartChat is null)
+            {
+                await ApiService.AddNewChat(toMakeChatWith.Id, _system.LoggedUser.Id);
+            }
+        }
     }
 }

@@ -923,6 +923,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetReadStatus",
+    "RelativePath": "api/Social/GetReadStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mesId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetUserById",
     "RelativePath": "api/Social/GetUserById",
     "HttpMethod": "GET",
@@ -1099,6 +1125,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "ReadMessage",
+    "RelativePath": "api/Social/ReadMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "readMessage",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BReadMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "RemoveContact",
     "RelativePath": "api/Social/RemoveContact",
     "HttpMethod": "DELETE",
@@ -1152,6 +1200,28 @@
       {
         "Name": "toSetPaper",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BChatWallpaperDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "SetReadStatus",
+    "RelativePath": "api/Social/SetReadStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "readStatDTO",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BSetReadStatusDTO",
         "IsRequired": true
       }
     ],

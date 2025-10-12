@@ -10,8 +10,8 @@ namespace TelegramLib.MainClasses.Messages
     {
         public string Text { get; set; }
 
-        public TextMessage(int id, int senderUserId, DateTime sentTime, string text) :
-            base(id, senderUserId, sentTime)
+        public TextMessage(int id, int senderUserId, DateTime sentTime, string text, bool isRead) :
+            base(id, senderUserId, sentTime, isRead)
         {
             Text = text;
         }
@@ -21,6 +21,7 @@ namespace TelegramLib.MainClasses.Messages
             Id = -1;
             Text = "TextMessage";
             SentTime = DateTime.Now;
+            IsRead = false;
         }
 
         public override string GetLastMessage()

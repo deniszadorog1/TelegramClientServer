@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="200">
     <Grid>
@@ -32,9 +33,26 @@
                            Grid.Row="0"
                        Margin="10 -10 7 5" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
 
-                <TextBlock Name ="SentTime" Grid.Row="1" Text="time"
-                           HorizontalAlignment="Right" Margin="0 0 7 5"
+                <Grid Grid.Row="1" Margin="0 0 7 5"
+                            Name="BottomPanel">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0" x:Name="TickColumn"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Name ="SentTime"  Text="time"
+                           HorizontalAlignment="Right"
                            Foreground="Gray" FontSize="13" VerticalAlignment="Bottom"/>
+
+                    <materialDesign:PackIcon Grid.Column="1" 
+                                             Name="ReadIconFlag"
+                                             HorizontalAlignment="Right"
+                                             Foreground="{StaticResource TempActiveTextColor}"
+                                             Margin="0 0 5 0"
+                                             Kind="TickAll"/>
+
+                </Grid>
             </Grid>
         </Border>
     </Grid>

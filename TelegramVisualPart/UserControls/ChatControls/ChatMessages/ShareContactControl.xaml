@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
              d:DesignHeight="110" d:DesignWidth="260"
@@ -83,12 +84,27 @@
 
                 </Grid>
 
-                <Grid Grid.Row="1" Name="TimeRow">
+                <Grid Grid.Row="1" Name="TimeRow"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Name="TickColumn" Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    
                     <TextBlock Name="SendTimeBlock" Text="Time"
-                           Foreground="Gray"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Margin="0 0 15 5"/>
+                               Grid.Column="0"
+                               Foreground="Gray"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 0"/>
+
+                    <materialDesign:PackIcon VerticalAlignment="Center" Margin="0 0 5 0"
+                                             Name="TickIcon" Kind="Tick"
+                                             Grid.Column="1"
+                                             Foreground="{StaticResource TempActiveTextColor}"/>
+
                 </Grid>
 
             </Grid>

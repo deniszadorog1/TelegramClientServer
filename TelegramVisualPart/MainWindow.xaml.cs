@@ -131,6 +131,7 @@ namespace TelegramVisualPart
 
         private void SetLoginPage()
         {
+            MainFrame.Content = null;
             EnterPage page = new EnterInAccount.EnterPage();
             MainFrame.Content = page;
         }
@@ -458,14 +459,17 @@ namespace TelegramVisualPart
             {
                 await ApiService.SetUserOnlineStatus(_system.LoggedUser.Id, false);
 
-                _system.LoggedUser.IsOnline = (await ApiService.GetUserById(_system.LoggedUser.Id)).IsOnline;
+                _system.LoggedUser.IsOnline = 
+                    (await ApiService.GetUserById(_system.LoggedUser.Id)).IsOnline;
 
                 SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             };
 
             ClearThirdFrame();
             ClearSecFrame();
+
             SetLoginPage();
+            await SignalRService.DisconnectAsync();
         }
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
@@ -1042,10 +1046,10 @@ namespace TelegramVisualPart
             _blockTimer.Start();
         }
 
-        public void DeleteChat(User chatter)
+        public void DeleteChat(User chatter, bool isDeleteForOtherUser)
         {
             if (MainFrame.Content is not MainChatPage page) return;
-            page.DeleteChat(chatter);
+            page.DeleteChat(chatter, isDeleteForOtherUser);
         }
 
         public void AddAddMediaPage(string firstMediaPath)
@@ -1058,7 +1062,7 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs);
         }
 
-        public void SetShardContact(int chatId, UserContactcs contact)
+        public void SetSharedContact(int chatId, UserContactcs contact)
         {
             if (MainFrame.Content is MainChatPage page) 
                 page.SetShareContactControl(chatId, contact);
@@ -1073,6 +1077,27 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage page) return;
             page._chosenChat = chat;
+        }
+
+        public bool EscapePressed()
+        {
+            if (ThirdFrame.Content is not null)
+            {
+                ClearThirdFrame();
+                return false;
+            }
+            if(SecondaryFrame.Content is not null)
+            {
+                ClearSecFrame();
+                return false;
+            }
+            return true;
+        }
+
+        public void UpdateReadCountOfReadMessages(int chatId)
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.UpdateAmountOfReadMessages(chatId);
         }
     }
 }

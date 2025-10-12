@@ -66,10 +66,9 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             if (sender is not UserContact contact) return;
 
             int.TryParse(contact.Tag.ToString(), out int tagId);
-
             //Send share message
             ((MainWindow)Window.GetWindow(this))
-                .SetShardContact(tagId, _contact);
+                .SetSharedContact(tagId, _contact);
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
@@ -115,7 +114,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             await ApiService.AddNewChat(user.Id, contact.Id);
 
         }
-
 
         public void UserControl_MouserEnter(object sender, MouseEventArgs e)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }
 
-        private const int _minMessageWidth = 30;
+        private const int _minMessageWidth = 50;
         private void SetWidth(string fontName)
         {
             double blockSize = GetStringWidth(fontFamily: fontName) + 10;
@@ -96,5 +97,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             );
             return formattedText.Width;
         }
+
+        private const int _tickColWidth = 25;
+        public void SetTickVis(string iconName)
+        {
+            TickColumn.Width = new GridLength(_tickColWidth);
+            SetVisibility(iconName);
+        }
+
+        public void SetVisibility(string iconName)
+        {
+            ReadIconFlag.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
+        }
+
     }
 }

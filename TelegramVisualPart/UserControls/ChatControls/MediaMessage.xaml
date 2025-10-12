@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="65" d:DesignWidth="200" 
-             MaxHeight="150">
+             MaxHeight="150"
+             MouseEnter="UserControl_MouseEnter"
+             MouseLeave="UserControl_MouseLeave">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>
@@ -41,7 +44,7 @@
             <Image Name="GifImage"/>
         </Border>
 
-        
+
         <Border Name="VideoBorder"
                 Visibility="Hidden"
                 Grid.Column="1"
@@ -56,6 +59,22 @@
                           Stretch="UniformToFill"/>
         </Border>
 
+        <Grid Grid.Column="1"      
+              VerticalAlignment="Bottom"
+              HorizontalAlignment="Right"
+              Width="35" Height="10"
+              Margin="3" Background="Transparent"
+              Name="SendInfoGrid">
 
+            <TextBlock Name="Time" Text="99:99"
+                           FontSize="8"
+                       HorizontalAlignment="Left"/>
+
+            <materialDesign:PackIcon Name="TickIcon"
+                                     Foreground="{StaticResource TempActiveTextColor}"
+                                     HorizontalAlignment="Right" Height="10"
+                                     Kind="Tick"/>
+
+        </Grid>
     </Grid>
 </UserControl>

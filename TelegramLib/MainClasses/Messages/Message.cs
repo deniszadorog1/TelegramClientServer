@@ -15,12 +15,14 @@ namespace TelegramLib.MainClasses.Messages
         public int SenderUserId { get; set; }
         public bool IsLoggedUserSent { get; set; }
         public DateTime SentTime { get; set; }
+        public bool IsRead { get; set; }
 
-        public Message(int id, int senderUserId, DateTime sentTime)
+        public Message(int id, int senderUserId, DateTime sentTime, bool isRead)
         {
             Id = id;
             SenderUserId = senderUserId;
             SentTime = sentTime;
+            IsRead = isRead;
         }
 
         public Message()
@@ -28,6 +30,7 @@ namespace TelegramLib.MainClasses.Messages
             Id = -1;
             IsLoggedUserSent = true;
             SentTime = DateTime.Now;
+            IsRead = false;
         }
 
         public DateTime? GetSentDate()

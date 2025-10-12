@@ -30,6 +30,8 @@ namespace TelegramLib.Models
 
         public int? ShareContactId { get; set; }
 
+        public bool IsRead { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatImage ChatImage { get; set; }

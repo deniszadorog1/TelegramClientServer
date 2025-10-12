@@ -14,8 +14,8 @@ namespace TelegramLib.MainClasses.Messages
         public bool IsSticker { get; set; }
         public string MediaName { get; set; }
 
-        public MediaAction(int id, int senderUserId, DateTime sentTime, string mediaName, bool isSticker) : 
-            base(id, senderUserId, sentTime)
+        public MediaAction(int id, int senderUserId, DateTime sentTime, string mediaName, bool isSticker, bool isRead) : 
+            base(id, senderUserId, sentTime, isRead)
         {
             IsSticker = isSticker;
             MediaName = mediaName;
@@ -26,6 +26,7 @@ namespace TelegramLib.MainClasses.Messages
             Id = -1;
             SenderUserId = -1;
             MediaName = "testPATH";
+            IsRead = false;
         }
 
         public bool IsImage()

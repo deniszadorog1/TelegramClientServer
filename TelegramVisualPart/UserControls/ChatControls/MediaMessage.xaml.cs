@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Protocol;
+﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,6 +128,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public string GetGifPath()
         {
             return _gifPath;
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            SendInfoGrid.Visibility = Visibility.Visible;
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SendInfoGrid.Visibility = Visibility.Hidden;
+        }
+
+        public void SetInfoParams(string iconName, DateTime time)
+        {
+            TickIcon.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
+            Time.Text = $"{time.Hour}:{time.Minute}"; 
         }
     }
 }
