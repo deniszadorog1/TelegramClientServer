@@ -501,5 +501,33 @@ namespace TelegramLib.MainClasses
             TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);
             chat.Messages.Add(toAdd);
         }
+
+        public string GetMessageSenderLoginByMessage(Message message)
+        {
+            //Is contact contacts - get it
+            UserContactcs contact =  GetContactById(message.SenderUserId);
+            if (!(contact is null)) return contact.Login;
+
+            //Else - get user chatter by message
+            User chatter = GetChatterByMessage(message.SenderUserId);
+            if (!(chatter is null)) return chatter.Login;
+            return LoggedUser.Login;
+        }
+
+        public UserContactcs GetContactById(int senderId)
+        {
+            return Contacts.FirstOrDefault(x => x.ContactUserId == senderId);
+        }
+
+        public User GetChatterByMessage(int senderId)
+        {
+            return Chats.Select(x => x.Chatter).FirstOrDefault(x => x.Id == senderId);
+        }
+
+        public bool IsChatContainsInChats(int chatId)
+        {
+            return Chats.Any(x => x.Id == chatId);
+        }
+
     }
 }

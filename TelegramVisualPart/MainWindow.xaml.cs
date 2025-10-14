@@ -1099,5 +1099,10 @@ namespace TelegramVisualPart
             if (MainFrame.Content is not MainChatPage page) return;
             page.UpdateAmountOfReadMessages(chatId);
         }
+
+        public void UpdateChatControls()
+        {
+            if (MainFrame.Content is MainChatPage page) page.RepaintUserChatsPanel();
+        }
     }
 }

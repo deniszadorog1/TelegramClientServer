@@ -237,18 +237,18 @@ namespace TelegramVisualPart.Services
             await _connection.StartAsync();
         }
 
-        public static async Task SendTextMessage(User sender, TextMessage message)
+        public static async Task SendTextMessage(User sender, TextMessage message, User chatter)
         {
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendTextMessage", sender, message);
+                await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
         }
 
-        public static async Task SendMediaMessage(User sender, MediaAction message)
+        public static async Task SendMediaMessage(User sender, MediaAction message, User chatter)
         {
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendMediaMessage", sender, message);
+                await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
         }
 
         public static async Task AddContact(User user, User contact)

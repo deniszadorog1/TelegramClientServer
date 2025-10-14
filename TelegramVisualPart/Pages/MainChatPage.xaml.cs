@@ -355,10 +355,10 @@ namespace TelegramVisualPart.Pages
             HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
 
-            for (int i = 0; i < _system.Contacts.Count; i++)
+/*            for (int i = 0; i < _system.Contacts.Count; i++)
             {
                 SetUserChat(_system.Contacts[i].Login);
-            }
+            }*/
             await RepaintUserChatsPanel();
         }
 

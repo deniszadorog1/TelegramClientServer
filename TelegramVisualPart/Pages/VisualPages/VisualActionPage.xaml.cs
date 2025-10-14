@@ -170,6 +170,9 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             SentDate.Text = $"{media.GetSentDate().Value.Day} {media.GetSentDate().Value.Month} {media.GetSentDate().Value.Year}";
 
+
+            //Set sender name
+            SenderName.Text = _system.GetMessageSenderLoginByMessage(_messages[_tempMediaIndex]);
             return;
             //set text
 /*            SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :

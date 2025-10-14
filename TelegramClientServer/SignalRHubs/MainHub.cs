@@ -8,14 +8,18 @@ namespace TelegramClientServer.SignalRHubs
 {
     public class MainHub : Hub
     {
-        public async Task SendTextMessage(User user, TextMessage message)
+        public async Task SendTextMessage(User user, TextMessage message, User chatter)
         {
-            await Clients.All.SendAsync("ReceiveTextMessage", user, message);
+            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
+            //await Clients.All.SendAsync("ReceiveTextMessage", user, message);
         }
 
-        public async Task SendMediaMessage(User user, MediaAction message)
+        public async Task SendMediaMessage(User user, MediaAction message, User chatter)
         {
-            await Clients.All.SendAsync("ReceiveMediaMessage", user, message);
+            //Send to only one 
+            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", user, message);
+
+            //await Clients.All.SendAsync("ReceiveMediaMessage", user, message);               
         }
 
         public async Task AddContact(User user, User contact)

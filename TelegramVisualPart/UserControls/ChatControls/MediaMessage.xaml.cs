@@ -33,7 +33,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public string _senderImgName;
 
-        public MediaMessage(Image img, bool isSticker, string senderImgName)
+        public MediaMessage(Image img, bool isSticker, string senderImgName, DateTime sendTime)
         {
             _img = img;
             IsSticker = isSticker;
@@ -45,9 +45,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             HideAllBorders();
             ImageBorder.Visibility = Visibility.Visible;
             SetSenderImage();
+
+            SetTime(sendTime);
         }
 
-        public MediaMessage(string gifPath, string senderImgName)
+        public MediaMessage(string gifPath, string senderImgName, DateTime sentTime)
         {
             _gifPath = gifPath;
             _senderImgName = senderImgName;
@@ -59,6 +61,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetGif(gifPath);
             SetSenderImage();
+
+            SetTime(sentTime);
+        }
+
+        private void SetTime(DateTime time)
+        {
+            TimeBlock.Text = $"{time.Hour.ToString()}:{time.Minute.ToString()}";
         }
 
         public void SetGif(string gifPath)
@@ -140,10 +149,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SendInfoGrid.Visibility = Visibility.Hidden;
         }
 
-        public void SetInfoParams(string iconName, DateTime time)
+        private const int _tickColWidth = 20;
+        public void SetTickVis(string iconName, bool isCanBeVis)
+        {
+            TickColumn.Width = new GridLength(_tickColWidth);
+            SetVisibility(iconName);
+            if (isCanBeVis) TickIcon.Visibility = Visibility.Visible; 
+        }
+
+        public void SetVisibility(string iconName)
         {
             TickIcon.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
-            Time.Text = $"{time.Hour}:{time.Minute}"; 
         }
+
     }
 }
