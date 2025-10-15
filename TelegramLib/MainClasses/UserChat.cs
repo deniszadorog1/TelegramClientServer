@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.ChatFitures;
@@ -16,14 +17,16 @@ namespace TelegramLib.MainClasses
     {
         public int Id { get; set; }
         public User Chatter { get; set; }
-        public List<Message> Messages { get; set; }
+        public List<TelegramLib.MainClasses.Messages.Message> Messages { get; set; }
         public ChatBackground ChatBg { get; set; }
         public AutoDeleteType AutoDel { get; set; }
 
+        public bool NotificationStatus { get; set; }
         public bool IsPinned { get; set; }
         public bool IsMarked { get; set; }
 
-        public UserChat(int id, User chatter, List<Message> messages, 
+        public UserChat(int id, User chatter, 
+            List<Messages.Message> messages, 
             ChatBackground bg, AutoDeleteType type)
         {
             Id = id;
@@ -45,10 +48,10 @@ namespace TelegramLib.MainClasses
                 .Where(x => !x.IsSticker).ToList();
         }
 
-        public int GetMessageId(Message message)
+/*        public int GetMessageId(Message message)
         {
             return Messages.Where(x => x.Id == message.Id).First().Id;
-        }
+        }*/
 
 /*        public void AddSticker(string name, int senderId)
         {
@@ -76,7 +79,7 @@ namespace TelegramLib.MainClasses
             return lastSeen;
         }
 
-        public List<Message> GetChatMessages()
+        public List<Messages.Message> GetChatMessages()
         {
             return Messages;
         }
@@ -113,7 +116,7 @@ namespace TelegramLib.MainClasses
             return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
         }
 
-        public Message GetLastMessageObj()
+        public Messages.Message GetLastMessageObj()
         {
             return Messages.Last();
         }
@@ -215,9 +218,9 @@ namespace TelegramLib.MainClasses
             Messages.Add(toAdd);
         }
 
-        public List<Message> GetMessageByGivenIds(List<int> ids)
+        public List<Messages.Message> GetMessageByGivenIds(List<int> ids)
         {
-            List<Message> res = new List<Message>();
+            List<Messages.Message> res = new List<Messages.Message>();
             return Messages.Where(x => ids.Contains(x.Id)).ToList();
         }
 
@@ -225,6 +228,16 @@ namespace TelegramLib.MainClasses
         {
             return Messages.Where(x => !x.IsRead && 
             x.SenderUserId != loggedUserId).Count();
+        }
+
+        public void ChangeNotificationStatus(bool state)
+        {
+            NotificationStatus = state;
+        }
+
+        public bool GetNotificationStatus()
+        {
+            return NotificationStatus;
         }
     }
 }

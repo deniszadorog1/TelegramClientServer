@@ -124,7 +124,10 @@
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
                      VerticalAlignment="Bottom"
+                     
                      ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"
+                    
+                     
                      ScrollViewer.CanContentScroll="True"
                      ScrollViewer.PanningRatio="0.3">
                 

@@ -20,10 +20,6 @@ namespace TelegramLib.Models
         [StringLength(255)]
         public string LastName { get; set; }
 
-        public bool? IsNotifsIsOn { get; set; }
-
-        public bool? IsBlocked { get; set; }
-
         public virtual User User { get; set; }
 
         public virtual User User1 { get; set; }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Diagnostics.Contracts;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Security.Permissions;
 using System.Security.RightsManagement;
 using System.Windows;
@@ -355,10 +356,10 @@ namespace TelegramVisualPart.Pages
             HideAllChatBlocks();
             ChatsBox.Visibility = Visibility.Visible;
 
-/*            for (int i = 0; i < _system.Contacts.Count; i++)
-            {
-                SetUserChat(_system.Contacts[i].Login);
-            }*/
+            /*            for (int i = 0; i < _system.Contacts.Count; i++)
+                        {
+                            SetUserChat(_system.Contacts[i].Login);
+                        }*/
             await RepaintUserChatsPanel();
         }
 
@@ -1087,7 +1088,7 @@ namespace TelegramVisualPart.Pages
             {
                 if (_chatsDict.ContainsKey(_system.Chats[i].Id))
                 {
-                    _chatsDict.TryGetValue(_system.Chats[i].Id, 
+                    _chatsDict.TryGetValue(_system.Chats[i].Id,
                         out ListBoxItem tempItem);
 
                     if (tempItem.Content is UserTalkMessage usTalk)
@@ -1135,12 +1136,12 @@ namespace TelegramVisualPart.Pages
         public void SetMessageInUserTalkControl(int chatId, string message)
         {
             if (!_chatsDict.ContainsKey(chatId)) return;
-             _chatsDict.TryGetValue(chatId, out ListBoxItem? item);
+            _chatsDict.TryGetValue(chatId, out ListBoxItem? item);
             if (item is null ||
             item.Content is not UserTalkMessage talkMes) return;
 
-             talkMes.LastMessageTime.Text =
-                $"{DateTime.Now.Day.ToString()}.{DateTime.Now.Month.ToString()}.{DateTime.Now.Year.ToString()}";
+            talkMes.LastMessageTime.Text =
+               $"{DateTime.Now.Day.ToString()}.{DateTime.Now.Month.ToString()}.{DateTime.Now.Year.ToString()}";
             talkMes.LastMessage.Text = message;
         }
 
@@ -1203,6 +1204,8 @@ namespace TelegramVisualPart.Pages
 
             TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
+            if (chat is null) return;
+
 
             UserTalkMessage message =
                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
@@ -2042,14 +2045,11 @@ namespace TelegramVisualPart.Pages
             ((MainWindow)Window.GetWindow(this)).SetChosenFolderByName(fold.Name);
         }
 
-        public void DeleteChat(TelegramLib.MainClasses.User chatter,
+        public async Task DeleteChat(TelegramLib.MainClasses.User chatter,
             bool isDeleteForOtherUser)
         {
             //Delet for other user
-            if (isDeleteForOtherUser)
-            {
-                DeleteForOtherUser(chatter);
-            }
+            if (isDeleteForOtherUser) await DeleteForOtherUser(chatter);
             DeleteChat(chatter);
         }
 
@@ -2059,10 +2059,21 @@ namespace TelegramVisualPart.Pages
             if (!isOtherOnline)
             {
                 //Delete from db (bgs + messages + chat + from folders etc...);
-                DeleteChatFromDb(chatter);
+                //DeleteChatFromDb(chatter);
+
+                await DeleteOtherChatFromDB(chatter);
                 return;
             }
             await SignalRService.DeleteChatMethod(_system.LoggedUser, chatter);
+        }
+
+        public async Task DeleteOtherChatFromDB(TelegramLib.MainClasses.User chatter)
+        {
+            TelegramLib.MainClasses.UserChat chat =
+                await ApiService.GetChatByUserAndSenderId(chatter.Id, _system.LoggedUser.Id);
+            if (chat is null) return;
+
+            await ApiService.DeleteChatById(chat.Id);
         }
 
         public void DeleteChat(TelegramLib.MainClasses.User chatter)
@@ -2075,12 +2086,15 @@ namespace TelegramVisualPart.Pages
 
             //Delete For Chatter by SignalR id need
 
-            //Clear from vis(just updated)  
-            RepaintUserChatsPanel();
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                //Clear from vis(just updated)  
+                RepaintUserChatsPanel();
 
-            //Clear user chat (temp)
-            UserChat.Visibility = Visibility.Hidden;
-            ChosoeChatBorder.Visibility = Visibility.Visible;
+                //Clear user chat (temp)
+                UserChat.Visibility = Visibility.Hidden;
+                ChosoeChatBorder.Visibility = Visibility.Visible;
+            });
         }
 
         //If chat is absent(Was deleted)
@@ -2123,7 +2137,7 @@ namespace TelegramVisualPart.Pages
             UserChat.AddBigMediaImagesMessage(capture, imgs);
         }
 
-        public async Task SetShareContactControl(int chatId, UserContactcs contactToSend, 
+        public async Task SetShareContactControl(int chatId, UserContactcs contactToSend,
             bool isAddInSignalR = true)
         {
             //Get contact params
@@ -2160,7 +2174,7 @@ namespace TelegramVisualPart.Pages
             //UserChat.ShareContact(contactToSend, contactToSend.Name);
         }
 
-        public async Task AddSharedMessageInSignalR(TelegramLib.MainClasses.User chatter, 
+        public async Task AddSharedMessageInSignalR(TelegramLib.MainClasses.User chatter,
             UserContactcs contactToSend)
         {
             if (await ApiService.IsUserOnline(chatter.Id))
@@ -2177,7 +2191,7 @@ namespace TelegramVisualPart.Pages
         public async Task AddShareMessageInDbIfOffline(TelegramLib.MainClasses.User chatter,
             UserContactcs contactToSend)
         {
-            TelegramLib.MainClasses.UserChat chat = 
+            TelegramLib.MainClasses.UserChat chat =
                 await ApiService.GetChatByUserAndSenderId(chatter.Id, _system.LoggedUser.Id);
 
             if (chat is null) return;
@@ -2187,10 +2201,10 @@ namespace TelegramVisualPart.Pages
         }
 
         public async Task AddShareContactMesInDb
-            (TelegramLib.MainClasses.User chatter, 
+            (TelegramLib.MainClasses.User chatter,
             UserContactcs contactToSend)
         {
-            TelegramLib.MainClasses.UserChat chat = 
+            TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByChatterId(chatter.Id);
             //UserContactcs contact = _system.GetContactByUserId(chatter.Id);
             if (chat is null || contactToSend is null) return;
@@ -2220,9 +2234,10 @@ namespace TelegramVisualPart.Pages
         {
             if (UserChat.IsChoseChatIdIsEqual(chat.Id))
             {
-                TelegramLib.MainClasses.User shared = 
+                TelegramLib.MainClasses.User shared =
                     await ApiService.GetUserById(contactToSend.ContactUserId);
-                Message last = chat.GetLastMessageObj();
+                TelegramLib.MainClasses.Messages.Message last = 
+                    chat.GetLastMessageObj();
 
                 //Add share message
                 Application.Current.Dispatcher.Invoke(() =>
@@ -2242,6 +2257,5 @@ namespace TelegramVisualPart.Pages
             if (item is null || item.Content is not UserTalkMessage talkMes) return;
             SetUnreadForUserTalk(talkMes, _system.GetChatById(chatId));
         }
-
     }
 }

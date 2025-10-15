@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
@@ -554,6 +555,17 @@ namespace TelegramVisualPart.Services
             bool contact = JsonConvert.DeserializeObject<bool>(jsonResponse);
             return contact;
         }
+        
+        public static async Task<bool> IsUserIsBlocked(int userId, int contactId)
+        {
+            var response = await _client.GetAsync($"api/Social/IsUserIsBlocked?userId={userId}&contactId={contactId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
+
+            bool contact = JsonConvert.DeserializeObject<bool>(jsonResponse);
+            return contact;
+        }
 
         public static async Task<bool> IsUserColorExist(int userId)
         {
@@ -708,6 +720,22 @@ namespace TelegramVisualPart.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public static async Task<bool> ChangeNotificationState(int chatId, bool state)
+        {
+            var data = new 
+            { 
+                ChatId = chatId, 
+                State = state
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/ChangeNotificationState", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
 
         //Set aut delition
         public static async Task<bool> SetAutoDeletion(int chatId,

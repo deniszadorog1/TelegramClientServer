@@ -13,6 +13,7 @@ namespace TelegramLib.Models
         public Chat()
         {
             Messages = new HashSet<Messages>();
+            NotificationChats = new HashSet<NotificationChats>();
             PossibleChatBGs = new HashSet<PossibleChatBGs>();
         }
 
@@ -38,6 +39,9 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Messages> Messages { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NotificationChats> NotificationChats { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PossibleChatBGs> PossibleChatBGs { get; set; }

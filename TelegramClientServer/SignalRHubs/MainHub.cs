@@ -76,7 +76,7 @@ namespace TelegramClientServer.SignalRHubs
 
         public async Task DeleteChat(User loggedUser, User chatter, int clientId)
         {
-            await Clients.User(clientId.ToString()).SendAsync("DeleteChat", loggedUser);
+            await Clients.User(clientId.ToString()).SendAsync("DeleteChat", loggedUser, chatter);
         }
 
         public async Task UpdateReadStatus(User loggedUser, int clientId)

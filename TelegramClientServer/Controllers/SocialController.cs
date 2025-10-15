@@ -269,6 +269,13 @@ namespace TelegramClientServer.Controllers
             return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
+        [HttpGet("IsUserIsBlocked")]
+        public bool IsUserIsBlocked(int userId, int contactId)
+        {
+            return DbService.IsUserIsBlocked(userId, contactId);
+        }
+
+
         [HttpGet("IsChatExist")]
         public bool IsChatExist(int userId, int contactId)
         {
@@ -362,6 +369,18 @@ namespace TelegramClientServer.Controllers
         {
             public int MesId { get; set; }
         }
+
+        [HttpPost("ChangeNotificationState")]
+        public void ChangeNotificationState([FromBody] ChangeNotificationStateDTO dto)
+        {
+            DbService.ChangeNotificationState(dto.ChatId, dto.State);
+        }
+        public class ChangeNotificationStateDTO
+        {
+            public int ChatId { get; set; }
+            public bool State { get; set; }
+        }
+
 
         [HttpGet("GetReadStatus")]
         public bool GetReadStatus(int mesId)

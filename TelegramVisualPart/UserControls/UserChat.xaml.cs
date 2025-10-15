@@ -47,7 +47,8 @@ namespace TelegramVisualPart.UserControls
     /// </summary>
     public partial class UserChat : UserControl
     {
-        public List<Message> _chatMessages = new List<Message>();
+        public List<TelegramLib.MainClasses.Messages.Message> _chatMessages =
+            new List<TelegramLib.MainClasses.Messages.Message>();
         public UserChat()
         {
             InitializeComponent();
@@ -62,8 +63,8 @@ namespace TelegramVisualPart.UserControls
             SignalRService.TextMessageReceived -= OnTextMessageReceived;
             SignalRService.TextMessageReceived += OnTextMessageReceived;
 
-            SignalRService.MediaMessageReceived -= OnMediaMessageRecived;
-            SignalRService.MediaMessageReceived += OnMediaMessageRecived;
+            SignalRService.MediaMessageReceived -= OnMediaMessageReceived;
+            SignalRService.MediaMessageReceived += OnMediaMessageReceived;
 
             SignalRService.UpdateOnlineStatusDel -= UpdateOnlineStatus;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -212,19 +213,23 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-        public void OnMediaMessageRecived(TelegramLib.MainClasses.User sender,
+        public void OnMediaMessageReceived(TelegramLib.MainClasses.User sender,
             TelegramLib.MainClasses.Messages.MediaAction message)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(async Task () =>
             {
                 //Get chat wherer Logged is Sender 
-                TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(sender.Id);
+                TelegramLib.MainClasses.UserChat chat = await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
+                //_system.GetChatByChatterId(sender.Id);
                 if (chat is null) return;
 
-                if (_chat is null || chat.Id != _chat.Id) AddMediaMessageInUnChosenChat(chat, message);
-                else AddMediaMessageInChosenChat(message, sender);
+                SetNewUserChatMessageControl(chat);
 
-                //Is temp chat is chosen
+                if (_chat is null || chat.Id != _chat.Id)
+                {
+                    AddMediaMessageInUnChosenChat(chat, message);
+                }
+                else AddMediaMessageInChosenChat(message, sender);
             });
         }
 
@@ -248,9 +253,10 @@ namespace TelegramVisualPart.UserControls
             chat.Messages.Add(message);
             //Add in db
             await ApiService.AddMessage(message, chat);
+            ToUpdateUserControlMessage();
         }
 
-        private void OnTextMessageReceived(TelegramLib.MainClasses.User sender, 
+        private void OnTextMessageReceived(TelegramLib.MainClasses.User sender,
             TelegramLib.MainClasses.Messages.TextMessage message)
         {
             Dispatcher.Invoke(async Task () =>
@@ -260,10 +266,10 @@ namespace TelegramVisualPart.UserControls
                     //_chat = null;
                     //return;
                 }//Get chat where Logged is Sender 
-/*                TelegramLib.MainClasses.UserChat chat =
-                    _system.GetChatByChatterId(sender.Id);*/
+                /*                TelegramLib.MainClasses.UserChat chat =
+                                    _system.GetChatByChatterId(sender.Id);*/
 
-                TelegramLib.MainClasses.UserChat chat = 
+                TelegramLib.MainClasses.UserChat chat =
                     await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
                 if (chat is null) return;
 
@@ -278,10 +284,12 @@ namespace TelegramVisualPart.UserControls
                 else AddTextMessageInChosenChat(message, sender);
 
                 //Is temp chat is chosen
+
+                ToUpdateUserControlMessage();
             });
         }
 
-        public void SetNewUserChatMessageControl(TelegramLib.MainClasses.UserChat chat) 
+        public void SetNewUserChatMessageControl(TelegramLib.MainClasses.UserChat chat)
         {
             if (_system.IsChatContainsInChats(chat.Id)) return;
 
@@ -625,7 +633,7 @@ namespace TelegramVisualPart.UserControls
             _chatMessages.Add(toAddText);
             if (CommentTextBox.Text == sendText) CommentTextBox.Text = string.Empty;
 
-            //Send if user is online 
+            //Add Message In DB (On chatterss side) 
             AddTextMessageInDb(toAddText);
 
             //Set vis tick 
@@ -634,20 +642,23 @@ namespace TelegramVisualPart.UserControls
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
 
-        public async Task AddTextMessageInDb(TelegramLib.MainClasses.Messages.TextMessage toAddText)
+        public async Task AddTextMessageInDb(
+            TelegramLib.MainClasses.Messages.TextMessage toAddText)
         {
+            if (await ApiService.IsUserIsBlocked(_chat.Chatter.Id, _system.LoggedUser.Id)) return;
+
             //TO add in both chats if chatter online
             if (await ApiService.IsUserOnline(_chat.Chatter.Id))
             {
                 await SignalRService.SendTextMessage(_system.LoggedUser, toAddText, _chat.Chatter);
                 return;
             }
+
             //just to Add in chatters chat in db
             //Get chat
             TelegramLib.MainClasses.UserChat chat = await GetChatByUserSendersIds(_chat.Chatter.Id, _system.LoggedUser.Id);
             //await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
             if (chat is null) return;
-            // await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
 
             //Add in chats db
             await ApiService.AddMessage(toAddText, chat);
@@ -1492,7 +1503,6 @@ namespace TelegramVisualPart.UserControls
             Cursor = Cursors.Hand;
             UnblockGrid.Background =
                 (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
-
         }
 
         private void UnblockGrid_MouseLeave(object sender, MouseEventArgs e)

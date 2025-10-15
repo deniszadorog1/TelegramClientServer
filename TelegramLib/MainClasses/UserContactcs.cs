@@ -22,8 +22,6 @@ namespace TelegramLib.MainClasses
         public DateTime? LastSeen { get; set; }
         public bool IsNotificationsIsOn { get; set; }
         public List<UserImage> UserImages { get; set; }
-        public bool IsBlockedUserBlocked { get; set; }
-
         public AutoDeleteDuration AutoDeletion { get; set; }
 
         public UserContactcs(int id, string name, string surname, string userName,

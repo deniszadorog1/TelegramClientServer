@@ -75,8 +75,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetLanguageText.SetContactInfo(this);
 
             BlockButVisibility();
+            SetStartToggleState();
 
             LoadEnd?.Invoke();
+        }
+
+        public void SetStartToggleState()
+        {
+            NotificationToggle.IsChecked = _chat.GetNotificationStatus();
         }
 
         public async Task SetInfoVisibility()
@@ -735,18 +741,24 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
         {
             if (_chat is null) return;
+            await ApiService.ChangeNotificationState(_chat.Id, true);
+            _chat.ChangeNotificationStatus(true);
+
             //_chat.GetChatter().SetNotifState(true);
 
-            await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
+            //await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
         }
 
         private async void NotificationToggle_Unchecked(object sender, RoutedEventArgs e)
         {
             if (_chat is null) return;
-            UserContactcs contact = _system.GetContactByUserId(_chat.GetChatter().Id);
-            if (contact is not null) contact.SetNotifState(false);
+            await ApiService.ChangeNotificationState(_chat.Id, false);
+            _chat.ChangeNotificationStatus(false);
 
-            await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
+            //UserContactcs contact = _system.GetContactByUserId(_chat.GetChatter().Id);
+            //if (contact is not null) contact.SetNotifState(false);
+
+            //await ApiService.UpdateContact(_system.LoggedUser.Id, _contact);
         }
 
         private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)

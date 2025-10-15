@@ -38,6 +38,7 @@ namespace TelegramLib.Models
         public virtual DbSet<MessageVideo> MessageVideo { get; set; }
         public virtual DbSet<MonitorNotifs> MonitorNotifs { get; set; }
         public virtual DbSet<MonitorSidesType> MonitorSidesType { get; set; }
+        public virtual DbSet<NotificationChats> NotificationChats { get; set; }
         public virtual DbSet<NotificatioonsAndSound> NotificatioonsAndSound { get; set; }
         public virtual DbSet<PassCode> PassCode { get; set; }
         public virtual DbSet<PhoneNumberSettings> PhoneNumberSettings { get; set; }

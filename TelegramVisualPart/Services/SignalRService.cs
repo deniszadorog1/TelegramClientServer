@@ -215,7 +215,6 @@ namespace TelegramVisualPart.Services
             {
                 //logged user is now chatter 
                 //Send logged user become chatter in new one
-
                 DeleteChat?.Invoke(loggedUser);
             });
 
@@ -315,7 +314,7 @@ namespace TelegramVisualPart.Services
         public static async Task DeleteChatMethod(User loggedUser, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("DeleteChat", loggedUser, chatter.Id);
+                await _connection.InvokeAsync("DeleteChat", loggedUser, chatter, chatter.Id);
         }
 
         public static async Task UpdateReadStatusMethod(User loggedUser, User chatter)

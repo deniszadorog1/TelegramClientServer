@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Abstractions;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using TelegramLib.Enums.Messages;
@@ -337,11 +339,21 @@ namespace TelegramLib.Services
                             GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(chat.AutoDeleteId));
 
+                        toAdd.NotificationStatus = GetNotificationStatusByChatId(chat.Id);
                         res.Add(toAdd);
                     }
                 }
             }
             return res;
+        }
+
+        private static bool GetNotificationStatusByChatId(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                NotificationChats not = model.NotificationChats.FirstOrDefault(x => x.ChatId == chatId);
+                return not is null ? false : (bool)not.IsOn;
+            }
         }
 
         private static ChatBackground GetChosenBgByChatId(int chatId)
@@ -574,7 +586,8 @@ namespace TelegramLib.Services
         public static mainClass.User GetUserByLoginAndPassword(string login, string password)
         {
             List<mainClass.User> users = GetAllUsers();
-            return users.Where(x => x.Login == login && x.Password == password).FirstOrDefault();
+            return users.Where(x => x.Login == login && 
+            x.Password == password).FirstOrDefault();
         }
 
         //Correct (When add new fields in user table)
@@ -672,7 +685,6 @@ namespace TelegramLib.Services
                     toAdd.BIO = tempContact.User.BIO;
                     toAdd.PhoneNumber = tempContact.User.PhoneNumber;
                     toAdd.LastSeen = tempContact.User.LastOnline;
-                    toAdd.IsNotificationsIsOn = (bool)tempContact.IsNotifsIsOn;
 
                     resContacts.Add(toAdd);
                 }
@@ -719,7 +731,6 @@ namespace TelegramLib.Services
                 toAdd.BIO = user.BIO;// contact.User.BIO;
                 toAdd.PhoneNumber = user.PhoneNumber;// contact.User.PhoneNumber;
                 toAdd.LastSeen = contact.User.LastOnline;
-                toAdd.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
                 toAdd.Surname = contact.LastName;
 
                 toAdd.UserImages = GetUserImagesByUserId((int)contact.FriendId);
@@ -763,9 +774,6 @@ namespace TelegramLib.Services
                 res.BIO = user.BIO;
                 res.PhoneNumber = user.PhoneNumber;
                 res.LastSeen = user.LastSeenOnline;
-                res.IsNotificationsIsOn = (bool)contact.IsNotifsIsOn;
-                //res.UserImages = GetUserImagesByUserId(user.Id);
-                res.IsBlockedUserBlocked = (bool)contact.IsBlocked;
 
                 res.UserImages = GetUserImagesByUserId((int)contact.FriendId);
             }
@@ -783,8 +791,6 @@ namespace TelegramLib.Services
 
                 toAdd.Name = contact.Name;
                 toAdd.LastName = contact.Surname;
-                toAdd.IsNotifsIsOn = contact.IsNotificationsIsOn;
-                toAdd.IsBlocked = contact.IsBlockedUserBlocked;
 
                 model.Contacts.Add(toAdd);
                 model.SaveChanges();
@@ -800,8 +806,6 @@ namespace TelegramLib.Services
 
                 toUpdate.Name = contact.Name;
                 toUpdate.LastName = contact.Surname;
-                toUpdate.IsNotifsIsOn = contact.IsNotificationsIsOn;
-                toUpdate.IsBlocked = contact.IsBlockedUserBlocked;
 
                 model.SaveChanges();
             }
@@ -2348,7 +2352,6 @@ namespace TelegramLib.Services
                 toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
                 //toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
 
-
                 //Update general BG
 
                 int chosenBgId = GetChosenBgIdByName(toUpdate.Id);
@@ -2684,6 +2687,8 @@ namespace TelegramLib.Services
                 {
                     //remove all chat messages
                     RemoveMessagesByChatId(toRemove[i].Id);
+
+                    DeleteNotificationChat(toRemove[i].Id);
                 }
 
                 //remove chat
@@ -2772,6 +2777,8 @@ namespace TelegramLib.Services
 
         public static void DeleteChatById(int chatId)
         {
+            DeleteNotificationChat(chatId);
+
             using (var model = new TelegramModel())
             {
                 Chat toRemove = model.Chat.FirstOrDefault(x => x.Id == chatId);
@@ -2910,7 +2917,58 @@ namespace TelegramLib.Services
                 model.Chat.Add(toAdd);
                 model.SaveChanges();
             }
+
+            UserChat chat = GetChatByUserAndContactIds(userId, chatterContactId);
+            if (chat is null) return;
+            AddNotificationChat(chat.Id);
         }
+
+        private static void AddNotificationChat(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                NotificationChats toAdd = new NotificationChats();
+                toAdd.ChatId = chatId;
+                toAdd.IsOn = false;
+
+                model.NotificationChats.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+        public static void ChangeNotificationState(int chatId, bool state)
+        {
+            using(var model = new TelegramModel())
+            {
+                NotificationChats toCorrect = model.NotificationChats.FirstOrDefault(x => x.ChatId == chatId);
+                if (toCorrect is null) return;
+
+                toCorrect.IsOn = state;
+                model.SaveChanges();
+            }
+        }
+
+        public static bool IsUserIsBlocked(int userId, int contactId)
+        {
+            using(var model = new TelegramModel())
+            {
+                return !(model.BlockedContacts
+                            .FirstOrDefault(x => x.UserId == userId && 
+                                        x.BlockedContactId == contactId) is null);
+            }
+        }
+
+        private static void DeleteNotificationChat(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                NotificationChats toDelete = model.NotificationChats.FirstOrDefault(x => x.ChatId == chatId);
+                if (toDelete is null) return;
+
+                model.NotificationChats.Remove(toDelete);
+                model.SaveChanges();
+            }
+        }
+
 
         public static UserChat GetChatByUserAndContactIds(int userId, int contactId)
         {

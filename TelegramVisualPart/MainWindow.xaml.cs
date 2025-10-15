@@ -435,7 +435,7 @@ namespace TelegramVisualPart
             }
         }
 
-        private async void Close_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
             if (_isOnlyChat)
             {
@@ -1046,10 +1046,10 @@ namespace TelegramVisualPart
             _blockTimer.Start();
         }
 
-        public void DeleteChat(User chatter, bool isDeleteForOtherUser)
+        public async Task DeleteChat(User chatter, bool isDeleteForOtherUser)
         {
             if (MainFrame.Content is not MainChatPage page) return;
-            page.DeleteChat(chatter, isDeleteForOtherUser);
+            await page.DeleteChat(chatter, isDeleteForOtherUser);
         }
 
         public void AddAddMediaPage(string firstMediaPath)

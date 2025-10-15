@@ -529,5 +529,17 @@ namespace TelegramLib.MainClasses
             return Chats.Any(x => x.Id == chatId);
         }
 
+        public bool IsChatterBlocked(User chatter)
+        {
+            User toCheck = LoggedUser.BlockedUsers.FirstOrDefault
+                (x => x.Id == chatter.Id);
+
+            return !(toCheck is null);
+
+/*            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
+            return contact is null ? false : contact.IsBlockedUserBlocked;*/
+
+            
+        }
     }
 }

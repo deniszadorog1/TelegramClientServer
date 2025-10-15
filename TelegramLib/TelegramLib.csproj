@@ -220,6 +220,7 @@
     <Compile Include="Models\MessageVideo.cs" />
     <Compile Include="Models\MonitorNotifs.cs" />
     <Compile Include="Models\MonitorSidesType.cs" />
+    <Compile Include="Models\NotificationChats.cs" />
     <Compile Include="Models\NotificatioonsAndSound.cs" />
     <Compile Include="Models\PassCode.cs" />
     <Compile Include="Models\PhoneNumberSettings.cs" />
