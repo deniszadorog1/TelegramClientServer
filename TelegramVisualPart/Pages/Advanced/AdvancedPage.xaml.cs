@@ -1,6 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MahApps.Metro.Controls;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -157,6 +159,16 @@ namespace TelegramVisualPart.Pages.Advanced
         private void CheckBox_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = null;
+        }
+
+        private void TaskBarBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetVisibilityInTaskBar(true);
+        }
+
+        private void TaskBarBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetVisibilityInTaskBar(false);
         }
     }
 }

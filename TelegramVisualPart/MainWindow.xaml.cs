@@ -1104,5 +1104,10 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is MainChatPage page) page.RepaintUserChatsPanel();
         }
+
+        public void SetVisibilityInTaskBar(bool isVis)
+        {
+            this.ShowInTaskbar = isVis;
+        }
     }
 }

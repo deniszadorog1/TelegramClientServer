@@ -1536,18 +1536,20 @@ namespace TelegramVisualPart.Pages
             HamburgIcon.Foreground = Brushes.Gray;
         }
 
+
+        private SizerActionType? _sizeType; 
         public void SetWindowSizerAction(bool isToClearFromPrevLevel = false)
         {
-            SizerActionType? type =
+            _sizeType =
                 ((MainWindow)Window.GetWindow(this)).GetWindowSizeType();
 
-            if (isToClearFromPrevLevel) ClearPrevSizerChanges(type);
+            if (isToClearFromPrevLevel) ClearPrevSizerChanges(_sizeType);
             /*            if (((MainWindow)Window.GetWindow(this)).IsWindowIsMaxSize() &&
                             ((MainWindow)Window.GetWindow(this)).GetMaxState())
                         {
                             ClearAllLevels();
                         }*/
-            switch (type)
+            switch (_sizeType)
             {
                 case null:
                     {
