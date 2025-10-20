@@ -14,8 +14,10 @@ namespace TelegramLib.MainClasses.Messages
         public bool IsSticker { get; set; }
         public string MediaName { get; set; }
 
-        public MediaAction(int id, int senderUserId, DateTime sentTime, string mediaName, bool isSticker, bool isRead) : 
-            base(id, senderUserId, sentTime, isRead)
+        public MediaAction(int id, int senderUserId, 
+            DateTime sentTime, string mediaName, 
+            bool isSticker, bool isRead, bool isPinned) : 
+            base(id, senderUserId, sentTime, isRead, isPinned)
         {
             IsSticker = isSticker;
             MediaName = mediaName;

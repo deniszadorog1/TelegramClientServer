@@ -136,13 +136,14 @@ namespace TelegramVisualPart.Pages
         public ToChooseChats(ChooseType type, List<UserContactcs> contacts, PrivacySub sub,
             PrivAndSecSettings settings, TelSystem system)
         {
-            SetContactsUsers();
             _type = type;
             _sub = sub;
             _privSettings = settings;
             _system = system;
 
             InitializeComponent();
+
+            SetContactsUsers();
 
             SetParams();
 
@@ -313,9 +314,6 @@ namespace TelegramVisualPart.Pages
                         break;
                     }
             }
-
-            //DbService.UpdatePrivacySettings(_privSettings);
-
             await ApiService.UpdatePrivSettings(_privSettings);
         }
 

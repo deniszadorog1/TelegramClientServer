@@ -1,6 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,16 +26,20 @@ namespace TelegramLib.MainClasses
         public bool IsPinned { get; set; }
         public bool IsMarked { get; set; }
 
-        public UserChat(int id, User chatter, 
-            List<Messages.Message> messages, 
-            ChatBackground bg, AutoDeleteType type)
+        public List<TelegramLib.MainClasses.Messages.Message> PinnedMessages { get; set; }
+
+        public UserChat(int id, User chatter,
+            List<Messages.Message> messages,
+            ChatBackground bg, AutoDeleteType type,
+            List<Messages.Message> pinned)
         {
             Id = id;
             Chatter = chatter;
             Messages = messages;
             ChatBg = bg;
             AutoDel = type;
-        }   
+            PinnedMessages = pinned;
+        }
 
         public UserChat()
         {
@@ -48,15 +53,15 @@ namespace TelegramLib.MainClasses
                 .Where(x => !x.IsSticker).ToList();
         }
 
-/*        public int GetMessageId(Message message)
-        {
-            return Messages.Where(x => x.Id == message.Id).First().Id;
-        }*/
+        /*        public int GetMessageId(Message message)
+                {
+                    return Messages.Where(x => x.Id == message.Id).First().Id;
+                }*/
 
-/*        public void AddSticker(string name, int senderId)
-        {
-            Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
-        }*/
+        /*        public void AddSticker(string name, int senderId)
+                {
+                    Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
+                }*/
 
         public ChatBackground GetBackground()
         {
@@ -97,7 +102,7 @@ namespace TelegramLib.MainClasses
         public string GetLastMesDateInString()
         {
             string res = string.Empty;
-            if(Messages.Count != 0)
+            if (Messages.Count != 0)
             {
                 DateTime? time = Messages.Last().GetSentDate();
                 if (time is null) return res;
@@ -138,9 +143,9 @@ namespace TelegramLib.MainClasses
 
         public int? GetMessageIndexByText(string text)
         {
-            for(int i = 0; i < Messages.Count; i++)
+            for (int i = 0; i < Messages.Count; i++)
             {
-                if (Messages[i] is TextMessage textMess && 
+                if (Messages[i] is TextMessage textMess &&
                     textMess.Text == text)
                 {
                     return i;
@@ -151,17 +156,17 @@ namespace TelegramLib.MainClasses
 
         public void RemoveElementByIndex(int elIndex, MediaType type)
         {
-            for(int i = 0; i < Messages.Count; i++)
+            for (int i = 0; i < Messages.Count; i++)
             {
-                if (Messages[i] is MediaAction media && 
+                if (Messages[i] is MediaAction media &&
                     !media.IsSticker)
                 {
                     if (type != GetMediaTypeFromFilename(media.MediaName)) continue;
-                    if(elIndex == 0)
+                    if (elIndex == 0)
                     {
                         Messages.Remove(media);
                         return;
-                    }                    
+                    }
                     elIndex--;
                 }
             }
@@ -204,7 +209,7 @@ namespace TelegramLib.MainClasses
             }
         }
 
-        public bool IsChatterIdsAreEqual(int chatterId) 
+        public bool IsChatterIdsAreEqual(int chatterId)
         {
             return Chatter.Id == chatterId;
         }
@@ -213,7 +218,8 @@ namespace TelegramLib.MainClasses
             User sharedUser, string sharedContactName)
         {
             ShareContactMessage toAdd = new ShareContactMessage(id,
-                senderUserId, DateTime.Now, sharedContactName, sharedUser, false);
+                senderUserId, DateTime.Now, sharedContactName,
+                sharedUser, false, false);
 
             Messages.Add(toAdd);
         }
@@ -226,7 +232,7 @@ namespace TelegramLib.MainClasses
 
         public int GetAmountOfUnreadMessages(int loggedUserId)
         {
-            return Messages.Where(x => !x.IsRead && 
+            return Messages.Where(x => !x.IsRead &&
             x.SenderUserId != loggedUserId).Count();
         }
 
@@ -239,5 +245,57 @@ namespace TelegramLib.MainClasses
         {
             return NotificationStatus;
         }
+
+        public TelegramLib.MainClasses.Messages.Message GetMessageById(int id)
+        {
+            for (int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i].Id == id) return Messages[i];
+            }
+            return null;
+        }
+
+        public bool IsMessageContains(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            return Messages.Any(x => x.Id == mes.Id);
+        }
+
+        public void AddPinnedMessage(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (PinnedMessages.Contains(mes)) return;
+            mes.IsPinned = true;
+            PinnedMessages.Add(mes);
+        }
+
+        public void DeletePinnedMessage(Messages.Message mes)
+        {
+            mes.IsPinned = false;
+            PinnedMessages.Remove(mes);
+        }
+
+        public int GetPinnedMessageIndex(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            return PinnedMessages.IndexOf(mes);
+        }
+
+        public Messages.Message GetNextPinnedMessage(Messages.Message mes)
+        {
+            int tempMesIndex = PinnedMessages.IndexOf(mes);
+            if (tempMesIndex == -1) return mes;
+
+            tempMesIndex++;
+
+            return tempMesIndex < PinnedMessages.Count ? 
+                PinnedMessages[tempMesIndex] : 
+                PinnedMessages.First();
+        }
+
+        public bool IsAnyPinnedMessage()
+        {
+            return PinnedMessages.Count > 0;
+        }
+
     }
 }

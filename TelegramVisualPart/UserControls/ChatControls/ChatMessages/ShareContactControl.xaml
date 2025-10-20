@@ -39,7 +39,7 @@
                       Name="ContactRow"
                       MouseEnter="ContactRow_MouseEnter"
                       MouseLeave="ContactRow_MouseLeave"
-                      PreviewMouseDown="ContactRow_PreviewMouseDown">
+                      PreviewMouseLeftButtonDown="ContactRow_PreviewMouseDown">
                     <Grid.RowDefinitions>
                         <RowDefinition Name="InfoRow"/>
                         <RowDefinition Name="ButRow" Height="20"/>
@@ -87,14 +87,21 @@
                 <Grid Grid.Row="1" Name="TimeRow"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center">
-
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Name="PinIconColumn" Width="20"/>
                         <ColumnDefinition/>
                         <ColumnDefinition Name="TickColumn" Width="0"/>
                     </Grid.ColumnDefinitions>
-                    
+
+                    <Grid Grid.Column="0">
+                        <materialDesign:PackIcon Name="PinnIcon" Visibility="Hidden"
+                                             HorizontalAlignment="Right"
+                                             Foreground="{StaticResource UsualTextColor}"
+                                             Kind="PinOutline"/>
+                    </Grid>
+
                     <TextBlock Name="SendTimeBlock" Text="Time"
-                               Grid.Column="0"
+                               Grid.Column="1"
                                Foreground="Gray"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
@@ -102,7 +109,7 @@
 
                     <materialDesign:PackIcon VerticalAlignment="Center" Margin="0 0 5 0"
                                              Name="TickIcon" Kind="Tick"
-                                             Grid.Column="1"
+                                             Grid.Column="2"
                                              Foreground="{StaticResource TempActiveTextColor}"/>
 
                 </Grid>

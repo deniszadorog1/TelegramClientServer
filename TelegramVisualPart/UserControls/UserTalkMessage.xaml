@@ -55,7 +55,7 @@
                 </Ellipse>
 
                 <Border Background="Gray" CornerRadius="10"
-                        Name="UnredCountBorder" Visibility="Visible">
+                        Name="UnredCountBorder" Visibility="Hidden">
                     <TextBlock Name="MesCounter" Text="0"
                                Foreground="White"
                                VerticalAlignment="Center"

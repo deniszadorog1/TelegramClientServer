@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -24,11 +26,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
     {
         private string _text;
         private string _imgName;
+        private TelSystem _system;
+        private TelegramLib.MainClasses.Messages.Message? _toReply;
 
-        public TextMessage(string text, string senderImageName, string fontName)
+        public TextMessage(TelSystem system,
+            string text, string senderImageName,
+            string fontName,
+            TelegramLib.MainClasses.Messages.Message? toReply = null)
         {
+            _system = system;
             _text = text;
             _imgName = senderImageName;
+            _toReply = toReply;
 
             InitializeComponent();
 
@@ -38,6 +47,28 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetImageSource();
             SetFont(fontName);
+
+            SetMessageReplyControl();
+        }
+
+        private void SetMessageReplyControl()
+        {
+            if (_toReply is null || _system is null)
+            {
+                ReplyedRow.Height = new GridLength(0);
+                //Set null value
+                return;
+            }
+            ReplyedRow.Height = new GridLength(50);
+            ReplyControl.SetReplyMessageParams(_system, _toReply);
+
+            ReplyControl.PreviewMouseDown += (sender, e) =>
+            {
+                if (_toReply is null) return;
+                //Set scrolling to message
+                ((MainWindow)Window.GetWindow(this))
+                .ShowChosenMessageByMessageId(_toReply.Id);
+            };
         }
 
         private void SetFont(string font)
@@ -48,7 +79,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetImageSource()
         {
-            if(_imgName is null)
+            if (_imgName is null)
             {
                 BgBrush.ImageSource = BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
@@ -59,7 +90,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }
 
-        private const int _minMessageWidth = 50;
+        private const int _minMessageWidth = 75;
         private void SetWidth(string fontName)
         {
             double blockSize = GetStringWidth(fontFamily: fontName) + 10;
@@ -108,6 +139,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetVisibility(string iconName)
         {
             ReadIconFlag.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
+        }
+
+        private const int _basePinWidth = 20;
+        public void SetPinColumnState(bool isPinned)
+        {
+            if (isPinned) PinnIcon.Visibility = Visibility.Visible;
+            else PinnIcon.Visibility = Visibility.Hidden;
         }
 
     }

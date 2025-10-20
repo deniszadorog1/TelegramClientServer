@@ -38,6 +38,12 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Threading;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Microsoft.AspNetCore.Http.Metadata;
+using TelegramVisualPart.Enums.Menus;
+using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
+using MahApps.Metro.Controls;
+using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
+using static System.Collections.Specialized.BitVector32;
+using System.IO;
 
 
 namespace TelegramVisualPart.UserControls
@@ -80,6 +86,30 @@ namespace TelegramVisualPart.UserControls
 
             SignalRService.UpdateContactPhotoDel -= UpdateChatterIamge;
             SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
+
+            SignalRService.DeleteMessageByIdDel -= RemoveMessageById;
+            SignalRService.DeleteMessageByIdDel += RemoveMessageById;
+        }
+
+        public void RemoveMessageById(TelegramLib.MainClasses.User chatter,
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            //Get Pair message from mes to delete
+            TelegramLib.MainClasses.Messages.Message pair = ApiService.GetPairOfMessage(mes).Result;
+            if (pair is null) return;
+
+            //Remove from db
+            ApiService.DeleteMessageById(pair.Id);
+
+            //remove from system
+            _system.RemoveMessageById(pair.Id);
+
+            //remove from vis
+            ListBoxItem? item = ChatBox.Items
+                .OfType<ListBoxItem>().FirstOrDefault(x => x.Tag.ToString() == pair.Id.ToString());
+
+            if (item is null) return;
+            ChatBox.Items.Remove(item);
         }
 
         public void SetChatterImageVisibility()
@@ -301,7 +331,7 @@ namespace TelegramVisualPart.UserControls
         private async Task AddTextMessageInChosenChat(TelegramLib.MainClasses.Messages.TextMessage message,
             TelegramLib.MainClasses.User sender)
         {
-            ChatControls.TextMessage text = new ChatControls.TextMessage(
+            ChatControls.TextMessage text = new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(message.Text),
                 /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
                 _system.Settings.GetChatSettings().FontName);
@@ -337,7 +367,8 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = text,
-                Tag = mesId.ToString()
+                Tag = mesId.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             //SetMessagePositionSettings(item);
@@ -357,15 +388,17 @@ namespace TelegramVisualPart.UserControls
             ToUpdateUserControlMessage();
         }
 
-        private TelegramLib.MainClasses.UserChat _chat;
+        public TelegramLib.MainClasses.UserChat _chat;
         public event Action SettingEnded;
 
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
+            MessageMenu.Children.Clear();
             if (chat is null) return;
             SetChatterImageVisibility();
 
             _chat = chat;
+            SetPinnedMessages();
 
             SetUnblockGridVis();
 
@@ -388,6 +421,24 @@ namespace TelegramVisualPart.UserControls
             SetChatterImage();
 
             SettingEnded?.Invoke();
+        }
+
+        public void SetPinnedMessages()
+        {
+            if (_chat is null) return;
+            if (_chat.PinnedMessages.Count == 0)
+            {
+                PinRow.Height = new GridLength(0);
+                return;
+            }
+            PinRow.Height = new GridLength(50);
+
+            //Get messages to Set
+            for (int i = 0; i < _chat.PinnedMessages.Count; i++)
+            {
+                SetPinnedMessageInPanel(_chat.PinnedMessages[i]);
+                //Set them
+            }
         }
 
         public bool IsChoseChatIdIsEqual(int id)
@@ -565,7 +616,7 @@ namespace TelegramVisualPart.UserControls
             string senderImageName)
         {
             ChatControls.TextMessage newMes =
-                new ChatControls.TextMessage(GetConvertedStringMessage(message.Text),
+                new ChatControls.TextMessage(_system, GetConvertedStringMessage(message.Text),
                 senderImageName, _system.Settings.GetChatSettings().FontName);
 
             newMes.SetTime(message.SentTime);
@@ -573,8 +624,10 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = newMes,
-                Tag = message.Id.ToString()
+                Tag = message.Id.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
 
             //SetMessagePositionSettings(item);
 
@@ -584,7 +637,6 @@ namespace TelegramVisualPart.UserControls
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
             SetMessagesPosition(_isGluedToLeft);
         }
-
 
         public HorizontalAlignment GetHorAlignmentForMessage()
         {
@@ -608,31 +660,62 @@ namespace TelegramVisualPart.UserControls
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
-                AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name, CommentTextBox.Text);
+                MessageMenu.Children.Clear();
+
+                //To send text message
+                AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name,
+                    CommentTextBox.Text);
+                ReplyMessageRow.Height = new GridLength(0);
             }
+        }
+
+        public bool IsReplyMessage()
+        {
+            return ReplyBorder.Visibility == Visibility.Visible ||
+                ReplyedImageColumn.Width.Value != 0;
+        }
+
+        public TelegramLib.MainClasses.Messages.Message GetMessageToReply()
+        {
+            if (!IsReplyMessage() || _mesMenu is null ||
+                _mesMenu.GetChosenListBoxItem() is null ||
+                ReplyMessageRow.Height.Value == 0) return null;
+
+            int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
+
+            return _system.GetMessageById(id);
         }
 
         private async void AddTextMessageControl(string senderImageName, string sendText)
         {
+            //Is reply
+            //Get reply message
+            TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
+
             //Visaul add
-            ChatControls.TextMessage text = new ChatControls.TextMessage(
+            ChatControls.TextMessage text = new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(sendText),
-                senderImageName, _system.Settings.GetChatSettings().FontName);
+                senderImageName, _system.Settings.GetChatSettings().FontName,
+                toReply);
 
             ListBoxItem item = new ListBoxItem()
             {
                 Content = text,
-                HorizontalAlignment = GetHorAlignmentForMessage()
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = GetHorAlignmentForMessage(),
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
+
 
             //SetMessagePositionSettings(item);
 
             //system add
 
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
-            TelegramLib.MainClasses.Messages.Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
+            TelegramLib.MainClasses.Messages.Message toAdd =
+                new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
-                            DateTime.Now, sendText, false);
+                            DateTime.Now, sendText, false, null, false);
 
             //Adding in DB
             await ApiService.AddMessage(toAdd, _chat);
@@ -658,6 +741,254 @@ namespace TelegramVisualPart.UserControls
 
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
             SetMessagesPosition(_isGluedToLeft);
+        }
+
+        public void SetMessageMenu_PreviewRightMouseDown(object sender, MouseEventArgs e)
+        {
+            if (sender is not ListBoxItem item) return;
+            System.Windows.Point clickPosition = e.GetPosition(this);
+
+            if (item.Content is ChatControls.TextMessage text)
+            {
+                //Set message menu for text
+                AddMessageMenu(MessageMenuType.TextMessage, clickPosition, item);
+            }
+            else if (item.Content is ChatControls.MediaMessage media)
+            {
+                AddMessageMenu(MessageMenuType.MediaMessage, clickPosition, item);
+            }
+            else if (item.Content is ShareContactControl share)
+            {
+                AddMessageMenu(MessageMenuType.ShareContact, clickPosition, item);
+            }
+        }
+
+        private MesMenu _mesMenu;
+        public void AddMessageMenu(
+            MessageMenuType menuType,
+            System.Windows.Point point,
+            ListBoxItem item)
+        {
+            MessageMenu.Children.Clear();
+
+            _mesMenu = new MesMenu(menuType);
+            _mesMenu.SetClickedListBoxItem(item);
+
+            Message mes = GetMessageByListBoxTag(item);
+            _mesMenu.SetPinVisStatus(mes);
+
+            MessageMenu.Children.Add(_mesMenu);
+            SetMesMenuActions(_mesMenu);
+
+            //is x to big
+            if (point.X + _mesMenu.Width > this.ActualWidth)
+            {
+                Canvas.SetLeft(_mesMenu, point.X - _mesMenu.Width);
+            }
+            else Canvas.SetLeft(_mesMenu, point.X);
+
+            //is y too big
+            if (point.Y + _mesMenu.Height > this.ActualHeight)
+            {
+                Canvas.SetTop(_mesMenu, point.Y - _mesMenu.Height);
+            }
+            else Canvas.SetTop(_mesMenu, point.Y);
+        }
+
+        public void SetMesMenuActions(MesMenu menu)
+        {
+            menu.ReplyAct += () => SetReplyMessageRow();
+            menu.PinAct += () => SetPinnedAction();
+            menu.DeleteAct += () => DeleteMessageAction();
+            menu.CopyAct += () => CopyMessageAction();
+            menu.SaveAct += () => SaveMediaAction();
+        }
+
+        public void SaveMediaAction()
+        {
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
+            if (item is null || item.Content is not UserControl control) return;
+
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null || mes is not MediaAction media) return;
+
+            if (media.IsGif())
+            {
+                string gifFullPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                SaveElements.SaveGifAs(media.MediaName);
+            }
+            else if (media.IsImage())
+            {
+                string imgPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                var image = new Image();
+                image.Source =  new BitmapImage(new Uri(imgPath));
+                SaveElements.SaveImageAs(image);
+            }
+            else if (media.IsVideo())
+            {
+                MediaElement videoElement = FilesAction.GetMediaElementByVideoName(media.MediaName);
+                SaveElements.SaveVideoAs(videoElement);
+            }
+        }
+
+        public void CopyMessageAction()
+        {
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
+            if (item is null || item.Content is not UserControl control) return;
+
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null) return;
+
+            if (mes is TelegramLib.MainClasses.Messages.TextMessage text)
+            {
+                Clipboard.SetText(text.Text);
+            }
+            else if (mes is TelegramLib.MainClasses.Messages.MediaAction media)
+            {
+                string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                var image = new BitmapImage(new Uri(mediaPath));
+                Clipboard.SetImage(image);
+            }
+            else if (mes is TelegramLib.MainClasses.Messages.ShareContactMessage share)
+            {
+                Clipboard.SetText("Contact");
+            }
+        }
+
+        public void DeleteMessageAction()
+        {
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
+            if (item is null || item.Content is not UserControl control) return;
+
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null) return;
+
+            //Remove from system
+            _system.RemoveMessageById(mes.Id);
+
+            //Remove from Visual
+            ChatBox.Items.Remove(item);
+
+            //Remove from db
+            ApiService.DeleteMessageById(mes.Id);
+
+            //Remove in SignalR
+        }
+
+        public void SetPinOnVisControl(UserControl control, bool isPinned)
+        {
+            //Set pin icon on message userControl
+            if (control is ChatControls.TextMessage text)
+            {
+                text.SetPinColumnState(isPinned);
+            }
+            else if (control is ChatControls.MediaMessage media)
+            {
+                media.SetPinColumnState(isPinned);
+            }
+            else if (control is ShareContactControl share)
+            {
+                share.SetPinColumnState(isPinned);
+            }
+        }
+
+        public void SetPinnedAction()
+        {
+            //Get ListBoxItem From Menu
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            if (item is null || item.Content is not UserControl control) return;
+
+            //item.Tag == message id; Get message by system
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null) return;
+
+            //Set Pin status in system
+            mes.MirrorPinStatus();
+
+            if (mes.IsPinned)
+            {
+                //Set pin in message visual
+                AddPinnedMessage(mes);
+                SetPinOnVisControl(control, true);
+                return;
+            }
+            else
+            {
+                DeletePinnedMessage(mes);
+                SetPinOnVisControl(control, false);
+
+            }
+        }
+
+        public bool IsHidePinnedMessesRow(TelegramLib.MainClasses.Messages.Message lastDeletedPinned)
+        {
+            bool isAnyPinnedMessages = _system.IsAnyPinnedMessagesByMessage(lastDeletedPinned);
+            if (!isAnyPinnedMessages)
+            {
+                PinRow.Height = new GridLength(0);
+                return true;
+            }
+            return false;
+        }
+
+        public void DeletePinnedMessage(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            //Delete from vis
+            int.TryParse(PinRowBorder.Tag.ToString(), out int tempMesId);
+
+            //Change temp on next
+            if (mes.Id == tempMesId)
+            {
+                TelegramLib.MainClasses.Messages.Message nextMes =
+                     _system.GetNextPinnedMessage(mes);
+                SetPinnedMessageInPanel(nextMes);
+            }
+
+            //Remove mes from system
+            _system.DeletePinnedMessage(mes);
+
+            //Delete in DB
+            //Delete with SignalR
+
+            if (IsHidePinnedMessesRow(mes)) return;
+            //Is pinned panel is visible
+            PinRow.Height = new GridLength(50);
+        }
+
+        public void AddPinnedMessage(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            //Is pinned panel is visible
+            PinRow.Height = new GridLength(50);
+
+            //Add in last position
+            _system.AddPinnedMessage(mes);
+
+            //Set in last position + show this in panel
+            SetPinnedMessageInPanel(mes);
+        }
+
+        public void SetPinnedMessageInPanel(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (mes is MediaAction mediaAct)
+            {
+                string path = FilesAction.GetUserImagePath(mediaAct.MediaName);
+                if (File.Exists(path))
+                {
+                    PinnedImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
+                }
+            }
+            else PinnedImage.Source = null;
+
+            PinMesNumber.Text = $"Pinned message #{_system.GetPinnedMessageIndex(mes)}";
+            PinnedMessage.Text =
+                mes is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
+                mes is TelegramLib.MainClasses.Messages.MediaAction media ? "Media" :
+                mes is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
+                "Pinned message";
+
+            PinRowBorder.Tag = mes.Id.ToString();
         }
 
         public async Task AddTextMessageInDb(
@@ -733,7 +1064,7 @@ namespace TelegramVisualPart.UserControls
 
             for (int i = 0; i < str.Length; i++)
             {
-                if (i % checker == 0)
+                if (i % checker == 0 && i != 0)
                 {
                     str = str.Insert(i, "\n");
                 }
@@ -822,7 +1153,7 @@ namespace TelegramVisualPart.UserControls
                             .Any()) return;*/
 
             Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
-                DateTime.Now, fileName, isSticker, false);
+                DateTime.Now, fileName, isSticker, false, false);
 
             if (isAdd)
             {
@@ -874,8 +1205,11 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = message,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 Tag = mes.Id.ToString()
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
+
             //SetMessagePositionSettings(item);
 
             ChatBox.Items.Add(message);
@@ -903,7 +1237,8 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = video,
-                Tag = mes.Id.ToString()
+                Tag = mes.Id.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
             //SetMessagePositionSettings(item);
 
@@ -969,7 +1304,8 @@ namespace TelegramVisualPart.UserControls
             MediaAction media)
         {
             var message = new MediaMessage(img, isSticker, senderImgName, media.SentTime);
-            message.PreviewMouseDown += ChatImage_PreviewMouseDown;
+            message.MouseLeftButtonDown += ChatImage_PreviewMouseDown;
+
 
             //Set tick vis
             SetMediaTickVis(media, message);
@@ -977,8 +1313,11 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = message,
-                Tag = media.Id.ToString()
+                Tag = media.Id.ToString(),
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
+
             //SetMessagePositionSettings(item);
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
@@ -998,7 +1337,8 @@ namespace TelegramVisualPart.UserControls
             //message.PreviewMouseDown += ChatImage_PreviewMouseDown;
             ListBoxItem item = new ListBoxItem()
             {
-                Content = message
+                Content = message,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
             //SetMessagePositionSettings(item);
 
@@ -1256,6 +1596,19 @@ namespace TelegramVisualPart.UserControls
             EmojisBoard.Visibility = Visibility.Hidden;
         }
 
+        public void ScrollToMessageByMessageId(int messageId)
+        {
+            ListBoxItem? item = ChatBox.Items
+                .OfType<ListBoxItem>()
+                .FirstOrDefault(x => x.Tag.ToString() == messageId.ToString());
+            if (item is null) return;
+
+            int index = ChatBox.Items.IndexOf(item);
+            if (index == -1) return;
+
+            ScrollToChosenItem(index);
+        }
+
         public void ScrollToChosenItem(int index)
         {
             if (ChatBox.Items.Count <= index)
@@ -1460,11 +1813,14 @@ namespace TelegramVisualPart.UserControls
             for (int i = 0; i < ChatBox.Items.Count; i++)
             {
                 if (ChatBox.Items[i] is not ListBoxItem item ||
-                    item.Tag is null) continue;
-                int.TryParse(item.Tag.ToString(), out int id);
+                    item.Tag is null)
+                {
+                    continue;
+                }
+                    int.TryParse(item.Tag.ToString(), out int id);
 
                 Message mes = _chatMessages.FirstOrDefault(x => x.Id == id);
-                if (mes is null) return;             
+                if (mes is null) return;
                 if (mes.SenderUserId != _system.LoggedUser.Id) continue;
 
                 SetMessagePositionSettings(item);
@@ -1504,12 +1860,12 @@ namespace TelegramVisualPart.UserControls
             {
                 if (_isGluedToLeft)
                 {
-                    item.HorizontalAlignment = HorizontalAlignment.Left;
+                    item.HorizontalContentAlignment = HorizontalAlignment.Left;
                     item.Margin = new Thickness(0, 0, 0, 0);
                 }
                 else
                 {
-                    item.HorizontalAlignment = HorizontalAlignment.Right;
+                    item.HorizontalContentAlignment = HorizontalAlignment.Right;
                     item.Margin = new Thickness(0, 0, 0, 0);
                 }
 
@@ -1522,6 +1878,11 @@ namespace TelegramVisualPart.UserControls
                 {
                     if (!_isGluedToLeft) media.UserEllipseImage.Visibility = Visibility.Hidden;
                     else media.UserEllipseImage.Visibility = Visibility.Visible;
+                }
+                else if(item.Content is ShareContactControl share)
+                {
+                    if (!_isGluedToLeft) share.SenderEllipseImage.Visibility = Visibility.Hidden;
+                    else share.SenderEllipseImage.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -1687,8 +2048,12 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = shareContact,
-                Tag = mes.Id
+                Tag = mes.Id,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
+
+
             //SetMessagePositionSettings(item);
 
             //Set user tick icon
@@ -1938,5 +2303,172 @@ namespace TelegramVisualPart.UserControls
                 await ApiService.AddNewChat(toMakeChatWith.Id, _system.LoggedUser.Id);
             }
         }
+
+        private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageMenu.Children.Clear();
+        }
+
+        private void CloseReplyGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseBut.Foreground = new SolidColorBrush(Colors.White);
+            Cursor = Cursors.Hand;
+        }
+
+        private void CloseReplyGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            CloseBut.Foreground = new SolidColorBrush(Colors.Gray);
+            Cursor = null;
+        }
+
+        private void CloseReplyGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Close reply action
+
+            ReplyMessageRow.Height = new GridLength(0);
+        }
+
+        public void SetReplyMessageRow()
+        {
+            //Get ListBoxItem From Menu
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            if (item is null || item.Content is not UserControl control) return;
+
+            //item.Tag == message id; Get essage by system
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null) return;
+
+            ReplyMessageRow.Height = new GridLength(50);
+
+            //Set Image to reply
+            if (control is MediaMessage media)
+            {
+                ReplyedImageColumn.Width = new GridLength(50);
+                ReplyedImage.Source = media._img.Source; /*new BitmapImage(
+                    new Uri(FilesAction.GetUserImagePath(
+                        _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));
+            */
+            }
+            else
+            {
+                ReplyedImageColumn.Width = new GridLength(0);
+                ReplyedImage.Source = null;
+            }
+
+            //Set sender name
+            ReplySenderText.Text = $"Reply to {_system.GetMessageSender(mes.SenderUserId).Login}";
+
+            //Set text
+            ReplyedMessageText.Text =
+                mes is MediaAction ? "Reply media" :
+                mes is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
+                mes is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
+                "Some shit";
+        }
+
+        public ListBoxItem? GetListBoxItemFromMenu()
+        {
+            MesMenu menu = MessageMenu.Children.OfType<MesMenu>().FirstOrDefault();
+            return menu is null ? null : menu.GetChosenListBoxItem();
+        }
+
+        public Message GetMessageByListBoxTag(ListBoxItem item)
+        {
+            int.TryParse(item.Tag.ToString(), out int id);
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(id);
+            return mes;
+        }
+
+        private void PinRowBorder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void PinRowBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void PinRowBorder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            int.TryParse(PinRowBorder.Tag.ToString(), out int mesId);
+            //Get Message
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(mesId);
+            if (mes is null) return;
+
+            //Show Pinned message
+            ScrollToMessageByMessageId(mes.Id);
+
+            //Get next mes to set
+            Message nextMes = _system.GetNextPinnedMessage(mes);
+
+            //Change it to the next
+            SetPinnedMessageInPanel(nextMes);
+        }
+
+        public async Task SetStopMessageForChatter()
+        {
+            //string stopSignPath = FilesAction.GetSystemImagePath("StopSign.png");
+
+            //Get is need to set stop img
+            IEnumerable<ListBoxItem> items = ChatBox.Items.OfType<ListBoxItem>();
+
+            foreach(var item in items)
+            {
+                int.TryParse(item.Tag.ToString(), out int itemTag);
+                Message? mes = _chat.Messages.FirstOrDefault(x => x.Id == itemTag);
+                if (mes is null || mes.SenderUserId == _system.LoggedUser.Id) continue;
+
+                if(item.Content is ChatControls.TextMessage text)
+                {
+                    await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter, 
+                        text.BgBrush, text.UserEllipseImage);
+                    //text.BgBrush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                }
+                else if(item.Content is ChatControls.MediaMessage media)
+                {
+                    await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                        media.BgBrush, media.UserEllipseImage);
+                    //media.BgBrush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                }
+                else if(item.Content is ShareContactControl share)
+                {
+                    await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                        share.BgBrush, share.SenderEllipseImage);
+
+                    await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                        share.ImageIcon, share.UserEllipseImage);
+
+              /*      share.BgBrush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                    share.ImageIcon.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+               */ }
+            }
+        }
+
+        public async Task SetSenderImageByListBoxItem(ListBoxItem item)
+        {
+            if (item.Content is ChatControls.TextMessage text)
+            {
+                await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                    text.BgBrush, text.UserEllipseImage);
+            }
+            else if (item.Content is ChatControls.MediaMessage media)
+            {
+                await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                    media.BgBrush, media.UserEllipseImage);
+            }
+            else if (item.Content is ShareContactControl share)
+            {
+                await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                    share.BgBrush, share.SenderEllipseImage);
+
+                await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
+                    share.ImageIcon, share.UserEllipseImage);
+            }
+        }
+
+
     }
 }

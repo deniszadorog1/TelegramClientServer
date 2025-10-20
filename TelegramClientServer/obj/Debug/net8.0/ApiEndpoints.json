@@ -784,6 +784,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "DeleteMessageById",
+    "RelativePath": "api/Social/DeleteMessageById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetChatBgidByName",
     "RelativePath": "api/Social/GetChatBgIdByName",
     "HttpMethod": "GET",
@@ -934,6 +956,32 @@
     "ReturnTypes": [
       {
         "Type": "TelegramLib.MainClasses.UserContactcs",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetPairToMessage",
+    "RelativePath": "api/Social/GetPairToMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mes",
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
         "MediaTypes": [
           "text/plain",
           "application/json",

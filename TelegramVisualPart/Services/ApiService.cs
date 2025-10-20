@@ -635,6 +635,18 @@ namespace TelegramVisualPart.Services
             var response = await _client.SendAsync(request);
         }
 
+        public static async Task DeleteMessageById(int id)
+        {
+            var data = new { Id = id };
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteMessageById"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+        }
+
         public static async Task<bool> DeleteChatById(int chatId)
         {
             var data = new { ChatId = chatId };
@@ -750,7 +762,7 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<UserChat> GetChatByUserAndSenderId(int userId, int contactId)
+        public static async Task<UserChat?> GetChatByUserAndSenderId(int userId, int contactId)
         {
             var response = await _client.GetAsync($"api/Social/GetChatByUserAndContactId?userId={userId}&contactId={contactId}");
 
@@ -760,6 +772,14 @@ namespace TelegramVisualPart.Services
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
         }
+
+        public static async Task<Message?> GetPairOfMessage(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            var response = await _client.GetAsync($"api/Social/GetPairToMessage?mes={mes}");
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            return jsonResponse is null ? null : JsonConvert.DeserializeObject<Message>(jsonResponse); 
+        }
+
 
         public static async Task<int> GetLastFolderIdByUserId(int userId)
         {

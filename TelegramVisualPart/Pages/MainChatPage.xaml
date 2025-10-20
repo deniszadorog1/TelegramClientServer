@@ -17,7 +17,6 @@
       PreviewKeyDown="Page_PreviewKeyDown"
       Loaded="Page_Loaded">
 
-
     <materialDesign:DrawerHost x:Name="MainDrawerHost">
         <materialDesign:DrawerHost.LeftDrawerContent>
             <StackPanel Background="{StaticResource DarkThemeOne}" Width="320"
@@ -116,8 +115,7 @@
                                      Style="{StaticResource MaterialDesignOutlinedTextBox}"
 
                                      BorderBrush="Transparent"
-                                     BorderThickness="0"
-                                     
+                                     BorderThickness="0"   
                                      
                                      materialDesign:HintAssist.IsFloating="False"
                                      
@@ -152,7 +150,6 @@
                       MouseEnter="MagnifierGrid_MouseEnter"
                       MouseLeave="MagnifierGrid_MouseLeave"
                       PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
-
                             <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
                                                  Width="35" Height="35" Foreground="Gray" 
                                                  Visibility="Hidden"/>

@@ -91,5 +91,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         {
             TickIcon.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
         }
+
+        public void SetPinColumnState(bool isPinned)
+        {
+            if (isPinned) PinnIcon.Visibility = Visibility.Visible;
+            else PinnIcon.Visibility = Visibility.Hidden;
+        }
+
     }
 }

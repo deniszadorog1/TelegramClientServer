@@ -688,6 +688,12 @@ namespace TelegramVisualPart
             }
         }
 
+        public void ShowChosenMessageByMessageId(int mesId)
+        {
+            if (MainFrame.Content is MainChatPage page) 
+                page.ShowChosenMessageByMessageId(mesId);
+        }
+
         public void SetChatsMessages()
         {
             if (MainFrame.Content is not MainChatPage) return;
@@ -1109,5 +1115,23 @@ namespace TelegramVisualPart
         {
             this.ShowInTaskbar = isVis;
         }
+
+        public void SetMessageMenu(MessageMenuType type)
+        {
+            switch (type)
+            {
+                case MessageMenuType.TextMessage:
+                    {
+                        break;
+                    }
+                case MessageMenuType.MediaMessage:
+                    {
+                        break;
+                    }
+            }
+        }
+
+       
+
     }
 }

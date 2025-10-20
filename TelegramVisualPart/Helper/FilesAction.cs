@@ -342,6 +342,12 @@ namespace TelegramVisualPart.Helper
             };
         }
 
+        public static string GetFullChatImagePath(string fileName)
+        {
+            string chatImages = GetChatImageFolderPath();
+            return Path.Combine(chatImages, fileName);
+        }
+
         public static bool IsVideoIsExistInSecFolder(string videoName)
         {
             string vidFolderPath = GetVideosPath();

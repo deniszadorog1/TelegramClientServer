@@ -107,6 +107,17 @@ namespace TelegramClientServer.Controllers
             DbService.RemoveFolder(folder.Folder.Id);
         }
 
+        [HttpDelete("DeleteMessageById")]
+        public void DeleteMessageById([FromBody] DeleteMessageDTO dto)
+        {
+            DbService.RemoveMessageById(dto.Id);
+        }
+        public class DeleteMessageDTO
+        {
+            public int Id { get; set; }
+        }
+
+
         [HttpDelete("DeleteChatById")]
         public void DeleteChatById([FromBody] DeleteChatByChatterIdDTO chatterIdDTO)
         {
@@ -150,6 +161,13 @@ namespace TelegramClientServer.Controllers
             if (res is null) return NotFound("Some SHIT");
 
             return Ok(res);
+        }
+
+        [HttpGet("GetPairToMessage")]
+        public TelegramLib.MainClasses.Messages.Message GetPairToMessage(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            return DbService.GetPairOfMessageBySentTime(mes);
         }
 
         [HttpGet("GetLastFolderIdByUserId")]

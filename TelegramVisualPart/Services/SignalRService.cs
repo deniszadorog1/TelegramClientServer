@@ -45,6 +45,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? UpdateReadStatus;
         public static event Func<User, UserContactcs, Task>? SetShareContactMessage;
 
+        public static event Action<User, Message> DeleteMessageByIdDel;
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -228,9 +229,12 @@ namespace TelegramVisualPart.Services
             {
                 //chatter is now logged
                 //logged is now chatter
-
-
                 SetShareContactMessage?.Invoke(logged, contactToSend);
+            });
+
+            _connection.On<User, Message>("DeleteMessage", (logged, mes) =>
+            {
+                DeleteMessageByIdDel?.Invoke(logged, mes);
             });
 
             await _connection.StartAsync();
@@ -328,6 +332,13 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("AddShareContactMessage", logged, chatter, contactToSend);
+        }
+
+        public static async Task DeleteMessageById(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes);
         }
     }
 }

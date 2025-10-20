@@ -62,21 +62,30 @@
         <Grid Grid.Column="1"   
               VerticalAlignment="Bottom"
               HorizontalAlignment="Right"
-              Width="60" Height="20"
+              Height="20"
               Margin="0 0 5 3" Background="Transparent"
-              Name="SendInfoGrid" Visibility="Hidden">
+              Name="SendInfoGrid" Visibility="Visible">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition Name="PinIconColumn" Width="15"/>
+                <ColumnDefinition />
                 <ColumnDefinition Name="TickColumn" Width="0"/>
             </Grid.ColumnDefinitions>
 
+            <Grid Grid.Column="0">
+                <materialDesign:PackIcon Name="PinnIcon" Visibility="Hidden"
+                                             HorizontalAlignment="Right"
+                                             Foreground="{StaticResource UsualTextColor}"
+                                             Kind="PinOutline"/>
+            </Grid>
+
             <TextBlock Name="TimeBlock" Text="99:99"
-                       FontSize="14" 
+                       Grid.Column="1"
+                       FontSize="14"
                        Foreground="{StaticResource UsualTextColor}"
                        HorizontalAlignment="Right" Margin="0 0 5 0"/>
 
-            <materialDesign:PackIcon Name="TickIcon" Grid.Column="1"
+            <materialDesign:PackIcon Name="TickIcon" Grid.Column="2"
                                      Foreground="{StaticResource TempActiveTextColor}"
                                      HorizontalAlignment="Right" Height="20" Width="20"
                                      Kind="Tick" Visibility="Hidden"/>

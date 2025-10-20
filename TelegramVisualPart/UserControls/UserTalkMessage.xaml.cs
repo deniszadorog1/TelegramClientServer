@@ -88,5 +88,15 @@ namespace TelegramVisualPart.UserControls
             UnredCountBorder.Visibility = amount > 0 ? Visibility.Visible : Visibility.Hidden;
             MesCounter.Text = amount.ToString();
         }
+
+        public void SetUnreadAmountVisibility(bool vis)
+        {
+            UnredCountBorder.Visibility = vis ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void SetBackground(SolidColorBrush background)
+        {
+            Background = background;
+        }
     }
 }

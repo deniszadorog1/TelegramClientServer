@@ -16,13 +16,16 @@ namespace TelegramLib.MainClasses.Messages
         public bool IsLoggedUserSent { get; set; }
         public DateTime SentTime { get; set; }
         public bool IsRead { get; set; }
+        public bool IsPinned { get; set; }
 
-        public Message(int id, int senderUserId, DateTime sentTime, bool isRead)
+        public Message(int id, int senderUserId,
+            DateTime sentTime, bool isRead, bool isPinned)
         {
             Id = id;
             SenderUserId = senderUserId;
             SentTime = sentTime;
             IsRead = isRead;
+            IsPinned = isPinned;
         }
 
         public Message()
@@ -46,6 +49,11 @@ namespace TelegramLib.MainClasses.Messages
         public string GetSentTimeInString()
         {
             return $"{SentTime.Day}.{SentTime.Month}.{SentTime.Year}";
+        }
+
+        public void MirrorPinStatus()
+        {
+            IsPinned = !IsPinned;
         }
     }
 }

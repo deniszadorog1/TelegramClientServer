@@ -91,7 +91,6 @@
                PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
                 <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
-
                 <Frame Name="BlockFrame" NavigationUIVisibility="Hidden"/>
 
             </Grid>

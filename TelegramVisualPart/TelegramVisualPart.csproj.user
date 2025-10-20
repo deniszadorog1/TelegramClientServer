@@ -28,6 +28,9 @@
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\PinMessagePage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -179,6 +182,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\BackMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\MessageMenu\MesMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\MessageMenu\MesMenuBut.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\MessageMenu\ReplyMessagePart.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml.cs">
@@ -417,6 +429,9 @@
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ChatActions\PinMessagePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -568,6 +583,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\BackMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\MessageMenu\MesMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\MessageMenu\MesMenuBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\MessageMenu\ReplyMessagePart.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml">

@@ -13,12 +13,14 @@
              
              KeyDown="UserControl_KeyDown"
              MouseLeave="UserControl_MouseLeave"
-             
+             PreviewMouseDown="UserControl_PreviewMouseDown"
              >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" Name="UpperRow"/>
+            <RowDefinition Name="PinRow" Height="0"/>
             <RowDefinition/>
+            <RowDefinition Name="ReplyMessageRow"  Height="0"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
@@ -118,7 +120,63 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0"
+        <Border Name="PinRowBorder"
+                Grid.Row="1" BorderThickness="0 1 0 1"
+                BorderBrush="Black"
+                Background="{StaticResource DarkThemeSecond}"
+                MouseEnter="PinRowBorder_MouseEnter"
+                MouseLeave="PinRowBorder_MouseLeave"
+                PreviewMouseDown="PinRowBorder_PreviewMouseDown">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Image Name="PinnedImage"/>
+                </Grid>
+                
+                <Border Background="{StaticResource TempActiveTextColor}" 
+                        Grid.ColumnSpan="3" Opacity="0.1"/>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Name="PinMesNumber"
+                               Grid.Row="0"
+                               Text="Pinned message number"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Margin="5 0 0 0"
+                               Foreground="{StaticResource TempActiveTextColor}"/>
+
+                    <TextBlock Name="PinnedMessage"
+                               Grid.Row="1"
+                               Text="Pinned message"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Margin="5 0 0 0 "
+                               Foreground="{StaticResource UsualTextColor}"/>
+                </Grid>
+
+                <Grid Grid.Column="2">
+                    <materialDesign:PackIcon Kind="Pin"
+                                             Foreground="White"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Width="30" Height="30"/>
+                </Grid>
+
+
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0"
               MouseLeave="ClearStickerPanel_MouseLeave">
             <Grid Name="CustomBg" Background="Transparent"/>
             <ListBox Background="Transparent" BorderThickness="0"
@@ -139,7 +197,70 @@
                      VirtualizingStackPanel.VirtualizationMode="Standard"
                      ScrollViewer.CanContentScroll="True"-->
 
-        <Grid Grid.Row="2" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">
+
+        <Border Grid.Row="3" Name="ReplyBorder" Visibility="Visible"
+                Background="{StaticResource DarkThemeSecond}"
+                BorderThickness="1 1 0 0"
+                BorderBrush="Black">
+            <!--Reply message grid-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Name="ReplyedImageColumn" Width="50"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:PackIcon Name="ReplyIcon"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="35" Width="35"
+                                         Foreground="Gray"
+                                         Kind="Reply"/>
+
+                <!--Reply message image-->
+                <Grid Grid.Column="1" Name="ReplyedImageGrid">
+                    <Image Name="ReplyedImage" Margin="5 "/>
+                </Grid>
+
+                <!--Reply message params-->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Name="ReplySenderText" 
+                               Text="ReplyedSender"
+                               VerticalAlignment="Center" Margin="5 5 0 0"
+                               Foreground="{StaticResource TempActiveTextColor}"
+                               FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Row="1" Name="ReplyedMessageText" 
+                               Text="ReplyedSender"
+                               VerticalAlignment="Center" Margin="5 0 0 5"
+                               Foreground="{StaticResource UsualTextColor}"/>
+                </Grid>
+
+                <Grid Grid.Column="3" Name="CloseReplyGrid"
+                      Background="Transparent"
+                      MouseEnter="CloseReplyGrid_MouseEnter"
+                      MouseLeave="CloseReplyGrid_MouseLeave"
+                      PreviewMouseDown="CloseReplyGrid_PreviewMouseDown">
+
+                    <materialDesign:PackIcon Kind="Close"
+                                             Name="CloseBut"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Foreground="Gray"
+                                             Width="30"
+                                             Height="30"/>
+                </Grid>
+            </Grid>
+            
+        </Border>
+        
+        <Grid Grid.Row="4" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
@@ -178,7 +299,7 @@
         </Grid>
 
 
-        <Border Grid.Row="2" BorderThickness="0 1 0 0" BorderBrush="Black"
+        <Border Grid.Row="3" BorderThickness="0 1 0 0" BorderBrush="Black"
                 Name="UnBlockBorder" Visibility="Hidden">
             <Grid  Background="{StaticResource DarkThemeSecond}"
               Name="UnblockGrid"
@@ -196,11 +317,19 @@
         </Border>
         
         <buts:UserChatInfoMenu x:Name="UserChatMenu"
-                Grid.Row="0" Grid.RowSpan="3"  
+                Grid.Row="0" Grid.RowSpan="4"  
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Panel.ZIndex="100"
                 Visibility="Hidden"/>
+
+
+        <Canvas Name="MessageMenu"
+              Grid.RowSpan="3" 
+              Grid.ColumnSpan="2" Margin="10,0,-10,0"
+              >
+
+        </Canvas>
 
         <Grid Grid.Column="1" Grid.RowSpan="3" Name="ContactInfoGrid"/>
     </Grid>
