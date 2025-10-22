@@ -91,6 +91,21 @@ namespace TelegramClientServer.SignalRHubs
                 .SendAsync("AddShareContactMessage", logged, chatter, contactToSend);
         }
 
+
+        public async Task ReplyMessage(User logged, User chatter, 
+            TelegramLib.MainClasses.Messages.TextMessage text)
+        {
+            await Clients.User(chatter.Id.ToString())
+                .SendAsync("ReplyMessage", logged, text);
+        }
+
+        public async Task PinMessage(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.Message pinned)
+        {
+            await Clients.User(chatter.Id.ToString())
+                .SendAsync("PinMessage", logged, pinned);
+        }
+
         public async Task DeleteMessage(User logged, User chatter, 
             TelegramLib.MainClasses.Messages.Message mes)
         {

@@ -13,8 +13,9 @@ namespace TelegramLib.MainClasses.Messages
 
         public TextMessage(int id, int senderUserId, 
             DateTime sentTime, string text, bool isRead,
-            int? replMessId, bool isPinned) :
-            base(id, senderUserId, sentTime, isRead, isPinned)
+            int? replMessId, bool isPinned, 
+            int? forwardedFromId) :
+            base(id, senderUserId, sentTime, isRead, isPinned, forwardedFromId)
         {
             Text = text;
             RepliedMessageId = replMessId;

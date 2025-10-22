@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Http;
 using System.Runtime.CompilerServices;
 using TelegramVisualPart.UserControls.SettingsControls;
+using TelegramVisualPart.Pages;
 
 namespace TelegramVisualPart.Services
 {
@@ -45,6 +46,8 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? UpdateReadStatus;
         public static event Func<User, UserContactcs, Task>? SetShareContactMessage;
 
+
+        public static event Action<User, TextMessage> ReplyMesAction;
         public static event Action<User, Message> DeleteMessageByIdDel;
         public static void SetSystem(TelSystem system)
         {
@@ -232,10 +235,24 @@ namespace TelegramVisualPart.Services
                 SetShareContactMessage?.Invoke(logged, contactToSend);
             });
 
+
+            _connection.On<User, TextMessage>("ReplyMessage", (logged, message) =>
+            {
+                //to reply
+                ReplyMesAction?.Invoke(logged, message);
+            });
+
+            _connection.On<User, Message>("PinMessage", (logged, message) =>
+            {
+                //to pin
+            });
+
             _connection.On<User, Message>("DeleteMessage", (logged, mes) =>
             {
                 DeleteMessageByIdDel?.Invoke(logged, mes);
             });
+
+            
 
             await _connection.StartAsync();
         }
@@ -339,6 +356,13 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes);
+        }
+
+        public static async Task SendReplyMessage(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.TextMessage replyMes)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("ReplyMessage", logged, chatter, replyMes);
         }
     }
 }

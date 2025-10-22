@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -511,7 +512,7 @@ namespace TelegramLib.MainClasses
            TelegramLib.MainClasses.Messages.ShareContactMessage toAdd = 
                 new TelegramLib.MainClasses.Messages.ShareContactMessage(-1,
                 LoggedUser.Id, DateTime.Now, contact.Name, 
-                share, false, false);
+                share, false, false, null);
 
             TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);
             chat.Messages.Add(toAdd);
@@ -555,11 +556,12 @@ namespace TelegramLib.MainClasses
             return contact is null ? false : contact.IsBlockedUserBlocked;*/      
         }
 
-        public Message GetMessageById(int id)
+        public Message GetMessageById(int? id)
         {
+            if (id is null) return null;
             for(int i = 0; i < Chats.Count; i++)
             {
-                Message mes = Chats[i].GetMessageById(id);
+                Message mes = Chats[i].GetMessageById((int)id);
                 if (!(mes is null)) return mes;
             }
             return null;
@@ -622,5 +624,15 @@ namespace TelegramLib.MainClasses
             UserChat chat = GetChatByMessage(mes);
             return chat is null ? false : chat.PinnedMessages.Any();
         }
+
+        public void AddForwardMessage(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (mes.ForwardedFromId is null) return;
+
+            UserChat chat = GetChatByChatterId((int)mes.ForwardedFromId);
+            chat.Messages.Add(mes);
+        }
+
     }
 }

@@ -26,20 +26,31 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Name="ReplyedRow" Height="50"/>
+                    <RowDefinition Name="ForwardedRow" Height="0"/>
+                    <RowDefinition Name="ReplyedRow" Height="0"/>
                     <RowDefinition/>
                     <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
 
-                <Grid Margin="5" Name="ReplyGrid">
+                <Grid Grid.Row="0" Name="ForwardedGrid" Visibility="Hidden">
+                    <TextBlock
+                        Foreground="{StaticResource TempActiveTextColor}">
+                        
+                        <Run Name="FromRun" Text="Forwarded from"/>
+
+
+                    </TextBlock>
+                </Grid>
+
+                <Grid Margin="5" Name="ReplyGrid" Grid.Row="1">
                     <Replyed:ReplyMessagePart x:Name="ReplyControl"/>
                 </Grid>
-                
+
                 <TextBlock Name ="Message" Text="test" VerticalAlignment="Top"
-                           Grid.Row="1"
+                           Grid.Row="2"
                            Margin="15 10 7 5" Foreground="{StaticResource UsualTextColor}" FontSize="14"/>
 
-                <Grid Grid.Row="2" Margin="0 0 7 5"
+                <Grid Grid.Row="3" Margin="0 0 7 5"
                             Name="BottomPanel"
                       HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
@@ -56,7 +67,7 @@
                                                  Margin="0 0 5 0"
                                                  Kind="PinOutline"/>
                     </Grid>
-                    
+
                     <TextBlock Name ="SentTime"  Text="time"
                                Grid.Column="1"
                            HorizontalAlignment="Right"

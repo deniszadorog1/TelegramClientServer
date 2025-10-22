@@ -1131,7 +1131,12 @@ namespace TelegramVisualPart
             }
         }
 
+        public void SetForwardMessage(TelegramLib.MainClasses.Messages.Message mes,
+            int userIdToSend)
+        {
+            if(MainFrame.Content is MainChatPage page) 
+                page.SetForwardMessage(userIdToSend, mes);
+        }
        
-
     }
 }

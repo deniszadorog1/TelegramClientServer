@@ -3,6 +3,7 @@ using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Xaml.Behaviors.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -223,7 +224,7 @@ namespace TelegramVisualPart.Pages
                     talkControl.ImageIcon, talkControl.UserEllipseImage);
 
                 //Change 
-                UserChat.SetStopMessageForChatter();
+                await UserChat.SetStopMessageForChatter();
             });
         }
 
@@ -2299,11 +2300,8 @@ namespace TelegramVisualPart.Pages
                 //Add share message
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Console.WriteLine(_system);
-                    Console.WriteLine(chat);
                     UserChat.ShareContact(shared, shared.Name, last);
                 });
-
             }
             SetMessageInUserTalkControl(chat.Id, "Contact");
         }
@@ -2314,5 +2312,35 @@ namespace TelegramVisualPart.Pages
             if (item is null || item.Content is not UserTalkMessage talkMes) return;
             SetUnreadForUserTalk(talkMes, _system.GetChatById(chatId));
         }
+
+        public void SetForwardMessage(int userIdToSend, 
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            TelegramLib.MainClasses.Messages.Message copy =
+                DeepCopy<Message>(mes);
+            copy.ForwardedFromId = userIdToSend;
+
+
+            //Add In Db
+            //Add SignalR
+            //Add In system
+            //Add In visual
+
+            //Add in system (GET OTHER MESSAGE(copy of given)
+            _system.AddForwardMessage(copy);
+
+            //Update vis stuff
+            UserChat.SetMessagesInChat();
+        }
+
+
+
+        public static T DeepCopy<T>(T obj)
+        {
+            var json = JsonConvert.SerializeObject(obj);
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+
+
     }
 }

@@ -218,6 +218,18 @@ namespace TelegramVisualPart.Services
             return user;
         }
 
+        public static async Task<TelegramLib.MainClasses.Messages.Message> GetTextMessageById(int id)
+        {
+            var response = await _client.GetAsync($"api/Social/GetMessageById?id={id}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.Messages.TextMessage? mes = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.TextMessage>(jsonResponse);
+            return mes;
+        }
+
         public static async Task<TelegramLib.MainClasses.User> GetUserById(int id)
         {
             var response = await _client.GetAsync($"api/Social/GetUserById?userId={id}");
@@ -775,7 +787,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<Message?> GetPairOfMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
-            var response = await _client.GetAsync($"api/Social/GetPairToMessage?mes={mes}");
+            var response = await _client.GetAsync($"api/Social/GetPairToMessage?mesId={mes.Id}");
             string jsonResponse = await response.Content.ReadAsStringAsync();
             return jsonResponse is null ? null : JsonConvert.DeserializeObject<Message>(jsonResponse); 
         }
@@ -818,6 +830,17 @@ namespace TelegramVisualPart.Services
             var response = await _client.PostAsync("api/Social/SetChatWallpaper", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task SetPinStatus(int mesId, bool pinStatus)
+        {
+            var data = new { MesId = mesId, PinStatus = pinStatus };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/SetPinStatus", content);
+
+            Console.WriteLine(response.IsSuccessStatusCode);
         }
 
         public static async Task<bool> SetUserOnlineStatus(int userId, bool status)

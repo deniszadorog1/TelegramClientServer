@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -29,15 +30,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelSystem _system;
         private TelegramLib.MainClasses.Messages.Message? _toReply;
 
+        private int? _forwardedFrom = null;
+        
         public TextMessage(TelSystem system,
             string text, string senderImageName,
             string fontName,
-            TelegramLib.MainClasses.Messages.Message? toReply = null)
+            TelegramLib.MainClasses.Messages.Message? toReply = null,
+            int? forwardedFrom = null)
         {
             _system = system;
             _text = text;
             _imgName = senderImageName;
             _toReply = toReply;
+            _forwardedFrom = forwardedFrom;
 
             InitializeComponent();
 
@@ -49,8 +54,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetFont(fontName);
 
             SetMessageReplyControl();
+
+            SetForwardedFromRow();
         }
 
+        private async Task SetForwardedFromRow()
+        {
+            if (_forwardedFrom is null) return;
+
+            TelegramLib.MainClasses.User from =
+                await ApiService.GetUserById((int)_forwardedFrom);
+            if (from is null) return;
+
+
+        }
         private void SetMessageReplyControl()
         {
             if (_toReply is null || _system is null)

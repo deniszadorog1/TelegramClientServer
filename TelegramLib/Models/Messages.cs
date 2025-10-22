@@ -32,6 +32,12 @@ namespace TelegramLib.Models
 
         public bool IsRead { get; set; }
 
+        public bool? IsPinned { get; set; }
+
+        public int? ReplyId { get; set; }
+
+        public int? ForwardedFrom { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatImage ChatImage { get; set; }

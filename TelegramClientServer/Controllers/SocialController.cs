@@ -164,10 +164,15 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetPairToMessage")]
-        public TelegramLib.MainClasses.Messages.Message GetPairToMessage(
-            TelegramLib.MainClasses.Messages.Message mes)
+        public TelegramLib.MainClasses.Messages.Message GetPairToMessage(int mesId)
         {
-            return DbService.GetPairOfMessageBySentTime(mes);
+            return DbService.GetPairOfMessageBySentTime(mesId);
+        }
+
+        [HttpGet("GetMessageById")]
+        public TelegramLib.MainClasses.Messages.Message GetMessageById(int id)
+        {
+            return DbService.GetMessageById(id);
         }
 
         [HttpGet("GetLastFolderIdByUserId")]
@@ -193,6 +198,17 @@ namespace TelegramClientServer.Controllers
         public class ChatDTO
         {
             public UserChat Chat { get; set; }
+        }
+
+        [HttpPost("SetPinStatus")]
+        public void SetPinStatus([FromBody] SetPinStatusDTO pinDto)
+        {
+            DbService.SetPinStatus(pinDto.MesId, pinDto.PinStatus);
+        }
+        public class SetPinStatusDTO
+        {
+            public int MesId { get; set; }
+            public bool PinStatus { get; set; }
         }
 
         //Clear chat

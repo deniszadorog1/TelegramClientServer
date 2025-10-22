@@ -337,7 +337,8 @@ namespace TelegramLib.Services
                             GetUserById((int)chat.ChatterId),
                             GetMessagesByChatId(chat.Id),
                             GetChosenBgByChatId(chat.Id),
-                            GetAutoDelTypeById(chat.AutoDeleteId), new List<mainClass.Messages.Message>());
+                            GetAutoDelTypeById(chat.AutoDeleteId),
+                            GetPinnedMessages(chat.Id));
 
                         toAdd.NotificationStatus = GetNotificationStatusByChatId(chat.Id);
                         res.Add(toAdd);
@@ -411,6 +412,21 @@ namespace TelegramLib.Services
             return res;
         }
 
+        private static List<TelegramLib.MainClasses.Messages.Message> GetPinnedMessages(int chatId)
+        {
+            List<TelegramLib.MainClasses.Messages.Message> res = new List<mainClass.Messages.Message>();
+            using(var model = new TelegramModel())
+            {
+                List<Messages> messes = model.Messages.Where(x => x.ChatId == chatId && (bool)x.IsPinned).ToList();
+
+                foreach(var mes in messes)
+                {
+                    res.Add(GetMessageByMessages(mes));
+                }
+            }
+            return res;
+        }
+
         private static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
         {
             List<TelegramLib.MainClasses.Messages.Message> res =
@@ -474,6 +490,19 @@ namespace TelegramLib.Services
             return res;
         }
 
+        public static TelegramLib.MainClasses.Messages.Message GetMessageById(int id)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages mes = model.Messages.FirstOrDefault(x => x.Id == id);
+
+                TelegramLib.MainClasses.Messages.Message res =
+                    mes is null ? null : GetMessageByMessages(mes);
+
+                return res;
+            }
+        }
+
         private static TelegramLib.MainClasses.Messages.Message GetMessageByMessages(Messages mes)
         {
             TelegramLib.MainClasses.Messages.Message toAdd;
@@ -486,7 +515,7 @@ namespace TelegramLib.Services
             //toAdd.SenderId = (int)mes.SenderId;
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
-
+            
             if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
             else if (!(mes.ImageId is null))
             {
@@ -518,6 +547,13 @@ namespace TelegramLib.Services
                 share.SharedUser = GetUserById((int)message.UserId);
             }
 
+            toAdd.IsPinned = (bool)mes.IsPinned;
+
+            if(toAdd is TextMessage text)
+            {
+                text.RepliedMessageId = mes.ReplyId;
+                text.ForwardedFromId = mes.ForwardedFrom;
+            }
             return toAdd;
         }
 
@@ -2002,7 +2038,6 @@ namespace TelegramLib.Services
             }
         }
 
-
         private static void AddMessagesSettings()
         {
             using (var model = new TelegramModel())
@@ -2285,6 +2320,14 @@ namespace TelegramLib.Services
 
                 toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
 
+                toAdd.IsPinned = message.IsPinned;
+                
+                if(message is TextMessage addText)
+                {
+                    toAdd.ReplyId = addText.RepliedMessageId;
+                    toAdd.ForwardedFrom = addText.ForwardedFromId;
+                }
+
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
             }
@@ -2307,10 +2350,13 @@ namespace TelegramLib.Services
                 res.Id = chosen.Id;
                 res.SenderUserId = (int)chosen.SenderId;
                 res.SentTime = chosen.SentDate is null ? DateTime.Now : (DateTime)chosen.SentDate;
+                res.IsPinned = (bool)chosen.IsPinned;
 
                 if (res is TextMessage text)
                 {
                     text.Text = chosen.Message;
+                    text.RepliedMessageId = chosen.ReplyId;
+                    text.ForwardedFromId = chosen.ForwardedFrom;
                 }
                 else if (res is MediaAction media)
                 {
@@ -3637,19 +3683,18 @@ namespace TelegramLib.Services
             }
         }
 
-        public static TelegramLib.MainClasses.Messages.Message GetPairOfMessageBySentTime(
-            TelegramLib.MainClasses.Messages.Message mes)
+        public static TelegramLib.MainClasses.Messages.Message GetPairOfMessageBySentTime(int mesId)
         {
             //Add chat chacker if need
             using(var model = new TelegramModel())
             {
-                Messages toCompare = model.Messages.FirstOrDefault(x => x.Id == mes.Id);
+                Messages toCompare = model.Messages.FirstOrDefault(x => x.Id == mesId);
                 if (toCompare is null) return null;
 
                 Messages res  =  model.Messages
                     .AsEnumerable()
                     .FirstOrDefault(x =>
-                        x.Id != mes.Id &&
+                        x.Id != mesId &&
                         x.SentDate.HasValue && toCompare.SentDate.HasValue &&
                         Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds) < 100);
 
@@ -3674,6 +3719,18 @@ namespace TelegramLib.Services
                 if (chat is null) return;
             
                 
+            }
+        }
+
+        public static void SetPinStatus(int messageId, bool isPin)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
+                if (mes is null) return;
+
+                mes.IsPinned = isPin;
+                model.SaveChanges();
             }
         }
 

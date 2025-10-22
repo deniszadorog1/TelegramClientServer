@@ -97,7 +97,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         private void ForwardBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            ForwardAct?.Invoke();
         }
 
         private void DeleteBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

@@ -967,6 +967,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "GetMessageById",
+    "RelativePath": "api/Social/GetMessageById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetPairToMessage",
     "RelativePath": "api/Social/GetPairToMessage",
     "HttpMethod": "GET",
@@ -974,9 +1000,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "mes",
-        "Type": "TelegramLib.MainClasses.Messages.Message",
-        "IsRequired": true
+        "Name": "mesId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1301,6 +1327,28 @@
       {
         "Name": "toSetPaper",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BChatWallpaperDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "SetPinStatus",
+    "RelativePath": "api/Social/SetPinStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pinDto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BSetPinStatusDTO",
         "IsRequired": true
       }
     ],

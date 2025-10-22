@@ -25,8 +25,9 @@ namespace TelegramLib.MainClasses.Messages
 
         public ShareContactMessage(int id, int senderUserId,
             DateTime sentTime, string sharedContactName, 
-            User shared, bool isRead, bool isPinned)
-            : base(id, senderUserId, sentTime, isRead, isPinned)
+            User shared, bool isRead, bool isPinned,
+            int? forwardedFromId)
+            : base(id, senderUserId, sentTime, isRead, isPinned, forwardedFromId)
         {
             SharedName = sharedContactName;
             SharedUser = shared;

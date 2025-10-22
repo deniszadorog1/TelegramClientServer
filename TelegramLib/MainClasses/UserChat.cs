@@ -219,7 +219,7 @@ namespace TelegramLib.MainClasses
         {
             ShareContactMessage toAdd = new ShareContactMessage(id,
                 senderUserId, DateTime.Now, sharedContactName,
-                sharedUser, false, false);
+                sharedUser, false, false, null);
 
             Messages.Add(toAdd);
         }
@@ -263,7 +263,12 @@ namespace TelegramLib.MainClasses
         public void AddPinnedMessage(
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            if (PinnedMessages.Contains(mes)) return;
+            //To check is contains by id
+
+            TelegramLib.MainClasses.Messages.Message toAdd =
+                PinnedMessages.FirstOrDefault(x => x.Id == mes.Id);
+
+            if (PinnedMessages.Contains(toAdd)) return;
             mes.IsPinned = true;
             PinnedMessages.Add(mes);
         }
@@ -271,18 +276,24 @@ namespace TelegramLib.MainClasses
         public void DeletePinnedMessage(Messages.Message mes)
         {
             mes.IsPinned = false;
-            PinnedMessages.Remove(mes);
+
+            TelegramLib.MainClasses.Messages.Message toRemove = 
+                PinnedMessages.FirstOrDefault(x => x.Id == mes.Id);
+            PinnedMessages.Remove(toRemove);
         }
 
         public int GetPinnedMessageIndex(
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            return PinnedMessages.IndexOf(mes);
+            TelegramLib.MainClasses.Messages.Message res =
+                PinnedMessages.FirstOrDefault(x => x.Id == mes.Id);
+
+            return res is null ? -1 : PinnedMessages.IndexOf(res);
         }
 
         public Messages.Message GetNextPinnedMessage(Messages.Message mes)
         {
-            int tempMesIndex = PinnedMessages.IndexOf(mes);
+            int tempMesIndex = GetPinnedMessageIndex(mes);
             if (tempMesIndex == -1) return mes;
 
             tempMesIndex++;
