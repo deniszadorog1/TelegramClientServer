@@ -31,6 +31,9 @@
     <Compile Update="Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\MessageMenuPages\IsMakeActionOnBothSides.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\PinMessagePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -194,6 +197,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\MessageMenu\ReplyMessagePart.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\SelectionTick.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml.cs">
@@ -435,6 +441,9 @@
     <Page Update="Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ChatActions\MessageMenuPages\IsMakeActionOnBothSides.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ChatActions\PinMessagePage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -598,6 +607,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\MessageMenu\ReplyMessagePart.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\SelectionTick.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml">

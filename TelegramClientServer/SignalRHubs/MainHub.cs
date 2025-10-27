@@ -106,6 +106,13 @@ namespace TelegramClientServer.SignalRHubs
                 .SendAsync("PinMessage", logged, pinned);
         }
 
+
+        public async Task ForwardMessage(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.Message toForward)
+        {
+            await Clients.User(chatter.Id.ToString()).SendAsync("ForwardMessage", logged, toForward);
+        }
+
         public async Task DeleteMessage(User logged, User chatter, 
             TelegramLib.MainClasses.Messages.Message mes)
         {

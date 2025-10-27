@@ -112,7 +112,6 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
 
             await SignalRHelperService.SetLastSeenStatus(user, shareType, AutoDeletionType);
-
         }
 
         private void SetAutoDeleteParams()
@@ -182,6 +181,11 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
         public string GetTypeName()
         {
             return TypeName.Text;
+        }
+
+        public void SetChatParams(TelegramLib.MainClasses.User user)
+        {
+            SetActivePhotoImage();
         }
     }
 }

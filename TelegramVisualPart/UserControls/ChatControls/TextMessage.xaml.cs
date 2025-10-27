@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -31,7 +32,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelegramLib.MainClasses.Messages.Message? _toReply;
 
         private int? _forwardedFrom = null;
-        
+
         public TextMessage(TelSystem system,
             string text, string senderImageName,
             string fontName,
@@ -67,6 +68,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (from is null) return;
 
 
+            //Set forwarded from user id as tag
+            LoginForwarded.Tag = from.Id;
+
+            ForwardedRow.Height = new GridLength(50);
+            LoginForwarded.Text = from.Login;
         }
         private void SetMessageReplyControl()
         {
@@ -165,5 +171,92 @@ namespace TelegramVisualPart.UserControls.ChatControls
             else PinnIcon.Visibility = Visibility.Hidden;
         }
 
+        private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            int.TryParse(LoginForwarded.Tag.ToString(), out int userId);
+            var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
+
+            if (user is null) return;
+
+            if (_system.LoggedUser.Id == userId)
+            {
+                //set logged user info page
+                LoggedUserProfile logged = new LoggedUserProfile(_system.LoggedUser, _system);
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);
+                return;
+            }
+
+            //set chatter info page
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(userId);
+            if (chat is null) return;
+
+            UserInfo infoPage = new UserInfo(chat, _system);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(infoPage);
+        }
+
+        private void LoginForwarded_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void LoginForwarded_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void UserEllipseImage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserEllipseImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void UserEllipseImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Get user 
+            DependencyObject check = this.Parent;
+            if (check is not ListBoxItem item) return;
+
+            int.TryParse(item.Tag.ToString(), out int mesId);
+
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(mesId);
+            if (mes is null) return;
+
+            //Settings logged user page
+            if (_system.LoggedUser.Id == mes.SenderUserId)
+            {
+                LoggedUserProfile logged =
+                    new LoggedUserProfile(_system.LoggedUser, _system);
+
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);
+                return;
+            }
+
+            //Set other user page
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessage(mes);
+
+            UserInfo info = new UserInfo(chat, _system);
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+        }
+
+        private const int _selectTickColWidth = 30;
+        public void SetTickVisibility(bool isVis)
+        {
+            if (isVis)
+            {
+                this.Width += _selectTickColWidth;
+                TickColumnDef.Width = new GridLength(_selectTickColWidth);
+            }
+            else
+            {
+                this.Width -= _selectTickColWidth;
+                TickColumnDef.Width = new GridLength(0);
+            }
+        }
     }
 }

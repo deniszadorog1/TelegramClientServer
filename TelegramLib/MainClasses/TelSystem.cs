@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using Microsoft.Extensions.Primitives;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using System;
 using System.CodeDom;
@@ -574,10 +575,24 @@ namespace TelegramLib.MainClasses
                 Message mes = Chats[i].Messages.FirstOrDefault(x => x.Id == id);
                 if(!(mes is null))
                 {
+                    Chats[i].RemovePinnedMessageById(mes.Id);
                     Chats[i].Messages.Remove(mes);
+                    Chats[i].RemoveRepliedMessages(mes);
                     return;
                 }
             }
+        }
+
+        public void SetChatParamsAfterMessageRemoved(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            UserChat chat = GetChatByMessage(mes);
+
+            //Remove from replied
+            chat.RemoveRepliedMessages(mes);
+
+            //Remove from pinned
+            chat.RemovePinnedMessage(mes);
         }
 
         public void AddPinnedMessage(

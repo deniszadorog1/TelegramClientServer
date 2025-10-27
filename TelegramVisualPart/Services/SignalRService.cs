@@ -48,7 +48,10 @@ namespace TelegramVisualPart.Services
 
 
         public static event Action<User, TextMessage> ReplyMesAction;
+        public static event Action<User, Message> ForwardMesAction;
         public static event Action<User, Message> DeleteMessageByIdDel;
+        public static event Action<User, Message> ToPinMessageDel;
+
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -245,6 +248,7 @@ namespace TelegramVisualPart.Services
             _connection.On<User, Message>("PinMessage", (logged, message) =>
             {
                 //to pin
+                ToPinMessageDel?.Invoke(logged, message);
             });
 
             _connection.On<User, Message>("DeleteMessage", (logged, mes) =>
@@ -252,7 +256,10 @@ namespace TelegramVisualPart.Services
                 DeleteMessageByIdDel?.Invoke(logged, mes);
             });
 
-            
+            _connection.On<User, Message>("ForwardMessage", (logged, mes) =>
+            {
+                ForwardMesAction?.Invoke(logged, mes);
+            });
 
             await _connection.StartAsync();
         }
@@ -358,11 +365,28 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes);
         }
 
+        public static async Task PinMessage(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.Message toPin)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("PinMessage", logged, chatter, toPin);
+        } 
+
+
+
+        public static async Task ForwardMessage(User logged, User chatter,
+            TelegramLib.MainClasses.Messages.Message toForward)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("ForwardMessage", logged, chatter, toForward);
+        }
+        
         public static async Task SendReplyMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.TextMessage replyMes)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("ReplyMessage", logged, chatter, replyMes);
         }
+
     }
 }

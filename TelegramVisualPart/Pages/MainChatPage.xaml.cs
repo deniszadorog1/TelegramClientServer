@@ -2313,34 +2313,11 @@ namespace TelegramVisualPart.Pages
             SetUnreadForUserTalk(talkMes, _system.GetChatById(chatId));
         }
 
-        public void SetForwardMessage(int userIdToSend, 
+        public async Task SetForwardMessage(int userIdToSend, 
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            TelegramLib.MainClasses.Messages.Message copy =
-                DeepCopy<Message>(mes);
-            copy.ForwardedFromId = userIdToSend;
-
-
-            //Add In Db
-            //Add SignalR
-            //Add In system
-            //Add In visual
-
-            //Add in system (GET OTHER MESSAGE(copy of given)
-            _system.AddForwardMessage(copy);
-
-            //Update vis stuff
-            UserChat.SetMessagesInChat();
+            UserChat.SetForwardedMessage(mes, userIdToSend);
         }
-
-
-
-        public static T DeepCopy<T>(T obj)
-        {
-            var json = JsonConvert.SerializeObject(obj);
-            return JsonConvert.DeserializeObject<T>(json);
-        }
-
 
     }
 }

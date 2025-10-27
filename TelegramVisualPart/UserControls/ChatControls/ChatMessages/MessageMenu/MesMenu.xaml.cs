@@ -107,7 +107,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         private void SelectBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            SelectAct?.Invoke();
         }
 
         public void SetPinVisStatus(TelegramLib.MainClasses.Messages.Message mes)

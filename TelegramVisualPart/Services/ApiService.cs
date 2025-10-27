@@ -788,9 +788,23 @@ namespace TelegramVisualPart.Services
         public static async Task<Message?> GetPairOfMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
             var response = await _client.GetAsync($"api/Social/GetPairToMessage?mesId={mes.Id}");
+            if (!response.IsSuccessStatusCode) return null;
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(jsonResponse))
+                return null;
+
+            return JsonConvert.DeserializeObject<Message>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+
+
+      /*      var response = await _client.GetAsync($"api/Social/GetPairToMessage?mesId={mes.Id}");
             string jsonResponse = await response.Content.ReadAsStringAsync();
             return jsonResponse is null ? null : JsonConvert.DeserializeObject<Message>(jsonResponse); 
-        }
+       */ }
 
 
         public static async Task<int> GetLastFolderIdByUserId(int userId)

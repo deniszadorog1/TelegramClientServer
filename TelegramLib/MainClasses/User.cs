@@ -137,5 +137,10 @@ namespace TelegramLib.MainClasses
         {
             return BlockedUsers.Any(x => x.Id == userId);
         }
+
+        public string GetLastSeenInChat()
+        {
+            return $"{LastSeenOnline.Day}.{LastSeenOnline.Month}.{LastSeenOnline.Year}";
+        }
     }
 }

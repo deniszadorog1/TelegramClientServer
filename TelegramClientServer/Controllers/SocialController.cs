@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
@@ -164,9 +165,18 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetPairToMessage")]
-        public TelegramLib.MainClasses.Messages.Message GetPairToMessage(int mesId)
+        public IActionResult GetPairToMessage(int mesId)
         {
-            return DbService.GetPairOfMessageBySentTime(mesId);
+            var message = DbService.GetPairOfMessageBySentTime(mesId);
+            if (message == null) return NoContent();
+
+            var json = JsonConvert.SerializeObject(message, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+
+            return Content(json, "application/json");
+            //return DbService.GetPairOfMessageBySentTime(mesId);
         }
 
         [HttpGet("GetMessageById")]

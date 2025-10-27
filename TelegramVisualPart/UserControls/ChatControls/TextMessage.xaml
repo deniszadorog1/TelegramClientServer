@@ -6,16 +6,21 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:Replyed="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
+             xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="200">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>
             <ColumnDefinition/>
+            <ColumnDefinition Name="TickColumnDef" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
-                Name="UserEllipseImage" Width="40" Height="40">
+                 Name="UserEllipseImage" Width="40" Height="40"
+                 MouseEnter="UserEllipseImage_MouseEnter"
+                 MouseLeave="UserEllipseImage_MouseLeave"
+                 PreviewMouseDown="UserEllipseImage_PreviewMouseDown">
             <Ellipse.Fill>
                 <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
             </Ellipse.Fill>
@@ -32,13 +37,17 @@
                     <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Name="ForwardedGrid" Visibility="Hidden">
-                    <TextBlock
+                <Grid Grid.Row="0" Name="ForwardedGrid" 
+                      Visibility="Visible" Margin="10 5 10 0">
+                    <TextBlock FontSize="12" TextWrapping="Wrap"
                         Foreground="{StaticResource TempActiveTextColor}">
-                        
                         <Run Name="FromRun" Text="Forwarded from"/>
-
-
+                        <Run Name="LoginForwarded" Text="Login" Background="Transparent"
+                             
+                             MouseEnter="LoginForwarded_MouseEnter"
+                             MouseLeave="LoginForwarded_MouseLeave"
+                             PreviewMouseDown="LoginForwarded_PreviewMouseDown"
+                             />
                     </TextBlock>
                 </Grid>
 
@@ -82,5 +91,14 @@
                 </Grid>
             </Grid>
         </Border>
+
+
+        <Grid Grid.Column="2">
+            <Tick:SelectionTick x:Name="SelectionTickObj"
+                                Width="20" Height="20"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Right"/>
+        </Grid>
+        
     </Grid>
 </UserControl>

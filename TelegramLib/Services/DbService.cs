@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.IO;
 using System.Linq;
@@ -2321,11 +2322,11 @@ namespace TelegramLib.Services
                 toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
 
                 toAdd.IsPinned = message.IsPinned;
-                
+                toAdd.ForwardedFrom = message.ForwardedFromId;
+          
                 if(message is TextMessage addText)
                 {
                     toAdd.ReplyId = addText.RepliedMessageId;
-                    toAdd.ForwardedFrom = addText.ForwardedFromId;
                 }
 
                 model.Messages.Add(toAdd);
@@ -3742,6 +3743,17 @@ namespace TelegramLib.Services
                     model.Messages.FirstOrDefault(x => x.Id == id);
                 if (mes is null) return;
                 model.Messages.Remove(mes);
+
+                model.Messages
+                    .Where(x => x.ReplyId == id)
+                    .ToList()
+                    .ForEach(x => x.ReplyId = -1);
+
+                model.Messages
+                    .Where(x => x.ForwardedFrom == id)
+                    .ToList()
+                    .ForEach(x => x.ForwardedFrom = -1);
+
                 model.SaveChanges();
             }
         }

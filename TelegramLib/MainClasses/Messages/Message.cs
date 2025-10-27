@@ -35,7 +35,7 @@ namespace TelegramLib.MainClasses.Messages
         public Message()
         {
             Id = -1;
-            IsLoggedUserSent = true;
+            IsLoggedUserSent = false;
             SentTime = DateTime.Now;
             IsRead = false;
             ForwardedFromId = null;

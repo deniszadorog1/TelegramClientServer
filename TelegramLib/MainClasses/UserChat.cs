@@ -277,7 +277,7 @@ namespace TelegramLib.MainClasses
         {
             mes.IsPinned = false;
 
-            TelegramLib.MainClasses.Messages.Message toRemove = 
+            TelegramLib.MainClasses.Messages.Message toRemove =
                 PinnedMessages.FirstOrDefault(x => x.Id == mes.Id);
             PinnedMessages.Remove(toRemove);
         }
@@ -298,8 +298,8 @@ namespace TelegramLib.MainClasses
 
             tempMesIndex++;
 
-            return tempMesIndex < PinnedMessages.Count ? 
-                PinnedMessages[tempMesIndex] : 
+            return tempMesIndex < PinnedMessages.Count ?
+                PinnedMessages[tempMesIndex] :
                 PinnedMessages.First();
         }
 
@@ -308,5 +308,41 @@ namespace TelegramLib.MainClasses
             return PinnedMessages.Count > 0;
         }
 
+        public void RemovePinnedMessage(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            TelegramLib.MainClasses.Messages.Message toRemove =
+                PinnedMessages.FirstOrDefault(x => x.Id == mes.Id);
+            if (toRemove is null) return;
+            PinnedMessages.Remove(toRemove);
+        }
+
+        public void RemoveRepliedMessages(
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            for (int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i] is TextMessage text &&
+                    !(text.RepliedMessageId is null) &&
+                    text.RepliedMessageId == mes.Id)
+                {
+                    text.RepliedMessageId = -1;
+                }
+            }
+        }
+
+        public void RemovePinnedMessageById(int id)
+        {
+            TelegramLib.MainClasses.Messages.Message mes = 
+                PinnedMessages.FirstOrDefault(x => x.Id == id);
+            if (mes is null) return;
+
+            PinnedMessages.Remove(mes);
+        }
+
+        public int GetAmountOfPinnedMessages()
+        {
+            return Messages.Where(x => x.IsPinned).Count();
+        }
     }
 }

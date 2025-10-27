@@ -29,7 +29,8 @@
             <ColumnDefinition Width="0" Name="UserInfoColumn"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Background="{StaticResource DarkThemeOne}">
+        <Grid Name="ChatterInfoGrid" Grid.Row="0" Visibility="Visible"
+              Background="{StaticResource DarkThemeOne}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="UpperChatterImage" Width="75"/>
                 <ColumnDefinition x:Name="BackButColumn" Width="0"/>
@@ -119,7 +120,43 @@
                 </Grid>
             </StackPanel>
         </Grid>
+        <Grid Name="SelectedMessesGrid" Visibility="Hidden"
+              Background="{StaticResource DarkThemeOne}">
 
+            <StackPanel Name="SelectedMenu" 
+                        Margin="10 0 0 0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+
+                <Button Name="ForwardSelectedBut"
+                        Padding="5 0 5 0"
+                        Content="Forward AMOUNT"
+                        Background="{StaticResource TempActiveTextColor}"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Click="ForwardSelectedBut_Click"/>
+
+                <Button Name="DeleteSelectedBut"
+                        Padding="5 0 5 0"
+                        Margin="10 0 0 0"
+                        Content="Delete AMOUNT"
+                        Background="{StaticResource TempActiveTextColor}"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Click="DeleteSelectedBut_Click"/>
+            </StackPanel>
+
+            <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="16"
+                            MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
+                            Foreground="{StaticResource TempActiveTextColor}"
+                            Click="CancelBut_Click"/>
+
+        </Grid>
+        
+        
         <Border Name="PinRowBorder"
                 Grid.Row="1" BorderThickness="0 1 0 1"
                 BorderBrush="Black"
@@ -179,6 +216,13 @@
         <Grid Grid.Row="2" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0"
               MouseLeave="ClearStickerPanel_MouseLeave">
             <Grid Name="CustomBg" Background="Transparent"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="ChatColumn" />
+                    <ColumnDefinition x:Name="SelectColumn" Width="0"/>
+                </Grid.ColumnDefinitions>
+            
             <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
                      VerticalAlignment="Bottom"
@@ -192,6 +236,8 @@
                 
                 
             </ListBox>
+            
+            </Grid>
         </Grid>
                    <!--  VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Standard"

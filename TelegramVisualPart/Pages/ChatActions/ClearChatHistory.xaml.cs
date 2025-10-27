@@ -93,7 +93,7 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
         private void DeleteBut_MouseEnter(object sender, MouseEventArgs e)

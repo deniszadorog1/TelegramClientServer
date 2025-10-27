@@ -39,23 +39,28 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             ChatsPanel.Children.Clear();
 
-            for (int i = 0; i < _system.Contacts.Count; i++)
+            for (int i = 0; i < _system.Chats.Count; i++)
             {
                 ListBoxItem item = new ListBoxItem()
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Tag = _system.Contacts[i].ContactUserId
+                    Tag = _system.Chats[i].Chatter.Id,
+                    Padding = new Thickness(0),
+                    VerticalAlignment = VerticalAlignment.Top,
                 };
                 item.PreviewMouseDown += Contacts_PreviewMouseDown;
 
-                ChatToApply contact = new ChatToApply(_system.Contacts[i]);
+                ChatToApply contact = new ChatToApply(_system.Chats[i].Chatter);
+                contact.HorizontalAlignment = HorizontalAlignment.Stretch;
 
-                contact.Tag = _system.Contacts[i].GetFirstImageName().Name;
-                contact.Name = _system.Contacts[i].Id.ToString();
+                contact.AddedUserImage(_system.Chats[i].Chatter);
+                contact.TypeName.Text = _system.Chats[i].Chatter.Login;
+                contact.AutoDeletionType.Text = _system.Chats[i].Chatter.GetLastSeenInChat();
 
+                contact.Tag = _system.Chats[i].Chatter.GetFirstImageName().Name;
                 item.Content = contact;
 
-                ChatsPanel.Children.Add(item);
+                ChatPanel.Items.Add(item);
             }
         }
 
@@ -65,6 +70,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             int.TryParse(item.Tag.ToString(), out int userSendId);
 
             ((MainWindow)Window.GetWindow(this)).SetForwardMessage(_mes, userSendId);
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
         private void CancelBut_MouseEnter(object sender, MouseEventArgs e)

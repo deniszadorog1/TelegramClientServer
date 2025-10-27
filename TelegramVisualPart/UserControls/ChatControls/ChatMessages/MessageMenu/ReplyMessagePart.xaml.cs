@@ -32,7 +32,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         public void SetReplyMessageParams(TelSystem system,
             TelegramLib.MainClasses.Messages.Message mes) 
         {
-            if(mes is MediaAction action)
+            if(mes.Id == -1)
+            {
+                ImageColumn.Width = new GridLength(0);
+                TextGrid.Visibility = Visibility.Hidden;
+                DeleteMessageGrid.Visibility = Visibility.Visible;
+                return;
+            }
+
+            if(mes is MediaAction action && mes.Id != -1)
             {
                 string path = FilesAction.GetFullChatImagePath(action.MediaName);
                 if (File.Exists(path)) 
@@ -45,7 +53,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
             ReplyedMessage.Text =
                 mes is MediaAction ? "Media" :
-                mes is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
+                mes is TelegramLib.MainClasses.Messages.TextMessage secText  ? secText.Text :
                 "Message";
         }
 
