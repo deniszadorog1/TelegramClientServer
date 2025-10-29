@@ -24,11 +24,23 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
     {
         private TelSystem _system;
         private TelegramLib.MainClasses.Messages.Message _mes;
+
+        public event Action<int> ForwardSelected;
+
         public ForwardToPage(TelSystem system,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             _system = system;
             _mes = mes;
+
+            InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        public ForwardToPage(TelSystem system)
+        {
+            _system = system;
 
             InitializeComponent();
 
@@ -68,6 +80,13 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             if (sender is not ListBoxItem item) return;
             int.TryParse(item.Tag.ToString(), out int userSendId);
+
+            if (_mes is null)
+            {
+                ForwardSelected?.Invoke(userSendId);
+                ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                return;
+            }
 
             ((MainWindow)Window.GetWindow(this)).SetForwardMessage(_mes, userSendId);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);

@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Security.Permissions;
@@ -855,9 +856,36 @@ namespace TelegramVisualPart.Pages
         private void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not System.Windows.Controls.ListBoxItem item ||
-                item.Content is not UserTalkMessage talkControl) return;           
-            SetChosenChatBg(item);
+                item.Content is not UserTalkMessage talkControl) return;
+            SetChatParams(item, talkControl);
+        }
 
+
+        public void SetChatByChatterId(int userId)
+        {
+           //Get user chat
+           TelegramLib.MainClasses.UserChat chat = 
+                _system.GetChatByChatterId(userId);
+            if (chat is null) return;
+
+            //Get ListBoxItem (chat control)
+            ListBoxItem chatItem = GetChatItemByChatId(chat.Id);
+            if (chatItem is null ||
+                chatItem.Content is not UserTalkMessage talkControl) return;
+
+            SetChatParams(chatItem, talkControl);
+        }
+
+        public ListBoxItem? GetChatItemByChatId(int chatId)
+        {
+            return ChatsBox.Items
+                .OfType<ListBoxItem>()
+                .FirstOrDefault(x => x.Tag.ToString() == chatId.ToString());
+        }
+
+        public void SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
+        {
+            SetChosenChatBg(item);
             int.TryParse(item.Tag.ToString(), out int id);
 
             talkControl.SetVisibilityToUnreadEllipse(false);
@@ -1755,7 +1783,6 @@ namespace TelegramVisualPart.Pages
 
             if (type is null) return;
 
-
             if (type == SizerActionType.ThirdLevel)
             {
                 UserChat.SetVisibilityToBackBut(true);
@@ -2316,8 +2343,14 @@ namespace TelegramVisualPart.Pages
         public async Task SetForwardMessage(int userIdToSend, 
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            UserChat.SetForwardedMessage(mes, userIdToSend);
+            UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
         }
 
+
+        public void UpdateAmountOfSelectedMessages()
+        {
+            if (UserChat.Visibility == Visibility.Hidden) return;
+            UserChat.UpdateSelectedAmount();
+        }
     }
 }

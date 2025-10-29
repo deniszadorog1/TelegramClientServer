@@ -27,6 +27,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         public event Action MakeAction;
             
+        //To set action for one message
         public IsMakeActionOnBothSides(
             TelegramLib.MainClasses.User user,
             TelegramLib.MainClasses.Messages.Message mes,
@@ -38,6 +39,16 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             InitializeComponent();
 
+            SetBasicParams();
+        }
+
+        //To Delete selected messages
+        public IsMakeActionOnBothSides(TelegramLib.MainClasses.User user)
+        {
+            _user = user;
+            _bothType = BothUsersMessageAction.Delete;
+
+            InitializeComponent();
             SetBasicParams();
         }
 

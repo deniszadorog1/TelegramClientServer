@@ -57,6 +57,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetMessageReplyControl();
 
             SetForwardedFromRow();
+
+            SetEvents();
+        }
+
+        public void SetEvents()
+        {
+            SelectionTickObj.StatusChanged += () =>
+            {
+                //Pressed on tick
+                //Update counter on user chat
+                ((MainWindow)Window.GetWindow(this)).UpdateUserChatSelectedAmount();
+            };
         }
 
         private async Task SetForwardedFromRow()
@@ -257,6 +269,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 this.Width -= _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(0);
             }
+        }
+
+        public bool IsMessageIdTicked()
+        {
+            return SelectionTickObj.GetChosenStatus();
         }
     }
 }

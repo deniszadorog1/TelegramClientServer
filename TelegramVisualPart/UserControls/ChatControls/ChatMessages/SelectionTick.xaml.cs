@@ -40,6 +40,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            ActivateTickAction();
+        }
+
+        public void ActivateTickAction()
+        {
             _isChosen = !_isChosen;
             SetVisPartByStatus();
 
@@ -63,10 +68,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             ChosenTickIcon.Visibility = Visibility.Hidden;
             ChooseEllipse.Fill =
                 (SolidColorBrush)Application.Current.Resources["DarkThemeOne"]; 
-            
-            //new SolidColorBrush(Colors.Transparent);
-
-            //DarkThemeOne
         }
 
         public void SetChosenState()
@@ -74,7 +75,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             ChosenTickIcon.Visibility = Visibility.Visible;
             ChooseEllipse.Fill = 
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+        }
 
+        public bool GetChosenStatus()
+        {
+            return _isChosen;
         }
 
     }

@@ -1137,6 +1137,18 @@ namespace TelegramVisualPart
             if(MainFrame.Content is MainChatPage page) 
                 page.SetForwardMessage(userIdToSend, mes);
         }
+
+        public void UpdateUserChatSelectedAmount()
+        {
+            if (MainFrame.Content is MainChatPage page)
+                page.UpdateAmountOfSelectedMessages();
+        }
+
+        public void SetOtherChatByUserId(int userId)
+        {
+            if (MainFrame.Content is MainChatPage page)
+                page.SetChatByChatterId(userId);
+        }
        
     }
 }
