@@ -188,6 +188,7 @@
     <Compile Include="MainClasses\Messages\MediaAction.cs" />
     <Compile Include="MainClasses\Messages\Message.cs" />
     <Compile Include="MainClasses\Messages\ShareContactMessage.cs" />
+    <Compile Include="MainClasses\Messages\StaticMessage.cs" />
     <Compile Include="MainClasses\Messages\TextMessage.cs" />
     <Compile Include="MainClasses\TelSystem.cs" />
     <Compile Include="MainClasses\User.cs" />

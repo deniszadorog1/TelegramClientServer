@@ -65,6 +65,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Cha
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\MessageMenu\MesMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\MessageMenu\MesMenuBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\MessageMenu\ReplyMessagePart.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\SelectionTick.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\ShareContactControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
@@ -135,5 +136,4 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls\ToUnblockUser.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\SelectionTick.xaml;;
 

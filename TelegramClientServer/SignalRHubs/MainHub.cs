@@ -22,6 +22,11 @@ namespace TelegramClientServer.SignalRHubs
             //await Clients.All.SendAsync("ReceiveMediaMessage", user, message);               
         }
 
+        public async Task SendStatMessage(User user, StaticMessage message, User chatter)
+        {
+            await Clients.User(chatter.Id.ToString()).SendAsync("AddStatMessage", user, message);
+        }
+
         public async Task AddContact(User user, User contact)
         {
             await Clients.User(user.Id.ToString()).SendAsync("AddContact", user, contact);

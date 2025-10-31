@@ -83,7 +83,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //Set forwarded from user id as tag
             LoginForwarded.Tag = from.Id;
 
-            ForwardedRow.Height = new GridLength(50);
+            ForwardedRow.Height = new GridLength(40);
             LoginForwarded.Text = from.Login;
         }
         private void SetMessageReplyControl()

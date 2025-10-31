@@ -250,6 +250,17 @@ namespace TelegramClientServer.Controllers
             public int ChatterContactId { get; set; }
         }
 
+        [HttpPut("AddStatMessage")]
+        public void AddStatMessage([FromBody] AddStatMessageDTO sto)
+        {
+            DbService.AddStatMessage(sto.ChatId, sto.StatMessage);
+        }
+        public class AddStatMessageDTO
+        {
+            public StaticMessage StatMessage { get; set; }
+            public int ChatId { get; set; }
+        }
+
         //Add chat bg
         [HttpPost("AddChatBg")]
         public void AddChatBg([FromBody] ChatDTO chat)
@@ -258,7 +269,7 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpPost("SetAutoDeletion")]
-        public void SetAutoDeletion([FromBody] AutoDelDTO autDel)
+        public void SetAutoDeletion([FromBody] AutoDelDTO autDel) 
         {
             DbService.SetAutoDel(autDel.ChatId, autDel.DelType);
         }
@@ -313,12 +324,24 @@ namespace TelegramClientServer.Controllers
             return DbService.GetChatByUserAndContactIds(userId, contactId);
         }
 
+        [HttpGet("GetLastStatMesIdByChatId")]
+        public int? GetLastStatMesIdByChatId(int chatId)
+        {
+            return DbService.GetLastStatMesIdByChatId(chatId);
+        }
+
+        [HttpGet("GetStatMessageIdByItsReference")]
+        public int? GetStatMessageIdByItsReference(int chatId, int refId)
+        {
+           return DbService.GetStatMessageIdByItsReference(chatId, refId);
+        }
+
+
         [HttpGet("IsUserIsBlocked")]
         public bool IsUserIsBlocked(int userId, int contactId)
         {
             return DbService.IsUserIsBlocked(userId, contactId);
         }
-
 
         [HttpGet("IsChatExist")]
         public bool IsChatExist(int userId, int contactId)

@@ -233,7 +233,8 @@ namespace TelegramLib.MainClasses
         public int GetAmountOfUnreadMessages(int loggedUserId)
         {
             return Messages.Where(x => !x.IsRead &&
-            x.SenderUserId != loggedUserId).Count();
+            x.SenderUserId != loggedUserId &&
+            x.GetType() != typeof(StaticMessage)).Count();
         }
 
         public void ChangeNotificationStatus(bool state)
@@ -343,6 +344,27 @@ namespace TelegramLib.MainClasses
         public int GetAmountOfPinnedMessages()
         {
             return Messages.Where(x => x.IsPinned).Count();
+        }
+
+        public int GetMesIdPairOfMessageByTime(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (mes is null) return -1;
+
+            const int maxDiffer = 100;
+            for (int i = 0; i < Messages.Count; i++)
+            {
+  /*              bool sameBaseTime =
+                    mes.SentTime.Year == Messages[i].SentTime.Year &&
+                    mes.SentTime.Month == Messages[i].SentTime.Month &&
+                    mes.SentTime.Day == Messages[i].SentTime.Day &&
+                    mes.SentTime.Hour == Messages[i].SentTime.Hour &&
+                    mes.SentTime.Minute == Messages[i].SentTime.Minute &&
+                    mes.SentTime.Second == Messages[i].SentTime.Second;*/
+
+                double diffMs = Math.Abs((mes.SentTime - Messages[i].SentTime).TotalMilliseconds);
+                if (diffMs < maxDiffer) return Messages[i].Id;
+            }
+            return -1;
         }
     }
 }

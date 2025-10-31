@@ -18,7 +18,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" Name="UpperRow"/>
-            <RowDefinition Name="PinRow" Height="0"/>
+            <RowDefinition Name="PinRow" Height="50"/>
             <RowDefinition/>
             <RowDefinition Name="ReplyMessageRow"  Height="0"/>
             <RowDefinition Height="50"/>
@@ -120,7 +120,8 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        <Grid Name="SelectedMessesGrid" Visibility="Hidden"
+        
+        <Grid Name="SelectedMessesGrid" Grid.Row="0" Visibility="Hidden"
               Background="{StaticResource DarkThemeOne}">
 
             <StackPanel Name="SelectedMenu" 
@@ -163,7 +164,37 @@
                             Click="CancelBut_Click"/>
 
         </Grid>
-        
+
+        <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
+              Background="{StaticResource DarkThemeOne}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <materialDesign:PackIcon Name="BackToChatIcon"
+                                         Kind="ArrowLeft"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Width="35"
+                                         Height="35"
+                                         Foreground="Gray"/>
+            </Grid>
+
+            <TextBlock Name="AmountOfPinnedMessagesBlock" Grid.Column="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Foreground="{StaticResource UsualTextColor}"
+                       Margin="10 0 0 0"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                
+                <Run Name="PinnedAmountRun" Text="9"/>
+                <Run Name="PinnedSecRun" Text="pinned message"/>
+            </TextBlock>
+        </Grid>
         
         <Border Name="PinRowBorder"
                 Grid.Row="1" BorderThickness="0 1 0 1"
@@ -209,7 +240,7 @@
                                Foreground="{StaticResource UsualTextColor}"/>
                 </Grid>
 
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Name="PinnedChatBut">
                     <materialDesign:PackIcon Kind="Pin"
                                              Foreground="White"
                                              VerticalAlignment="Center"
@@ -352,13 +383,12 @@
                                      MouseLeave="EmojisBoard_MouseLeave"/>
         </Grid>
 
-
-        <Border Grid.Row="3" BorderThickness="0 1 0 0" BorderBrush="Black"
+        <Border Grid.Row="4" BorderThickness="0 1 0 0" BorderBrush="Black"
                 Name="UnBlockBorder" Visibility="Hidden">
             <Grid  Background="{StaticResource DarkThemeSecond}"
               Name="UnblockGrid"
-              MouseEnter="UnblockGrid_MouseEnter"
-              MouseLeave="UnblockGrid_MouseLeave"
+              MouseEnter="BottomGrid_MouseEnter"
+              MouseLeave="BottomGrid_MouseLeave"
               PreviewMouseDown="UnblockGrid_PreviewMouseDown">
                 <TextBlock VerticalAlignment="Center"
                        HorizontalAlignment="Center"
@@ -369,7 +399,26 @@
                        FontWeight="SemiBold"/>
             </Grid>
         </Border>
-        
+
+        <Border Grid.Row="4" BorderThickness="0 1 0 0" BorderBrush="Black"
+                Name="UnPinAllBorder" Visibility="Hidden">
+            <Grid Grid.Row="4" Name="UnPinAlGrid"
+                  Background="{StaticResource DarkThemeSecond}"
+                  MouseEnter="BottomGrid_MouseEnter"
+                  MouseLeave="BottomGrid_MouseLeave"
+                  PreviewMouseDown="UnPinAlGrid_PreviewMouseDown">
+
+                <TextBlock Text="Unpin all messages"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource UsualTextColor}"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+
+            </Grid>
+        </Border>
+
+
         <buts:UserChatInfoMenu x:Name="UserChatMenu"
                 Grid.Row="0" Grid.RowSpan="4"  
                 HorizontalAlignment="Right"

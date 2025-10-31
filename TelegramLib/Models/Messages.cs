@@ -38,6 +38,8 @@ namespace TelegramLib.Models
 
         public int? ForwardedFrom { get; set; }
 
+        public int? MessageRefference { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatImage ChatImage { get; set; }

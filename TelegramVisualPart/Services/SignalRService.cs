@@ -31,6 +31,8 @@ namespace TelegramVisualPart.Services
 
         public static event Action<User, TextMessage>? TextMessageReceived;
         public static event Action<User, MediaAction>? MediaMessageReceived;
+        public static event Func<User, StaticMessage, Task>? StatMessageReceived;
+
         public static event Action<User>? UpdateContactDel;
         public static event Action<User>? UpdateOnlineStatusDel;
         public static event Action<User>? UpdateUserImage;
@@ -261,6 +263,11 @@ namespace TelegramVisualPart.Services
                 ForwardMesAction?.Invoke(logged, mes);
             });
 
+            _connection.On<User, StaticMessage>("AddStatMessage", (logged, mes) =>
+            {
+                StatMessageReceived?.Invoke(logged, mes);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -276,6 +283,12 @@ namespace TelegramVisualPart.Services
             //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
+        }
+
+        public static async Task AddStatMessage(User sender, StaticMessage message, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("SendStatMessage", sender, message, chatter);
         }
 
         public static async Task AddContact(User user, User contact)
@@ -371,7 +384,6 @@ namespace TelegramVisualPart.Services
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("PinMessage", logged, chatter, toPin);
         } 
-
 
 
         public static async Task ForwardMessage(User logged, User chatter,

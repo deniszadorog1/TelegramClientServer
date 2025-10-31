@@ -25,7 +25,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private TelegramLib.MainClasses.Messages.Message _mes;
         private BothUsersMessageAction _bothType;
 
-        public event Action MakeAction;
+        public event Func<ValueTask> MakeAction;
             
         //To set action for one message
         public IsMakeActionOnBothSides(

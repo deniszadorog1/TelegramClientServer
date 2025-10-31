@@ -5,18 +5,43 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="135">
-    <Border Background="Gray" CornerRadius="20">
-        <Grid Margin="5 0 5 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+             d:DesignHeight="40" d:DesignWidth="500"
+             Height="30" MaxWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Name="PinnedMessageCol" Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Name ="Day" Text="33"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                       FontSize="20" Foreground="White"/>
-            <TextBlock Grid.Column="1" Name ="Month" Text="October"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                       FontSize="20" Foreground="White" Margin="5 0 0 0"/>
+        <Border Grid.ColumnSpan="3" Opacity="0.3" Background="Gray"
+                CornerRadius="10"/>
+
+        <TextBlock Grid.Column="0" Name ="LeftMessage" Text="33"  
+                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                   FontSize="14" Foreground="White"
+                   
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap"
+                   
+                   Margin="10 0 0 0"/>
+
+        <TextBlock Grid.Column="1" Name ="CenterMessage" Text="October"  
+                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Margin="5 0 0 0"/>
+
+        <Grid Grid.Column="2" Margin="5 0 10 0">
+            <TextBlock Name="RightMessage" Text="Pinned" 
+                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" 
+                       
+                       TextTrimming="CharacterEllipsis"
+                       TextWrapping="NoWrap"
+                       
+                       MouseEnter="RightMessage_MouseEnter"
+                       MouseLeave="RightMessage_MouseLeave"
+                       PreviewMouseDown="RightMessage_PreviewMouseDown"/>
         </Grid>
-    </Border>
+    </Grid>
+
 </UserControl>

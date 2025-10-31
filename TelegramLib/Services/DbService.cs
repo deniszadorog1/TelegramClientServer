@@ -11,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Configuration;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
 using TelegramLib.Enums.Messages;
 using TelegramLib.Enums.Settings.ChatSettings;
@@ -507,13 +509,14 @@ namespace TelegramLib.Services
         private static TelegramLib.MainClasses.Messages.Message GetMessageByMessages(Messages mes)
         {
             TelegramLib.MainClasses.Messages.Message toAdd;
-            if (mes.Message is null) toAdd = new MediaAction();
+            if (!(mes.MessageRefference is null)) toAdd = new mainClass.Messages.StaticMessage();
+            else if (mes.Message is null) toAdd = new MediaAction();
             else if (!(mes.ShareContactMessage is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
             toAdd.SenderUserId = (int)mes.SenderId;
-            //toAdd.SenderId = (int)mes.SenderId;
+            
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
             
@@ -548,13 +551,19 @@ namespace TelegramLib.Services
                 share.SharedUser = GetUserById((int)message.UserId);
             }
 
-            toAdd.IsPinned = (bool)mes.IsPinned;
+            toAdd.IsPinned = mes.IsPinned is null ? false :(bool)mes.IsPinned;
+            toAdd.ForwardedFromId = mes.ForwardedFrom;
 
             if(toAdd is TextMessage text)
             {
                 text.RepliedMessageId = mes.ReplyId;
-                text.ForwardedFromId = mes.ForwardedFrom;
             }
+
+            if(toAdd is StaticMessage statMessage)
+            {
+                statMessage.MessageReferenceId = mes.MessageRefference is null ? -1 : mes.MessageRefference;
+            }
+
             return toAdd;
         }
 
@@ -3755,6 +3764,48 @@ namespace TelegramLib.Services
                     .ForEach(x => x.ForwardedFrom = -1);
 
                 model.SaveChanges();
+            }
+        }
+
+        public static void AddStatMessage(int chatId, 
+            TelegramLib.MainClasses.Messages.StaticMessage statMes)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages toAdd = new Messages();
+
+                toAdd.SenderId = statMes.SenderUserId;
+                toAdd.SentDate = statMes.SentTime;
+                toAdd.MessageRefference = statMes.MessageReferenceId;
+                toAdd.ChatId = chatId;
+
+                model.Messages.Add(toAdd);
+                model.SaveChanges();
+            }
+        }
+
+        public static int? GetLastStatMesIdByChatId(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages mes = model.Messages
+                    .Where(x => x.ChatId == chatId && x.MessageRefference != null)
+                        .OrderByDescending(x => x.Id) 
+                        .FirstOrDefault();
+
+                if (mes is null) return null;
+                return mes.Id;
+            }
+        }
+
+        public static int? GetStatMessageIdByItsReference(int chatId, int refId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages res = model.Messages.FirstOrDefault(x => x.ChatId == chatId && x.MessageRefference == refId);
+
+                if (res is null) return null;
+                return res.Id;
             }
         }
     }

@@ -120,6 +120,14 @@ namespace TelegramVisualPart.Services
             return JsonConvert.DeserializeObject<bool>(jsonResponse);
         }
 
+        public static async Task<int?> GetLastAddedStatMessageIdByChatId(int chatId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastStatMesIdByChatId?chatId={chatId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<int?>(jsonResponse);
+        }
+
         public static async Task<bool> SetReadStatus(int mesId)
         {
             var data = new { MesId = mesId };
@@ -785,6 +793,17 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
         }
 
+        public static async Task<int?> GetStatMessageIdByItsReference(int chatId, int refId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetStatMessageIdByItsReference?chatId={chatId}&refId={refId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<int?>(jsonResponse);
+        }
+
         public static async Task<Message?> GetPairOfMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
             var response = await _client.GetAsync($"api/Social/GetPairToMessage?mesId={mes.Id}");
@@ -943,5 +962,24 @@ namespace TelegramVisualPart.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public static async Task<bool> AddStatMessage(StaticMessage message, int chatId)
+        {
+            var data = new 
+            { 
+                StatMessage = message,
+                ChatId = chatId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Social/AddStatMessage", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+
+
     }
 }
