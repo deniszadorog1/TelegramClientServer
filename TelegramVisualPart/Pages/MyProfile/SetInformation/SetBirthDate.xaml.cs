@@ -358,7 +358,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
                 }
         */
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Make check for date
             int day = DaysSpecial.GetSelectedIndex() - 1;
@@ -368,7 +368,11 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
             _user.BirthDay = new DateTime(year, month, day);
 
-            ApiService.UpdateUser(_user);
+            await ApiService.UpdateUser(_user);
+
+            //Update in Signal R
+
+            await SignalRService.UpdateBirtDate(_user);
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
             ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();
@@ -399,9 +403,11 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void RemoveBut_Click(object sender, RoutedEventArgs e)
+        private async void RemoveBut_Click(object sender, RoutedEventArgs e)
         {
             _user.BirthDay = null;
+            await SignalRService.UpdateBirtDate(_user);
+
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
 
             ((MainWindow)Window.GetWindow(this)).UpdateLoggedUserPage();

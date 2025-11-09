@@ -2344,6 +2344,28 @@ namespace TelegramLib.Services
             return true;
         }
 
+        public static void EditMessage(int chatId,
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            using(var model = new TelegramModel())
+            {
+                //Get message
+                Messages toEdit = model.Messages.FirstOrDefault(
+                    x => x.ChatId == chatId && x.Id == mes.Id);
+                if (toEdit is null) return;
+
+                //Update params
+                if (mes is MediaAction video && video.IsVideo()) toEdit.VideoId = GetVideoIdByName(video.MediaName);
+                if (mes is MediaAction image && image.IsImage()) toEdit.ImageId = GetChatImageIdByName(image.MediaName);
+                if (mes is MediaAction gif && gif.IsGif()) toEdit.GifId = GetChatGifIdByName(gif.MediaName);
+
+                if (mes is TextMessage text) toEdit.Message = text.Text;
+
+                //Save
+                model.SaveChanges();
+            }
+        }
+
         public static TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
         {
             using (var model = new TelegramModel())
@@ -3728,7 +3750,7 @@ namespace TelegramLib.Services
                 Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
                 if (chat is null) return;
             
-                
+            
             }
         }
 

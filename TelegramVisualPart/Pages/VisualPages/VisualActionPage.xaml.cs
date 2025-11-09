@@ -68,7 +68,8 @@ namespace TelegramVisualPart.Pages.VisualPages
             //VideoToShow = null;
         }
 
-        public void SetUserImages(List<UserImage> images, TelSystem system, string userName, bool isLoggedUser, UserChat chat)
+        public void SetUserImages(List<UserImage> images, TelSystem system, 
+            string userName, bool isLoggedUser, UserChat chat)
         {
             MediaMenu = null;
             _imgs = null;
@@ -175,8 +176,6 @@ namespace TelegramVisualPart.Pages.VisualPages
             SenderName.Text = _system.GetMessageSenderLoginByMessage(_messages[_tempMediaIndex]);
             return;
             //set text
-/*            SenderName.Text = media.SenderId == -1 ? _system.LoggedUser.Name :
-                _system.Contacts[_system.Contacts.FindIndex(x => x.Id == media.Id)].Name;*/
         }
 
         public void SetImgIndex()
@@ -215,6 +214,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             ImageToShow.Visibility = Visibility.Hidden;
             VideoToShow.Visibility = Visibility.Hidden;
         }
+
         public void SetVideo(string videoPath)
         {
             var media = new MediaElement
@@ -311,6 +311,9 @@ namespace TelegramVisualPart.Pages.VisualPages
         private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set move to message on chat
+
+            //Get temp message
+            //go trough 
         }
 
         private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)

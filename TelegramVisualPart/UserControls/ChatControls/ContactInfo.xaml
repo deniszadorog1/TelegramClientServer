@@ -87,9 +87,11 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Name="Username" 
+                            <TextBlock Grid.Row="0" Name="Username"  Margin="0 0 30 0"
                                        VerticalAlignment="Center" FontSize="18"
-                                       Foreground="{StaticResource UsualTextColor}">
+                                       Foreground="{StaticResource UsualTextColor}"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="NoWrap">
                                 <Run Name="ContName" Text="Name"/>
                                 <Run Name="ContSurname" Text="Surnmae"/>
                             </TextBlock>
@@ -104,7 +106,6 @@
                     <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"/>
 
                     <Grid Grid.Row="2" Margin="0 5 0 5">
-
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
@@ -116,6 +117,7 @@
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="55" Name="BirthdatRow"/>
+                                <RowDefinition Height="0" Name="BioRow"/>
                                 <RowDefinition Height="*" Name="AddContactRow"/>
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="50"/>
@@ -129,9 +131,9 @@
                             <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
                             <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="UserName" VerticalAlignment="Center"/>
                             <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
+                            <local:DoubleText Grid.Row="3" Grid.Column="1" x:Name="Bio" VerticalAlignment="Center"/>
 
-
-                            <Grid Grid.Row="3" Grid.Column="0"                                
+                            <Grid Grid.Row="4" Grid.Column="0"                                
                                   Grid.ColumnSpan="3"
                                   Background="Transparent"
                                   Name="AddContactGrid"
@@ -149,15 +151,15 @@
                                            FontWeight="SemiBold"/>
                             </Grid>
 
-                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="4" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="5" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="BellIcon"
                                                  Foreground="{StaticResource UsualTextColor}"/>
-                            <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"
+                            <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"
                                        Foreground="{StaticResource UsualTextColor}" FontSize="16"
                                        Name="NotifsBlock"/>
                             <ToggleButton Name ="NotificationToggle" Width="35"
-                                          Grid.Column="2" Grid.Row="4"
+                                          Grid.Column="2" Grid.Row="5"
                                           Checked="NotificationToggle_Checked"
                                           Unchecked="NotificationToggle_Unchecked"
                                           HorizontalAlignment="Right"
@@ -170,12 +172,12 @@
                                           Background="{StaticResource TempActiveTextColor}"/>
 
                             
-                            <Grid Grid.ColumnSpan="3" Grid.Row="5" Name ="SendMessageBut"
+                            <Grid Grid.ColumnSpan="3" Grid.Row="6" Name ="SendMessageBut"
                                   MouseEnter="But_MouseEnter"
                                   MouseLeave="But_MouseLeave" Background="Transparent"
                                   PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
 
-                            <TextBlock Grid.Column="1" Grid.Row="5"
+                            <TextBlock Grid.Column="1" Grid.Row="6"
                                        FontSize="16" Name="SendMesBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource TempActiveTextColor}"
@@ -207,7 +209,7 @@
                         <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="VideosLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                               PreviewMouseDown="Line_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" Name="FilesLine"
+                        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" Name="GifLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="Line_PreviewMouseDown"/>
 

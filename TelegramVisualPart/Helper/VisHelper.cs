@@ -30,7 +30,6 @@ namespace TelegramVisualPart.Helper
         }
 
         //Get controls which are seen in list box (vertical scroll stuff)
-
         public static IEnumerable<object> GetVisibleItems(ListBox listBox)
         {
             VirtualizingStackPanel vsp = FindVisualChild<VirtualizingStackPanel>(listBox);
@@ -46,7 +45,6 @@ namespace TelegramVisualPart.Helper
             }
         }
 
-        // Рекурсивный поиск дочернего элемента в визуальном дереве
         private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
         {
             if (!Application.Current.Dispatcher.CheckAccess())
@@ -65,6 +63,13 @@ namespace TelegramVisualPart.Helper
                     return result;
             }
             return null;
+        }
+
+        private const int _correctTimeLength = 2;
+        public static string GetCorrectTimeParamVis(string timeParam)
+        {
+            return timeParam.Count() == _correctTimeLength ? 
+                timeParam : timeParam.Insert(0, "0");
         }
 
     }

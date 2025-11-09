@@ -89,6 +89,11 @@ namespace TelegramLib.MainClasses
             return Messages;
         }
 
+        public List<Messages.Message> GetOnlyPinnedMessages()
+        {
+            return Messages.Where(x => x.IsPinned).ToList();
+        }
+
         public DateTime? GetLastMessageDateTime()
         {
             return Messages.Count == 0 ? null : Messages.Last().GetSentDate();
@@ -365,6 +370,20 @@ namespace TelegramLib.MainClasses
                 if (diffMs < maxDiffer) return Messages[i].Id;
             }
             return -1;
+        }
+
+        public List<MediaAction> GetGifMessages()
+        {
+            List<MediaAction> gifs = new List<MediaAction>();
+            for(int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i] is MediaAction media &&
+                    media.IsGif())
+                {
+                    gifs.Add(media);
+                }
+            }
+            return gifs;
         }
     }
 }

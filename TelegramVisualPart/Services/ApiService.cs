@@ -19,6 +19,7 @@ using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Net.WebSockets;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -896,6 +897,18 @@ namespace TelegramVisualPart.Services
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Settings/UpdateNotifMonitor", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> EditMessage(int chatId, 
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            var data = new { ChatId = chatId, Message = mes };
+
+            string json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Social/EditMessage", content);
 
             return response.IsSuccessStatusCode;
         }

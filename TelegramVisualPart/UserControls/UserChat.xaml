@@ -20,7 +20,7 @@
             <RowDefinition Height="60" Name="UpperRow"/>
             <RowDefinition Name="PinRow" Height="50"/>
             <RowDefinition/>
-            <RowDefinition Name="ReplyMessageRow"  Height="0"/>
+            <RowDefinition Name="ReplyMessageRow"  Height="50"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
@@ -75,7 +75,10 @@
                 <TextBlock Grid.Row="0"  
                            FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Center" 
-                           Foreground="{StaticResource UsualTextColor}">
+                           Foreground="{StaticResource UsualTextColor}"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"
+                           >
                     <Run x:Name="ChatFriendLogin" Text="Name"/>
                     <Run x:Name="ChatFriendSurname" Text="Surname"/>
 
@@ -119,6 +122,41 @@
 
                 </Grid>
             </StackPanel>
+        </Grid>
+        
+        <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
+              Background="{StaticResource DarkThemeOne}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Name="BackToChatGrid" Grid.Column="0" 
+                  Background="Transparent"
+                  MouseEnter="BackToChatGrid_MouseEnter"
+                  MouseLeave="BackToChatGrid_MouseLeave"
+                  PreviewMouseDown="BackToChatGrid_PreviewMouseDown">
+                <materialDesign:PackIcon Name="BackToChatIcon"
+                                         Kind="ArrowLeft"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Width="35"
+                                         Height="35"
+                                         Foreground="Gray"/>
+            </Grid>
+
+            <TextBlock Name="AmountOfPinnedMessagesBlock" Grid.Column="1"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Foreground="{StaticResource UsualTextColor}"
+                       Margin="10 0 0 0"
+                       FontSize="20"
+                       FontWeight="SemiBold">
+                
+                <Run Name="PinnedAmountRun" Text="9"/>
+                <Run Name="PinnedSecRun" Text="pinned message"/>
+            </TextBlock>
         </Grid>
         
         <Grid Name="SelectedMessesGrid" Grid.Row="0" Visibility="Hidden"
@@ -165,39 +203,9 @@
 
         </Grid>
 
-        <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
-              Background="{StaticResource DarkThemeOne}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <materialDesign:PackIcon Name="BackToChatIcon"
-                                         Kind="ArrowLeft"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Width="35"
-                                         Height="35"
-                                         Foreground="Gray"/>
-            </Grid>
-
-            <TextBlock Name="AmountOfPinnedMessagesBlock" Grid.Column="1"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Left"
-                       Foreground="{StaticResource UsualTextColor}"
-                       Margin="10 0 0 0"
-                       FontSize="20"
-                       FontWeight="SemiBold">
-                
-                <Run Name="PinnedAmountRun" Text="9"/>
-                <Run Name="PinnedSecRun" Text="pinned message"/>
-            </TextBlock>
-        </Grid>
-        
-        <Border Name="PinRowBorder"
-                Grid.Row="1" BorderThickness="0 1 0 1"
+        <Border Name="PinRowBorder" Grid.Row="1" 
+                BorderThickness="0 1 0 1"
                 BorderBrush="Black"
                 Background="{StaticResource DarkThemeSecond}"
                 MouseEnter="PinRowBorder_MouseEnter"
@@ -240,7 +248,10 @@
                                Foreground="{StaticResource UsualTextColor}"/>
                 </Grid>
 
-                <Grid Grid.Column="2" Name="PinnedChatBut">
+                <Grid Grid.Column="2" Name="PinnedChatBut"
+                      MouseEnter="PinnedChatBut_MouseEnter"
+                      MouseLeave="PinnedChatBut_MouseLeave"
+                      PreviewMouseDown="PinnedChatBut_PreviewMouseDown">
                     <materialDesign:PackIcon Kind="Pin"
                                              Foreground="White"
                                              VerticalAlignment="Center"
@@ -261,27 +272,22 @@
                     <ColumnDefinition x:Name="ChatColumn" />
                     <ColumnDefinition x:Name="SelectColumn" Width="0"/>
                 </Grid.ColumnDefinitions>
-            
-            <ListBox Background="Transparent" BorderThickness="0"
+
+                <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
                      VerticalAlignment="Bottom"
                      
-                     ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"
-                    
+                     ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"                  
                      
                      ScrollViewer.CanContentScroll="True"
                      ScrollViewer.PanningRatio="0.3">
-                
-                
-                
-            </ListBox>
+                </ListBox>
             
             </Grid>
         </Grid>
                    <!--  VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Standard"
                      ScrollViewer.CanContentScroll="True"-->
-
 
         <Border Grid.Row="3" Name="ReplyBorder" Visibility="Visible"
                 Background="{StaticResource DarkThemeSecond}"
@@ -317,6 +323,8 @@
 
                     <TextBlock Grid.Row="0" Name="ReplySenderText" 
                                Text="ReplyedSender"
+                               TextTrimming="CharacterEllipsis"
+                               TextWrapping="NoWrap"
                                VerticalAlignment="Center" Margin="5 5 0 0"
                                Foreground="{StaticResource TempActiveTextColor}"
                                FontWeight="SemiBold"/>
@@ -358,7 +366,6 @@
                 <materialDesign:PackIcon Kind="Paperclip" Margin="10 0 0 0" Name ="AddFile"
                                      Width="35" Height="35" VerticalAlignment="Center" Foreground="Gray"/>
             </Grid>
-
 
             <TextBox Grid.Column="1" x:Name="CommentTextBox" 
                      Background="{StaticResource DarkThemeOne}" Foreground="White" 
@@ -428,12 +435,12 @@
 
 
         <Canvas Name="MessageMenu"
-              Grid.RowSpan="3" 
+              Grid.RowSpan="4" 
               Grid.ColumnSpan="2" Margin="10,0,-10,0"
               >
 
         </Canvas>
 
-        <Grid Grid.Column="1" Grid.RowSpan="3" Name="ContactInfoGrid"/>
+        <Grid Grid.Column="1" Grid.RowSpan="5" Name="ContactInfoGrid"/>
     </Grid>
 </UserControl>

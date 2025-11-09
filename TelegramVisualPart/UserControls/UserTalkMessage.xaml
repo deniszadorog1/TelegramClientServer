@@ -26,11 +26,20 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="125"/>
+                </Grid.ColumnDefinitions>
+                
                 <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
                            Text="UserLogin" Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" 
-                           FontSize="16"/>
+                           FontSize="16" Grid.Column="0"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"/>
                 <TextBlock x:Name="LastMessageTime" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                           Text="mestime" Margin="10 5 25 5" Foreground="Gray" FontSize="16"/>
+                           Text="mestime" Margin="10 5 25 5" Foreground="Gray" FontSize="16"
+                           Grid.Column="1"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
@@ -38,7 +47,8 @@
                        Margin="10 0 0 0" FontSize="16"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap"
-                       Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"/>
+                       Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"
+                       />
 
             <Grid Grid.Row="1" HorizontalAlignment="Right"
                   Margin="0 0 25 5">

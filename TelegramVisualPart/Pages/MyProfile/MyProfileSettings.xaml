@@ -99,7 +99,8 @@
                     <TextBox x:Name="BioTextBox" MaxLength="70" TextChanged="BioTextBox_TextChanged"
                              materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
                              materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
-                             Foreground="{StaticResource UsualTextColor}" CaretBrush="{StaticResource UsualTextColor}"
+                             Foreground="{StaticResource UsualTextColor}" 
+                             CaretBrush="{StaticResource UsualTextColor}"
                              VerticalContentAlignment="Center" Margin="20 0 0 0"
                              FontSize="18" BorderThickness="0"/>
 

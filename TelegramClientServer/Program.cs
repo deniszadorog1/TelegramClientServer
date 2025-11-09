@@ -42,7 +42,6 @@ namespace TelegramClientServer
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.MapHub<SignalRHubs.MainHub>("/chatHub");

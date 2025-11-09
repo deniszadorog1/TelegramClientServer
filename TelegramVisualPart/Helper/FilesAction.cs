@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 using Path = System.IO.Path;
@@ -101,6 +102,12 @@ namespace TelegramVisualPart.Helper
         {
             string baseName = Path.GetFileName(gifName);
             return Path.Combine(GetGifsPath(), baseName);
+        }
+
+        public static string GetFullUserImagePath(string imgName)
+        {
+            string userImgsFolderPath = Path.Combine(GetImagesPath(), "UserImages");
+            return Path.Combine(userImgsFolderPath, imgName);
         }
 
         public static List<string> GetFullPathForVideos(List<string> paths)
@@ -426,6 +433,11 @@ namespace TelegramVisualPart.Helper
                     }
             }
         }
+
+/*        public static string GetFullVideoPath(string vidName)
+        {
+            return Path.Combine(GetVideosPath(), name);
+        }*/
 
         public static Image GetImagePreviewForVideo(string videoName)
         {

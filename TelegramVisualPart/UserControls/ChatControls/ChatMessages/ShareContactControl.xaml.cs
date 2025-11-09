@@ -63,16 +63,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
         public void SetSendTime()
         {
-            string hours = MakeCorrectTimeString(DateTime.Now.Hour.ToString());
-            string minutes = MakeCorrectTimeString(DateTime.Now.Minute.ToString());
+            DateTime time = DateTime.Now;
             
-            SendTimeBlock.Text = $"{hours}:{minutes}";
-        }
-
-        private string MakeCorrectTimeString(string temp)
-        {
-            if (temp.Length < 2) temp = temp.Insert(0, "0");
-            return temp;
+            SendTimeBlock.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
+                $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";
         }
 
         private void ContactRow_PreviewMouseDown(object sender, MouseButtonEventArgs e)

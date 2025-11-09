@@ -56,6 +56,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 ListBoxItem item = new ListBoxItem()
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
+                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
                     Tag = _system.Chats[i].Chatter.Id,
                     Padding = new Thickness(0),
                     VerticalAlignment = VerticalAlignment.Top,

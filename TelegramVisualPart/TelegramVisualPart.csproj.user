@@ -412,6 +412,9 @@
     <Compile Update="UserControls\ChatControls\MediaActions\ActionButton.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Windows\MediaWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="CustWindows\ToastWindow.xaml">
@@ -820,6 +823,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MediaActions\ActionButton.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\MediaWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

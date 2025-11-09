@@ -15,7 +15,9 @@
         <StackPanel Orientation="Vertical"
                     Name="Buts">
 
+            <But:MesMenuBut x:Name="GoToMessage" PreviewMouseDown="GoToMessage_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="ReplyBut" PreviewMouseDown="ReplyBut_PreviewMouseDown"/>
+            <But:MesMenuBut x:Name="EditBut" PreviewMouseDown="EditBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="PinBut" PreviewMouseDown="PinBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="SaveAsBut" PreviewMouseDown="SaveAsBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="CopyBut" PreviewMouseDown="CopyBut_PreviewMouseDown"/>

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Models;
 using TelegramVisualPart.Enums.Menus;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
@@ -24,9 +25,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
     public partial class MesMenu : UserControl
     {
         private MessageMenuType _type;
-        public MesMenu(MessageMenuType type)
+        private bool _isOnlyPinnedChat;
+        private TelegramLib.MainClasses.Messages.Message _mes;
+
+        public MesMenu(MessageMenuType type, bool isOnlyPinnedChat,
+            TelegramLib.MainClasses.Messages.Message mes)
         {
             _type = type;
+            _isOnlyPinnedChat = isOnlyPinnedChat;
+            _mes = mes;
+
             InitializeComponent();
 
             SetBasicParams();
@@ -34,8 +42,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         public void SetBasicParams()
         {
+            GoToMessage.Icon.Kind = PackIconKind.EyeOutline;
+            GoToMessage.ButText.Text = "Go to message";
+
             ReplyBut.Icon.Kind = PackIconKind.Reply;
             ReplyBut.ButText.Text = "Reply";
+
+            EditBut.Icon.Kind = PackIconKind.PencilOutline;
+            EditBut.ButText.Text = "Edit";
+            IsAddEditBut();
 
             PinBut.Icon.Kind = PackIconKind.PinOutline;
             PinBut.ButText.Text = "Pin";
@@ -55,9 +70,22 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             SelectBut.Icon.Kind = PackIconKind.ProgressTick;
             SelectBut.ButText.Text = "Select";
 
-            if(_type != MessageMenuType.MediaMessage) Buts.Children.Remove(SaveAsBut);
+            if (_type != MessageMenuType.MediaMessage) Buts.Children.Remove(SaveAsBut);
+
+            if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
+            else Buts.Children.Remove(ReplyBut);
         }
 
+        public void IsAddEditBut()
+        {
+            const int timeDiffer = 30;
+
+            if (_mes is null) return;
+            if (Math.Abs((_mes.SentTime - DateTime.Now).TotalSeconds) < timeDiffer) return;
+
+            //Remove edit button
+            Buts.Children.Remove(GoToMessage);
+        }
 
         private ListBoxItem _item;
         public void SetClickedListBoxItem(ListBoxItem item)
@@ -67,6 +95,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         public ListBoxItem GetChosenListBoxItem() => _item;
 
+        public event Action GoToMessageAct;
         public event Action ReplyAct;
         public event Action PinAct;
         public event Action SaveAct;
@@ -122,5 +151,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             PinBut.ButText.Text = "Pin";
         }
 
+        private void GoToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            GoToMessageAct?.Invoke();
+        }
+
+        private void EditBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set edit menu in chat
+        }
     }
 }

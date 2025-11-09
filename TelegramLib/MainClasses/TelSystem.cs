@@ -190,7 +190,24 @@ namespace TelegramLib.MainClasses
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == userId);
             return chat is null ? null : chat.Chatter;
         }
-        
+
+        public User GetTrueUserById(int userId)
+        {
+            UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == userId);
+            return chat is null ? LoggedUser : chat.Chatter;
+        }
+
+        public List<string> GetUserLoginsByIds(List<int> ids)
+        {
+            List<string> res = new List<string>();
+
+            for (int i = 0; i < ids.Count; i++)
+            {
+                res.Add(GetUserById(ids[i]).Login);
+            }
+
+            return res;
+        }
         public User GetSenderUserById(int userId)
         {
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == userId);
@@ -476,9 +493,9 @@ namespace TelegramLib.MainClasses
         public List<(TextMessage, int)> GetMessagesChatIdFromChatsWithGivenSubChat(string subString)
         {
             List<(TextMessage, int)> res = new List<(TextMessage, int)>();
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
-                for(int j = 0; j < Chats[i].Messages.Count; j++)
+                for (int j = 0; j < Chats[i].Messages.Count; j++)
                 {
                     if (Chats[i].Messages[j] is TextMessage text &&
                         text.Text.Contains(subString))
@@ -510,10 +527,10 @@ namespace TelegramLib.MainClasses
         {
             TelegramLib.MainClasses.User share = GetUserById(contact.ContactUserId);
 
-           TelegramLib.MainClasses.Messages.ShareContactMessage toAdd = 
-                new TelegramLib.MainClasses.Messages.ShareContactMessage(-1,
-                LoggedUser.Id, DateTime.Now, contact.Name, 
-                share, false, false, null);
+            TelegramLib.MainClasses.Messages.ShareContactMessage toAdd =
+                 new TelegramLib.MainClasses.Messages.ShareContactMessage(-1,
+                 LoggedUser.Id, DateTime.Now, contact.Name,
+                 share, false, false, null);
 
             TelegramLib.MainClasses.UserChat chat = GetChatByChatterId(share.Id);
             chat.Messages.Add(toAdd);
@@ -522,7 +539,7 @@ namespace TelegramLib.MainClasses
         public string GetMessageSenderLoginByMessage(Message message)
         {
             //Is contact contacts - get it
-            UserContactcs contact =  GetContactById(message.SenderUserId);
+            UserContactcs contact = GetContactById(message.SenderUserId);
             if (!(contact is null)) return contact.Login;
 
             //Else - get user chatter by message
@@ -553,14 +570,14 @@ namespace TelegramLib.MainClasses
 
             return !(toCheck is null);
 
-/*            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
-            return contact is null ? false : contact.IsBlockedUserBlocked;*/      
+            /*            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
+                        return contact is null ? false : contact.IsBlockedUserBlocked;*/
         }
 
         public Message GetMessageById(int? id)
         {
             if (id is null) return null;
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Message mes = Chats[i].GetMessageById((int)id);
                 if (!(mes is null)) return mes;
@@ -570,10 +587,10 @@ namespace TelegramLib.MainClasses
 
         public void RemoveMessageById(int id)
         {
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Message mes = Chats[i].Messages.FirstOrDefault(x => x.Id == id);
-                if(!(mes is null))
+                if (!(mes is null))
                 {
                     Chats[i].RemovePinnedMessageById(mes.Id);
                     Chats[i].Messages.Remove(mes);
@@ -613,7 +630,7 @@ namespace TelegramLib.MainClasses
         public TelegramLib.MainClasses.UserChat GetChatByMessage(
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 if (Chats[i].IsMessageContains(mes)) return Chats[i];
             }
@@ -647,6 +664,16 @@ namespace TelegramLib.MainClasses
 
             UserChat chat = GetChatByChatterId((int)mes.ForwardedFromId);
             chat.Messages.Add(mes);
+        }
+
+        public void UpdateUserBirthdate(User user)
+        {
+           User toUpdate = Chats
+                .Select(x => x.Chatter)
+                .FirstOrDefault(x => x.Id == user.Id);
+
+            if (toUpdate is null) return;
+            toUpdate.BirthDay = user.BirthDay;
         }
 
     }

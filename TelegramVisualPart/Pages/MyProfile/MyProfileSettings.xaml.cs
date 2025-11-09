@@ -21,6 +21,7 @@ using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.MyProfileControls;
+using TelegramVisualPart.Windows;
 
 namespace TelegramVisualPart.Pages.MyProfile
 {
@@ -176,17 +177,29 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            string firstImage = _user.GetFirstImageName().Name;
+/*            string firstImage = _user.GetFirstImageName().Name;
             Image chosen = FilesAction.GetUserImage(firstImage);
 
-            List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());
+            List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());*/
 
-            VisualActionPage page = new VisualActionPage(chosen, imgs);
+            //Set window here
+            MediaWindow mediaWindow = new MediaWindow(
+                _system.LoggedUser, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.UserImages, _system);
+
+            //Is exist
+            if (((MainWindow)Window.GetWindow(this))
+                .IsMediaWindowIsExistByUserId(_system.LoggedUser.Id)) return;
+            mediaWindow.Show();
+
+
+
+/*            VisualActionPage page = new VisualActionPage(chosen, imgs);
             page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
 
             page.ToRemoveImage += ToRemoveUserImage_MouseDown;
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
         private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)

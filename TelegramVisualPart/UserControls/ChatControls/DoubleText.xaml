@@ -8,8 +8,12 @@
              d:DesignHeight="100" d:DesignWidth="300">
     <StackPanel Orientation="Vertical">
         <TextBlock Name ="UpperText" Text="There gona be upper text"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap"
                    Foreground="{StaticResource UsualTextColor}" FontSize="16" Margin="0 0 0 2"/>
         <TextBlock Name ="BottomText" Text="There gona be upper text"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap"
                    Foreground="Gray" FontSize="16"/>
     </StackPanel>
 </UserControl>

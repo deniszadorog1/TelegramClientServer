@@ -19,6 +19,7 @@ using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.UserContactControls;
 using TelegramVisualPart.UserControls.ChatsControls;
+using TelegramVisualPart.Windows;
 using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -142,12 +143,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //is gifs amount == 0
             if (FilesAction.GetGifsAmount(medias) == 0)
             {
-                FilesLine.Visibility = Visibility.Hidden;
+                GifLine.Visibility = Visibility.Hidden;
                 MaxHeight -= GifRow.Height.Value;
                 GifRow.Height = new GridLength(0);
             }
 
-            if (FilesLine.Visibility == Visibility.Hidden &&
+            if (GifLine.Visibility == Visibility.Hidden &&
                 VideosLine.Visibility == Visibility.Hidden &&
                 PhotosLine.Visibility == Visibility.Hidden)
             {
@@ -250,9 +251,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Dispatcher.InvokeAsync(async () =>
             {
                 if (user.Id == _system.LoggedUser.Id) return;
+
+                _system.UpdateUserBirthdate(user);
                 await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
             });
         }
+
+
 
         public void SetPhoneNumberVisByExps(TelegramLib.MainClasses.User user)
         {
@@ -308,7 +313,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
-                if (_contact is null || _contact.Id != updated.Id) return;
+                if (_contact is null || _contact.ContactUserId != updated.Id) return;
 
                 //Username.Text = updated.Login;
                 ContName.Text = updated.Name;
@@ -318,9 +323,25 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 //MobileNumber.UpperText.Text = updated.PhoneNumber;
 
                 UserName.UpperText.Text = updated.Name;
+
+                SetBioRow(updated);
+
                 Birthdate.UpperText.Text = updated.BirthDay is null ? VisConstParamsJsonService.GetStringByName("BirthdayNeverBeen") :
                 $"{updated.BirthDay.Value.Day}.{updated.BirthDay.Value.Month}.{updated.BirthDay.Value.Year}";
             });
+        }
+
+        public void SetBioRow(TelegramLib.MainClasses.User toUpdate)
+        {
+            if (toUpdate.BIO == string.Empty)
+            {
+                BioRow.Height = new GridLength(0);
+                return;
+            }
+            else BioRow.Height = new GridLength(55);
+
+            Bio.UpperText.Text = "Bio";
+            Bio.BottomText.Text = $"{toUpdate.BIO}";
         }
 
         private async Task SetUserParams()
@@ -577,7 +598,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 el == ImageIcon || el == AmountOfPhotosTextBlock ? PhotosLine :
                 el == VideoIcon || el == AmountOfVideosTextBlock ? VideosLine :
-                el == GifIcon || el == AmountOfGifsTextBlock ? FilesLine :
+                el == GifIcon || el == AmountOfGifsTextBlock ? GifLine :
                 el == SendMesBlock ? SendMessageBut : null;
 
         }
@@ -684,7 +705,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             return name == PhotosLine.Name.ToString() ? Enums.SentItemsTypes.Photos :
                 name == VideosLine.Name.ToString() ? Enums.SentItemsTypes.Video :
-                name == FilesLine.Name.ToString() ? Enums.SentItemsTypes.File :
+                name == GifLine.Name.ToString() ? Enums.SentItemsTypes.GIFs : 
+                //name == FilesLine.Name.ToString() ? Enums.SentItemsTypes.File :
                 Enums.SentItemsTypes.Photos;
         }
 
@@ -763,7 +785,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            TelegramLib.MainClasses.User contact = _chat.GetChatter();
+            //Set window here
+            MediaWindow mediaWindow = new MediaWindow(
+                _chat.GetChatter(), (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.OtherUserImages, _system);
+
+           
+            //Is exist
+            if (((MainWindow)Window.GetWindow(this))
+                .IsMediaWindowIsExistByUserId(_chat.GetChatter().Id)) return;
+
+            mediaWindow.Show();
+
+/*            TelegramLib.MainClasses.User contact = _chat.GetChatter();
 
             string firstImage = contact.GetFirstImageName().Name;
             Image chosen = FilesAction.GetUserImage(firstImage);
@@ -773,7 +807,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             VisualActionPage page = new VisualActionPage(chosen, imgs);
             page.SetUserImages(contact.UserImages, _system, contact.Name, false, null);
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
 

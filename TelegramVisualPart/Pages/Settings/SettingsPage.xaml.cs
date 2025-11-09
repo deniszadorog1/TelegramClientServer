@@ -24,6 +24,7 @@ using TelegramVisualPart.Pages.Settings.Language;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using TelegramVisualPart.Windows;
 using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 
@@ -182,16 +183,28 @@ namespace TelegramVisualPart.Pages.Settings
 
         private void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            string firstImage = _system.LoggedUser.GetFirstImageName().Name;
+            MediaWindow mediaWindow = new MediaWindow(
+                _system.LoggedUser, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.UserImages, _system);
+
+            //mediaWindow.ToRe
+
+            //Is exist
+            if (((MainWindow)Window.GetWindow(this))
+                .IsMediaWindowIsExistByUserId(_system.LoggedUser.Id)) return;
+            mediaWindow.Show();
+
+
+/*            string firstImage = _system.LoggedUser.GetFirstImageName().Name;
             Image chosen = FilesAction.GetUserImage(firstImage);
 
-            List<Image> imgs = FilesAction.GetUserImages(_system.LoggedUser.GetImagesNames());
+            List<Image> imgs = FilesAction.GetUserImages(_system.LoggedUser.GetUserImagesNames());
             VisualActionPage page = new VisualActionPage(chosen, imgs);
             page.SetUserImages(_system.LoggedUser.UserImages, _system, _system.LoggedUser.Name, true, null);
 
             page.ToRemoveImage += ToRemoveUserImage_MouseDown;
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
         private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)

@@ -147,10 +147,11 @@
                         <Grid 
                       Name="MagnifierGrid"  Grid.Column="1"
                         Background="Transparent" Visibility="Hidden"
+                            
                       MouseEnter="MagnifierGrid_MouseEnter"
                       MouseLeave="MagnifierGrid_MouseLeave"
                       PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
-                            <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="10 10 0 0"
+                            <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="25 10 0 0"
                                                  Width="35" Height="35" Foreground="Gray" 
                                                  Visibility="Hidden"/>
                         </Grid>

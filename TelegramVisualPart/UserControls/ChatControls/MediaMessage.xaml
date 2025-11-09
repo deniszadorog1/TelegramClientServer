@@ -29,7 +29,7 @@
         <Grid Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Name="ForwardedRow" Height="20"/>
+                <RowDefinition Name="ForwardedRow" Height="0"/>
                 <RowDefinition Name="MediaRow"/>
             </Grid.RowDefinitions>
             

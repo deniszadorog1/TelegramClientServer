@@ -24,6 +24,9 @@
         AllowsTransparency="True"
         Background="White"
                 
+        BorderThickness="1"
+        BorderBrush="Black"
+        
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
         LayoutUpdated="Window_LayoutUpdated"

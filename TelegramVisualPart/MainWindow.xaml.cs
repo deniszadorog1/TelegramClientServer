@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.IdentityModel.Tokens;
 using System.Data.Entity.Core.EntityClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Eventing.Reader;
 using System.Formats.Tar;
 using System.Linq.Expressions;
@@ -32,6 +33,7 @@ using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.Windows;
 using Brushes = System.Windows.Media.Brushes;
 
 namespace TelegramVisualPart
@@ -51,11 +53,12 @@ namespace TelegramVisualPart
 
         DispatcherTimer _blockTimer;
 
+        List<MediaWindow> _mediaWidows = new List<MediaWindow>();
+
 
         //Basic start
         public MainWindow()
         {
-
             VisConstParamsJsonService.SetFileName("EnglishLang.json");
             InitializeComponent();
             Loaded += MainWindow_Loaded;
@@ -80,7 +83,7 @@ namespace TelegramVisualPart
             _bossWindow = boss;
             _onlyChatUserChat = chat;
 
-            AddChatMainWindow();
+            //AddChatMainWindow();
 
             SetMainPage(system);
 
@@ -121,6 +124,17 @@ namespace TelegramVisualPart
             Dispatcher.Invoke(() =>
             {
                 if (_system is null) return;
+
+                User? user = _system.Chats
+                .Select(x => x.Chatter)
+                .FirstOrDefault(x => x.Id == updated.Id);
+
+                if(user is not null)
+                {
+                    user.UpdateParamsByUser(updated);
+                }
+
+
                 UserContactcs? contactToUpdate =
                     _system.Contacts.FirstOrDefault(x => x.ContactUserId == updated.Id);
                 if (contactToUpdate is null) return;
@@ -449,6 +463,7 @@ namespace TelegramVisualPart
 
         public async void LogOut()
         {
+            CloseAllMediaWindow();
             if (MainFrame.Content is EnterPage)
             {
                 this.Close();
@@ -470,6 +485,20 @@ namespace TelegramVisualPart
 
             SetLoginPage();
             await SignalRService.DisconnectAsync();
+        }
+
+        public void CloseAllMediaWindow()
+        {
+            for(int i = 0; i < _mediaWidows.Count; i++)
+            {
+                _mediaWidows[i].Close();
+            }
+            _mediaWidows.Clear();
+        }
+
+        public void AddMediaWindow(MediaWindow window)
+        {
+            _mediaWidows.Add(window);
         }
 
         private void UpperBut_MouseEnter(object sender, MouseEventArgs e)
@@ -862,6 +891,12 @@ namespace TelegramVisualPart
             _chatWindows.Clear();
         }
 
+        public void DeleteMediaWindow(MediaWindow mediaWindow)
+        {
+            _mediaWidows.Remove(mediaWindow);
+            mediaWindow.Close();
+        }
+
         public bool ChatIsOnOtherWindow(TelegramLib.MainClasses.UserChat chat)
         {
             return _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id) is not null;
@@ -1149,6 +1184,33 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage page)
                 page.SetChatByChatterId(userId);
         }
-       
+
+        public void RemoveFromGodWindow(MediaWindow medWindow)
+        {
+            _mediaWidows.Remove(medWindow);
+        }
+
+        public bool IsMediaWindowIsExistByUserId(int userId)
+        {
+            for(int i = 0; i < _mediaWidows.Count; i++)
+            {
+                if (_mediaWidows[i].IsUsersIdsAreEqual(userId)) return false;
+            }
+            return false;
+        }
+
+        public void DeleteMessage(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            if (MainFrame.Content is MainChatPage mainPage)
+            {
+                mainPage.DeleteMessage(mes);
+            }
+        }
+
+        public void SendOneForwardMessage(TelegramLib.MainClasses.Messages.Message message)
+        {
+            if (MainFrame.Content is MainChatPage page) page.SetForwardedOnlyMessage(message);
+
+        }
     }
 }

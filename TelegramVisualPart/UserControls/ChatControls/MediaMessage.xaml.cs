@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
@@ -61,10 +62,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetForwardedFromRow();
         }
 
-        public MediaMessage(string gifPath, string senderImgName, DateTime sentTime)
+        public MediaMessage(string gifPath, string senderImgName, DateTime sentTime,
+            int? forwardedFromId)
         {
             _gifPath = gifPath;
             _senderImgName = senderImgName;
+            _forwardedFrom = forwardedFromId;
 
             InitializeComponent();
 
@@ -81,7 +84,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetTime(DateTime time)
         {
-            TimeBlock.Text = $"{time.Hour.ToString()}:{time.Minute.ToString()}";
+            TimeBlock.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
+                $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";
         }
 
         public void SetGif(string gifPath)
@@ -96,10 +100,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(GifImage, RepeatBehavior.Forever);
         }
 
-        public MediaMessage(MediaElement media, string senderImgName)
+        public MediaMessage(MediaElement media, string senderImgName, 
+            MediaAction mediaLogicEl, int? forwardedFromId)
         {
             _media = media;
             _senderImgName = senderImgName;
+            _forwardedFrom = forwardedFromId;
 
             InitializeComponent();
 
@@ -110,6 +116,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetSenderImage();
 
             SetTickEvent();
+
+            SetTime(mediaLogicEl.SentTime);
         }
 
         public void SetTickEvent()
@@ -242,7 +250,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            return;
+            //return;
             int.TryParse(LoginForwarded.Tag.ToString(), out int userId);
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 

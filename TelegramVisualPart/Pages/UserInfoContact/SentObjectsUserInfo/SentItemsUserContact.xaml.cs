@@ -23,6 +23,7 @@ using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.Windows;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 {
@@ -118,20 +119,33 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
         public void MediaGifs_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not Image img ) return;
+            int.TryParse(img.Tag.ToString(), out int imgIndex);
 
-            string chosenGifPath = FilesAction.GetFullGifPath(_gifPaths[int.Parse(img.Tag.ToString())]);
+            //string path = _gifPaths[imgIndex];
+            //string chosenGifPath = FilesAction.GetFullGifPath(_gifPaths[int.Parse(img.Tag.ToString())]);
 
             _gifPaths = FilesAction.GetFullGifPaths(_gifPaths);
+            List<MediaAction> gifs = GetGifMessages();
+
+            //List<MediaAction> videos = _system.GetAllVideoMessages();
+            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+
+            MediaWindow mediaWindow = new MediaWindow(
+                null, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.Gif, _system);
+
+            mediaWindow.SetGif(imgIndex, _gifPaths, gifs);
+            mediaWindow.Show();
+
             //SetVideo Paths
-            VisualActionPage page = new VisualActionPage(chosenGifPath, _gifPaths);
+/*            VisualActionPage page = new VisualActionPage(chosenGifPath, _gifPaths);
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
 
-            List<MediaAction> gifs = GetGifMessages();
 
             int chosenGifIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, gifs, chosenGifIndex, _chat);
+            page.SetUserChat(_system, gifs, chosenGifIndex, _chat);*/
         }
 
         public List<MediaAction> GetGifMessages()
@@ -186,7 +200,19 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             _videoPaths = FilesAction.GetFullPathForVideos(_videoPaths);
 
-            //SetVideo Paths
+            List<MediaAction> videos = _system.GetAllVideoMessages();
+
+            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+
+            MediaWindow mediaWindow = new MediaWindow(
+                null, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.Videos, _system);
+
+            mediaWindow.SetVideos(videoElement, _videoPaths, videos);
+            mediaWindow.Show();
+
+
+/*            //SetVideo Paths
             VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
@@ -195,14 +221,13 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, videos, chosenVideoIndex, _chat);
+            page.SetUserChat(_system, videos, chosenVideoIndex, _chat);*/
         }
 
         public int GetImageIndex(Image img)
         {
             return ElemsPanel.Children.IndexOf(img);
         }
-
 
         public List<MediaAction> GetVideoMessages()
         {
@@ -221,12 +246,17 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
         public void SetImagesInPanel()
         {
+            SetChatMediaObjs();
             _imgs = GetImages();
 
+            SetOnlyImagesInMedias();
+          
             for (int i = 0; i < _imgs.Count; i++)
             {
                 _imgs[i].Width = mediaSize;
                 _imgs[i].Height = mediaSize;
+
+                _imgs[i].Tag = _medias[i].Id;
 
                 _imgs[i].Margin = new Thickness(5);
 
@@ -239,15 +269,61 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             }
         }
 
+        private List<MediaAction> _medias = new List<MediaAction>();
+        public void SetChatMediaObjs()
+        {
+            _medias.Clear();
+            for(int i = 0; i < _chat.Messages.Count; i++)
+            {
+                if (_chat.Messages[i] is MediaAction media)
+                {
+                    _medias.Add(media);
+                }
+            }
+        }
+
+        public void SetOnlyImagesInMedias()
+        {
+            List<MediaAction> toRemove = new List<MediaAction>();
+
+            for(int i = 0; i < _medias.Count; i++)
+            {
+                if(!FilesAction.IsFileIsImage(_medias[i].MediaName))
+                {
+                    toRemove.Add(_medias[i]);
+                }
+            }
+
+            foreach(var val in toRemove)
+            {
+                _medias.Remove(val);
+            }
+        }
+
         public void MediaImages_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not Image img) return;
 
-            VisualActionPage page = new VisualActionPage(img, _imgs);
+            int.TryParse(img.Tag.ToString(), out int chosenId);
+
+
+            Message chosen = _system.GetMessageById(chosenId);
+
+            MediaWindow mediaWindow = new MediaWindow(
+                null, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.ChatImages, _system);
+
+            mediaWindow.SetChatImageMessages(chosen, _medias);
+
+            //Is exist
+            mediaWindow.Show();
+
+
+/*            VisualActionPage page = new VisualActionPage(img, _imgs);
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
 
-            page.SetUserChat(_system, GetImageMessages(), _imgs.IndexOf(img), _chat);
+            page.SetUserChat(_system, GetImageMessages(), _imgs.IndexOf(img), _chat);*/
         }
 
         public List<MediaAction> GetImageMessages()
@@ -271,7 +347,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             List<Image> res = new List<Image>();
             for (int i = 0; i < _chat.Messages.Count; i++)
             {
-                if (_chat.Messages[i] is MediaAction media)
+                if (_chat.Messages[i] is MediaAction media && 
+                    FilesAction.IsFileIsImage(media.MediaName))
                 {
                     if (!FilesAction.IsUserChatMediaIsExist(media.MediaName)) continue;
 

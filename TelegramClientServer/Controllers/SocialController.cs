@@ -54,6 +54,19 @@ namespace TelegramClientServer.Controllers
             DbService.UpdateContact(contact.Contact, contact.UserId);
         }
 
+        [HttpPost ("EditMessage")]
+        public void EditMessage([FromBody] EditMessageDTO editDTO)
+        {
+            DbService.EditMessage(editDTO.ChatId, editDTO.Message);
+        }
+
+        public class EditMessageDTO
+        {
+            public int ChatId { get; set; }
+            public TelegramLib.MainClasses.Messages.Message Message { get; set; }
+        }
+
+
         [HttpGet("GetLastUserContact")]
         public UserContactcs GetContact(int userId)
         {

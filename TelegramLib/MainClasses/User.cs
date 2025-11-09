@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses.UserParams;
+using TelegramLib.Models;
+using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
 
 namespace TelegramLib.MainClasses
 {
@@ -50,6 +53,20 @@ namespace TelegramLib.MainClasses
 
             LastSeenOnline = lastSeen;
             IsOnline = isOnline;
+        }
+
+        public void UpdateParamsByUser(User user)
+        {
+            if (user is null || Id  != user.Id) return;
+
+            Login = user.Login;
+            Password = user.Password;
+            Name = user.Name;
+            Surname = user.Surname;
+            BIO = user.BIO;
+
+            PhoneNumber = user.PhoneNumber;
+            BirthDay = user.BirthDay;
         }
 
         //Smth like test params
@@ -102,7 +119,7 @@ namespace TelegramLib.MainClasses
             return UserImages.First().Name;
         }
 
-        public List<string> GetImagesNames()
+        public List<string> GetUserImagesNames()
         {
             List<string> res = new List<string>();
 
@@ -141,6 +158,11 @@ namespace TelegramLib.MainClasses
         public string GetLastSeenInChat()
         {
             return $"{LastSeenOnline.Day}.{LastSeenOnline.Month}.{LastSeenOnline.Year}";
+        }
+
+        public bool IsIdsAreEqual(int id)
+        {
+            return Id == id;
         }
     }
 }
