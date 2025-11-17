@@ -64,6 +64,7 @@ namespace TelegramVisualPart.EnterInAccount
                 ClearBoxes();
                 return;
             }
+            _system.SetEmptyUserImages();
 
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
             if (isOnline)
@@ -104,5 +105,7 @@ namespace TelegramVisualPart.EnterInAccount
             LoginBox.Text = string.Empty;
             PasswordBox.Text = string.Empty;
         }
+
+
     }
 }

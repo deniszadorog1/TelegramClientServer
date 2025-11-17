@@ -17,7 +17,7 @@
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="100"/>
                 <RowDefinition Height="10"/>
-                <RowDefinition Name="BlockColumn" Height="140"/>
+                <RowDefinition Name="BlockColumn" Height="200"/>
                 <RowDefinition Height="10"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -134,13 +134,13 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Orientation="Vertical"
-                                Name="BioPanel">
-                        <TextBlock Name="BioBlock"          
+                                Name="BioPanel" VerticalAlignment="Center">
+                        <TextBlock Name="BioBlock"  
+                                   Margin="0 0 50 0"
                                    Text="Threre is gonna be user logindd"
+                                   TextWrapping="Wrap"
                                    FontSize="16" 
                                    Foreground="{StaticResource UsualTextColor}"
-                                   MouseEnter="UserNameBlock_MouseEnter"
-                                   MouseLeave="UserNameBlock_MouseLeave"
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
 
                         <TextBlock Name="BioText" 
@@ -155,8 +155,6 @@
                                    Text=""
                                    FontSize="16"
                                    Foreground="{StaticResource UsualTextColor}"
-                                   MouseEnter="UserNameBlock_MouseEnter"
-                                   MouseLeave="UserNameBlock_MouseLeave"
                                    PreviewMouseDown="UserNameBlock_PreviewMouseDown"/>
 
                         <TextBlock Name="BirthdayText" 

@@ -14,6 +14,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Windows.Forms;
+using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.Enums.Settings.Notifs;
@@ -336,11 +337,14 @@ namespace TelegramLib.Services
                 {
                     if (userId == chat.UserId)
                     {
+                        int? correctAutoDelId = null;
+                        if (!(chat.AutoDeleteId is null)) correctAutoDelId = (int)chat.AutoDeleteId;
+
                         UserChat toAdd = new UserChat(chat.Id,
                             GetUserById((int)chat.ChatterId),
                             GetMessagesByChatId(chat.Id),
                             GetChosenBgByChatId(chat.Id),
-                            GetAutoDelTypeById(chat.AutoDeleteId),
+                            GetAutoDelTypeById(correctAutoDelId),
                             GetPinnedMessages(chat.Id));
 
                         toAdd.NotificationStatus = GetNotificationStatusByChatId(chat.Id);
@@ -509,7 +513,10 @@ namespace TelegramLib.Services
         private static TelegramLib.MainClasses.Messages.Message GetMessageByMessages(Messages mes)
         {
             TelegramLib.MainClasses.Messages.Message toAdd;
-            if (!(mes.MessageRefference is null)) toAdd = new mainClass.Messages.StaticMessage();
+            if (!(mes.MessageRefference is null) || 
+                !(mes.ChangedAutoDelId is null) || 
+                !(mes.StatDate is null)) toAdd = new mainClass.Messages.StaticMessage();
+            
             else if (mes.Message is null) toAdd = new MediaAction();
             else if (!(mes.ShareContactMessage is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
             else toAdd = new TextMessage();
@@ -562,8 +569,12 @@ namespace TelegramLib.Services
             if(toAdd is StaticMessage statMessage)
             {
                 statMessage.MessageReferenceId = mes.MessageRefference is null ? -1 : mes.MessageRefference;
-            }
 
+                if (mes.ChangedAutoDelId is null) statMessage.DelType = null;
+                else statMessage.DelType = GetAutoDelTypeById(mes.ChangedAutoDelId + 1);
+
+                statMessage.Date = mes.StatDate;
+            }
             return toAdd;
         }
 
@@ -2457,22 +2468,15 @@ namespace TelegramLib.Services
 
         public static void UpdateChat(UserChat chat)
         {
-            //Update messages
-
-            /*            //Remove all messages
-                        ClearAllChatMessages(chat.Id);
-
-                        //Add all messages
-                        AddMessagesInChat(chat);*/
-
             //Update chat messages
+            
             UpdateMessages(chat);
             using (var model = new TelegramModel())
             {
-                Chat toUpdate = model.Chat.Where(x => x.Id == chat.Id).FirstOrDefault();
+                Chat toUpdate = model.Chat.FirstOrDefault(x => x.Id == chat.Id);
                 if (toUpdate is null) return;
 
-                toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
+                if(!(chat.ChatBg is null)) toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
                 toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
                 //toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
 
@@ -3726,11 +3730,30 @@ namespace TelegramLib.Services
                 Messages res  =  model.Messages
                     .AsEnumerable()
                     .FirstOrDefault(x =>
+                        x.ChatId != toCompare.ChatId &&
                         x.Id != mesId &&
                         x.SentDate.HasValue && toCompare.SentDate.HasValue &&
                         Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds) < 100);
 
                 return res is null ? null : GetMessageByMessages(res);
+            }
+        }
+
+        public static int? GetCorrectIdBySentDate(DateTime sentTime)
+        {
+            using(var model = new TelegramModel())
+            {
+                Messages res = model.Messages
+                    .AsEnumerable()
+                    .FirstOrDefault(x =>
+                        x.SentDate.HasValue && 
+                        Math.Abs((x.SentDate.Value - sentTime).TotalMilliseconds) < 1000);
+
+                if (res is null) return null;
+
+                TelegramLib.MainClasses.Messages.Message mes = GetMessageByMessages(res);
+                if (mes is null) return null;
+                return mes.Id;
             }
         }
 
@@ -3799,6 +3822,12 @@ namespace TelegramLib.Services
                 toAdd.SenderId = statMes.SenderUserId;
                 toAdd.SentDate = statMes.SentTime;
                 toAdd.MessageRefference = statMes.MessageReferenceId;
+                toAdd.StatDate = statMes.Date;
+
+                if (statMes.DelType is null) toAdd.ChangedAutoDelId = null;
+                else toAdd.ChangedAutoDelId = ((int)((Enums.Chat.AutoDeleteType)statMes.DelType) + 1);
+                
+                
                 toAdd.ChatId = chatId;
 
                 model.Messages.Add(toAdd);
@@ -3811,7 +3840,9 @@ namespace TelegramLib.Services
             using(var model = new TelegramModel())
             {
                 Messages mes = model.Messages
-                    .Where(x => x.ChatId == chatId && x.MessageRefference != null)
+                    .Where(x => x.ChatId == chatId && 
+                    (x.MessageRefference != null || 
+                    x.ChangedAutoDelId != null || x.StatDate != null))
                         .OrderByDescending(x => x.Id) 
                         .FirstOrDefault();
 
@@ -3828,6 +3859,28 @@ namespace TelegramLib.Services
 
                 if (res is null) return null;
                 return res.Id;
+            }
+        }
+
+        public static bool? IsInChatterChatIsExistDateMessage(
+            int loggedId, int chatterId, DateTime date)
+        {
+            using (var model = new TelegramModel())
+            {
+                //Get chat
+                Chat chat = model.Chat.FirstOrDefault(
+                    x => x.UserId == chatterId && x.ChatterId == loggedId);
+                if (chat is null) return null;
+
+                //Is date message exist
+
+                bool isExist = model.Messages.Any(x => x.ChatId == chat.Id &&
+                !(x.StatDate == null) &&
+                x.StatDate.Value.Year == date.Year &&
+                x.StatDate.Value.Month == date.Month &&
+                x.StatDate.Value.Day == date.Day);
+
+                return isExist;
             }
         }
     }

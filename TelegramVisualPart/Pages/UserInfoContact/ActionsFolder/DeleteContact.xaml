@@ -30,31 +30,43 @@
                     </Ellipse.Fill>
                 </Ellipse>
 
-                <TextBlock Grid.Column="1" Foreground="{StaticResource UsualTextColor}" FontSize="16" 
+                <TextBlock Grid.Column="1" 
+                           Foreground="{StaticResource UsualTextColor}" 
+                           FontSize="20" 
                            VerticalAlignment="Center" Text="Delete Contact" />
             </Grid>
 
             <TextBlock Grid.Row="1" Name="ToBlockText" TextWrapping="Wrap"
-                       Foreground="{StaticResource UsualTextColor}" FontSize="16" Margin="15">            
+                       Foreground="{StaticResource UsualTextColor}" 
+                       FontSize="18" Margin="12">            
                 <Run Text="Are you sure you want to delete"/>
                 <Run x:Name="UsernamePlace"  Text="USERNAME"/>
                 <Run Text="from your contact list?"/>
             </TextBlock>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
-                            Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 10 0"
-                            MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
-                            Foreground="{StaticResource TempActiveTextColor}"
-                            Click="CancelBut_Click"/>
+            <StackPanel Grid.Row="5" Orientation="Horizontal" 
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Name="CancelBut"
+                        Content="Cancel" Background="Transparent" 
+                        BorderThickness="0"
+                        HorizontalAlignment="Right" Margin="0 0 10 0"
+                        MouseEnter="CancelBut_MouseEnter"  
+                        MouseLeave="CancelBut_MouseLeave"
+                        Foreground="{StaticResource TempActiveTextColor}"
+                        Click="CancelBut_Click"
+                        FontSize="16"/>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DeleteBut"
-                            Content="Delete" Background="Transparent" BorderThickness="0"
-                            MouseEnter="DeleteBut_MouseEnter"  MouseLeave="DeleteBut_MouseLeave"
-                            HorizontalAlignment="Left" 
-                            Click="DeleteBut_Click" Margin="10 0 20 0" 
-                            Foreground="{StaticResource CloseWindowColor}"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Name="DeleteBut"
+                        Content="Delete" Background="Transparent" 
+                        BorderThickness="0"
+                        MouseEnter="DeleteBut_MouseEnter"  
+                        MouseLeave="DeleteBut_MouseLeave"
+                        HorizontalAlignment="Left"
+                        FontSize="16"
+                        Click="DeleteBut_Click" Margin="10 0 20 0" 
+                        Foreground="{StaticResource CloseWindowColor}"/>
             </StackPanel>
         </Grid>
     </Border>

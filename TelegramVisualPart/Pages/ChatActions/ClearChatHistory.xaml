@@ -30,11 +30,17 @@
                        VerticalAlignment="Bottom" FontSize="17"
                        Name="SecondInfoText"/>
 
-            <StackPanel Grid.Row="2" Margin="0 5 0 0" Height="20" Orientation="Horizontal">
+            <StackPanel Name="BothPanel"
+                        Grid.Row="2" Margin="0 5 0 0" 
+                        Height="20" Orientation="Horizontal"
+                        Background="Transparent"
+                        PreviewMouseDown="BothPanel_PreviewMouseDown"
+                        MouseEnter="BothPanel_MouseEnter"
+                        MouseLeave="BothPanel_MouseLeave">
                 <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
                             Name="ShowChatNameBox" Padding="5 0 0 0" 
                             Background="{StaticResource TempActiveTextColor}"
-                            IsChecked="False" FontSize="17"                              
+                            IsChecked="False" FontSize="17" IsHitTestVisible="False"                              
                             materialDesign:CheckBoxAssist.CheckBoxSize="22"/>
 
                 <TextBlock FontSize="17" Foreground="White" >

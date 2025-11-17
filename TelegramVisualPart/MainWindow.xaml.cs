@@ -18,6 +18,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
+using TelegramLib.MainClasses.Messages;
 using TelegramLib.Services;
 using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
@@ -116,7 +117,7 @@ namespace TelegramVisualPart
         {
             if (!_isOnlyChat ||
                 MainFrame.Content is not MainChatPage page) return;
-            page.SetOnlyChatPage(_onlyChatUserChat);
+            page.SetOnlyChatPage(_onlyChatUserChat, _system);
         }
 
         private void UpdateUserSignalR(User updated)
@@ -180,8 +181,6 @@ namespace TelegramVisualPart
 
             VisConstParamsJsonService.SetFileName(fileName);
         }
-
-
 
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1211,6 +1210,32 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is MainChatPage page) page.SetForwardedOnlyMessage(message);
 
+        }
+
+        public void UpdateAutoDelVis(TelegramLib.MainClasses.UserChat chat)
+        {
+            if (MainFrame.Content is MainChatPage page) 
+                page.UpdateAutoDelDurationVis(chat);
+        }
+
+        public async Task AddStatMessage(StaticMessage mes, bool isBoth,
+            TelegramLib.MainClasses.UserChat chat)
+        {
+            if(MainFrame.Content is MainChatPage page)
+            {
+                page.AddStatMessage(mes, isBoth, chat);
+            }
+        }
+
+        public void UpdateChatAutDelIconVisibility()
+        {
+            if (MainFrame.Content is MainChatPage page) page.UpdateUserChatAutoDelIconVis();
+        }
+
+        public void RemoveMessagesByDates(List<DateTime> removeDates)
+        {
+            if (MainFrame.Content is MainChatPage page) 
+                page.RemoveMessagesByDates(removeDates);
         }
     }
 }

@@ -6,6 +6,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPa
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\MainWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Advanced\AdvancedPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\BlockPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\CalendarPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\ClearChatHistory.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\DeleteChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAutoDeletion\NewMessagesDeletion.xaml;;

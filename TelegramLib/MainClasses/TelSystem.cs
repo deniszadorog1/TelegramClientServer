@@ -9,6 +9,7 @@ using System.Data.Entity.Migrations.Model;
 using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.InteropServices;
+using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
@@ -450,6 +451,11 @@ namespace TelegramLib.MainClasses
             return null;
         }
 
+        public UserChat GetChatByUserId(int userId)
+        {
+            return Chats.FirstOrDefault(x => x.Chatter.Id == userId);
+        }
+
         public User GetChatterById(int chatterId)
         {
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
@@ -676,5 +682,34 @@ namespace TelegramLib.MainClasses
             toUpdate.BirthDay = user.BirthDay;
         }
 
+
+        public void SetEmptyUserImages()
+        {
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                Chats[i].SetEmptyChatterImage();
+            }
+        }
+
+        public string GetAutDelDurationInString(Enums.Chat.AutoDeleteType type)
+        {
+            return type == Enums.Chat.AutoDeleteType.OneDay ? "1d" :
+                type == Enums.Chat.AutoDeleteType.TwoDays ? "2d" :
+                type == Enums.Chat.AutoDeleteType.ThreeDays ? "3d" :
+                type == Enums.Chat.AutoDeleteType.FourDays ? "4d" :
+                type == Enums.Chat.AutoDeleteType.FiveDays ? "5d" :
+                type == Enums.Chat.AutoDeleteType.SixDays ? "6d" :
+                type == Enums.Chat.AutoDeleteType.OneWeek ? "1w" :
+                type == Enums.Chat.AutoDeleteType.TwoWeeks ? "2w" :
+                type == Enums.Chat.AutoDeleteType.ThreeWeeks ? "3w" :
+                type == Enums.Chat.AutoDeleteType.OneMonth ? "1m" :
+                type == Enums.Chat.AutoDeleteType.TwoMonths ? "2m" :
+                type == Enums.Chat.AutoDeleteType.ThreeMonths ? "3m" :
+                type == Enums.Chat.AutoDeleteType.FourMonths ? "4m" :
+                type == Enums.Chat.AutoDeleteType.FiveMonths ? "5m" :
+                type == Enums.Chat.AutoDeleteType.SixMonths ? "6m" :
+                type == Enums.Chat.AutoDeleteType.OneYear ? "1y" :
+                "ct";
+        }
     }
 }

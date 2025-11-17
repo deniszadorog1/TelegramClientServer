@@ -794,6 +794,30 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse);
         }
 
+        public static async Task<bool?> IsDateMesIsExistInChat(int loggedId, int chatterId, DateTime date)
+        {
+            string isoDate = date.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            var response = await _client.GetAsync($"api/Social/IsDateMesIsExistInChat?loggedId={loggedId}&chatterId={chatterId}&date={isoDate}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null : JsonConvert.DeserializeObject<bool?>(jsonResponse);
+        }
+
+        public static async Task<int?> GetMessageIdByDateTime(DateTime sentDate)
+        {
+            string isDate = sentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            var response = await _client.GetAsync($"api/Social/GetMessageIdByDateTime?sentTime={isDate}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null : JsonConvert.DeserializeObject<int?>(jsonResponse);
+        }
+
         public static async Task<int?> GetStatMessageIdByItsReference(int chatId, int refId)
         {
             var response = await _client.GetAsync($"api/Social/GetStatMessageIdByItsReference?chatId={chatId}&refId={refId}");

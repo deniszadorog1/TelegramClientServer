@@ -71,7 +71,7 @@
                     <TextBlock x:Name="SentDate" Style="{StaticResource TextStyle}" Text="00.00.0000"/>
                 </StackPanel>
             </Grid>
-            
+
             <StackPanel Name="LeftMenuPanel" 
                     Orientation="Horizontal" HorizontalAlignment="Right">
                 <controls:ActionButton HorizontalAlignment="Right" x:Name="SaveBut"
@@ -86,7 +86,7 @@
                                    MouseEnter="MenuBut_MouseEnter"
                                    PreviewMouseDown="MenuBut_PreviewMouseDown"/>
 
-                
+
                 <controls:MediaMenu Panel.ZIndex="100" Margin="-165 -200 0 0"
                                     MouseLeave="MediaMenu_MouseLeave"
                                     x:Name="MediaMenu" Visibility="Hidden"/>
@@ -95,10 +95,7 @@
                                      x:Name="UsersImageMenu" 
                                      MouseLeave="UsersImageMenu_MouseLeave"
                                      Visibility="Hidden"/>
-
             </StackPanel>
-            
-            
         </Grid>
 
     </Grid>

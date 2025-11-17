@@ -22,7 +22,6 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
     public partial class IsMakeActionOnBothSides : Page
     {
         private TelegramLib.MainClasses.User _user;
-        private TelegramLib.MainClasses.Messages.Message _mes;
         private BothUsersMessageAction _bothType;
 
         public event Func<ValueTask> MakeAction;
@@ -30,11 +29,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         //To set action for one message
         public IsMakeActionOnBothSides(
             TelegramLib.MainClasses.User user,
-            TelegramLib.MainClasses.Messages.Message mes,
-            BothUsersMessageAction bothType )
+            BothUsersMessageAction bothType)
         {
             _user = user;
-            _mes = mes;
             _bothType = bothType;
 
             InitializeComponent();
@@ -106,5 +103,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             Cursor = null;
         }
 
+        private void CheckBoxStack_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IsInBoth.IsChecked = !IsInBoth.IsChecked;
+        }
     }
 }

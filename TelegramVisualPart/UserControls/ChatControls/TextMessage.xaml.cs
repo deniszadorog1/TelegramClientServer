@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
@@ -193,6 +194,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 
             if (user is null) return;
+            if (!SetIsUserCanSeeChattersInfo(user.Id))
+            {
+                MessageBox.Show("No no no mister fish, you go to tasik");
+                return;
+            }
 
             if (_system.LoggedUser.Id == userId)
             {
@@ -209,6 +215,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UserInfo infoPage = new UserInfo(chat, _system);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(infoPage);
+        }
+
+        public bool SetIsUserCanSeeChattersInfo(int userId)
+        {
+            MainSettings setUserSettings = Task.Run(() => ApiService.GetSettingsByUserId(userId)).Result;
+
+            if (setUserSettings.PrivacySettings.ForwardMesPrivacy
+                .ShareWithExps.Any(x => x.Id == _system.LoggedUser.Id)) return true;
+            else if (setUserSettings.PrivacySettings.ForwardMesPrivacy
+                .NeverShareExps.Any(x => x.Id == _system.LoggedUser.Id)) return false;
+
+            return setUserSettings.PrivacySettings.
+                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, userId);
         }
 
         private void LoginForwarded_MouseEnter(object sender, MouseEventArgs e)

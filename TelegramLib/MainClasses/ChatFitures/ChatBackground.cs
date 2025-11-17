@@ -16,7 +16,7 @@
 
         public ChatBackground()
         {
-            FileName = string.Empty;
+            FileName = "fray.jpg";
             IsBlurred = false;
             IsGeneral = false;
         }

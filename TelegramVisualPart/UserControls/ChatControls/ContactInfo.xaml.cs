@@ -1,4 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.CodeDom;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +34,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelegramLib.MainClasses.UserChat _chat;
         private TelSystem _system;
         public TelegramLib.MainClasses.UserContactcs _contact;
+        public event Action SendMesPressed;
 
         public ContactInfo()
         {
@@ -61,6 +64,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (!_isSetMaxHeight) MaxHeight = int.MaxValue;
 
             await SetInfoVisibility();
+
+            SetBioRow(_chat.Chatter);
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -331,17 +336,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
             });
         }
 
+        private const int _addInfoRowHeight = 55;
+        private const int _baseInfoRowHeight = 280;
+
         public void SetBioRow(TelegramLib.MainClasses.User toUpdate)
         {
             if (toUpdate.BIO == string.Empty)
             {
                 BioRow.Height = new GridLength(0);
+                UpdateSizeWithBioRow(toUpdate);
                 return;
             }
-            else BioRow.Height = new GridLength(55);
+            else BioRow.Height = new GridLength(_addInfoRowHeight);
 
+            UpdateSizeWithBioRow(toUpdate);
             Bio.UpperText.Text = "Bio";
             Bio.BottomText.Text = $"{toUpdate.BIO}";
+        }
+
+        public void UpdateSizeWithBioRow(TelegramLib.MainClasses.User user)
+        {
+            if (user.BIO == string.Empty)
+            {
+                InfoRow.Height = new GridLength(_baseInfoRowHeight);
+            }
+            else InfoRow.Height = new GridLength(_baseInfoRowHeight + _addInfoRowHeight);
         }
 
         private async Task SetUserParams()
@@ -618,7 +637,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SendMessageBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            //Set User chat 
+            if (_chat is null) return;
 
+            ((MainWindow)Window.GetWindow(this))
+                .SetOtherChatByUserId(_chat.GetChatter().Id);
+
+            SendMesPressed?.Invoke();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();            
         }
 
         private void CloseButGrid_MouseEnter(object sender, MouseEventArgs e)

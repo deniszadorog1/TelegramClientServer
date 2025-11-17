@@ -26,10 +26,8 @@
             <But:MesMenuBut x:Name="SelectBut" PreviewMouseDown="SelectBut_PreviewMouseDown"/>
 
             <Grid x:Name="WhenSentGrid">
-                
+
             </Grid>
-            
-            
         </StackPanel>
     </Border>
 </UserControl>

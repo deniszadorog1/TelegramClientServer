@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
@@ -9,6 +10,7 @@ using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramLib.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -191,6 +193,8 @@ namespace TelegramClientServer.Controllers
             return Content(json, "application/json");
             //return DbService.GetPairOfMessageBySentTime(mesId);
         }
+
+
 
         [HttpGet("GetMessageById")]
         public TelegramLib.MainClasses.Messages.Message GetMessageById(int id)
@@ -467,5 +471,21 @@ namespace TelegramClientServer.Controllers
         {
             return DbService.GetMessageReadStatusById(mesId);
         }
+
+        [HttpGet("IsDateMesIsExistInChat")]
+        public bool? IsDateMesIsExistInChat(int loggedId, int chatterId, string date)
+        {
+            DateTime.TryParse(date, out DateTime checkDate);
+
+            return DbService.IsInChatterChatIsExistDateMessage(loggedId, chatterId, checkDate);
+        }
+
+        [HttpGet("GetMessageIdByDateTime")]
+        public int? GetMessageIdByDateTime(string sentTime)
+        {
+            DateTime.TryParse(sentTime, out DateTime checkDate);
+            return DbService.GetCorrectIdBySentDate(checkDate);
+        }
+
     }
 }

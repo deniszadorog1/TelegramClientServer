@@ -48,9 +48,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             ReplyBut.Icon.Kind = PackIconKind.Reply;
             ReplyBut.ButText.Text = "Reply";
 
-            EditBut.Icon.Kind = PackIconKind.PencilOutline;
-            EditBut.ButText.Text = "Edit";
-            IsAddEditBut();
+            Buts.Children.Remove(EditBut);
+            /*            EditBut.Icon.Kind = PackIconKind.PencilOutline;
+                        EditBut.ButText.Text = "Edit";
+                        IsAddEditBut();*/
 
             PinBut.Icon.Kind = PackIconKind.PinOutline;
             PinBut.ButText.Text = "Pin";
@@ -70,14 +71,47 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             SelectBut.Icon.Kind = PackIconKind.ProgressTick;
             SelectBut.ButText.Text = "Select";
 
-            if (_type != MessageMenuType.MediaMessage) Buts.Children.Remove(SaveAsBut);
+            RemoveUnnesBlocks();
 
             if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
             else Buts.Children.Remove(ReplyBut);
         }
+        
+        public void RemoveUnnesBlocks()
+        {
+            switch (_type)
+            {
+                case MessageMenuType.TextMessage:
+                    {
+                        break;
+                    }
+                case MessageMenuType.MediaMessage:
+                    {
+                        Buts.Children.Remove(SaveAsBut);
+                        break;
+                    }
+                case MessageMenuType.ShareContact:
+                    {
+                        break;
+                    }
+                case MessageMenuType.StatMessage:
+                    {
+                        Buts.Children.Remove(GoToMessage);
+                        Buts.Children.Remove(EditBut);
+                        Buts.Children.Remove(PinBut);
+                        Buts.Children.Remove(SaveAsBut);
+                        Buts.Children.Remove(CopyBut);
+                        Buts.Children.Remove(ForwardBut);
+                        Buts.Children.Remove(SelectBut);
+
+                        break;
+                    }
+            }
+        }
 
         public void IsAddEditBut()
         {
+            return;
             const int timeDiffer = 30;
 
             if (_mes is null) return;

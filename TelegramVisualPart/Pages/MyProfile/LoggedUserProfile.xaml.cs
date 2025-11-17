@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -70,10 +71,25 @@ namespace TelegramVisualPart.Pages
             }
             else
             {
+                if (block == BioBlock)
+                {
+                    SetBioBlockHeight();
+                    return;
+                }
                 row.Height = new GridLength(1, GridUnitType.Star);
                 iconRow.Height = new GridLength(1, GridUnitType.Star);
                 BlockColumn.Height = new GridLength(BlockColumn.Height.Value + 40);
             }
+        }
+
+        public void SetBioBlockHeight()
+        {
+            if(BioBlock.Text.Length < 30)
+            {
+                BioColumn.Height = new GridLength(1.25, GridUnitType.Star);
+                return;
+            }
+            BioColumn.Height = new GridLength(1.75, GridUnitType.Star);
         }
 
         private void SetOnlineStatus()
@@ -155,11 +171,13 @@ namespace TelegramVisualPart.Pages
         private void UserNameBlock_MouseEnter(object sender, MouseEventArgs e)
         {
             UserNameBlock.TextDecorations = TextDecorations.Underline;
+            Cursor = Cursors.Hand;
         }
 
         private void UserNameBlock_MouseLeave(object sender, MouseEventArgs e)
         {
             UserNameBlock.TextDecorations = null;
+            Cursor = null;
         }
 
         private void UserNameBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)

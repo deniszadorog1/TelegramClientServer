@@ -13,11 +13,32 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="55" Height="55">
-            <Ellipse.Fill>
-                <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-            </Ellipse.Fill>
-        </Ellipse>
+        <Grid Grid.Column="0">
+            <Ellipse Name="UserEllipseImage" Width="55" Height="55">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Grid Name="AutoDelDurationGrid"
+                  Visibility="Hidden"
+                  VerticalAlignment="Bottom"
+                  HorizontalAlignment="Right" 
+                  Margin="5"
+                  >
+                <Ellipse Name="TimeDuration" Width="20" Height="20" 
+                         Stroke="DarkGray" Fill="Gray">
+               
+                </Ellipse>
+
+                <TextBlock Name="AutoDelDurBlock"
+                           Text="1y" FontSize="11" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="White"/>
+            </Grid>
+
+        </Grid>
 
         <Grid Grid.Column="1" Name="InfoGrid">
             <Grid.RowDefinitions>
@@ -31,7 +52,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="125"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
                            Text="UserLogin" Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" 
                            FontSize="16" Grid.Column="0"
@@ -71,9 +92,9 @@
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
                 </Border>
-                
+
             </Grid>
-            
+
         </Grid>
 
     </Grid>

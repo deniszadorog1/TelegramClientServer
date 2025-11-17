@@ -14,7 +14,7 @@
       Height="700" Width="475" Margin="0 50 0 0"
       MaxHeight="700"
       HorizontalAlignment="Center" VerticalAlignment="Top"     
-      
+      Loaded="Page_Loaded"
       Title="MyProfileSettings">
 
     <Border  Background="{StaticResource DarkThemeOne}" CornerRadius="10">
@@ -22,7 +22,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="200"/>
-                <RowDefinition Height="115"/>
+                <RowDefinition Height="115" Name="BioRow"/>
                 <RowDefinition Height="135"/>
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="50"/>
@@ -86,7 +86,7 @@
 
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="50" Name="BioBoxHeight"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
@@ -102,15 +102,18 @@
                              Foreground="{StaticResource UsualTextColor}" 
                              CaretBrush="{StaticResource UsualTextColor}"
                              VerticalContentAlignment="Center" Margin="20 0 0 0"
-                             FontSize="18" BorderThickness="0"/>
+                             FontSize="18" BorderThickness="0"
+                             TextWrapping="Wrap" 
+                             materialDesign:TextFieldAssist.CharacterCounterVisibility ="Hidden"/>
 
                     <TextBlock Grid.Column="1" x:Name="WordCount" Text="70" TextWrapping="Wrap"
                            FontSize="18" HorizontalAlignment="Center"
                            VerticalAlignment="Center" Foreground="Gray"/>
                 </Grid>
 
-                <Grid Grid.Row="1" Background="{StaticResource DarkThemeMouseEnterBut}">
-                    <TextBlock Margin="20 10 0 0" FontSize="18" Foreground="Gray"
+                <Grid Grid.Row="1" Name="BioExpGrid"
+                      Background="{StaticResource DarkThemeMouseEnterBut}">
+                    <TextBlock Margin="20 5 0 0" FontSize="18" Foreground="Gray"
                            TextWrapping="Wrap" Name ="InfoText"
                            Text="Any details such as age, occupation or city.
                            Example: 23 y.o. designer from San Francisco."/>

@@ -260,7 +260,6 @@ namespace TelegramVisualPart.Pages
             }
             else ApplyAutoDeletion();
 
-
             if (_prevPage is not null)
             {
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(_prevPage);
@@ -294,7 +293,21 @@ namespace TelegramVisualPart.Pages
                 if (contact is null) continue;
 
                 contact.SetAutoDeleteDuration(_newAutoDelType);
+
+                SetAutoDelToChat(contact.ContactUserId);
             }
+        }
+
+        public void SetAutoDelToChat(int userId)
+        {
+            TelegramLib.MainClasses.UserChat? chat = 
+                _system.Chats.FirstOrDefault(x => x.Chatter.Id == userId);
+
+            if (chat is null || _newAutoDelType is null) return;
+
+            chat.AutoDel = (AutoDeleteType)_newAutoDelType;
+
+            ((MainWindow)Window.GetWindow(this)).UpdateAutoDelVis(chat);
         }
 
         private async Task SaveChosenContacts()

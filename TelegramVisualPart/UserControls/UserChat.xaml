@@ -123,7 +123,7 @@
                 </Grid>
             </StackPanel>
         </Grid>
-        
+
         <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
               Background="{StaticResource DarkThemeOne}">
 
@@ -158,7 +158,7 @@
                 <Run Name="PinnedSecRun" Text="pinned message"/>
             </TextBlock>
         </Grid>
-        
+
         <Grid Name="SelectedMessesGrid" Grid.Row="0" Visibility="Hidden"
               Background="{StaticResource DarkThemeOne}">
 
@@ -221,7 +221,7 @@
                 <Grid Grid.Column="0">
                     <Image Name="PinnedImage"/>
                 </Grid>
-                
+
                 <Border Background="{StaticResource TempActiveTextColor}" 
                         Grid.ColumnSpan="3" Opacity="0.1"/>
 
@@ -282,10 +282,10 @@
                      ScrollViewer.CanContentScroll="True"
                      ScrollViewer.PanningRatio="0.3">
                 </ListBox>
-            
+
             </Grid>
         </Grid>
-                   <!--  VirtualizingStackPanel.IsVirtualizing="True"
+        <!--  VirtualizingStackPanel.IsVirtualizing="True"
                      VirtualizingStackPanel.VirtualizationMode="Standard"
                      ScrollViewer.CanContentScroll="True"-->
 
@@ -350,14 +350,14 @@
                                              Height="30"/>
                 </Grid>
             </Grid>
-            
+
         </Border>
-        
+
         <Grid Grid.Row="4" Background="{StaticResource DarkThemeOne}" Margin="0 0 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Background="Transparent"
@@ -373,16 +373,31 @@
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                      BorderThickness="0" FontSize="16" />
 
-            <Grid Grid.Column="2" Name="EmojisGrid" 
-                  Background="Transparent"
-                  MouseEnter="EmojisGrid_MouseEnter"
-                  MouseLeave="EmojisGrid_MouseLeave">
-                <materialDesign:PackIcon Kind="SmileyOutline" Name="Emojis" 
+            <StackPanel Grid.Column="2" Orientation="Horizontal" >
+
+                <Grid Name="AutoDelGrid"  Margin="0 0 10 0"
+                      Background="Transparent"
+                      MouseEnter="AutoDelGrid_MouseEnter"
+                      MouseLeave="AutoDelGrid_MouseLeave"
+                      PreviewMouseDown="AutoDelGrid_PreviewMouseDown">
+                    <materialDesign:PackIcon Kind="Fire" Name="AutoDelIcon" 
                                       Width="40" Height="40"
                                      VerticalAlignment="Center"
                                      HorizontalAlignment="Center"
                                      Foreground="Gray"/>
-            </Grid>
+                </Grid>
+
+                <Grid Name="EmojisGrid" 
+                  Background="Transparent"
+                  MouseEnter="EmojisGrid_MouseEnter"
+                  MouseLeave="EmojisGrid_MouseLeave">
+                    <materialDesign:PackIcon Kind="SmileyOutline" Name="Emojis" 
+                                      Width="40" Height="40"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Foreground="Gray"/>
+                </Grid>
+            </StackPanel>
 
             <Emojis:FullVisualsBlock Grid.Column="2" x:Name="EmojisBoard"
                                      Panel.ZIndex="100" 

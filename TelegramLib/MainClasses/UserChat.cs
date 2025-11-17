@@ -121,7 +121,7 @@ namespace TelegramLib.MainClasses
             Messages.RemoveAt(0);
         }
 
-        public string GetLastMessage()
+        public string GetLastMessageInString()
         {
             return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
         }
@@ -384,6 +384,27 @@ namespace TelegramLib.MainClasses
                 }
             }
             return gifs;
+        }
+
+        public void SetEmptyChatterImage()
+        {
+            Chatter.GetFirstImageName();
+        }
+
+        public bool IsStateDateExist(DateTime time)
+        {
+            return Messages.OfType<StaticMessage>().Any(x => !(x.Date is null) &&
+            ((DateTime)x.Date).Year == time.Year &&
+            ((DateTime)x.Date).Month == time.Month &&
+            ((DateTime)x.Date).Day == time.Day);
+        }
+
+        public List<TelegramLib.MainClasses.Messages.Message> GetMessagesByDateTime(DateTime date)
+        {
+            return Messages.Where(x =>
+            x.SentTime.Year == date.Year &&
+            x.SentTime.Month == date.Month &&
+            x.SentTime.Day == date.Day).ToList();
         }
     }
 }

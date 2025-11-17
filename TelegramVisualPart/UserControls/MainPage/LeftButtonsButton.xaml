@@ -17,6 +17,8 @@
                                  HorizontalAlignment="Center"
                                  Width="40" Height="40" Name="ButIcon"/>
         <TextBlock x:Name="ButText" Text="Edit" HorizontalAlignment="Center" 
-                   Foreground="Gray" FontSize="14"/>
+                   Foreground="Gray" FontSize="14"
+                   TextTrimming="CharacterEllipsis"
+                   TextWrapping="NoWrap"/>
     </StackPanel>
 </UserControl>

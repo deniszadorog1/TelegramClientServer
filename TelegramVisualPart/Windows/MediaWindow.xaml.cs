@@ -291,14 +291,11 @@ namespace TelegramVisualPart.Windows
             {
                 Source = new BitmapImage(new Uri(allPath, UriKind.Absolute))
             };
-
             ImageToShow.Source = img.Source;
         }
 
         //Chat image 
         //chat Videos
-
-
         public bool IsUsersIdsAreEqual(int compareUserId)
         {
             return _user.IsIdsAreEqual(compareUserId);
@@ -425,8 +422,9 @@ namespace TelegramVisualPart.Windows
 
         private void Forward_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Resent element to another user
+            if (_mediaMessages is null || _mediaMessages.Count <= _tempMediaIndex) return;
 
+            //Resent element to another user
             TelegramLib.MainClasses.Messages.Message mes = _mediaMessages[_tempMediaIndex];
 
             _godWindow.SendOneForwardMessage(mes);
@@ -520,10 +518,10 @@ namespace TelegramVisualPart.Windows
         private const int _rotateAngle = 90;
         private void RotateBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            UIElement el = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow : ImageToShow;
+            UIElement el = _type == MediaShowType.Videos ? VideoToShow : ImageToShow;
 
-            double width = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
-            double height = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
+            double width =  _type == MediaShowType.Videos ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
+            double height = _type == MediaShowType.Videos ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
 
             if (!(el.RenderTransform is RotateTransform rotateTransform))
             {

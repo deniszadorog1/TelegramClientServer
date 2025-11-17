@@ -14,8 +14,11 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using AutoDeleteType = TelegramLib.Enums.Chat.AutoDeleteType;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 {
@@ -33,7 +36,31 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             _system = system;
             InitializeComponent();
 
+            SetRemoveButVisibility();
+            SetChosenAutoDelType();
+
             SetLanguageText.SetMessDeletion(this);
+            SetBaseTextBlocks();
+        }
+
+        public void SetBaseTextBlocks()
+        {
+            SetDestructBut.Text = _chat.GetChatter().Login;
+        }
+
+        public void SetRemoveButVisibility()
+        {
+            if(_chat.AutoDel == AutoDeleteType.Nothing)
+            {
+                RemoveBut.Visibility = Visibility.Hidden;
+                return;
+            }
+        }
+
+        public void SetChosenAutoDelType()
+        {
+            if (_chat.AutoDel == AutoDeleteType.Nothing) return;
+            SpecialList.ValueByIndex((int)_chat.AutoDel);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -101,11 +128,33 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
             _chat.AutoDel = type;
 
+            AddStaticMessage();
+
             //Set Auto Del in DB
             await ApiService.SetAutoDeletion(_chat.Id, type);
 
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            ((MainWindow)Window.GetWindow(this)).UpdateAutoDelVis(_chat);
+            ((MainWindow)Window.GetWindow(this)).UpdateChatAutDelIconVisibility();
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
+        private async void RemoveBut_Click(object sender, RoutedEventArgs e)
+        {
+            _chat.AutoDel = AutoDeleteType.Nothing;
+            await ApiService.SetAutoDeletion(_chat.Id, _chat.AutoDel);
+
+            AddStaticMessage();
+
+            ((MainWindow)Window.GetWindow(this)).UpdateAutoDelVis(_chat);
+            ((MainWindow)Window.GetWindow(this)).UpdateChatAutDelIconVisibility();
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+        }
+
+        public async void AddStaticMessage()
+        {           
+            await ((MainWindow)Window.GetWindow(this))
+                .AddStatMessage(new StaticMessage(_chat.AutoDel, _system.LoggedUser.Id),
+                true, _chat);
+        }
     }
 }

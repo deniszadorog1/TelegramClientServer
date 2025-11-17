@@ -79,6 +79,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("UpdateContactPhoto", user);
         }
 
+        public async Task UpdateForwardStatus(User user)
+        {
+            await Clients.All.SendAsync("UpdateForwardStatus", user);
+        }
+
         public async Task DeleteChat(User loggedUser, User chatter, int clientId)
         {
             await Clients.User(clientId.ToString()).SendAsync("DeleteChat", loggedUser, chatter);
@@ -119,10 +124,10 @@ namespace TelegramClientServer.SignalRHubs
         }
 
         public async Task DeleteMessage(User logged, User chatter, 
-            TelegramLib.MainClasses.Messages.Message mes)
+            TelegramLib.MainClasses.Messages.Message mes, bool isUpdateVis)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("DeleteMessage", logged, mes);
+                .SendAsync("DeleteMessage", logged, mes, isUpdateVis);
         }
     }
 }

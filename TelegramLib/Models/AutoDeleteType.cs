@@ -13,6 +13,7 @@ namespace TelegramLib.Models
         public AutoDeleteType()
         {
             Chat = new HashSet<Chat>();
+            Messages = new HashSet<Messages>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,8 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chat> Chat { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Messages> Messages { get; set; }
     }
 }

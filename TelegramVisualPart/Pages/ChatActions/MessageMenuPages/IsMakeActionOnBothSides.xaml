@@ -35,11 +35,13 @@
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         MouseEnter="CheckBoxStack_MouseEnter"
-                        MouseLeave="CheckBoxStack_MouseLeave">
+                        MouseLeave="CheckBoxStack_MouseLeave"
+                        PreviewMouseDown="CheckBoxStack_PreviewMouseDown">
 
                 <CheckBox Name="IsInBoth" Margin="0 0 5 0"
                           Background="{StaticResource TempActiveTextColor}"
-                          materialDesign:CheckBoxAssist.CheckBoxSize="24"/>
+                          materialDesign:CheckBoxAssist.CheckBoxSize="24"
+                          IsHitTestVisible="False"/>
 
                 <TextBlock Name="CheckTextBlock"
                            Foreground="{StaticResource UsualTextColor}"

@@ -28,5 +28,28 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
             ShareWithExps = new List<User>();
             NeverShareExps = new List<User>();
         }
-    }
+
+        public bool IsUserPageCanBeSeen(List<UserContactcs> contacts, int loggedUserId)
+        {
+            switch (ShareType)
+            {
+                case ShareWith.Everybody:
+                    {
+                        return true;
+                    }
+                case ShareWith.Contacts:
+                    {
+                        return contacts.Any(x => x.ContactUserId == loggedUserId);
+                    }
+                case ShareWith.Nobody:
+                    {
+                        return false;
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
+        }
+}
 }

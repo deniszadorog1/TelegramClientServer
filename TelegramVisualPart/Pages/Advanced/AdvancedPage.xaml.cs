@@ -170,5 +170,10 @@ namespace TelegramVisualPart.Pages.Advanced
         {
             ((MainWindow)Window.GetWindow(this)).SetVisibilityInTaskBar(false);
         }
+
+        private void ShowChatNameBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

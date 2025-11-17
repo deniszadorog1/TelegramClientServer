@@ -17,6 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
@@ -40,7 +42,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private TelSystem _system;
 
-        public MediaMessage(TelSystem system, Image img, bool isSticker, 
+        public MediaMessage(TelSystem system, Image img, bool isSticker,
             string senderImgName, DateTime sendTime, int? forwardedFromId = null)
         {
             _img = img;
@@ -57,7 +59,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetSenderImage();
 
             SetTime(sendTime);
-        
+
             SetTickEvent();
             SetForwardedFromRow();
         }
@@ -78,7 +80,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetSenderImage();
 
             SetTime(sentTime);
-        
+
             SetTickEvent();
         }
 
@@ -100,7 +102,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(GifImage, RepeatBehavior.Forever);
         }
 
-        public MediaMessage(MediaElement media, string senderImgName, 
+        public MediaMessage(MediaElement media, string senderImgName,
             MediaAction mediaLogicEl, int? forwardedFromId)
         {
             _media = media;
@@ -209,7 +211,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             TickColumn.Width = new GridLength(_tickColWidth);
             SetVisibility(iconName);
-            if (isCanBeVis) TickIcon.Visibility = Visibility.Visible; 
+            if (isCanBeVis) TickIcon.Visibility = Visibility.Visible;
         }
 
         private const int _selectTickColWidth = 30;
@@ -255,6 +257,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 
             if (user is null) return;
+            if (!SetIsUserCanSeeChattersInfo(user.Id))
+            {
+                MessageBox.Show("No no no mister fish, you go to tasik");
+                return;
+            }
 
             if (_system.LoggedUser.Id == userId)
             {
@@ -271,6 +278,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UserInfo infoPage = new UserInfo(chat, _system);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(infoPage);
+        }
+
+        public bool SetIsUserCanSeeChattersInfo(int userId)
+        {
+            MainSettings setUserSettings = Task.Run(() => ApiService.GetSettingsByUserId(userId)).Result;
+
+            if (setUserSettings.PrivacySettings.ForwardMesPrivacy
+                .ShareWithExps.Any(x => x.Id == _system.LoggedUser.Id)) return true;
+            else if (setUserSettings.PrivacySettings.ForwardMesPrivacy
+                .NeverShareExps.Any(x => x.Id == _system.LoggedUser.Id)) return false;
+
+            return setUserSettings.PrivacySettings.
+                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, userId);
         }
 
     }

@@ -571,6 +571,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
 
             await SignalRService.UpdateContactPhotoVis(_system.LoggedUser);
+
+            await SignalRService.UpdateContactForwardStatus(_system.LoggedUser);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

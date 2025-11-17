@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.UserControls.ChatControls;
 
 namespace TelegramVisualPart.Pages
 {
@@ -33,8 +34,15 @@ namespace TelegramVisualPart.Pages
             SetMaxValue();
 
             ContactInfo.UpdateAction += UpdatePage;
+            ContactInfo.SendMesPressed += ClearTempPage;
+
             ContactInfo.SetMenuVisibility(Visibility.Visible);
         }
+
+        public void ClearTempPage()
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+        } 
 
         public async Task UpdateContactVis(UserContactcs contact)
         {

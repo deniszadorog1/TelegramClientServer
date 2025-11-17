@@ -137,8 +137,12 @@
 
                         <StackPanel Grid.Row="1" Margin="20 0 0 0" Orientation="Vertical">
                             <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                        Content="Show chat name" Name="ShowChatNameBox"
-                                        Margin="-3 10 7 7"/>
+                                        Name="ShowChatNameBox" Content="123kjbkj"
+                                        Margin="-3 10 7 7" Checked="ShowChatNameBox_Checked">
+                                <CheckBox.Resources>
+                                    <SolidColorBrush x:Key="MaterialDesignCheckBoxOffOutline" Color="Orange"/>
+                                </CheckBox.Resources>
+                            </CheckBox>
 
                             <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
                                         Content="Total unread count" Name="UnreadCountBox"/>

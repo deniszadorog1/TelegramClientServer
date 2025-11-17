@@ -59,8 +59,7 @@ namespace TelegramVisualPart.Pages.MyProfile
         {
             UserName.Text = _user.Login;
 
-            HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);
-            
+            HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);      
 
             BioTextBox.Text = _user.BIO;
 
@@ -138,13 +137,35 @@ namespace TelegramVisualPart.Pages.MyProfile
             return new LoggedUserProfile(_user, _system);
         }
 
+        public const int _baseBioBoxHeight = 45;
+        public const int _bioBoxHeightStep = 15;
+
         private async void BioTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             WordCount.Text = (BioTextBox.MaxLength - BioTextBox.Text.Length).ToString();
             _user.BIO = BioTextBox.Text;
 
+            SetTextBoxHeight();
+
             await ApiService.UpdateUser(_user);
             await SignalRService.UpdateContact(_user);
+        }
+
+        public void SetTextBoxHeight()
+        {
+            BioBoxHeight.Height = new GridLength(_baseBioBoxHeight +
+                _bioBoxHeightStep * BioTextBox.LineCount);
+
+            if (BioTextBox.LineCount > 1)
+            {
+                BioExpGrid.Visibility = Visibility.Hidden;
+                BioRow.Height = new GridLength(90);
+            }
+            else
+            {
+                BioExpGrid.Visibility = Visibility.Visible;
+                BioRow.Height = new GridLength(115);
+            }
         }
 
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -206,6 +227,11 @@ namespace TelegramVisualPart.Pages.MyProfile
         {
             UserImage.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetTextBoxHeight();
         }
     }
 }

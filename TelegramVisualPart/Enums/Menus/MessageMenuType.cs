@@ -10,6 +10,7 @@ namespace TelegramVisualPart.Enums.Menus
     {
         TextMessage,
         MediaMessage,
-        ShareContact
+        ShareContact, 
+        StatMessage
     }
 }

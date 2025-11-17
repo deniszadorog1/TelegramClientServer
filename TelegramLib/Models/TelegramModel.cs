@@ -66,6 +66,11 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.AutoDeleteType)
                 .HasForeignKey(e => e.AutoDeleteId);
 
+            modelBuilder.Entity<AutoDeleteType>()
+                .HasMany(e => e.Messages)
+                .WithOptional(e => e.AutoDeleteType)
+                .HasForeignKey(e => e.ChangedAutoDelId);
+
             modelBuilder.Entity<BioSettings>()
                 .HasMany(e => e.PrivacySetting)
                 .WithOptional(e => e.BioSettings)

@@ -1,3 +1,5 @@
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.csproj.AssemblyReference.cache
+B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.csproj.CoreCompileInputs.cache
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\TelegramLib.dll.config
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\TelegramLib.dll
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\TelegramLib.pdb
@@ -79,8 +81,6 @@ B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\System.Text.Encodings.Web.x
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\System.Text.Json.xml
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\System.Threading.Tasks.Extensions.xml
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Debug\System.ValueTuple.xml
-B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.csproj.AssemblyReference.cache
-B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.csproj.CoreCompileInputs.cache
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\Telegram.9F9AEC3A.Up2Date
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.dll
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Debug\TelegramLib.pdb

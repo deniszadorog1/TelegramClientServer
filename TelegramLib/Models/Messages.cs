@@ -40,6 +40,13 @@ namespace TelegramLib.Models
 
         public int? MessageRefference { get; set; }
 
+        public int? ChangedAutoDelId { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime? StatDate { get; set; }
+
+        public virtual AutoDeleteType AutoDeleteType { get; set; }
+
         public virtual Chat Chat { get; set; }
 
         public virtual ChatImage ChatImage { get; set; }

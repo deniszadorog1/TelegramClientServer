@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 
@@ -97,6 +98,19 @@ namespace TelegramVisualPart.UserControls
         public void SetBackground(SolidColorBrush background)
         {
             Background = background;
+        }
+
+        public void SetAutoDelDurationCircle(AutoDeleteType type, 
+            string duration)
+        {
+            if (type == AutoDeleteType.Nothing)
+            {
+                AutoDelDurationGrid.Visibility = Visibility.Hidden;
+                return;
+            }
+
+            AutoDelDurationGrid.Visibility = Visibility.Visible;
+            AutoDelDurBlock.Text = duration;
         }
     }
 }

@@ -45,13 +45,18 @@
                        Text="This action cannot be undone."
                        Name="SecInfoText"/>
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Height="30" Margin="-3 0 0 0"
-                        Visibility="Visible">
-                <CheckBox   Style="{StaticResource MaterialDesignCheckBox}"  
-                            Name="ShowChatNameBox" Margin="0 0 5 0"
-                            Background="{StaticResource TempActiveTextColor}"
-                            IsChecked="False"                                 
-                            materialDesign:CheckBoxAssist.CheckBoxSize="28"/>
+            <StackPanel Name="BothCheckPanel"
+                        Grid.Row="3" Orientation="Horizontal" 
+                        Height="30" Margin="-3 0 0 0"
+                        Visibility="Visible" Background="Transparent"
+                        PreviewMouseDown="BothCheckPanel_PreviewMouseDown"
+                        MouseEnter="BothCheckPanel_MouseEnter"
+                        MouseLeave="BothCheckPanel_MouseLeave">
+                <CheckBox Style="{StaticResource MaterialDesignCheckBox}"  
+                          Name="ShowChatNameBox" Margin="0 0 5 0"
+                          Background="{StaticResource TempActiveTextColor}"
+                          IsChecked="False" IsHitTestVisible="False"                    
+                          materialDesign:CheckBoxAssist.CheckBoxSize="28"/>
 
                 <TextBlock Foreground="White" FontSize="17" VerticalAlignment="Center">
                     <Run Name="CheckBoxText" Text="Also delete for"/>

@@ -135,5 +135,19 @@ namespace TelegramVisualPart.Pages.ChatActions
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new NewMessagesDeletion(_chat, _system));
         }
 
+        private void BothPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowChatNameBox.IsChecked = !ShowChatNameBox.IsChecked;
+        }
+
+        private void BothPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void BothPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

@@ -22,6 +22,9 @@
     <Compile Update="Pages\BlockPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\CalendarPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\ClearChatHistory.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -433,6 +436,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\BlockPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\CalendarPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\ClearChatHistory.xaml">

@@ -76,5 +76,20 @@ namespace TelegramVisualPart.Pages.ChatActions
             if (sender is Button but) but.Background =
                             (SolidColorBrush)Application.Current.Resources["OtherButMouseEnter"];
         }
+
+        private void BothCheckPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowChatNameBox.IsChecked = !ShowChatNameBox.IsChecked;
+        }
+
+        private void BothCheckPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void BothCheckPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 }

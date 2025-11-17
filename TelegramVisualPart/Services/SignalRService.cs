@@ -43,6 +43,8 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? SetPhoneNumVisByExpsDel;
         public static event Action<User>? UpdateBirthDateDel;
         public static event Action<User>? UpdateContactPhotoDel;
+        public static event Action<User>? UpdateForwardStatusDel;
+
         public static event Action<User>? DeleteChat;
 
         public static event Action<User>? UpdateReadStatus;
@@ -51,7 +53,7 @@ namespace TelegramVisualPart.Services
 
         public static event Action<User, TextMessage> ReplyMesAction;
         public static event Action<User, Message> ForwardMesAction;
-        public static event Action<User, Message> DeleteMessageByIdDel;
+        public static event Action<User, Message, bool> DeleteMessageByIdDel;
         public static event Action<User, Message> ToPinMessageDel;
 
         public static void SetSystem(TelSystem system)
@@ -89,8 +91,8 @@ namespace TelegramVisualPart.Services
             TextMessageReceived = null;
 
             MediaMessageReceived = null;
-            UpdateContactDel = null; 
-            UpdateOnlineStatusDel = null; 
+            UpdateContactDel = null;
+            UpdateOnlineStatusDel = null;
             UpdateUserImage = null;
             ClearChatDel = null;
             SetContactPhoneNumberVisibilityDel = null;
@@ -99,10 +101,10 @@ namespace TelegramVisualPart.Services
             UpdateBirthDateDel = null;
             UpdateContactPhotoDel = null;
             DeleteChat = null;
-            
-            UpdateReadStatus = null; 
+
+            UpdateReadStatus = null;
             SetShareContactMessage = null;
-    }
+        }
 
         public static async Task SetSignalRConnection()
         {
@@ -112,7 +114,7 @@ namespace TelegramVisualPart.Services
             .WithUrl("https://localhost:7164/chatHub", options =>
             {
                 options.Headers.Add("userId", _system.LoggedUser.Id.ToString());
-            }) 
+            })
             .Build();
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
@@ -220,6 +222,11 @@ namespace TelegramVisualPart.Services
                 UpdateContactPhotoDel?.Invoke(user);
             });
 
+            _connection.On<User>("UpdateForwardStatus", (user) =>
+            {
+                UpdateForwardStatusDel?.Invoke(user);
+            });
+
             _connection.On<User, User>("DeleteChat", (loggedUser, chatter) =>
             {
                 //logged user is now chatter 
@@ -253,9 +260,9 @@ namespace TelegramVisualPart.Services
                 ToPinMessageDel?.Invoke(logged, message);
             });
 
-            _connection.On<User, Message>("DeleteMessage", (logged, mes) =>
+            _connection.On<User, Message, bool>("DeleteMessage", (logged, mes, isUpdateVis) =>
             {
-                DeleteMessageByIdDel?.Invoke(logged, mes);
+                DeleteMessageByIdDel?.Invoke(logged, mes, isUpdateVis);
             });
 
             _connection.On<User, Message>("ForwardMessage", (logged, mes) =>
@@ -273,14 +280,12 @@ namespace TelegramVisualPart.Services
 
         public static async Task SendTextMessage(User sender, TextMessage message, User chatter)
         {
-            //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
         }
 
         public static async Task SendMediaMessage(User sender, MediaAction message, User chatter)
         {
-            //save sent message in db here
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
         }
@@ -352,6 +357,12 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("UpdateContactPhoto", user);
         }
 
+        public static async Task UpdateContactForwardStatus(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateForwardStatus", user);
+        }
+
         public static async Task DeleteChatMethod(User loggedUser, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
@@ -372,10 +383,10 @@ namespace TelegramVisualPart.Services
         }
 
         public static async Task DeleteMessageById(User logged, User chatter,
-            TelegramLib.MainClasses.Messages.Message mes)
+            TelegramLib.MainClasses.Messages.Message mes, bool isUpdateVis = true)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes);
+                await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes, isUpdateVis);
         }
 
         public static async Task PinMessage(User logged, User chatter,

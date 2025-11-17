@@ -1,6 +1,7 @@
 ﻿using FFMpegCore;
 using MahApps.Metro.Controls;
 using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Xaml.Behaviors.Core;
 using Newtonsoft.Json;
@@ -31,10 +32,12 @@ using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.ChatActions;
+using TelegramVisualPart.Pages.ChatActions.MessageMenuPages;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
+using TelegramVisualPart.UserControls.ChatControls;
 using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
@@ -45,6 +48,7 @@ using static MaterialDesignThemes.Wpf.Theme;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using ListBoxItem = System.Windows.Controls.ListBoxItem;
+using Page = System.Windows.Controls.Page;
 
 namespace TelegramVisualPart.Pages
 {
@@ -87,7 +91,7 @@ namespace TelegramVisualPart.Pages
             SetLanguageText.SetMainChatPageParams(this);
         }
 
-        public async Task SetBasicParams()
+        public void SetBasicParams()
         {
             /*            LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
                         LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;*/
@@ -98,7 +102,12 @@ namespace TelegramVisualPart.Pages
 
             LeftButtons.SetSystemParam(_system);
 
-            UserChat.SetSystemAndMainWindowParam(_system, (MainWindow)Window.GetWindow(this));
+            /*            Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MainWindow window = (MainWindow)Window.GetWindow(this);
+                            UserChat.SetSystemAndMainWindowParam(_system, window);
+                        });
+            */
             UserChat.BackButton_MouseDown += BackButton_MouseDown;
 
             SetUserImage();
@@ -218,9 +227,10 @@ namespace TelegramVisualPart.Pages
                 if (boxItem is null || boxItem.Content is not UserTalkMessage talkControl) return;
                 int.TryParse(boxItem.Tag.ToString(), out int chatId);
 
-                TelegramLib.MainClasses.UserChat chat =
+                TelegramLib.MainClasses.UserChat? chat =
                 await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id,
                 _system.Chats.First(x => x.Id == chatId).Chatter.Id);
+                if (chat is null) return;
 
                 await SignalRHelperService.SetContactPhoto(user, chat,
                     talkControl.ImageIcon, talkControl.UserEllipseImage);
@@ -559,7 +569,7 @@ namespace TelegramVisualPart.Pages
 
         public void SetFoundGlobalMessages()
         {
-            List<(TextMessage, int)> messages =
+            List<(TelegramLib.MainClasses.Messages.TextMessage, int)> messages =
                 _system.GetMessagesChatIdFromChatsWithGivenSubChat(SarchBox.Text);
 
             //Sent amount of messages block 
@@ -609,7 +619,8 @@ namespace TelegramVisualPart.Pages
                     {
                         Content = message,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        HorizontalContentAlignment = HorizontalAlignment.Stretch
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        Tag = messages[i].Item1.Id
                     };
 
                 item.PreviewMouseDown += OpenChatInChosenMessage_PreviewMouseDown;
@@ -626,6 +637,8 @@ namespace TelegramVisualPart.Pages
         {
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage message) return;
+
+            if (!int.TryParse(item.Tag.ToString(), out int mesId)) return;
 
             //open chat
             TelegramLib.MainClasses.UserChat chat =
@@ -651,10 +664,11 @@ namespace TelegramVisualPart.Pages
             Action tempHandler = null;
             tempHandler = () =>
             {
-                int? messIndex = chat.GetMessageIndexByText(message.GetLastMessageText());
-                if (messIndex is null) return;
+                //int? messIndex = chat.GetMessageIndexByText(message.GetLastMessageText());
+                //if (messIndex is null) return;
 
-                UserChat.ScrollToChosenItem((int)messIndex);
+                UserChat.ScrollToMessageByMessageId(mesId);
+                //UserChat.ScrollToChosenItem((int)messIndex);
                 UserChat.SettingEnded -= tempHandler;
             };
             UserChat.SettingEnded += tempHandler;
@@ -685,7 +699,8 @@ namespace TelegramVisualPart.Pages
 
         public void SetSearchMessagesInChosenChat()
         {
-            List<TextMessage> messages = _chosenChat.GetMessagesWithGivenText(SarchBox.Text);
+            List<TelegramLib.MainClasses.Messages.TextMessage> messages =
+                _chosenChat.GetMessagesWithGivenText(SarchBox.Text);
 
             for (int i = 0; i < messages.Count; i++)
             {
@@ -717,13 +732,13 @@ namespace TelegramVisualPart.Pages
                     {
                         Content = message,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        HorizontalContentAlignment = HorizontalAlignment.Stretch
+                        HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                        Tag = messages[i].Id
                     };
 
                 item.PreviewMouseDown += SearchedMessage_PreviewMouseDown;
                 SearchedMessageslistBox.Items.Add(item);
             }
-
         }
 
         public void SearchedMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -731,17 +746,20 @@ namespace TelegramVisualPart.Pages
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage message) return;
 
+            if (!int.TryParse(item.Tag.ToString(), out int mesId)) return;
+
             //Find Message index in chat
             //Scroll to this message
             //Show bgs for 2 seconds
 
             //message index
-            int? messIndex =
-                _chosenChat.GetMessageIndexByText(message.GetLastMessageText());
-            if (messIndex is null) return;
+            UserChat.ScrollToMessageByMessageId(mesId);
+            /*            int? messIndex =
+                            _chosenChat.GetMessageIndexByText(message.GetLastMessageText());
+                        if (messIndex is null) return;
 
-            //scroll to the message
-            UserChat.ScrollToChosenItem((int)messIndex);
+                        //scroll to the message
+                        UserChat.ScrollToChosenItem((int)messIndex);*/
         }
 
         public void ShowChosenMessageByMessageId(int mesId)
@@ -894,7 +912,6 @@ namespace TelegramVisualPart.Pages
                 item.Content is not UserTalkMessage talkControl) return;
             SetChatParams(item, talkControl);
         }
-
 
         public void SetChatByChatterId(int userId)
         {
@@ -1150,7 +1167,9 @@ namespace TelegramVisualPart.Pages
             SarchBox.Text = string.Empty;
 
             HideAllChatBlocks();
+
             ChatsBox.Visibility = Visibility.Visible;
+            SetActiveChats();
 
             FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
             Keyboard.ClearFocus();
@@ -1173,8 +1192,9 @@ namespace TelegramVisualPart.Pages
                         out ListBoxItem tempItem);
 
                     if (tempItem.Content is UserTalkMessage usTalk)
+                    {
                         SetUnreadForUserTalk(usTalk, _system.Chats[i]);
-
+                    }
                     items.Add(tempItem);
                     continue;
                 }
@@ -1205,6 +1225,16 @@ namespace TelegramVisualPart.Pages
             {
                 ChatsBox.Items.Add(item);
             }
+
+            for (int i = 0; i < ChatsBox.Items.Count; i++)
+            {
+                if (ChatsBox.Items[i] is ListBoxItem listBoxItem)
+                {
+                    if (!int.TryParse(listBoxItem.Tag.ToString(), out int chatId)) continue;
+                    UpdateAutoDelDurationVis(_system.Chats.FirstOrDefault(x => x.Id == chatId));
+                }
+            }
+
             MarkStartFolderChat();
         }
 
@@ -1276,7 +1306,7 @@ namespace TelegramVisualPart.Pages
 
             if (date is not null) chatControl.LastMessageTime.Text =
                     $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
-            chatControl.LastMessage.Text = chat.GetLastMessage();
+            chatControl.LastMessage.Text = chat.GetLastMessageInString();
 
             //Set Image icon
 
@@ -1315,10 +1345,14 @@ namespace TelegramVisualPart.Pages
                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
 
             if (message is null) return;
+              
+            TelegramLib.MainClasses.Messages.Message mes = null; 
 
             //Get chat
-            message.LastMessage.Text = chat.GetLastMessage();
-            message.LastMessageTime.Text = chat.Messages.Last().GetSentTimeInString();
+            message.LastMessage.Text = chat.GetLastMessageInString();
+            message.LastMessageTime.Text = chat.Messages.Count == 0 ?
+                string.Empty :
+                chat.Messages.Last().GetSentTimeInString();
 
             SetUnreadForUserTalk(message, chat);
         }
@@ -1361,9 +1395,7 @@ namespace TelegramVisualPart.Pages
 
             if (e.Key == Key.Escape)
             {
-
                 if (!((MainWindow)Window.GetWindow(this)).EscapePressed()) return;
-
 
                 SarchBox.Text = string.Empty;
                 FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
@@ -1401,22 +1433,14 @@ namespace TelegramVisualPart.Pages
 
                 if (UserChat.Visibility == Visibility.Hidden) ClearAllChatsBgs();
 
-                /*                if (SearchBoxGrid.Visibility == Visibility.Visible)
-                                {
-                                    SearchControl.SetContacts(_system);
-                                    HideAllChatBlocks();
-                                    ChatsBox.Visibility = Visibility.Visible;
-                                }
-                                else if (SearchMessageGrid.Visibility == Visibility.Visible)
-                                {
-                                    HideAllChatBlocks();
-                                    ChatsBox.Visibility = Visibility.Visible;
-                                }
-                                else if (UserChat.Visibility == Visibility.Visible)
-                                {
-                                    UserChat.Visibility = Visibility.Hidden;
-                                    ChosoeChatBorder.Visibility = Visibility.Visible;
-                                }*/
+                //If all are hidden -> show all chats
+                if (
+                   ChatsBox.Visibility == Visibility.Visible)
+                {
+                    SetActiveChats();
+                    ChatsBox.Visibility = Visibility.Visible;
+                }
+
             }
         }
 
@@ -1470,7 +1494,7 @@ namespace TelegramVisualPart.Pages
 
                 if (date is not null) message.LastMessageTime.Text =
                         $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
-                message.LastMessage.Text = chat.GetLastMessage();
+                message.LastMessage.Text = chat.GetLastMessageInString();
 
                 System.Windows.Controls.ListBoxItem item =
                      new System.Windows.Controls.ListBoxItem()
@@ -1483,7 +1507,9 @@ namespace TelegramVisualPart.Pages
                 item.PreviewMouseRightButtonDown += TalkMessage_PreviewRightMouseDown;
                 item.MouseEnter += UserChat_MouseEnter;
                 item.MouseLeave += UserChat_MouseLeave;
+
                 ChatsBox.Items.Add(item);
+                UpdateAutoDelDurationVis(chat);
             }
 
             HideAllChatBlocks();
@@ -2043,8 +2069,10 @@ namespace TelegramVisualPart.Pages
         }
 
 
-        public void SetOnlyChatPage(TelegramLib.MainClasses.UserChat chat)
+        public void SetOnlyChatPage(TelegramLib.MainClasses.UserChat chat, TelSystem system)
         {
+            _system = system;
+
             SetColumnMinWidth(LeftButtonsColumn, 0);
             SetColumnWidth(LeftButtonsColumn, 0);
 
@@ -2055,6 +2083,10 @@ namespace TelegramVisualPart.Pages
             SetColumnWidth(GridSplitterColumn, 0);
 
             ShowChatControl();
+
+
+
+            UserChat.SetSystem(_system);
             UserChat.SetUserChat(chat);
         }
 
@@ -2063,6 +2095,12 @@ namespace TelegramVisualPart.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             PageLoadedAction?.Invoke();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MainWindow window = (MainWindow)Window.GetWindow(this);
+                UserChat.SetSystemAndMainWindowParam(_system, window);
+            });
         }
 
         public void UpdateContact(UserContactcs contact)
@@ -2386,7 +2424,7 @@ namespace TelegramVisualPart.Pages
 
         public void SetForwardedOnlyMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
-            if (UserChat.Visibility == Visibility.Visible) 
+            if (UserChat.Visibility == Visibility.Visible)
                 UserChat.SetMessageToForward(mes);
         }
 
@@ -2394,6 +2432,51 @@ namespace TelegramVisualPart.Pages
         {
             if (UserChat.Visibility == Visibility.Hidden) return;
             UserChat.UpdateSelectedAmount();
+        }
+
+        public void UpdateAutoDelDurationVis(TelegramLib.MainClasses.UserChat? chat)
+        {
+            if (chat is null) return;
+
+            UserTalkMessage mes = GetChatById(chat);
+
+            mes.SetAutoDelDurationCircle(chat.AutoDel,
+                _system.GetAutDelDurationInString(chat.AutoDel));
+        }
+
+        public UserTalkMessage GetChatById(TelegramLib.MainClasses.UserChat chat)
+        {
+            for (int i = 0; i < ChatsBox.Items.Count; i++)
+            {
+                if (ChatsBox.Items[i] is ListBoxItem item)
+                {
+                    if (!int.TryParse(item.Tag.ToString(), out int chatId)) continue;
+
+                    if (chatId == chat.Id &&
+                        item.Content is UserTalkMessage mes) return mes;
+                }
+            }
+            return null;
+        }
+
+        public async Task AddStatMessage(TelegramLib.MainClasses.Messages.StaticMessage statMes,
+            bool isBothAdd, TelegramLib.MainClasses.UserChat chat)
+        {
+            if (UserChat.Visibility == Visibility.Hidden ||
+             chat.Id != UserChat._chat.Id) return;
+
+            await UserChat.AddStatMessage(statMes, isBothAdd, chat);
+        }
+
+        public void UpdateUserChatAutoDelIconVis()
+        {
+            if (UserChat.Visibility != Visibility.Visible) return;
+            UserChat.SetNewAutoDelIconVisibility();
+        }
+
+        public void RemoveMessagesByDates(List<DateTime> dates)
+        {
+            UserChat.RemoveMessagesByDates(dates);
         }
     }
 }
