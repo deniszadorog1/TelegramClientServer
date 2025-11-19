@@ -1237,5 +1237,10 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage page) 
                 page.RemoveMessagesByDates(removeDates);
         }
+
+        public void ScrollToMessagesByDate(DateTime dateTime)
+        {
+            if (MainFrame.Content is MainChatPage page) page.ScrolToMessageByDateTime(dateTime);
+        }
     }
 }

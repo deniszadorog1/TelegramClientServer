@@ -89,8 +89,9 @@ namespace TelegramVisualPart.Services
         private static void ClearAllEvents()
         {
             TextMessageReceived = null;
-
             MediaMessageReceived = null;
+            StatMessageReceived = null;
+
             UpdateContactDel = null;
             UpdateOnlineStatusDel = null;
             UpdateUserImage = null;
@@ -101,6 +102,7 @@ namespace TelegramVisualPart.Services
             UpdateBirthDateDel = null;
             UpdateContactPhotoDel = null;
             DeleteChat = null;
+            DeleteMessageByIdDel = null;
 
             UpdateReadStatus = null;
             SetShareContactMessage = null;

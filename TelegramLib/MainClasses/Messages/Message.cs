@@ -60,5 +60,16 @@ namespace TelegramLib.MainClasses.Messages
         {
             IsPinned = !IsPinned;
         }
+
+        public bool IsMessageForDate(DateTime date)
+        {
+            if (SentTime.Year != date.Year ||
+               SentTime.Month != date.Month ||
+               SentTime.Day != date.Day) return false;
+
+            if (this is StaticMessage stat && !(stat.Date is null)) return false;
+
+            return true;
+        }
     }
 }

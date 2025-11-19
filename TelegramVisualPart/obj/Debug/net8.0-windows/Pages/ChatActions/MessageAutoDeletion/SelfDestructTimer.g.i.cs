@@ -147,8 +147,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/chatactions/messageautodeletion/selfdestructt" +
-                    "imer.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/chatactions/messageautodeletion/self" +
+                    "destructtimer.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\ChatActions\MessageAutoDeletion\SelfDestructTimer.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

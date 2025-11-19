@@ -406,5 +406,27 @@ namespace TelegramLib.MainClasses
             x.SentTime.Month == date.Month &&
             x.SentTime.Day == date.Day).ToList();
         }
+
+        public void RemoveMessageById(int id)
+        {
+            TelegramLib.MainClasses.Messages.Message toRemove = 
+                Messages.FirstOrDefault(x => x.Id == id);
+
+            if (toRemove is null) return;
+
+            Messages.Remove(toRemove);
+        }
+
+        public TelegramLib.MainClasses.Messages.Message GetMessageByDateTime(DateTime date)
+        {
+            //Check for Same Day
+            TelegramLib.MainClasses.Messages.Message sameDateMes =
+                Messages.FirstOrDefault(x => x.IsMessageForDate(date));
+            if (!(sameDateMes is null)) return sameDateMes;
+
+            //Date close date message
+
+            return null;
+        }   
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.IdentityModel.Metadata;
 using System.IO;
 using System.Linq;
 using System.Net.Configuration;
@@ -523,7 +524,7 @@ namespace TelegramLib.Services
 
             toAdd.Id = mes.Id;
             toAdd.SenderUserId = (int)mes.SenderId;
-            
+
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
             
@@ -3733,7 +3734,8 @@ namespace TelegramLib.Services
                         x.ChatId != toCompare.ChatId &&
                         x.Id != mesId &&
                         x.SentDate.HasValue && toCompare.SentDate.HasValue &&
-                        Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds) < 100);
+                        Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds) 
+                        < 10);
 
                 return res is null ? null : GetMessageByMessages(res);
             }
@@ -3747,7 +3749,7 @@ namespace TelegramLib.Services
                     .AsEnumerable()
                     .FirstOrDefault(x =>
                         x.SentDate.HasValue && 
-                        Math.Abs((x.SentDate.Value - sentTime).TotalMilliseconds) < 1000);
+                        Math.Abs((x.SentDate.Value - sentTime).TotalMilliseconds) < 100);
 
                 if (res is null) return null;
 

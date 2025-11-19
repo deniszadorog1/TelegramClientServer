@@ -243,6 +243,7 @@ namespace TelegramVisualPart.UserControls
 
             //Is Need to remove date Message
 
+            if (chat is null || chat.Messages.Count() == 0) return;
             TelegramLib.MainClasses.Messages.Message isDate = chat.Messages.Last();
             if (isDate is not StaticMessage stat || stat.Date is null) return;
             chat.Messages.Remove(stat);
@@ -1687,12 +1688,23 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
 
+            TelegramLib.MainClasses.UserChat? chat = 
+                await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
+
             //remove from db
             TelegramLib.MainClasses.Messages.Message? pair =
                 await ApiService.GetPairOfMessage(toRemove);
 
             if (pair is null) return;
             await ApiService.DeleteMessageById(pair.Id);
+
+            chat.RemoveMessageById(pair.Id);
+            //Is Need to remove date Message
+
+            if (chat is null || chat.Messages.Count() == 0) return;
+            TelegramLib.MainClasses.Messages.Message isDate = chat.Messages.Last();
+            if (isDate is not StaticMessage stat || stat.Date is null) return;
+            await ApiService.DeleteMessageById(stat.Id);
         }
 
         public void SetPinOnVisControl(UserControl control, bool isPinned)
@@ -3905,6 +3917,16 @@ namespace TelegramVisualPart.UserControls
             _mainWindow.SetSecondaryFrame(mesDel);
         }
 
+        public void ScrollToMessageByDateTime(DateTime dateTime)
+        {
+            TelegramLib.MainClasses.Messages.Message mes = _chat.GetMessageByDateTime(dateTime);
 
+            if (mes is null)
+            {
+                MessageBox.Show("No no noooo");
+                return;
+            }
+            ScrollToMessageByMessageId(mes.Id);
+        }
     }
 }

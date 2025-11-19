@@ -21,7 +21,8 @@
                       materialDesign:CalendarAssist.SelectionColor="Red"
                       Style="{StaticResource MaterialDesignCalendarPortrait}"
                       Foreground="{StaticResource TempActiveTextColor}"
-                      SelectionMode="None">
+                      
+                      Calendar.SelectedDatesChanged="Calendar_SelectedDatesChanged">
                       
                     <Calendar.Resources>
                         <SolidColorBrush x:Key="MaterialDesignCalendarItemHoverBackground" Color="Orange"/>

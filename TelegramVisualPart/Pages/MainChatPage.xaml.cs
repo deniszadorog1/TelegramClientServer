@@ -2478,5 +2478,29 @@ namespace TelegramVisualPart.Pages
         {
             UserChat.RemoveMessagesByDates(dates);
         }
+
+        public void ScrolToMessageByDateTime(DateTime date)
+        {
+            if (UserChat.Visibility == Visibility.Hidden) return;
+            UserChat.ScrollToMessageByDateTime(date);
+        }
+
+        private void LittleCalendarGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            CalendarIcon.Foreground = new SolidColorBrush(Colors.White);
+        }
+
+        private void LittleCalendarGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            CalendarIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void LittleCalendarGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CalendarPage page = new CalendarPage();
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+        }
     }
 }

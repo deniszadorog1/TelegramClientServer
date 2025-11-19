@@ -141,6 +141,28 @@
                                                  Foreground="Gray"
                                                  Margin="0 0 10 0"
                                                  PreviewMouseDown="ClearTextBut_PreviewMouseDown"/>
+
+
+                                <Grid x:Name="LittleCalendarGrid"
+                                      Visibility="Visible"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="25" Height="25" 
+                                      Margin="0 0 10 0"
+                                      Background="Transparent"
+                                      MouseEnter="LittleCalendarGrid_MouseEnter"
+                                      MouseLeave="LittleCalendarGrid_MouseLeave"
+                                      PreviewMouseDown="LittleCalendarGrid_PreviewMouseDown">
+
+                                    <materialDesign:PackIcon Name="CalendarIcon"
+                                                             VerticalAlignment="Center"
+                                                             HorizontalAlignment="Center"
+                                                             Width="20" Height="20"                          
+                                                             Foreground="Gray"
+                                                             Kind="Calendar" />
+
+                                </Grid>
+                                
                             </Grid>
                         </Border>
 

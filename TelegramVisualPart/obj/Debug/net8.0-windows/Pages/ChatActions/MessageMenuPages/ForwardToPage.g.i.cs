@@ -97,8 +97,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/chatactions/messagemenupages/forwardtopage.xa" +
-                    "ml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/chatactions/messagemenupages/forward" +
+                    "topage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

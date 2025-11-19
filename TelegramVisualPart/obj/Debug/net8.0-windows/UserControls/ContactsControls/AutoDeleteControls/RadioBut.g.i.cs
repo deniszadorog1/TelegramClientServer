@@ -73,8 +73,8 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/contactscontrols/autodeletecontrols/ra" +
-                    "diobut.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/contactscontrols/autodeleteco" +
+                    "ntrols/radiobut.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

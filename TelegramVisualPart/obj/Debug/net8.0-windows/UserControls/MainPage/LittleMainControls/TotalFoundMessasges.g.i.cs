@@ -69,8 +69,8 @@ namespace TelegramVisualPart.UserControls.MainPage.LittleMainControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/mainpage/littlemaincontrols/totalfound" +
-                    "messasges.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/mainpage/littlemaincontrols/t" +
+                    "otalfoundmessasges.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\MainPage\LittleMainControls\TotalFoundMessasges.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

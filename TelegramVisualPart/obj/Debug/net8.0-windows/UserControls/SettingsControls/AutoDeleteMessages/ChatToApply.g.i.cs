@@ -97,8 +97,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/autodeletemessages/ch" +
-                    "attoapply.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/autodeleteme" +
+                    "ssages/chattoapply.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\SettingsControls\AutoDeleteMessages\ChatToApply.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

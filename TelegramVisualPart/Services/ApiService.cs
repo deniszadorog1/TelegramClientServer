@@ -791,12 +791,15 @@ namespace TelegramVisualPart.Services
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
             return jsonResponse is null ? null :
-                JsonConvert.DeserializeObject<UserChat>(jsonResponse);
+                JsonConvert.DeserializeObject<UserChat>(jsonResponse, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
         }
 
         public static async Task<bool?> IsDateMesIsExistInChat(int loggedId, int chatterId, DateTime date)
         {
-            string isoDate = date.ToString("yyyy-MM-ddTHH:mm:ss");
+            string isoDate = date.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
             var response = await _client.GetAsync($"api/Social/IsDateMesIsExistInChat?loggedId={loggedId}&chatterId={chatterId}&date={isoDate}");
 
@@ -808,7 +811,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<int?> GetMessageIdByDateTime(DateTime sentDate)
         {
-            string isDate = sentDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            string isDate = sentDate.ToString("yyyy-MM-ddTHH:mm:ss.fff");
 
             var response = await _client.GetAsync($"api/Social/GetMessageIdByDateTime?sentTime={isDate}");
 

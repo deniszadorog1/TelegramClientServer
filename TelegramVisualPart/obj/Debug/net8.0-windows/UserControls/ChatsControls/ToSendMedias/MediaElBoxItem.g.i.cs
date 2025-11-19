@@ -105,8 +105,8 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatscontrols/tosendmedias/mediaelboxi" +
-                    "tem.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatscontrols/tosendmedias/me" +
+                    "diaelboxitem.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatsControls\ToSendMedias\MediaElBoxItem.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

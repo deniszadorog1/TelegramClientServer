@@ -44,7 +44,7 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private void SelectDaysBut_Click(object sender, RoutedEventArgs e)
         {
-            Calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
+            //Calendar.SelectionMode = CalendarSelectionMode.MultipleRange;
 
             CloseBut.Visibility = Visibility.Hidden;
             CancelBut.Visibility = Visibility.Visible;
@@ -55,13 +55,15 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
-            Calendar.SelectionMode = CalendarSelectionMode.None;
+            //Calendar.SelectionMode = CalendarSelectionMode.None;
 
             CloseBut.Visibility = Visibility.Visible;
             CancelBut.Visibility = Visibility.Hidden;
 
             SelectDaysBut.Visibility = Visibility.Visible;
             ClearHistoryBut.Visibility = Visibility.Hidden;
+
+            Calendar.SelectedDate = null;
         }
 
         private void ClearHistoryBut_MouseEnter(object sender, MouseEventArgs e)
@@ -83,6 +85,17 @@ namespace TelegramVisualPart.Pages.ChatActions
             if (chosenDates is null || chosenDates.Count == 0) return;
 
             ((MainWindow)Window.GetWindow(this)).RemoveMessagesByDates(chosenDates);
+        }
+
+        private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ClearHistoryBut.Visibility == Visibility.Visible) return;
+
+            List<DateTime> chosenDates = Calendar.SelectedDates.ToList();
+            if (chosenDates is null || chosenDates.Count == 0) return;
+
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            ((MainWindow)Window.GetWindow(this)).ScrollToMessagesByDate(chosenDates.First());
         }
     }
 }
