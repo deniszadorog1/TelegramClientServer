@@ -141,8 +141,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu 
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/chatmessages/mes" +
-                    "sagemenu/mesmenu.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/chatmessages/messagemenu/" +
+                    "mesmenu.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\UserControls\ChatControls\ChatMessages\MessageMenu\MesMenu.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

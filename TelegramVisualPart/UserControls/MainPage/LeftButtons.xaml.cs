@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Http.Metadata;
 using System.Security.Policy;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +8,8 @@ using System.Windows.Media;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.Folders;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using TelegramVisualPart.UserControls.FolderControls;
 
 namespace TelegramVisualPart.UserControls.MainPage
 {
@@ -49,10 +52,43 @@ namespace TelegramVisualPart.UserControls.MainPage
                     Tag = _system.Folders[i].Id
                 };
 
-                item.PreviewMouseDown += FolderBut_PreviewMouseDown;
+                item.PreviewMouseLeftButtonDown += FolderBut_PreviewMouseDown;
+                item.PreviewMouseRightButtonDown += SetFolderMenu_PreviewMouseRightButtonDown;
 
                 FoldersBox.Items.Insert(FoldersBox.Items.IndexOf(EditFolderBoxItem), item);
             }
+        }
+
+        public void SetFolderMenu_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListBoxItem item) return;
+            int.TryParse(item.Tag.ToString(), out int folderId);
+            System.Windows.Point point = e.GetPosition(this);
+
+            FolderMenu menu = new FolderMenu(folderId, _system, (MainWindow)Window.GetWindow(this));
+
+            Size windowSize =  ((MainWindow)Window.GetWindow(this)).GetWindowSize();
+
+            menu.Loaded += (sender, e) =>
+            {
+                //is x to big
+                if (point.X + menu.ActualWidth > windowSize.Width)
+                {
+                    Canvas.SetLeft(menu, point.X - menu.Width);
+                }
+                else Canvas.SetLeft(menu, point.X);
+
+                //is y too big
+                if (point.Y + menu.ActualHeight > windowSize.Height)
+                {
+                    Canvas.SetTop(menu, windowSize.Height - menu.ActualHeight);
+                }
+                else Canvas.SetTop(menu, point.Y);
+            };
+
+            ((MainWindow)Window.GetWindow(this)).AddFolderMenu(menu);
+
+            //Add menu on main
         }
 
         public void SetBasicParams()

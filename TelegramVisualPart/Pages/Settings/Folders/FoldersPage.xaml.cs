@@ -210,6 +210,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             UpdateFolderPosition(false);
 
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
+            ((MainWindow)Window.GetWindow(this)).UpdateFolders();
         }
 
         public async Task UpdateFolderPosition(bool isLeft)
@@ -225,6 +226,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             UpdateFolderPosition(true);
 
             ((MainWindow)Window.GetWindow(this)).UpdateTabsStandings();
+            ((MainWindow)Window.GetWindow(this)).UpdateFolders();
         }
 
         private void TabsRadio_MouseEnter(object sender, MouseEventArgs e)

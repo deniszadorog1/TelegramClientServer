@@ -38,6 +38,7 @@ using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.ChatsSearch;
 using TelegramVisualPart.UserControls.ContactsControls;
@@ -72,7 +73,7 @@ namespace TelegramVisualPart.Pages
 
             SetBasicParams();
 
-            FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
+            FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system, (MainWindow)Window.GetWindow(this));
 
             UpdateTabsPlacement();
             SetLangText();
@@ -428,8 +429,14 @@ namespace TelegramVisualPart.Pages
 
         private void Magnifier_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (ChatsColumn.Width.Value == 0)
+            {
+                BackButton_MouseDown();
+            }
+
             HideAllChatBlocks();
             SearchMessageGrid.Visibility = Visibility.Visible;
+            LittleCalendarGrid.Visibility = Visibility.Visible;
 
             UserChat.TurnOnLoopState();
 
@@ -446,6 +453,13 @@ namespace TelegramVisualPart.Pages
 
             SetMessagesForSearch();
             //}
+
+            if (_textAddBlcoker)
+            {
+                _textAddBlcoker = false;
+                return;
+            }
+            _textHistory.Add(SarchBox.Text);
         }
 
         public void SetChatPanelsVisibility()
@@ -644,7 +658,6 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatById(int.Parse(message.Tag.ToString()));
 
-
             //Set chat in UserChat
             chat.IsMarked = false;
 
@@ -673,18 +686,10 @@ namespace TelegramVisualPart.Pages
             };
             UserChat.SettingEnded += tempHandler;
 
-
-            /*            UserChat.SettingEnded += () =>
-                        {
-                            //Scroll to chosen message
-                            int? messIndex =
-                                chat.GetMessageIndexByText(message.GetLastMessageText());
-                            if (messIndex is null) return;
-
-                            UserChat.ScrollToChosenItem((int)messIndex);
-                        };*/
-            //scroll to the message
-            //UserChat.ScrollToChosenItem((int)messIndex);
+            Console.WriteLine(ChatsColumn.Width);
+            Console.WriteLine(LeftButtonsColumn.Width);
+            Console.WriteLine(GridSplitterColumn.Width);
+            Console.WriteLine(ChatColumn.Width);
         }
 
         public void SearchMessage_MouseEnter(object sender, MouseEventArgs e)
@@ -776,7 +781,10 @@ namespace TelegramVisualPart.Pages
         public void HideAllChatBlocks()
         {
             ChatsBox.Visibility = Visibility.Hidden;
+            
             SearchBoxGrid.Visibility = Visibility.Hidden;
+            LittleCalendarGrid.Visibility = Visibility.Hidden;
+
             SearchMessageGrid.Visibility = Visibility.Hidden;
             NothingFoundSearch.Visibility = Visibility.Hidden;
             GlobalMessageSearch.Visibility = Visibility.Hidden;
@@ -1142,7 +1150,7 @@ namespace TelegramVisualPart.Pages
             if (SearchMessageGrid.Visibility == Visibility.Hidden &&
                 GlobalMessageSearch.Visibility == Visibility.Hidden) ChatsBox.Visibility = Visibility.Visible;
 
-            ChatsColumn.MinWidth = 50;
+            if(ChatsColumn.Width.Value != 0) ChatsColumn.MinWidth = 50;
             CrossSearchColumn.Width = new GridLength(0);
 
             if (!_system.Settings.IsTabsOnTheLeft)
@@ -1345,8 +1353,8 @@ namespace TelegramVisualPart.Pages
                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
 
             if (message is null) return;
-              
-            TelegramLib.MainClasses.Messages.Message mes = null; 
+
+            TelegramLib.MainClasses.Messages.Message mes = null;
 
             //Get chat
             message.LastMessage.Text = chat.GetLastMessageInString();
@@ -1631,7 +1639,8 @@ namespace TelegramVisualPart.Pages
 
         public void UpdateFolders()
         {
-            LeftButtons.UpdateFolders();
+            if (_system.Settings.IsTabsOnTheLeft) LeftButtons.UpdateFolders();
+            else FolderSliderMenu.SetFolders();
         }
 
         private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1669,7 +1678,7 @@ namespace TelegramVisualPart.Pages
 
             //Setting folders
             if (!isShow)
-                FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system);
+                FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system, (MainWindow)Window.GetWindow(this));
         }
 
         private void HamburgerAddGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -2100,6 +2109,7 @@ namespace TelegramVisualPart.Pages
             {
                 MainWindow window = (MainWindow)Window.GetWindow(this);
                 UserChat.SetSystemAndMainWindowParam(_system, window);
+                window.WindowSizeChanged();
             });
         }
 
@@ -2501,6 +2511,39 @@ namespace TelegramVisualPart.Pages
         {
             CalendarPage page = new CalendarPage();
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+        }
+
+        List<string> _textHistory = new List<string>();
+        private bool _textAddBlcoker = false;
+
+        private void SarchBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBoxMenu textBoxMenu = new TextBoxMenu(SarchBox, _textHistory);
+            System.Windows.Point point = e.GetPosition(this);
+
+            textBoxMenu.Loaded += (sender, e) =>
+            {
+                //is x to big
+                if (point.X + textBoxMenu.ActualWidth > this.ActualWidth)
+                {
+                    Canvas.SetLeft(textBoxMenu, point.X - textBoxMenu.Width);
+                }
+                else Canvas.SetLeft(textBoxMenu, point.X);
+
+                //is y too big
+                if (point.Y + textBoxMenu.ActualHeight > this.ActualHeight)
+                {
+                    Canvas.SetTop(textBoxMenu, this.ActualHeight - textBoxMenu.ActualHeight);
+                }
+                else Canvas.SetTop(textBoxMenu, point.Y);
+            };
+
+            textBoxMenu.UnReDoAction += () =>
+            {
+                _textAddBlcoker = true;
+            };
+
+            ((MainWindow)Window.GetWindow(this)).AddMenuInMenuCan(textBoxMenu);
         }
     }
 }

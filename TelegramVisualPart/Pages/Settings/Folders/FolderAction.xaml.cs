@@ -111,6 +111,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             // FolderIcon.Visibility = Visibility.Hidden;
         }
 
+        public event Action UpdateFolder;
         private async void CreateBut_Click(object sender, RoutedEventArgs e)
         {
             //CHECK FOLDER SETTINGS (IS name exist etc...)
@@ -129,6 +130,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
                 ((MainWindow)Window.GetWindow(this)).UpdateFolders();
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FoldersPage(_system, true));
+                UpdateFolder?.Invoke();
                 return;
             }
 

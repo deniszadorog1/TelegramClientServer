@@ -129,7 +129,10 @@
                                      GotFocus="SarchBox_GotFocus"
                                      LostFocus="SarchBox_LostFocus"
                                      TextChanged="SarchBox_TextChanged"
-                                     
+                                         
+                                     ContextMenuService.IsEnabled="False" 
+                                     PreviewMouseRightButtonDown="SarchBox_PreviewMouseRightButtonDown"
+                                         
                                      materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
                                      materialDesign:TextFieldAssist.DecorationVisibility="Hidden"/>
 
@@ -144,7 +147,7 @@
 
 
                                 <Grid x:Name="LittleCalendarGrid"
-                                      Visibility="Visible"
+                                      Visibility="Hidden"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Right"
                                       Width="25" Height="25" 
@@ -162,17 +165,17 @@
                                                              Kind="Calendar" />
 
                                 </Grid>
-                                
+
                             </Grid>
                         </Border>
 
                         <Grid 
-                      Name="MagnifierGrid"  Grid.Column="1"
-                        Background="Transparent" Visibility="Hidden"
+                            Name="MagnifierGrid"  Grid.Column="1"
+                            Background="Transparent" Visibility="Hidden"
                             
-                      MouseEnter="MagnifierGrid_MouseEnter"
-                      MouseLeave="MagnifierGrid_MouseLeave"
-                      PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
+                            MouseEnter="MagnifierGrid_MouseEnter"
+                            MouseLeave="MagnifierGrid_MouseLeave"
+                            PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
                             <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="25 10 0 0"
                                                  Width="35" Height="35" Foreground="Gray" 
                                                  Visibility="Hidden"/>

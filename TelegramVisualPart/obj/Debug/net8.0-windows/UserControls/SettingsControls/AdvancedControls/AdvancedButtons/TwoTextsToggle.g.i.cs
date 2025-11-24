@@ -77,8 +77,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.Adva
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/advancedcont" +
-                    "rols/advancedbuttons/twotextstoggle.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/advancedcontrols/adva" +
+                    "ncedbuttons/twotextstoggle.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\TwoTextsToggle.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

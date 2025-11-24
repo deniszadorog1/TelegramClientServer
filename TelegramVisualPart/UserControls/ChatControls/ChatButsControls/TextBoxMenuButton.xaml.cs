@@ -24,5 +24,23 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
         {
             InitializeComponent();
         }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            Background = (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            Background = (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
+        }
+
+        public void SetTextParams(string leftText, string rightText)
+        {
+            LeftTextBlock.Text = leftText;
+            RightTextBlock.Text = rightText;
+        }
     }
 }

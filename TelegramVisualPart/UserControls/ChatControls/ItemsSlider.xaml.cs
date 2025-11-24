@@ -18,6 +18,8 @@ using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.FolderControls;
+using TelegramVisualPart.Windows;
 using Folder = TelegramLib.MainClasses.FolderObjs.Folder;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -34,21 +36,25 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private List<Folder> _folders;
         private TelSystem _system;
-        public void SetSliderWithFolders(List<Folder> folders, TelSystem system)
+        private MainWindow _window;
+
+        public void SetSliderWithFolders(List<Folder> folders, TelSystem system,
+            MainWindow window)
         {
             _folders = folders;
             _system = system;
+            _window = window;
 
             SetFolders();
         }
-        private void SetFolders()
+        public void SetFolders()
         {
             TabsPanel.Children.Clear();
 
-            AddFolderBlock("Personal", isAllChats: true);
+            AddFolderBlock("Personal", -1, isAllChats: true);
             for (int i = 0; i < _folders.Count; i++)
             {
-                AddFolderBlock(_folders[i].Name);
+                AddFolderBlock(_folders[i].Name, _folders[i].Id);
             }
 
             SetBasicChosenFolder();
@@ -68,7 +74,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
 
-        public void AddFolderBlock(string name, bool isAllChats = false)
+        public void AddFolderBlock(string name, int folderId, bool isAllChats = false)
         {
             TextBlock block = new TextBlock()
             {
@@ -80,9 +86,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 Margin = new Thickness(10, 0, 10, 0),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Background = Brushes.Transparent,
+                Tag = folderId
             };
 
-            block.PreviewMouseDown += SetAnimation_PreviewMouseDown;
+            block.PreviewMouseLeftButtonDown += SetAnimation_PreviewMouseDown;
+            block.PreviewMouseRightButtonDown += SetFolderMenuBlock;
 
             block.MouseEnter += TextBlock_MouseEnter;
             block.MouseLeave += TextBlock_MouseLeave;
@@ -91,6 +99,37 @@ namespace TelegramVisualPart.UserControls.ChatControls
             else block.PreviewMouseDown += SetFolderChats_PreviewMouseDown;
 
             TabsPanel.Children.Add(block);
+        }
+
+        public void SetFolderMenuBlock(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not TextBlock block) return;
+
+            int.TryParse(block.Tag.ToString(), out int folderId);
+            if (folderId == -1) return;
+
+            FolderMenu menu = new FolderMenu(folderId, _system, _window);
+            
+            Size windowSize = ((MainWindow)Window.GetWindow(this)).GetWindowSize();
+            Point point = e.GetPosition(this);
+
+            menu.Loaded += (sender, e) =>
+            {
+                //is x to big
+                if (point.X + menu.ActualWidth > windowSize.Width)
+                {
+                    Canvas.SetLeft(menu, point.X - menu.Width);
+                }
+                else Canvas.SetLeft(menu, point.X);
+
+                //is y too big
+                if (point.Y + menu.ActualHeight > windowSize.Height)
+                {
+                    Canvas.SetTop(menu, windowSize.Height - menu.ActualHeight);
+                }
+                else Canvas.SetTop(menu, point.Y + menu.ActualHeight / 1.75);
+            };
+            _window.AddFolderMenu(menu);
         }
 
         public void TextBlock_MouseEnter(object sender, MouseEventArgs e)

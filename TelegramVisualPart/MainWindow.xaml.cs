@@ -34,6 +34,8 @@ using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using TelegramVisualPart.UserControls.FolderControls;
 using TelegramVisualPart.Windows;
 using Brushes = System.Windows.Media.Brushes;
 
@@ -544,9 +546,16 @@ namespace TelegramVisualPart
             {
                 info.ContactInfo.ContactMenu.Visibility = Visibility.Hidden;
             }
+
+            Menus.Children.Clear();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WindowSizeChanged();
+        }
+
+        public void WindowSizeChanged()
         {
             if (this.ActualHeight < SystemParameters.WorkArea.Height ||
                 this.ActualWidth < SystemParameters.WorkArea.Width)
@@ -1209,7 +1218,6 @@ namespace TelegramVisualPart
         public void SendOneForwardMessage(TelegramLib.MainClasses.Messages.Message message)
         {
             if (MainFrame.Content is MainChatPage page) page.SetForwardedOnlyMessage(message);
-
         }
 
         public void UpdateAutoDelVis(TelegramLib.MainClasses.UserChat chat)
@@ -1241,6 +1249,21 @@ namespace TelegramVisualPart
         public void ScrollToMessagesByDate(DateTime dateTime)
         {
             if (MainFrame.Content is MainChatPage page) page.ScrolToMessageByDateTime(dateTime);
+        }
+
+        public void AddMenuInMenuCan(TextBoxMenu menu)
+        {
+            Menus.Children.Add(menu);
+        }
+
+        public void AddFolderMenu(FolderMenu menu)
+        {
+            Menus.Children.Add(menu);
+        }
+
+        public Size GetWindowSize()
+        {
+            return new Size(this.ActualWidth, this.ActualHeight);
         }
     }
 }

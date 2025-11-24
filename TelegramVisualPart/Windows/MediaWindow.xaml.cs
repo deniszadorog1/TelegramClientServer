@@ -523,11 +523,11 @@ namespace TelegramVisualPart.Windows
             double width =  _type == MediaShowType.Videos ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
             double height = _type == MediaShowType.Videos ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
 
-            if (!(el.RenderTransform is RotateTransform rotateTransform))
-            {
-                rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
+            /* if (!(el.RenderTransform is RotateTransform rotateTransform))
+             {*/
+                RotateTransform rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
                 el.RenderTransform = rotateTransform;
-            }
+            //}
             _rotation += _rotateAngle;
 
             DoubleAnimation animation = new DoubleAnimation

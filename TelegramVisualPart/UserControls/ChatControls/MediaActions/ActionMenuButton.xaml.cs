@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.MediaActions
         {
             this.Background = (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
             Cursor = null;
-        }       
+        }     
+        
+        public void SetBasicParams(string text, PackIconKind kind)
+        {
+            Icon.Kind = kind;
+            ButText.Text = text;
+        }
+
+        public void SetColor(SolidColorBrush color)
+        {
+            Icon.Foreground = color;
+            ButText.Foreground = color;
+        }
     }
 }

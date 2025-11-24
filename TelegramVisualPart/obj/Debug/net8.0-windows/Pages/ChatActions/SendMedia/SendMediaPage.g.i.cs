@@ -355,8 +355,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/chatactions/sendmedia/sendmediapage." +
-                    "xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/chatactions/sendmedia/sendmediapage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\Pages\ChatActions\SendMedia\SendMediaPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

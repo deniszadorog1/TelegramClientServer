@@ -96,6 +96,8 @@
 
                 <Frame Name="BlockFrame" NavigationUIVisibility="Hidden"/>
 
+                <Canvas Name="Menus"/>
+
             </Grid>
         </Grid>
     </Border>

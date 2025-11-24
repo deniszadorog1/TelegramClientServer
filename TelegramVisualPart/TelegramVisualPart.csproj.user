@@ -304,6 +304,9 @@
     <Compile Update="UserControls\DifferButs\ToggleTextBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\FolderControls\FolderMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\MainPage\LeftButtons.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -724,6 +727,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\DifferButs\ToggleTextBut.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\FolderControls\FolderMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\MainPage\LeftButtons.xaml">

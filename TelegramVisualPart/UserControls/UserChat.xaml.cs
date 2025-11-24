@@ -57,6 +57,7 @@ using TelegramVisualPart.Windows;
 using TelegramLib.Enums.Chat;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.ChatActions;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -978,11 +979,11 @@ namespace TelegramVisualPart.UserControls
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
+                _textHistory.Clear();
                 if (await SendSelectedMessagesToForward()) return;
 
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
                 MessageMenu.Children.Clear();
-
                 //To send text message
                 await AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name,
                     CommentTextBox.Text);
@@ -996,6 +997,8 @@ namespace TelegramVisualPart.UserControls
                 _toForwardMessages.Count > 0 &&
                 _forwardSenderId is not null)
             {
+                UpdateSentDateForMessagesToForward();
+
                 TelegramLib.MainClasses.UserChat chat =
                     _system.GetChatByChatterId((int)_forwardSenderId);
 
@@ -1011,6 +1014,18 @@ namespace TelegramVisualPart.UserControls
                 return true;
             }
             return false;
+        }
+
+        public void UpdateSentDateForMessagesToForward()
+        {
+            List<Message> res = new List<Message>();
+            for(int i = 0; i < _toForwardMessages.Count; i++)
+            {
+                Message copy = (Message)DeepCopy(_toForwardMessages[i]);
+                copy.SentTime = DateTime.Now;
+                res.Add(copy);
+            }
+            _toForwardMessages = res;
         }
 
         public async Task AddForwardedMessagesInDB(TelegramLib.MainClasses.UserChat chat)
@@ -2096,9 +2111,12 @@ namespace TelegramVisualPart.UserControls
             bool isAdd = true, MediaAction mes = null)
         {
             DateTime sentDate = mes is null ? DateTime.Now : mes.SentTime;
+            int? forwardedSenderId = mes is null ? null : mes.ForwardedFromId;
+
 
             var message = new MediaMessage(gifPath, senderImageName, sentDate,
-                _forwardSenderId = mes.ForwardedFromId);
+                _forwardSenderId = forwardedSenderId);
+
             message.PreviewMouseDown += ChatGif_PreviewMouseDown;
 
             if (isAdd) Task.Run(() => AddMediaPath(gifPath, isAdd: isAdd)).Wait();
@@ -2418,7 +2436,6 @@ namespace TelegramVisualPart.UserControls
             ContactInfo info = new ContactInfo();
             ContactInfoGrid.Children.Add(info);
 
-
             //info.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id)); /*_system.ChosenChatContact*/
 
             info.LoadEnd += () =>
@@ -2447,7 +2464,6 @@ namespace TelegramVisualPart.UserControls
                 UnBlockBorder.Visibility = Visibility.Visible;
             }
             else UnBlockBorder.Visibility = Visibility.Hidden;
-
 
             //update contact
             if (!ContactInfoGrid.Children.OfType<ContactInfo>().Any()) return;
@@ -3350,10 +3366,15 @@ namespace TelegramVisualPart.UserControls
                 control is MediaMessage media)
             {
                 ReplyedImageColumn.Width = new GridLength(50);
-                ReplyedImage.Source = media._img.Source; /*new BitmapImage(
+
+
+                if (media._img is not null) ReplyedImage.Source = media._img.Source;
+                else return;
+                /*else if(media._gifPath is not null && media._gifPath != string.Empty)
+                ReplyedImage.Source =  new BitmapImage(
                     new Uri(FilesAction.GetUserImagePath(
-                        _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));
-            */
+                        _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
+            
             }
             else
             {
@@ -3522,6 +3543,7 @@ namespace TelegramVisualPart.UserControls
             //Set reply row in chat    
             SetReplyRowParams(messageControl, messages);
         }
+
 
         public void ClearForwardMessagesFromReply()
         {
@@ -3927,6 +3949,49 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
             ScrollToMessageByMessageId(mes.Id);
+        }
+
+        List<string> _textHistory = new List<string>();
+        private bool _textAddBlcoker = false;
+
+        private void CommentTextBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBoxMenu textBoxMenu = new TextBoxMenu(CommentTextBox, _textHistory);
+            System.Windows.Point point = e.GetPosition(this);
+
+            textBoxMenu.Loaded += (sender, e) =>
+            {
+                //is x to big
+                if (point.X + textBoxMenu.ActualWidth > this.ActualWidth)
+                {
+                    Canvas.SetLeft(textBoxMenu, point.X - textBoxMenu.Width);
+                }
+                else Canvas.SetLeft(textBoxMenu, point.X);
+
+                //is y too big
+                if (point.Y + textBoxMenu.ActualHeight > this.ActualHeight)
+                {
+                    Canvas.SetTop(textBoxMenu, this.ActualHeight - textBoxMenu.ActualHeight);
+                }
+                else Canvas.SetTop(textBoxMenu, point.Y);
+            };
+
+            textBoxMenu.UnReDoAction += () =>
+            {
+                _textAddBlcoker = true;
+            };
+
+            MessageMenu.Children.Add(textBoxMenu);
+        }
+
+        private void CommentTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_textAddBlcoker)
+            {
+                _textAddBlcoker = false;
+                return;
+            }
+            _textHistory.Add(CommentTextBox.Text);
         }
     }
 }

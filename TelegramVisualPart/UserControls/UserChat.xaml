@@ -96,7 +96,7 @@
                       PreviewMouseDown="FindMessage_PreviewMouseDown"
                       MouseEnter="FindMessageBut_MouseEnter"
                       MouseLeave="FindMessageBut_MouseLeave">
-                    <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
+                      <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" 
                                          Name="FindMessageIcon"/>
@@ -106,7 +106,7 @@
                       PreviewMouseDown="UserInfoBut_PreviewMouseDown"
                       MouseEnter="UserInfoBut_MouseEnter"
                       MouseLeave="UserInfoBut_MouseLeave">
-                    <materialDesign:PackIcon Kind="PageLayoutSidebarRight" Foreground="Gray"
+                     <materialDesign:PackIcon Kind="PageLayoutSidebarRight" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" Margin="5"
                                          Name="UserInfoIcon"/>
@@ -115,7 +115,7 @@
                       MouseDown="UserChatMenuBut_PreviewMouseDown"
                       MouseEnter="UserChatMenuBut_MouseEnter"
                       MouseLeave="UserChatMenuBut_MouseLeave">
-                    <materialDesign:PackIcon Kind="DotsVerticalCircleOutline" Foreground="Gray"
+                     <materialDesign:PackIcon Kind="DotsVerticalCircleOutline" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" Margin="5 0 15 0"
                                          Name="UserChatMenuIcon"/>
@@ -371,7 +371,10 @@
                      Background="{StaticResource DarkThemeOne}" Foreground="White" 
                      VerticalContentAlignment="Center" CaretBrush="White"
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                     BorderThickness="0" FontSize="16" />
+                     BorderThickness="0" FontSize="16" 
+                     ContextMenuService.IsEnabled="False" 
+                     TextChanged="CommentTextBox_TextChanged"
+                     PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"/>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" >
 

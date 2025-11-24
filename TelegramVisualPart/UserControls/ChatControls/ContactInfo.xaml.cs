@@ -341,7 +341,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetBioRow(TelegramLib.MainClasses.User toUpdate)
         {
-            if (toUpdate.BIO == string.Empty)
+            if (toUpdate.BIO is null || toUpdate.BIO == string.Empty)
             {
                 BioRow.Height = new GridLength(0);
                 UpdateSizeWithBioRow(toUpdate);
@@ -356,7 +356,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void UpdateSizeWithBioRow(TelegramLib.MainClasses.User user)
         {
-            if (user.BIO == string.Empty)
+            if (user.BIO is null ||  user.BIO == string.Empty)
             {
                 InfoRow.Height = new GridLength(_baseInfoRowHeight);
             }
