@@ -1019,7 +1019,7 @@ namespace TelegramVisualPart.UserControls
         public void UpdateSentDateForMessagesToForward()
         {
             List<Message> res = new List<Message>();
-            for(int i = 0; i < _toForwardMessages.Count; i++)
+            for (int i = 0; i < _toForwardMessages.Count; i++)
             {
                 Message copy = (Message)DeepCopy(_toForwardMessages[i]);
                 copy.SentTime = DateTime.Now;
@@ -1703,7 +1703,7 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
 
-            TelegramLib.MainClasses.UserChat? chat = 
+            TelegramLib.MainClasses.UserChat? chat =
                 await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
 
             //remove from db
@@ -2428,9 +2428,9 @@ namespace TelegramVisualPart.UserControls
             RemoveRightContactInfo();
         }
 
+        private int _userContactWidth = 450;
         public async Task AddContactInfo()
         {
-            const int _userContactWidth = 450;
             double windowWidth = ((MainWindow)Window.GetWindow(this)).ActualWidth;
 
             ContactInfo info = new ContactInfo();
@@ -2441,8 +2441,10 @@ namespace TelegramVisualPart.UserControls
             info.LoadEnd += () =>
             {
                 if (windowWidth + _userContactWidth <=
-                    SystemParameters.PrimaryScreenWidth)
+                    SystemParameters.PrimaryScreenWidth && 
+                    !_mainWindow.GetIsLongContnetChatState())
                 {
+                    _mainWindow.SetIsLongContnetChatState(true);
                     ((MainWindow)Window.GetWindow(this)).Width =
                         windowWidth + _userContactWidth;
                 }
@@ -2487,6 +2489,19 @@ namespace TelegramVisualPart.UserControls
         {
             ContactInfoGrid.Children.Clear();
             UserInfoColumn.Width = new GridLength(0);
+
+            if (_mainWindow.GetIsLongContnetChatState())
+            {
+                ((MainWindow)Window.GetWindow(this)).Width -= _userContactWidth;
+            }
+
+            _mainWindow.SetIsLongContnetChatState(false);
+        }
+
+        private const int _basicButWidth = 30;
+        public void SetUserInfoButGrid(bool isVis)
+        {
+            UserInfoBut.Width = isVis ? _basicButWidth : 0;
         }
 
         public void UpdateColors()
@@ -3374,7 +3389,7 @@ namespace TelegramVisualPart.UserControls
                 ReplyedImage.Source =  new BitmapImage(
                     new Uri(FilesAction.GetUserImagePath(
                         _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
-            
+
             }
             else
             {
@@ -3993,5 +4008,6 @@ namespace TelegramVisualPart.UserControls
             }
             _textHistory.Add(CommentTextBox.Text);
         }
+
     }
 }

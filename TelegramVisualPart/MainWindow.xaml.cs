@@ -1265,5 +1265,19 @@ namespace TelegramVisualPart
         {
             return new Size(this.ActualWidth, this.ActualHeight);
         }
+
+        public bool GetIsLongContnetChatState()
+        {
+            if (MainFrame.Content is MainChatPage page) return page._chatterInfo;
+
+            return false;
+        }
+
+        public void SetIsLongContnetChatState(bool status)
+        {
+            if (MainFrame.Content is MainChatPage page) 
+                page.SetUserChatContactInfoStatus(status);
+        }
+
     }
 }

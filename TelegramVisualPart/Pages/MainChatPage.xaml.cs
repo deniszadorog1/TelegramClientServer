@@ -60,6 +60,7 @@ namespace TelegramVisualPart.Pages
     {
         private TelSystem _system;
         public TelegramLib.MainClasses.UserChat _chosenChat;
+        public bool _chatterInfo = false;
 
         public MainChatPage(TelSystem system)
         {
@@ -76,9 +77,16 @@ namespace TelegramVisualPart.Pages
             FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system, (MainWindow)Window.GetWindow(this));
 
             UpdateTabsPlacement();
+            UpdateFolders();
+
             SetLangText();
 
             SetEvents();
+        }
+
+        public void SetUserChatContactInfoStatus(bool status)
+        {
+            _chatterInfo = status;
         }
 
         public void SetEvents()
@@ -685,11 +693,6 @@ namespace TelegramVisualPart.Pages
                 UserChat.SettingEnded -= tempHandler;
             };
             UserChat.SettingEnded += tempHandler;
-
-            Console.WriteLine(ChatsColumn.Width);
-            Console.WriteLine(LeftButtonsColumn.Width);
-            Console.WriteLine(GridSplitterColumn.Width);
-            Console.WriteLine(ChatColumn.Width);
         }
 
         public void SearchMessage_MouseEnter(object sender, MouseEventArgs e)
@@ -781,7 +784,7 @@ namespace TelegramVisualPart.Pages
         public void HideAllChatBlocks()
         {
             ChatsBox.Visibility = Visibility.Hidden;
-            
+
             SearchBoxGrid.Visibility = Visibility.Hidden;
             LittleCalendarGrid.Visibility = Visibility.Hidden;
 
@@ -1150,7 +1153,7 @@ namespace TelegramVisualPart.Pages
             if (SearchMessageGrid.Visibility == Visibility.Hidden &&
                 GlobalMessageSearch.Visibility == Visibility.Hidden) ChatsBox.Visibility = Visibility.Visible;
 
-            if(ChatsColumn.Width.Value != 0) ChatsColumn.MinWidth = 50;
+            if (ChatsColumn.Width.Value != 0) ChatsColumn.MinWidth = 50;
             CrossSearchColumn.Width = new GridLength(0);
 
             if (!_system.Settings.IsTabsOnTheLeft)
@@ -1640,7 +1643,7 @@ namespace TelegramVisualPart.Pages
         public void UpdateFolders()
         {
             if (_system.Settings.IsTabsOnTheLeft) LeftButtons.UpdateFolders();
-            else FolderSliderMenu.SetFolders();
+            if(FolderSliderMenu.Height != 0) FolderSliderMenu.SetFolders();
         }
 
         private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1717,7 +1720,9 @@ namespace TelegramVisualPart.Pages
                         //The most window level
                         //clear every modified param
                         UserChat.SetMessagesPosition(true);
+                        UserChat.SetUserInfoButGrid(true);
 
+                        SetFoldersLineVis();
                         return;
                     }
                 case SizerActionType.SecondLevel:
@@ -1727,21 +1732,33 @@ namespace TelegramVisualPart.Pages
                         if (UserChat.Visibility == Visibility.Hidden) return;
 
                         UserChat.SetMessagesPosition(false);
+                        UserChat.SetUserInfoButGrid(true);
+
+                        SetFoldersLineVis();
                         return;
                     }
                 case SizerActionType.ThirdLevel:
                     {
                         SetThirdLevel();
+                        SetFoldersLineVis();
                         return;
                     }
                 case SizerActionType.FourthLevel:
                     {
-                        _system.Settings.IsTabsOnTheLeft = false;
+                        //_system.Settings.IsTabsOnTheLeft = false;
+
                         ChangeLeftButsVisState(false);
+
+                        UserChat.SetUserInfoButGrid(false);
                         SetClosingChatColumn();
                         return;
                     }
             }
+        }
+
+        public void SetFoldersLineVis()
+        {
+            ChangeLeftButsVisState(_system.Settings.IsTabsOnTheLeft);
         }
 
         public void ClearPrevSizerChanges(Enums.SizerActionType? tempSizeType)
@@ -1773,8 +1790,8 @@ namespace TelegramVisualPart.Pages
 
         private void ClearThirdLevelState()
         {
-            _system.Settings.IsTabsOnTheLeft = true;
-            ChangeLeftButsVisState(true);
+            //_system.Settings.IsTabsOnTheLeft = true;
+            ChangeLeftButsVisState(_system.Settings.IsTabsOnTheLeft);
 
             ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
             ChatColumn.Width = new GridLength(0);
@@ -1809,6 +1826,9 @@ namespace TelegramVisualPart.Pages
 
                 //Set gridSplitter column width
                 SetColumnWidth(GridSplitterColumn, 0);
+
+                //Hide Contact info Button
+                UserChat.SetUserInfoButGrid(false);
 
                 //Set User Chat Column Width
                 /*                double newUserChatColumn = this.ActualWidth - LeftButtons.ActualWidth;

@@ -34,6 +34,7 @@ namespace TelegramVisualPart.EnterInAccount
             InitializeComponent();
         }
 
+
         private void RegistrationGrid_MouseLeave(object sender, MouseEventArgs e)
         {
             Register.TextDecorations = null;

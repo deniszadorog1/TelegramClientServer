@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -95,8 +96,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             block.MouseEnter += TextBlock_MouseEnter;
             block.MouseLeave += TextBlock_MouseLeave;
 
-            if (isAllChats) block.PreviewMouseDown += SetAllChats_PreviewMouseDown;
-            else block.PreviewMouseDown += SetFolderChats_PreviewMouseDown;
+            if (isAllChats) block.PreviewMouseLeftButtonDown += SetAllChats_PreviewMouseDown;
+            else block.PreviewMouseLeftButtonDown += SetFolderChats_PreviewMouseDown;
 
             TabsPanel.Children.Add(block);
         }
@@ -106,10 +107,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (sender is not TextBlock block) return;
 
             int.TryParse(block.Tag.ToString(), out int folderId);
-            if (folderId == -1) return;
+            FolderMenu menu = null;
 
-            FolderMenu menu = new FolderMenu(folderId, _system, _window);
-            
+            if (folderId != -1) menu = new FolderMenu(folderId, _system, _window);
+            else menu = new FolderMenu(_system, _window);
+
             Size windowSize = ((MainWindow)Window.GetWindow(this)).GetWindowSize();
             Point point = e.GetPosition(this);
 
@@ -123,11 +125,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 else Canvas.SetLeft(menu, point.X);
 
                 //is y too big
-                if (point.Y + menu.ActualHeight > windowSize.Height)
+
+                double mult = menu.GetFolderId() != -1 ? 1 : 2.5;
+
+                if (point.Y + menu.ActualHeight * mult  > windowSize.Height)
                 {
-                    Canvas.SetTop(menu, windowSize.Height - menu.ActualHeight);
+                    Canvas.SetTop(menu, windowSize.Height - menu.ActualHeight * mult);
                 }
-                else Canvas.SetTop(menu, point.Y + menu.ActualHeight / 1.75);
+                else Canvas.SetTop(menu, point.Y + menu.ActualHeight * mult / 1.75);
             };
             _window.AddFolderMenu(menu);
         }

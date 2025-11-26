@@ -18,6 +18,7 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Services;
+using static System.Collections.Specialized.BitVector32;
 
 namespace TelegramVisualPart.UserControls.FolderControls
 {
@@ -26,7 +27,7 @@ namespace TelegramVisualPart.UserControls.FolderControls
     /// </summary>
     public partial class FolderMenu : UserControl
     {
-        private int _folderId;
+        private int _folderId = -1;
         private TelSystem _system;
         private MainWindow _mainWindow;
 
@@ -39,13 +40,32 @@ namespace TelegramVisualPart.UserControls.FolderControls
             InitializeComponent();
             SetBasicParams();
         }
+        //Set Edit all folders
+        public FolderMenu(TelSystem system, MainWindow window)
+        {
+            _mainWindow = window;
+            _system = system;
+
+            InitializeComponent();
+
+            SetBasicParams();
+            SetEmptyFolderParams();
+        }
+
+        private const int _baseButHeight = 40;
+        private void SetEmptyFolderParams()
+        {
+            EditFolderBut.Height = 0;
+            RemoveBut.Height = 0;
+
+            EditAllFolders.Height = _baseButHeight;
+        }
 
         public void SetBasicParams()
         {
             EditFolderBut.SetBasicParams("Edit folder", PackIconKind.PencilOutline); ;
             EditAllFolders.SetBasicParams("Edit All folders", PackIconKind.PencilOutline); ;
             
-
             RemoveBut.SetBasicParams("Remove", PackIconKind.GarbageCanOutline); ;
             RemoveBut.SetColor(new SolidColorBrush(Colors.Red));
         }
@@ -74,6 +94,17 @@ namespace TelegramVisualPart.UserControls.FolderControls
 
                 _mainWindow.UpdateFolders();
             }
+            else if(sender == EditAllFolders)
+            {
+                FoldersPage page = new FoldersPage(_system, false);
+
+                _mainWindow.SetSecondaryFrame(page);
+            }
+        }
+
+        public int GetFolderId()
+        {
+            return _folderId;
         }
     }
 }

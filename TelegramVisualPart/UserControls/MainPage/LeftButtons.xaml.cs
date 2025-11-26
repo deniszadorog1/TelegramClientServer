@@ -67,8 +67,15 @@ namespace TelegramVisualPart.UserControls.MainPage
 
             FolderMenu menu = new FolderMenu(folderId, _system, (MainWindow)Window.GetWindow(this));
 
-            Size windowSize =  ((MainWindow)Window.GetWindow(this)).GetWindowSize();
+            Size windowSize = ((MainWindow)Window.GetWindow(this)).GetWindowSize();
+            SetFolderMenuPostion(point, menu, windowSize);
 
+            ((MainWindow)Window.GetWindow(this)).AddFolderMenu(menu);
+            //Add menu on main
+        }
+
+        public void SetFolderMenuPostion(Point point, FolderMenu menu, Size windowSize)
+        {
             menu.Loaded += (sender, e) =>
             {
                 //is x to big
@@ -85,10 +92,6 @@ namespace TelegramVisualPart.UserControls.MainPage
                 }
                 else Canvas.SetTop(menu, point.Y);
             };
-
-            ((MainWindow)Window.GetWindow(this)).AddFolderMenu(menu);
-
-            //Add menu on main
         }
 
         public void SetBasicParams()
@@ -102,8 +105,6 @@ namespace TelegramVisualPart.UserControls.MainPage
             Edit.ButIcon.Kind = PackIconKind.PlaylistEdit;
             //Edit.ButText.Text = "Edit";
         }
-
-        
 
         public event EventHandler? OnMenuClick;
 
@@ -140,6 +141,20 @@ namespace TelegramVisualPart.UserControls.MainPage
 
             _system.Settings.ChosenFolderId = -1;
             ((MainWindow)Window.GetWindow(this)).SetAllChatsInMainPage();
+        }
+
+        private void AllFolderMenu_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListBoxItem item) return;
+            System.Windows.Point point = e.GetPosition(this);
+
+            FolderMenu menu = new FolderMenu(_system, (MainWindow)Window.GetWindow(this));
+
+            Size windowSize = ((MainWindow)Window.GetWindow(this)).GetWindowSize();
+            SetFolderMenuPostion(point, menu, windowSize);
+
+            ((MainWindow)Window.GetWindow(this)).AddFolderMenu(menu);
+            //Add menu on main
         }
 
         private void FolderBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
