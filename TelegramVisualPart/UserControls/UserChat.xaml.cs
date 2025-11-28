@@ -58,6 +58,10 @@ using TelegramLib.Enums.Chat;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using static MaterialDesignThemes.Wpf.Theme;
+using ListBoxItem = System.Windows.Controls.ListBoxItem;
+using Button = System.Windows.Controls.Button;
+using TelegramVisualPart.Enums.MediaShow;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -1126,7 +1130,7 @@ namespace TelegramVisualPart.UserControls
 
             return _system.GetMessageById(id);
         }
-
+        
         private async Task AddTextMessageControl(string senderImageName, string sendText)
         {
             await AddDateStatMessage();
@@ -1148,9 +1152,7 @@ namespace TelegramVisualPart.UserControls
             };
             item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
 
-
             //SetMessagePositionSettings(item);
-
             //system add
 
             int? replyId = toReply is null ? null : toReply.Id;
@@ -1257,6 +1259,8 @@ namespace TelegramVisualPart.UserControls
 
             menu.ReplyAct += () => SetReplyMessageRow();
             menu.PinAct += () => SetMessagePinChat();
+            
+            menu.ShowInFolderAct += () => ShowInFolderAction();
             menu.ForwardAct += () => ForwardMesAction();
 
             menu.DeleteAct += () => SetIsBothDeletePage();
@@ -1512,6 +1516,36 @@ namespace TelegramVisualPart.UserControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
 
+        public void ShowInFolderAction()
+        {
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
+            if (item is null || item.Content is not UserControl control) return;
+
+            Message mes = GetMessageByListBoxTag(item);
+            if (mes is null || mes is not MediaAction media) return;
+
+
+            (string name, MediaShowType type) mediaParams = GetParamsToShowInFolder(media);
+
+            //Get full filePath
+            string fullPath = FilesAction.GetFullPath(mediaParams.name, mediaParams.type); //GetFullPath(mediaName);
+
+            if (fullPath is null || fullPath == string.Empty || !File.Exists(fullPath))
+            {
+                MessageBox.Show("Not exist man!");
+                return;
+            }
+            System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{fullPath}\"");
+        }
+
+        public (string, MediaShowType) GetParamsToShowInFolder(MediaAction media)
+        {
+            return media.IsImage() ? (media.MediaName, MediaShowType.ChatImages) :
+                media.IsGif() ? (media.MediaName, MediaShowType.Gif) :
+                media.IsVideo() ? (media.MediaName, MediaShowType.Videos) : 
+                (string.Empty, MediaShowType.OtherUserImages);
+        }
+
         public void SaveMediaAction()
         {
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
@@ -1522,8 +1556,8 @@ namespace TelegramVisualPart.UserControls
 
             if (media.IsGif())
             {
-                string gifFullPath = FilesAction.GetFullChatImagePath(media.MediaName);
-                SaveElements.SaveGifAs(media.MediaName);
+                string gifFullPath = FilesAction.GetFullGifPath(media.MediaName);
+                SaveElements.SaveGifAs(gifFullPath);
             }
             else if (media.IsImage())
             {
@@ -1553,6 +1587,8 @@ namespace TelegramVisualPart.UserControls
             }
             else if (mes is TelegramLib.MainClasses.Messages.MediaAction media)
             {
+                if (!media.IsImage()) return;
+
                 string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
                 var image = new BitmapImage(new Uri(mediaPath));
                 Clipboard.SetImage(image);
@@ -2117,7 +2153,7 @@ namespace TelegramVisualPart.UserControls
             var message = new MediaMessage(gifPath, senderImageName, sentDate,
                 _forwardSenderId = forwardedSenderId);
 
-            message.PreviewMouseDown += ChatGif_PreviewMouseDown;
+            message.MouseLeftButtonDown += ChatGif_PreviewMouseDown;
 
             if (isAdd) Task.Run(() => AddMediaPath(gifPath, isAdd: isAdd)).Wait();
             if (mes is null) mes = (MediaAction)_chatMessages.Last();
@@ -2177,7 +2213,7 @@ namespace TelegramVisualPart.UserControls
         private void AddVideoMessage(MediaElement el, string senderImageName, MediaAction mes)
         {
             var video = new MediaMessage(el, senderImageName, mes, mes.ForwardedFromId);
-            video.PreviewMouseDown += ChatVideo_PreviewMouseDown;
+            video.PreviewMouseLeftButtonDown += ChatVideo_PreviewMouseDown;
 
             ListBoxItem item = new ListBoxItem()
             {
@@ -2185,6 +2221,8 @@ namespace TelegramVisualPart.UserControls
                 Tag = mes.Id.ToString(),
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
+
             //SetMessagePositionSettings(item);
 
             ChatBox.Items.Add(item);
@@ -3382,14 +3420,14 @@ namespace TelegramVisualPart.UserControls
             {
                 ReplyedImageColumn.Width = new GridLength(50);
 
+                Console.WriteLine(media._gifPath);
 
                 if (media._img is not null) ReplyedImage.Source = media._img.Source;
+               
+                else if (media._gifPath is not null &&
+                    media._gifPath != string.Empty) ReplyedImage.Source = FilesAction.GetFirstImageFromGif(media._gifPath);
+                
                 else return;
-                /*else if(media._gifPath is not null && media._gifPath != string.Empty)
-                ReplyedImage.Source =  new BitmapImage(
-                    new Uri(FilesAction.GetUserImagePath(
-                        _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
-
             }
             else
             {
@@ -3654,7 +3692,7 @@ namespace TelegramVisualPart.UserControls
             if (sender is Button but) but.Background =
                             (SolidColorBrush)Application.Current.Resources["OtherButMouseEnter"];
         }
-
+        
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ClearSelectionRow();
@@ -4008,6 +4046,5 @@ namespace TelegramVisualPart.UserControls
             }
             _textHistory.Add(CommentTextBox.Text);
         }
-
     }
 }

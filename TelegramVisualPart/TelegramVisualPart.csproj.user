@@ -286,6 +286,9 @@
     <Compile Update="UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ContactsControls\SentLinkControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ContactsControls\UserContact.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -709,6 +712,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ContactsControls\SentLinkControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\UserContact.xaml">

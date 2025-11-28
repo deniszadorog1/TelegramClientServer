@@ -7,7 +7,6 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="65" d:DesignWidth="200" 
-             MaxHeight="150"
              xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">

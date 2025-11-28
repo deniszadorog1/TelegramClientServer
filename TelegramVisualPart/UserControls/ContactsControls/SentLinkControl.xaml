@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="TelegramVisualPart.UserControls.ContactsControls.SentLinkControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ContactsControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border Name="LikeImgBorder" Grid.Column="0" 
+                VerticalAlignment="Top"
+                Margin="0 15 0 0"
+                HorizontalAlignment="Center"
+                Width="55" Height="55"
+                CornerRadius="10"
+                Background="{StaticResource TempActiveTextColor}"
+                >
+            <TextBlock Name="LikeImgTextBlock"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       Text="W" FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="White"/>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="0 10 20 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition x:Name="DescriptionRow"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Name="SiteName" 
+                       Grid.Row="0"
+                       Text="Test name"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="White"
+                       FontSize="16"
+                       FontWeight="DemiBold"/>
+
+            <TextBlock Name="DescriptionBlock"
+                       Grid.Row="1" Margin="0 0 0 0"
+                       Text="description text"            
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="White"
+                       TextWrapping="Wrap"
+                       FontSize="14"/>
+
+            <TextBlock Name="LinkBlock"
+                       Grid.Row="2"
+                       Text="Test link text"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       TextTrimming="CharacterEllipsis"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Foreground="{StaticResource TempActiveTextColor}"
+                       
+                       MouseEnter="LinkBlock_MouseEnter"
+                       MouseLeave="LinkBlock_MouseLeave"
+                       PreviewMouseDown="LinkBlock_PreviewMouseDown"/>
+        </Grid>
+    </Grid>
+</UserControl>

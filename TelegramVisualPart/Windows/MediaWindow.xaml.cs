@@ -354,7 +354,7 @@ namespace TelegramVisualPart.Windows
             else mediaName = _mediaMessages[_tempMediaIndex].MediaName;
 
             //Get full filePath
-            string? fullPath = GetFullPath(mediaName);
+            string? fullPath = FilesAction.GetFullPath(mediaName, _type); //GetFullPath(mediaName);
 
             if (fullPath is null || !File.Exists(fullPath))
             {

@@ -1639,7 +1639,6 @@ namespace TelegramVisualPart.Pages
             MenusCan.Children.Clear();
         }
 
-
         public void UpdateFolders()
         {
             if (_system.Settings.IsTabsOnTheLeft) LeftButtons.UpdateFolders();

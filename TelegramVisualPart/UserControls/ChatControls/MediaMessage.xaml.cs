@@ -54,6 +54,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             InitializeComponent();
             ImgMessage.ImageSource = _img.Source;
 
+            SetImgMessageSize(_img, ImageBorder);
+
             HideAllBorders();
             ImageBorder.Visibility = Visibility.Visible;
             SetSenderImage();
@@ -62,6 +64,24 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetTickEvent();
             SetForwardedFromRow();
+        }
+
+
+        private const int _minMediaSize = 125;
+        private const int _maxMediaSize = 225;
+
+        public void SetImgMessageSize(Image img, Border border)
+        {
+            if (img.Source is not BitmapImage bitmap) return;
+
+            border.Width = bitmap.PixelWidth;
+            border.Height = bitmap.PixelHeight;
+
+            if (border.Width < _minMediaSize) border.Width = _minMediaSize;
+            if (border.Width > _maxMediaSize) border.Width = _maxMediaSize;
+
+            if (border.Height < _minMediaSize) border.Height = _minMediaSize;
+            if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
         public MediaMessage(string gifPath, string senderImgName, DateTime sentTime,
@@ -100,6 +120,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
             var source = new BitmapImage(uri);
             WpfAnimatedGif.ImageBehavior.SetAnimatedSource(GifImage, source);
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(GifImage, RepeatBehavior.Forever);
+
+            SetGifSize(GifImage, GifBorder, source);
+        }
+
+        public void SetGifSize(Image img, Border border, BitmapImage bitmap)
+        {
+            border.Width = bitmap.PixelWidth;
+            border.Height = bitmap.PixelHeight;
+
+            if (border.Width < _minMediaSize) border.Width = _minMediaSize;
+            if (border.Width > _maxMediaSize) border.Width = _maxMediaSize;
+
+            if (border.Height < _minMediaSize) border.Height = _minMediaSize;
+            if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
         public MediaMessage(MediaElement media, string senderImgName,
@@ -172,6 +206,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Image img = FilesAction.GetImagePreviewForVideo(fileName);
 
             ImgMessage.ImageSource = img.Source;
+
+            SetImgMessageSize(img, ImageBorder);
         }
 
         public void HideAllBorders()

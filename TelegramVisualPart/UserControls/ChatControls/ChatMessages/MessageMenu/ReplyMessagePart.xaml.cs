@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
+using static System.Collections.Specialized.BitVector32;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 {
@@ -30,9 +31,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         }
 
         public void SetReplyMessageParams(TelSystem system,
-            TelegramLib.MainClasses.Messages.Message mes) 
+            TelegramLib.MainClasses.Messages.Message mes)
         {
-            if(mes.Id == -1)
+            if (mes.Id == -1)
             {
                 ImageColumn.Width = new GridLength(0);
                 TextGrid.Visibility = Visibility.Hidden;
@@ -40,12 +41,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                 return;
             }
 
-            if(mes is MediaAction action && mes.Id != -1)
+            if (mes is MediaAction action && mes.Id != -1)
             {
-                string path = FilesAction.GetFullChatImagePath(action.MediaName);
-                if (File.Exists(path)) 
-                    ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
-                
+                SetMediaPath(action.MediaName);
             }
             else ImageColumn.Width = new GridLength(0);
 
@@ -53,8 +51,35 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
             ReplyedMessage.Text =
                 mes is MediaAction ? "Media" :
-                mes is TelegramLib.MainClasses.Messages.TextMessage secText  ? secText.Text :
+                mes is TelegramLib.MainClasses.Messages.TextMessage secText ? secText.Text :
                 "Message";
+        }
+
+        public void SetMediaPath(string mediaName)
+        {
+            if (FilesAction.IsFileIsImage(mediaName))
+            {
+                string path = FilesAction.GetFullChatImagePath(mediaName);
+                if (!File.Exists(path)) return;
+                ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
+            }
+            else if (FilesAction.IsFileIsGif(mediaName))
+            {
+                string fullGifName = FilesAction.GetFullGifPath(mediaName);
+
+                BitmapSource firstGifImgSource = FilesAction.GetFirstImageFromGif(fullGifName);
+                if (firstGifImgSource is null) return;
+
+                ReplyImage.Source = firstGifImgSource;
+            }
+            else if (FilesAction.IsFileIsVideo(mediaName))
+            {
+                //string fullGifName = FilesAction.GetFullVideoPath(mediaName);
+
+                
+
+                //ReplyImage.Source = firstGifImgSource;
+            }
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)

@@ -59,7 +59,7 @@
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="280" Name="InfoRow"/>
                         <RowDefinition Height="10"/>
-                        <RowDefinition Height="155" Name="MediasRow"/>
+                        <RowDefinition Height="205" Name="MediasRow"/>
                         <RowDefinition Height="10" Name="DivRow"/>
                         <RowDefinition Height="200" x:Name="ToBeHiddenButs"/>
                     </Grid.RowDefinitions>
@@ -196,6 +196,7 @@
                             <!--<RowDefinition/>
                             <RowDefinition/> -->
                             <RowDefinition Name="GifRow" Height="50"/>
+                            <RowDefinition Name="LinkRow" Height="50"/>
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
@@ -213,6 +214,10 @@
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="Line_PreviewMouseDown"/>
 
+                        <Grid Grid.ColumnSpan="2" Grid.Row="3" Background="Transparent" Name="LinkLine"
+                              MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
+                              PreviewMouseDown="Line_PreviewMouseDown"/>
+
                         <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="ImageIcon"
@@ -225,12 +230,20 @@
                                                  Foreground="{StaticResource UsualTextColor}"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="4" Grid.Column="0"
+                        <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="GifIcon"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"
                                                  Foreground="{StaticResource UsualTextColor}"/>
 
+                        <materialDesign:PackIcon Kind="Link" Grid.Row="3" Grid.Column="0"
+                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Height="30" Width="30" Name="LinkIcon"
+                                                 MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                                 PreviewMouseDown="Line_PreviewMouseDown"
+                                                 Foreground="{StaticResource UsualTextColor}"/>
+                        
+                        
                         <TextBlock Grid.Column="1" Grid.Row="0" 
                                    Name="AmountOfPhotosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -243,11 +256,18 @@
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="4"
+                        <TextBlock Grid.Column="1" Grid.Row="2"
                                    Name="AmountOfGifsTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
+                        
+                        <TextBlock Grid.Column="1" Grid.Row="3"
+                                   Name="AmountOfLinksTextBlock" FontSize="16"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                                   Foreground="{StaticResource UsualTextColor}" 
+                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                   PreviewMouseDown="Line_PreviewMouseDown"/>
                     </Grid>
                     
                     <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"

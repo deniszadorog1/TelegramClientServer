@@ -153,9 +153,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 GifRow.Height = new GridLength(0);
             }
 
+            if(_chat.GetLinksAmount() == 0)
+            {
+                LinkLine.Visibility = Visibility.Hidden;
+                MaxHeight -= LinkRow.Height.Value;
+                LinkRow.Height = new GridLength(0);
+            }
+
             if (GifLine.Visibility == Visibility.Hidden &&
                 VideosLine.Visibility == Visibility.Hidden &&
-                PhotosLine.Visibility == Visibility.Hidden)
+                PhotosLine.Visibility == Visibility.Hidden && 
+                LinkLine.Visibility == Visibility.Hidden)
             {
                 BottomDivideLine.Visibility = Visibility.Hidden;
             }
@@ -186,7 +194,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetMediasRowVisibility()
         {
             MediasRow.Height = new GridLength(
-                PhotoRow.Height.Value + VideosRow.Height.Value + GifRow.Height.Value + 10);
+                PhotoRow.Height.Value + VideosRow.Height.Value + 
+                GifRow.Height.Value + LinkRow.Height.Value + 10);
 
             MaxHeight += 5;
 
@@ -538,6 +547,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetTextForTextBlock(AmountOfGifsTextBlock,
                 FilesAction.GetGifsAmount(medias),
                 VisConstParamsJsonService.GetStringByName("AmountOfGifsTextBlock"));
+
+            SetTextForTextBlock(AmountOfLinksTextBlock,
+                _chat.GetLinksAmount(), "Amount of Links: ");
         }
 
         private void SetTextForTextBlock(TextBlock block, int amount, string baseString)
@@ -732,7 +744,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return name == PhotosLine.Name.ToString() ? Enums.SentItemsTypes.Photos :
                 name == VideosLine.Name.ToString() ? Enums.SentItemsTypes.Video :
                 name == GifLine.Name.ToString() ? Enums.SentItemsTypes.GIFs : 
-                //name == FilesLine.Name.ToString() ? Enums.SentItemsTypes.File :
+                name == LinkLine.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
                 Enums.SentItemsTypes.Photos;
         }
 

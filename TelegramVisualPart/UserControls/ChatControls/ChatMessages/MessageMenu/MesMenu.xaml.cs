@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramVisualPart.Enums.Menus;
 
@@ -42,39 +43,31 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         public void SetBasicParams()
         {
-            GoToMessage.Icon.Kind = PackIconKind.EyeOutline;
-            GoToMessage.ButText.Text = "Go to message";
-
-            ReplyBut.Icon.Kind = PackIconKind.Reply;
-            ReplyBut.ButText.Text = "Reply";
+            GoToMessage.SetParams(PackIconKind.EyeOutline, "Go to message");
+            ReplyBut.SetParams(PackIconKind.Reply, "Reply");
 
             Buts.Children.Remove(EditBut);
             /*            EditBut.Icon.Kind = PackIconKind.PencilOutline;
                         EditBut.ButText.Text = "Edit";
                         IsAddEditBut();*/
 
-            PinBut.Icon.Kind = PackIconKind.PinOutline;
-            PinBut.ButText.Text = "Pin";
+            PinBut.SetParams(PackIconKind.PinOutline, "Pin");
+            ShowInFolder.SetParams(PackIconKind.FolderOutline, "Show in folder");
 
-            SaveAsBut.Icon.Kind = PackIconKind.ContentSaveOutline;
-            SaveAsBut.ButText.Text = "Save as...";
+            SaveAsBut.SetParams(PackIconKind.ContentSaveOutline, "Save as...");
+            CopyBut.SetParams(PackIconKind.ContentCopy, "Copy this");
 
-            CopyBut.Icon.Kind = PackIconKind.ContentCopy;
-            CopyBut.ButText.Text = "Copy this";
+            ForwardBut.SetParams(PackIconKind.ForwardOutline, "Forward");
+            DeleteBut.SetParams(PackIconKind.DeleteForeverOutline, "Delete");
 
-            ForwardBut.Icon.Kind = PackIconKind.ForwardOutline;
-            ForwardBut.ButText.Text = "Forward";
-
-            DeleteBut.Icon.Kind = PackIconKind.DeleteForeverOutline;
-            DeleteBut.ButText.Text = "Delete";
-
-            SelectBut.Icon.Kind = PackIconKind.ProgressTick;
-            SelectBut.ButText.Text = "Select";
+            SelectBut.SetParams(PackIconKind.ProgressTick, "Select");
 
             RemoveUnnesBlocks();
 
             if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
             else Buts.Children.Remove(ReplyBut);
+
+            if (_mes is MediaAction media && !media.IsImage()) Buts.Children.Remove(CopyBut);
         }
         
         public void RemoveUnnesBlocks()
@@ -83,15 +76,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             {
                 case MessageMenuType.TextMessage:
                     {
+                        Buts.Children.Remove(ShowInFolder);
+                        Buts.Children.Remove(SaveAsBut);
                         break;
                     }
                 case MessageMenuType.MediaMessage:
                     {
-                        Buts.Children.Remove(SaveAsBut);
                         break;
                     }
                 case MessageMenuType.ShareContact:
                     {
+                        Buts.Children.Remove(ShowInFolder);
+                        Buts.Children.Remove(SaveAsBut);
                         break;
                     }
                 case MessageMenuType.StatMessage:
@@ -99,6 +95,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                         Buts.Children.Remove(GoToMessage);
                         Buts.Children.Remove(EditBut);
                         Buts.Children.Remove(PinBut);
+                        Buts.Children.Remove(ShowInFolder);
                         Buts.Children.Remove(SaveAsBut);
                         Buts.Children.Remove(CopyBut);
                         Buts.Children.Remove(ForwardBut);
@@ -132,6 +129,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         public event Action GoToMessageAct;
         public event Action ReplyAct;
         public event Action PinAct;
+        public event Action ShowInFolderAct;
         public event Action SaveAct;
         public event Action CopyAct;
         public event Action ForwardAct;
@@ -193,6 +191,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         private void EditBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set edit menu in chat
+        }
+
+        private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowInFolderAct?.Invoke();
         }
     }
 }

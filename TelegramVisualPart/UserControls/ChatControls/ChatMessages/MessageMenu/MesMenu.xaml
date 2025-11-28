@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
              xmlns:But="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
              mc:Ignorable="d" 
-             d:DesignHeight="280" d:DesignWidth="200"
+             d:DesignHeight="400" d:DesignWidth="200"
              Width="200">
     <Border Background ="{StaticResource DarkThemeSecond}" 
             CornerRadius="5"
@@ -19,6 +19,7 @@
             <But:MesMenuBut x:Name="ReplyBut" PreviewMouseDown="ReplyBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="EditBut" PreviewMouseDown="EditBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="PinBut" PreviewMouseDown="PinBut_PreviewMouseDown"/>
+            <But:MesMenuBut x:Name="ShowInFolder" PreviewMouseDown="ShowInFolder_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="SaveAsBut" PreviewMouseDown="SaveAsBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="CopyBut" PreviewMouseDown="CopyBut_PreviewMouseDown"/>
             <But:MesMenuBut x:Name="ForwardBut" PreviewMouseDown="ForwardBut_PreviewMouseDown"/>

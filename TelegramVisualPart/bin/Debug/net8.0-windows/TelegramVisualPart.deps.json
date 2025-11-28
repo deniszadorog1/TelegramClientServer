@@ -11,6 +11,7 @@
           "DotNetEnv": "3.1.1",
           "EntityFramework": "6.5.1",
           "FFMpegCore": "5.2.0",
+          "HtmlAgilityPack": "1.12.4",
           "MaterialDesignColors": "5.2.1",
           "MaterialDesignThemes": "5.2.1",
           "MaterialDesignThemes.MahApps": "5.2.1",
@@ -83,6 +84,14 @@
           "lib/netstandard2.0/FFMpegCore.dll": {
             "assemblyVersion": "5.0.0.0",
             "fileVersion": "5.0.0.0"
+          }
+        }
+      },
+      "HtmlAgilityPack/1.12.4": {
+        "runtime": {
+          "lib/net7.0/HtmlAgilityPack.dll": {
+            "assemblyVersion": "1.12.4.0",
+            "fileVersion": "1.12.4.0"
           }
         }
       },
@@ -1358,6 +1367,13 @@
       "sha512": "sha512-VpTM8mNo41Upj2zrlroEroQp7TGaXa+jDlGbekvy7Vcvz7bQTesUhf0LWvvwgakcCo9j9OlhP1bzkaZpEyn8WA==",
       "path": "ffmpegcore/5.2.0",
       "hashPath": "ffmpegcore.5.2.0.nupkg.sha512"
+    },
+    "HtmlAgilityPack/1.12.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ljqvBabvFwKoLniuoQKO8b5bJfJweKLs4fUNS/V5dsvpo0A8MlJqxxn9XVmP2DaskbUXty6IYaWAi1SArGIMeQ==",
+      "path": "htmlagilitypack/1.12.4",
+      "hashPath": "htmlagilitypack.1.12.4.nupkg.sha512"
     },
     "Instances/3.0.1": {
       "type": "package",

@@ -3,8 +3,11 @@ using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Permissions;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,7 +26,9 @@ using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.Windows;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 {
@@ -54,6 +59,13 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             SetIconsKind();
 
             SetFiles();
+
+            AddDate();
+        }
+
+        public void AddDate()
+        {
+            Date.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
         }
 
         private void SetFiles()
@@ -76,6 +88,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                     }
                 case Enums.SentItemsTypes.SharedLinks:
                     {
+                        SetLinksInPanel();
                         break;
                     }
                 case Enums.SentItemsTypes.GIFs:
@@ -86,9 +99,52 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             }
         }
 
+        public async Task SetLinksInPanel()
+        {
+            List<string> links = _chat.GetLinks();
+
+            for (int i = 0; i < links.Count; i++)
+            {
+                (string title, string desc) siteParams = await GetParsedParams(links[i]);
+
+                SentLinkControl linkControl = new SentLinkControl(siteParams.title, siteParams.desc, links[i]);
+                ElemsPanel.Children.Add(linkControl); 
+            }
+        }
+
+        public async Task<(string, string)> GetParsedParams(string link)
+        {
+            var client = new HttpClient();
+            var html = await client.GetStringAsync(link);
+
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(html);
+
+            string title = doc.DocumentNode.SelectSingleNode("//title")?.InnerText;
+
+            var node = doc.DocumentNode.SelectSingleNode("//meta[@name='description']");
+            string description = node?.GetAttributeValue("content", null);
+
+            title = RemoveUnnesParts(title);
+            description = RemoveUnnesParts(description);
+
+            return (title, description);
+        }
+
+        public string RemoveUnnesParts(string str)
+        {
+            if (str is null || str == string.Empty) return string.Empty;
+            str = str.Replace("\n", "");
+            str = str.Replace("\t", "");
+
+            return str;
+        }
+
+
         public void SetGifsInPanel()
         {
-            _gifPaths = GetGifFileNames();
+            List<MediaAction> medias = GetGifFileNames();
+            _gifPaths = medias.Select(x => x.MediaName).ToList();
 
             for (int i = 0; i < _gifPaths.Count; i++)
             {
@@ -358,16 +414,16 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             return res;
         }
 
-        private List<string> GetGifFileNames()
+        private List<MediaAction> GetGifFileNames()
         {
-            List<string> res = new List<string>();
+            List<MediaAction> res = new List<MediaAction>();
 
             for (int i = 0; i < _chat.Messages.Count; i++)
             {
                 if (_chat.Messages[i] is not MediaAction media ||
                     !FilesAction.IsGifNameIsExist(media.MediaName)) continue;
 
-                res.Add(media.MediaName);
+                res.Add(media);
             }
             return res;
         }

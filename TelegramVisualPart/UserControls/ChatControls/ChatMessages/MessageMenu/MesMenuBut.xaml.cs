@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -38,6 +39,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         {
             Cursor = null;
             Background = new SolidColorBrush(Colors.Transparent);
+        }
+
+        public void SetParams(PackIconKind kind, string text)
+        {
+            Icon.Kind = kind;
+            ButText.Text = text;
         }
     }
 }

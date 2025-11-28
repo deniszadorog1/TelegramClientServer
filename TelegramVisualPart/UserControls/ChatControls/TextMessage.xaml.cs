@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,7 +53,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             InitializeComponent();
 
             //BgBrush.ImageSource = img.Source;
-            Message.Text = text;
+            //Message.Text = text;
+
+            SetText(text);
+
+
             SetWidth(fontName);
 
             SetImageSource();
@@ -62,6 +69,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetEvents();
         }
+
+        public void SetText(string text)
+        {
+            text = text.Replace("\n", "");
+
+            var match = Regex.Match(text, @"https?:\/\/[^\s]+");
+
+            if (match.Success)
+            {
+                string before = text.Substring(0, match.Index);
+                string url = match.Value;
+                string after = text.Substring(match.Index + match.Length);
+
+                FirstPart.Text = before;
+                LinkPart.Text = url;
+                SecondPart.Text = after;
+
+                //Message.Text = string.Empty;
+                return;
+            }
+
+            Message.Text = text;
+        }
+
+
 
         public void SetEvents()
         {
@@ -145,7 +177,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetTime(DateTime.Now);
             //SentTime.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
             //    $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";
-        } 
+        }
 
         public void SetTime(DateTime time)
         {
@@ -297,6 +329,36 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public bool IsMessageIdTicked()
         {
             return SelectionTickObj.GetChosenStatus();
+        }
+
+        private void LinkPart_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is not System.Windows.Documents.Run run) return;
+            run.TextDecorations = TextDecorations.Underline;
+            Cursor = Cursors.Hand;
+        }
+
+        private void LinkPart_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is not System.Windows.Documents.Run run) return;
+            run.TextDecorations = null;
+            Cursor = null;
+        }
+
+        private void LinkPart_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not System.Windows.Documents.Run run) return;
+            try
+            {
+                Process.Start(new ProcessStartInfo(run.Text)
+                {
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Smth wrong with your url!!");
+            }
         }
     }
 }

@@ -369,3 +369,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\ChatButsControls\TextBoxMenuButton.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\FolderControls\FolderMenu.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\FolderControls\FolderMenu.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\HtmlAgilityPack.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\SentLinkControl.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\SentLinkControl.baml

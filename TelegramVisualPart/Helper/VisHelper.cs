@@ -72,5 +72,10 @@ namespace TelegramVisualPart.Helper
                 timeParam : timeParam.Insert(0, "0");
         }
 
+        public static bool IsLink(string text)
+        {
+            return Uri.TryCreate(text, UriKind.Absolute, out var uri)
+                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }
     }
 }

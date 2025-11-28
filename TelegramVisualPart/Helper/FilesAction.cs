@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Enums.MediaShow;
 using Path = System.IO.Path;
 
 namespace TelegramVisualPart.Helper
@@ -275,12 +276,12 @@ namespace TelegramVisualPart.Helper
             string userImagePath = Path.Combine(GetImagesPath(), "UserImages");
 
             CopyFileToAnotherFolder(path, userImagePath);
-/*            string fileName = Path.GetFileName(path);
-            string destinationPath = Path.Combine(userImagePath, fileName);
+            /*            string fileName = Path.GetFileName(path);
+                        string destinationPath = Path.Combine(userImagePath, fileName);
 
-            if (Path.Exists(destinationPath)) return;
+                        if (Path.Exists(destinationPath)) return;
 
-            File.Copy(path, destinationPath, overwrite: true);*/
+                        File.Copy(path, destinationPath, overwrite: true);*/
         }
 
         public static void AddNewNotifSound(string path)
@@ -288,10 +289,10 @@ namespace TelegramVisualPart.Helper
             string notifPath = Path.Combine(GetSoundsPath(), "NotifSounds");
 
             CopyFileToAnotherFolder(path, notifPath);
-/*            string fileName = Path.GetFileName(path);
-            string destinationPath = Path.Combine(notifPath, fileName);
-            if (Path.Exists(destinationPath)) return;
-            File.Copy(path, destinationPath, overwrite: true);*/
+            /*            string fileName = Path.GetFileName(path);
+                        string destinationPath = Path.Combine(notifPath, fileName);
+                        if (Path.Exists(destinationPath)) return;
+                        File.Copy(path, destinationPath, overwrite: true);*/
         }
 
         public static string GetSoundPath(string fileName)
@@ -434,10 +435,10 @@ namespace TelegramVisualPart.Helper
             }
         }
 
-/*        public static string GetFullVideoPath(string vidName)
-        {
-            return Path.Combine(GetVideosPath(), name);
-        }*/
+        /*        public static string GetFullVideoPath(string vidName)
+                {
+                    return Path.Combine(GetVideosPath(), name);
+                }*/
 
         public static Image GetImagePreviewForVideo(string videoName)
         {
@@ -490,6 +491,51 @@ namespace TelegramVisualPart.Helper
             return res;
         }
 
+        public static BitmapSource GetFirstImageFromGif(string gifPath)
+        {
+            if (!File.Exists(gifPath)) return null;
 
+            using (var stream = new FileStream(gifPath, FileMode.Open, FileAccess.Read))
+            {
+                var decoder = BitmapDecoder.Create(
+                    stream,
+                    BitmapCreateOptions.PreservePixelFormat,
+                    BitmapCacheOption.OnLoad);
+
+                // Первый кадр всегда по индексу 0
+                return decoder.Frames[0];
+            }
+        }
+        public static string GetFullPath(string fileName, MediaShowType type)
+        {
+            if (fileName is null) return string.Empty;
+            switch (type)
+            {
+                case MediaShowType.ChatImages:
+                    {
+                        return FilesAction.GetFullChatImagePath(fileName);
+                    }
+                case MediaShowType.UserImages:
+                    {
+                        return FilesAction.GetFullUserImagePath(fileName);
+                    }
+                case MediaShowType.Videos:
+                    {
+                        return FilesAction.GetFullVideoPath(fileName);
+                    }
+                case MediaShowType.OtherUserImages:
+                    {
+                        return FilesAction.GetFullChatImagePath(fileName);
+                    }
+                case MediaShowType.Gif:
+                    {
+                        return FilesAction.GetFullGifPath(fileName);
+                    }
+                default:
+                    {
+                        return string.Empty;
+                    }
+            }
+        }
     }
 }

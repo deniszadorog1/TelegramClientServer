@@ -57,12 +57,10 @@
                 </Grid>
             </ScrollViewer>
 
-
             <ListBox Name="ChatPanel" Grid.Row="3"
                      HorizontalAlignment="Stretch">
-                
-            </ListBox>
 
+            </ListBox>
 
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right"
                         Margin="0 0 10 10">

@@ -5,12 +5,14 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramLib.MainClasses
 {
@@ -339,7 +341,7 @@ namespace TelegramLib.MainClasses
 
         public void RemovePinnedMessageById(int id)
         {
-            TelegramLib.MainClasses.Messages.Message mes = 
+            TelegramLib.MainClasses.Messages.Message mes =
                 PinnedMessages.FirstOrDefault(x => x.Id == id);
             if (mes is null) return;
 
@@ -358,13 +360,13 @@ namespace TelegramLib.MainClasses
             const int maxDiffer = 100;
             for (int i = 0; i < Messages.Count; i++)
             {
-  /*              bool sameBaseTime =
-                    mes.SentTime.Year == Messages[i].SentTime.Year &&
-                    mes.SentTime.Month == Messages[i].SentTime.Month &&
-                    mes.SentTime.Day == Messages[i].SentTime.Day &&
-                    mes.SentTime.Hour == Messages[i].SentTime.Hour &&
-                    mes.SentTime.Minute == Messages[i].SentTime.Minute &&
-                    mes.SentTime.Second == Messages[i].SentTime.Second;*/
+                /*              bool sameBaseTime =
+                                  mes.SentTime.Year == Messages[i].SentTime.Year &&
+                                  mes.SentTime.Month == Messages[i].SentTime.Month &&
+                                  mes.SentTime.Day == Messages[i].SentTime.Day &&
+                                  mes.SentTime.Hour == Messages[i].SentTime.Hour &&
+                                  mes.SentTime.Minute == Messages[i].SentTime.Minute &&
+                                  mes.SentTime.Second == Messages[i].SentTime.Second;*/
 
                 double diffMs = Math.Abs((mes.SentTime - Messages[i].SentTime).TotalMilliseconds);
                 if (diffMs < maxDiffer) return Messages[i].Id;
@@ -375,7 +377,7 @@ namespace TelegramLib.MainClasses
         public List<MediaAction> GetGifMessages()
         {
             List<MediaAction> gifs = new List<MediaAction>();
-            for(int i = 0; i < Messages.Count; i++)
+            for (int i = 0; i < Messages.Count; i++)
             {
                 if (Messages[i] is MediaAction media &&
                     media.IsGif())
@@ -409,7 +411,7 @@ namespace TelegramLib.MainClasses
 
         public void RemoveMessageById(int id)
         {
-            TelegramLib.MainClasses.Messages.Message toRemove = 
+            TelegramLib.MainClasses.Messages.Message toRemove =
                 Messages.FirstOrDefault(x => x.Id == id);
 
             if (toRemove is null) return;
@@ -427,6 +429,36 @@ namespace TelegramLib.MainClasses
             //Date close date message
 
             return null;
-        }   
+        }
+
+        public int GetLinksAmount()
+        {
+            int res = 0;
+            for (int i = 0; i < Messages.Count; i++)
+            {
+                if (Messages[i] is TextMessage text)
+                {
+                    var match = Regex.Match(text.Text, @"https?:\/\/[^\s]+");
+                    if (match.Success) res++;
+                }
+            }
+            return res;
+        }
+
+        public List<string> GetLinks()
+        {
+            List<string> res = new List<string>();
+
+            for (int i = 0; i < Messages.Count; i++)
+            {
+                if (!(Messages[i] is TextMessage text)) continue;
+
+                var match = Regex.Match(text.Text, @"https?:\/\/[^\s]+");
+
+                if (!match.Success) continue;
+                res.Add(match.Value);
+            }
+            return res;
+        }
     }
 }
