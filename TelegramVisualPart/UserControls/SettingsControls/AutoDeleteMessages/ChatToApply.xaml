@@ -20,13 +20,30 @@
         <Border CornerRadius="100" Width="42" Height="42" 
                 Name="ChosenChatIconBorder"         
                 Background="Transparent">
-            <Ellipse Height="40"
-                     Name="UserImageEllipse"
-                     Width="40">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="UserImageBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-                </Ellipse.Fill>
-            </Ellipse>
+            <Grid>
+                <Ellipse Height="40" Visibility="Visible"
+                         Name="UserImageEllipse"
+                         Width="40">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="UserImageBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <Grid Name="SavedChatGrid" Visibility="Hidden">
+                    <Ellipse Height="40" 
+                         Name="SavedChatImageEllipse"
+                         Width="40" 
+                         Fill="{StaticResource TempActiveTextColor}"/>
+                    <materialDesign:PackIcon 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="FlagOutline"
+                    Height="20" Width="20"
+                    Foreground="White"/>
+                </Grid>
+                
+                
+            </Grid>
         </Border>
 
         <Grid Grid.Column="1">

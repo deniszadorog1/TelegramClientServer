@@ -73,6 +73,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if(_chat.Chatter is null)
+            {
+
+                return;
+            }
+
             UserInfo info = new UserInfo(_chat, _system);
 
             info.ContactInfo.LoadEnd += () =>

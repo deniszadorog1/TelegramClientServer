@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="700">
+             d:DesignHeight="60" d:DesignWidth="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="70"/>
@@ -24,11 +24,10 @@
                   Visibility="Hidden"
                   VerticalAlignment="Bottom"
                   HorizontalAlignment="Right" 
-                  Margin="5"
-                  >
+                  Margin="5">
+
                 <Ellipse Name="TimeDuration" Width="20" Height="20" 
                          Stroke="DarkGray" Fill="Gray">
-               
                 </Ellipse>
 
                 <TextBlock Name="AutoDelDurBlock"
@@ -58,14 +57,18 @@
                            FontSize="16" Grid.Column="0"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"/>
-                <TextBlock x:Name="LastMessageTime" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                           Text="mestime" Margin="10 5 25 5" Foreground="Gray" FontSize="16"
+                
+                <TextBlock x:Name="LastMessageTime" 
+                           HorizontalAlignment="Right" 
+                           VerticalAlignment="Center" 
+                           Text="mestime" Margin="10 5 25 5" 
+                           Foreground="Gray" FontSize="16"
                            Grid.Column="1"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                       Margin="10 0 0 0" FontSize="16"
+                       Margin="10 0 25 0" FontSize="16"
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap"
                        Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"

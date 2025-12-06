@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Data.Entity.Core.Common.CommandTrees;
@@ -230,12 +231,13 @@ namespace TelegramClientServer.Controllers
         [HttpPost("SetPinStatus")]
         public void SetPinStatus([FromBody] SetPinStatusDTO pinDto)
         {
-            DbService.SetPinStatus(pinDto.MesId, pinDto.PinStatus);
+            DbService.SetPinStatus(pinDto.MesId, pinDto.PinStatus, pinDto.IsSaveMessageChat);
         }
         public class SetPinStatusDTO
         {
             public int MesId { get; set; }
             public bool PinStatus { get; set; }
+            public bool IsSaveMessageChat { get; set; }
         }
 
         //Clear chat
@@ -485,6 +487,66 @@ namespace TelegramClientServer.Controllers
         {
             DateTime.TryParse(sentTime, out DateTime checkDate);
             return DbService.GetCorrectIdBySentDate(checkDate);
+        }
+
+        //Set saved messages chat
+
+        [HttpGet("GetSavedMessagesChat")]
+        public TelegramLib.MainClasses.SavedMessagesChat GetSavedMessagesChat(int userId)
+        {
+            return DbService.GetSavedMessageChat(userId);
+        }
+
+        [HttpGet("IsDateStatContainsInSavedMessageChat")]
+        public bool IsDateStatContainsInSavedMessageChat(int chatId, DateTime date)
+        {
+            return DbService.IsDateStatContainsInSavedMessageChat(chatId, date);
+        }
+
+        [HttpGet("GetLastStatDateIdInSavedChat")]
+        public int? GetLastStatDateIdInSavedChat(int chatId)
+        {
+            return DbService.GetLastStatDateIdInSavedChat(chatId);
+        }
+
+        [HttpGet("GetIdOfLastSavedMessage")]
+        public int? GetIdOfLastSavedMessage(int chatId)
+        {
+            return DbService.GetIdOfLastSavedMessage(chatId);
+        }
+
+
+        [HttpPut("AddSavedMessage")]
+        public void AddSavedMessage([FromBody]AddSavedMessageDTO mesDTO)
+        {
+            DbService.AddSavedMessage(mesDTO.SavedChatId, mesDTO.Mes);
+        }
+        public class AddSavedMessageDTO
+        {
+            public int SavedChatId { get; set; }
+            public TelegramLib.MainClasses.Messages.Message Mes { get; set; }
+        }
+
+        [HttpPut("AddSavedChat")]
+        public void AddSavedChat([FromBody]AddSavedChatDTO dto)
+        {
+            DbService.AddSavedMessagesChat(dto.UserId);
+        }
+        public class AddSavedChatDTO
+        {
+            public int UserId { get; set; }
+        }
+
+        [HttpDelete("DeleteSavedMessage")]
+        public void DeleteSavedMessage([FromBody]DeleteSavedMessageDTO dto)
+        {
+            DbService.RemoveSavedMessage(dto.SavedChatId, dto.ToRemoveId);
+        }
+
+        public class DeleteSavedMessageDTO
+        {
+            public int SavedChatId { get; set; }
+            public int ToRemoveId { get; set; }
         }
 
     }

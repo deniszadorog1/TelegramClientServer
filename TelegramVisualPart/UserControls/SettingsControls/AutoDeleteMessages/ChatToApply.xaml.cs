@@ -187,5 +187,14 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
         {
             SetActivePhotoImage();
         }
+
+        public void SetSavedMesChatGrid()
+        {
+            SavedChatGrid.Visibility = Visibility.Visible;
+            UserImageEllipse.Visibility = Visibility.Hidden;
+
+            TypeName.Text = "Saved messages";
+            AutoDeletionType.Text = "Forward messages here"; 
+        }
     }
 }

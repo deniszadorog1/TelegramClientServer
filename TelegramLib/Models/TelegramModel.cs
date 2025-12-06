@@ -46,6 +46,8 @@ namespace TelegramLib.Models
         public virtual DbSet<PrivacySetting> PrivacySetting { get; set; }
         public virtual DbSet<PrivacySettingType> PrivacySettingType { get; set; }
         public virtual DbSet<ProfilePhotoSettings> ProfilePhotoSettings { get; set; }
+        public virtual DbSet<SavedMessages> SavedMessages { get; set; }
+        public virtual DbSet<SavedMessagesChat> SavedMessagesChat { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<ShareContactMessage> ShareContactMessage { get; set; }
         public virtual DbSet<Sounds> Sounds { get; set; }
@@ -86,8 +88,18 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.ChatBG)
                 .HasForeignKey(e => e.BgName);
 
+            modelBuilder.Entity<ChatBG>()
+                .HasMany(e => e.SavedMessagesChat)
+                .WithOptional(e => e.ChatBG)
+                .HasForeignKey(e => e.BgImageId);
+
             modelBuilder.Entity<ChatImage>()
                 .HasMany(e => e.Messages)
+                .WithOptional(e => e.ChatImage)
+                .HasForeignKey(e => e.ImageId);
+
+            modelBuilder.Entity<ChatImage>()
+                .HasMany(e => e.SavedMessages)
                 .WithOptional(e => e.ChatImage)
                 .HasForeignKey(e => e.ImageId);
 
@@ -123,6 +135,11 @@ namespace TelegramLib.Models
 
             modelBuilder.Entity<MessageVideo>()
                 .HasMany(e => e.Messages)
+                .WithOptional(e => e.MessageVideo)
+                .HasForeignKey(e => e.VideoId);
+
+            modelBuilder.Entity<MessageVideo>()
+                .HasMany(e => e.SavedMessages)
                 .WithOptional(e => e.MessageVideo)
                 .HasForeignKey(e => e.VideoId);
 
@@ -176,6 +193,11 @@ namespace TelegramLib.Models
                 .WithOptional(e => e.ShareContactMessage)
                 .HasForeignKey(e => e.ShareContactId);
 
+            modelBuilder.Entity<ShareContactMessage>()
+                .HasMany(e => e.SavedMessages)
+                .WithOptional(e => e.ShareContactMessage)
+                .HasForeignKey(e => e.ShareContactId);
+
             modelBuilder.Entity<Sounds>()
                 .HasMany(e => e.UserSounds)
                 .WithOptional(e => e.Sounds)
@@ -183,6 +205,11 @@ namespace TelegramLib.Models
 
             modelBuilder.Entity<StickerImage>()
                 .HasMany(e => e.Messages)
+                .WithOptional(e => e.StickerImage)
+                .HasForeignKey(e => e.StickerId);
+
+            modelBuilder.Entity<StickerImage>()
+                .HasMany(e => e.SavedMessages)
                 .WithOptional(e => e.StickerImage)
                 .HasForeignKey(e => e.StickerId);
 

@@ -55,8 +55,8 @@
                 <menuIconTextBut:MenuIconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="ContactsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                <!-- <menuIconTextBut:MenuIconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
-               -->
+                <menuIconTextBut:MenuIconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
+               
                 <menuIconTextBut:MenuIconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
             </StackPanel>
         </materialDesign:DrawerHost.LeftDrawerContent >

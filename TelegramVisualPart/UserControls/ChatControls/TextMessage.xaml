@@ -14,6 +14,7 @@
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>
             <ColumnDefinition/>
             <ColumnDefinition Name="TickColumnDef" Width="0"/>
+            <ColumnDefinition Name="GoTOMessageButton" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
@@ -55,21 +56,39 @@
                     <Replyed:ReplyMessagePart x:Name="ReplyControl"/>
                 </Grid>
 
-                <TextBlock Name ="Message" VerticalAlignment="Top"
-                           Grid.Row="2"
-                           Margin="15 10 7 5" Foreground="{StaticResource UsualTextColor}" 
-                           FontSize="14" TextWrapping="Wrap">
-                    
-                    <Run Name="FirstPart" />
-                    
-                    <Run Name="LinkPart" Foreground="{StaticResource TempActiveTextColor}" 
-                         MouseEnter="LinkPart_MouseEnter" 
-                         MouseLeave="LinkPart_MouseLeave"
-                         PreviewMouseLeftButtonDown="LinkPart_PreviewMouseLeftButtonDown"/>
-                    
-                    <Run Name="SecondPart"/>
+                <RichTextBox Name ="Message" 
+                             Style="{x:Null}"
+                             VerticalAlignment="Top"
+                             Grid.Row="2"
+                             Margin="15 10 7 5" 
+                             FontSize="14" 
+                             Foreground="{StaticResource UsualTextColor}" 
+                             Background="Transparent"
+                             BorderThickness="0"
+                             IsReadOnly="True"
+                             IsDocumentEnabled="True"
+                             Padding="0">
 
-                </TextBlock>
+                    <RichTextBox.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#444DFF"/>
+
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                    </RichTextBox.Resources>
+
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Name="FirstPart" />
+
+                            <Run Name="LinkPart" Foreground="{StaticResource TempActiveTextColor}" 
+                                 MouseEnter="LinkPart_MouseEnter" 
+                                 MouseLeave="LinkPart_MouseLeave"
+                                 PreviewMouseLeftButtonDown="LinkPart_PreviewMouseLeftButtonDown"/>
+
+                            <Run Name="SecondPart"/>
+                        </Paragraph>
+                    </FlowDocument>
+
+                </RichTextBox>
 
                 <Grid Grid.Row="3" Margin="0 0 7 5"
                             Name="BottomPanel"
@@ -111,6 +130,26 @@
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Right"/>
         </Grid>
-        
+
+        <Grid Grid.Column="3">
+            <Grid Width="25" Height="25" Name="GoToMessageGrid"
+                  MouseEnter="GoToMessageGrid_MouseEnter"
+                  MouseLeave="GoToMessageGrid_MouseLeave"
+                  PreviewMouseLeftButtonDown="GoToMessageGrid_PreviewMouseLeftButtonDown"
+                  >
+                <Ellipse 
+                     StrokeThickness="5" Stroke="{StaticResource DarkThemeSecond}"
+                     Fill="DarkGray"/>
+
+                <materialDesign:PackIcon Name="GoToMesIcon"
+                                         Kind="ArrowRight"
+                                         Foreground="White"
+                                         Width="10" Height=" 10 "
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+            </Grid>
+
+        </Grid>
+
     </Grid>
 </UserControl>

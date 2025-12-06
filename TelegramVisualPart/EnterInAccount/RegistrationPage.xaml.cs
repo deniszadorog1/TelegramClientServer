@@ -79,7 +79,7 @@ namespace TelegramVisualPart.EnterInAccount
 
             await ApiService.AddUserBasicColor(user.Id);
             await ApiService.AddUserSettings(user.Id);
-
+            await ApiService.AddSavedMessagesChat(user.Id);
 
             MessageBox.Show("New user was Created!");
 

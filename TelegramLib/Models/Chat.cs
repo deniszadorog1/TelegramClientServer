@@ -29,6 +29,10 @@ namespace TelegramLib.Models
 
         public bool? IsMute { get; set; }
 
+        public bool? IsPinned { get; set; }
+
+        public bool? IsRead { get; set; }
+
         public virtual AutoDeleteType AutoDeleteType { get; set; }
 
         public virtual ChatBG ChatBG { get; set; }

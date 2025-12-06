@@ -372,3 +372,9 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\HtmlAgilityPack.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\SentLinkControl.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\SentLinkControl.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\SavedChatControls\MediaParam.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\SavedChatControls\SavedChatMenu.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\SavedChatControls\MediaParam.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatControls\SavedChatControls\SavedChatMenu.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\SavedMessagesChatPage.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\SavedMessagesChatPage.baml

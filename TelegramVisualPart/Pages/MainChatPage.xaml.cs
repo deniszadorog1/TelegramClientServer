@@ -50,6 +50,7 @@ using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using ListBoxItem = System.Windows.Controls.ListBoxItem;
 using Page = System.Windows.Controls.Page;
+using SavedMessagesChat = TelegramLib.MainClasses.SavedMessagesChat;
 
 namespace TelegramVisualPart.Pages
 {
@@ -707,6 +708,8 @@ namespace TelegramVisualPart.Pages
 
         public void SetSearchMessagesInChosenChat()
         {
+            if (UserChat.IsSavedChat()) _chosenChat = UserChat.GetChat();
+
             List<TelegramLib.MainClasses.Messages.TextMessage> messages =
                 _chosenChat.GetMessagesWithGivenText(SarchBox.Text);
 
@@ -714,12 +717,25 @@ namespace TelegramVisualPart.Pages
             {
                 //If sender is null, check logged user
                 TelegramLib.MainClasses.User sender =
+
+                    _system.GetIsSavedMesChatStatus() &&  _system.LoggedUser.Id == messages[i].ForwardedFromId ?
+                    _system.LoggedUser :
+
                     _system.LoggedUser.Id == messages[i].SenderUserId ?
                     _system.LoggedUser :
-                    _system.GetChatterById(messages[i].SenderUserId);
 
-                UserTalkMessage message = new UserTalkMessage(
-                    _chosenChat.Chatter.GetFirstImageName().Name)
+                    messages[i].ForwardedFromId is not null ?
+                    _system.GetChatterById((int)messages[i].ForwardedFromId) :
+
+                     messages[i].SenderUserId != 0 ? _system.GetChatterById(messages[i].SenderUserId) : 
+                     
+                     _system.LoggedUser;
+
+                string senderImgName = UserChat.IsSavedChat() ? 
+                    _system.LoggedUser.GetFirstImageName().Name : 
+                    _chosenChat.Chatter.GetFirstImageName().Name;
+
+                UserTalkMessage message = new UserTalkMessage(senderImgName)
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
@@ -729,7 +745,7 @@ namespace TelegramVisualPart.Pages
                            else if (_system.IsUserIsSameId(i) is not null) message.FriendLogin.Text = _system.LoggedUser.Name;
            */
 
-                message.FriendLogin.Text = sender.Name;
+                if(sender is not null)message.FriendLogin.Text = sender.Name;
 
                 message.LastMessage.Text = messages[i].Text;
                 message.LastMessageTime.Text = messages[i].GetSentTimeInString();
@@ -831,8 +847,8 @@ namespace TelegramVisualPart.Pages
             CallsDrawBut.IconType.Kind = PackIconKind.TelephoneInTalk;
             //CallsDrawBut.ButName.Text = "Calls";
 
-            //SavedMessagesDrawBut.IconType.Kind = PackIconKind.ContentSaveOutline;
-            //SavedMessagesDrawBut.ButName.Text = "Saved Messages";
+            SavedMessagesDrawBut.IconType.Kind = PackIconKind.ContentSaveOutline;
+            SavedMessagesDrawBut.ButName.Text = "Saved Messages";
 
             SettingsDrawBut.IconType.Kind = PackIconKind.SettingsOutline;
             //SettingsDrawBut.ButName.Text = "Settings";
@@ -1044,10 +1060,7 @@ namespace TelegramVisualPart.Pages
             NotFoundBg.Effect = null;
         }
 
-        private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Set Saved Messages chat control
-        }
+
 
         private const int _minChatColWidth = 90;
 
@@ -1992,7 +2005,7 @@ namespace TelegramVisualPart.Pages
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(chat, _system));
         }
 
-        public void SetPinAction()
+        public async void SetPinAction()
         {
             Window tempWindow = Window.GetWindow(this);
             if (tempWindow is not MainWindow main ||
@@ -2010,11 +2023,13 @@ namespace TelegramVisualPart.Pages
 
             _menuChatterTalk.SetVisibilityToPinBlock(chat.IsPinned);
 
+            await ApiService.UpdateChat(chat);
+
             //Update chats talk items
             RepaintUserChatsPanel();
         }
 
-        public void SetUnreadMark()
+        public async void SetUnreadMark()
         {
             Window tempWindow = Window.GetWindow(this);
             if (tempWindow is not MainWindow main ||
@@ -2024,6 +2039,8 @@ namespace TelegramVisualPart.Pages
 
             _menuChatterTalk.ChangeUnreadEllipseVisOnOtherDirection();
             chat.IsMarked = !chat.IsMarked;
+
+            await ApiService.UpdateChat(chat);
 
             //close windows with this chat
             ((MainWindow)Window.GetWindow(this)).CloseWindowWithGivenChat(chat);
@@ -2445,7 +2462,7 @@ namespace TelegramVisualPart.Pages
             SetUnreadForUserTalk(talkMes, _system.GetChatById(chatId));
         }
 
-        public async Task SetForwardMessage(int userIdToSend,
+        public async Task SetForwardMessage(int? userIdToSend,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
@@ -2564,5 +2581,24 @@ namespace TelegramVisualPart.Pages
 
             ((MainWindow)Window.GetWindow(this)).AddMenuInMenuCan(textBoxMenu);
         }
+
+        private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Get saved chat
+
+            SavedMessagesChat savedChat = _system.GetSavedChatMessages();
+
+            UserChat.SetUserChat(savedChat);
+
+            _chosenChat = savedChat;
+            _system.ChosenChatContact = null;
+
+            ShowChatControl();
+            SetSizerActionWithUserChatMouseDown();
+
+            MainDrawerHost.IsLeftDrawerOpen = false;
+        }
+
+
     }
 }

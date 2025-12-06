@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 {
@@ -25,7 +27,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private TelSystem _system;
         private TelegramLib.MainClasses.Messages.Message _mes;
 
-        public event Action<int> ForwardSelected;
+        public event Action<int?> ForwardSelected;
 
         public ForwardToPage(TelSystem system,
             TelegramLib.MainClasses.Messages.Message mes)
@@ -53,34 +55,62 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             for (int i = 0; i < _system.Chats.Count; i++)
             {
-                ListBoxItem item = new ListBoxItem()
-                {
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = _system.Chats[i].Chatter.Id,
-                    Padding = new Thickness(0),
-                    VerticalAlignment = VerticalAlignment.Top,
-                };
-                item.PreviewMouseDown += Contacts_PreviewMouseDown;
-
-                ChatToApply contact = new ChatToApply(_system.Chats[i].Chatter);
-                contact.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-                contact.AddedUserImage(_system.Chats[i].Chatter);
-                contact.TypeName.Text = _system.Chats[i].Chatter.Login;
-                contact.AutoDeletionType.Text = _system.Chats[i].Chatter.GetLastSeenInChat();
-
-                contact.Tag = _system.Chats[i].Chatter.GetFirstImageName().Name;
-                item.Content = contact;
-
-                ChatPanel.Items.Add(item);
+                SetChatListBoxItem(_system.Chats[i]);
             }
+            SetChatListBoxItem(_system.GetSavedChatMessages());
+        }
+
+        public void SetChatListBoxItem(TelegramLib.MainClasses.UserChat chat)
+        {
+            ListBoxItem item = new ListBoxItem()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
+                Tag = chat is TelegramLib.MainClasses.SavedMessagesChat ? null : chat.Chatter.Id,
+                Padding = new Thickness(0),
+                VerticalAlignment = VerticalAlignment.Top,
+            };
+            item.PreviewMouseDown += Contacts_PreviewMouseDown;
+
+            SetContatToApply(chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser : chat.Chatter, item);
+        }
+
+        public void SetContatToApply(TelegramLib.MainClasses.User user,
+            ListBoxItem item)
+        {
+            ChatToApply contact = new ChatToApply(user);
+            contact.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            if (item.Tag is not null)
+            {
+                contact.AddedUserImage(user);
+                contact.TypeName.Text = user.Login;
+                contact.AutoDeletionType.Text = user.GetLastSeenInChat();
+
+                contact.Tag = user.GetFirstImageName().Name;
+
+            }
+            else
+            {
+                //Saved chat messages
+                contact.SetSavedMesChatGrid();
+            }
+            item.Content = contact;
+
+            ChatPanel.Items.Add(item);
         }
 
         public void Contacts_PreviewMouseDown(object sender, MouseEventArgs e)
         {
             if (sender is not ListBoxItem item) return;
-            int.TryParse(item.Tag.ToString(), out int userSendId);
+
+            //null = saved chat
+            int? userSendId = null;
+            if (int.TryParse(item.Tag?.ToString(), out int temp))
+            {
+                userSendId = temp;
+            }
 
             if (_mes is null)
             {

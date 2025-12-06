@@ -34,5 +34,7 @@ namespace TelegramLib.MainClasses.Messages
         {
             return Text;
         }
+
+
     }
 }

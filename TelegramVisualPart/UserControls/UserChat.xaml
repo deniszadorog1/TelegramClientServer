@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls"
              mc:Ignorable="d" 
+         
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:Emojis="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
              xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
+             
              d:DesignHeight="450" d:DesignWidth="800" 
              
              KeyDown="UserControl_KeyDown"
@@ -90,13 +92,30 @@
 
             </Grid>
 
+            <Grid Grid.ColumnSpan="3" Name="SavedMessagesGrid"
+                  Visibility="Hidden"
+                  Background="{StaticResource DarkThemeOne}"
+                  MouseEnter="SavedMessagesGrid_MouseEnter"
+                  MouseLeave="SavedMessagesGrid_MouseLeave"
+                  PreviewMouseLeftButtonDown="SavedMessagesGrid_PreviewMouseLeftButtonDown">
+                <TextBlock Name="SavedMessagesBlock"
+                           Foreground="White"
+                           Text="Saved Messages"
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="30 0 0 0">
+
+                </TextBlock>
+            </Grid>
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3"
                         MouseEnter="StackPanel_MouseEnter">
                 <Grid Margin="5" Name="FindMessageBut" Background="Transparent"
                       PreviewMouseDown="FindMessage_PreviewMouseDown"
                       MouseEnter="FindMessageBut_MouseEnter"
                       MouseLeave="FindMessageBut_MouseLeave">
-                      <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
+                    <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" 
                                          Name="FindMessageIcon"/>
@@ -106,7 +125,7 @@
                       PreviewMouseDown="UserInfoBut_PreviewMouseDown"
                       MouseEnter="UserInfoBut_MouseEnter"
                       MouseLeave="UserInfoBut_MouseLeave">
-                     <materialDesign:PackIcon Kind="PageLayoutSidebarRight" Foreground="Gray"
+                    <materialDesign:PackIcon Kind="PageLayoutSidebarRight" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" Margin="5"
                                          Name="UserInfoIcon"/>
@@ -115,7 +134,7 @@
                       MouseDown="UserChatMenuBut_PreviewMouseDown"
                       MouseEnter="UserChatMenuBut_MouseEnter"
                       MouseLeave="UserChatMenuBut_MouseLeave">
-                     <materialDesign:PackIcon Kind="DotsVerticalCircleOutline" Foreground="Gray"
+                    <materialDesign:PackIcon Kind="DotsVerticalCircleOutline" Foreground="Gray"
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" Margin="5 0 15 0"
                                          Name="UserChatMenuIcon"/>
@@ -263,7 +282,8 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="2" Name="ChatGrid" Background="{StaticResource DarkThemeSecond}" Margin="0 1 0 0"
+        <Grid Grid.Row="2" Name="ChatGrid" 
+              Background="{StaticResource DarkThemeSecond}"
               MouseLeave="ClearStickerPanel_MouseLeave">
             <Grid Name="CustomBg" Background="Transparent"/>
 
@@ -275,13 +295,12 @@
 
                 <ListBox Background="Transparent" BorderThickness="0"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ChatBox"
-                     VerticalAlignment="Bottom"
+                     VerticalAlignment="Top"
                      
                      ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"                  
                      
                      ScrollViewer.CanContentScroll="True"
-                     ScrollViewer.PanningRatio="0.3">
-                </ListBox>
+                     ScrollViewer.PanningRatio="0.3" Margin="-8,239,8,0"/>
 
             </Grid>
         </Grid>
@@ -368,8 +387,10 @@
             </Grid>
 
             <TextBox Grid.Column="1" x:Name="CommentTextBox" 
-                     Background="{StaticResource DarkThemeOne}" Foreground="White" 
-                     VerticalContentAlignment="Center" CaretBrush="White"
+                     Background="{StaticResource DarkThemeOne}" 
+                     Foreground="White" 
+                     VerticalContentAlignment="Center" 
+                     CaretBrush="White"
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
                      BorderThickness="0" FontSize="16" 
                      ContextMenuService.IsEnabled="False" 

@@ -90,10 +90,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 return;
             }
 
-            Message.Text = text;
+            FirstPart.Text = text;
         }
-
-
 
         public void SetEvents()
         {
@@ -294,8 +292,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _system.GetMessageById(mesId);
             if (mes is null) return;
 
+            bool isSavedChat = _system.GetIsSavedMesChatStatus();
+
             //Settings logged user page
-            if (_system.LoggedUser.Id == mes.SenderUserId)
+            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat)
+                
+                ||
+
+                (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {
                 LoggedUserProfile logged =
                     new LoggedUserProfile(_system.LoggedUser, _system);
@@ -305,12 +309,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
 
             //Set other user page
-            TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessage(mes);
+            TelegramLib.MainClasses.UserChat chat = isSavedChat && mes.ForwardedFromId is not null ? 
+                _system.GetChatByChatterId((int)mes.ForwardedFromId) : 
+                _system.GetChatByMessage(mes);
 
             UserInfo info = new UserInfo(chat, _system);
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
         }
 
+        
         private const int _selectTickColWidth = 30;
         public void SetTickVisibility(bool isVis)
         {
@@ -359,6 +366,26 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 MessageBox.Show("Smth wrong with your url!!");
             }
+        }
+
+        private void Ellipse_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+
+        }
+
+        private void GoToMessageGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void GoToMessageGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void GoToMessageGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

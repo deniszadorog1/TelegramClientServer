@@ -41,6 +41,12 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         public async Task SetBasicParams()
         {
+            if (_chat.Chatter is null)
+            {
+                UsernameBlock.Text = "Clear saved messages";
+                BothPanel.Visibility = Visibility.Hidden;
+                return;
+            }
             TelegramLib.MainClasses.User user =
                 await ApiService.GetUserById(_chat.Chatter.Id);
             UsernameBlock.Text = user.Login;

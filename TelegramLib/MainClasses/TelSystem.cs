@@ -32,6 +32,8 @@ namespace TelegramLib.MainClasses
 
         public List<UserChat> ChatInNewWindow = new List<UserChat>();
 
+        public SavedMessagesChat SavedMesesChat;
+
         public TelSystem(User user, MainSettings settings,
             List<UserChat> chats, List<UserContactcs> contacts,
             List<Folder> folders)
@@ -53,6 +55,12 @@ namespace TelegramLib.MainClasses
             Folders = new List<Folder>();
 
             //SetTestSystemParams();
+        }
+
+
+        public SavedMessagesChat GetSavedChatMessages()
+        {
+            return SavedMesesChat;
         }
 
         public void AddFolder(int id, string name, string iconName,
@@ -583,6 +591,12 @@ namespace TelegramLib.MainClasses
         public Message GetMessageById(int? id)
         {
             if (id is null) return null;
+
+            if (_isSavedMesChat)
+            {
+                return SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
+            }
+
             for (int i = 0; i < Chats.Count; i++)
             {
                 Message mes = Chats[i].GetMessageById((int)id);
@@ -593,6 +607,17 @@ namespace TelegramLib.MainClasses
 
         public void RemoveMessageById(int id)
         {
+            if (_isSavedMesChat)
+            {
+                Message mes = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
+                if (mes is null) return;
+
+                SavedMesesChat.RemovePinnedMessageById(mes.Id);
+                SavedMesesChat.Messages.Remove(mes);
+                SavedMesesChat.RemoveRepliedMessages(mes);
+                return;
+            }
+
             for (int i = 0; i < Chats.Count; i++)
             {
                 Message mes = Chats[i].Messages.FirstOrDefault(x => x.Id == id);
@@ -636,6 +661,8 @@ namespace TelegramLib.MainClasses
         public TelegramLib.MainClasses.UserChat GetChatByMessage(
             TelegramLib.MainClasses.Messages.Message mes)
         {
+            if (_isSavedMesChat) return SavedMesesChat;
+
             for (int i = 0; i < Chats.Count; i++)
             {
                 if (Chats[i].IsMessageContains(mes)) return Chats[i];
@@ -674,9 +701,9 @@ namespace TelegramLib.MainClasses
 
         public void UpdateUserBirthdate(User user)
         {
-           User toUpdate = Chats
-                .Select(x => x.Chatter)
-                .FirstOrDefault(x => x.Id == user.Id);
+            User toUpdate = Chats
+                 .Select(x => x.Chatter)
+                 .FirstOrDefault(x => x.Id == user.Id);
 
             if (toUpdate is null) return;
             toUpdate.BirthDay = user.BirthDay;
@@ -685,7 +712,7 @@ namespace TelegramLib.MainClasses
 
         public void SetEmptyUserImages()
         {
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Chats[i].SetEmptyChatterImage();
             }
@@ -711,5 +738,14 @@ namespace TelegramLib.MainClasses
                 type == Enums.Chat.AutoDeleteType.OneYear ? "1y" :
                 "ct";
         }
+
+
+        private bool _isSavedMesChat = false;
+        public void SetIsSavedMesChatStatus(bool isSet)
+        {
+            _isSavedMesChat = isSet;
+        }
+
+        public bool GetIsSavedMesChatStatus() => _isSavedMesChat;
     }
 }

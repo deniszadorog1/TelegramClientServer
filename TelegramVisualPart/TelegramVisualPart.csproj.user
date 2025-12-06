@@ -40,6 +40,9 @@
     <Compile Update="Pages\ChatActions\PinMessagePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\SavedMessagesChatPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,6 +254,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\MonthDay.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\SavedChatControls\MediaParam.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\SavedChatControls\SavedChatMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\TextMessage.xaml.cs">
@@ -468,6 +477,9 @@
     <Page Update="Pages\ChatActions\PinMessagePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ChatActions\SavedMessagesChatPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -679,6 +691,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\MonthDay.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\SavedChatControls\MediaParam.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\SavedChatControls\SavedChatMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\TextMessage.xaml">

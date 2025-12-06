@@ -82,10 +82,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                         SetVideosInPanel();
                         break;
                     }
-                case Enums.SentItemsTypes.File:
-                    {
-                        break;
-                    }
                 case Enums.SentItemsTypes.SharedLinks:
                     {
                         SetLinksInPanel();

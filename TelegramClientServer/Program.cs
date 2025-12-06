@@ -18,6 +18,9 @@ namespace TelegramClientServer
                     options.SerializerSettings.TypeNameHandling = TypeNameHandling.All;
                 });
 
+            builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => { });
+
+
             builder.Services.AddSignalR();
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();
 

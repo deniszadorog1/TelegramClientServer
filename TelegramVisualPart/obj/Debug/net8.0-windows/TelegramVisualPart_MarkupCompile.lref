@@ -84,6 +84,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Med
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\UserImageMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MonthDay.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\SavedChatControls\MediaParam.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\SavedChatControls\SavedChatMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserContactControls\UserContactMenu.xaml;;
@@ -95,6 +97,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\Sear
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\SearchMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\SentLinkControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
@@ -141,5 +144,5 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Windows\MediaWindow.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\SentLinkControl.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SavedMessagesChatPage.xaml;;
 

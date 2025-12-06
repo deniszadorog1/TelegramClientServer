@@ -1,6 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -460,5 +461,43 @@ namespace TelegramLib.MainClasses
             }
             return res;
         }
+
+        public bool IsImageMessagesExist()
+        {
+            return Messages.Any(x => x is MediaAction media &&
+            media.IsImage() && !media.IsSticker);
+        }
+
+        public int GetAmountOfImages()
+        {
+            return Messages.Where(x => x is MediaAction media &&
+            media.IsImage() && !media.IsSticker).ToList().Count();
+        }
+
+        public bool IsVideoMessagesExist()
+        {
+            return Messages.Any(x => x is MediaAction media &&
+            media.IsVideo());
+        }
+
+        public int GetAmountOfVideos()
+        {
+            return Messages.Where(x => x is MediaAction media &&
+            media.IsVideo()).ToList().Count();
+        }
+
+        
+        public bool IsGifMessagesExist()
+        {
+            return Messages.Any(x => x is MediaAction media &&
+            media.IsGif());
+        }
+
+        public int GetAmountOfGifs()
+        {
+            return Messages.Where(x => x is MediaAction media &&
+            media.IsGif()).ToList().Count();
+        }
+
     }
 }

@@ -57,7 +57,7 @@ namespace TelegramVisualPart.Services
         public static async Task SetLastSeenString(TelegramLib.MainClasses.User user,
         IsPrivacyException type, TelegramLib.MainClasses.UserChat chat, TextBlock textBlock)
         {
-            if (chat is null || chat.GetChatter().Id != user.Id) return;
+            if (chat is null || chat.Chatter is null || chat.GetChatter().Id != user.Id) return;
             await SetLastSeenStatus(user, type, textBlock);
         }
 
@@ -151,6 +151,7 @@ namespace TelegramVisualPart.Services
         public static async Task SetPhotoInEllipse(TelegramLib.MainClasses.User user, 
             ImageBrush brush, Ellipse ellipse)
         {
+            if (user is null) return;
             IsPrivacyException shareType =
                 await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
 

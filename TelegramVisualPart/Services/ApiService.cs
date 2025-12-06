@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.CodeDom;
@@ -893,9 +894,9 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task SetPinStatus(int mesId, bool pinStatus)
+        public static async Task SetPinStatus(int mesId, bool pinStatus, bool isSavedChat)
         {
-            var data = new { MesId = mesId, PinStatus = pinStatus };
+            var data = new { MesId = mesId, PinStatus = pinStatus, IsSaveMessageChat = isSavedChat};
 
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -1019,6 +1020,106 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        //Saved messages
+        public static async Task<bool> AddSavedMessage(int savedChatId, TelegramLib.MainClasses.Messages.Message mes)
+        {
+            var data = new
+            {
+                SavedChatId = savedChatId,
+                Mes = mes
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+
+            json = JsonConvert.SerializeObject(
+                data,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+            
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Social/AddSavedMessage", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> AddSavedMessagesChat(int userId)
+        {
+            var data = new
+            {
+                UserId = userId
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync("api/Social/AddSavedChat", content);
+
+            return response.IsSuccessStatusCode;
+
+        }
+
+        public static async Task<TelegramLib.MainClasses.SavedMessagesChat?> GetSavedMessageChat(int userId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetSavedMessagesChat?chatId={userId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.SavedMessagesChat?>(jsonResponse);
+        }
+
+        public static async Task<bool?> IsDateStatContainsInSavedMessageChat(int chatId, DateTime date)
+        {
+            var response = await _client.GetAsync($"api/Social/IsDateStatContainsInSavedMessageChat?chatId={chatId}&date={date}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<bool?>(jsonResponse);
+        }
+
+        public static async Task RemoveSavedMessage(int savedChatId, int toRemoveId)
+        {
+            /*            public int SavedChatId { get; set; }
+                        public int ToRemoveId { get; set; }*/
+
+            var data = new { SavedChatId = savedChatId, ToRemoveId = toRemoveId};
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                //RequestUri = new Uri("https://localhost:7164/api/Login/RemoveClosedGames"),
+                RequestUri = new Uri($"{_host}api/Social/DeleteSavedMessage"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+        }
+
+        public static async Task<int?> GetLastStatDateIdInSavedChat(int chatId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetLastStatDateIdInSavedChat?chatId={chatId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<int>(jsonResponse);
+        }
+
+        public static async Task<int?> GetIdOfLastSavedMessage(int chatId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetIdOfLastSavedMessage?chatId={chatId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<int>(jsonResponse);
+        }
 
 
     }
