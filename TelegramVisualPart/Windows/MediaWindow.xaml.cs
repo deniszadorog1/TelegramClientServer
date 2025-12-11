@@ -62,6 +62,11 @@ namespace TelegramVisualPart.Windows
             godWindow.AddMediaWindow(this);
         }
 
+        public void SetMenuParams()
+        {
+
+        }
+
         private List<string> _mediaPaths;
         private MediaElement _media;
 
@@ -244,6 +249,8 @@ namespace TelegramVisualPart.Windows
 
             SetUserImage(_user.UserImages.First().Name);
             SetImgMediaParam();
+
+            MediaMenu = null;
         }
 
         public List<string> GetSendersForUserImages(int amount)
@@ -323,6 +330,16 @@ namespace TelegramVisualPart.Windows
             MediaMenu.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
             MediaMenu.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
             MediaMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
+
+            UsersImageMenu.Copy.PreviewMouseDown += CopyFrame_PreviewMouseDown;
+            UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
+            UsersImageMenu.WatchInFiles.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
+            UsersImageMenu.Report.PreviewMouseDown += Report_PreviewMouseDown;
+        }
+
+        private void Report_PreviewMouseDown(object sender, MouseEventArgs e)
+        {
+            MessageBox.Show("You cant report here!!");
         }
 
         private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)

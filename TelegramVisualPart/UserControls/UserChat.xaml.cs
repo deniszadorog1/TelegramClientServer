@@ -598,8 +598,6 @@ namespace TelegramVisualPart.UserControls
         public TelegramLib.MainClasses.UserChat _chat;
         public event Action SettingEnded;
 
-
-
         private bool _isSavedMessageChat;
         public async void SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
@@ -1045,9 +1043,13 @@ namespace TelegramVisualPart.UserControls
 
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
                 MessageMenu.Children.Clear();
+
+                //Clear unnes /Ns
+                string cleaned = Regex.Replace(CommentTextBox.Text, @"^\s+|\s+$", "");
+
                 //To send text message
                 await AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name,
-                    CommentTextBox.Text);
+                    cleaned);
                 ReplyMessageRow.Height = new GridLength(0);
             }
         }
@@ -2785,6 +2787,7 @@ namespace TelegramVisualPart.UserControls
         {
             UpdateColors();
             EmojisBoard.Visibility = Visibility.Visible;
+            EmojisBoard.EmojisPanel.SetEmojisList();
 
             Emojis.Foreground = new SolidColorBrush(Colors.LightGray);
             Cursor = Cursors.Hand;

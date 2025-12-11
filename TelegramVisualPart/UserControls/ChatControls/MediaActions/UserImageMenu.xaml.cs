@@ -33,13 +33,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.MediaActions
             Copy.Icon.Kind = PackIconKind.ContentCopy;
             Copy.ButText.Text = "Copy";
 
-            Delete.Icon.Kind = PackIconKind.DeleteForeverOutline;
-            Delete.ButText.Text = "Delete";
-
             SaveAs.Icon.Kind = PackIconKind.ContentSaveOutline;
             SaveAs.ButText.Text = "Save As...";
 
-            Report.Icon.Kind = PackIconKind.InfoOutline;
+            WatchInFiles.Icon.Kind = PackIconKind.FolderOutline;
+            WatchInFiles.ButText.Text = "Show in file";
+
+            Report.Icon.Kind = PackIconKind.InfoBoxOutline;
             Report.ButText.Text = "Report";
         }
     }

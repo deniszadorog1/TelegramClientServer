@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.MediaActions"
              mc:Ignorable="d" 
-             d:DesignHeight="120" d:DesignWidth="150"
-             Width="150" Height="120">
+             d:DesignHeight="160" d:DesignWidth="150"
+             Height="160" Width="150">
     <StackPanel Orientation="Vertical" Name="ChildrenPanel">
         <local:ActionMenuButton x:Name="Copy"/>
-        <local:ActionMenuButton x:Name="Delete"/>
         <local:ActionMenuButton x:Name="SaveAs"/>
+        <local:ActionMenuButton x:Name="WatchInFiles"/>
         <local:ActionMenuButton x:Name="Report"/>
     </StackPanel>
 </UserControl>

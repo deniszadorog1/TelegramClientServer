@@ -32,6 +32,10 @@ namespace TelegramLib.MainClasses.Messages
 
         public override string GetLastMessage()
         {
+            //Test with cleared cpaces
+            string text = Text.Replace("\r\n", " ");
+            return text;
+
             return Text;
         }
 

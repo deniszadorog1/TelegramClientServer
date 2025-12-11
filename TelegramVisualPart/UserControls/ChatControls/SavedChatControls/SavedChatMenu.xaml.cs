@@ -25,6 +25,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
     public partial class SavedChatMenu : UserControl
     {
         private SavedMessagesChat _chat;
+        private TelSystem _system;
 
         public event Action ControlLoaded;
         public event Action CloseControl;
@@ -41,6 +42,56 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
             SetBasicParams();
 
             SetHeightParams();
+        }
+
+        public void SetChats()
+        {
+/*            return; 
+            //Get unique message items
+            List<TelegramLib.MainClasses.Messages.Message> messes = 
+                new List<TelegramLib.MainClasses.Messages.Message>();
+
+            for(int i = 0; i < _chat.Messages.Count; i++)
+            {
+                if(messes.Any(x => x.SenderUserId ==
+                _chat.Messages[i].SenderUserId))
+                {
+                    messes.Add(_chat.Messages[i]);
+                }
+                else
+                {
+                   int index =  messes.IndexOf(messes.First(x => x.SenderUserId ==
+                    _chat.Messages[i].SenderUserId));
+
+                    messes[index] = _chat.Messages[i];
+                }
+            }
+
+            List<UserTalkMessage> talkMessages = new List<UserTalkMessage>();
+
+            //Set user talk messages
+            for(int i = 0; i < _chat.Messages.Count; i++)
+            {
+                 //string imgName = _system.
+
+                //UserTalkMessage toAdd = new UserTalkMessage();
+
+
+                //talkMessages.Add(toAdd);
+            }
+
+            //Set them in chat
+
+            foreach(var control in talkMessages)
+            {
+                ListBoxItem item = new ListBoxItem()
+                {
+                    Content = control
+                };
+            }
+
+*/
+
         }
 
         public void SetHeightParams()

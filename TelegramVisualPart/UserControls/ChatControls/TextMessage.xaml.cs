@@ -295,9 +295,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             bool isSavedChat = _system.GetIsSavedMesChatStatus();
 
             //Settings logged user page
-            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat)
-                
-                ||
+            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) || 
+
+                (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0)  ||
 
                 (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {

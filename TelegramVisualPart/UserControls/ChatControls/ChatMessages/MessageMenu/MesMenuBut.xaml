@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="320"
+             Height="40"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              
+             Background="Transparent"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave"
              

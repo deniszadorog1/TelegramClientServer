@@ -451,51 +451,6 @@ namespace TelegramLib.Services
                 {
                     if (mes.ChatId == chatId)
                     {
-                        /*         TelegramLib.MainClasses.Messages.Message toAdd;
-                                 if (mes.Message is null) toAdd = new MediaAction();
-                                 else if (!(mes.ShareContactMessage is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
-                                 else toAdd = new TextMessage();
-
-                                 toAdd.Id = mes.Id;
-                                 toAdd.SenderUserId = (int)mes.SenderId;
-                                 //toAdd.SenderId = (int)mes.SenderId;
-                                 toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
-                                 toAdd.IsRead = mes.IsRead;
-
-                                 if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
-                                 else if (!(mes.ImageId is null))
-                                 {
-                                     ((MediaAction)toAdd).IsSticker = false;
-                                     ((MediaAction)toAdd).MediaName = GetChatImageNameById((int)mes.ImageId);
-                                 }
-                                 else if (!(mes.VideoId is null))
-                                 {
-                                     ((MediaAction)toAdd).IsSticker = false;
-                                     ((MediaAction)toAdd).MediaName = GetChatVideoNameById((int)mes.VideoId);
-                                 }
-                                 else if (!(mes.GifId is null))
-                                 {
-                                     ((MediaAction)toAdd).IsSticker = false;
-                                     ((MediaAction)toAdd).MediaName = GetChatGifNameById((int)mes.GifId);
-                                 }
-                                 else if (!(mes.StickerId is null))
-                                 {
-                                     ((MediaAction)toAdd).IsSticker = true;
-                                     ((MediaAction)toAdd).MediaName = GetChatStickerNameById((int)mes.StickerId);
-                                 }
-
-                                 if (toAdd is TelegramLib.MainClasses.Messages.ShareContactMessage share &&
-                                     !(mes.ShareContactId is null))
-                                 {
-                                     model.ShareContactMessage message = GetShareModelById((int)mes.ShareContactId);
-
-                                     share.SharedName = message.Name;
-                                     share.SharedUser = GetUserById((int)message.UserId);
-                                 }
-                                 //Set media or text
-                                 //Set message Action
-                                 res.Add(toAdd);*/
-
                         res.Add(GetMessageByMessages(mes));
                     }
                 }
@@ -577,7 +532,7 @@ namespace TelegramLib.Services
                 statMessage.MessageReferenceId = mes.MessageRefference is null ? -1 : mes.MessageRefference;
 
                 if (mes.ChangedAutoDelId is null) statMessage.DelType = null;
-                else statMessage.DelType = GetAutoDelTypeById(mes.ChangedAutoDelId + 1);
+                else statMessage.DelType = GetAutoDelTypeById(mes.ChangedAutoDelId);
 
                 statMessage.Date = mes.StatDate;
             }
@@ -2584,7 +2539,7 @@ namespace TelegramLib.Services
 
         private static Enums.Chat.AutoDeleteType GetAutoDelTypeByTypeString(string type)
         {
-            for (int i = 0; i < (int)Enums.Chat.AutoDeleteType.OneYear; i++)
+            for (int i = 0; i <= (int)Enums.Chat.AutoDeleteType.OneYear; i++)
             {
                 if (type == ((Enums.Chat.AutoDeleteType)i).ToString()) return (Enums.Chat.AutoDeleteType)i;
             }
@@ -3807,8 +3762,6 @@ namespace TelegramLib.Services
                 model.SaveChanges();
             }
         }
-
-        
 
         public static void RemoveMessageById(int id)
         {

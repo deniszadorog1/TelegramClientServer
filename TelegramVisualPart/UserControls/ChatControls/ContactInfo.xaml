@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="915" d:DesignWidth="450"
              MaxHeight="915" Width="450" >
-    <Border Name="BgBorder" CornerRadius="0" 
+    <Border Name="BgBorder" CornerRadius="5" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
             <Grid.RowDefinitions>

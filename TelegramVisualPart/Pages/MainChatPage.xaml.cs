@@ -633,7 +633,11 @@ namespace TelegramVisualPart.Pages
 
                 message.FriendLogin.Text = sender.Name;
 
-                message.LastMessage.Text = messages[i].Item1.Text;
+                //message.LastMessage.Text =message.SetText(messages[i].Item1.Text);// messages[i].Item1.Text;
+                //message.SetText(messages[i].Item1.Text);
+                message.LastMessage.Text = messages[i].Item1.Text.Replace("\r\n", " ");
+
+
                 message.LastMessageTime.Text = messages[i].Item1.GetSentTimeInString();
 
                 //SET ICON HERE 
@@ -718,7 +722,7 @@ namespace TelegramVisualPart.Pages
                 //If sender is null, check logged user
                 TelegramLib.MainClasses.User sender =
 
-                    _system.GetIsSavedMesChatStatus() &&  _system.LoggedUser.Id == messages[i].ForwardedFromId ?
+                    _system.GetIsSavedMesChatStatus() && _system.LoggedUser.Id == messages[i].ForwardedFromId ?
                     _system.LoggedUser :
 
                     _system.LoggedUser.Id == messages[i].SenderUserId ?
@@ -727,12 +731,12 @@ namespace TelegramVisualPart.Pages
                     messages[i].ForwardedFromId is not null ?
                     _system.GetChatterById((int)messages[i].ForwardedFromId) :
 
-                     messages[i].SenderUserId != 0 ? _system.GetChatterById(messages[i].SenderUserId) : 
-                     
+                     messages[i].SenderUserId != 0 ? _system.GetChatterById(messages[i].SenderUserId) :
+
                      _system.LoggedUser;
 
-                string senderImgName = UserChat.IsSavedChat() ? 
-                    _system.LoggedUser.GetFirstImageName().Name : 
+                string senderImgName = UserChat.IsSavedChat() ?
+                    _system.LoggedUser.GetFirstImageName().Name :
                     _chosenChat.Chatter.GetFirstImageName().Name;
 
                 UserTalkMessage message = new UserTalkMessage(senderImgName)
@@ -745,9 +749,11 @@ namespace TelegramVisualPart.Pages
                            else if (_system.IsUserIsSameId(i) is not null) message.FriendLogin.Text = _system.LoggedUser.Name;
            */
 
-                if(sender is not null)message.FriendLogin.Text = sender.Name;
+                if (sender is not null) message.FriendLogin.Text = sender.Name;
 
-                message.LastMessage.Text = messages[i].Text;
+                //message.LastMessage.Text = messages[i].Text;
+                message.LastMessage.Text = messages[i].Text.Replace("\r\n", " ");
+
                 message.LastMessageTime.Text = messages[i].GetSentTimeInString();
 
                 //SET ICON HERE 
@@ -933,10 +939,11 @@ namespace TelegramVisualPart.Pages
             //Set UserControl
         }
 
-        private void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
+        private async void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
+
             SetChatParams(item, talkControl);
         }
 
@@ -962,7 +969,7 @@ namespace TelegramVisualPart.Pages
                 .FirstOrDefault(x => x.Tag.ToString() == chatId.ToString());
         }
 
-        public void SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
+        public async void SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
         {
             SetChosenChatBg(item);
             int.TryParse(item.Tag.ToString(), out int id);
@@ -990,6 +997,7 @@ namespace TelegramVisualPart.Pages
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
             chat.IsMarked = false;
+            await ApiService.UpdateChat(chat);
 
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
             {
@@ -1365,8 +1373,13 @@ namespace TelegramVisualPart.Pages
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
             if (chat is null) return;
 
+            SetLastTalkMessageByChat(chat);
+        }
+
+        public void SetLastTalkMessageByChat(TelegramLib.MainClasses.UserChat chat)
+        {
             UserTalkMessage message =
-                GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
+                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
 
             if (message is null) return;
 
@@ -1655,7 +1668,7 @@ namespace TelegramVisualPart.Pages
         public void UpdateFolders()
         {
             if (_system.Settings.IsTabsOnTheLeft) LeftButtons.UpdateFolders();
-            if(FolderSliderMenu.Height != 0) FolderSliderMenu.SetFolders();
+            if (FolderSliderMenu.Height != 0) FolderSliderMenu.SetFolders();
         }
 
         private void MagnifierGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -2372,13 +2385,9 @@ namespace TelegramVisualPart.Pages
                 sharedId, sharedUser, contactToSend.Name);
 
             //Add backwards
-            if (isAddInSignalR)
-            {
-                AddSharedMessageInSignalR(chat.Chatter, contactToSend);
-            }
-            //UserChat.SetUserChat(chat);
+            if (isAddInSignalR) AddSharedMessageInSignalR(chat.Chatter, contactToSend);
 
-            //UserChat.ShareContact(contactToSend, contactToSend.Name);
+            SetLastTalkMessageByChat(chat);
         }
 
         public async Task AddSharedMessageInSignalR(TelegramLib.MainClasses.User chatter,

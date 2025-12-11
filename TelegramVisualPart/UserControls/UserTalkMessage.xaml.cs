@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -111,6 +112,11 @@ namespace TelegramVisualPart.UserControls
 
             AutoDelDurationGrid.Visibility = Visibility.Visible;
             AutoDelDurBlock.Text = duration;
+        }
+
+        public void SetText(string text)
+        {
+            LastMessage.Text = Regex.Replace(text, @"^\s+|\s+$", "");
         }
     }
 }

@@ -88,13 +88,13 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void HideDeleteFromuserMenu(bool isLogged)
         {
-            if (!isLogged) UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
+            //if (!isLogged) UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
         }
 
         public void SetEventsForUsersImagesMenu()
         {
             UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
-            if (UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
+            //if (UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
             UsersImageMenu.Copy.PreviewMouseDown += CopyUserImage_PreviewMouseDown;
             UsersImageMenu.Report.PreviewMouseDown += ReportUserImage_PreviewMouseDown;
         }

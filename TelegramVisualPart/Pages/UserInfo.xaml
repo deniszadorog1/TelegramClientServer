@@ -9,7 +9,9 @@
       d:DesignHeight="855" d:DesignWidth="450"
       Width="450" Height="455"
       MaxHeight="855"
-      Title="UserInfo">
+      Title="UserInfo"
+      
+      Visibility="Hidden">
 
     <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">
         <Grid>

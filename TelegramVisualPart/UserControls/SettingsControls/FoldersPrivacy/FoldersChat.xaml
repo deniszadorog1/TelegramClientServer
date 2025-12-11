@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="40" d:DesignWidth="350">
+             d:DesignHeight="50" d:DesignWidth="350">
     <Grid HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
@@ -14,12 +14,12 @@
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
 
-        <Ellipse Width="30" Height="30" Name="ChatEllipse"
+        <Ellipse Width="35" Height="35" Name="ChatEllipse"
                              Fill="{StaticResource TempActiveTextColor}"/>
 
         <TextBlock Grid.Column="1" Text="Create new Folder" Name="NewFoldersChatText"
                        VerticalAlignment="Center" Margin="10 0 0 0"
-                       Foreground="{StaticResource TempActiveTextColor}" FontSize="12"/>
+                       Foreground="{StaticResource TempActiveTextColor}" FontSize="16"/>
 
         <Grid Grid.Column="2" Name="CloseGrid"
               MouseEnter="Grid_MouseEnter" 

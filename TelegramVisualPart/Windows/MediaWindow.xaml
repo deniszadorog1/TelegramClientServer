@@ -153,11 +153,11 @@
                                PreviewMouseDown="MenuBut_PreviewMouseDown"/>
 
 
-                    <controls:MediaMenu Panel.ZIndex="100" Margin="-165 -200 0 0"
+                    <controls:MediaMenu Panel.ZIndex="100" Margin="-200 -200 0 0"
                                 MouseLeave="MediaMenu_MouseLeave"
                                 x:Name="MediaMenu" Visibility="Hidden"/>
 
-                    <controls:UserImageMenu Panel.ZIndex="100" Margin="-150 -100 0 0"
+                    <controls:UserImageMenu Panel.ZIndex="100" Margin="-200 -150 0 0"
                                  x:Name="UsersImageMenu" 
                                  MouseLeave="UsersImageMenu_MouseLeave"
                                  Visibility="Hidden"/>

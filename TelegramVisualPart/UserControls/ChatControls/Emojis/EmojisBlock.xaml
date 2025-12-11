@@ -15,6 +15,12 @@
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Width" Value="25"/>
             <Setter Property="Height" Value="25"/>
+            <Setter Property="Background" Value="Transparent"/>
+            
+            <EventSetter Event="MouseEnter" Handler="PackIcon_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="PackIcon_MouseLeave"/>
+            <EventSetter Event="PreviewMouseDown" Handler="PackIcon_PreviewMouseDown"/>
+
         </Style>
     </UserControl.Resources>
     
@@ -40,17 +46,23 @@
                                                  Margin="5 0 0 0"/>
 
                         <TextBox Grid.Row="0"  Name="SarchBox" 
-                          Foreground="White" Margin="35 0 10 0" FontSize="14"
-                          materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                          materialDesign:HintAssist.Foreground="Gray"
-                          CaretBrush="White" MaxLength="10"/>
+                                 Foreground="White" Margin="35 0 10 0" FontSize="14"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="Transparent" 
+                                 materialDesign:HintAssist.Foreground="Gray"
+                                 
+                                 CaretBrush="White" 
+                                 MaxLength="10"
+                                 TextChanged="SarchBox_TextChanged"/>
 
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"
-                                    VerticalAlignment="Center" Margin="0 0 10 0">
+                        <StackPanel Name="TypeIconsPanel"
+                                    HorizontalAlignment="Right" 
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center" 
+                                    Margin="0 0 10 0">
 
-                            <materialDesign:PackIcon Kind="Heart" Style="{StaticResource IconsStyle}"/>
-                            <materialDesign:PackIcon Kind="Like" Style="{StaticResource IconsStyle}"/>
-                            <materialDesign:PackIcon Kind="Dislike" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="OtherIcons" Kind="Heart" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="PosIcons" Kind="Like" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="NegIcons" Kind="Dislike" Style="{StaticResource IconsStyle}"/>
                         </StackPanel>
                         
                     </Grid>

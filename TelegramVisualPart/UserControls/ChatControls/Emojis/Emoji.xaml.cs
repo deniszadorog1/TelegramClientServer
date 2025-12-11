@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.Enums;
 
 namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 {
@@ -20,15 +21,23 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
     /// </summary>
     public partial class Emoji : UserControl
     {
+        private EmojiType _type;
         public Emoji()
         {
             InitializeComponent();
         }
 
-        public Emoji(string emoji)
+        public Emoji(string emoji, EmojiType type)
         {
             InitializeComponent();
+
             EmojiBlock.Text = emoji;
+            _type = type;
+        }
+
+        public EmojiType GetType()
+        {
+            return _type;
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
