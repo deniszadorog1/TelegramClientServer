@@ -11,7 +11,7 @@
              Height="195" Width="250">
     <Border Name="BgBorder" CornerRadius="10"
             Background="{StaticResource DarkThemeOne}">
-        <StackPanel Margin="0 10 0 10">
+        <StackPanel Name="ButsStack" Margin="0 10 0 10">
             <!--<otherButs:UserChatMenuButton x:Name="MuteNotifsBut" Margin="0 5 0 5"/>
             <Grid Height="10" Background="{StaticResource DarkThemeDeviderField}"/>-->
             <otherButs:UserChatMenuButton x:Name="ViewProfileBut" PreviewMouseDown="ViewProfileBut_PreviewMouseDown"/>

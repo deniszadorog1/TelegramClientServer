@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.CodeDom;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics.Eventing.Reader;
@@ -65,7 +66,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SetInfoVisibility();
 
-            SetBioRow(_chat.Chatter);
 
             SignalRService.UpdateContactDel += UpdateContactParams;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -75,6 +75,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SignalRService.SetPhoneNumVisByExpsDel += SetPhoneNumberVisByExps;
             SignalRService.UpdateBirthDateDel += UpdateBirthDate;
             SignalRService.UpdateContactPhotoDel += UpdateContactPhoto;
+            SignalRService.UpdateContactBioDel += UpdateContactBio;
 
             this.Visibility = Visibility.Visible;
 
@@ -110,8 +111,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetInfoLinesVisibility()
         {
-            if (Birthdate.UpperText.Text ==
-                VisConstParamsJsonService.GetStringByName("CantSeeStuff") ||
+            if (/*Birthdate.UpperText.Text ==
+                VisConstParamsJsonService.GetStringByName("CantSeeStuff") ||*/
 
                 Birthdate.UpperText.Text ==
                 VisConstParamsJsonService.GetStringByName("BirthDatNotSet"))
@@ -153,7 +154,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 GifRow.Height = new GridLength(0);
             }
 
-            if(_chat.GetLinksAmount() == 0)
+            if (_chat.GetLinksAmount() == 0)
             {
                 LinkLine.Visibility = Visibility.Hidden;
                 MaxHeight -= LinkRow.Height.Value;
@@ -162,7 +163,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (GifLine.Visibility == Visibility.Hidden &&
                 VideosLine.Visibility == Visibility.Hidden &&
-                PhotosLine.Visibility == Visibility.Hidden && 
+                PhotosLine.Visibility == Visibility.Hidden &&
                 LinkLine.Visibility == Visibility.Hidden)
             {
                 BottomDivideLine.Visibility = Visibility.Hidden;
@@ -194,7 +195,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetMediasRowVisibility()
         {
             MediasRow.Height = new GridLength(
-                PhotoRow.Height.Value + VideosRow.Height.Value + 
+                PhotoRow.Height.Value + VideosRow.Height.Value +
                 GifRow.Height.Value + LinkRow.Height.Value + 10);
 
             MaxHeight += 5;
@@ -247,13 +248,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return _hiddenParasHeight;
         }
 
+        public void UpdateContactBio(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (_chat.Chatter.Id == user.Id)
+                {
+                    await SetBioRow(user);
+                }
+            });
+        }
+
         public void UpdateContactPhoto(TelegramLib.MainClasses.User user)
         {
             Dispatcher.InvokeAsync(async () =>
             {
                 if (user.Id == _system.LoggedUser.Id) return;
-
-                Console.WriteLine(_system.Settings.PrivacySettings.ProfPhotoPrivacy);
 
                 await SignalRHelperService.SetContactPhoto(user,
                     _chat, ContactImgBrush, UserIcon);
@@ -348,7 +358,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _addInfoRowHeight = 55;
         private const int _baseInfoRowHeight = 280;
 
-        public void SetBioRow(TelegramLib.MainClasses.User toUpdate)
+        public async Task SetBioRow(TelegramLib.MainClasses.User toUpdate)
         {
             if (toUpdate.BIO is null || toUpdate.BIO == string.Empty)
             {
@@ -360,12 +370,30 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             UpdateSizeWithBioRow(toUpdate);
             Bio.UpperText.Text = "Bio";
+
+            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.Bio);
+            MainSettings settings = await ApiService.GetSettingsByUserId(toUpdate.Id);
+
+            if (shareType == IsPrivacyException.Share)
+            {
+                Bio.BottomText.Text = toUpdate.BIO;
+                return;
+            }
+
+            if (settings.PrivacySettings.BioPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                shareType == IsPrivacyException.NeverShare)
+            {
+                Bio.BottomText.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                return;
+            }
+
             Bio.BottomText.Text = $"{toUpdate.BIO}";
         }
 
         public void UpdateSizeWithBioRow(TelegramLib.MainClasses.User user)
         {
-            if (user.BIO is null ||  user.BIO == string.Empty)
+            if (user.BIO is null || user.BIO == string.Empty)
             {
                 InfoRow.Height = new GridLength(_baseInfoRowHeight);
             }
@@ -382,6 +410,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //SetLastSeenOnline();
             await SetMobilePhoneNumber();
             await SetBirtDate();
+
+            SetBioRow(_chat.Chatter);
+
 
             UserName.SetUpperText(_chat.GetChatter().Login);
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
@@ -485,7 +516,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TelegramLib.MainClasses.User? user = _chat.Chatter;//  await GetChatterUser();
             if (user is null) return;
 
-            IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.PhoneNumber);
+            //IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.DateBirth);
 
             await SignalRHelperService.SetBirthDate(user, _chat, Birthdate.UpperText);
 
@@ -511,7 +542,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async Task SetOnlineStatus()
         {
             //if (_chat is null) return;
-            TelegramLib.MainClasses.User? user = await GetChatterUser(); await ApiService.GetUserById(_chat.GetChatter().Id);
+            TelegramLib.MainClasses.User? user = await GetChatterUser(); //await ApiService.GetUserById(_chat.GetChatter().Id);
             if (user is null) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(user, Enums.PrivacySettingType.LastSeen);
@@ -656,7 +687,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 .SetOtherChatByUserId(_chat.GetChatter().Id);
 
             SendMesPressed?.Invoke();
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();            
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void CloseButGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -699,12 +730,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 //unblock in system
                 _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
+
+                ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, _chat.Chatter);
             }
             else
             {
                 //Set to block page
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
                     new Pages.UserInfoContact.ActionsFolder.BlockContact(_system, _chat.GetChatter()));
+
             }
             ((MainWindow)Window.GetWindow(this)).SetFramesAfterBlockingContact();
         }
@@ -743,7 +777,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             return name == PhotosLine.Name.ToString() ? Enums.SentItemsTypes.Photos :
                 name == VideosLine.Name.ToString() ? Enums.SentItemsTypes.Video :
-                name == GifLine.Name.ToString() ? Enums.SentItemsTypes.GIFs : 
+                name == GifLine.Name.ToString() ? Enums.SentItemsTypes.GIFs :
                 name == LinkLine.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
                 Enums.SentItemsTypes.Photos;
         }
@@ -828,24 +862,24 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _chat.GetChatter(), (MainWindow)Window.GetWindow(this),
                 Enums.MediaShow.MediaShowType.OtherUserImages, _system);
 
-           
+
             //Is exist
             if (((MainWindow)Window.GetWindow(this))
                 .IsMediaWindowIsExistByUserId(_chat.GetChatter().Id)) return;
 
             mediaWindow.Show();
 
-/*            TelegramLib.MainClasses.User contact = _chat.GetChatter();
+            /*            TelegramLib.MainClasses.User contact = _chat.GetChatter();
 
-            string firstImage = contact.GetFirstImageName().Name;
-            Image chosen = FilesAction.GetUserImage(firstImage);
+                        string firstImage = contact.GetFirstImageName().Name;
+                        Image chosen = FilesAction.GetUserImage(firstImage);
 
-            List<Image> imgs = FilesAction.GetUserImages(contact.GetImagesNames());
+                        List<Image> imgs = FilesAction.GetUserImages(contact.GetImagesNames());
 
-            VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(contact.UserImages, _system, contact.Name, false, null);
+                        VisualActionPage page = new VisualActionPage(chosen, imgs);
+                        page.SetUserImages(contact.UserImages, _system, contact.Name, false, null);
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
+                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
 
@@ -886,7 +920,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void AddContactGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set Add Contact Page
-            EditUserContact contact = 
+            EditUserContact contact =
                 new EditUserContact(_chat.Chatter, _system);
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(contact);
         }

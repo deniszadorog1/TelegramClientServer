@@ -45,6 +45,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         public void SetBaseTextBlocks()
         {
+            if (_chat.Chatter is null) return;
             SetDestructBut.Text = _chat.GetChatter().Login;
         }
 

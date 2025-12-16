@@ -14,7 +14,7 @@ namespace TelegramLib.UserSettings.SettingsTypes
     {
         public int Id { get; set; }
         public List<User> BlockedUsers { get; set; }
-        
+
         public AwayForTime SelfDeleteTime { get; set; }
 
         public PhoneNumberSub PhonePrivacy { get; set; }
@@ -66,5 +66,23 @@ namespace TelegramLib.UserSettings.SettingsTypes
             BioPrivacy = new BioSub();
             PassCode = null;
         }
+
+        public void SetBlockParams(bool isBlock, User user)
+        {
+            if (isBlock)
+            {
+                if(!LastSeenPrivacy.NeverShareExps.Any(x => x.Id == user.Id)) LastSeenPrivacy.NeverShareExps.Add(user);
+                LastSeenPrivacy.ShareWithExps.Remove(LastSeenPrivacy.ShareWithExps.FirstOrDefault(x => x.Id == user.Id));
+
+                if (!ProfPhotoPrivacy.NeverShareExps.Any(x => x.Id == user.Id)) ProfPhotoPrivacy.NeverShareExps.Add(user);
+                ProfPhotoPrivacy.ShareWithExps.Remove(ProfPhotoPrivacy.ShareWithExps.FirstOrDefault(x => x.Id == user.Id));
+                return;
+            }
+
+            LastSeenPrivacy.NeverShareExps.Remove(LastSeenPrivacy.NeverShareExps.FirstOrDefault(x => x.Id == user.Id));
+            ProfPhotoPrivacy.NeverShareExps.Remove(ProfPhotoPrivacy.NeverShareExps.FirstOrDefault(x => x.Id == user.Id));
+        }
+
+        
     }
 }

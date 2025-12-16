@@ -1,23 +1,28 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.SignalR.Client;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.UserControls;
 using Newtonsoft.Json.Bson;
 using TelegramLib.Models;
+
 using UserChat = TelegramLib.MainClasses.UserChat;
 using User = TelegramLib.MainClasses.User;
+
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Http;
 using System.Runtime.CompilerServices;
 using TelegramVisualPart.UserControls.SettingsControls;
 using TelegramVisualPart.Pages;
+using TelegramVisualPart.Windows;
+using TelegramLib.MainClasses.DTOsHelper;
 
 namespace TelegramVisualPart.Services
 {
@@ -43,7 +48,10 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? SetPhoneNumVisByExpsDel;
         public static event Action<User>? UpdateBirthDateDel;
         public static event Action<User>? UpdateContactPhotoDel;
+        public static event Action<User>? UpdateContactBioDel;
         public static event Action<User>? UpdateForwardStatusDel;
+
+        public static event Func<User, Message, Task>? EditMessageDel;
 
         public static event Action<User>? DeleteChat;
 
@@ -103,6 +111,7 @@ namespace TelegramVisualPart.Services
             UpdateContactPhotoDel = null;
             DeleteChat = null;
             DeleteMessageByIdDel = null;
+            EditMessageDel = null;
 
             UpdateReadStatus = null;
             SetShareContactMessage = null;
@@ -116,8 +125,7 @@ namespace TelegramVisualPart.Services
             .WithUrl("https://localhost:7164/chatHub", options =>
             {
                 options.Headers.Add("userId", _system.LoggedUser.Id.ToString());
-            })
-            .Build();
+            }).Build();
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
             {
@@ -126,7 +134,6 @@ namespace TelegramVisualPart.Services
                 //there receiver should add message to RECEIVERSdb
 
                 //sender converts into contact id -> find chat in db by this params -> add message to chat
-
 
                 TextMessageReceived?.Invoke(user, message);
 
@@ -173,6 +180,12 @@ namespace TelegramVisualPart.Services
             _connection.On<User>("UpdateOnlineStatus", (updatedContact) =>
             {
                 UpdateOnlineStatusDel?.Invoke(updatedContact);
+                return;
+            });
+
+            _connection.On<User>("UpdateContactBio", (updatedContact) =>
+            {
+                UpdateContactBioDel?.Invoke(updatedContact);
                 return;
             });
 
@@ -277,6 +290,16 @@ namespace TelegramVisualPart.Services
                 StatMessageReceived?.Invoke(logged, mes);
             });
 
+            _connection.On<User, EditDTO>("EditMessage", (logged, dto) =>
+            {
+                //Turn into message
+
+                Message mes = dto.TextMes is not null ? dto.TextMes : dto.MediaMes;
+                if (mes is null) return;
+                
+                EditMessageDel?.Invoke(logged, mes);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -359,6 +382,12 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("UpdateContactPhoto", user);
         }
 
+        public static async Task UpdateContactBioVis(User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateContactBio", user);
+        }
+
         public static async Task UpdateContactForwardStatus(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
@@ -411,6 +440,25 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("ReplyMessage", logged, chatter, replyMes);
+        }
+
+        public static async Task EditMessage(User logged, User chatter, 
+            TelegramLib.MainClasses.Messages.Message toEdit)
+        {
+            EditDTO dto = GetEditDTO(toEdit);
+
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("EditMessage", chatter.Id, logged, dto);
+        }
+
+        private static EditDTO GetEditDTO(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            EditDTO res = new EditDTO();
+
+            if (mes is TextMessage text) res.TextMes = text;
+            else if (mes is MediaAction media) res.MediaMes = media;
+
+            return res;
         }
 
     }

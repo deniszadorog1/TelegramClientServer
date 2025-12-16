@@ -60,13 +60,14 @@ namespace TelegramClientServer.Controllers
         [HttpPost ("EditMessage")]
         public void EditMessage([FromBody] EditMessageDTO editDTO)
         {
-            DbService.EditMessage(editDTO.ChatId, editDTO.Message);
+            DbService.EditMessage(editDTO.ChatId, editDTO.TextMes, editDTO.MediaMes);
         }
 
         public class EditMessageDTO
         {
             public int ChatId { get; set; }
-            public TelegramLib.MainClasses.Messages.Message Message { get; set; }
+            public TelegramLib.MainClasses.Messages.TextMessage? TextMes { get; set; }
+            public TelegramLib.MainClasses.Messages.MediaAction? MediaMes { get; set; }
         }
 
 

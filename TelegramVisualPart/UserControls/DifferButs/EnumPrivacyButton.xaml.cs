@@ -36,5 +36,10 @@ namespace TelegramVisualPart.UserControls.DifferButs
             Background = (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
             Cursor = null;
         }
+
+        public void SetAmountOfUsers(string str)
+        {
+            EnumPart.Text = str;
+        }
     }
 }

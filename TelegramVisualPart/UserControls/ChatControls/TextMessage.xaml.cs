@@ -39,7 +39,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private int? _forwardedFrom = null;
 
         public TextMessage(TelSystem system,
-            string text, string senderImageName,
+            string text, 
+            string senderImageName,
             string fontName,
             TelegramLib.MainClasses.Messages.Message? toReply = null,
             int? forwardedFrom = null)
@@ -57,7 +58,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetText(text);
 
-
             SetWidth(fontName);
 
             SetImageSource();
@@ -69,6 +69,29 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetEvents();
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_system.GetIsSavedMesChatStatus()) return;
+
+            DependencyObject check = this.Parent;
+            if (check is not ListBoxItem item) return;
+
+            int.TryParse(item.Tag.ToString(), out int mesId);
+
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(mesId);
+
+            if(mes.SenderUserId == _system.LoggedUser.Id)
+            { 
+                SolidColorBrush color = 
+                    (SolidColorBrush)Application.
+                    Current.Resources["DarkThemeOne"];
+
+                MessageColor.Background = color;
+            }
+        }
+
 
         public void SetText(string text)
         {
@@ -86,11 +109,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 LinkPart.Text = url;
                 SecondPart.Text = after;
 
-                //Message.Text = string.Empty;
+                TrimText();
                 return;
             }
 
             FirstPart.Text = text;
+            TrimText();
+        }
+
+        public void TrimText()
+        {
+            FirstPart.Text = FirstPart.Text.Trim(' ');
+            LinkPart.Text = LinkPart.Text.Trim(' ');
+            SecondPart.Text = SecondPart.Text.Trim(' ');
         }
 
         public void SetEvents()
@@ -387,5 +418,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
 
         }
+
     }
 }

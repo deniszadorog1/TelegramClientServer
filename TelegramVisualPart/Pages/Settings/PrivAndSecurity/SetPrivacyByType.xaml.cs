@@ -53,6 +53,38 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             //EverybodyRadio.IsChecked = true;
         }
 
+        public void SetAmountSharedUsers()
+        {
+            switch (_type)
+            {
+                case PrivacySettingType.PhoneNumber:
+                    {
+                        //PhoneContactNeverShareBut.SetAmountOfUsers()
+                        //PhoneNobodyAlwaysShareBut
+                            return;
+                    }
+                case PrivacySettingType.LastSeen:
+                    break;
+                case PrivacySettingType.ProfilePhotos:
+                    break;
+                case PrivacySettingType.ForwardedMessages:
+                    break;
+                case PrivacySettingType.Messages:
+                    break;
+                case PrivacySettingType.DateBirth:
+                    break;
+                case PrivacySettingType.Bio:
+                    break;
+            }
+        }
+
+        public int GetAmountOfUsers()
+        {
+            
+
+            return 0;
+        }
+
         public void SetVisualPart()
         {
             switch (_type)
@@ -559,21 +591,10 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
 
-            await UpdateStatesWithSignalR();
+            await VisHelper.UpdateStatesWithSignalR(_system);
         }
 
-        public async Task UpdateStatesWithSignalR()
-        {
-            await SignalRService.SetPhoneNumVisByExps( _system.LoggedUser);
 
-            await SignalRService.UpdateBirtDate(_system.LoggedUser);
-
-            await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
-
-            await SignalRService.UpdateContactPhotoVis(_system.LoggedUser);
-
-            await SignalRService.UpdateContactForwardStatus(_system.LoggedUser);
-        }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {

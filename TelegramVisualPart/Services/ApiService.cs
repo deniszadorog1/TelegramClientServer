@@ -932,9 +932,13 @@ namespace TelegramVisualPart.Services
         public static async Task<bool> EditMessage(int chatId, 
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            var data = new { ChatId = chatId, Message = mes };
+            var data = new { 
+                ChatId = chatId, 
+                TextMes = mes is TextMessage text ? text : null,
+                MediaMes = mes is MediaAction media ? media : null
+            };
 
-            string json = JsonConvert.SerializeObject(data);
+            string json = JsonConvert.SerializeObject(data); 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Social/EditMessage", content);
 

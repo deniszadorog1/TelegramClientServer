@@ -24,6 +24,7 @@ using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.ChatActions.SendMedia;
 using TelegramVisualPart.Pages.MyProfile;
@@ -1006,6 +1007,11 @@ namespace TelegramVisualPart
             }
         }
 
+        public async Task SetBlockedUserVisParams(bool isBlock, TelegramLib.MainClasses.User user)
+        {
+            if (MainFrame.Content is MainChatPage page) await page.SetUserBlockParams(isBlock, user);
+        }
+   
         public void ClearTempPageFrame(Page page)
         {
             if (SecondaryFrame.Content == page) ClearSecFrame();
@@ -1187,10 +1193,10 @@ namespace TelegramVisualPart
                 page.UpdateAmountOfSelectedMessages();
         }
 
-        public void SetOtherChatByUserId(int userId)
+        public async Task SetOtherChatByUserId(int userId)
         {
             if (MainFrame.Content is MainChatPage page)
-                page.SetChatByChatterId(userId);
+                await page.SetChatByChatterId(userId);
         }
 
         public void RemoveFromGodWindow(MediaWindow medWindow)

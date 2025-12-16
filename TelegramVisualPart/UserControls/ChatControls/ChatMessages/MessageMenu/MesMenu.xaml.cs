@@ -46,10 +46,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             GoToMessage.SetParams(PackIconKind.EyeOutline, "Go to message");
             ReplyBut.SetParams(PackIconKind.Reply, "Reply");
 
-            Buts.Children.Remove(EditBut);
-            /*            EditBut.Icon.Kind = PackIconKind.PencilOutline;
-                        EditBut.ButText.Text = "Edit";
-                        IsAddEditBut();*/
+            EditBut.Icon.Kind = PackIconKind.PencilOutline;
+            EditBut.ButText.Text = "Edit";
+            IsAddEditBut();
 
             PinBut.SetParams(PackIconKind.PinOutline, "Pin");
             ShowInFolder.SetParams(PackIconKind.FolderOutline, "Show in folder");
@@ -82,11 +81,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                     }
                 case MessageMenuType.MediaMessage:
                     {
+                        Buts.Children.Remove(EditBut);
                         break;
                     }
                 case MessageMenuType.ShareContact:
                     {
                         Buts.Children.Remove(ShowInFolder);
+                        Buts.Children.Remove(EditBut);
                         Buts.Children.Remove(SaveAsBut);
                         break;
                     }
@@ -135,6 +136,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         public event Action ForwardAct;
         public event Action DeleteAct;
         public event Action SelectAct;
+        public event Action EditAct;
 
         private void ReplyBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -191,6 +193,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         private void EditBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set edit menu in chat
+            EditAct?.Invoke();
         }
 
         private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)

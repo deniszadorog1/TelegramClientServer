@@ -947,7 +947,7 @@ namespace TelegramVisualPart.Pages
             SetChatParams(item, talkControl);
         }
 
-        public void SetChatByChatterId(int userId)
+        public async Task SetChatByChatterId(int userId)
         {
             //Get user chat
             TelegramLib.MainClasses.UserChat chat =
@@ -959,7 +959,7 @@ namespace TelegramVisualPart.Pages
             if (chatItem is null ||
                 chatItem.Content is not UserTalkMessage talkControl) return;
 
-            SetChatParams(chatItem, talkControl);
+            await SetChatParams(chatItem, talkControl);
         }
 
         public ListBoxItem? GetChatItemByChatId(int chatId)
@@ -969,7 +969,7 @@ namespace TelegramVisualPart.Pages
                 .FirstOrDefault(x => x.Tag.ToString() == chatId.ToString());
         }
 
-        public async void SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
+        public async Task SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
         {
             SetChosenChatBg(item);
             int.TryParse(item.Tag.ToString(), out int id);
@@ -1005,7 +1005,7 @@ namespace TelegramVisualPart.Pages
                 ((MainWindow)Window.GetWindow(this)).SetOtherChatWindowOnFront(chat);
                 return;
             }
-            UserChat.SetUserChat(chat);
+            await UserChat.SetUserChat(chat);
 
             SetChosenChatValues(chat);
 
@@ -1853,7 +1853,7 @@ namespace TelegramVisualPart.Pages
                 SetColumnWidth(GridSplitterColumn, 0);
 
                 //Hide Contact info Button
-                UserChat.SetUserInfoButGrid(false);
+                UserChat.SetUserInfoButGrid(true);
 
                 //Set User Chat Column Width
                 /*                double newUserChatColumn = this.ActualWidth - LeftButtons.ActualWidth;
@@ -2249,6 +2249,14 @@ namespace TelegramVisualPart.Pages
             UpdateChatContactInfo();
         }
 
+        public async Task SetUserBlockParams(bool isBlock, TelegramLib.MainClasses.User user)
+        {
+            _system.SetUserBlockParams(isBlock, user);
+
+            await ApiService.UpdatePrivSettings(_system.Settings.PrivacySettings);
+            await VisHelper.UpdateStatesWithSignalR(_system);
+        }
+
         public void UpdateChatContactInfo()
         {
             if (UserChat.Visibility == Visibility.Visible)
@@ -2474,7 +2482,13 @@ namespace TelegramVisualPart.Pages
         public async Task SetForwardMessage(int? userIdToSend,
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
+            await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
+
+            Console.WriteLine(UserChat.ReplyMessageRow.Height);
+            Console.WriteLine(UserChat.ReplyBorder.Visibility);
+            Console.WriteLine(UserChat.ReplyBorder.Height);
+
+            UserChat.ReplyBorder.Height = 50;
         }
 
         public void SetForwardedOnlyMessage(TelegramLib.MainClasses.Messages.Message mes)

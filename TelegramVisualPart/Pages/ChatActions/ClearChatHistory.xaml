@@ -15,8 +15,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="55"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition/>
+                <RowDefinition Name="BothPanelRow" Height="60"/>
+                <RowDefinition Name="EnAutoDeleteRow"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -45,9 +45,8 @@
 
                 <TextBlock FontSize="17" Foreground="White" >
                     <Run Name ="CheckBoxText"/>
-                    <Run Name="UsernameCheckBoxBlock" Text="USERNAME "/>
+                    <Run Name="UsernameCheckBoxBlock" Text="USERNAME"/>
                 </TextBlock>
-
             </StackPanel>
 
 
@@ -64,13 +63,15 @@
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="DeleteBut"
-                            Content="Delete" Background="Transparent" BorderThickness="0"
-                            MouseEnter="DeleteBut_MouseEnter"  
-                            MouseLeave="DeleteBut_MouseLeave"
-                            HorizontalAlignment="Left" FontSize="16"
-                            Click="DeleteBut_Click"  Margin="5 0 5 0" 
-                            Foreground="{StaticResource CloseWindowColor}"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Name="DeleteBut"
+                        Content="Delete" Background="Transparent" 
+                        BorderThickness="0"
+                        MouseEnter="DeleteBut_MouseEnter"  
+                        MouseLeave="DeleteBut_MouseLeave"
+                        HorizontalAlignment="Left" FontSize="16"
+                        Click="DeleteBut_Click"  Margin="5 0 5 0" 
+                        Foreground="{StaticResource CloseWindowColor}"/>
             </StackPanel>
 
         </Grid>

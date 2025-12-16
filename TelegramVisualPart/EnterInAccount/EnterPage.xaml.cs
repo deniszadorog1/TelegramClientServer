@@ -58,6 +58,7 @@ namespace TelegramVisualPart.EnterInAccount
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
+            SignalRHelperService.SetStatSystem(_system);
 
             if (_system is null)
             {

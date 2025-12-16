@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using TelegramClientServer.SignalRHubs;
 
+
 namespace TelegramClientServer
 {
 
@@ -17,6 +18,14 @@ namespace TelegramClientServer
                 {
                     options.SerializerSettings.TypeNameHandling = TypeNameHandling.All;
                 });
+
+/*            builder.Services.AddSignalR()
+                .AddNewtonsoftJsonProtocol(options =>
+                {
+                    options.PayloadSerializerSettings.TypeNameHandling =
+                        TypeNameHandling.Auto;
+                });
+*/
 
             builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => { });
 

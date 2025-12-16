@@ -22,35 +22,50 @@ namespace TelegramVisualPart.Services
 {
     public static class SignalRHelperService
     {
+        private static TelSystem _system;
+
+        public static void SetStatSystem(TelSystem system)
+        {
+            _system = system;
+        }
+
         public static async Task<IsPrivacyException> GetTypeByUser(TelegramLib.MainClasses.User user,
         Enums.PrivacySettingType settingType)
         {
+            //Test method
             MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
-
+            
             if (settingType == Enums.PrivacySettingType.LastSeen)
             {
-                return settings.PrivacySettings.LastSeenPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
-                     settings.PrivacySettings.LastSeenPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                return settings.PrivacySettings.LastSeenPrivacy.ShareWithExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.LastSeenPrivacy.NeverShareExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
             else if (settingType == PrivacySettingType.PhoneNumber)
             {
-                return settings.PrivacySettings.PhonePrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
-                     settings.PrivacySettings.PhonePrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                return settings.PrivacySettings.PhonePrivacy.ShareWithExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.PhonePrivacy.NeverShareExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
             else if (settingType == PrivacySettingType.DateBirth)
             {
-                return settings.PrivacySettings.DateBirthPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
-                     settings.PrivacySettings.DateBirthPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                return settings.PrivacySettings.DateBirthPrivacy.ShareWithExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.DateBirthPrivacy.NeverShareExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
             else if (settingType == PrivacySettingType.ProfilePhotos)
             {
-                return settings.PrivacySettings.ProfPhotoPrivacy.ShareWithExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.Share :
-                     settings.PrivacySettings.ProfPhotoPrivacy.NeverShareExps.Select(x => x.Id).Contains(user.Id) ? IsPrivacyException.NeverShare :
+                return settings.PrivacySettings.ProfPhotoPrivacy.ShareWithExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.ProfPhotoPrivacy.NeverShareExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.NeverShare :
                      IsPrivacyException.Null;
             }
+            else if(settingType == PrivacySettingType.Bio)
+            {
+                return settings.PrivacySettings.BioPrivacy.ShareWithExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.Share :
+                     settings.PrivacySettings.BioPrivacy.NeverShareExps.Select(x => x.Id).Contains(_system.LoggedUser.Id) ? IsPrivacyException.NeverShare :
+                     IsPrivacyException.Null;
+            }
+
             return IsPrivacyException.Null;
         }
 
@@ -173,7 +188,7 @@ namespace TelegramVisualPart.Services
                 shareType == IsPrivacyException.NeverShare)
             {
                 brush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
-                ellipse.IsHitTestVisible = false;
+                //ellipse.IsHitTestVisible = false;
                 return;
             }
             brush.ImageSource = new BitmapImage(new Uri
@@ -240,7 +255,9 @@ namespace TelegramVisualPart.Services
             UserChat chat, ImageBrush brush, Ellipse ellipse)
         {
             brush.ImageSource = _photoBitmapImg;
-            ellipse.IsHitTestVisible = _isPhotoCanBePushed;
+
+            //ellipse.IsHitTestVisible = true;
+            //ellipse.IsHitTestVisible = _isPhotoCanBePushed;
         }
     }
 }

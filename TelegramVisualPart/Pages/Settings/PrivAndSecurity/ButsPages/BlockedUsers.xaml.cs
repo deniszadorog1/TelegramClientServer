@@ -15,8 +15,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.UserControls.SettingsControls;
+using User = TelegramLib.MainClasses.User;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 {
@@ -71,6 +73,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
                     //Update if its temp chat 
                     ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
+                    ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, contact);
+
                 };
 
                 BlockedUsersPanel.Items.Add(item);

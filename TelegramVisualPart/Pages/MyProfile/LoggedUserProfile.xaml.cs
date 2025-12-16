@@ -67,7 +67,7 @@ namespace TelegramVisualPart.Pages
             {
                 row.Height = new GridLength(0);
                 iconRow.Height = new GridLength(0);
-                BlockColumn.Height = new GridLength(BlockColumn.Height.Value);
+                BlockColumn.Height = new GridLength(BlockColumn.Height.Value - 40);
             }
             else
             {

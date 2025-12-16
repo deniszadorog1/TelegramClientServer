@@ -38,5 +38,24 @@ namespace TelegramVisualPart.Services
             block.Text = lastSeenOnline is null ? VisConstParamsJsonService.GetStringByName("RecentlyStat") :  
                 $"{lastSeenOnline.Value.Day}.{lastSeenOnline.Value.Month}.{lastSeenOnline.Value.Year}";
         }
+
+        public static ScrollViewer GetScrollViewer(DependencyObject dep)
+        {
+            if (dep == null) return null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dep); i++)
+            {
+                var child = VisualTreeHelper.GetChild(dep, i);
+
+                if (child is ScrollViewer sv)
+                    return sv;
+
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+
+            return null;
+        }
     }
 }

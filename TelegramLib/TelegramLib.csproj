@@ -184,6 +184,7 @@
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="MainClasses\ChatFitures\ChatBackground.cs" />
     <Compile Include="MainClasses\ChatFitures\Theme.cs" />
+    <Compile Include="MainClasses\DTOsHelper\EditDTO.cs" />
     <Compile Include="MainClasses\FolderObjs\Folder.cs" />
     <Compile Include="MainClasses\Messages\MediaAction.cs" />
     <Compile Include="MainClasses\Messages\Message.cs" />

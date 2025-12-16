@@ -121,6 +121,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             ((MainWindow)Window.GetWindow(this)).SetForwardMessage(_mes, userSendId);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+
         }
 
         private void CancelBut_MouseEnter(object sender, MouseEventArgs e)

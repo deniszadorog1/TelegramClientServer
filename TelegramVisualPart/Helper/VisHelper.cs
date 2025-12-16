@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using TelegramVisualPart.Services;
+using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.Helper
 {
@@ -76,6 +78,21 @@ namespace TelegramVisualPart.Helper
         {
             return Uri.TryCreate(text, UriKind.Absolute, out var uri)
                 && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }
+
+        public static async Task UpdateStatesWithSignalR(TelSystem system)
+        {
+            await SignalRService.SetPhoneNumVisByExps(system.LoggedUser);
+
+            await SignalRService.UpdateBirtDate(system.LoggedUser);
+
+            await SignalRService.SetContactLastSeenVisState(system.LoggedUser);
+
+            await SignalRService.UpdateContactPhotoVis(system.LoggedUser);
+
+            await SignalRService.UpdateContactForwardStatus(system.LoggedUser);
+
+            await SignalRService.UpdateContactBioVis(system.LoggedUser);
         }
     }
 }

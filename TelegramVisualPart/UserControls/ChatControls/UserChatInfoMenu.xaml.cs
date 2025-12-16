@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,9 +48,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetBasicBlocks()
         {
-/*            MuteNotifsBut.IconType.Kind = PackIconKind.VolumeMute;
-            MuteNotifsBut.ButName.Text = "Mute notifications";
-*/
+            /*            MuteNotifsBut.IconType.Kind = PackIconKind.VolumeMute;
+                        MuteNotifsBut.ButName.Text = "Mute notifications";
+            */
             ViewProfileBut.IconType.Kind = PackIconKind.AccountCircleOutline;
             //ViewProfileBut.ButName.Text = "View profile";
 
@@ -65,7 +66,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             DeleteChatBut.IconType.Kind = PackIconKind.TrashCanOutline;
             //DeleteChatBut.ButName.Text = "Delete chat";
 
-            DeleteChatBut.IconType.Foreground = 
+            DeleteChatBut.IconType.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
             DeleteChatBut.ButName.Foreground =
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
@@ -73,7 +74,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void ViewProfileBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(_chat.Chatter is null)
+            if (_chat.Chatter is null)
             {
 
                 return;
@@ -91,7 +92,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new DeleteChat(_chat.Chatter));
-            
+
             //await ApiService.GetUserById(_chat.GetChatter().Id))
         }
 
@@ -106,14 +107,45 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             //TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
             if (_chat is null) return;
-            if(_chat.ChatBg is null)
+            if (_chat.ChatBg is null)
             {
                 _chat.ChatBg = new TelegramLib.MainClasses.ChatFitures.ChatBackground();
             }
-            
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                 new SetChatWallpaper(_chat.GetBackground(), _chat,
                 _system.Settings.GetChatSettings()));
+        }
+
+        public void HideBloksIfSavedChat(bool isSave)
+        {
+            const int baseButHeight = 35;
+            if (isSave)
+            {
+                ViewProfileBut.Height = 0;
+                ExportHistoryBut.Height = 0;
+                DeleteChatBut.Height = 0;
+                //return;
+            }
+            else 
+            {
+                ViewProfileBut.Height = baseButHeight;
+                ExportHistoryBut.Height = baseButHeight;
+                DeleteChatBut.Height = baseButHeight;
+            }
+
+            UpdateMenuSize();
+        }
+
+        public void UpdateMenuSize()
+        {
+            Height = ViewProfileBut.Height +
+                SetWallpaperBut.Height +
+                ExportHistoryBut.Height +
+                ClearChatBut.Height +
+                DeleteChatBut.Height +
+                ButsStack.Margin.Top +
+                ButsStack.Margin.Bottom;
         }
     }
 }

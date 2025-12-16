@@ -747,5 +747,23 @@ namespace TelegramLib.MainClasses
         }
 
         public bool GetIsSavedMesChatStatus() => _isSavedMesChat;
+
+        public void EditMessage(Message toEdit)
+        {
+            Message mes = Chats.Select(x => x.Messages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
+
+            if (mes is null) return;
+
+            if(mes is TextMessage mesText && 
+               toEdit is TextMessage toEditText)
+            {
+                mesText.Text = toEditText.Text;
+            }
+        }
+
+        public void SetUserBlockParams(bool isBlock, User user)
+        {
+            Settings.SetBlockParams(isBlock, user);
+        }
     }
 }

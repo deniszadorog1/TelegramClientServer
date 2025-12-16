@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.DTOsHelper;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using User = TelegramLib.MainClasses.User;
+
 
 namespace TelegramClientServer.SignalRHubs
 {
@@ -42,10 +44,19 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.All.SendAsync("UpdateOnlineStatus", toUpdate);
         }
+        public async Task UpdateContactBio(User user)
+        {
+            await Clients.All.SendAsync("UpdateContactBio", user);
+        }
 
         public async Task AddUserImage(User addedImage)
         {
             await Clients.All.SendAsync("AddUserImage", addedImage);
+        }
+
+        public async Task EditMessage(int clientId, User logged, EditDTO dto)
+        {
+            await Clients.User(clientId.ToString()).SendAsync("EditMessage", logged, dto);
         }
 
         public async Task ClearChat(int clientId, User chatter)

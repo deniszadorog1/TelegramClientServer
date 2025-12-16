@@ -2317,8 +2317,15 @@ namespace TelegramLib.Services
         }
 
         public static void EditMessage(int chatId,
-            TelegramLib.MainClasses.Messages.Message mes)
+            TelegramLib.MainClasses.Messages.TextMessage textMes,
+            TelegramLib.MainClasses.Messages.MediaAction mediaMes)
         {
+            TelegramLib.MainClasses.Messages.Message mes = null;
+            if (textMes is null) mes = mediaMes;
+            else mes = textMes;
+
+            if (mes is null) return;
+
             using (var model = new TelegramModel())
             {
                 //Get message
@@ -3864,6 +3871,22 @@ namespace TelegramLib.Services
         //Add message
         //Delete message
         //
+
+        public static void ClearSavedChatMessages(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                List<SavedMessages> toRemove = 
+                    model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId).ToList();
+
+                foreach(var mes in toRemove)
+                {
+                    model.SavedMessages.Remove(mes);
+                }
+
+                model.SaveChanges();
+            }
+        }
 
         public static int? GetLastStatDateIdInSavedChat(int chatId)
         {

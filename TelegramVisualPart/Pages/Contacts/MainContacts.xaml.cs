@@ -127,6 +127,8 @@ namespace TelegramVisualPart.Pages.Contacts
 
                 //Update if its temp chat 
                 ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
+
+                ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(true, chat.GetChatter());
                 return;
             }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.UserSettings.SettingsTypes;
 
@@ -65,6 +66,11 @@ namespace TelegramLib.UserSettings
         public PrivAndSecSettings GetPrivacySettings()
         {
             return PrivacySettings;
+        }
+
+        public void SetBlockParams(bool isBlock, User user)
+        {
+            PrivacySettings.SetBlockParams(isBlock, user);
         }
 
     }

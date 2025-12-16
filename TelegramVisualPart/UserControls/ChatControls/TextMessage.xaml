@@ -8,7 +8,9 @@
              xmlns:Replyed="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
              xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="200">
+             d:DesignHeight="100" d:DesignWidth="200"
+             
+             Loaded="UserControl_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>

@@ -43,8 +43,14 @@ namespace TelegramVisualPart.Pages.ChatActions
         {
             if (_chat.Chatter is null)
             {
-                UsernameBlock.Text = "Clear saved messages";
+                UsernameBlock.Text = "?"; //"Clear saved messes";
                 BothPanel.Visibility = Visibility.Hidden;
+                EnAutoDelete.Visibility = Visibility.Hidden;
+
+                BothPanelRow.Height = new GridLength(0);
+                EnAutoDeleteRow.Height = new GridLength(0);
+
+                Height -= 100;
                 return;
             }
             TelegramLib.MainClasses.User user =
@@ -60,6 +66,16 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private async Task ClearChat()
         {
+            //Saved messages
+            if(_chat.Chatter is null)
+            {
+                //clear from db
+                //clear from system value 
+                //clear chat in vis
+                return;
+                _chat.Messages.Clear();
+            }
+
             //Is to clear both users
             bool isClearBoth = (bool)ShowChatNameBox.IsChecked;
             if (isClearBoth)
