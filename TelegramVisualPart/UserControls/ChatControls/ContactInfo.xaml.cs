@@ -213,10 +213,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public const int _hiddenParasHeight = 150;
         public void SetIsContactRemovedVis()
         {
-            /*            if (!_isSetMaxHeight)
-                        {
-                            return;
-                        }*/
+            /*if (!_isSetMaxHeight) return;*/
             if (_contact is null)
             {
                 //Hide lines

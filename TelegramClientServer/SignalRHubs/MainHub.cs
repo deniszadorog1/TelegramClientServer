@@ -40,6 +40,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("UpdateContact", updatedContact);
         }
 
+        public async Task RemoveContact(User logged, User removed)
+        {
+            await Clients.User(removed.Id.ToString()).SendAsync("RemoveContact", logged, removed);
+        }
+
         public async Task UpdateOnlineStatus(User toUpdate)
         {
             await Clients.All.SendAsync("UpdateOnlineStatus", toUpdate);

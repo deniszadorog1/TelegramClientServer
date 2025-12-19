@@ -79,9 +79,11 @@
                            Foreground="{StaticResource UsualTextColor}" Margin="0 5 0 0"/>
 
                 <TextBlock Name ="LastSeenOnline"
-                       Text="There should be last online time" 
-                       HorizontalAlignment="Center"
-                       FontSize="18" Foreground="Gray" Margin="0 5 0 0"/>
+                           Text="There should be last online time" 
+                           HorizontalAlignment="Center"
+                           FontSize="18" 
+                           Foreground="Gray" 
+                           Margin="0 5 0 0"/>
             </StackPanel>
 
             <Grid Grid.Row="2">
@@ -96,25 +98,34 @@
                         <ColumnDefinition Width="75"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="BioTextBox" MaxLength="70" TextChanged="BioTextBox_TextChanged"
-                             materialDesign:HintAssist.Hint="Bio" Background="Transparent" 
+                    <TextBox x:Name="BioTextBox" MaxLength="70" 
+                             TextChanged="BioTextBox_TextChanged"
+                             materialDesign:HintAssist.Hint="Bio" 
+                             Background="Transparent" 
                              materialDesign:TextFieldAssist.DecorationVisibility="Hidden" 
                              Foreground="{StaticResource UsualTextColor}" 
                              CaretBrush="{StaticResource UsualTextColor}"
-                             VerticalContentAlignment="Center" Margin="20 0 0 0"
-                             FontSize="18" BorderThickness="0"
+                             VerticalContentAlignment="Center" 
+                             Margin="20 0 0 0"
+                             FontSize="18" 
+                             BorderThickness="0"
                              TextWrapping="Wrap" 
                              materialDesign:TextFieldAssist.CharacterCounterVisibility ="Hidden"/>
 
-                    <TextBlock Grid.Column="1" x:Name="WordCount" Text="70" TextWrapping="Wrap"
-                           FontSize="18" HorizontalAlignment="Center"
-                           VerticalAlignment="Center" Foreground="Gray"/>
+                    <TextBlock Grid.Column="1" x:Name="WordCount" 
+                               Text="70" TextWrapping="Wrap"
+                               FontSize="18" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" 
+                               Foreground="Gray"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Name="BioExpGrid"
                       Background="{StaticResource DarkThemeMouseEnterBut}">
-                    <TextBlock Margin="20 5 0 0" FontSize="18" Foreground="Gray"
-                           TextWrapping="Wrap" Name ="InfoText"
+                    <TextBlock Margin="20 5 0 0" 
+                               FontSize="18" 
+                               Foreground="Gray"
+                               TextWrapping="Wrap" Name ="InfoText"
                            Text="Any details such as age, occupation or city.
                            Example: 23 y.o. designer from San Francisco."/>
                 </Grid>

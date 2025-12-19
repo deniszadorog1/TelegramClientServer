@@ -45,14 +45,43 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
         private async void DeleteBut_Click(object sender, RoutedEventArgs e)
         {
-            await ApiService.RemoveContact(_contact, _system.LoggedUser);
+            await RemoveContactAction();
 
-            _system.RemoveContact(_contact);
+            //Remove with signalR
 
             //update window after contact remove 
             ((MainWindow)Window.GetWindow(this)).UpdateDeletedUser(_contact);
-
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+        }
+
+        public async Task RemoveContactAction()
+        {
+            await RemoveContactForChatter();
+
+            //for logged user
+            await ApiService.RemoveContact(_contact, _system.LoggedUser);
+
+            _system.RemoveContact(_contact);
+        }
+
+        public async Task RemoveContactForChatter()
+        {
+            //IsOnline
+            bool isOnline = await ApiService.IsUserOnline(_contact.ContactUserId);
+
+            //Remove with signalR
+            if (isOnline)
+            {
+                TelegramLib.MainClasses.User removed = 
+                    _system.GetUserById(_contact.ContactUserId);
+                if (removed is null) return;
+
+                await SignalRService.DeleteContact(_system.LoggedUser, removed);
+                return;
+            }
+
+            //Remove only in db (i guess no need in this)
+            await ApiService.RemoveContact(_contact, _system.LoggedUser);
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

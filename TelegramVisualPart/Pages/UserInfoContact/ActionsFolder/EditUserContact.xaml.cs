@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -132,6 +133,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             if (isUserOnline)
             {
                 await AddContactIfContactOnline(newContact);
+
+                SetWindowParams();
                 return;
             }
 
@@ -143,6 +146,11 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //for addable contact(which is offline)
             await AddContactIfContactOffline(newContact);
 
+            SetWindowParams();
+        }
+
+        public void SetWindowParams()
+        {
 
             //Update Contact name - surname
             ((MainWindow)Window.GetWindow(this)).UpdateContactParams(_contact);

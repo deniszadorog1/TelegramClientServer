@@ -93,7 +93,45 @@ namespace TelegramVisualPart.Pages
         public void SetEvents()
         {
             SignalRService.UpdateReadStatus += UserChat.UpdateReadStatus;
+
+            SignalRService.AddContactDel += SetVisInAddingContact;
+            SignalRService.RemoveContactDel += RemoveContact;
         }
+
+        public async Task SetVisInAddingContact(TelegramLib.MainClasses.User toAdd)
+        {
+            await UpdateContactVis(toAdd);
+        }
+
+        public async Task RemoveContact(TelegramLib.MainClasses.User toRemove)
+        {
+            //Remove in system
+            _system.RemoveContact(_system.GetContactByUserId(toRemove.Id));
+
+            await UpdateContactVis(toRemove);
+        }
+
+        public async Task UpdateContactVis(TelegramLib.MainClasses.User user)
+        {
+            if (UserChat.Visibility != Visibility.Visible ||
+                UserChat._chat is null ||
+                UserChat._chat.GetChatter() is null ||
+                UserChat._chat.GetChatter().Id != user.Id) return;
+
+            //Close contact info page
+
+            Dispatcher.Invoke(() =>
+            {
+                if (((MainWindow)Window.GetWindow(this)).IsSecPageIsContactInfo())
+                {
+                    UserChat.SetUserInfo();
+                }
+            });
+
+            await UserChat.SetUserChat(UserChat._chat);
+        }
+
+
 
         public void SetLangText()
         {

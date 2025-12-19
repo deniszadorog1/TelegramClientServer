@@ -138,7 +138,6 @@ namespace TelegramVisualPart
                     user.UpdateParamsByUser(updated);
                 }
 
-
                 UserContactcs? contactToUpdate =
                     _system.Contacts.FirstOrDefault(x => x.ContactUserId == updated.Id);
                 if (contactToUpdate is null) return;
@@ -1285,5 +1284,9 @@ namespace TelegramVisualPart
                 page.SetUserChatContactInfoStatus(status);
         }
 
+        public bool IsSecPageIsContactInfo()
+        {
+            return SecondaryFrame.Content is UserInfo; 
+        }
     }
 }

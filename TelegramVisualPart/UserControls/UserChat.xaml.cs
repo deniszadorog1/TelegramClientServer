@@ -564,7 +564,9 @@ namespace TelegramVisualPart.UserControls
             ChatControls.TextMessage text = new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(message.Text),
                 /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
-                _system.Settings.GetChatSettings().FontName, toReply: replied, forwardedFrom: message.ForwardedFromId);
+                _system.Settings.GetChatSettings().FontName, 
+                message.IsEdited,
+                toReply: replied, forwardedFrom: message.ForwardedFromId);
 
             //
 
@@ -595,7 +597,6 @@ namespace TelegramVisualPart.UserControls
             double percent = maxOffset <= 0
                 ? maxPercent
                 : (sv.VerticalOffset / maxOffset) * 100;
-
 
             if (percent > minScrollOffest)
             {
@@ -965,6 +966,8 @@ namespace TelegramVisualPart.UserControls
             if (statMes.Date is not null) item.PreviewMouseLeftButtonDown += SetCalendarPage;
 
             ChatBox.Items.Add(item);
+
+            ScrollToNewMessage();
         }
 
         public void SetCalendarPage(object sender, MouseButtonEventArgs e)
@@ -1045,6 +1048,7 @@ namespace TelegramVisualPart.UserControls
                 GetConvertedStringMessage(message.Text),
                 senderImageName,
                 _system.Settings.GetChatSettings().FontName,
+                message.IsEdited,
                 toReply: reply,
                 forwardedFrom: message.ForwardedFromId);
 
@@ -1144,6 +1148,8 @@ namespace TelegramVisualPart.UserControls
                 await SignalRService.EditMessage(_system.LoggedUser, _chat.Chatter, toEdit);
             }
 
+            if (toEdit is TelegramLib.MainClasses.Messages.TextMessage textMes) textMes.IsEdited = true;
+
             //Logic
             _system.EditMessage(toEdit);
 
@@ -1151,7 +1157,7 @@ namespace TelegramVisualPart.UserControls
             await ApiService.EditMessage(chatId, toEdit);
 
             //Visual
-            SetMessagesInChat();
+            await SetMessagesInChat();
         }
 
         public void SetEditedParams(TelegramLib.MainClasses.Messages.Message toEdit)
@@ -1308,7 +1314,9 @@ namespace TelegramVisualPart.UserControls
             //Visaul add
             ChatControls.TextMessage text = new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(sendText),
-                senderImageName, _system.Settings.GetChatSettings().FontName,
+                senderImageName, 
+                _system.Settings.GetChatSettings().FontName,
+                false,
                 toReply: toReply);
 
             ListBoxItem item = new ListBoxItem()
@@ -1327,7 +1335,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message toAdd =
                 new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
-                            DateTime.Now, sendText, false, replyId, false, null);
+                            DateTime.Now, sendText, false, replyId, false, null, false);
 
             //Adding in DB
             toAdd = await GetAndAddMessage(toAdd);
@@ -1345,7 +1353,7 @@ namespace TelegramVisualPart.UserControls
             if (CommentTextBox.Text == sendText) CommentTextBox.Text = string.Empty;
 
             //Add Message In DB (On chatters side) 
-            AddTextMessageInDb(toAddText);
+            await AddTextMessageInDb(toAddText);
 
             //Set vis tick 
             SetTickStatusIfCorrectMes(item, toAdd);
@@ -1692,7 +1700,7 @@ namespace TelegramVisualPart.UserControls
 
             //Set int vis (If need)
             if (_chat.Id == chat.Id &&
-                !IsOnlyPinnedChatIsOn()) SetStaticMessageInVis(toAdd);
+                !IsOnlyPinnedChatIsOn()) await SetStaticMessageInVis(toAdd);
 
             //Set in UserTalkMessage
             /*((MainWindow)Window.GetWindow(this))*/
@@ -2600,6 +2608,8 @@ namespace TelegramVisualPart.UserControls
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
             SetSenderImageByListBoxItem(item, _system.GetUserById(media.SenderUserId), _system.LoggedUser.Id == media.SenderUserId);
+
+            ScrollToNewMessage();
         }
 
         public void SetMediaTickVis(MediaAction media, MediaMessage message)
@@ -2910,6 +2920,11 @@ namespace TelegramVisualPart.UserControls
 
         private void UserInforGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            SetUserInfo();
+        }
+
+        public void SetUserInfo()
+        {
             Pages.UserInfo info = new Pages.UserInfo(_chat, _system);
             SetUserInfoPageHeight(info);
 
@@ -3172,38 +3187,11 @@ namespace TelegramVisualPart.UserControls
                 }
                 int.TryParse(item.Tag.ToString(), out int id);
 
-                Message mes = _chatMessages.FirstOrDefault(x => x.Id == id);
+                Message? mes = _chatMessages.FirstOrDefault(x => x.Id == id);
                 if (mes is null) return;
                 if (mes.SenderUserId != _system.LoggedUser.Id) continue;
 
                 SetMessagePositionSettings(item);
-
-                /* if (_chatMessages[i].SenderUserId == _system.LoggedUser.Id &&
-                     item.Content is UserControl ctrl)
-                 {
-                     if (_isGluedToLeft)
-                     {
-                         item.HorizontalAlignment = HorizontalAlignment.Left;
-                         item.Margin = new Thickness(0, 0, 0, 0);
-                     }
-                     else
-                     {
-                         item.HorizontalAlignment = HorizontalAlignment.Right;
-                         item.Margin = new Thickness(0, 0, 0, 0);
-                     }
-
-                     if (item.Content is ChatControls.TextMessage text)
-                     {
-                         if (!_isGluedToLeft) text.UserEllipseImage.Visibility = Visibility.Hidden;
-                         else text.UserEllipseImage.Visibility = Visibility.Visible;
-                     }
-                     else if (item.Content is ChatControls.MediaMessage media)
-                     {
-                         if (!_isGluedToLeft) media.UserEllipseImage.Visibility = Visibility.Hidden;
-                         else media.UserEllipseImage.Visibility = Visibility.Visible;
-                     }
-                 }*/
-
             }
         }
 
@@ -3428,6 +3416,8 @@ namespace TelegramVisualPart.UserControls
             //Add it in chat
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
+
+            ScrollToNewMessage();
         }
 
         public void AddSharedMessageInSystem(UserContactcs contact)
@@ -4367,5 +4357,7 @@ namespace TelegramVisualPart.UserControls
         {
             return _chat;
         }
+
+        
     }
 }

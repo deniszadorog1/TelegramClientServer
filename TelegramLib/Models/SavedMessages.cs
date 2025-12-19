@@ -44,6 +44,8 @@ namespace TelegramLib.Models
         [Column(TypeName = "date")]
         public DateTime? StatDate { get; set; }
 
+        public bool IsEdited { get; set; }
+
         public virtual ChatImage ChatImage { get; set; }
 
         public virtual GIF GIF { get; set; }

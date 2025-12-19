@@ -11,14 +11,17 @@ namespace TelegramLib.MainClasses.Messages
         public string Text { get; set; }
         public int? RepliedMessageId { get; set; }
 
+        public bool IsEdited { get; set; }
+
         public TextMessage(int id, int senderUserId, 
             DateTime sentTime, string text, bool isRead,
             int? replMessId, bool isPinned, 
-            int? forwardedFromId) :
+            int? forwardedFromId, bool isEdited) :
             base(id, senderUserId, sentTime, isRead, isPinned, forwardedFromId)
         {
             Text = text;
             RepliedMessageId = replMessId;
+            IsEdited = isEdited;
         }
 
         public TextMessage()
@@ -28,6 +31,7 @@ namespace TelegramLib.MainClasses.Messages
             SentTime = DateTime.Now;
             IsRead = false;
             RepliedMessageId = null;
+            IsEdited = false;
         }
 
         public override string GetLastMessage()
@@ -35,8 +39,6 @@ namespace TelegramLib.MainClasses.Messages
             //Test with cleared cpaces
             string text = Text.Replace("\r\n", " ");
             return text;
-
-            return Text;
         }
 
 

@@ -321,6 +321,7 @@ namespace TelegramLib.MainClasses
 
         public void RemoveContact(UserContactcs contact)
         {
+            if (contact is null) return;
             //Remove chat with messages where contact is
             //RemoveChatsWithContact(contact);
 
@@ -380,9 +381,9 @@ namespace TelegramLib.MainClasses
 
         public void AddChat(UserChat chat)
         {
+            if (Chats.Any(x => x.GetChatter().Id == chat.GetChatter().Id)) return;
             Chats.Add(chat);
         }
-
 
         public UserChat GetChatByChatterId(int id)
         {
@@ -758,6 +759,7 @@ namespace TelegramLib.MainClasses
                toEdit is TextMessage toEditText)
             {
                 mesText.Text = toEditText.Text;
+                mesText.IsEdited = toEditText.IsEdited;
             }
         }
 

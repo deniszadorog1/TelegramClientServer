@@ -45,6 +45,8 @@ namespace TelegramLib.Models
         [Column(TypeName = "date")]
         public DateTime? StatDate { get; set; }
 
+        public bool IsEdited { get; set; }
+
         public virtual AutoDeleteType AutoDeleteType { get; set; }
 
         public virtual Chat Chat { get; set; }

@@ -488,7 +488,11 @@ namespace TelegramLib.Services
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
 
-            if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
+            if (toAdd is TextMessage)
+            {
+                ((TextMessage)toAdd).Text = mes.Message;
+                ((TextMessage)toAdd).IsEdited = mes.IsEdited;
+            }
             else if (!(mes.ImageId is null))
             {
                 ((MediaAction)toAdd).IsSticker = false;
@@ -2308,6 +2312,7 @@ namespace TelegramLib.Services
                 if (message is TextMessage addText)
                 {
                     toAdd.ReplyId = addText.RepliedMessageId;
+                    toAdd.IsEdited = addText.IsEdited;
                 }
 
                 model.Messages.Add(toAdd);
@@ -2326,11 +2331,16 @@ namespace TelegramLib.Services
 
             if (mes is null) return;
 
+            TelegramLib.MainClasses.Messages.Message pair = GetPairOfMessageBySentTime(textMes.Id);
+
             using (var model = new TelegramModel())
             {
                 //Get message
                 Messages toEdit = model.Messages.FirstOrDefault(
                     x => x.ChatId == chatId && x.Id == mes.Id);
+
+                Messages pairDb = model.Messages.FirstOrDefault(x => x.Id == pair.Id);
+
                 if (toEdit is null) return;
 
                 //Update params
@@ -2338,8 +2348,16 @@ namespace TelegramLib.Services
                 if (mes is MediaAction image && image.IsImage()) toEdit.ImageId = GetChatImageIdByName(image.MediaName);
                 if (mes is MediaAction gif && gif.IsGif()) toEdit.GifId = GetChatGifIdByName(gif.MediaName);
 
-                if (mes is TextMessage text) toEdit.Message = text.Text;
+                if (mes is TextMessage text)
+                {
+                    TextMessage pairText = pair as TextMessage;
 
+                    pairDb.Message = text.Text;
+                    pairDb.IsEdited = true;
+
+                    toEdit.Message = text.Text;
+                    toEdit.IsEdited = true;
+                }
                 //Save
                 model.SaveChanges();
             }
@@ -2751,7 +2769,11 @@ namespace TelegramLib.Services
             //Remove contact
             using (var model = new TelegramModel())
             {
-                model.Contacts.RemoveRange(model.Contacts.Where(x => x.Id == contact.Id || x.Id == pairContact.Id || x.Id == other.Id));
+                model.Contacts.RemoveRange(model.Contacts.Where(
+                    x => x.Id == contact.Id || 
+                    x.Id == pairContact.Id || 
+                    x.Id == other.Id));
+
                 model.SaveChanges();
             }
         }
@@ -3005,6 +3027,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
+                if (model.Chat.Any(x => x.UserId == userId && x.ChatterId == chatterContactId)) return;
+
                 Chat toAdd = new Chat();
 
                 toAdd.UserId = userId;

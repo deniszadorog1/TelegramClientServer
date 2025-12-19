@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
@@ -39,9 +40,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private int? _forwardedFrom = null;
 
         public TextMessage(TelSystem system,
-            string text, 
+            string text,
             string senderImageName,
             string fontName,
+            bool isEdited,
             TelegramLib.MainClasses.Messages.Message? toReply = null,
             int? forwardedFrom = null)
         {
@@ -66,8 +68,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetMessageReplyControl();
 
             SetForwardedFromRow();
+            SetIsEditedVis(isEdited);
 
             SetEvents();
+        }
+
+        public void SetIsEditedVis(bool isVis)
+        {
+            const int baseEditColWidth = 40;
+            if (isVis)
+            {
+                EditedColumn.Width =
+                    new GridLength(baseEditColWidth);
+                return;
+            }
+            EditedColumn.Width =
+                new GridLength(0);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -82,9 +98,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(mesId);
 
-            if(mes.SenderUserId == _system.LoggedUser.Id)
-            { 
-                SolidColorBrush color = 
+            if (mes.SenderUserId == _system.LoggedUser.Id)
+            {
+                SolidColorBrush color =
                     (SolidColorBrush)Application.
                     Current.Resources["DarkThemeOne"];
 
@@ -188,7 +204,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
         }
 
-        private const int _minMessageWidth = 75;
+        private const int _minMessageWidth = 125;
         private void SetWidth(string fontName)
         {
             double blockSize = GetStringWidth(fontFamily: fontName) + 10;
@@ -230,7 +246,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return formattedText.Width;
         }
 
-        private const int _tickColWidth = 25;
+        private const int _tickColWidth = 20;
         public void SetTickVis(string iconName)
         {
             TickColumn.Width = new GridLength(_tickColWidth);
@@ -242,11 +258,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ReadIconFlag.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
         }
 
-        private const int _basePinWidth = 20;
+        private const int _basePinWidth = 15;
         public void SetPinColumnState(bool isPinned)
         {
-            if (isPinned) PinnIcon.Visibility = Visibility.Visible;
-            else PinnIcon.Visibility = Visibility.Hidden;
+            if (isPinned)
+            {
+                PinnIcon.Visibility = Visibility.Visible;
+                PinColumn.Width = new GridLength(_basePinWidth);
+                return;
+            }
+            PinnIcon.Visibility = Visibility.Hidden;
+            PinColumn.Width = new GridLength(0);
         }
 
         private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -326,9 +348,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             bool isSavedChat = _system.GetIsSavedMesChatStatus();
 
             //Settings logged user page
-            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) || 
+            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) ||
 
-                (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0)  ||
+                (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0) ||
 
                 (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {
@@ -340,15 +362,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
 
             //Set other user page
-            TelegramLib.MainClasses.UserChat chat = isSavedChat && mes.ForwardedFromId is not null ? 
-                _system.GetChatByChatterId((int)mes.ForwardedFromId) : 
+            TelegramLib.MainClasses.UserChat chat = isSavedChat && mes.ForwardedFromId is not null ?
+                _system.GetChatByChatterId((int)mes.ForwardedFromId) :
                 _system.GetChatByMessage(mes);
 
             UserInfo info = new UserInfo(chat, _system);
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
         }
 
-        
+
         private const int _selectTickColWidth = 30;
         public void SetTickVisibility(bool isVis)
         {

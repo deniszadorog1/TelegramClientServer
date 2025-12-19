@@ -23,6 +23,7 @@ using TelegramVisualPart.UserControls.SettingsControls;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Windows;
 using TelegramLib.MainClasses.DTOsHelper;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace TelegramVisualPart.Services
 {
@@ -63,6 +64,9 @@ namespace TelegramVisualPart.Services
         public static event Action<User, Message> ForwardMesAction;
         public static event Action<User, Message, bool> DeleteMessageByIdDel;
         public static event Action<User, Message> ToPinMessageDel;
+
+        public static event Func<User, Task> RemoveContactDel;
+        public static event Func<User, Task> AddContactDel;
 
         public static void SetSystem(TelSystem system)
         {
@@ -115,6 +119,7 @@ namespace TelegramVisualPart.Services
 
             UpdateReadStatus = null;
             SetShareContactMessage = null;
+            RemoveContactDel = null;
         }
 
         public static async Task SetSignalRConnection()
@@ -164,8 +169,10 @@ namespace TelegramVisualPart.Services
                 //Add chat in DB
                 await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
 
-                UserChat chatToAdd = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
+                UserChat? chatToAdd = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
                 _system.AddChat(chatToAdd);
+
+                AddContactDel?.Invoke(toAdd);
                 return;
             });
 
@@ -300,6 +307,11 @@ namespace TelegramVisualPart.Services
                 EditMessageDel?.Invoke(logged, mes);
             });
 
+            _connection.On<User, User>("RemoveContact", (logged, removed) =>
+            {
+                RemoveContactDel?.Invoke(logged);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -331,6 +343,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateContact", updatedUser);
+        }
+
+        public static async Task DeleteContact(User loggedUser, User removed)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("RemoveContact", loggedUser, removed);
         }
 
         public static async Task UpdateOnlineStatus(User toUpdate)

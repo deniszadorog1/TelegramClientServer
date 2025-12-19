@@ -481,8 +481,6 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-
-
         //Add contact
         public static async Task<bool> AddContact(int userId, UserContactcs contact)
         {
