@@ -96,17 +96,33 @@ namespace TelegramVisualPart.Pages
 
             SignalRService.AddContactDel += SetVisInAddingContact;
             SignalRService.RemoveContactDel += RemoveContact;
+
+            SignalRService.UpdateChatsControlsDel += UpdateChatByChatter;
+        }
+
+        public async Task UpdateChatByChatter(TelegramLib.MainClasses.User user)
+        {
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(user.Id);
+
+            UserTalkMessage mes = GetChatById(chat);
+            string lastMessage = chat.GetLastMessageInString();
+
+            mes.SetText(lastMessage);
+            //Check for last mes
         }
 
         public async Task SetVisInAddingContact(TelegramLib.MainClasses.User toAdd)
         {
+            await UserChat.SetUserChat(UserChat._chat);
+
             await UpdateContactVis(toAdd);
         }
 
         public async Task RemoveContact(TelegramLib.MainClasses.User toRemove)
         {
             //Remove in system
-            _system.RemoveContact(_system.GetContactByUserId(toRemove.Id));
+            //_system.RemoveContact(_system.GetContactByUserId(toRemove.Id));
+
 
             await UpdateContactVis(toRemove);
         }
@@ -120,13 +136,13 @@ namespace TelegramVisualPart.Pages
 
             //Close contact info page
 
-            Dispatcher.Invoke(() =>
+/*            Dispatcher.Invoke(() =>
             {
                 if (((MainWindow)Window.GetWindow(this)).IsSecPageIsContactInfo())
                 {
                     UserChat.SetUserInfo();
                 }
-            });
+            });*/
 
             await UserChat.SetUserChat(UserChat._chat);
         }

@@ -48,15 +48,19 @@ namespace TelegramVisualPart.Pages
             _contacts = new List<User>();
             _contacts.Clear();
 
-            for (int i = 0; i < _system.Contacts.Count; i++)
+            for(int i = 0; i < _system.Chats.Count; i++)
+            {
+                if(_system.Chats[i].Chatter is not null) _contacts.Add(_system.Chats[i].Chatter);
+            }
+
+/*            for (int i = 0; i < _system.Contacts.Count; i++)
             {
                 UserChat? chat = _system.Chats
                     .FirstOrDefault(x => x.Chatter.Id == _system.Contacts[i].ContactUserId);
                 if (chat is null) continue;
 
                 _contacts.Add(chat.Chatter);
-            }
-
+            }*/
         }
 
         public void SetActionContacts()

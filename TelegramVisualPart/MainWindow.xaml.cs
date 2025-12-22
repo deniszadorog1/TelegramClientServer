@@ -378,6 +378,10 @@ namespace TelegramVisualPart
 
         private void MainFrame_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if(SecondaryFrame.Content is not null)
+            {
+                e.Handled = true;
+            }
             ClearSecFrame();
         }
 
@@ -1287,6 +1291,11 @@ namespace TelegramVisualPart
         public bool IsSecPageIsContactInfo()
         {
             return SecondaryFrame.Content is UserInfo; 
+        }
+
+        private void SecondFrameShadow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

@@ -24,6 +24,7 @@ using TelegramVisualPart.Pages;
 using TelegramVisualPart.Windows;
 using TelegramLib.MainClasses.DTOsHelper;
 using Microsoft.Xaml.Behaviors.Core;
+using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.Services
 {
@@ -31,8 +32,8 @@ namespace TelegramVisualPart.Services
     {
         //SignalR -> ApiService -> Controller -> DbService
 
-        private static HubConnection _connection;
-        private static TelSystem _system;
+        private static HubConnection? _connection;
+        private static TelSystem? _system;
 
 
         public static event Action<User, TextMessage>? TextMessageReceived;
@@ -60,14 +61,15 @@ namespace TelegramVisualPart.Services
         public static event Func<User, UserContactcs, Task>? SetShareContactMessage;
 
 
-        public static event Action<User, TextMessage> ReplyMesAction;
-        public static event Action<User, Message> ForwardMesAction;
-        public static event Action<User, Message, bool> DeleteMessageByIdDel;
-        public static event Action<User, Message> ToPinMessageDel;
+        public static event Action<User, TextMessage>? ReplyMesAction;
+        public static event Action<User, Message>? ForwardMesAction;
+        public static event Action<User, Message, bool>? DeleteMessageByIdDel;
+        public static event Action<User, Message>? ToPinMessageDel;
 
-        public static event Func<User, Task> RemoveContactDel;
-        public static event Func<User, Task> AddContactDel;
+        public static event Func<User, Task>? RemoveContactDel;
+        public static event Func<User, Task>? AddContactDel;
 
+        public static event Func<User, Task>? UpdateChatsControlsDel;
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -312,6 +314,12 @@ namespace TelegramVisualPart.Services
                 RemoveContactDel?.Invoke(logged);
             });
 
+            _connection.On<User>("UpdateChatsControls", (toUpdate) =>
+            {
+                UpdateChatsControlsDel?.Invoke(toUpdate);
+                //To update chat controls if last message was removed or changed(Text).
+            });
+
             await _connection.StartAsync();
         }
 
@@ -335,6 +343,9 @@ namespace TelegramVisualPart.Services
 
         public static async Task AddContact(User user, User contact)
         {
+            await VisHelper.UpdateStatesWithSignalR(_system);
+
+
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("AddContact", user, contact);
         }
@@ -347,6 +358,8 @@ namespace TelegramVisualPart.Services
 
         public static async Task DeleteContact(User loggedUser, User removed)
         {
+            await VisHelper.UpdateStatesWithSignalR(_system);
+
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("RemoveContact", loggedUser, removed);
         }
@@ -420,7 +433,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task UpdateReadStatusMethod(User loggedUser, User chatter)
         {
-            if (_connection.State == HubConnectionState.Connected)
+            if (_connection?.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateReadStatus", loggedUser, chatter.Id);
         }
 
@@ -479,5 +492,10 @@ namespace TelegramVisualPart.Services
             return res;
         }
 
+        public static async Task UpdateChatsControls(User logged, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateChatsControls", logged, chatter);
+        }
     }
 }

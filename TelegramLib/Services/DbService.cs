@@ -857,6 +857,8 @@ namespace TelegramLib.Services
                 toAdd.UserId = userId;
                 toAdd.FriendId = contact.ContactUserId;
 
+                if (model.Contacts.Any(x => x.UserId == userId && x.FriendId == contact.ContactUserId)) return;
+
                 toAdd.Name = contact.Name;
                 toAdd.LastName = contact.Surname;
 
@@ -2363,6 +2365,35 @@ namespace TelegramLib.Services
             }
         }
 
+        public static void EditSavedMessage(TelegramLib.MainClasses.Messages.TextMessage textMes, 
+            TelegramLib.MainClasses.Messages.MediaAction mediaMes)
+        {
+            TelegramLib.MainClasses.Messages.Message mes = null;
+            if (textMes is null) mes = mediaMes;
+            else mes = textMes;
+
+            using(var model = new TelegramModel())
+            {
+                //Get message
+                SavedMessages toEdit = model.SavedMessages.FirstOrDefault(x => x.Id == mes.Id);
+
+                if (toEdit is null) return;
+
+                //Update params
+                if (mes is MediaAction video && video.IsVideo()) toEdit.VideoId = GetVideoIdByName(video.MediaName);
+                if (mes is MediaAction image && image.IsImage()) toEdit.ImageId = GetChatImageIdByName(image.MediaName);
+                if (mes is MediaAction gif && gif.IsGif()) toEdit.GifId = GetChatGifIdByName(gif.MediaName);
+
+                if (mes is TextMessage text)
+                {
+                    toEdit.Message = text.Text;
+                    toEdit.IsEdited = true;
+                }
+                //Save
+                model.SaveChanges();
+            }
+        }
+
         public static TelegramLib.MainClasses.Messages.Message GetLastChatMessage(int chatId)
         {
             using (var model = new TelegramModel())
@@ -2770,9 +2801,9 @@ namespace TelegramLib.Services
             using (var model = new TelegramModel())
             {
                 model.Contacts.RemoveRange(model.Contacts.Where(
-                    x => x.Id == contact.Id || 
+                    x => x.Id == contact.Id /*|| 
                     x.Id == pairContact.Id || 
-                    x.Id == other.Id));
+                    x.Id == other.Id*/));
 
                 model.SaveChanges();
             }
@@ -4136,6 +4167,7 @@ namespace TelegramLib.Services
             if (toAdd is TextMessage text)
             {
                 text.RepliedMessageId = mes.ReplyId;
+                text.IsEdited = mes.IsEdited;
             }
 
             if (toAdd is StaticMessage statMessage)

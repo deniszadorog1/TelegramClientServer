@@ -186,7 +186,7 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(wallPaperPath, fileName);
         }
 
-        public static List<string?> GetAllWallpaperNames()
+        public static List<string?> GetAllWallpaperNames(List<string> names)
         {
             List<string?> resNames = new List<string?>();
             string wallPaperPath = Path.Combine(GetImagesPath(), "Wallpapers");
@@ -195,6 +195,18 @@ namespace TelegramVisualPart.Helper
             {
                 var files = Directory.GetFiles(wallPaperPath);
                 resNames = files.Select(Path.GetFileName).ToList();
+
+                List<string> toRemove = new List<string>();
+                foreach(string name in resNames)
+                {
+                    if (!names.Contains(name)) toRemove.Add(name);
+                }
+
+                for(int i = 0; i < toRemove.Count; i++)
+                {
+                    resNames.Remove(toRemove[i]);
+                }
+
             }
             return resNames;
         }

@@ -458,6 +458,7 @@ namespace TelegramVisualPart.Windows
             _godWindow.DeleteMessage(mediaAction);
 
             _godWindow.DeleteMediaWindow(this);
+
         }
 
         public MediaAction GetChosenMedia()

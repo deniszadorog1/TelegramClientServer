@@ -109,9 +109,12 @@
                 </TextBlock>
             </Grid>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="3"
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Grid.Column="3"
                         MouseEnter="StackPanel_MouseEnter">
-                <Grid Margin="5" Name="FindMessageBut" Background="Transparent"
+                <Grid Margin="5" Name="FindMessageBut" 
+                      Background="Transparent"
                       PreviewMouseDown="FindMessage_PreviewMouseDown"
                       MouseEnter="FindMessageBut_MouseEnter"
                       MouseLeave="FindMessageBut_MouseLeave">
@@ -121,7 +124,8 @@
                                          Name="FindMessageIcon"/>
                 </Grid>
 
-                <Grid Margin="5" Name="UserInfoBut" Background="Transparent"
+                <Grid Margin="5" Name="UserInfoBut" 
+                      Background="Transparent"
                       PreviewMouseDown="UserInfoBut_PreviewMouseDown"
                       MouseEnter="UserInfoBut_MouseEnter"
                       MouseLeave="UserInfoBut_MouseLeave">
@@ -130,7 +134,9 @@
                                          VerticalAlignment="Center" Margin="5"
                                          Name="UserInfoIcon"/>
                 </Grid>
-                <Grid Margin="5 0 10 0" Name="UserChatMenuBut" Background="Transparent"
+                <Grid Margin="5 0 10 0" 
+                      Name="UserChatMenuBut" 
+                      Background="Transparent"
                       MouseDown="UserChatMenuBut_PreviewMouseDown"
                       MouseEnter="UserChatMenuBut_MouseEnter"
                       MouseLeave="UserChatMenuBut_MouseLeave">
@@ -178,7 +184,7 @@
             </TextBlock>
         </Grid>
 
-        <Grid Name="SelectedMessesGrid" Grid.Row="0" Visibility="Hidden"
+        <Grid Name="SelectedMessesGrid" Grid.Row="0" Visibility="Visible"
               Background="{StaticResource DarkThemeOne}">
 
             <StackPanel Name="SelectedMenu" 

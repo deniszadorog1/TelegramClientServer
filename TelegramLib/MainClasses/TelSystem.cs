@@ -751,7 +751,12 @@ namespace TelegramLib.MainClasses
 
         public void EditMessage(Message toEdit)
         {
-            Message mes = Chats.Select(x => x.Messages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
+            Message mes;
+            if (_isSavedMesChat)
+            {
+                mes = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == toEdit.Id);
+            }
+            else mes = Chats.Select(x => x.Messages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
 
             if (mes is null) return;
 

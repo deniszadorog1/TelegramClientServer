@@ -81,8 +81,6 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
             LastSeenPrivacy.NeverShareExps.Remove(LastSeenPrivacy.NeverShareExps.FirstOrDefault(x => x.Id == user.Id));
             ProfPhotoPrivacy.NeverShareExps.Remove(ProfPhotoPrivacy.NeverShareExps.FirstOrDefault(x => x.Id == user.Id));
-        }
-
-        
+        }        
     }
 }

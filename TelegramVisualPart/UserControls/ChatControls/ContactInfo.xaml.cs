@@ -371,6 +371,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.Bio);
             MainSettings settings = await ApiService.GetSettingsByUserId(toUpdate.Id);
 
+            bool isStop = await SignalRHelperService.IsAndSetStopPath(Enums.PrivacySettingType.Bio, toUpdate);
+
             if (shareType == IsPrivacyException.Share)
             {
                 Bio.BottomText.Text = toUpdate.BIO;
@@ -380,6 +382,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (settings.PrivacySettings.BioPrivacy.ShareType ==
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 shareType == IsPrivacyException.NeverShare)
+            {
+                Bio.BottomText.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                return;
+            }
+
+            if (isStop)
             {
                 Bio.BottomText.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;

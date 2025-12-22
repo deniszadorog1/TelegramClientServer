@@ -11,7 +11,6 @@ namespace TelegramLib.MainClasses.Messages
     {
         public int? MessageReferenceId { get; set; }
         public AutoDeleteType? DelType { get; set; }
-
         public DateTime? Date { get; set; }
 
         public StaticMessage()

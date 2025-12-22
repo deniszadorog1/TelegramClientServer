@@ -87,17 +87,16 @@
                 <Grid Name="FirstFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
                 <Frame Name="SecondaryFrame" NavigationUIVisibility="Hidden"
-               PreviewMouseDown="SecondaryFrame_PreviewMouseDown"/>
+                    PreviewMouseDown="SecondaryFrame_PreviewMouseDown"/>
                 <Grid Name="SecondFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
                 <Frame Name="ThirdFrame" NavigationUIVisibility="Hidden"
-               PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
+                    PreviewMouseDown="ThirdFrame_PreviewMouseDown"/>
                 <Grid Name="ThirdFrameShadow" Background="Transparent" IsHitTestVisible="False"/>
 
                 <Frame Name="BlockFrame" NavigationUIVisibility="Hidden"/>
 
                 <Canvas Name="Menus"/>
-
             </Grid>
         </Grid>
     </Border>

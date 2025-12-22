@@ -66,6 +66,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 Wallpaper paper = new Wallpaper();
                 paper.WallpaperImage.Source = 
                     GetWallpaperImage(_settings.PossibleWallpapers[i]).Source;
+
                 paper.WallpaperImage.Tag = _settings.PossibleWallpapers[i];
 
                 WallpapersPanel.Children.Add(paper);

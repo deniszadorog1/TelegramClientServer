@@ -15,8 +15,7 @@ namespace TelegramLib.MainClasses.Messages
         public int SenderUserId { get; set; }
         public bool IsLoggedUserSent { get; set; }
         public DateTime SentTime { get; set; }
-        public bool IsRead { get; set; }
-        
+        public bool IsRead { get; set; }       
         public bool IsPinned { get; set; }
         public int? ForwardedFromId { get; set; }
 

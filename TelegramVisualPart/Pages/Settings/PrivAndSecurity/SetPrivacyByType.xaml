@@ -97,8 +97,10 @@
                             </Grid>
 
                             <TextBlock Grid.Row="1"
-                                   Text="Add Exceptions" FontSize="16" 
-                                   VerticalAlignment="Center" Margin="20 0 0 0"
+                                   Text="Add Exceptions" 
+                                       FontSize="16" 
+                                   VerticalAlignment="Center" 
+                                       Margin="20 0 0 0"
                                    Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <buts:EnumPrivacyButton x:Name="PhoneEverybodyUsersExcepts"

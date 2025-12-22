@@ -264,6 +264,8 @@ namespace TelegramVisualPart.UserControls
                                 ChatBox.Items.Remove(item);*/
 
                 SetChatMessages();
+
+                //Update UserTalkMessage(Chat) - if last message was removed
             });
         }
 
@@ -1126,7 +1128,8 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public async Task ToEditMessage(int chatId, bool isBoth = true, TelegramLib.MainClasses.Messages.Message toEdit = null)
+        public async Task ToEditMessage(int chatId, bool isBoth = true, 
+            TelegramLib.MainClasses.Messages.Message toEdit = null)
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -1140,6 +1143,24 @@ namespace TelegramVisualPart.UserControls
                 toEdit = GetMessageToEdit();
             }
             if (toEdit is null) return;
+
+            if (_system.GetIsSavedMesChatStatus())
+            {
+                if (toEdit is TelegramLib.MainClasses.Messages.TextMessage savedTextMes)
+                {
+                    savedTextMes.Text = CommentTextBox.Text;
+                    savedTextMes.IsEdited = true;
+                }
+                //In db
+                await ApiService.EditSavedChatMessage(toEdit);
+
+                //In system
+                _system.EditMessage(toEdit);
+
+                //Visual
+                await SetMessagesInChat();
+                return;
+            }
 
             //SignalR (What if offline?)
             if (isBoth)
@@ -1961,6 +1982,8 @@ namespace TelegramVisualPart.UserControls
             {
                 await DeleteMessageForBoth(message, isVisUpdate: isUpdateChatVis);
                 //SignalRService.DeleteMessageById(_system.LoggedUser, _chat.Chatter, mes);
+
+                await SignalRService.UpdateChatsControls(_system.LoggedUser, _chat.Chatter);
             }
 
             //Set for replied + pinned message
@@ -1970,7 +1993,7 @@ namespace TelegramVisualPart.UserControls
             _system.RemoveMessageById(message.Id);
 
             //Remove from Visual
-            ChatBox.Items.Remove(item);
+            if(ChatBox.Items.Contains(item))ChatBox.Items.Remove(item);
 
             //Update vis 
             bool isOnlyPinnedChat = IsOnlyPinnedChatIsOn();
@@ -1981,6 +2004,7 @@ namespace TelegramVisualPart.UserControls
             await RemoveMessageFromDb(message.Id);
 
             await RemoveDateStateIfNoMesOnDate();
+
         }
 
         public async Task RemoveMessageFromDb(int mesId)
@@ -4064,22 +4088,41 @@ namespace TelegramVisualPart.UserControls
 
                 bool? isBoth = page.IsInBoth.IsChecked;
                 if (isBoth is null) return;
-                //Delete them
 
-                for (int i = 0; i < toDelete.Count; i++)
+                //One by one is too slow try many at the same time 
+
+                await RemovManyMessages(toDelete, (bool)isBoth);
+
+                //Delete them
+/*                for (int i = 0; i < toDelete.Count; i++)
                 {
                     ListBoxItem item = GetItemByTagId(toDelete[i].Id);
                     if (item is null) continue;
 
                     //Set page actions
                     await DeleteMessage(toDelete[i], item, (bool)isBoth);
-                }
+                }*/
                 HideSelectionRow();
 
             };
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
 
+        public async Task RemovManyMessages(List<Message> toDelete, bool isBoth)
+        {
+            for (int i = 0; i < toDelete.Count; i++)
+            {
+                ListBoxItem item = GetItemByTagId(toDelete[i].Id);
+                if (item is null) continue;
+
+                ChatBox.Items.Remove(item);
+
+                await DeleteMessage(toDelete[i], item, (bool)isBoth);
+
+            }
+            
+            //Set page actions
+        }
 
         public ListBoxItem GetItemByTagId(int mesId)
         {

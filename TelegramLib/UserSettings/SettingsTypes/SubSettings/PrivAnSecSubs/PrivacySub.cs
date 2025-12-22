@@ -29,6 +29,16 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
             NeverShareExps = new List<User>();
         }
 
+        public int GetAmountOfSharedExps()
+        {
+            return ShareWithExps.Count();
+        }
+
+        public int GetAmountOfNeverSharedExps()
+        {
+            return NeverShareExps.Count();
+        }
+
         public bool IsUserPageCanBeSeen(List<UserContactcs> contacts, int loggedUserId)
         {
             switch (ShareType)

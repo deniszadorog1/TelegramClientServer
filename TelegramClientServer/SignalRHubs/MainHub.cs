@@ -110,6 +110,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.User(clientId.ToString()).SendAsync("UpdateReadStatus", loggedUser);
         }
 
+        public async Task UpdateChatsControls(User logged, User chatter)
+        {
+            await Clients.User(chatter.Id.ToString()).SendAsync("UpdateChatsControls", logged);
+        }
+
         public async Task AddShareContactMessage(User logged, 
             User chatter, UserContactcs contactToSend)
         {

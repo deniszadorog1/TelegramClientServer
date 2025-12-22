@@ -79,7 +79,7 @@ namespace TelegramVisualPart.EnterInAccount
             _system.Settings.ChatsSettings.SetBasicThemes();
 
             _system.Settings.ChatsSettings.PossibleWallpapers = 
-                FilesAction.GetAllWallpaperNames();
+                FilesAction.GetAllWallpaperNames(_system.Settings.ChatsSettings.PossibleWallpapers);
             _system.Settings.ChatsSettings.Theme = 
                 TelegramLib.Enums.Settings.ChatSettings.ThemeType.Night;
 
