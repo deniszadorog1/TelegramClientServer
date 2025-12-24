@@ -13,7 +13,7 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
         public ShareWith ShareType { get; set; }
         public List<User> ShareWithExps { get; set; }
         public List<User> NeverShareExps { get; set; }
-    
+
         public PrivacySub(ShareWith type, List<User> shareWith,
             List<User> neverShare)
         {
@@ -29,15 +29,13 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs
             NeverShareExps = new List<User>();
         }
 
-        public int GetAmountOfSharedExps()
-        {
-            return ShareWithExps.Count();
-        }
+        public int GetAmountOfSharedExps() => ShareWithExps.Count();
+        public int GetAmountOfNeverSharedExps() => NeverShareExps.Count();
 
-        public int GetAmountOfNeverSharedExps()
-        {
-            return NeverShareExps.Count();
-        }
+        public string GetAmountOfAlwaysSharedExpsInString() =>
+            GetAmountOfSharedExps() == 0 ? "Add Users" : $"{GetAmountOfSharedExps().ToString()} Users";
+        public string GetAmountOfNeverSharedExpsInString() =>
+            GetAmountOfNeverSharedExps() == 0 ? "Add Users" : $"{GetAmountOfNeverSharedExps().ToString()} Users";
 
         public bool IsUserPageCanBeSeen(List<UserContactcs> contacts, int loggedUserId)
         {

@@ -276,6 +276,7 @@ namespace TelegramLib.MainClasses
 
         public void SetTestUserContacts()
         {
+            return;
             List<UserImage> imageNames = new List<UserImage>();
             imageNames.Add(new UserImage("fray.jpg", DateTime.Now));
             imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
@@ -474,6 +475,11 @@ namespace TelegramLib.MainClasses
         public bool IsChatterIdIsContact(int chatterId)
         {
             return Contacts.Any(x => x.ContactUserId == chatterId);
+        }
+
+        public bool IsContactExistByUserId(int id)
+        {
+            return Contacts.Any(x => x.ContactUserId == id);
         }
 
         public void DeleteChatByChatter(User chatter)

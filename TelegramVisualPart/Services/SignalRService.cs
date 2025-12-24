@@ -70,6 +70,8 @@ namespace TelegramVisualPart.Services
         public static event Func<User, Task>? AddContactDel;
 
         public static event Func<User, Task>? UpdateChatsControlsDel;
+        public static event Action<User>? SendTypingActionDel;
+
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -166,7 +168,7 @@ namespace TelegramVisualPart.Services
                 await ApiService.AddContact(_system.LoggedUser.Id, contact);
                 contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
 
-                _system.Contacts.Add(contact);
+                if (!_system.IsContactExistByUserId(contact.ContactUserId)) _system.Contacts.Add(contact);
 
                 //Add chat in DB
                 await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
@@ -320,6 +322,13 @@ namespace TelegramVisualPart.Services
                 //To update chat controls if last message was removed or changed(Text).
             });
 
+            _connection.On<User>("SendTypingAction", (logged) =>
+            {
+                //Set typing action;
+
+                SendTypingActionDel?.Invoke(logged);
+
+            });
             await _connection.StartAsync();
         }
 
@@ -496,6 +505,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateChatsControls", logged, chatter);
+        }
+
+        public static async Task SendTypingAction(User logged, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("SendTypingAction", logged, chatter);
         }
     }
 }

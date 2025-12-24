@@ -137,7 +137,6 @@ namespace TelegramClientServer.SignalRHubs
                 .SendAsync("PinMessage", logged, pinned);
         }
 
-
         public async Task ForwardMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message toForward)
         {
@@ -149,6 +148,12 @@ namespace TelegramClientServer.SignalRHubs
         {
             await Clients.User(chatter.Id.ToString())
                 .SendAsync("DeleteMessage", logged, mes, isUpdateVis);
+        }
+
+        public async Task SendTypingAction(User logged, User chatter)
+        {
+            await Clients.User(chatter.Id.ToString())
+                .SendAsync("SendTypingAction", logged);
         }
     }
 }

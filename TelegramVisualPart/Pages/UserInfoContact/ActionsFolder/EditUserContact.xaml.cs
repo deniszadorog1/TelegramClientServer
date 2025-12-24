@@ -194,7 +194,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             _contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
 
-            _system.Contacts.Add(contact);
+            if(!_system.IsContactExistByUserId(contact.ContactUserId)) _system.Contacts.Add(contact);
 
             //Add chat in DB. (MUST EXIST)
 

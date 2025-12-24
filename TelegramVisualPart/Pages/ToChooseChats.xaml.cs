@@ -30,6 +30,8 @@ namespace TelegramVisualPart.Pages
         private PrivacySub _sub;
 
         private AutoDeleteType? _newAutoDelType = null;
+
+        public event Action UpdateVisOnPrevPage;
         public ToChooseChats(TelSystem system, AutoDeleteType type)
         {
             _system = system;
@@ -263,6 +265,8 @@ namespace TelegramVisualPart.Pages
                 //return;
             }
             else ApplyAutoDeletion();
+
+            UpdateVisOnPrevPage?.Invoke();
 
             if (_prevPage is not null)
             {

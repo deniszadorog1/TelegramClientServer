@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,10 +144,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             WhoCanUseBlock.Text = "Who can see my bio";
 
             BioAlwaysShareBut.NamePart.Text = "Always share with";
-            BioAlwaysShareBut.EnumPart.Text = "Add users";
+            BioAlwaysShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.BioPrivacy.GetAmountOfAlwaysSharedExpsInString();
 
             BioNeverShareBut.NamePart.Text = "Never share with";
-            BioNeverShareBut.EnumPart.Text = "Add users";
+            BioNeverShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.BioPrivacy.GetAmountOfNeverSharedExpsInString();
 
             _alwaysShare = BioAlwaysShareBut;
             _neverShare = BioNeverShareBut;
@@ -158,10 +161,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             WhoCanUseBlock.Text = "Who can see my date of birth";
 
             BirthDateAlwaysShareBut.NamePart.Text = "Always share with";
-            BirthDateAlwaysShareBut.EnumPart.Text = "Add users";
+            BirthDateAlwaysShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.DateBirthPrivacy.GetAmountOfAlwaysSharedExpsInString();
 
             BirthDateNeverShareBut.NamePart.Text = "Never share with";
-            BirthDateNeverShareBut.EnumPart.Text = "Add users";
+            BirthDateNeverShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.DateBirthPrivacy.GetAmountOfNeverSharedExpsInString();
 
             _alwaysShare = BirthDateAlwaysShareBut;
             _neverShare = BirthDateNeverShareBut;
@@ -173,10 +178,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             WhoCanUseBlock.Text = "Who can add a link to my account when forwarding my messages";
 
             ForwardMeesagesAlwaysShareBut.NamePart.Text = "Always share with";
-            ForwardMeesagesAlwaysShareBut.EnumPart.Text = "Add users";
+            ForwardMeesagesAlwaysShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.ForwardMesPrivacy.GetAmountOfAlwaysSharedExpsInString();
 
             ForwardMeesagesNeverShareBut.NamePart.Text = "Never share with";
-            ForwardMeesagesNeverShareBut.EnumPart.Text = "Add users";
+            ForwardMeesagesNeverShareBut.EnumPart.Text =
+                _system.Settings.PrivacySettings.ForwardMesPrivacy.GetAmountOfNeverSharedExpsInString();
 
             _alwaysShare = ForwardMeesagesAlwaysShareBut;
             _neverShare = ForwardMeesagesNeverShareBut;
@@ -193,10 +200,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             SetPubPhotoBut.ButName.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
 
             ProfPhotosAlwaysShareBut.NamePart.Text = "Always share with";
-            ProfPhotosAlwaysShareBut.EnumPart.Text = "Add users";
+            ProfPhotosAlwaysShareBut.EnumPart.Text = 
+                _system.Settings.PrivacySettings.ProfPhotoPrivacy.GetAmountOfAlwaysSharedExpsInString();
 
             ProfPhotosNeverShareBut.NamePart.Text = "Never share with";
-            ProfPhotosNeverShareBut.EnumPart.Text = "Add users";
+            ProfPhotosNeverShareBut.EnumPart.Text = 
+                _system.Settings.PrivacySettings.ProfPhotoPrivacy.GetAmountOfNeverSharedExpsInString();
 
             _alwaysShare = ProfPhotosAlwaysShareBut;
             _neverShare = ProfPhotosNeverShareBut;
@@ -210,12 +219,15 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
 
             LastSeenEverybodyUsersExcepts.NamePart.Text = "Never share with";
-            LastSeenEverybodyUsersExcepts.EnumPart.Text = "Add users";
+            LastSeenEverybodyUsersExcepts.EnumPart.Text = 
+                _system.Settings.PrivacySettings.LastSeenPrivacy.GetAmountOfNeverSharedExpsInString();
 
             LastSeenOtherAlwaysShare.NamePart.Text = "Always share with";
-            LastSeenOtherAlwaysShare.EnumPart.Text = "Add users";
+            LastSeenOtherAlwaysShare.EnumPart.Text = 
+                _system.Settings.PrivacySettings.LastSeenPrivacy.GetAmountOfAlwaysSharedExpsInString();
             LastSeenOtherNeverShare.NamePart.Text = "Never share with";
-            LastSeenOtherNeverShare.EnumPart.Text = "Add users";
+            LastSeenOtherNeverShare.EnumPart.Text =
+                _system.Settings.PrivacySettings.LastSeenPrivacy.GetAmountOfNeverSharedExpsInString();
 
             HideReedTimeToggleBut.TextBlock.Text = "Hide read time";
 
@@ -238,7 +250,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             PhoneEverybodyUsersExcepts.NamePart.Text =
                 "Never share with";
             PhoneEverybodyUsersExcepts.EnumPart.Text =
-                "Add Users";
+                _system.Settings.PrivacySettings.PhonePrivacy.GetAmountOfNeverSharedExpsInString();
             DescriptionPhoneEverybodyText.Text =
                  "Users who have your number saved in their contacts " +
                 "will also see it on Telegram";
@@ -246,11 +258,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             PhoneContactAlwaysShareBut.NamePart.Text =
                 "Always share with";
             PhoneContactAlwaysShareBut.EnumPart.Text =
-                "Add users";
+                _system.Settings.PrivacySettings.PhonePrivacy.GetAmountOfAlwaysSharedExpsInString();
             PhoneContactNeverShareBut.NamePart.Text =
                 "Never share with";
             PhoneContactNeverShareBut.EnumPart.Text =
-                "Add users";
+                 _system.Settings.PrivacySettings.PhonePrivacy.GetAmountOfNeverSharedExpsInString();
             DescriptionPhoneContactText.Text =
                 "Users who have your number saved in their contacts " +
                 "will also see it on Telegram";
@@ -258,7 +270,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             PhoneNobodyAlwaysShareBut.NamePart.Text =
                 "Always share with";
             PhoneNobodyAlwaysShareBut.EnumPart.Text =
-                "Add users";
+                _system.Settings.PrivacySettings.PhonePrivacy.GetAmountOfAlwaysSharedExpsInString(); 
             DescriptionPhoneNobodyText.Text =
                 "Users who add your number to their contacts will see" +
                 "it on Telegram only if they are your contacts";
@@ -633,6 +645,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 _settings, _system);
 
             chatsPage.SetExtraPage(this);
+
+            chatsPage.UpdateVisOnPrevPage += () =>
+            {
+                SetVisualPart();
+            };
 
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(chatsPage);
         }
