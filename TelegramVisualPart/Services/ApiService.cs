@@ -141,6 +141,18 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<bool> SetContactMask(UserContactcs contact, int loggedUserId)
+        {
+            var data = new { Contact = contact, LoggedUserId = loggedUserId };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Social/SetContactMask", content);
+
+            return response.IsSuccessStatusCode;
+        }
+
         public static async Task<bool> UpdateUser(TelegramLib.MainClasses.User user)
         {
             var data = new { User = user };
@@ -213,6 +225,19 @@ namespace TelegramVisualPart.Services
             var response = await _client.PutAsync("api/Settings/AddUserColor", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<TelegramLib.MainClasses.UserParams.UserImage> GetContactMask(int loggedUserId, int contactUserId)
+        {
+            var response = await _client.GetAsync($"api/Social/GetContactMask?loggedUserId={loggedUserId}&contactUserId={contactUserId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.UserParams.UserImage? imgParams = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.UserParams.UserImage>(jsonResponse);
+            return imgParams;
+
         }
 
         // Get User

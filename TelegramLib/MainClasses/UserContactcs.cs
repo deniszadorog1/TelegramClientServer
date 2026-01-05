@@ -10,9 +10,7 @@ namespace TelegramLib.MainClasses
     {
         public int Id { get; set; }
         public int ContactUserId { get; set; }
-
         public bool IsOnline { get; set; }
-
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Login { get; set; }
@@ -22,6 +20,8 @@ namespace TelegramLib.MainClasses
         public DateTime? LastSeen { get; set; }
         public bool IsNotificationsIsOn { get; set; }
         public List<UserImage> UserImages { get; set; }
+
+        public UserImage MaskImage { get; set; }
         public AutoDeleteDuration AutoDeletion { get; set; }
 
         public UserContactcs(int id, string name, string surname, string userName,
@@ -120,6 +120,7 @@ namespace TelegramLib.MainClasses
 
         public UserImage GetFirstImageName()
         {
+            if (!(MaskImage is null)) return MaskImage;
             if (UserImages is null || UserImages.Count == 0)
             {
                 UserImages = new List<UserImage>();
@@ -159,6 +160,12 @@ namespace TelegramLib.MainClasses
             PhoneNumber = user.PhoneNumber;
             LastSeen = user.LastSeenOnline;
             UserImages = user.UserImages is null || user.UserImages.Count == 0 ? UserImages : user.UserImages;
+        }
+
+        public void RemoveMask()
+        {
+            if (!(MaskImage is null) && UserImages.Count >= 1) UserImages.RemoveAt(0);
+            MaskImage = null;
         }
     }
 }

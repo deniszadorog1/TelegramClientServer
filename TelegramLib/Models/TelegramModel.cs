@@ -23,6 +23,7 @@ namespace TelegramLib.Models
         public virtual DbSet<ChatImage> ChatImage { get; set; }
         public virtual DbSet<ChatSettings> ChatSettings { get; set; }
         public virtual DbSet<ChosenPrivacyContacts> ChosenPrivacyContacts { get; set; }
+        public virtual DbSet<ContactImageMask> ContactImageMask { get; set; }
         public virtual DbSet<Contacts> Contacts { get; set; }
         public virtual DbSet<ContactsInFolder> ContactsInFolder { get; set; }
         public virtual DbSet<DateOfBirthSettings> DateOfBirthSettings { get; set; }
@@ -247,6 +248,16 @@ namespace TelegramLib.Models
                 .HasMany(e => e.ChosenPrivacyContacts)
                 .WithOptional(e => e.User)
                 .HasForeignKey(e => e.ContactId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.ContactImageMask)
+                .WithOptional(e => e.User)
+                .HasForeignKey(e => e.FriendId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.ContactImageMask1)
+                .WithOptional(e => e.User1)
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Contacts)

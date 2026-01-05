@@ -119,7 +119,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Set changings
-            _settings.FontName = CheckFontBlock.FontFamily.Source.ToString();
+            _settings.FontName = 
+                CheckFontBlock.FontFamily.Source.ToString();
+
+            Application.Current.Resources["AppFont"] =
+                new FontFamily(_settings.FontName);
 
             ((MainWindow)Window.GetWindow(this)).UpdateChatSettingsPage();
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();

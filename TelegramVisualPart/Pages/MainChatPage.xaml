@@ -21,7 +21,6 @@
         <materialDesign:DrawerHost.LeftDrawerContent>
             <StackPanel Background="{StaticResource DarkThemeOne}" Width="320"
                         Name="SlideMenuPanel">
-
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="75"/>
@@ -36,8 +35,11 @@
                         </Ellipse.Fill>
                     </Ellipse>
 
-                    <TextBlock Grid.Column="1" Name="SliderLogin" Text="TestLogin"
-                               FontSize="16" Foreground="{StaticResource UsualTextColor}" 
+                    <TextBlock Grid.Column="1" Name="SliderLogin" 
+                               FontFamily="{DynamicResource AppFont}"
+                               Text="TestLogin"
+                               FontSize="16" 
+                               Foreground="{StaticResource UsualTextColor}" 
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left"/>
 
@@ -105,36 +107,40 @@
                         <Border  Margin="10 5 10 0" Grid.Column="1"
                              CornerRadius="20" Name="SearchBorder"
                              Background="{StaticResource DarkThemeDeviderField}">
-                            <Grid>
+                            <Grid Name="SearchGrid"
+                                  GotFocus="SearchGrid_GotFocus"
+                                  LostFocus="SearchGrid_LostFocus">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition x:Name="CrossSearchColumn" Width="0"/>
+                                    <ColumnDefinition x:Name="CrossSearchColumn" 
+                                                      Width="0"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox Name="SarchBox" Grid.Column="0"
-                                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                         FontFamily="{DynamicResource AppFont}"
+                                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
 
-                                     BorderBrush="Transparent"
-                                     BorderThickness="0"   
+                                         BorderBrush="Transparent"
+                                         BorderThickness="0"   
                                      
-                                     materialDesign:HintAssist.IsFloating="False"
+                                         materialDesign:HintAssist.IsFloating="False"
                                      
-                                     Foreground="{StaticResource UsualTextColor}" 
-                                     Margin="13 0 13 0" FontSize="16"
+                                         Foreground="{StaticResource UsualTextColor}" 
+                                         Margin="13 0 13 0" FontSize="16"
 
-                                     Padding="0"
-                                     materialDesign:HintAssist.Foreground="Gray"
-                                     CaretBrush="{StaticResource UsualTextColor}" 
+                                         Padding="0"
+                                         materialDesign:HintAssist.Foreground="Gray"
+                                         CaretBrush="{StaticResource UsualTextColor}" 
                                      
-                                     GotFocus="SarchBox_GotFocus"
-                                     LostFocus="SarchBox_LostFocus"
-                                     TextChanged="SarchBox_TextChanged"
+                                         GotFocus="SarchBox_GotFocus"
+                                         LostFocus="SarchBox_LostFocus"
+                                         TextChanged="SarchBox_TextChanged"
                                          
-                                     ContextMenuService.IsEnabled="False" 
-                                     PreviewMouseRightButtonDown="SarchBox_PreviewMouseRightButtonDown"
+                                         ContextMenuService.IsEnabled="False" 
+                                         PreviewMouseRightButtonDown="SarchBox_PreviewMouseRightButtonDown"
                                          
-                                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
-                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"/>
+                                         materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
+                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"/>
 
                                 <menuIconTextBut:IconButton x:Name="ClearTextBut"
                                                         Grid.Column="1"
@@ -166,11 +172,31 @@
 
                                 </Grid>
 
+                                <Grid x:Name="LockGrid"
+                                      Visibility="Hidden"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Right"
+                                      Width="25" Height="25" 
+                                      Margin="0 0 10 0"
+                                      Background="Transparent"
+                                      MouseEnter="LockGrid_MouseEnter"
+                                      MouseLeave="LockGrid_MouseLeave"
+                                      PreviewMouseDown="LockGrid_PreviewMouseDown">
+
+                                    <materialDesign:PackIcon Name="LockIcon"
+                                                             VerticalAlignment="Center"
+                                                             HorizontalAlignment="Center"
+                                                             Width="20" Height="20"                          
+                                                             Foreground="Gray"
+                                                             Kind="LockOpenOutline" />
+
+                                </Grid>
+
                             </Grid>
                         </Border>
 
                         <Grid 
-                            Name="MagnifierGrid"  Grid.Column="1"
+                            Name="MagnifierGrid" Grid.Column="1"
                             Background="Transparent" Visibility="Hidden"
                             
                             MouseEnter="MagnifierGrid_MouseEnter"
@@ -192,9 +218,11 @@
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                     </ListBox>
 
-                    <StackPanel Grid.Row="2" Name="SearchBoxGrid" Visibility="Hidden" 
-                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                            Orientation="Vertical">
+                    <StackPanel Grid.Row="2" Name="SearchBoxGrid" 
+                                Visibility="Hidden" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Top"
+                                Orientation="Vertical">
                         <searchControl:SearchControl x:Name="SearchControl"
                                                  HorizontalAlignment="Stretch"/>
 
@@ -242,7 +270,8 @@
                   ResizeDirection="Columns"
                   Cursor="SizeWE"
                   DragDelta="GridSplitter_DragDelta"/>
-                <Border Name="ChatBg" Grid.Column="3" Background="{StaticResource DarkThemeSecond}">
+                <Border Name="ChatBg" Grid.Column="3" 
+                        Background="{StaticResource DarkThemeSecond}">
                     <Grid>
                         <Grid Name="NotFoundBg" Background="Transparent"/>
                         <Border Name="ChosoeChatBorder" Visibility="Visible"
@@ -250,8 +279,11 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" Margin="0 0 0 100">
                             <TextBlock Text="asd" Foreground="White"
-                                   FontSize="18" Padding="7" Name="SetChatBlock"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                       FontFamily="{DynamicResource AppFont}"
+                                       FontSize="18" Padding="7"
+                                       Name="SetChatBlock"
+                                       VerticalAlignment="Center" 
+                                       HorizontalAlignment="Center"/>
                         </Border>
                         <userControls:UserChat x:Name="UserChat" Visibility="Hidden"/>
                     </Grid>

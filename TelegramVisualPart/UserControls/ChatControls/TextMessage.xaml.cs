@@ -20,10 +20,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -38,12 +40,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelegramLib.MainClasses.Messages.Message? _toReply;
 
         private int? _forwardedFrom = null;
+        private TelegramLib.MainClasses.Messages.TextMessage _message;
+
 
         public TextMessage(TelSystem system,
             string text,
             string senderImageName,
             string fontName,
             bool isEdited,
+            TelegramLib.MainClasses.Messages.TextMessage message,
             TelegramLib.MainClasses.Messages.Message? toReply = null,
             int? forwardedFrom = null)
         {
@@ -52,6 +57,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _imgName = senderImageName;
             _toReply = toReply;
             _forwardedFrom = forwardedFrom;
+            _message = message;
 
             InitializeComponent();
 
@@ -101,7 +107,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (mes.SenderUserId == _system.LoggedUser.Id)
             {
                 SolidColorBrush color =
-                    (SolidColorBrush)Application.
+                    (SolidColorBrush)System.Windows.Application.
                     Current.Resources["DarkThemeOne"];
 
                 MessageColor.Background = color;
@@ -191,7 +197,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Message.FontFamily = new FontFamily(font);
         }
 
-        private void SetImageSource()
+        private async void SetImageSource()
         {
             if (_imgName is null)
             {
@@ -200,8 +206,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 return;
             }
 
-            BgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
+            await SignalRHelperService.SetPhotoInEllipse(_system.GetUserById(_message.SenderUserId),
+                BgBrush, UserEllipseImage);
+
+/*            BgBrush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));*/
         }
 
         private const int _minMessageWidth = 125;
@@ -241,7 +250,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 typeface,
                 Message.FontSize,
                 Brushes.Black,
-                VisualTreeHelper.GetDpi(Application.Current.MainWindow).PixelsPerDip
+                VisualTreeHelper.GetDpi(System.Windows.Application.Current.MainWindow).PixelsPerDip
             );
             return formattedText.Width;
         }
@@ -255,7 +264,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetVisibility(string iconName)
         {
-            ReadIconFlag.Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
+            ReadIconFlag.Kind = 
+                (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
         }
 
         private const int _basePinWidth = 15;

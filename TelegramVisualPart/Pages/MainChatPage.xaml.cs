@@ -1687,6 +1687,8 @@ namespace TelegramVisualPart.Pages
             UserChatMenu? menu =
                 MenusCan.Children.OfType<UserChatMenu>().FirstOrDefault();
 
+            //UserChatMenu? menu = _menuWndow.GetMenu();
+
             return menu is null ? 100 : menu.ActualWidth;
         }
 
@@ -1695,20 +1697,27 @@ namespace TelegramVisualPart.Pages
             UserChatMenu? menu =
                 MenusCan.Children.OfType<UserChatMenu>().FirstOrDefault();
 
+            //UserChatMenu? menu = _menuWndow.GetMenu();
+
             return menu is null ? new Point() :
                 new Point(Canvas.GetLeft(menu), Canvas.GetTop(menu));
         }
 
+        private MenuGlobalWindow _menuWndow = null;
+
         public void AddMenuElement(UserChatMenu menu, Point cordPoint)
         {
             MenusCan.Children.Add(menu);
-
+      
             Window window = Window.GetWindow(menu);
             if (window is null ||
-                window is not MainWindow) throw new Exception("Its should be Main Window");
+                window is not MainWindow godWindow) 
+                throw new Exception("Its should be Main Window");
+
+/*            _menuWndow = new MenuGlobalWindow(godWindow, menu, cordPoint);
+            _menuWndow.Show();*/
 
             menu.SetWindow(window as MainWindow);
-
 
             Canvas.SetLeft(menu, cordPoint.X);
             Canvas.SetTop(menu, cordPoint.Y);
@@ -2197,7 +2206,6 @@ namespace TelegramVisualPart.Pages
             ShowChatControl();
 
 
-
             UserChat.SetSystem(_system);
             UserChat.SetUserChat(chat);
         }
@@ -2676,6 +2684,62 @@ namespace TelegramVisualPart.Pages
             MainDrawerHost.IsLeftDrawerOpen = false;
         }
 
+        private void SearchGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //LockGrid.Visibility = Visibility.Hidden;
+        }
 
+        private void SearchGrid_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (_system.Settings.PrivacySettings.PassCode is null ||
+                _system.Settings.PrivacySettings.PassCode.MinutesTimer == -1) return;
+
+            //LockGrid.Visibility = Visibility.Visible;
+        }
+
+        private void LockGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            LockIcon.Foreground = new SolidColorBrush(Colors.LightGray);
+        }
+
+        private void LockGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            LockIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void LockGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ((MainWindow)Window.GetWindow(this)).SetBlockFrame();
+        }
+
+        public double GetAdditionalContactInfoWidth()
+        {
+            if(UserChat.Visibility == Visibility.Visible)
+            {
+                return UserChat.GetUserInfoColumnWidth();
+            }
+            return 0;
+        }
+
+        public void SetContactMask(int userIdToSetMask)
+        {
+            //Set in userChat
+            if(UserChat.Visibility == Visibility.Visible && 
+               UserChat._chat is not null)
+            {
+                UserChat.SetChatMessages();
+            }
+
+            //Set in Chats
+            UserTalkMessage chat = 
+                GetChatById(_system.GetChatByChatterId(userIdToSetMask));
+
+            TelegramLib.MainClasses.User chatter = _system.GetUserById(userIdToSetMask);
+
+            if (chat is null || chatter is null) return;
+            chat.SetNewImgName(System.IO.Path.GetFileName(chatter.GetFirstImageName().Name));
+
+            chat.SetContactImage();
+        }
     }
 }

@@ -196,6 +196,7 @@ namespace TelegramLib.MainClasses
 
         public User GetUserById(int userId)
         {
+            if (userId == LoggedUser.Id) return LoggedUser;
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == userId);
             return chat is null ? null : chat.Chatter;
         }
@@ -586,10 +587,10 @@ namespace TelegramLib.MainClasses
 
         public bool IsChatterBlocked(User chatter)
         {
-            User toCheck = LoggedUser.BlockedUsers.FirstOrDefault
+            return LoggedUser.BlockedUsers.Any
                 (x => x.Id == chatter.Id);
 
-            return !(toCheck is null);
+           // return !(toCheck is null);
 
             /*            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
                         return contact is null ? false : contact.IsBlockedUserBlocked;*/
@@ -689,6 +690,12 @@ namespace TelegramLib.MainClasses
         {
             UserChat chat = GetChatByMessage(tempMes);
             return chat.GetNextPinnedMessage(tempMes);
+        }
+
+        public Messages.Message GetLastPinnedMessageByMessage(Messages.Message mes)
+        {
+            UserChat chat = GetChatByMessage(mes);
+            return chat.GetLastPinnedMessage();
         }
 
         public bool IsAnyPinnedMessagesByMessage(Messages.Message mes)

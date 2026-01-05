@@ -16,8 +16,11 @@
         <materialDesign:PackIcon Kind="PlaylistEdit" Foreground="Gray" 
                                  HorizontalAlignment="Center"
                                  Width="40" Height="40" Name="ButIcon"/>
-        <TextBlock x:Name="ButText" Text="Edit" HorizontalAlignment="Center" 
-                   Foreground="Gray" FontSize="14"
+        <TextBlock x:Name="ButText" Text="Edit" 
+                   FontFamily="{DynamicResource AppFont}"
+                   HorizontalAlignment="Center" 
+                   Foreground="Gray" 
+                   FontSize="14"
                    TextTrimming="CharacterEllipsis"
                    TextWrapping="NoWrap"/>
     </StackPanel>

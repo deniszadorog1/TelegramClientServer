@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.UserInfoContact.ActionsFolder"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="400"
-      Height="300" Width="400"
+      d:DesignHeight="400" d:DesignWidth="400"
+      Height="400" Width="400"
       Title="EditUserContact">
 
     <Border Name="BgBorder" CornerRadius="15" Background="{StaticResource DarkThemeOne}">
@@ -17,6 +17,8 @@
                 <RowDefinition Height="65"/>
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="50" x:Name="SetContactInfoRow"/>
+                <RowDefinition Height="50" x:Name="SetContactMaskRow"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -51,8 +53,6 @@
                                     Name ="LastSeenBox"
                                     VerticalAlignment="Top" Text="There gonna be last seen online"/>
                 </Grid>
-
-
             </Grid>
 
             <TextBox Grid.Row="2" Grid.Column="1"
@@ -71,8 +71,54 @@
                   materialDesign:HintAssist.Foreground="Gray"
                   Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
 
+            <Grid Grid.Row="4"
+                  Name="ChangeContactImageGrid"
+                  Background="Transparent"
+                  MouseEnter="Grid_MouseEnter"
+                  MouseLeave="Grid_MouseLeave"
+                  PreviewMouseDown="ChangeContactImageGrid_PreviewMouseDown">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                <materialDesign:PackIcon Grid.Column="0"
+                                         Kind="BrokenImage"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Width="30" Height="30"
+                                         Foreground="{StaticResource TempActiveTextColor}"/>
+                <TextBlock Grid.Column="1" 
+                           VerticalAlignment="Center"
+                           FontFamily="{DynamicResource AppFont}"
+                           FontSize="16"
+                           Foreground="{StaticResource TempActiveTextColor}">
+                    <Run Text="SetPhoto for"/>
+                    <Run Text="Name" Name="UserLogin"/>
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="5"
+                  Name="RemoveContactMaskGrid"
+                  Background="Transparent"
+                  MouseEnter="RemoveContactMaskGrid_MouseEnter"
+                  MouseLeave="RemoveContactMaskGrid_MouseLeave"
+                  PreviewMouseDown="RemoveContactMaskGrid_PreviewMouseDown">
+
+                    <TextBlock Grid.Column="1" 
+                           VerticalAlignment="Center"
+                           FontFamily="{DynamicResource AppFont}"
+                           FontSize="16"
+                               Margin="20 0 0 0"
+                           Foreground="{StaticResource TempActiveTextColor}">
+                    <Run Text="Remove contact mask image"/>
+                    <Run Text="Name" Name="NameToRemoveRun"/>
+                </TextBlock>
+            </Grid>
+
+
+            <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
                           Content="Cancel" Background="Transparent" BorderThickness="0"
                           HorizontalAlignment="Right" Margin="0 0 10 0"

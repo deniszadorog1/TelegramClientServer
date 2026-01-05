@@ -80,8 +80,12 @@ namespace TelegramVisualPart.EnterInAccount
 
             _system.Settings.ChatsSettings.PossibleWallpapers = 
                 FilesAction.GetAllWallpaperNames(_system.Settings.ChatsSettings.PossibleWallpapers);
+           
             _system.Settings.ChatsSettings.Theme = 
                 TelegramLib.Enums.Settings.ChatSettings.ThemeType.Night;
+
+            Application.Current.Resources["AppFont"] =
+              new FontFamily(_system.Settings.ChatsSettings.FontName); 
 
             await SetOnlineStatus();
 

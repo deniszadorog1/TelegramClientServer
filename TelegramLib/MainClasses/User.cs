@@ -26,6 +26,8 @@ namespace TelegramLib.MainClasses
         public DateTime LastSeenOnline { get; set; }
         public List<UserImage> UserImages { get; set; }
 
+        public UserImage ImageMask { get; set; }
+
         //Blcoked users cant sent messages to Logged user
         public List<User> BlockedUsers { get; set; }
 
@@ -163,6 +165,12 @@ namespace TelegramLib.MainClasses
         public bool IsIdsAreEqual(int id)
         {
             return Id == id;
+        }
+
+        public void RemoveMask()
+        {
+            if (!(ImageMask is null) && UserImages.Count >= 1) UserImages.RemoveAt(0);
+            ImageMask = null;
         }
     }
 }

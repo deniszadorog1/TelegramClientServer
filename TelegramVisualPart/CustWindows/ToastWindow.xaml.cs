@@ -112,9 +112,5 @@ namespace TelegramVisualPart.CustWindows
             }
         }
 
-
-
-
-
     }
 }

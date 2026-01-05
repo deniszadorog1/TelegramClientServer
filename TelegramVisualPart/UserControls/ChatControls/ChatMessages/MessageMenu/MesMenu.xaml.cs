@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramVisualPart.Enums.Menus;
@@ -28,13 +29,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         private MessageMenuType _type;
         private bool _isOnlyPinnedChat;
         private TelegramLib.MainClasses.Messages.Message _mes;
+        private TelSystem _system;
 
         public MesMenu(MessageMenuType type, bool isOnlyPinnedChat,
-            TelegramLib.MainClasses.Messages.Message mes)
+            TelegramLib.MainClasses.Messages.Message mes, TelSystem system)
         {
             _type = type;
             _isOnlyPinnedChat = isOnlyPinnedChat;
             _mes = mes;
+            _system = system;
 
             InitializeComponent();
 
@@ -67,6 +70,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             else Buts.Children.Remove(ReplyBut);
 
             if (_mes is MediaAction media && !media.IsImage()) Buts.Children.Remove(CopyBut);
+            if (_mes is TelegramLib.MainClasses.Messages.TextMessage text) SetEditMesVis(text);
+        }
+
+        public void SetEditMesVis(TelegramLib.MainClasses.Messages.TextMessage text)
+        {
+            const int timeToEdit = 30;
+
+            if (text.SenderUserId != _system.LoggedUser.Id ||
+               (DateTime.Now - text.SentTime).TotalSeconds > timeToEdit)
+            {
+                Buts.Children.Remove(EditBut);
+            }
         }
         
         public void RemoveUnnesBlocks()

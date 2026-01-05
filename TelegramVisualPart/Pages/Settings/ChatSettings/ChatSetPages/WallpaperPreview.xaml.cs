@@ -130,7 +130,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 //Set chat wallpaper in db
                 await ApiService.SetChatWallpaper(_chatBackground, _chat.Id);
             }
-
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
 
             //Set user chat bg
@@ -211,6 +210,16 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             Cancel.TextBlock.Foreground = activeColor;
             Apply.TextBlock.Foreground = activeColor;
             ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
+        }
+
+        private void IsBlurCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void IsBlurCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

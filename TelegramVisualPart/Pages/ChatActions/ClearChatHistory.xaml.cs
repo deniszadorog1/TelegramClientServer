@@ -94,12 +94,12 @@ namespace TelegramVisualPart.Pages.ChatActions
 
             if (isChatterOnline)
             {
-                SignalRService.ClearChat(chatter.Id, _system.LoggedUser);
+               await SignalRService.ClearChat(chatter.Id, _system.LoggedUser);
             }
             else
             {
                 UserContactcs userContact = await ApiService.GetContactByUserAndFriendIds(chatter.Id, _system.LoggedUser.Id);
-                UserChat chat = await ApiService.GetChatByUserAndSenderId(chatter.Id, userContact.Id);
+                UserChat? chat = await ApiService.GetChatByUserAndSenderId(chatter.Id, _system.LoggedUser.Id);
                 await ApiService.ClearChat(chat);
             }
         }

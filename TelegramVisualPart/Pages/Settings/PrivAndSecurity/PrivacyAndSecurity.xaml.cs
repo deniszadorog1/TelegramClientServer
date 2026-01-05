@@ -145,6 +145,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private Page? GetPageForBut(string name)
         {
+            if (name == LocalPasscode.Name.ToString() && _system.Settings.PrivacySettings.PassCode is null)
+            {
+                return new SetLocalCode(_system, false);
+            }
+
             return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system, _system.Settings.PrivacySettings.PassCode.MinutesTimer != -1) :
                 name == BlockedUsers.Name.ToString() ? new BlockedUsers(_system) :
                 name == PhoneNumber.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.PhoneNumber, _system.Settings.GetPrivacySettings(), _system.Contacts, _system) :

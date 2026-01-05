@@ -60,8 +60,8 @@ namespace TelegramVisualPart.UserControls.ContactsControls
 
             InitializeComponent();
 
-            SetBasicIamge();
-            SetUserImage();
+            SetLogin();
+            //SetUserImage();
 
             //HelperService.SetOnlineStatusInTextBox(LastSennOnline, user.IsOnline, user.LastSeenOnline);
             SetBasicParams();
@@ -118,12 +118,12 @@ namespace TelegramVisualPart.UserControls.ContactsControls
                 FilesAction.GetUserImagePath(_contactImgName), UriKind.Absolute));
         }
 
-        public void SetBasicIamge()
+        public void SetLogin()
         {
-            if (_imgSource != string.Empty)
+/*            if (_imgSource != string.Empty)
             {
                 ImgBrushSource.ImageSource = new BitmapImage(new Uri(_imgSource, UriKind.Absolute));
-            }
+            }*/
             UserLogin.Text = _login;
         }
 

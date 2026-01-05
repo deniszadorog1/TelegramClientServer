@@ -55,8 +55,18 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             ActionCheckText.Text = _bothType.ToString();
             DeleteBut.Content = _bothType.ToString();
            
-
             LoginPartCheckText.Text = _user.Login;
+        
+            if(_bothType == BothUsersMessageAction.UnPin)
+            {
+                const int checkBoxRowHeight = 50;
+
+                CheckBoxStack.Visibility = Visibility.Hidden;
+                Height -= checkBoxRowHeight;
+                CheckBoxRow.Height = new GridLength(0);
+
+                IsInBoth.IsChecked = true;
+            }
         }
 
         private void DeleteBut_MouseEnter(object sender, MouseEventArgs e)

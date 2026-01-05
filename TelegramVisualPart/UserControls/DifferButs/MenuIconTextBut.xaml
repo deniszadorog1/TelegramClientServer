@@ -22,9 +22,13 @@
                                  Width="25" Height="25"
                                  Name="IconType"/>
         
-        <TextBlock Grid.Column="1" Name="ButName" Text="There would be a but name"
-                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Foreground="{StaticResource UsualTextColor}" Margin="15 0 0 0" FontSize="16"/>
+        <TextBlock Grid.Column="1" Name="ButName" 
+                   FontFamily="{DynamicResource AppFont}"
+                   Text="There would be a but name"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Left"
+                   Foreground="{StaticResource UsualTextColor}" 
+                   Margin="15 0 0 0" FontSize="16"/>
 
     </Grid>
 </UserControl>

@@ -153,10 +153,10 @@
                            Margin="25 10 10 10"/>
 
                         <Border Grid.Row="1" CornerRadius="15" Background="White"
-                    Margin="35 15 35 15">
+                                Margin="35 15 35 15">
                             <Border  CornerRadius="0" 
-                    Background="{StaticResource DarkThemeSecond}"
-                    Margin="10">
+                                Background="{StaticResource DarkThemeSecond}"
+                                Margin="10">
                                 <Grid Margin="3" Name="MonitorBordersGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="110"/>

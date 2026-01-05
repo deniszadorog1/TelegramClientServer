@@ -96,8 +96,12 @@
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <CheckBox x:Name="IsBlurCheckBox"
+                                      IsHitTestVisible="False"
+                                      Checked="IsBlurCheckBox_Checked"
+                                      Unchecked="IsBlurCheckBox_Unchecked"
                                       Padding="5 0 0 1"
-                                      Foreground="White" FontSize="14"
+                                      Foreground="White" 
+                                      FontSize="14"
                                       Background="White" />
                         </StackPanel>
                     </Grid>
@@ -119,10 +123,14 @@
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Margin="0 0 15 0"
                             VerticalAlignment="Center" Orientation="Horizontal">
-                    <controls:WallpaperBotBut Grid.Row="2" x:Name="Cancel" Width="75" Margin="10 0 0 0"
-                                              Height="35" PreviewMouseDown="Cancel_PreviewMouseDown"/>
-                    <controls:WallpaperBotBut Grid.Row="2" x:Name="Apply" Width="75" Margin="10 0 0 0"
-                                              Height="35" PreviewMouseDown="Apply_PreviewMouseDown"/>
+                    <controls:WallpaperBotBut Grid.Row="2" x:Name="Cancel" 
+                                              Width="75" Margin="10 0 0 0"
+                                              Height="35" 
+                                              PreviewMouseDown="Cancel_PreviewMouseDown"/>
+                    <controls:WallpaperBotBut Grid.Row="2" x:Name="Apply" 
+                                              Width="75" Margin="10 0 0 0"
+                                              Height="35" 
+                                              PreviewMouseDown="Apply_PreviewMouseDown"/>
                 </StackPanel>
 
             </Grid>

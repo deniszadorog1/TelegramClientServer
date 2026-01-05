@@ -17,6 +17,8 @@ namespace TelegramLib.Models
             Chat = new HashSet<Chat>();
             Chat1 = new HashSet<Chat>();
             ChosenPrivacyContacts = new HashSet<ChosenPrivacyContacts>();
+            ContactImageMask = new HashSet<ContactImageMask>();
+            ContactImageMask1 = new HashSet<ContactImageMask>();
             Contacts = new HashSet<Contacts>();
             Contacts1 = new HashSet<Contacts>();
             ContactsInFolder = new HashSet<ContactsInFolder>();
@@ -74,6 +76,12 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChosenPrivacyContacts> ChosenPrivacyContacts { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactImageMask> ContactImageMask { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactImageMask> ContactImageMask1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contacts> Contacts { get; set; }

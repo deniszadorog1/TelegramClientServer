@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
@@ -15,10 +16,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
 using TelegramLib.Services;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 {
@@ -48,7 +51,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             PageNameBlock.Text = "New Contact";
 
             BgBrush.ImageSource = new BitmapImage(new Uri
-                (FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+                (FilesAction.GetUserImagePath(System.IO.Path.GetFileName(_user.GetFirstImageName().Name)), UriKind.Absolute));
 
             FirstNameBox.Text = _user.Name;
             LastNameBox.Text = _user.Surname;
@@ -59,14 +62,16 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 $"{_user.LastSeenOnline.Day}.{_user.LastSeenOnline.Month}.{_user.LastSeenOnline.Year}";
         }
 
-        public EditUserContact(User user, UserContactcs contact)
+        public EditUserContact(User user, UserContactcs contact, TelSystem system)
         {
             _contact = contact;
             _user = user;
+            _system = system;
 
             InitializeComponent();
 
             SetBasicParams();
+            SetRemoveMaskLine();
         }
 
 
@@ -194,7 +199,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             _contact = await ApiService.GetLastUserContact(_system.LoggedUser.Id);
 
-            if(!_system.IsContactExistByUserId(contact.ContactUserId)) _system.Contacts.Add(contact);
+            if (!_system.IsContactExistByUserId(contact.ContactUserId)) _system.Contacts.Add(contact);
 
             //Add chat in DB. (MUST EXIST)
 
@@ -206,5 +211,158 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //((MainWindow)Window.GetWindow(this)).UpdateUserTalkMessage(contact);
         }
 
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ChangeContactImageGrid.Background =
+                (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
+            Cursor = Cursors.Hand;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ChangeContactImageGrid.Background =
+                new SolidColorBrush(Colors.Transparent);
+            Cursor = null;
+        }
+
+        private async void ChangeContactImageGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set change getting new image source
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Choose image or video",
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                {
+                    //is image exist (add if not)
+                    //Set it as image
+                    if (FilesAction.IsFileIsImage(filePath))
+                    {
+                        Image img = new Image();
+                        //Set file path
+
+                        if(IsMaskExist())
+                        {
+                            return;
+                        }
+
+                        img.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
+                        img.Tag = filePath;
+
+                        if (_contact.MaskImage is not null && 
+                            _contact.UserImages.Count >= 1)
+                        {
+                            //Remove added mask
+                            _contact.UserImages.RemoveAt(0);
+                        }
+
+                        _contact.MaskImage = 
+                            new TelegramLib.MainClasses.UserParams.UserImage(filePath, DateTime.Now);
+                        _contact.UserImages.Insert(0, _contact.MaskImage);
+
+                        if(_system is not null)
+                        {
+                            User user = _system.GetUserById(_contact.ContactUserId);
+
+                            TelegramLib.MainClasses.UserParams.UserImage mask = 
+                                new TelegramLib.MainClasses.UserParams.UserImage(System.IO.Path.GetFileName(filePath), DateTime.Now);
+
+                            user.ImageMask = mask;
+                            user.UserImages.Insert(0, mask);
+                        }
+
+                        await ApiService.SetContactMask(_contact, _user.Id);
+
+                        SetRemoveMaskLine();
+
+                        //Set new contact image
+                        UpdateVisAfterMasking();
+                    }
+                }
+            }
+        }
+
+        public bool IsMaskExist()
+        {
+            if (_contact.MaskImage is null) return false;
+            if (_system is not null)
+            {
+                User user = _system.GetUserById(_contact.ContactUserId);
+                if (user.ImageMask is null) return false;
+            }
+
+            return true;
+        }
+
+        private const int _baseRemoveRowHeight = 50;
+        public void SetRemoveMaskLine()
+        {
+            if (_contact.MaskImage is null)
+            {
+                SetContactMaskRow.Height = new GridLength(0);
+                return;
+            }
+            SetContactMaskRow.Height = new GridLength(_baseRemoveRowHeight);
+        }
+
+        private void RemoveContactMaskGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            RemoveContactMaskGrid.Background =
+                (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
+            Cursor = Cursors.Hand;
+        }
+
+        private void RemoveContactMaskGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            RemoveContactMaskGrid.Background =
+                new SolidColorBrush(Colors.Transparent);
+            Cursor = null;
+        }
+
+        private void RemoveContactMaskGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RemoveContactMask();
+        }
+
+        public async void RemoveContactMask()
+        {
+            //Remove from system
+
+            //Remove mask from contact
+            _contact.RemoveMask();
+
+            //remove mask from user(if in chat)
+            if (_system is not null)
+            {
+                User user = _system.GetUserById(_contact.ContactUserId);
+                user.RemoveMask();
+            }
+
+            //Hide line
+            SetRemoveMaskLine();
+            
+            //Remove from db
+            await ApiService.SetContactMask(_contact, _user.Id);
+
+            //Set in visual part
+            UpdateVisAfterMasking();
+        }
+
+        public void UpdateVisAfterMasking()
+        {
+            ((MainWindow)Window.GetWindow(this)).SetContactMask(_contact.ContactUserId);
+
+            TelegramLib.MainClasses.User contactUser = _system.GetUserById(_contact.ContactUserId);
+
+            BgBrush.ImageSource = new BitmapImage(new Uri
+                (FilesAction.GetUserImagePath(System.IO.Path.GetFileName(contactUser.GetFirstImageName().Name)), UriKind.Absolute));
+        }
     }
 }

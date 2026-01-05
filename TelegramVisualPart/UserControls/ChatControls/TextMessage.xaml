@@ -99,7 +99,7 @@
                         <ColumnDefinition x:Name="EditedColumn" Width="0"/>
                         <ColumnDefinition x:Name="PinColumn" Width="0"/>
                         <ColumnDefinition x:Name="TimeColumn" Width="35"/>
-                        <ColumnDefinition x:Name="TickColumn" Width="20"/>
+                        <ColumnDefinition x:Name="TickColumn" Width="0"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid Grid.Column="0" Name="EditedGrid">

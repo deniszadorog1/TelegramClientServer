@@ -74,6 +74,7 @@ namespace TelegramLib.MainClasses
         public void ClearChat()
         {
             Messages.Clear();
+            PinnedMessages.Clear();
         }
 
         public User GetChatter()
@@ -266,7 +267,7 @@ namespace TelegramLib.MainClasses
 
         public bool IsMessageContains(TelegramLib.MainClasses.Messages.Message mes)
         {
-            return Messages.Any(x => x.Id == mes.Id);
+            return mes is null ? false : Messages.Any(x => x.Id == mes.Id);
         }
 
         public void AddPinnedMessage(
@@ -280,6 +281,10 @@ namespace TelegramLib.MainClasses
             if (PinnedMessages.Contains(toAdd)) return;
             mes.IsPinned = true;
             PinnedMessages.Add(mes);
+
+            PinnedMessages.Sort((a, b) => b.SentTime.CompareTo(a.SentTime));
+            //PinnedMessages.Sort((a, b) => a.SentTime.CompareTo(b.SentTime));
+
         }
 
         public void DeletePinnedMessage(Messages.Message mes)
@@ -311,6 +316,13 @@ namespace TelegramLib.MainClasses
                 PinnedMessages[tempMesIndex] :
                 PinnedMessages.First();
         }
+
+        public Messages.Message GetLastPinnedMessage()
+        {
+            return PinnedMessages.FirstOrDefault();
+        }
+
+        
 
         public bool IsAnyPinnedMessage()
         {
@@ -358,7 +370,7 @@ namespace TelegramLib.MainClasses
         {
             if (mes is null) return -1;
 
-            const int maxDiffer = 100;
+            const int maxDiffer = 20;
             for (int i = 0; i < Messages.Count; i++)
             {
                 /*              bool sameBaseTime =

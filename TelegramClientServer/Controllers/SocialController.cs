@@ -57,6 +57,19 @@ namespace TelegramClientServer.Controllers
             DbService.UpdateContact(contact.Contact, contact.UserId);
         }
 
+        [HttpPost("SetContactMask")]
+        public void SetContactMask([FromBody] SetContactMaskDTO dto)
+        {
+            DbService.SetMaskImage(dto.Contact, dto.LoggedUserId);
+        }
+        public class SetContactMaskDTO
+        {
+            public UserContactcs Contact { get; set; }
+            public int LoggedUserId { get; set; }
+        }
+
+
+
         [HttpPost("EditSavedChatMessage")]
         public void EditSavedChatMessage([FromBody] EditMessageDTO editDTO)
         {
@@ -74,6 +87,12 @@ namespace TelegramClientServer.Controllers
             public int ChatId { get; set; }
             public TelegramLib.MainClasses.Messages.TextMessage? TextMes { get; set; }
             public TelegramLib.MainClasses.Messages.MediaAction? MediaMes { get; set; }
+        }
+
+        [HttpGet("GetContactMask")]
+        public TelegramLib.MainClasses.UserParams.UserImage GetContactMask(int loggedUserId, int contactUserId)
+        {
+            return DbService.GetContactMaskByContactUserId(loggedUserId, contactUserId);
         }
 
 

@@ -30,7 +30,8 @@ namespace TelegramVisualPart.Pages
             _chat = chat;
             InitializeComponent();
 
-            ContactInfo.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id)); /*_system.ChosenChatContact*/
+            ContactInfo.SetContactInfo(_chat, _system, 
+                _system.GetContactByUserId(_chat.Chatter.Id)); /*_system.ChosenChatContact*/
             SetMaxValue();
 
             ContactInfo.UpdateAction += UpdatePage;
@@ -93,6 +94,11 @@ namespace TelegramVisualPart.Pages
 
             ContactInfo.SetContactInfo(_chat, _system,
                  _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
+        }
+
+        public async void UpdateImage()
+        {
+           await ContactInfo.SetContactPhoto();
         }
     }
 }

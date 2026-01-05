@@ -34,6 +34,11 @@ namespace TelegramVisualPart.UserControls
             SetContactImage();
         }
 
+        public void SetNewImgName(string newName)
+        {
+            _imgName = newName;
+        }
+
         public void SetContactImage()
         {
             if (_imgName is null)

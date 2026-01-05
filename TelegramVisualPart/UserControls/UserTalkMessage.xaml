@@ -34,7 +34,8 @@
                            Text="1y" FontSize="11" 
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
-                           Foreground="White"/>
+                           Foreground="White"
+                           FontFamily="{DynamicResource AppFont}"/>
             </Grid>
 
         </Grid>
@@ -56,14 +57,16 @@
                            Text="UserLogin" Margin="10 0 0 0" Foreground="{StaticResource UsualTextColor}" 
                            FontSize="16" Grid.Column="0"
                            TextTrimming="CharacterEllipsis"
-                           TextWrapping="NoWrap"/>
+                           TextWrapping="NoWrap"
+                           FontFamily="{DynamicResource AppFont}"/>
                 
                 <TextBlock x:Name="LastMessageTime" 
                            HorizontalAlignment="Right" 
                            VerticalAlignment="Center" 
                            Text="mestime" Margin="10 5 25 5" 
                            Foreground="Gray" FontSize="16"
-                           Grid.Column="1"/>
+                           Grid.Column="1"
+                           FontFamily="{DynamicResource AppFont}"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
@@ -72,7 +75,7 @@
                        TextTrimming="CharacterEllipsis"
                        TextWrapping="NoWrap"
                        Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"
-                       />
+                       FontFamily="{DynamicResource AppFont}"/>
 
             <Grid Grid.Row="1" HorizontalAlignment="Right"
                   Margin="0 0 25 5">
@@ -93,7 +96,8 @@
                     <TextBlock Name="MesCounter" Text="0"
                                Foreground="White"
                                VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center"
+                               FontFamily="{DynamicResource AppFont}"/>
                 </Border>
 
             </Grid>

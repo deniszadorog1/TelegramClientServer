@@ -554,6 +554,11 @@ namespace TelegramVisualPart
             Menus.Children.Clear();
         }
 
+        public void ClearMainChatPageMenus()
+        {
+
+        }
+
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             WindowSizeChanged();
@@ -627,8 +632,11 @@ namespace TelegramVisualPart
             {
                 Enums.SizerActionType? tempSizer = GetWindowSizeType();
 
+                double width = GetMainWindowWidthWithoutRightContactInfo();
+
+
                 //Temp chat messages glues to one part(left)
-                if (this.ActualWidth < 1500)
+                if (/*this.ActualWidth*/ width  < 1500)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.FirstLevel);
@@ -637,7 +645,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction();
                 }
                 //Temp chat messages in glued to differ borders
-                if (this.Width < 1200)
+                if (/*this.Width*/ width < 1200)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.SecondLevel);
@@ -646,7 +654,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //AllChats Closing
-                if (this.Width < 1000)
+                if (/*this.Width*/ width  < 1000)
                 {
                     bool isClearPrev = tempSizer is null ? false :
                         ((int)tempSizer) > ((int)Enums.SizerActionType.ThirdLevel);
@@ -655,13 +663,25 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //Temp chat is closing + Tabs is going to top
-                if (this.ActualWidth < 800)
+                if (/*this.ActualWidth*/ width < 800)
                 {
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
                 }
             }
             return;
+        }
+
+        private double GetMainWindowWidthWithoutRightContactInfo()
+        {
+            double baseSize = this.ActualWidth;
+
+            if(MainFrame.Content is MainChatPage page)
+            {
+                return baseSize - page.GetAdditionalContactInfoWidth();
+            }
+
+            return baseSize;
         }
 
         private void SetFramePageHeight(Page page)
@@ -1096,12 +1116,16 @@ namespace TelegramVisualPart
             _blockTimer.Tick += (sender, e) =>
             {
                 if (_system.Settings.PrivacySettings.PassCode is null) return;
-                _blockTimer.Stop();
-
-                BlockPage page = new BlockPage(_system);
-                BlockFrame.Content = page;
+                SetBlockFrame();
             };
             _blockTimer.Start();
+        }
+
+        public void SetBlockFrame()
+        {
+            _blockTimer.Stop();
+            BlockPage page = new BlockPage(_system);
+            BlockFrame.Content = page;
         }
 
         public async Task DeleteChat(User chatter, bool isDeleteForOtherUser)
@@ -1296,6 +1320,21 @@ namespace TelegramVisualPart
         private void SecondFrameShadow_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        public void SetContactMask(int userIdToSetMask)
+        {
+            if(MainFrame.Content is MainChatPage page)
+            {
+                //Set for MainChatPage
+                page.SetContactMask(userIdToSetMask);
+            }
+
+            if(SecondaryFrame.Content is UserInfo info)
+            {
+                //Set for contact info
+                info.UpdateImage();
+            }
         }
     }
 }

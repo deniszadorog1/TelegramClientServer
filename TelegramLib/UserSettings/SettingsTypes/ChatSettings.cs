@@ -74,5 +74,10 @@ namespace TelegramLib.UserSettings.SettingsTypes
             Themes.Add(new MainClasses.ChatFitures.Theme(3, ThemeType.Tinted, new ColorHelper(-1, 0, 0, 255)));
             Themes.Add(new MainClasses.ChatFitures.Theme(4, ThemeType.Night, new ColorHelper(-1, 255, 0, 255)));
         }
+
+        public bool GetIsSendWithEnter()
+        {
+            return IsSendWithEnter;
+        }
     }
 }

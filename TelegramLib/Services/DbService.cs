@@ -14,6 +14,7 @@ using System.Net.Configuration;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
+using System.Threading;
 using System.Windows.Forms;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
@@ -24,6 +25,7 @@ using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.MainClasses.UserParams;
 using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
@@ -319,7 +321,7 @@ namespace TelegramLib.Services
                 {
                     if (cont.UserId == userId)
                     {
-                        UserContactcs toAdd = GetContactById(cont.Id);
+                        UserContactcs toAdd = GetContactById(cont.Id, userId);
                         if (toAdd is null) continue;
 
                         res.Add(toAdd);
@@ -349,16 +351,36 @@ namespace TelegramLib.Services
                             GetAutoDelTypeById(correctAutoDelId),
                             GetPinnedMessages(chat.Id));
 
+                        //Set mask for chatterId
+                        SetMaskForChatterId(toAdd.Chatter, userId);
+
                         toAdd.NotificationStatus = GetNotificationStatusByChatId(chat.Id);
 
                         toAdd.IsPinned = chat.IsPinned is null ? false : (bool)chat.IsPinned;
-                        toAdd.IsMarked = chat.IsRead is null ? false : (bool)chat.IsRead; 
+                        toAdd.IsMarked = chat.IsRead is null ? false : (bool)chat.IsRead;
 
                         res.Add(toAdd);
                     }
                 }
             }
             return res;
+        }
+
+        private static void SetMaskForChatterId(TelegramLib.MainClasses.User chatter, int loggedUserId)
+        {
+            using(var model = new TelegramModel())
+            {
+                TelegramLib.MainClasses.UserParams.UserImage mask = 
+                    GetContactMaskByContactUserId(loggedUserId, chatter.Id);
+
+                if (mask is null) return;
+
+                chatter.ImageMask = 
+                    new TelegramLib.MainClasses.UserParams.UserImage(
+                        System.IO.Path.GetFileName(mask.Name), mask.Date);
+
+                chatter.UserImages.Insert(0, chatter.ImageMask);
+            }
         }
 
         private static bool GetNotificationStatusByChatId(int chatId)
@@ -822,7 +844,7 @@ namespace TelegramLib.Services
             return res;
         }
 
-        public static UserContactcs GetContactById(int contactId)
+        public static UserContactcs GetContactById(int contactId, int loggedUserId)
         {
             UserContactcs res = new UserContactcs();
             using (var model = new TelegramModel())
@@ -842,6 +864,7 @@ namespace TelegramLib.Services
                 res.BIO = user.BIO;
                 res.PhoneNumber = user.PhoneNumber;
                 res.LastSeen = user.LastSeenOnline;
+                res.MaskImage = GetContactMaskByContactUserId(loggedUserId, (int)contact.FriendId);
 
                 res.UserImages = GetUserImagesByUserId((int)contact.FriendId);
             }
@@ -888,7 +911,7 @@ namespace TelegramLib.Services
                 List<Contacts> toGet = model.Contacts.Where(x => x.UserId == userId).ToList();
                 if (toGet is null) return null;
 
-                return GetContactById(toGet.Last().Id);
+                return GetContactById(toGet.Last().Id, userId);
             }
         }
 
@@ -1114,7 +1137,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                UserImage img = model.UserImage.Where(x => x.Id == userImageId).FirstOrDefault();
+                model.UserImage img = model.UserImage.Where(x => x.Id == userImageId).FirstOrDefault();
                 if (img is null) return string.Empty;
 
                 return img.Name;
@@ -2365,14 +2388,14 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void EditSavedMessage(TelegramLib.MainClasses.Messages.TextMessage textMes, 
+        public static void EditSavedMessage(TelegramLib.MainClasses.Messages.TextMessage textMes,
             TelegramLib.MainClasses.Messages.MediaAction mediaMes)
         {
             TelegramLib.MainClasses.Messages.Message mes = null;
             if (textMes is null) mes = mediaMes;
             else mes = textMes;
 
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 //Get message
                 SavedMessages toEdit = model.SavedMessages.FirstOrDefault(x => x.Id == mes.Id);
@@ -2619,6 +2642,7 @@ namespace TelegramLib.Services
                 model.Messages
                     .RemoveRange(model.Messages
                         .Where(x => x.ChatId == chatId));
+
                 model.SaveChanges();
             }
         }
@@ -3186,6 +3210,7 @@ namespace TelegramLib.Services
                 toAdd.ChatId = chatId;
                 toAdd.ChatBgId = GetChatBgIdByName(fileName);
                 toAdd.IsGeneral = true;
+                toAdd.IsBlurred = toAdd.IsBlurred;
 
                 model.PossibleChatBGs.Add(toAdd);
 
@@ -3235,7 +3260,7 @@ namespace TelegramLib.Services
             {
                 Contacts cont = model.Contacts.FirstOrDefault(x => x.UserId == senderId && x.FriendId == receiverId);
                 if (cont is null) return null;
-                return GetContactById(cont.Id);
+                return GetContactById(cont.Id, senderId);
             }
         }
 
@@ -3276,7 +3301,7 @@ namespace TelegramLib.Services
             if (IsUserImageisExist(user, userImageName)) return;
             using (var model = new TelegramModel())
             {
-                UserImage img = new UserImage();
+                model.UserImage img = new model.UserImage();
 
                 img.UserId = user.Id;
                 img.Name = userImageName;
@@ -3929,12 +3954,12 @@ namespace TelegramLib.Services
 
         public static void ClearSavedChatMessages(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                List<SavedMessages> toRemove = 
+                List<SavedMessages> toRemove =
                     model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId).ToList();
 
-                foreach(var mes in toRemove)
+                foreach (var mes in toRemove)
                 {
                     model.SavedMessages.Remove(mes);
                 }
@@ -3945,7 +3970,7 @@ namespace TelegramLib.Services
 
         public static int? GetLastStatDateIdInSavedChat(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 SavedMessages mes = model.SavedMessages
                     .Where(x => x.SavedMessagesChatId == chatId &&
@@ -3959,7 +3984,7 @@ namespace TelegramLib.Services
 
         public static int? GetIdOfLastSavedMessage(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 SavedMessages mes = model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId)
                     .OrderByDescending(x => x.Id)
@@ -3972,17 +3997,17 @@ namespace TelegramLib.Services
 
         public static bool IsDateStatContainsInSavedMessageChat(int chatId, DateTime date)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.SavedMessages.Any(x => x.SavedMessagesChatId == chatId &&
-                x.StatDate.HasValue && 
+                x.StatDate.HasValue &&
                 x.StatDate.Value.Day == date.Day);
             }
         }
 
         public static void AddSavedMessagesChat(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.SavedMessagesChat toAdd = new model.SavedMessagesChat();
 
@@ -3996,7 +4021,7 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void AddSavedMessage(int savedMessageChatId, 
+        public static void AddSavedMessage(int savedMessageChatId,
             TelegramLib.MainClasses.Messages.Message toAdd)
         {
             using (var model = new TelegramModel())
@@ -4049,7 +4074,7 @@ namespace TelegramLib.Services
             res.PinnedMessages = GetPinnedSavedChatMessages(res.Id);
             using (var model = new TelegramModel())
             {
-                Models.SavedMessagesChat chat = 
+                Models.SavedMessagesChat chat =
                     model.SavedMessagesChat.FirstOrDefault(x => x.UserId == userId);
                 if (chat is null) return null;
 
@@ -4061,7 +4086,7 @@ namespace TelegramLib.Services
 
                 res.IsPinned = chat.IsPinned is null ? false : (bool)chat.IsPinned;
                 res.IsMarked = chat.IsRead is null ? false : (bool)chat.IsRead;
-            
+
             }
 
             return res;
@@ -4121,7 +4146,7 @@ namespace TelegramLib.Services
                 !(mes.StatDate is null)) toAdd = new mainClass.Messages.StaticMessage();
 
             else if (mes.Message is null) toAdd = new MediaAction();
-            else if (!(mes.ShareContactMessage is null)) toAdd = 
+            else if (!(mes.ShareContactMessage is null)) toAdd =
                     new TelegramLib.MainClasses.Messages.ShareContactMessage();
             else toAdd = new TextMessage();
 
@@ -4172,7 +4197,7 @@ namespace TelegramLib.Services
 
             if (toAdd is StaticMessage statMessage)
             {
-                statMessage.MessageReferenceId = 
+                statMessage.MessageReferenceId =
                     mes.MessageRefference is null ? -1 : mes.MessageRefference;
 
                 statMessage.Date = mes.StatDate;
@@ -4180,6 +4205,45 @@ namespace TelegramLib.Services
             return toAdd;
         }
 
+        public static void SetMaskImage(UserContactcs contact, int loggedUserId)
+        {
+            using (var model = new TelegramModel())
+            {
+                ContactImageMask mask = model.ContactImageMask.
+                    FirstOrDefault(x => x.UserId == loggedUserId &&
+                    x.FriendId == contact.ContactUserId);
+
+                if (!(mask is null))
+                {
+                    if (contact.MaskImage is null) model.ContactImageMask.Remove(mask);
+                    else mask.ImageName = contact.MaskImage.Name;
+                }
+                else
+                {
+                    ContactImageMask toAdd = new ContactImageMask();
+                    toAdd.UserId = loggedUserId;
+                    toAdd.FriendId = contact.ContactUserId;
+                    toAdd.ImageName = contact.MaskImage.Name;
+
+                    model.ContactImageMask.Add(toAdd);
+                }
+                model.SaveChanges();
+            }
+        }
+
+        public static TelegramLib.MainClasses.UserParams.UserImage GetContactMaskByContactUserId(int loggedUserId, int contactUserId)
+        {
+            using (var model = new TelegramModel())
+            {
+                ContactImageMask mask = model.ContactImageMask.
+                    FirstOrDefault(x => x.UserId == loggedUserId && x.FriendId == contactUserId);
+
+                if (mask is null) return null;
+
+                return new TelegramLib.MainClasses.UserParams.UserImage(mask.ImageName, DateTime.Now);
+
+            }
+        }
 
 
     }

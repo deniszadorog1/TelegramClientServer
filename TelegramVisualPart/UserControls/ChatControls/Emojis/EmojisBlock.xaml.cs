@@ -60,14 +60,41 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             _baseEmojis.Add(("😎", EmojiType.Positive, "LikeFace"));
             _baseEmojis.Add(("😆", EmojiType.Positive, "EasyLaugh"));
             _baseEmojis.Add(("😀", EmojiType.Positive, "Happy"));
+            _baseEmojis.Add(("😹", EmojiType.Positive, "CatLaugh"));
+            _baseEmojis.Add(("😻", EmojiType.Positive, "CatLove"));
+            _baseEmojis.Add(("🙉", EmojiType.Positive, "MonkeyOpen"));
+            _baseEmojis.Add(("🙈", EmojiType.Positive, "MonkeyClose"));
+            _baseEmojis.Add(("🤣", EmojiType.Positive, "HardLaugh"));
+
             _baseEmojis.Add(("☹️", EmojiType.Negative, "Smthing"));
             _baseEmojis.Add(("😐", EmojiType.Negative, "Nervous"));
-            _baseEmojis.Add(("🤣", EmojiType.Positive, "HardLaugh"));
-            _baseEmojis.Add(("❤️", EmojiType.Other, "Heart"));
-            _baseEmojis.Add(("🤷", EmojiType.Other, "Hands"));
             _baseEmojis.Add(("🤡", EmojiType.Negative, "Clown"));
             _baseEmojis.Add(("💩", EmojiType.Negative, "Poop"));
+            _baseEmojis.Add(("😾", EmojiType.Negative, "CatAngry"));
+            _baseEmojis.Add(("😿", EmojiType.Negative, "CatCry"));
+            _baseEmojis.Add(("🙀", EmojiType.Negative, "CatShock"));
+            _baseEmojis.Add(("😶", EmojiType.Negative, "NothingFace"));
+            _baseEmojis.Add(("😈", EmojiType.Negative, "DevilSmile"));
+            _baseEmojis.Add(("🌑", EmojiType.Negative, "BlackCirlce"));
+            _baseEmojis.Add(("🍅", EmojiType.Negative, "Tomato"));
+            _baseEmojis.Add(("🍱", EmojiType.Negative, "Sushi"));
+            _baseEmojis.Add(("💀", EmojiType.Negative, "Death"));
+            
             _baseEmojis.Add(("😺", EmojiType.Other, "Cat"));
+            _baseEmojis.Add(("❤️", EmojiType.Other, "Heart"));
+            _baseEmojis.Add(("🤷", EmojiType.Other, "Hands"));
+            _baseEmojis.Add(("✈", EmojiType.Other, "Plane"));
+            _baseEmojis.Add(("✂", EmojiType.Other, "Cisers"));
+            _baseEmojis.Add(("✔", EmojiType.Other, "Tick"));
+            _baseEmojis.Add(("❔", EmojiType.Other, "QuestionMark"));
+            _baseEmojis.Add(("🚀", EmojiType.Other, "Rocket"));
+            _baseEmojis.Add(("🚗", EmojiType.Other, "Car"));
+            _baseEmojis.Add(("🚢", EmojiType.Other, "Ship"));
+            _baseEmojis.Add(("🚩", EmojiType.Other, "Flag"));
+            _baseEmojis.Add(("🚪", EmojiType.Other, "Door"));
+            _baseEmojis.Add(("🚲", EmojiType.Other, "Bike"));
+            _baseEmojis.Add(("⏰", EmojiType.Other, "Clock"));
+            _baseEmojis.Add(("✨", EmojiType.Other, "Stars"));
         }
 
         private void PackIcon_MouseEnter(object sender, MouseEventArgs e)
@@ -124,7 +151,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
                 EmojisPanel.Children.Add(new Emoji(_baseEmojis[i].Item1, _baseEmojis[i].Item2));
             }
         }
-
         private void SarchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             //Update empjis by name

@@ -18,7 +18,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
 
-            
+            <FontFamily x:Key="AppFont">Segoe UI</FontFamily>
+
+
             <SolidColorBrush x:Key="TempActiveTextColor" Color="#5DB2F2"/>
             <SolidColorBrush x:Key="UsualTextColor" Color="White"/>
 

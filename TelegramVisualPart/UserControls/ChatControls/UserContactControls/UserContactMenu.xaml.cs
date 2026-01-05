@@ -21,6 +21,7 @@ using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.UserControls.DifferButs;
+using TelegramVisualPart.UserControls.SettingsControls;
 
 namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 {
@@ -40,10 +41,33 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             AddClearSubMenuAction();
         }
 
-        public void SetTelSystemParam(TelSystem system, TelegramLib.MainClasses.UserChat chat)
+        public void SetTelSystemParam(TelSystem system, 
+            TelegramLib.MainClasses.UserChat chat)
         {
             _system = system;
             _chat = chat;
+
+            SetBlockButText();
+        }
+
+        public void SetBlockButText()
+        {
+            if (BlockUser.Visibility == Visibility.Hidden || 
+                _chat.GetChatter() is null) return;
+
+            if (_system.IsChatterBlocked(_chat.GetChatter())) 
+            {
+                BlockUser.IconType.Kind = PackIconKind.BlockHelper;
+                BlockUser.ButName.Text = "UnBlock user";
+            }
+            else
+            {
+
+                BlockUser.IconType.Kind = PackIconKind.Hand;
+                BlockUser.ButName.Text = "Block user";
+            }
+
+
         }
 
         public void UpdateParamsIsChatterIsNotContact()
@@ -113,10 +137,19 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 (SolidColorBrush)Application.Current.Resources["CloseWindowColor"];
         }
 
+        public event Action UnblockUser;
         private void But_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is UserChatMenuButton but)
             {
+                if(but.Name == BlockUser.Name.ToString() &&
+                   _system.IsChatterBlocked(_chat.GetChatter()))
+                {
+                    UnblockUser?.Invoke();
+                    this.Visibility = Visibility.Hidden;
+                    return;
+                }
+
                 Page? page = GetPageToOpen(but.Name);
                 if (page is null) return;
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
@@ -131,8 +164,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :
+                  
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
-                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact) :
+
+
+                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact, _system) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
                    name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) :
                    name == AddContact.Name.ToString() ? new EditUserContact(_chat.Chatter, _system) : null;

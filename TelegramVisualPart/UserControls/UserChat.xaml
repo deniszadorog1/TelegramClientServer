@@ -23,7 +23,7 @@
             <RowDefinition Name="PinRow" Height="50"/>
             <RowDefinition/>
             <RowDefinition Name="ReplyMessageRow"  Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="50" Name="CommentRow"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -400,7 +400,8 @@
                      VerticalContentAlignment="Center" 
                      CaretBrush="White"
                      materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                     BorderThickness="0" FontSize="16" 
+                     BorderThickness="0" 
+                     FontSize="16" 
                      ContextMenuService.IsEnabled="False" 
                      TextChanged="CommentTextBox_TextChanged"
                      PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"/>

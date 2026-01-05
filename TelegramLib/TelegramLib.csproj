@@ -208,6 +208,7 @@
     <Compile Include="Models\ChatImage.cs" />
     <Compile Include="Models\ChatSettings.cs" />
     <Compile Include="Models\ChosenPrivacyContacts.cs" />
+    <Compile Include="Models\ContactImageMask.cs" />
     <Compile Include="Models\Contacts.cs" />
     <Compile Include="Models\ContactsInFolder.cs" />
     <Compile Include="Models\DateOfBirthSettings.cs" />

@@ -344,9 +344,12 @@
                         <TextBlock Grid.Column="1" Grid.Row="3" FontSize="16"
                                    Name="BlockContactBlock"                                                                          
                                    FontWeight="SemiBold" 
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource ToBlockContact}" MouseEnter="But_MouseEnter" 
-                                   MouseLeave="But_MouseLeave" PreviewMouseDown="BlockLine_PreviewMouseDown"/>
+                                   VerticalAlignment="Center" 
+                                   HorizontalAlignment="Left"
+                                   Foreground="{StaticResource ToBlockContact}" 
+                                   MouseEnter="But_MouseEnter" 
+                                   MouseLeave="But_MouseLeave" 
+                                   PreviewMouseDown="BlockLine_PreviewMouseDown"/>
                     </Grid>
                 </Grid>
             </ScrollViewer>

@@ -37,7 +37,7 @@ namespace TelegramVisualPart.Pages.Contacts
         private TelSystem _system;
         private bool _isBlock;
 
-        public MainContacts(ContactsPageAction type, TelSystem system, 
+        public MainContacts(ContactsPageAction type, TelSystem system,
             bool isBlock)
         {
             _type = type;
@@ -60,22 +60,22 @@ namespace TelegramVisualPart.Pages.Contacts
                 return;
             }
 
-            List<UserContactcs> toAdd = !_isBlock ? _system.Contacts : 
+            List<UserContactcs> toAdd = !_isBlock ? _system.Contacts :
                 _system.Contacts.Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Name).Contains(x.Name)).ToList();
 
-            for(int i = 0; i < toAdd.Count; i++)
+            for (int i = 0; i < toAdd.Count; i++)
             {
-                TelegramLib.MainClasses.User user = await ApiService.GetUserById(toAdd[i].ContactUserId);
+                TelegramLib.MainClasses.User user =
+                    await ApiService.GetUserById(toAdd[i].ContactUserId);
                 UserContact contact = new UserContact(user);
-
 
                 ListBoxItem item = new ListBoxItem
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = toAdd[i].Login 
+                    Tag = toAdd[i].Login
                 };
-                
+
                 item.PreviewMouseDown += Contact_PreviewMouseDown;
                 ContactsListBox.Items.Add(item);
             }
@@ -90,7 +90,7 @@ namespace TelegramVisualPart.Pages.Contacts
                     .Select(x => x.Chatter)
                     .ToList();
 
-            for(int i = 0; i < toAdd.Count; i++)
+            for (int i = 0; i < toAdd.Count; i++)
             {
                 UserContact contact = new UserContact(toAdd[i]);
 
@@ -100,7 +100,7 @@ namespace TelegramVisualPart.Pages.Contacts
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
                     Tag = toAdd[i].Id
                 };
-                
+
                 item.PreviewMouseDown += Contact_PreviewMouseDown;
                 ContactsListBox.Items.Add(item);
             }
