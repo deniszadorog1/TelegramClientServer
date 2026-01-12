@@ -692,6 +692,21 @@ namespace TelegramVisualPart.Services
             var response = await _client.SendAsync(request);
         }
 
+        public static async Task<bool> DeleteManyMessages(List<int> idsToDelete, bool isBoth)
+        {
+            var data = new { IdsToDelete = idsToDelete, IsBoth = isBoth };
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteManyMessages"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
         public static async Task<bool> DeleteChatById(int chatId)
         {
             var data = new { ChatId = chatId };
@@ -816,6 +831,20 @@ namespace TelegramVisualPart.Services
 
             return jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<UserChat>(jsonResponse, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+        }
+
+        public static async Task<bool?> IsChatterIdIsContact(int userId, int friendUserId)
+        {
+            var response = await _client.GetAsync($"api/Social/IsChatterIdIsContact?userId={userId}&friendUserId={friendUserId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<bool>(jsonResponse, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });

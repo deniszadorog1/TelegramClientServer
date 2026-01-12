@@ -34,6 +34,10 @@ namespace TelegramVisualPart.Helper
         //Get controls which are seen in list box (vertical scroll stuff)
         public static IEnumerable<object> GetVisibleItems(ListBox listBox)
         {
+            var sv = GetScrollViewer(listBox);
+            if (sv == null)
+                yield break;
+
             VirtualizingStackPanel vsp = FindVisualChild<VirtualizingStackPanel>(listBox);
             if (vsp == null)
                 yield break;
@@ -45,6 +49,21 @@ namespace TelegramVisualPart.Helper
             {
                 yield return listBox.Items[i];
             }
+        }
+
+        private static ScrollViewer GetScrollViewer(DependencyObject d)
+        {
+            if (d is ScrollViewer sv)
+                return sv;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(d); i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+                var result = GetScrollViewer(child);
+                if (result != null)
+                    return result;
+            }
+            return null;
         }
 
         private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject

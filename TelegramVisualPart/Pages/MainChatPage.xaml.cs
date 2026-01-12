@@ -998,11 +998,17 @@ namespace TelegramVisualPart.Pages
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
 
-            SetChatParams(item, talkControl);
+            await SetChatParams(item, talkControl);
         }
 
         public async Task SetChatByChatterId(int userId)
         {
+            if(_system.LoggedUser.Id == userId)
+            {
+                SetSavedChatMessages();
+                return;
+            }
+
             //Get user chat
             TelegramLib.MainClasses.UserChat chat =
                  _system.GetChatByChatterId(userId);
@@ -1025,12 +1031,16 @@ namespace TelegramVisualPart.Pages
 
         public async Task SetChatParams(ListBoxItem item, UserTalkMessage talkControl)
         {
-            SetChosenChatBg(item);
             int.TryParse(item.Tag.ToString(), out int id);
-
-            talkControl.SetVisibilityToUnreadEllipse(false);
-
             TelegramLib.MainClasses.UserChat chat = _system.GetChatById(id);
+
+            //Is Chat is opened on othre window
+            if (((MainWindow)Window.GetWindow(this)).IsSameOnlyChatById(id)) return;
+
+            if (IsSameChatIsOpened(id)) return;
+
+            SetChosenChatBg(item);
+            talkControl.SetVisibilityToUnreadEllipse(false);
 
             if (chat is null)
             {
@@ -1065,6 +1075,15 @@ namespace TelegramVisualPart.Pages
 
             ShowChatControl();
             SetSizerActionWithUserChatMouseDown();
+        }
+
+        public bool IsSameChatIsOpened(int chatId)
+        {
+            bool isOpened = UserChat.Visibility == Visibility.Visible &&
+               UserChat._chat is not null && UserChat._chat.Id == chatId;
+
+            if (isOpened) UserChat.ScrollChatToEnd();
+            return isOpened;
         }
 
         public void SetChosenChatValues(TelegramLib.MainClasses.UserChat chat)
@@ -1324,7 +1343,7 @@ namespace TelegramVisualPart.Pages
             MarkStartFolderChat();
         }
 
-        public void ClearAllChatsBgs()
+        public void ClearAllChatsBgs(bool isLow = false)
         {
             for (int i = 0; i < ChatsBox.Items.Count; i++)
             {
@@ -1332,6 +1351,16 @@ namespace TelegramVisualPart.Pages
                     item.Content is UserTalkMessage mes)
                 {
                     item.Background = new SolidColorBrush(Colors.Transparent);
+                }
+            }
+
+            if (isLow)
+            {
+                //If all are hidden -> show all chats
+                if (ChatsBox.Visibility == Visibility.Visible)
+                {
+                    SetActiveChats();
+                    ChatsBox.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -1522,17 +1551,22 @@ namespace TelegramVisualPart.Pages
                         }
                 }
 
-                if (UserChat.Visibility == Visibility.Hidden) ClearAllChatsBgs();
+                ClearChatBgs();
+
 
                 //If all are hidden -> show all chats
-                if (
-                   ChatsBox.Visibility == Visibility.Visible)
+                if (ChatsBox.Visibility == Visibility.Visible)
                 {
                     SetActiveChats();
                     ChatsBox.Visibility = Visibility.Visible;
                 }
 
             }
+        }
+
+        public void ClearChatBgs(bool isLow = false)
+        {
+            if (UserChat.Visibility == Visibility.Hidden) ClearAllChatsBgs(isLow: isLow);
         }
 
         public EscLevels GetEscapeLevel()
@@ -1570,7 +1604,10 @@ namespace TelegramVisualPart.Pages
                 TelegramLib.MainClasses.UserChat chat =
                     _system.GetUserChatByChatterId(contact.Id);
 
-                UserTalkMessage message = new UserTalkMessage(chat.GetChatter().GetFirstImageName().Name)
+                TelegramLib.MainClasses.User chatter = chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                    _system.LoggedUser : chat.GetChatter();
+
+                UserTalkMessage message = new UserTalkMessage(chatter.GetFirstImageName().Name)
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Width = ChatsGrid.ActualWidth,
@@ -1579,6 +1616,7 @@ namespace TelegramVisualPart.Pages
                 };
 
                 UserContactcs cont = _system.GetContactByUserId(chat.GetChatter().Id);
+
                 message.FriendLogin.Text = cont is null ? chat.GetChatter().Name : cont.Name;
 
                 DateTime? date = chat.GetLastMessageDateTime();
@@ -1636,7 +1674,6 @@ namespace TelegramVisualPart.Pages
 
             //Get point to menu
             Point point = new Point(relativePoint.X /*+ targetElement.ActualWidth + 5*/, relativePoint.Y - 15);
-
 
             int.TryParse(boxItem.Tag.ToString(), out int id);
             TelegramLib.MainClasses.UserChat chat = _system.GetChatById(id);
@@ -2154,11 +2191,11 @@ namespace TelegramVisualPart.Pages
                 return;
             }
 
-
             MainWindow window = new MainWindow(_system, chat, main);
 
             window.Show();
-            //SetWindowChat(windChat);
+
+            window.AddChatMainWindow();
         }
         /*        public void SetWindowChat(MainWn windChat)
                 {
@@ -2670,7 +2707,11 @@ namespace TelegramVisualPart.Pages
         private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Get saved chat
+            SetSavedChatMessages();
+        }
 
+        public void SetSavedChatMessages()
+        {
             SavedMessagesChat savedChat = _system.GetSavedChatMessages();
 
             UserChat.SetUserChat(savedChat);
@@ -2740,6 +2781,15 @@ namespace TelegramVisualPart.Pages
             chat.SetNewImgName(System.IO.Path.GetFileName(chatter.GetFirstImageName().Name));
 
             chat.SetContactImage();
+        }
+
+        public void ClearChatMouseButtonDown()
+        {
+            if(UserChat.Visibility == Visibility.Visible && 
+               UserChat._chat is not null)
+            {
+                UserChat.ClearMouseDown();
+            }
         }
     }
 }

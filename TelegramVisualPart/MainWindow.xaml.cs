@@ -50,7 +50,7 @@ namespace TelegramVisualPart
         public TelSystem _system;// = new TelSystem();
 
         private bool _isOnlyChat = false;
-        private UserChat _onlyChatUserChat;
+        public UserChat _onlyChatUserChat;
 
         List<MainWindow> _chatWindows = new List<MainWindow>();
         private MainWindow _bossWindow;
@@ -77,7 +77,8 @@ namespace TelegramVisualPart
         }
 
         //Chat in other Window
-        public MainWindow(TelSystem system, TelegramLib.MainClasses.UserChat chat,
+        public MainWindow(TelSystem system, 
+            TelegramLib.MainClasses.UserChat chat,
             MainWindow boss)
         {
             InitializeComponent();
@@ -92,6 +93,18 @@ namespace TelegramVisualPart
             SetMainPage(system);
 
             //Set chat page
+        }
+
+        public bool IsSameOnlyChatById(int chatId)
+        {
+            for(int i = 0; i < _chatWindows.Count; i++)
+            {
+                if (_chatWindows[i]._onlyChatUserChat.Id == chatId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool GetIsOnlyChat()
@@ -411,6 +424,8 @@ namespace TelegramVisualPart
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
             SetWindowSizeState();
+
+            //SizeC
         }
 
         public bool IsWindowIsMaxSize()
@@ -667,6 +682,8 @@ namespace TelegramVisualPart
                 {
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
+
+                    if (MainFrame.Content is MainChatPage page) page.ClearChatBgs(true);
                 }
             }
             return;
@@ -946,6 +963,7 @@ namespace TelegramVisualPart
         //from chat window
         public void AddChatMainWindow()
         {
+            if (_bossWindow is null) return;
             _bossWindow._chatWindows.Add(this);
         }
 
@@ -1134,9 +1152,9 @@ namespace TelegramVisualPart
             await page.DeleteChat(chatter, isDeleteForOtherUser);
         }
 
-        public void AddAddMediaPage(string firstMediaPath)
+        public void AddAddMediaPage(string firstMediaPath, string text)
         {
-            SetSecondaryFrame(new SendMediaPage(firstMediaPath));
+            SetSecondaryFrame(new SendMediaPage(firstMediaPath, text));
         }
 
         public void SendBigImagesMessage(string capture, List<Image> imgs)
@@ -1335,6 +1353,11 @@ namespace TelegramVisualPart
                 //Set for contact info
                 info.UpdateImage();
             }
+        }
+
+        private void Window_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (MainFrame.Content is MainChatPage chatPage) chatPage.ClearChatMouseButtonDown();
         }
     }
 }

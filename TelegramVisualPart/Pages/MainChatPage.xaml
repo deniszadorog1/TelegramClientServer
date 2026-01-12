@@ -202,16 +202,21 @@
                             MouseEnter="MagnifierGrid_MouseEnter"
                             MouseLeave="MagnifierGrid_MouseLeave"
                             PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
-                            <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" Margin="25 10 0 0"
-                                                 Width="35" Height="35" Foreground="Gray" 
-                                                 Visibility="Hidden"/>
+                            <materialDesign:PackIcon Kind="Magnify" Name="SearchChatBut" 
+                                                     Margin="25 10 0 0"
+                                                     Width="35" Height="35" Foreground="Gray" 
+                                                     Visibility="Hidden"/>
                         </Grid>
                     </Grid>
-
 
                     <Grid Grid.Row="1" Name="FolderSliderGrid" Margin="0 5 0 0">
                         <SliderMenu:ItemsSlider x:Name="FolderSliderMenu"/>
                     </Grid>
+
+                    <Grid x:Name="FocusAnchor"
+                          Focusable="True"
+                          Width="0"
+                          Height="0"/>
 
                     <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden">
                         <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   

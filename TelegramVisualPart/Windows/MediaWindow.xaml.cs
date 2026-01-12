@@ -507,9 +507,27 @@ namespace TelegramVisualPart.Windows
             this.WindowState = WindowState.Minimized;
         }
 
+        private readonly Size _littleWindowSize = new Size(800, 600);
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
+            if(WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+
+                var screenWidth = SystemParameters.WorkArea.Width;
+                var screenHeight = SystemParameters.WorkArea.Height;
+
+                this.Left = (screenWidth - this.Width) / 2;
+                this.Top  = (screenHeight - this.Height) / 2;
+
+                Width = _littleWindowSize.Width;
+                Height = _littleWindowSize.Height;
+
+                WindowSizerIcon.Kind = PackIconKind.CropSquare;
+                return;
+            }
             this.WindowState = WindowState.Maximized;
+            WindowSizerIcon.Kind = PackIconKind.WindowRestore;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -603,6 +621,8 @@ namespace TelegramVisualPart.Windows
                 this.Left = screenPoint.X - targetWidth * percentHorizontal;
                 this.Top = 0;
                 this.Width = targetWidth;
+
+                WindowSizerIcon.Kind = PackIconKind.CropSquare;
 
                 this.DragMove();
             }

@@ -18,16 +18,20 @@
 
         <TextBlock Name="LeftTextBlock" Grid.Column="0" 
                    Text="Test Text"
+                   Margin="30 0 0 0"
                    VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
+                   HorizontalAlignment="Left"
                    Foreground="{StaticResource UsualTextColor}"
-                   FontSize="16"/>
+                   FontSize="16"
+                   FontFamily="{DynamicResource AppFont}"/>
 
         <TextBlock Name="RightTextBlock" Grid.Column="1"
                    Text="Test Text"
+                   Margin="0 0 30 0"
                    VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
+                   HorizontalAlignment="Right"
                    Foreground="{StaticResource TempActiveTextColor}"
-                   FontSize="16"/>
+                   FontSize="16"
+                   FontFamily="{DynamicResource AppFont}"/>
     </Grid>
 </UserControl>

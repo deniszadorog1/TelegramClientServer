@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using TelegramVisualPart.Enums;
 
 namespace TelegramVisualPart.UserControls.ChatControls.Emojis
@@ -26,10 +27,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
         {
             InitializeComponent();
 
-            SetBaseEmojis();
-            SetEmojisList();
+            SetEmojis();
 
             //SetEmojisBlock();
+        }
+
+        public void SetEmojis()
+        {
+            SetBaseEmojis();
+            SetEmojisList();
         }
 
         private List<(string, EmojiType, string)> _baseEmojis = new List<(string, EmojiType, string)>();
@@ -52,6 +58,27 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         public void SetBaseEmojis()
         {
+            _baseEmojis.Clear();
+            Random rnd = new Random();
+
+            for (int code = 0x1F600; code <= 0x1F64F; code++)
+            {
+                _baseEmojis.Add((char.ConvertFromUtf32(code), ((EmojiType)rnd.Next(0, 3)), code.ToString()));
+            }
+
+            for (int code = 0x1F300; code <= 0x1F5FF; code++)
+            {
+                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Other, code.ToString()));
+            }
+
+            for (int code = 0x1F680; code <= 0x1F6FF; code++)
+            {
+                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Other, code.ToString()));
+            }
+
+
+            return;
+
             _baseEmojis.Add(("🙂", EmojiType.Positive, "NiceSmile"));
             _baseEmojis.Add(("😁", EmojiType.Positive, "Laugh"));
             _baseEmojis.Add(("😅", EmojiType.Positive, "GitItFace"));
@@ -127,6 +154,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
             //Set Emojis By type
             SetIconsByTypeAndName();
+
+            SetBackIcon(true);
         }
 
         public void ClearTypeIconsColor()
@@ -157,25 +186,29 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             SetIconsByTypeAndName();
         }
 
-        /*   public void SetEmojisBlock()
-           {
-               EmojisPanel.Children.Add(new Emoji("🙂"));
-               EmojisPanel.Children.Add(new Emoji("😁"));
-               EmojisPanel.Children.Add(new Emoji("😅"));
-               EmojisPanel.Children.Add(new Emoji("😊"));
-               EmojisPanel.Children.Add(new Emoji("😉"));
-               EmojisPanel.Children.Add(new Emoji("😉"));
-               EmojisPanel.Children.Add(new Emoji("😎"));
-               EmojisPanel.Children.Add(new Emoji("😀"));
-               EmojisPanel.Children.Add(new Emoji("😆"));
-               EmojisPanel.Children.Add(new Emoji("☹️"));
-               EmojisPanel.Children.Add(new Emoji("😐"));
-               EmojisPanel.Children.Add(new Emoji("🤣"));
-               EmojisPanel.Children.Add(new Emoji("❤️"));
-               EmojisPanel.Children.Add(new Emoji("🤷"));
-               EmojisPanel.Children.Add(new Emoji("🤡"));
-               EmojisPanel.Children.Add(new Emoji("💩"));
-               EmojisPanel.Children.Add(new Emoji("😺"));
-           }*/
+        private void BackIconGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void BackIconGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private const PackIconKind _backKind = PackIconKind.ArrowLeft;
+        private void BackIconGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (BackIcon.Kind != _backKind) return;
+            SetBackIcon(false);
+
+            SetEmojis();
+        }
+
+        public void SetBackIcon(bool isBack)
+        {
+            BackIcon.Kind = isBack ? _backKind : PackIconKind.Magnify;
+        }
+
     }
 }

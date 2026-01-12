@@ -51,6 +51,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             StatusChanged?.Invoke();
         }
 
+        public void SetTickByGivenParam(bool isActive)
+        {
+            _isChosen = isActive;
+            SetVisPartByStatus();
+        }
+
         public void SetChosenParam(bool isChosen)
         {
             _isChosen = isChosen;

@@ -444,6 +444,26 @@ namespace TelegramLib.MainClasses
             return null;
         }
 
+        private const int _maxSentTimeDiffer = 10;
+        public TelegramLib.MainClasses.Messages.Message GetMessageByFullDateTime(DateTime time)
+        {
+           TelegramLib.MainClasses.Messages.Message mes =  
+                Messages.FirstOrDefault(x => Math.Abs((x.SentTime - time).TotalMilliseconds)
+                    < _maxSentTimeDiffer);
+
+            return mes;
+        }
+
+        public void RemoveMessageBySentTime(DateTime time)
+        {
+            TelegramLib.MainClasses.Messages.Message toRemove = GetMessageByFullDateTime(time);
+
+            if (toRemove is null) return;
+            Messages.Remove(toRemove);
+
+            RemoveDateMessages();
+        }
+
         public int GetLinksAmount()
         {
             int res = 0;
@@ -509,6 +529,32 @@ namespace TelegramLib.MainClasses
         {
             return Messages.Where(x => x is MediaAction media &&
             media.IsGif()).ToList().Count();
+        }
+
+        public void RemoveDateMessages()
+        {
+            List<StaticMessage> toRemove = new List<StaticMessage>();
+            bool isUsualMessageWas = false;
+            for(int i = Messages.Count - 1; i > 0; i--)
+            {
+                if (!isUsualMessageWas && 
+                    Messages[i] is StaticMessage stat &&
+                    !(stat.Date is null))
+                {
+                    toRemove.Add(stat);
+                }
+
+                if (Messages is StaticMessage)
+                {
+                    isUsualMessageWas = false;
+                }
+                else isUsualMessageWas = true;
+            }
+
+            foreach(var mes in toRemove)
+            {
+                Messages.Remove(mes);
+            }
         }
 
     }

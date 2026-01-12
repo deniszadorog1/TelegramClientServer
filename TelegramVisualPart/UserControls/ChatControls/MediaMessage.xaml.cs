@@ -195,6 +195,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
                 return;
             }
+/*            await SignalRHelperService.SetPhotoInEllipse(_system.GetUserById(_message.SenderUserId),
+                    BgBrush, UserEllipseImage);*/
+
             BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
         }

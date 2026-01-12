@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.RightsManagement;
@@ -71,9 +72,9 @@ namespace TelegramVisualPart.Services
         }
 
         public static async Task<ShareWith> GetShareType(TelegramLib.MainClasses.User user,
-        Enums.PrivacySettingType settingType)
+        Enums.PrivacySettingType settingType, MainSettings settings = null)
         {
-            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+            if (settings is null) settings = await ApiService.GetSettingsByUserId(user.Id);
 
             switch (settingType)
             {
@@ -99,7 +100,8 @@ namespace TelegramVisualPart.Services
             IsPrivacyException type, TelegramLib.MainClasses.UserChat chat, TextBlock textBlock,      
             MainSettings settings = null)
         {
-            if (chat is null || chat.Chatter is null || chat.GetChatter().Id != user.Id) return;
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat &&
+                (chat is null || chat.Chatter is null || chat.GetChatter().Id != user.Id)) return;
             await SetLastSeenStatus(user, type, textBlock, settings: settings);
         }
 
@@ -109,7 +111,8 @@ namespace TelegramVisualPart.Services
         {
             if(settings is null) settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            bool isStop = await IsAndSetStopPath(PrivacySettingType.LastSeen, user);
+            bool isStop = await IsAndSetStopPath(PrivacySettingType.LastSeen, user, 
+                settings: settings);
 
             if (type == IsPrivacyException.Share)
             {
@@ -142,11 +145,13 @@ namespace TelegramVisualPart.Services
             IsPrivacyException type, TelegramLib.MainClasses.UserChat chat,
             TextBlock textBlock, MainSettings settings = null)
         {
-            if (chat is null || chat.GetChatter().Id != user.Id) return;
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+               (chat is null || chat is TelegramLib.MainClasses.SavedMessagesChat || chat.GetChatter().Id != user.Id)) return;
 
             if(settings is null) settings = await ApiService.GetSettingsByUserId(user.Id);
 
-            bool isStop = await IsAndSetStopPath(PrivacySettingType.PhoneNumber, user);
+            bool isStop = await IsAndSetStopPath(PrivacySettingType.PhoneNumber, user, 
+                settings:settings);
 
             if (type == IsPrivacyException.Share)
             {
@@ -174,7 +179,8 @@ namespace TelegramVisualPart.Services
         public static async Task SetBirthDate(TelegramLib.MainClasses.User user,
             UserChat chat, TextBlock textBlock, MainSettings settings = null)
         {
-            if (chat.GetChatter().Id != user.Id) return;
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+                (chat is TelegramLib.MainClasses.SavedMessagesChat || chat.GetChatter().Id != user.Id)) return;
 
             IsPrivacyException shareType =
                 await GetTypeByUser(user, Enums.PrivacySettingType.DateBirth, settings: settings);
@@ -187,7 +193,8 @@ namespace TelegramVisualPart.Services
             string birthString = user.BirthDay is null ? VisConstParamsJsonService.GetStringByName("BirthDatNotSet") :
                 $"{user.BirthDay.Value.Day}.{user.BirthDay.Value.Month}.{yearStr}";
 
-            bool isStop = await IsAndSetStopPath(PrivacySettingType.DateBirth, user);
+            bool isStop = await IsAndSetStopPath(PrivacySettingType.DateBirth, user,
+                settings: settings);
 
             if (shareType == IsPrivacyException.Share)
             {
@@ -215,7 +222,7 @@ namespace TelegramVisualPart.Services
         public static async Task SetContactPhoto(TelegramLib.MainClasses.User user,
             UserChat chat, ImageBrush brush, Ellipse ellipse, MainSettings settings = null)
         {
-            if (chat.GetChatter().Id != user.Id) return;
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat && chat.GetChatter().Id != user.Id) return;
 
             await SetPhotoInEllipse(user, brush, ellipse, settings: settings);
         }
@@ -224,16 +231,19 @@ namespace TelegramVisualPart.Services
             ImageBrush brush, Ellipse ellipse, MainSettings settings = null)
         {
             if (user is null) return;
+            if(settings is null) settings = await ApiService.GetSettingsByUserId(user.Id);
+
             IsPrivacyException shareType =
                 await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos, settings: settings);
 
-            if(settings is null) settings = await ApiService.GetSettingsByUserId(user.Id);
-            bool isStop = await IsAndSetStopPath(Enums.PrivacySettingType.ProfilePhotos, user);
+            bool isStop = await IsAndSetStopPath(Enums.PrivacySettingType.ProfilePhotos, user,
+                settings: settings);
 
             string stopSignPath = FilesAction.GetSystemImagePath("StopSign.png");
 
             TelegramLib.MainClasses.UserParams.UserImage mask =
                 await ApiService.GetContactMask(_system.LoggedUser.Id, user.Id);
+
             if (mask is not null &&
 
                 (user.UserImages.Count > 0 &&
@@ -243,12 +253,17 @@ namespace TelegramVisualPart.Services
                     new TelegramLib.MainClasses.UserParams.UserImage(System.IO.Path.GetFileName(mask.Name), mask.Date));
             }
 
+            BitmapImage image;
+
             if (shareType == IsPrivacyException.Share ||
                 mask is not null)
             {
-                brush.ImageSource = new BitmapImage(new Uri
+                image = LoadBitmap(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()));
+                brush.ImageSource = image;
+
+/*                brush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
-                UriKind.Absolute));
+                UriKind.Absolute));*/
                 ellipse.IsHitTestVisible = true;
                 return;
             }
@@ -257,7 +272,10 @@ namespace TelegramVisualPart.Services
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 shareType == IsPrivacyException.NeverShare)
             {
-                brush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
+                image = LoadBitmap(stopSignPath);
+                brush.ImageSource = image;
+
+                //brush.ImageSource = new BitmapImage(new Uri(stopSignPath, UriKind.Absolute));
                 //ellipse.IsHitTestVisible = false;
                 return;
             }
@@ -268,10 +286,32 @@ namespace TelegramVisualPart.Services
                 return;
             };
 
-            brush.ImageSource = new BitmapImage(new Uri
+            image = LoadBitmap(FilesAction.GetUserImagePath(user.GetFirstImageNameInString()));
+            brush.ImageSource = image;
+            ellipse.Visibility = System.Windows.Visibility.Visible;
+
+/*            brush.ImageSource = new BitmapImage(new Uri
             (FilesAction.GetUserImagePath(user.GetFirstImageNameInString()),
-            UriKind.Absolute));
+            UriKind.Absolute));*/
             ellipse.IsHitTestVisible = true;
+        }
+
+        private static BitmapImage LoadBitmap(string path)
+        {
+            using var fs = new FileStream(
+                path,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.Read);
+
+            var bmp = new BitmapImage();
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad; 
+            bmp.StreamSource = fs;
+            bmp.EndInit();
+            bmp.Freeze();
+
+            return bmp;
         }
 
         public static async Task<string> GetUserPhotoToSet(TelegramLib.MainClasses.User user)
@@ -341,13 +381,14 @@ namespace TelegramVisualPart.Services
             _isPhotoCanBePushed = true;
         }
 
-        public static async Task<bool> IsAndSetStopPath(PrivacySettingType type, TelegramLib.MainClasses.User user)
+        public static async Task<bool> IsAndSetStopPath(PrivacySettingType type,
+            TelegramLib.MainClasses.User user, MainSettings settings = null)
         {
-            //Need to make it better somehow
+/*            //Need to make it better somehow
             TelegramLib.MainClasses.TelSystem system = 
-                await ApiService.GetTelSystem(user.Login, user.Password);
+                await ApiService.GetTelSystem(user.Login, user.Password);*/
 
-            ShareWith shareType = await GetShareType(user, type);
+            ShareWith shareType = await GetShareType(user, type, settings);
 
             switch (shareType)
             {
@@ -355,7 +396,8 @@ namespace TelegramVisualPart.Services
                     return false;
                 case ShareWith.Contacts:
 
-                    bool isContact = system.IsChatterIdIsContact(_system.LoggedUser.Id);
+                    bool isContact = (bool)await ApiService.IsChatterIdIsContact(user.Id, _system.LoggedUser.Id);
+                    // system.IsChatterIdIsContact(_system.LoggedUser.Id);
 
                     if (!isContact)
                     {

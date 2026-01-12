@@ -21,7 +21,7 @@
         <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
                 Name="UserEllipseImage" Width="40" Height="40">
             <Ellipse.Fill>
-                <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                <ImageBrush x:Name="BgBrush"/>
             </Ellipse.Fill>
         </Ellipse>
 

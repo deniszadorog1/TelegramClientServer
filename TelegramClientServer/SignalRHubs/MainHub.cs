@@ -155,5 +155,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.User(chatter.Id.ToString())
                 .SendAsync("SendTypingAction", logged);
         }
+
+        public async Task RemoveManyMessagesByDateTimes(List<DateTime> sentTimes, int loggedUserId, int chatterId)
+        {
+            await Clients.User(chatterId.ToString()).
+                SendAsync("RemoveManyMessagesByDateTimes", sentTimes, loggedUserId);
+        }
     }
 }

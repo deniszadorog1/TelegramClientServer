@@ -42,7 +42,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private int? _forwardedFrom = null;
         private TelegramLib.MainClasses.Messages.TextMessage _message;
 
-
         public TextMessage(TelSystem system,
             string text,
             string senderImageName,
@@ -114,10 +113,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
-
         public void SetText(string text)
         {
             text = text.Replace("\n", "");
+            text = text.Replace("\r\n", "");
 
             var match = Regex.Match(text, @"https?:\/\/[^\s]+");
 
@@ -128,21 +127,33 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 string after = text.Substring(match.Index + match.Length);
 
                 FirstPart.Text = before;
-                LinkPart.Text = url;
+                LinkPart.Inlines.Add(url);
                 SecondPart.Text = after;
 
                 TrimText();
                 return;
             }
 
+            string linkText = new TextRange(
+                    LinkPart.ContentStart,
+                    LinkPart.ContentEnd).Text;
+
             FirstPart.Text = text;
-            TrimText();
+
+            Message.Text = text;
+            string fullText = FirstPart.Text + linkText + SecondPart.Text;
+            SelectableText.Text = fullText;
+
+            /*
+                        LinkPart.Text = string.Empty;
+                        SecondPart.Text = string.Empty;*/
+            //TrimText();
         }
 
         public void TrimText()
         {
             FirstPart.Text = FirstPart.Text.Trim(' ');
-            LinkPart.Text = LinkPart.Text.Trim(' ');
+            //LinkPart.Text = LinkPart.Text.Trim(' ');
             SecondPart.Text = SecondPart.Text.Trim(' ');
         }
 
@@ -206,11 +217,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 return;
             }
 
-            await SignalRHelperService.SetPhotoInEllipse(_system.GetUserById(_message.SenderUserId),
+            await SignalRHelperService.SetPhotoInEllipse(
+                _system.GetUserById(_message.SenderUserId),
                 BgBrush, UserEllipseImage);
 
-/*            BgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));*/
+            //this.Visibility = Visibility.Visible;
+
+            /*            BgBrush.ImageSource = new BitmapImage(new Uri(
+                            FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));*/
         }
 
         private const int _minMessageWidth = 125;
@@ -264,7 +278,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetVisibility(string iconName)
         {
-            ReadIconFlag.Kind = 
+            ReadIconFlag.Kind =
                 (PackIconKind)Enum.Parse(typeof(PackIconKind), iconName);
         }
 
@@ -364,8 +378,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {
-                LoggedUserProfile logged =
-                    new LoggedUserProfile(_system.LoggedUser, _system);
+
+                //MessageBox.Show("Ведутся технические работі");
+                /*LoggedUserProfile logged =
+                    new LoggedUserProfile(_system.LoggedUser, _system);*/
+
+                UserInfo logged = new UserInfo(_system.SavedMesesChat, _system);
 
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);
                 return;
@@ -389,7 +407,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 this.Width += _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(_selectTickColWidth);
             }
-            else
+            else if (TickColumnDef.Width.Value != 0)
             {
                 this.Width -= _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(0);
@@ -403,24 +421,30 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LinkPart_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (sender is not System.Windows.Documents.Run run) return;
+            if (sender is not System.Windows.Documents.Hyperlink run) return;
             run.TextDecorations = TextDecorations.Underline;
             Cursor = Cursors.Hand;
+            SelectableText.Visibility = Visibility.Hidden;
         }
 
         private void LinkPart_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (sender is not System.Windows.Documents.Run run) return;
+            if (sender is not System.Windows.Documents.Hyperlink run) return;
             run.TextDecorations = null;
             Cursor = null;
+            SelectableText.Visibility = Visibility.Visible;
         }
 
         private void LinkPart_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not System.Windows.Documents.Run run) return;
+            if (sender is not System.Windows.Documents.Hyperlink run) return;
             try
             {
-                Process.Start(new ProcessStartInfo(run.Text)
+                string linkText = new TextRange(
+                        LinkPart.ContentStart,
+                        LinkPart.ContentEnd).Text;
+
+                Process.Start(new ProcessStartInfo(linkText)
                 {
                     UseShellExecute = true
                 });

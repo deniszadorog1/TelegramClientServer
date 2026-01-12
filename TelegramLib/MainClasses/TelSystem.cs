@@ -145,13 +145,18 @@ namespace TelegramLib.MainClasses
             //UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
             UserChat chat = Chats.FirstOrDefault(x => x.IsChatterIdsAreEqual(id) /*IsUserLoginsAreEqual(chatterLogin)*/);
 
+            if(LoggedUser.Id == id)
+            {
+                chat = SavedMesesChat;
+            }
+
             //Get tel system
             if (!(chat is null))
             {
-                ChosenChatContact = chat.Chatter;
+                ChosenChatContact = chat is TelegramLib.MainClasses.SavedMessagesChat ? LoggedUser : chat.Chatter;
 
                 //is need to change for ekse bg
-                SetChatBg();
+                SetChatBg(chat);
                 return chat;
             }
             //Create new chat(if its absent)
@@ -170,12 +175,13 @@ namespace TelegramLib.MainClasses
               return newChat;*/
         }
 
-        public void SetChatBg()
+        public void SetChatBg(UserChat chat)
         {
             UserSettings.SettingsTypes.SubSettings.ChatWallpaper wallpaper =
                 Settings.GetChatSettings().Wallpaper;
 
             UserChat chosen = GetChosenChat();
+            chosen = chosen is null ? chat : chosen;
 
             if (!(chosen.GetBackground() is null) &&
                 !chosen.GetBackground().IsGeneral) return;
@@ -389,6 +395,8 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChatByChatterId(int id)
         {
+           // if (id == LoggedUser.Id) return SavedMesesChat;
+
             return Chats.FirstOrDefault(x => x.Chatter.Id == id);
         }
 
@@ -636,6 +644,12 @@ namespace TelegramLib.MainClasses
                     Chats[i].RemoveRepliedMessages(mes);
                     return;
                 }
+            }
+
+            //Remove stat messages
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                Chats[i].RemoveDateMessages();
             }
         }
 

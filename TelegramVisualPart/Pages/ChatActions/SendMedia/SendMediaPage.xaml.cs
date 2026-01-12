@@ -26,18 +26,26 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
     public partial class SendMediaPage : Page
     {
         private string _firstMediaPath;
+        private string _text;
         public SendMediaType _sendType = SendMediaType.Single;
 
-        public SendMediaPage(string firstMediaPath)
+        public SendMediaPage(string firstMediaPath, string text)
         {
             _firstMediaPath = firstMediaPath;
+            _text = text;
             InitializeComponent();
 
             AddMedia(_firstMediaPath);
 
             SetMediaRowInList();
             SetMediaGroupList();
+            SetCaptureText();
             _paths.Add(_firstMediaPath);
+        }
+
+        private void SetCaptureText()
+        {
+            CaptureBox.Text = _text;
         }
 
         public void AddMedia(string mediaPath)

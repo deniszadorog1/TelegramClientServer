@@ -72,6 +72,8 @@ namespace TelegramVisualPart.Services
         public static event Func<User, Task>? UpdateChatsControlsDel;
         public static event Action<User>? SendTypingActionDel;
 
+        public static event Action<List<DateTime>, int>? RemoveManyMessagesDel;
+
         public static void SetSystem(TelSystem system)
         {
             _system = system;
@@ -329,6 +331,12 @@ namespace TelegramVisualPart.Services
                 SendTypingActionDel?.Invoke(logged);
 
             });
+
+            _connection.On<List<DateTime>, int>("RemoveManyMessagesByDateTimes", (sentTimes, loggedUserId) =>
+            {
+                RemoveManyMessagesDel?.Invoke(sentTimes, loggedUserId);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -511,6 +519,14 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendTypingAction", logged, chatter);
+        }
+
+        public static async Task RemoveManyMessagesByDateTimes(
+            List<DateTime> sentTimes, int loggedUserId, int chatterId)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("RemoveManyMessagesByDateTimes", 
+                    sentTimes, loggedUserId, chatterId);
         }
     }
 }

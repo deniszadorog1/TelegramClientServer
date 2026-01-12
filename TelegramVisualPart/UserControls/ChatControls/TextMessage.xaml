@@ -10,7 +10,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="200"
              
-             Loaded="UserControl_Loaded">
+             Loaded="UserControl_Loaded"
+             >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>
@@ -25,7 +26,7 @@
                  MouseLeave="UserEllipseImage_MouseLeave"
                  PreviewMouseDown="UserEllipseImage_PreviewMouseDown">
             <Ellipse.Fill>
-                <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                <ImageBrush x:Name="BgBrush" />
             </Ellipse.Fill>
         </Ellipse>
 
@@ -58,39 +59,41 @@
                     <Replyed:ReplyMessagePart x:Name="ReplyControl"/>
                 </Grid>
 
-                <RichTextBox Name ="Message" 
-                             Style="{x:Null}"
-                             VerticalAlignment="Top"
-                             Grid.Row="2"
-                             Margin="15 10 7 5" 
-                             FontSize="14" 
-                             Foreground="{StaticResource UsualTextColor}" 
-                             Background="Transparent"
-                             BorderThickness="0"
-                             IsReadOnly="True"
-                             IsDocumentEnabled="True"
-                             Padding="0">
 
-                    <RichTextBox.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#444DFF"/>
-
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
-                    </RichTextBox.Resources>
-
-                    <FlowDocument>
-                        <Paragraph>
-                            <Run Name="FirstPart" />
-
-                            <Run Name="LinkPart" Foreground="{StaticResource TempActiveTextColor}" 
+                <Grid Grid.Row="2" 
+                      Margin="15 10 7 5">
+                    <TextBlock x:Name="Message"
+                               FontSize="14"
+                               Foreground="{StaticResource UsualTextColor}"
+                               TextWrapping="Wrap"
+                               Style="{x:Null}" 
+                               VerticalAlignment="Top"   
+                               Background="Transparent">
+                            <Run Name="FirstPart"/>
+                            <Hyperlink Name="LinkPart" 
+                                 Foreground="{StaticResource TempActiveTextColor}"
                                  MouseEnter="LinkPart_MouseEnter" 
-                                 MouseLeave="LinkPart_MouseLeave"
+                                 MouseLeave="LinkPart_MouseLeave" 
                                  PreviewMouseLeftButtonDown="LinkPart_PreviewMouseLeftButtonDown"/>
-
                             <Run Name="SecondPart"/>
-                        </Paragraph>
-                    </FlowDocument>
+                    </TextBlock>
 
-                </RichTextBox>
+                    <TextBox
+                           x:Name="SelectableText"
+                           Style="{x:Null}"
+                           FontFamily="{DynamicResource AppFont}"
+                           Margin="-1 0 0 0"
+                           FontSize="14"
+                           Background="Transparent"
+                           Foreground="Transparent"
+                           BorderThickness="0"
+                           IsReadOnly="True"
+                           TextWrapping="Wrap"
+                           AcceptsReturn="True"
+                           VerticalScrollBarVisibility="Disabled"
+                           HorizontalScrollBarVisibility="Disabled"
+                           CaretBrush="Transparent"/>
+                </Grid>
 
                 <Grid Grid.Row="3" Margin="0 0 7 5"
                             Name="BottomPanel"
@@ -109,7 +112,7 @@
                                    FontSize="12"
                                    VerticalAlignment="Bottom"/>
                     </Grid>
-                    
+
                     <Grid Grid.Column="1">
                         <materialDesign:PackIcon Name="PinnIcon"
                                                  Visibility="Visible"

@@ -121,6 +121,12 @@ namespace TelegramClientServer.Controllers
             return DbService.IsContactIsExist(userId, friendId);
         }
 
+        [HttpGet("IsChatterIdIsContact")]
+        public bool IsChatterIdIsContact(int userId, int friendUserId)
+        {
+            return DbService.IsChatterIdIsContact(userId, friendUserId);
+        }
+
         //blcok contact (ITS UPDATE!!!)
         //unblock contact (ITS UPDATE!!!)
 
@@ -158,6 +164,17 @@ namespace TelegramClientServer.Controllers
         public class DeleteMessageDTO
         {
             public int Id { get; set; }
+        }
+
+        [HttpDelete("DeleteManyMessages")]
+        public void DeleteManyMessages([FromBody] DeleteManyMessagesDTO dto)
+        {
+            DbService.RemoveManyMessages(dto.IdsToDelete, dto.IsBoth);
+        }
+        public class DeleteManyMessagesDTO
+        {
+            public List<int> IdsToDelete { get; set; }
+            public bool IsBoth { get; set; }
         }
 
 

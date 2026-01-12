@@ -16,7 +16,8 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60" x:Name="UpperRow"/>
-                <RowDefinition/>
+                <RowDefinition Height="176*"/>
+                <RowDefinition Height="109*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -52,7 +53,7 @@
                 </StackPanel>
             </Grid>
 
-            <ScrollViewer Grid.Row="1" Margin="0 10 0 10" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="1" Margin="0,10,0,10" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="115"/>
@@ -118,7 +119,7 @@
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="55" Name="BirthdatRow"/>
                                 <RowDefinition Height="0" Name="BioRow"/>
-                                <RowDefinition Height="*" Name="AddContactRow"/>
+                                <RowDefinition Height="0" Name="AddContactRow"/>
                                 <RowDefinition Height="55"/>
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
@@ -171,13 +172,15 @@
                                           IsChecked="True" 
                                           Background="{StaticResource TempActiveTextColor}"/>
 
-                            
+
                             <Grid Grid.ColumnSpan="3" Grid.Row="6" Name ="SendMessageBut"
                                   MouseEnter="But_MouseEnter"
-                                  MouseLeave="But_MouseLeave" Background="Transparent"
-                                  PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
+                                  MouseLeave="But_MouseLeave" 
+                                  Background="Transparent"
+                                  PreviewMouseDown="SendMessageBut_PreviewMouseDown"
+                                  Margin="2,0,-2,0"/>
 
-                            <TextBlock Grid.Column="1" Grid.Row="6"
+                            <TextBlock Grid.Column="1" Grid.Row="6" Text="Send message"
                                        FontSize="16" Name="SendMesBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource TempActiveTextColor}"
@@ -242,8 +245,8 @@
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
                                                  PreviewMouseDown="Line_PreviewMouseDown"
                                                  Foreground="{StaticResource UsualTextColor}"/>
-                        
-                        
+
+
                         <TextBlock Grid.Column="1" Grid.Row="0" 
                                    Name="AmountOfPhotosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -261,7 +264,7 @@
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
-                        
+
                         <TextBlock Grid.Column="1" Grid.Row="3"
                                    Name="AmountOfLinksTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -269,7 +272,7 @@
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
                                    PreviewMouseDown="Line_PreviewMouseDown"/>
                     </Grid>
-                    
+
                     <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"
                           Name="BottomDivideLine"/>
 
@@ -355,7 +358,7 @@
             </ScrollViewer>
 
 
-            <Canvas Grid.RowSpan="100" Name="ContactMenusCanvas">
+            <Canvas Grid.RowSpan="3" Name="ContactMenusCanvas">
                 <menu:UserContactMenu x:Name="ContactMenu" 
                                     Grid.Column="1" Grid.RowSpan="3"  
                                     HorizontalAlignment="Right"

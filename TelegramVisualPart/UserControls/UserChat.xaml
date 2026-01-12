@@ -306,8 +306,8 @@
                          VerticalAlignment="Bottom"
                      
                          ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"                  
-                     
-                         ScrollViewer.CanContentScroll="True"
+                         
+                         ScrollViewer.CanContentScroll="False"
                          ScrollViewer.PanningRatio="0.3" />
 
             </Grid>

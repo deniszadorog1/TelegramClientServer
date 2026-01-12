@@ -41,7 +41,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             AddClearSubMenuAction();
         }
 
-        public void SetTelSystemParam(TelSystem system, 
+        public void SetTelSystemParam(TelSystem system,
             TelegramLib.MainClasses.UserChat chat)
         {
             _system = system;
@@ -52,10 +52,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public void SetBlockButText()
         {
-            if (BlockUser.Visibility == Visibility.Hidden || 
+            if (BlockUser.Visibility == Visibility.Hidden ||
                 _chat.GetChatter() is null) return;
 
-            if (_system.IsChatterBlocked(_chat.GetChatter())) 
+            if (_system.IsChatterBlocked(_chat.GetChatter()))
             {
                 BlockUser.IconType.Kind = PackIconKind.BlockHelper;
                 BlockUser.ButName.Text = "UnBlock user";
@@ -73,7 +73,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         public void UpdateParamsIsChatterIsNotContact()
         {
             //Is chatter is contact  
-            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
+            bool isContact = _chat is TelegramLib.MainClasses.SavedMessagesChat ? 
+                false : _system.IsChatterIdIsContact(_chat.Chatter.Id);
 
             //Set  vis for edit contact + folder + add contact
             EditContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
@@ -90,7 +91,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         public void UpdateMenuHeight()
         {
             Height = 0;
-            for(int i = 0; i < ButPanel.Children.Count; i++)
+            for (int i = 0; i < ButPanel.Children.Count; i++)
             {
                 if (ButPanel.Children[i] is UserChatMenuButton but)
                 {
@@ -142,7 +143,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         {
             if (sender is UserChatMenuButton but)
             {
-                if(but.Name == BlockUser.Name.ToString() &&
+                if (but.Name == BlockUser.Name.ToString() &&
                    _system.IsChatterBlocked(_chat.GetChatter()))
                 {
                     UnblockUser?.Invoke();
@@ -164,7 +165,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :
-                  
+
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
 
 
@@ -184,11 +185,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             Height = 15;
             Width = 250;
 
+            int chatterId = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser.Id : _chat.Chatter.Id;
+
             //Folders elements
             for (int i = 0; i < _system.Folders.Count; i++)
             {
                 User? isIncluded =
-                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
+                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == chatterId);
 
                 AddFolderElement(_system.Folders[i].Name, isIncluded is not null);
             }
@@ -222,7 +226,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public void AddNewFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FolderAction(_system));
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new FolderAction(_system));
         }
 
         public void AddFolderElement(string folderName, bool isIncluded)
@@ -255,13 +259,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         public void FolderElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not UserChatsMenuElement el) return;
-
+            TelegramLib.MainClasses.User user = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser : _chat.GetChatter();
             //Set add in folder
             if (el.IconElement.Kind == PackIconKind.None)
             {
-                _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
+                _system.AddContactToFolder(el.TextElement.Text, user);
             }
-            else _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter); //Set remove from folder
+            else _system.RemoveContactFromFolder(el.TextElement.Text, user); //Set remove from folder
 
 
             //Remove from db
@@ -276,7 +281,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         public double GetAddFolderButPos()
         {
             //Get Amount of VisParapms
-            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
+            bool isContact = _chat is TelegramLib.MainClasses.SavedMessagesChat ? false : _system.IsChatterIdIsContact(_chat.Chatter.Id);
             return AddToFolder.Height * (isContact ? 6 : 5) + 15;
         }
 

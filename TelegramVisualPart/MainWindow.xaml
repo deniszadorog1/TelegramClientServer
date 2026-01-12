@@ -30,7 +30,8 @@
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
         LayoutUpdated="Window_LayoutUpdated"
-        MouseMove="Window_MouseMove">
+        MouseMove="Window_MouseMove"
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"

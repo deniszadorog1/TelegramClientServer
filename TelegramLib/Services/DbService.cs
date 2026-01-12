@@ -3854,24 +3854,70 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                Messages mes =
-                    model.Messages.FirstOrDefault(x => x.Id == id);
-                if (mes is null) return;
-                model.Messages.Remove(mes);
-
-                model.Messages
-                    .Where(x => x.ReplyId == id)
-                    .ToList()
-                    .ForEach(x => x.ReplyId = -1);
-
-                model.Messages
-                    .Where(x => x.ForwardedFrom == id)
-                    .ToList()
-                    .ForEach(x => x.ForwardedFrom = -1);
+                RemoveMessageById(id, model);
 
                 model.SaveChanges();
             }
         }
+
+        public static void RemoveManyMessages(List<int> mesIds, bool isBoth)
+        {
+            using(var model = new TelegramModel())
+            {
+                for(int i = 0; i < mesIds.Count; i++)
+                {
+                    //Get pair of message
+                    if (isBoth)
+                    {
+                       Messages pairToRemove =  GetPairOfMessageById(mesIds[i], model);
+                        if (!(pairToRemove is null)) RemoveMessageById(pairToRemove.Id, model);
+
+                        Console.WriteLine(pairToRemove.Id);
+                    }
+                    RemoveMessageById(mesIds[i], model);
+                }
+
+                //Check with static message
+
+                model.SaveChanges();
+            }
+        }
+
+        private static Messages GetPairOfMessageById(int mesId, TelegramModel model)
+        {
+            Messages toCompare = model.Messages.FirstOrDefault(x => x.Id == mesId);
+            if (toCompare is null) return null;
+
+            Messages res = model.Messages
+                .AsEnumerable()
+                .FirstOrDefault(x =>
+                    x.ChatId != toCompare.ChatId &&
+                    x.Id != mesId &&
+                    x.SentDate.HasValue && toCompare.SentDate.HasValue &&
+                    Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds)
+                    < 10);
+
+            return res;
+        }
+
+        private static void RemoveMessageById(int id, TelegramModel model)
+        {
+            Messages mes =
+            model.Messages.FirstOrDefault(x => x.Id == id);
+            if (mes is null) return;
+            model.Messages.Remove(mes);
+
+            model.Messages
+                .Where(x => x.ReplyId == id)
+                .ToList()
+                .ForEach(x => x.ReplyId = -1);
+
+            model.Messages
+                .Where(x => x.ForwardedFrom == id)
+                .ToList()
+                .ForEach(x => x.ForwardedFrom = -1);
+        }
+
 
         public static void AddStatMessage(int chatId,
             TelegramLib.MainClasses.Messages.StaticMessage statMes)
@@ -3896,6 +3942,13 @@ namespace TelegramLib.Services
             }
         }
 
+        public static bool IsChatterIdIsContact(int userId, int friendUserId)
+        {
+            using (var model = new TelegramModel())
+            {
+               return model.Contacts.Any(x => x.UserId == userId && x.FriendId == friendUserId);
+            }
+        }
         public static int? GetLastStatMesIdByChatId(int chatId)
         {
             using (var model = new TelegramModel())

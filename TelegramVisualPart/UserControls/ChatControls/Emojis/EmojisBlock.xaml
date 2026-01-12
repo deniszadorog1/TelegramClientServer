@@ -38,17 +38,32 @@
                 <Border Grid.Row="0" Margin="10 5 10 0" CornerRadius="20" Name="SearchBorder"
                         Background="{StaticResource DarkThemeDeviderField}">
                     <Grid>
-                        
-                        <materialDesign:PackIcon Kind="Magnify" Width="25" Height="25"
-                                                 VerticalAlignment="Center"
-                                                 HorizontalAlignment="Left"
-                                                 Foreground="Gray"
-                                                 Margin="5 0 0 0"/>
 
+                        <Grid Name="BackIconGrid"
+                              Width="25" Height="25"
+                              HorizontalAlignment="Left"
+                              Margin="5 0 0 0"
+                              Background="Transparent"
+                              
+                              MouseEnter="BackIconGrid_MouseEnter"
+                              MouseLeave="BackIconGrid_MouseLeave"
+                              PreviewMouseDown="BackIconGrid_PreviewMouseDown">
+                            
+                            <materialDesign:PackIcon Name="BackIcon"
+                                                     Kind="Magnify" 
+                                                     VerticalAlignment="Center"
+                                                     Width="23" Height="23"
+                                                     Foreground="Gray"
+                                                     />
+                        </Grid>
+                        
                         <TextBox Grid.Row="0"  Name="SarchBox" 
                                  Foreground="White" Margin="35 0 10 0" FontSize="14"
                                  materialDesign:TextFieldAssist.UnderlineBrush="Transparent" 
                                  materialDesign:HintAssist.Foreground="Gray"
+                                 
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                                 materialDesign:TextFieldAssist.UnderlineCornerRadius="0"
                                  
                                  CaretBrush="White" 
                                  MaxLength="10"
@@ -68,18 +83,21 @@
                     </Grid>
                 </Border>
             </Grid>
+            
+            <ScrollViewer Grid.Row="1"
+              Grid.RowSpan="2"
+              VerticalScrollBarVisibility="Auto"
+              HorizontalScrollBarVisibility="Disabled"
+              CanContentScroll="False"
+              PanningMode="VerticalOnly">
 
-            <WrapPanel Grid.Row="1" Name="EmojisPanel" Grid.RowSpan="2">
-<!--            <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/>
-                <local:Emoji/> -->
-            </WrapPanel>
+                <StackPanel>
+                    <WrapPanel Name="EmojisPanel"
+                        Orientation="Horizontal"/>
+                </StackPanel>
+                
+            </ScrollViewer>
+            
         </Grid>
     </Border>
 </UserControl>

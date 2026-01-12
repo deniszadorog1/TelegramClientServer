@@ -72,7 +72,7 @@
                                 MouseEnter="UpperBut_MouseEnter"
                                 MouseLeave="UpperBut_MouseLeave">
 
-                    <materialDesign:PackIcon Kind="WindowRestore" Name="WindowSizerIcon"
+                    <materialDesign:PackIcon Kind="CropSquare" Name="WindowSizerIcon"
                                              Height="20" Width="20"
                                              VerticalAlignment="Center"
                                              HorizontalAlignment="Center"
