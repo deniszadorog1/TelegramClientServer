@@ -26,12 +26,27 @@ namespace TelegramVisualPart.UserControls
     public partial class UserTalkMessage : UserControl
     {
         private string _imgName;
+        private TelegramLib.MainClasses.UserChat _chat;
         public UserTalkMessage(string imgName)
         {
             _imgName = imgName;
             InitializeComponent();
 
             SetContactImage();
+        }
+
+        public void SetChat(TelegramLib.MainClasses.UserChat chat)
+        {
+            _chat = chat;
+            if(_chat is TelegramLib.MainClasses.SavedMessagesChat)
+            {
+                SetSavedMessageBlock();
+            }
+        }
+
+        public TelegramLib.MainClasses.UserChat GetChat()
+        {
+            return _chat;
         }
 
         public void SetNewImgName(string newName)
@@ -122,6 +137,15 @@ namespace TelegramVisualPart.UserControls
         public void SetText(string text)
         {
             LastMessage.Text = Regex.Replace(text, @"^\s+|\s+$", "");
+        }
+
+        public void SetSavedMessageBlock()
+        {
+            ImageIcon = null;
+
+            UserEllipseImage.Fill = 
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+            SavedMassageIcon.Visibility = Visibility.Visible;
         }
     }
 }

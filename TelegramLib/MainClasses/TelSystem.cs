@@ -402,6 +402,7 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChatById(int id)
         {
+            
             return Chats.FirstOrDefault(x => x.Id == id);
         }
 

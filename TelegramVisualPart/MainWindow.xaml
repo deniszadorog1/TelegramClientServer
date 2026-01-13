@@ -99,6 +99,23 @@
 
                 <Canvas Name="Menus"/>
             </Grid>
+
+            <Border Grid.Row="1" Name="TempTextGrid"
+                    Visibility="Hidden"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    CornerRadius="7"
+                    Background="Black" Opacity="0.8">
+
+                <TextBlock Name="TempTextBlock"
+                           Text="This is temporary text" 
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" 
+                           Padding="15 10 15 10"
+                           FontSize="16"/>
+            </Border>
+            
         </Grid>
     </Border>
 </Window>

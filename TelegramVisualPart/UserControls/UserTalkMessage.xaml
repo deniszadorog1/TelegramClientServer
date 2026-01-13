@@ -14,12 +14,23 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <Ellipse Name="UserEllipseImage" Width="55" Height="55">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-                </Ellipse.Fill>
-            </Ellipse>
 
+            <Grid>
+                <Ellipse Name="UserEllipseImage" Width="55" Height="55">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <materialDesign:PackIcon Name="SavedMassageIcon"
+                                         Visibility="Hidden"
+                                         Width="35" Height="35"
+                                         Kind="FlagOutline"
+                                         Foreground="White"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+            </Grid>
+            
             <Grid Name="AutoDelDurationGrid"
                   Visibility="Hidden"
                   VerticalAlignment="Bottom"
@@ -59,7 +70,7 @@
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"
                            FontFamily="{DynamicResource AppFont}"/>
-                
+
                 <TextBlock x:Name="LastMessageTime" 
                            HorizontalAlignment="Right" 
                            VerticalAlignment="Center" 

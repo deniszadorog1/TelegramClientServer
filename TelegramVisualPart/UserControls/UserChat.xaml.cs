@@ -4862,6 +4862,12 @@ namespace TelegramVisualPart.UserControls
             return UserInfoColumn.Width.Value;
         }
 
+
+        private void ChatBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+        }
+
         public void ScrollChatToEnd()
         {
             ScrollViewer sv = HelperService.GetScrollViewer(ChatBox);

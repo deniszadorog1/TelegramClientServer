@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
@@ -90,7 +91,7 @@ namespace TelegramVisualPart
 
             //AddChatMainWindow();
 
-            SetMainPage(system);
+            SetMainPage(system, isOnlyChat: true);
 
             //Set chat page
         }
@@ -105,6 +106,11 @@ namespace TelegramVisualPart
                 }
             }
             return false;
+        }
+
+        public bool IsSavedMessesIsOnlyChat()
+        {
+            return _chatWindows.Any(x => x._onlyChatUserChat is TelegramLib.MainClasses.SavedMessagesChat);
         }
 
         public bool GetIsOnlyChat()
@@ -166,18 +172,20 @@ namespace TelegramVisualPart
             MainFrame.Content = page;
         }
 
-        public async void SetMainPage(TelSystem system)
+        public async void SetMainPage(TelSystem system, bool isOnlyChat = false)
         {
             _system = system;
             SetLanguageFile();
 
             SignalRService.SetSystem(_system);
 
-            await SignalRService.SetBasicSignalRConnetion();
-            SignalRService.UpdateOnlineStatus(_system.LoggedUser);
+            if (!isOnlyChat)
+            {
+                await SignalRService.SetBasicSignalRConnetion();
+                SignalRService.UpdateOnlineStatus(_system.LoggedUser);
+            }
 
-
-            MainChatPage page = new MainChatPage(_system);
+            MainChatPage page = new MainChatPage(_system, isOnlyChat: isOnlyChat);
 
             page.PageLoadedAction += SetOnlyChatPage;
 
@@ -475,6 +483,7 @@ namespace TelegramVisualPart
             {
                 this.Close();
                 RemoveChatMainWindow();
+                return;
             }
 
             ClearAllChatWindows();
@@ -953,7 +962,8 @@ namespace TelegramVisualPart
 
         public void SetOtherChatWindowOnFront(TelegramLib.MainClasses.UserChat chat)
         {
-            MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
+            MainWindow? window = 
+                _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id);
             if (window is null) return;
 
             //window.Activate();          
@@ -1358,6 +1368,45 @@ namespace TelegramVisualPart
         private void Window_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (MainFrame.Content is MainChatPage chatPage) chatPage.ClearChatMouseButtonDown();
+        }
+
+        public async void SetTemporaryText(string text)
+        {
+            const int fadeTime = 150;
+            const int stopTime = 1000;
+
+            if (TempTextGrid.Visibility == Visibility.Visible) return;
+            TempTextGrid.Visibility = Visibility.Visible;
+
+            TempTextBlock.Text = text;
+
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(fadeTime),
+                FillBehavior = FillBehavior.HoldEnd
+            };
+
+            TempTextGrid.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+
+            await Task.Delay(stopTime);
+
+            var fadeOut = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(fadeTime),
+                FillBehavior = FillBehavior.Stop
+            };
+
+            fadeOut.Completed += (sender, e) =>
+            {
+                TempTextGrid.Visibility = Visibility.Hidden;
+            };
+
+            TempTextGrid.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+
         }
     }
 }

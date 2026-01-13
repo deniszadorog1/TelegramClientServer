@@ -383,6 +383,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task UpdateOnlineStatus(User toUpdate)
         {
+            if (_connection is null) return;
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
         }

@@ -461,6 +461,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             UserName.SetUpperText(_chatterUser.Login);
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
+            UserName.SetActions();
 
             SentObjsParams();
 

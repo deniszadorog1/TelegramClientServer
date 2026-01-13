@@ -69,6 +69,17 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             SetAddSubMenuEventsToElems();
 
             SetChangeableIcons();
+
+            SetVisIfSavedMessesChat();
+        }
+
+        public void SetVisIfSavedMessesChat()
+        {
+            if (_chat is null ||
+                _chat is not TelegramLib.MainClasses.SavedMessagesChat) return;
+
+            MainPanel.Children.Remove(Archive);
+            MainPanel.Children.Remove(MuteNotifs);
         }
 
         public void SetChangeableIcons()
@@ -302,11 +313,14 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             if (_chat is null) return;
             MainPanel.Children.Clear();
 
+
+            TelegramLib.MainClasses.User chatter = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser : _chat.GetChatter();
             //Folders elements
             for (int i = 0; i < _system.Folders.Count; i++)
             {
                 User? isIncluded =
-                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == _chat.Chatter.Id);
+                    _system.Folders[i].Contacts.FirstOrDefault(x => x.Id == chatter.Id);
 
                 AddFolderElement(_system.Folders[i].Name, isIncluded is not null);
             }
@@ -369,16 +383,19 @@ namespace TelegramVisualPart.UserControls.ChatsControls
         {
             if (sender is not UserChatsMenuElement el) return;
 
+            TelegramLib.MainClasses.User chatter = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser : _chat.GetChatter();
+
             //Set add in folder
             if (el.IconElement.Kind == PackIconKind.None)
             {
-                _system.AddContactToFolder(el.TextElement.Text, _chat.Chatter);
+                _system.AddContactToFolder(el.TextElement.Text, chatter);
 
             }
             else
             {
                 //Set remove from folder
-                _system.RemoveContactFromFolder(el.TextElement.Text, _chat.Chatter);
+                _system.RemoveContactFromFolder(el.TextElement.Text, chatter);
             }
 
             //Update in db
