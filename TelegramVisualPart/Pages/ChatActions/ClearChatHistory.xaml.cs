@@ -67,13 +67,23 @@ namespace TelegramVisualPart.Pages.ChatActions
         private async Task ClearChat()
         {
             //Saved messages
-            if(_chat.Chatter is null)
+            if(_chat is TelegramLib.MainClasses.SavedMessagesChat saved)
             {
-                //clear from db
                 //clear from system value 
+                _chat.ClearChat();
+
                 //clear chat in vis
+                Window window = Window.GetWindow(this);
+                if(window is MainWindow mainWindow)
+                {
+                    mainWindow.ClearVisChat();
+                }
+
+                //clear from db
+                await ApiService.ClearSaveChatById(saved.Id);
+
+                ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
                 return;
-                _chat.Messages.Clear();
             }
 
             //Is to clear both users

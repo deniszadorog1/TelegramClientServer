@@ -856,6 +856,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             _isMenuOpen = !_isMenuOpen;
 
+            if (_chat is not null &&
+                _chat is TelegramLib.MainClasses.SavedMessagesChat)
+            {
+                ContactMenu.RemoveParamsIfIsSavedMessagesChat();
+            }
+
             if (_isMenuOpen)
             {
                 ContactMenu.Visibility = Visibility.Visible;

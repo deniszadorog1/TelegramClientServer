@@ -68,8 +68,6 @@ namespace TelegramClientServer.Controllers
             public int LoggedUserId { get; set; }
         }
 
-
-
         [HttpPost("EditSavedChatMessage")]
         public void EditSavedChatMessage([FromBody] EditMessageDTO editDTO)
         {
@@ -147,6 +145,17 @@ namespace TelegramClientServer.Controllers
         public IActionResult UpdateFolder([FromBody] FolderDTO folder)
         {
             return DbService.UpdateFolder(folder.Folder, folder.UserId) ? Ok() : NotFound();
+        }
+
+
+        [HttpDelete("ClearSaveChatById")]
+        public void ClearSaveChatById([FromBody] ClearSaveMessagesChatDTO dto)
+        {
+            DbService.ClearSaveChatById(dto.Id);
+        }
+        public class ClearSaveMessagesChatDTO
+        {
+           public int Id { get; set; }
         }
 
         //Delete frolder()

@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,15 +67,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 BlockUser.IconType.Kind = PackIconKind.Hand;
                 BlockUser.ButName.Text = "Block user";
             }
-
-
         }
 
         public void UpdateParamsIsChatterIsNotContact()
         {
+            if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
             //Is chatter is contact  
-            bool isContact = _chat is TelegramLib.MainClasses.SavedMessagesChat ? 
-                false : _system.IsChatterIdIsContact(_chat.Chatter.Id);
+            bool isContact =  _system.IsChatterIdIsContact(_chat.Chatter.Id);
 
             //Set  vis for edit contact + folder + add contact
             EditContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
@@ -88,6 +87,19 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
             UpdateMenuHeight();
         }
 
+        public void RemoveParamsIfIsSavedMessagesChat()
+        {
+            AutoDelete.Visibility = Visibility.Hidden;
+            AddContact.Visibility = Visibility.Hidden;
+            EditContact.Visibility = Visibility.Hidden;
+            BlockUser.Visibility = Visibility.Hidden;
+            DeleteContact.Visibility = Visibility.Hidden;
+
+            ButPanel.Children.Remove(LineDevider);
+
+            UpdateMenuHeight();
+        }
+
         public void UpdateMenuHeight()
         {
             Height = 0;
@@ -97,7 +109,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 {
                     if (but.Visibility == Visibility.Visible)
                     {
-                        but.Height = AutoDelete.Height;
+                        but.Height = ExportHistory.Height;
                         Height += but.Height;
                     }
                     else but.Height = 0;
@@ -280,9 +292,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public double GetAddFolderButPos()
         {
+            int multiplier = 
+                _chat is TelegramLib.MainClasses.SavedMessagesChat ? 
+                4 : 6;
+
             //Get Amount of VisParapms
             bool isContact = _chat is TelegramLib.MainClasses.SavedMessagesChat ? false : _system.IsChatterIdIsContact(_chat.Chatter.Id);
-            return AddToFolder.Height * (isContact ? 6 : 5) + 15;
+            return AddToFolder.Height * (isContact ? multiplier : multiplier - 1) + 15;
         }
 
         MainWindow _wind;

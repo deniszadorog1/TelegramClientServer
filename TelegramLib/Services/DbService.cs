@@ -4161,6 +4161,17 @@ namespace TelegramLib.Services
             return res;
         }
 
+        public static void ClearSaveChatById(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.SavedMessages.RemoveRange(
+                    model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId));
+
+                model.SaveChanges();
+            }
+        }
+
         public static List<TelegramLib.MainClasses.Messages.Message> GetSavedMessages(int savedMessageChatId)
         {
             List<TelegramLib.MainClasses.Messages.Message> res = new List<mainClass.Messages.Message>();
@@ -4204,6 +4215,8 @@ namespace TelegramLib.Services
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
+            
+            toAdd.SenderUserId = 1;
 
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;

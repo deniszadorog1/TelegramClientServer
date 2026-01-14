@@ -305,7 +305,6 @@
                          Name="ChatBox"
                          VerticalAlignment="Bottom"
                      
-                         PreviewMouseWheel="ChatBox_PreviewMouseWheel"
                          ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"                  
 
                          ScrollViewer.CanContentScroll="True"

@@ -357,7 +357,6 @@
                 </Grid>
             </ScrollViewer>
 
-
             <Canvas Grid.RowSpan="3" Name="ContactMenusCanvas">
                 <menu:UserContactMenu x:Name="ContactMenu" 
                                     Grid.Column="1" Grid.RowSpan="3"  
@@ -366,7 +365,6 @@
                                     Panel.ZIndex="100"
                                     Visibility="Hidden"/>
             </Canvas>
-
 
         </Grid>
     </Border>

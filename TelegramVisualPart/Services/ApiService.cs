@@ -1156,11 +1156,22 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<bool?>(jsonResponse);
         }
 
+        public static async Task<bool> ClearSaveChatById(int chatId)
+        {
+            var data = new {Id = chatId};
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/ClearSaveChatById"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
+
+            return response.IsSuccessStatusCode;
+        }
+
         public static async Task RemoveSavedMessage(int savedChatId, int toRemoveId)
         {
-            /*            public int SavedChatId { get; set; }
-                        public int ToRemoveId { get; set; }*/
-
             var data = new { SavedChatId = savedChatId, ToRemoveId = toRemoveId};
             var request = new HttpRequestMessage
             {

@@ -88,46 +88,22 @@ namespace TelegramVisualPart.UserControls
 
         public void SetBasicSignalRMethods()
         {
-            SignalRService.TextMessageReceived -= OnTextMessageReceived;
+            if (SignalRService.GetIsChatEventsAreSet()) return;
+            SignalRService.ChangeIsChatEventsAreSet(true);
+
             SignalRService.TextMessageReceived += OnTextMessageReceived;
-
-            SignalRService.MediaMessageReceived -= OnMediaMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageReceived;
-
-            SignalRService.UpdateOnlineStatusDel -= UpdateOnlineStatus;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
-
-            SignalRService.UpdateUserImage -= UpdateUserImage;
             SignalRService.UpdateUserImage += UpdateUserImage;
-
-            SignalRService.ClearChatDel -= ClearChatAction;
             SignalRService.ClearChatDel += ClearChatAction;
-
-            SignalRService.SetContactLastSeenVisStateDel -= SetLastVisState;
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
-
-            SignalRService.UpdateContactPhotoDel -= UpdateChatterIamge;
             SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
-
-            SignalRService.UpdateForwardStatusDel -= UpdateForwardStatusDel;
             SignalRService.UpdateForwardStatusDel += UpdateForwardStatusDel;
-
-            SignalRService.DeleteMessageByIdDel -= RemoveMessageById;
             SignalRService.DeleteMessageByIdDel += RemoveMessageById;
-
-            SignalRService.RemoveManyMessagesDel -= RemoveManyMessages;
             SignalRService.RemoveManyMessagesDel += RemoveManyMessages;
-
-            SignalRService.ToPinMessageDel -= PinMessage;
             SignalRService.ToPinMessageDel += PinMessage;
-
-            SignalRService.StatMessageReceived -= SetStatMessageInFromSignalR;
             SignalRService.StatMessageReceived += SetStatMessageInFromSignalR;
-
-            SignalRService.EditMessageDel -= EditMessageSignlR;
             SignalRService.EditMessageDel += EditMessageSignlR;
-
-            SignalRService.SendTypingActionDel -= SetTypingAction;
             SignalRService.SendTypingActionDel += SetTypingAction;
         }
 
@@ -135,7 +111,7 @@ namespace TelegramVisualPart.UserControls
         public async void SetTypingAction(
             TelegramLib.MainClasses.User toSetTyping)
         {
-            if (_chat.GetChatter() is null ||
+            if (_chat is null ||  _chat.GetChatter() is null ||
                 _chat.GetChatter().Id != toSetTyping.Id) return;
 
             const string typeStr = "typing...";
@@ -1177,9 +1153,8 @@ namespace TelegramVisualPart.UserControls
 
             if(secDiffer > 0 && secDiffer < maxSecDiffer)
             {
-                item.Padding = new Thickness(10, closeDiffer, 10, closeDiffer);
+                item.Padding = new Thickness(7, closeDiffer, 10, closeDiffer);
             }
-
         }
 
         private bool _isMouseDown = false;
@@ -1427,7 +1402,7 @@ namespace TelegramVisualPart.UserControls
                 if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
                 MessageMenu.Children.Clear();
 
-                //Clear unnes /Ns
+                //Clear unused
                 string cleaned = Regex.Replace(CommentTextBox.Text, @"^\s+|\s+$", "");
 
                 //To send text message
@@ -3935,6 +3910,11 @@ namespace TelegramVisualPart.UserControls
             List<Message> messages =
                 chat.GetMessageByGivenIds(GetIdsByVisibleElems());
 
+            if(messages.Count > 0)
+            {
+                Console.WriteLine(messages.Count);
+            }
+
             if (chat is null) return;
             //Go through it
             //compare every chat in db(by time)
@@ -4860,12 +4840,6 @@ namespace TelegramVisualPart.UserControls
         public double GetUserInfoColumnWidth()
         {
             return UserInfoColumn.Width.Value;
-        }
-
-
-        private void ChatBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-
         }
 
         public void ScrollChatToEnd()

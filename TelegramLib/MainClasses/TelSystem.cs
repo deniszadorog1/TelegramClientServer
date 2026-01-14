@@ -401,32 +401,41 @@ namespace TelegramLib.MainClasses
         }
 
         public UserChat GetChatById(int id)
-        {
-            
+        {       
             return Chats.FirstOrDefault(x => x.Id == id);
         }
 
         public List<MediaAction> GetAllImageMessages()
         {
-            return GetMesagesByType(MediaType.Image);
+            return GetMessagesByType(MediaType.Image);
         }
 
         public List<MediaAction> GetAllVideoMessages()
         {
-            return GetMesagesByType(MediaType.Video);
+            return GetMessagesByType(MediaType.Video);
         }
 
-        private List<MediaAction> GetMesagesByType(MediaType type)
+        private List<MediaAction> GetMessagesByType(MediaType type)
         {
             List<MediaAction> res = new List<MediaAction>();
             for (int i = 0; i < Chats.Count; i++)
             {
-                for (int j = 0; j < Chats[i].Messages.Count; j++)
-                {
-                    if (!(Chats[i].Messages[j] is MediaAction media)) continue;
-                    if (type == MediaType.Image && media.IsImage()) res.Add(media);
-                    else if (type == MediaType.Video && media.IsVideo()) res.Add(media);
-                }
+                res.AddRange(GetMessagesByTypeFromChat(Chats[i], type));
+            }
+            res.AddRange(GetMessagesByTypeFromChat(SavedMesesChat, type));
+
+            return res;
+        }
+
+        public List<MediaAction> GetMessagesByTypeFromChat(TelegramLib.MainClasses.UserChat chat, MediaType type)
+        {
+            List<MediaAction> res = new List<MediaAction>();
+            for (int i = 0; i < chat.Messages.Count; i++)
+            {
+                if (!(chat.Messages[i] is MediaAction media)) continue;
+                if (type == MediaType.Image && media.IsImage()) res.Add(media);
+                else if (type == MediaType.Video && media.IsVideo()) res.Add(media);
+
             }
             return res;
         }

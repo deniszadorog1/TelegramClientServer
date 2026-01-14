@@ -33,8 +33,7 @@ namespace TelegramVisualPart.Services
         //SignalR -> ApiService -> Controller -> DbService
 
         private static HubConnection? _connection;
-        private static TelSystem? _system;
-
+        public static TelSystem? _system;
 
         public static event Action<User, TextMessage>? TextMessageReceived;
         public static event Action<User, MediaAction>? MediaMessageReceived;
@@ -73,6 +72,14 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? SendTypingActionDel;
 
         public static event Action<List<DateTime>, int>? RemoveManyMessagesDel;
+
+
+        private static bool _isChatEventsAreSet = false;
+        public static bool GetIsChatEventsAreSet() => _isChatEventsAreSet;
+        public static void ChangeIsChatEventsAreSet(bool isSet)
+        {
+            _isChatEventsAreSet = isSet;
+        }
 
         public static void SetSystem(TelSystem system)
         {

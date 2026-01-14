@@ -222,9 +222,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 BgBrush, UserEllipseImage);
 
             //this.Visibility = Visibility.Visible;
-
-            /*            BgBrush.ImageSource = new BitmapImage(new Uri(
-                            FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));*/
         }
 
         private const int _minMessageWidth = 125;

@@ -64,7 +64,7 @@ namespace TelegramVisualPart.Pages
         public TelegramLib.MainClasses.UserChat _chosenChat;
         public bool _chatterInfo = false;
 
-        public MainChatPage(TelSystem system, bool isOnlyChat = false)
+        public MainChatPage(TelSystem system)
         {
             //Folders
             //contacts
@@ -73,7 +73,6 @@ namespace TelegramVisualPart.Pages
 
             _system = system;
             InitializeComponent();
-            if (isOnlyChat) return;
 
             SetBasicParams();
 
@@ -991,8 +990,6 @@ namespace TelegramVisualPart.Pages
         {
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
-
-            //Set UserControl
         }
 
         private async void UserChat_PreviewLeftMouseDown(object sender, MouseButtonEventArgs e)
@@ -1037,8 +1034,7 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat = talkControl.GetChat() is null ?
                 _system.GetChatById(id) : talkControl.GetChat();
 
-            //Is Chat is opened on othre window
-
+            //Is Chat is opened on other window
             if (chat is TelegramLib.MainClasses.SavedMessagesChat &&
                 ((MainWindow)Window.GetWindow(this)).IsSavedMessesIsOnlyChat()) return;
 
@@ -1068,7 +1064,7 @@ namespace TelegramVisualPart.Pages
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
             chat.IsMarked = false;
-            await ApiService.UpdateChat(chat);
+            if(chat is not TelegramLib.MainClasses.SavedMessagesChat) await ApiService.UpdateChat(chat);
 
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
             {

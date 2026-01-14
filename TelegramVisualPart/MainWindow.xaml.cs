@@ -177,15 +177,15 @@ namespace TelegramVisualPart
             _system = system;
             SetLanguageFile();
 
-            SignalRService.SetSystem(_system);
 
             if (!isOnlyChat)
             {
+                SignalRService.SetSystem(_system);
                 await SignalRService.SetBasicSignalRConnetion();
-                SignalRService.UpdateOnlineStatus(_system.LoggedUser);
+                await SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             }
 
-            MainChatPage page = new MainChatPage(_system, isOnlyChat: isOnlyChat);
+            MainChatPage page = new MainChatPage(_system);
 
             page.PageLoadedAction += SetOnlyChatPage;
 
@@ -868,6 +868,12 @@ namespace TelegramVisualPart
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UserChat.ClearChat();
             chatPage.ClearChosenUserTalkValue();
+        }
+
+        public void ClearVisChat()
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            chatPage.UserChat.ClearChat();
         }
 
         public void UpdateUserChatTalkControl()
