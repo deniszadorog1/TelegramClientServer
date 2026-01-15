@@ -60,6 +60,18 @@ namespace TelegramVisualPart
 
         List<MediaWindow> _mediaWidows = new List<MediaWindow>();
 
+        public bool IsOnlyTempOnlyChatIsExist(
+            TelegramLib.MainClasses.UserChat chat)
+        {
+            return _chatWindows.Any(x => IsOnlyChatWindowHasChat(x, chat));
+        }
+
+        public bool IsOnlyChatWindowHasChat(MainWindow onlyChatWindow,
+            TelegramLib.MainClasses.UserChat chat)
+        {
+            if (onlyChatWindow.MainFrame.Content is not MainChatPage chatPage) return false;
+            return chatPage.IsChatIsOpened(chat);
+        }
 
         //Basic start
         public MainWindow()
@@ -92,8 +104,6 @@ namespace TelegramVisualPart
             //AddChatMainWindow();
 
             SetMainPage(system, isOnlyChat: true);
-
-            //Set chat page
         }
 
         public bool IsSameOnlyChatById(int chatId)
@@ -130,7 +140,7 @@ namespace TelegramVisualPart
 
             _bossWindow._onlyChatUserChat = _onlyChatUserChat;
 
-            bossChatPage.UpdateUserTalkChat();// bossChatPage.GetChtControlByChatterName(_onlyChatUserChat.Chatter.Name);
+            bossChatPage.UpdateUserTalkChat();
 
             return _onlyChatUserChat;
         }
@@ -479,6 +489,8 @@ namespace TelegramVisualPart
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            ClearBasicChatSignalRMethods();
+
             if (_isOnlyChat)
             {
                 this.Close();
@@ -488,6 +500,12 @@ namespace TelegramVisualPart
 
             ClearAllChatWindows();
             LogOut();
+        }
+        
+        public void ClearBasicChatSignalRMethods()
+        {
+            if (MainFrame.Content is not MainChatPage mainPage) return;
+            mainPage.ClearBasicChatSignalRMethods();
         }
 
         public async void LogOut()
@@ -1212,12 +1230,27 @@ namespace TelegramVisualPart
 
         public void UpdateReadCountOfReadMessages(int chatId)
         {
+            //Get boss window
+
+            if(_bossWindow is not null && 
+                _bossWindow.MainFrame.Content is MainChatPage mainPage)
+            {
+                mainPage.UpdateAmountOfReadMessages(chatId);
+                return;
+            }          
+
             if (MainFrame.Content is not MainChatPage page) return;
             page.UpdateAmountOfReadMessages(chatId);
         }
 
         public void UpdateChatControls()
         {
+            if(_bossWindow is not null)
+            {
+                _bossWindow.UpdateChatControls();
+                return;
+            }
+
             if (MainFrame.Content is MainChatPage page) page.RepaintUserChatsPanel();
         }
 

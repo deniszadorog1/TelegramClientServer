@@ -1,4 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,66 +10,35 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using TelegramVisualPart.Enums;
+using TelegramVisualPart.Enums.MediaShow;
+using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages.ChatActions;
+using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
+using TelegramVisualPart.Pages.ChatActions.MessageMenuPages;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
-using Application = System.Windows.Application;
-using Image = System.Windows.Controls.Image;
-using Path = System.IO.Path;
-
-using System.Data.Common;
-using TelegramLib.Models;
-using System.Net.Sockets;
-using static System.Data.Entity.Infrastructure.Design.Executor;
-using TelegramLib.UserSettings;
-using System.Windows.Documents;
-using TelegramVisualPart.Enums;
-using System.Drawing;
-using Brushes = System.Windows.Media.Brushes;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Windows.Media.Color;
-using TelegramLib.UserSettings.SettingsTypes;
-using System;
-using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
-using System.Collections.Frozen;
-using static System.Net.Mime.MediaTypeNames;
-using System.Threading;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
-using Microsoft.AspNetCore.Http.Metadata;
-using TelegramVisualPart.Enums.Menus;
-using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
-using MahApps.Metro.Controls;
-using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
-using static System.Collections.Specialized.BitVector32;
-using System.IO;
-using TelegramVisualPart.Pages.ChatActions.MessageMenuPages;
-using Newtonsoft.Json;
-using System.Diagnostics.Metrics;
-using Microsoft.Windows.Themes;
-using System.Data.Entity.Core.Mapping;
-using System.Text.RegularExpressions;
-using Microsoft.IdentityModel.Tokens;
-using ControlzEx.Standard;
-using System.Security.RightsManagement;
-using TelegramVisualPart.Windows;
-using TelegramLib.Enums.Chat;
-using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
-using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
-using static MaterialDesignThemes.Wpf.Theme;
-using ListBoxItem = System.Windows.Controls.ListBoxItem;
-using Button = System.Windows.Controls.Button;
-using TelegramVisualPart.Enums.MediaShow;
-using SavedMessagesChat = TelegramLib.MainClasses.SavedMessagesChat;
+using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
+using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ChatControls.SavedChatControls;
-using System.Runtime.InteropServices;
-using Microsoft.AspNetCore.Components.Forms;
-using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
+using TelegramVisualPart.Windows;
+using Application = System.Windows.Application;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using Button = System.Windows.Controls.Button;
+using Color = System.Windows.Media.Color;
+using Image = System.Windows.Controls.Image;
+using ListBoxItem = System.Windows.Controls.ListBoxItem;
+using Path = System.IO.Path;
+using SavedMessagesChat = TelegramLib.MainClasses.SavedMessagesChat;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -88,9 +60,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetBasicSignalRMethods()
         {
-            if (SignalRService.GetIsChatEventsAreSet()) return;
-            SignalRService.ChangeIsChatEventsAreSet(true);
-
+            /*            if (SignalRService.GetIsChatEventsAreSet()) return;
+                        SignalRService.ChangeIsChatEventsAreSet(true);*/
             SignalRService.TextMessageReceived += OnTextMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageReceived;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -107,11 +78,48 @@ namespace TelegramVisualPart.UserControls
             SignalRService.SendTypingActionDel += SetTypingAction;
         }
 
+        public void ClearBasicSignalRMethods()
+        {
+            SignalRService.TextMessageReceived -= OnTextMessageReceived;
+            SignalRService.MediaMessageReceived -= OnMediaMessageReceived;
+            SignalRService.UpdateOnlineStatusDel -= UpdateOnlineStatus;
+            SignalRService.UpdateUserImage -= UpdateUserImage;
+            SignalRService.ClearChatDel -= ClearChatAction;
+            SignalRService.SetContactLastSeenVisStateDel -= SetLastVisState;
+            SignalRService.UpdateContactPhotoDel -= UpdateChatterIamge;
+            SignalRService.UpdateForwardStatusDel -= UpdateForwardStatusDel;
+            SignalRService.DeleteMessageByIdDel -= RemoveMessageById;
+            SignalRService.RemoveManyMessagesDel -= RemoveManyMessages;
+            SignalRService.ToPinMessageDel -= PinMessage;
+            SignalRService.StatMessageReceived -= SetStatMessageInFromSignalR;
+            SignalRService.EditMessageDel -= EditMessageSignlR;
+            SignalRService.SendTypingActionDel -= SetTypingAction;
+        }
+
+        //Tactic for differ window chats
+
+        //Problem
+        //Boss window and only chat window gets message
+        //and both adding it to db etc
+
+        //Result
+        //if only chat window is exist(with chatter => return this)
+
+        public bool IsOnlyChatWindowWithChatIsExist(TelegramLib.MainClasses.UserChat chat)
+        {
+            Window window = Window.GetWindow(this);
+            if (window is MainWindow mainWind)
+            {
+                return mainWind.IsOnlyTempOnlyChatIsExist(chat);
+            }
+            return false;
+        }
+
         private CancellationTokenSource _typingCts;
         public async void SetTypingAction(
             TelegramLib.MainClasses.User toSetTyping)
         {
-            if (_chat is null ||  _chat.GetChatter() is null ||
+            if (_chat is null || _chat.GetChatter() is null ||
                 _chat.GetChatter().Id != toSetTyping.Id) return;
 
             const string typeStr = "typing...";
@@ -368,33 +376,6 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-        /*        private async Task SetLastSeenString(TelegramLib.MainClasses.User user,
-                    IsPrivacyException type)
-                {
-
-                    if (_chat is null || _chat.GetChatter().ContactUserId != user.Id) return;
-
-                    MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
-
-                    if (type == IsPrivacyException.Share)
-                    {
-                        HelperService.SetOnlineStatusInTextBox(
-                            ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
-                        return;
-                    }
-
-                    if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
-                        TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
-                        type == IsPrivacyException.NeverShare)
-                    {
-                        ChatFriendLastSeen.Foreground = new SolidColorBrush(Colors.Gray);
-                        ChatFriendLastSeen.Text = "You cant see this LOOOOLL";
-                        return;
-                    }
-                    HelperService.SetOnlineStatusInTextBox(
-                        ChatFriendLastSeen, user.IsOnline, user.LastSeenOnline);
-                }*/
-
         public void ClearChatAction(TelegramLib.MainClasses.User user)
         {
             Dispatcher.InvokeAsync(async () =>
@@ -561,20 +542,14 @@ namespace TelegramVisualPart.UserControls
                     }
                 }
 
-                if (!await ApiService.IsUserOnline(_system.LoggedUser.Id))
-                {
-                    //_chat = null;
-                    //return;
-                }//Get chat where Logged is Sender 
-                /*                TelegramLib.MainClasses.UserChat chat =
-                                    _system.GetChatByChatterId(sender.Id);*/
-
                 TelegramLib.MainClasses.UserChat chat =
                     await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
+
                 if (chat is null) return;
 
                 //Set user talk if not contains un chats
                 SetNewUserChatMessageControl(chat);
+                if (IsOnlyChatWindowWithChatIsExist(chat)) return;
 
                 if (_chat is null ||
                 chat.Id != _chat.Id)
@@ -584,10 +559,25 @@ namespace TelegramVisualPart.UserControls
                 }
                 else AddTextMessageInChosenChat(message, sender, chat);
 
-                //Is temp chat is chosen
+                //SetOnlyChat(chat);
 
+                //Is temp chat is chosen
                 ToUpdateUserControlMessage();
             });
+        }
+
+        public void SetOnlyChat(TelegramLib.MainClasses.UserChat chat)
+        {
+            TelegramLib.MainClasses.UserChat tempOnlyChat = 
+                ((MainWindow)Window.GetWindow(this))._onlyChatUserChat;
+
+            if (chat is null || tempOnlyChat is null) return;
+
+            if (chat.Id == tempOnlyChat.Id &&
+                chat.GetType() == tempOnlyChat.GetType())
+            {
+                tempOnlyChat = chat;
+            }
         }
 
         public void SetNewUserChatMessageControl(TelegramLib.MainClasses.UserChat chat)
@@ -626,8 +616,8 @@ namespace TelegramVisualPart.UserControls
             ScrollToNewMessage();
 
             chat.Messages.Add(message);
-
-            if (!await ApiService.IsUserOnline(_system.LoggedUser.Id)) return;
+            
+            //if (!await ApiService.IsUserOnline(_system.LoggedUser.Id)) return;
 
             ToUpdateUserControlMessage();
         }
@@ -653,17 +643,13 @@ namespace TelegramVisualPart.UserControls
 
         public void ToUpdateUserControlMessage()
         {
-            MainWindow window = ((MainWindow)Window.GetWindow(this));
+            Window window = Window.GetWindow(this);
+            if (window is not MainWindow mainWindow) return;
 
-            if (window is not null)
-            {
-                window.UpdateUserChatTalkControl();
-                return;
-            }
-            //_mainWindow.UpdateUserChatTalkControl();
+            mainWindow.UpdateUserChatTalkControl();
         }
 
-        public void AddTextControl(ChatControls.TextMessage text, 
+        public void AddTextControl(ChatControls.TextMessage text,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             //if (IsOnlyPinnedChatIsOn()) return;
@@ -1141,7 +1127,7 @@ namespace TelegramVisualPart.UserControls
         }
 
         private DateTime? _tempSendTime;
-        private void SetChatItemPadding(ListBoxItem item, 
+        private void SetChatItemPadding(ListBoxItem item,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             const int maxSecDiffer = 60;
@@ -1151,7 +1137,7 @@ namespace TelegramVisualPart.UserControls
 
             double secDiffer = (mes.SentTime - _tempSendTime.Value).TotalSeconds;
 
-            if(secDiffer > 0 && secDiffer < maxSecDiffer)
+            if (secDiffer > 0 && secDiffer < maxSecDiffer)
             {
                 item.Padding = new Thickness(7, closeDiffer, 10, closeDiffer);
             }
@@ -1176,10 +1162,10 @@ namespace TelegramVisualPart.UserControls
 
             item.PreviewMouseLeftButtonDown += (sender, e) =>
             {
-    /*            if (Mouse.DirectlyOver is System.Windows.Controls.TextBoxView)
-                {
-                    return;
-                }*/
+                /*            if (Mouse.DirectlyOver is System.Windows.Controls.TextBoxView)
+                            {
+                                return;
+                            }*/
                 _isMouseDown = true;
             };
             item.MouseLeftButtonUp += (sender, e) =>
@@ -3910,10 +3896,6 @@ namespace TelegramVisualPart.UserControls
             List<Message> messages =
                 chat.GetMessageByGivenIds(GetIdsByVisibleElems());
 
-            if(messages.Count > 0)
-            {
-                Console.WriteLine(messages.Count);
-            }
 
             if (chat is null) return;
             //Go through it

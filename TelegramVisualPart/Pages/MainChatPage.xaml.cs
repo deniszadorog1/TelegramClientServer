@@ -2225,6 +2225,18 @@ namespace TelegramVisualPart.Pages
             return _system.IsChatContainsInOtherWidowList(chat);
         }
 
+        public bool IsChatIsOpened(TelegramLib.MainClasses.UserChat chat)
+        {
+            if (UserChat.Visibility == Visibility.Hidden) return false;
+            
+            if (UserChat._chat is TelegramLib.MainClasses.SavedMessagesChat &&
+               chat is TelegramLib.MainClasses.SavedMessagesChat) return true;
+
+            return chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+                UserChat._chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+                UserChat._chat.Id == chat.Id;
+        }
+
         public TelegramLib.MainClasses.UserChat? GetChosenUserChat()
         {
             int.TryParse(_menuChatterTalk.Tag.ToString(), out int id);
@@ -2799,6 +2811,12 @@ namespace TelegramVisualPart.Pages
             {
                 UserChat.ClearMouseDown();
             }
+        }
+
+        public void ClearBasicChatSignalRMethods()
+        {
+            if (UserChat is null) return;
+            UserChat.ClearBasicSignalRMethods();
         }
     }
 }

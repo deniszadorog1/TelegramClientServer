@@ -74,11 +74,14 @@
                     </Grid>
 
 
-                    <Button Content="✕" Width="43" Click="Close_Click" Margin="5 0 10 0"
-                                Background="Transparent"  BorderBrush="Transparent"
-                                Name ="CloseWindowBut" 
-                                MouseEnter="CloseWindowBut_MouseEnter"
-                                MouseLeave="UpperBut_MouseLeave"/>
+                    <Button Name ="CloseWindowBut" Content="✕" 
+                            Width="43" 
+                            Margin="5 0 10 0"
+                            Background="Transparent"  
+                            BorderBrush="Transparent"
+                            Click="Close_Click" 
+                            MouseEnter="CloseWindowBut_MouseEnter"
+                            MouseLeave="UpperBut_MouseLeave"/>
                 </StackPanel>
             </Grid>
 
