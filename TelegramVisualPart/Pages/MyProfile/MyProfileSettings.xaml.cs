@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
 using TelegramLib.MainClasses.UserParams;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings;
@@ -59,7 +61,7 @@ namespace TelegramVisualPart.Pages.MyProfile
         {
             UserName.Text = _user.Login;
 
-            HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);      
+            HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);
 
             BioTextBox.Text = _user.BIO;
 
@@ -68,10 +70,10 @@ namespace TelegramVisualPart.Pages.MyProfile
             Username.AdditionalText.Text = _user.Login;
 
             PersonalChannelBut.AdditionalText.Text = VisConstParamsJsonService.GetStringByName("NotInvented"); ;
-            BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty : 
-                (((DateTime)_user.BirthDay).Day + " " + 
-                ((DateTime)_user.BirthDay).Month + " " + 
-                (((DateTime)_user.BirthDay).Year == 1 ? " " : 
+            BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty :
+                (((DateTime)_user.BirthDay).Day + " " +
+                ((DateTime)_user.BirthDay).Month + " " +
+                (((DateTime)_user.BirthDay).Year == 1 ? " " :
                 ((DateTime)_user.BirthDay).Year))
             .ToString();
         }
@@ -130,7 +132,7 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public Page GetPageForBackButton()
         {
-            if(_prevPage is SettingsPage set)
+            if (_prevPage is SettingsPage set)
             {
                 return new SettingsPage(_system);
             }
@@ -181,8 +183,8 @@ namespace TelegramVisualPart.Pages.MyProfile
         public Page? GetPageByName(string name)
         {
             return name == Name.Name.ToString() ? new SetInformation.SetNameSurname(_user) :
-                name == Username.Name.ToString() ? new SetInformation.SetUsername(_user) : 
-                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber(_user) : 
+                name == Username.Name.ToString() ? new SetInformation.SetUsername(_user) :
+                name == PhoneNumber.Name.ToString() ? new SetInformation.SetPhoneNumber(_user) :
                 name == BirthdayBut.Name.ToString() ? new SetInformation.SetBirthDate(_user) : null;
         }
 
@@ -198,10 +200,10 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-/*            string firstImage = _user.GetFirstImageName().Name;
-            Image chosen = FilesAction.GetUserImage(firstImage);
+            /*            string firstImage = _user.GetFirstImageName().Name;
+                        Image chosen = FilesAction.GetUserImage(firstImage);
 
-            List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());*/
+                        List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());*/
 
             //Set window here
             MediaWindow mediaWindow = new MediaWindow(
@@ -215,12 +217,12 @@ namespace TelegramVisualPart.Pages.MyProfile
 
 
 
-/*            VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
+            /*            VisualActionPage page = new VisualActionPage(chosen, imgs);
+                        page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
 
-            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
+                        page.ToRemoveImage += ToRemoveUserImage_MouseDown;
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
+                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
         private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
@@ -232,6 +234,53 @@ namespace TelegramVisualPart.Pages.MyProfile
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             SetTextBoxHeight();
+        }
+
+        private void SetPhotoGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void SetPhotoGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void SetPhotoGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Get photo
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Choose image",
+                Filter = "Image files|*.png;*.jpg;*.jpeg;"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+
+                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                {
+                    //Add in system
+                    _system.LoggedUser.AddUserImage(filePath);
+
+                    //Add file in correct folder(if not added yet)
+                    FilesAction.AddNewUserImage(filePath);
+
+                    //Add in db
+                    ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(filePath));
+
+                    //Update in system
+                    Window window = Window.GetWindow(this);
+                    if (window is MainWindow mainWindow)
+                    {
+                            
+                    }
+                }
+
+            }
         }
     }
 }

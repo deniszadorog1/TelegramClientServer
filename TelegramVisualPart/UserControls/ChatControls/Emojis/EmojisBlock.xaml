@@ -75,9 +75,9 @@
                                     VerticalAlignment="Center" 
                                     Margin="0 0 10 0">
 
-                            <materialDesign:PackIcon Name="OtherIcons" Kind="Heart" Style="{StaticResource IconsStyle}"/>
-                            <materialDesign:PackIcon Name="PosIcons" Kind="Like" Style="{StaticResource IconsStyle}"/>
-                            <materialDesign:PackIcon Name="NegIcons" Kind="Dislike" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="OtherIcons" Kind="Smiley" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="PosIcons" Kind="Symbol" Style="{StaticResource IconsStyle}"/>
+                            <materialDesign:PackIcon Name="NegIcons" Kind="Transportation" Style="{StaticResource IconsStyle}"/>
                         </StackPanel>
                         
                     </Grid>

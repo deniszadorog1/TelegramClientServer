@@ -30,6 +30,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Name="ForwardedRow" Height="0"/>
                 <RowDefinition Name="MediaRow"/>
+                <RowDefinition Name="AdditionalTextRow"/>
             </Grid.RowDefinitions>
             
             <Border Name="ImageBorder" Grid.Row="1"

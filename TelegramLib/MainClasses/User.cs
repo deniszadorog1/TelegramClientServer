@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses.UserParams;
 using TelegramLib.Models;
@@ -171,6 +172,23 @@ namespace TelegramLib.MainClasses
         {
             if (!(ImageMask is null) && UserImages.Count >= 1) UserImages.RemoveAt(0);
             ImageMask = null;
+        }
+
+        public void AddUserImage(string fullPath)
+        {
+            UserImage img = new UserImage()
+            {
+                Name = System.IO.Path.GetFileName(fullPath),
+                Date = DateTime.Now
+            };
+
+            if(!(ImageMask is null))
+            {
+                UserImages.Insert(1, img);
+                return;
+            }
+            UserImages.Insert(0, img);
+
         }
     }
 }

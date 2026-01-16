@@ -15,6 +15,7 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Enums.Menus;
@@ -66,14 +67,19 @@ namespace TelegramVisualPart.UserControls
             SignalRService.MediaMessageReceived += OnMediaMessageReceived;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.UpdateUserImage += UpdateUserImage;
-            SignalRService.ClearChatDel += ClearChatAction;
+
+            SignalRService.ClearChatDel += ClearChatAction; //Check withi first sent message late
+
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
             SignalRService.UpdateContactPhotoDel += UpdateChatterIamge;
             SignalRService.UpdateForwardStatusDel += UpdateForwardStatusDel;
+
             SignalRService.DeleteMessageByIdDel += RemoveMessageById;
             SignalRService.RemoveManyMessagesDel += RemoveManyMessages;
+            
             SignalRService.ToPinMessageDel += PinMessage;
             SignalRService.StatMessageReceived += SetStatMessageInFromSignalR;
+            
             SignalRService.EditMessageDel += EditMessageSignlR;
             SignalRService.SendTypingActionDel += SetTypingAction;
         }
@@ -107,12 +113,23 @@ namespace TelegramVisualPart.UserControls
 
         public bool IsOnlyChatWindowWithChatIsExist(TelegramLib.MainClasses.UserChat chat)
         {
+            return Application.Current.Dispatcher.Invoke(() =>
+            {
+                Window window = Window.GetWindow(this);
+                if (window is MainWindow mainWind)
+                {
+                    return mainWind.IsOnlyTempOnlyChatIsExist(chat);
+                }
+
+                return false;
+            });
+/*
             Window window = Window.GetWindow(this);
             if (window is MainWindow mainWind)
             {
                 return mainWind.IsOnlyTempOnlyChatIsExist(chat);
             }
-            return false;
+            return false;*/
         }
 
         private CancellationTokenSource _typingCts;
@@ -246,7 +263,9 @@ namespace TelegramVisualPart.UserControls
                 //Check from chat
                 TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByMessage(pair);
+
                 if (chat is null) return;
+                if (IsOnlyChatWindowWithChatIsExist(chat)) return;
 
                 //remove from vis
                 ListBoxItem? item = ChatBox.Items
@@ -261,6 +280,8 @@ namespace TelegramVisualPart.UserControls
                     isChatterBlocked: false);
 
                 if (IsOnlyPinnedChatIsOn()) SetChatMessages(true);
+
+                ToUpdateUserControlMessage();
             });
         }
 
@@ -299,18 +320,19 @@ namespace TelegramVisualPart.UserControls
 
             if (pair is null) return;
 
+            _chat = _system.GetChatByMessage(pair);
+            if (IsOnlyChatWindowWithChatIsExist(_chat)) return;
+
             RemoveMessageFromSigR(pair);
 
             Dispatcher.Invoke(() =>
             {
                 if (!isUpdateVis) return;
-                /*                //remove from vis
-                                ListBoxItem? item = ChatBox.Items
-                                .OfType<ListBoxItem>().FirstOrDefault(x => x.Tag.ToString() == pair.Id.ToString());
 
-                                if (item is null) return;
-                                ChatBox.Items.Remove(item);*/
-
+                if (_chat is null)
+                {
+                    return;
+                }
                 SetChatMessages();
 
                 //Update UserTalkMessage(Chat) - if last message was removed
@@ -319,8 +341,6 @@ namespace TelegramVisualPart.UserControls
 
         public void RemoveMessageFromSigR(TelegramLib.MainClasses.Messages.Message mes)
         {
-            _chat = _system.GetChatByMessage(mes);
-
             //Remove from db
             ApiService.DeleteMessageById(mes.Id);
 
@@ -472,6 +492,7 @@ namespace TelegramVisualPart.UserControls
                 if (chat is null) return;
 
                 SetNewUserChatMessageControl(chat);
+                if (IsOnlyChatWindowWithChatIsExist(chat)) return;
 
                 //Add media message in chat in db
                 Task.Run(() => ApiService.AddMessage(message, chat)).Wait();
@@ -479,12 +500,14 @@ namespace TelegramVisualPart.UserControls
                 //THere is no pair yet
                 message = GetPairOfMedia(message);
 
-
                 if (_chat is null || chat.Id != _chat.Id)
                 {
                     AddMediaMessageInUnChosenChat(chat, message);
+                    ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
                 }
                 else AddMediaMessageInChosenChat(message, sender);
+
+                ToUpdateUserControlMessage();
             });
         }
 
@@ -4248,7 +4271,8 @@ namespace TelegramVisualPart.UserControls
             //Set new chat(in logic + in vis)
             //if (_chat.Id != chat.Id) SetNewChat(chat);
 
-            if (_forwardSenderId is not null && chat.Id != _chat.Id)
+            if ((_forwardSenderId is not null && chat.Id != _chat.Id) || 
+                chat.GetType() != _chat.GetType())
                 await ((MainWindow)Window.GetWindow(this)).
                     SetOtherChatByUserId(chat.Chatter.Id);
 

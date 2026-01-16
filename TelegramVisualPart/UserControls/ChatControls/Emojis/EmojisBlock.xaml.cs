@@ -63,49 +63,48 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
             for (int code = 0x1F600; code <= 0x1F64F; code++)
             {
-                _baseEmojis.Add((char.ConvertFromUtf32(code), ((EmojiType)rnd.Next(0, 3)), code.ToString()));
+                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Other, code.ToString()));
             }
 
             for (int code = 0x1F300; code <= 0x1F5FF; code++)
             {
-                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Other, code.ToString()));
+                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Smiles, code.ToString()));
             }
 
             for (int code = 0x1F680; code <= 0x1F6FF; code++)
             {
-                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Other, code.ToString()));
+                _baseEmojis.Add((char.ConvertFromUtf32(code), EmojiType.Symbols, code.ToString()));
             }
-
 
             return;
 
-            _baseEmojis.Add(("🙂", EmojiType.Positive, "NiceSmile"));
-            _baseEmojis.Add(("😁", EmojiType.Positive, "Laugh"));
-            _baseEmojis.Add(("😅", EmojiType.Positive, "GitItFace"));
-            _baseEmojis.Add(("😊", EmojiType.Positive, "Smile"));
-            _baseEmojis.Add(("😉", EmojiType.Positive, "Blink"));
-            _baseEmojis.Add(("😎", EmojiType.Positive, "LikeFace"));
-            _baseEmojis.Add(("😆", EmojiType.Positive, "EasyLaugh"));
-            _baseEmojis.Add(("😀", EmojiType.Positive, "Happy"));
-            _baseEmojis.Add(("😹", EmojiType.Positive, "CatLaugh"));
-            _baseEmojis.Add(("😻", EmojiType.Positive, "CatLove"));
-            _baseEmojis.Add(("🙉", EmojiType.Positive, "MonkeyOpen"));
-            _baseEmojis.Add(("🙈", EmojiType.Positive, "MonkeyClose"));
-            _baseEmojis.Add(("🤣", EmojiType.Positive, "HardLaugh"));
+            _baseEmojis.Add(("🙂", EmojiType.Smiles, "NiceSmile"));
+            _baseEmojis.Add(("😁", EmojiType.Smiles, "Laugh"));
+            _baseEmojis.Add(("😅", EmojiType.Smiles, "GitItFace"));
+            _baseEmojis.Add(("😊", EmojiType.Smiles, "Smile"));
+            _baseEmojis.Add(("😉", EmojiType.Smiles, "Blink"));
+            _baseEmojis.Add(("😎", EmojiType.Smiles, "LikeFace"));
+            _baseEmojis.Add(("😆", EmojiType.Smiles, "EasyLaugh"));
+            _baseEmojis.Add(("😀", EmojiType.Smiles, "Happy"));
+            _baseEmojis.Add(("😹", EmojiType.Smiles, "CatLaugh"));
+            _baseEmojis.Add(("😻", EmojiType.Smiles, "CatLove"));
+            _baseEmojis.Add(("🙉", EmojiType.Smiles, "MonkeyOpen"));
+            _baseEmojis.Add(("🙈", EmojiType.Smiles, "MonkeyClose"));
+            _baseEmojis.Add(("🤣", EmojiType.Smiles, "HardLaugh"));
 
-            _baseEmojis.Add(("☹️", EmojiType.Negative, "Smthing"));
-            _baseEmojis.Add(("😐", EmojiType.Negative, "Nervous"));
-            _baseEmojis.Add(("🤡", EmojiType.Negative, "Clown"));
-            _baseEmojis.Add(("💩", EmojiType.Negative, "Poop"));
-            _baseEmojis.Add(("😾", EmojiType.Negative, "CatAngry"));
-            _baseEmojis.Add(("😿", EmojiType.Negative, "CatCry"));
-            _baseEmojis.Add(("🙀", EmojiType.Negative, "CatShock"));
-            _baseEmojis.Add(("😶", EmojiType.Negative, "NothingFace"));
-            _baseEmojis.Add(("😈", EmojiType.Negative, "DevilSmile"));
-            _baseEmojis.Add(("🌑", EmojiType.Negative, "BlackCirlce"));
-            _baseEmojis.Add(("🍅", EmojiType.Negative, "Tomato"));
-            _baseEmojis.Add(("🍱", EmojiType.Negative, "Sushi"));
-            _baseEmojis.Add(("💀", EmojiType.Negative, "Death"));
+            _baseEmojis.Add(("☹️", EmojiType.Symbols, "Smthing"));
+            _baseEmojis.Add(("😐", EmojiType.Symbols, "Nervous"));
+            _baseEmojis.Add(("🤡", EmojiType.Symbols, "Clown"));
+            _baseEmojis.Add(("💩", EmojiType.Symbols, "Poop"));
+            _baseEmojis.Add(("😾", EmojiType.Symbols, "CatAngry"));
+            _baseEmojis.Add(("😿", EmojiType.Symbols, "CatCry"));
+            _baseEmojis.Add(("🙀", EmojiType.Symbols, "CatShock"));
+            _baseEmojis.Add(("😶", EmojiType.Symbols, "NothingFace"));
+            _baseEmojis.Add(("😈", EmojiType.Symbols, "DevilSmile"));
+            _baseEmojis.Add(("🌑", EmojiType.Symbols, "BlackCirlce"));
+            _baseEmojis.Add(("🍅", EmojiType.Symbols, "Tomato"));
+            _baseEmojis.Add(("🍱", EmojiType.Symbols, "Sushi"));
+            _baseEmojis.Add(("💀", EmojiType.Symbols, "Death"));
             
             _baseEmojis.Add(("😺", EmojiType.Other, "Cat"));
             _baseEmojis.Add(("❤️", EmojiType.Other, "Heart"));
@@ -148,8 +147,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
             //GetType
             _chosenType =
-                icon == PosIcons ? EmojiType.Positive :
-                icon == NegIcons ? EmojiType.Negative :
+                icon == PosIcons ? EmojiType.Smiles :
+                icon == NegIcons ? EmojiType.Symbols :
                 EmojiType.Other;
 
             //Set Emojis By type

@@ -2227,13 +2227,15 @@ namespace TelegramVisualPart.Pages
 
         public bool IsChatIsOpened(TelegramLib.MainClasses.UserChat chat)
         {
-            if (UserChat.Visibility == Visibility.Hidden) return false;
+            if (UserChat.Visibility == Visibility.Hidden || 
+                chat is null ||
+                UserChat._chat is null) return false;
             
             if (UserChat._chat is TelegramLib.MainClasses.SavedMessagesChat &&
                chat is TelegramLib.MainClasses.SavedMessagesChat) return true;
 
             return chat is not TelegramLib.MainClasses.SavedMessagesChat && 
-                UserChat._chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+                UserChat._chat is not TelegramLib.MainClasses.SavedMessagesChat &&
                 UserChat._chat.Id == chat.Id;
         }
 
@@ -2602,12 +2604,15 @@ namespace TelegramVisualPart.Pages
         public async Task SetForwardMessage(int? userIdToSend,
             TelegramLib.MainClasses.Messages.Message mes)
         {
+            //Is blocked
+            if(userIdToSend is not null && 
+                _system.IsChatterBlocked(_system.GetUserById((int)userIdToSend)))
+            {
+                return;
+            }
+
+            //To set forwarding params
             await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
-
-            Console.WriteLine(UserChat.ReplyMessageRow.Height);
-            Console.WriteLine(UserChat.ReplyBorder.Visibility);
-            Console.WriteLine(UserChat.ReplyBorder.Height);
-
             UserChat.ReplyBorder.Height = 50;
         }
 
@@ -2736,6 +2741,7 @@ namespace TelegramVisualPart.Pages
             SavedMessagesChat savedChat = _system.GetSavedChatMessages();
 
             UserChat.SetUserChat(savedChat);
+            UserChat.UnBlockBorder.Visibility = Visibility.Hidden;
 
             _chosenChat = savedChat;
             _system.ChosenChatContact = null;

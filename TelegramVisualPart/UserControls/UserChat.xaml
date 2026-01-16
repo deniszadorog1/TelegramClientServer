@@ -144,7 +144,6 @@
                                          HorizontalAlignment="Center" Width="30" Height="30" 
                                          VerticalAlignment="Center" Margin="5 0 15 0"
                                          Name="UserChatMenuIcon"/>
-
                 </Grid>
             </StackPanel>
         </Grid>
@@ -225,9 +224,7 @@
                             MouseEnter="CancelBut_MouseEnter"  MouseLeave="CancelBut_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
-
         </Grid>
-
 
         <Border Name="PinRowBorder" Grid.Row="1" 
                 BorderThickness="0 1 0 1"
@@ -283,8 +280,6 @@
                                              HorizontalAlignment="Center"
                                              Width="30" Height="30"/>
                 </Grid>
-
-
             </Grid>
         </Border>
 
@@ -391,10 +386,14 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Background="Transparent"
-                    MouseEnter="AddFile_MouseEnter" MouseLeave="AddFile_MouseLeave"
-                    PreviewMouseDown="AddFile_PreviewMouseDown">
-                <materialDesign:PackIcon Kind="Paperclip" Margin="10 0 0 0" Name ="AddFile"
-                                     Width="35" Height="35" VerticalAlignment="Center" Foreground="Gray"/>
+                  MouseEnter="AddFile_MouseEnter" 
+                  MouseLeave="AddFile_MouseLeave"
+                  PreviewMouseDown="AddFile_PreviewMouseDown">
+                <materialDesign:PackIcon Kind="Paperclip" Name ="AddFile"
+                                         Margin="10 0 0 0" 
+                                         Width="35" Height="35" 
+                                         VerticalAlignment="Center" 
+                                         Foreground="Gray"/>
             </Grid>
 
             <TextBox Grid.Column="1" x:Name="CommentTextBox" 

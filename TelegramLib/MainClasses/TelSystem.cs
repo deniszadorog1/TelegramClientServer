@@ -145,7 +145,7 @@ namespace TelegramLib.MainClasses
             //UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
             UserChat chat = Chats.FirstOrDefault(x => x.IsChatterIdsAreEqual(id) /*IsUserLoginsAreEqual(chatterLogin)*/);
 
-            if(LoggedUser.Id == id)
+            if (LoggedUser.Id == id)
             {
                 chat = SavedMesesChat;
             }
@@ -395,13 +395,13 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChatByChatterId(int id)
         {
-           // if (id == LoggedUser.Id) return SavedMesesChat;
+            // if (id == LoggedUser.Id) return SavedMesesChat;
 
             return Chats.FirstOrDefault(x => x.Chatter.Id == id);
         }
 
         public UserChat GetChatById(int id)
-        {       
+        {
             return Chats.FirstOrDefault(x => x.Id == id);
         }
 
@@ -605,13 +605,10 @@ namespace TelegramLib.MainClasses
 
         public bool IsChatterBlocked(User chatter)
         {
+            if (chatter is null) return true;
+
             return LoggedUser.BlockedUsers.Any
                 (x => x.Id == chatter.Id);
-
-           // return !(toCheck is null);
-
-            /*            UserContactcs contact = Contacts.FirstOrDefault(x => x.ContactUserId == chatter.Id);
-                        return contact is null ? false : contact.IsBlockedUserBlocked;*/
         }
 
         public Message GetMessageById(int? id)
@@ -657,7 +654,7 @@ namespace TelegramLib.MainClasses
             }
 
             //Remove stat messages
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Chats[i].RemoveDateMessages();
             }
@@ -797,7 +794,7 @@ namespace TelegramLib.MainClasses
 
             if (mes is null) return;
 
-            if(mes is TextMessage mesText && 
+            if (mes is TextMessage mesText &&
                toEdit is TextMessage toEditText)
             {
                 mesText.Text = toEditText.Text;

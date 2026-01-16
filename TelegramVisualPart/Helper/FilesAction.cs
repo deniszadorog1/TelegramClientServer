@@ -288,12 +288,6 @@ namespace TelegramVisualPart.Helper
             string userImagePath = Path.Combine(GetImagesPath(), "UserImages");
 
             CopyFileToAnotherFolder(path, userImagePath);
-            /*            string fileName = Path.GetFileName(path);
-                        string destinationPath = Path.Combine(userImagePath, fileName);
-
-                        if (Path.Exists(destinationPath)) return;
-
-                        File.Copy(path, destinationPath, overwrite: true);*/
         }
 
         public static void AddNewNotifSound(string path)

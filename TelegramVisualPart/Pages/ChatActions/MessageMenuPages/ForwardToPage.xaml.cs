@@ -72,11 +72,11 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             };
             item.PreviewMouseDown += Contacts_PreviewMouseDown;
 
-            SetContatToApply(chat is TelegramLib.MainClasses.SavedMessagesChat ?
+            SetContactToApply(chat is TelegramLib.MainClasses.SavedMessagesChat ?
                 _system.LoggedUser : chat.Chatter, item);
         }
 
-        public void SetContatToApply(TelegramLib.MainClasses.User user,
+        public void SetContactToApply(TelegramLib.MainClasses.User user,
             ListBoxItem item)
         {
             ChatToApply contact = new ChatToApply(user);
@@ -87,9 +87,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 contact.AddedUserImage(user);
                 contact.TypeName.Text = user.Login;
                 contact.AutoDeletionType.Text = user.GetLastSeenInChat();
-
+                
                 contact.Tag = user.GetFirstImageName().Name;
-
             }
             else
             {

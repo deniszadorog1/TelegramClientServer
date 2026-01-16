@@ -42,8 +42,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private TelSystem _system;
 
-        public MediaMessage(TelSystem system, Image img, bool isSticker,
-            string senderImgName, DateTime sendTime, int? forwardedFromId = null)
+        public MediaMessage(TelSystem system, 
+            Image img, bool isSticker,
+            string senderImgName, DateTime sendTime, 
+            int? forwardedFromId = null)
         {
             _img = img;
             IsSticker = isSticker;
@@ -84,7 +86,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
-        public MediaMessage(string gifPath, string senderImgName, DateTime sentTime,
+        public MediaMessage(string gifPath, 
+            string senderImgName, DateTime sentTime,
             int? forwardedFromId)
         {
             _gifPath = gifPath;
@@ -136,8 +139,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
-        public MediaMessage(MediaElement media, string senderImgName,
-            MediaAction mediaLogicEl, int? forwardedFromId)
+        public MediaMessage(MediaElement media,
+            string senderImgName,
+            MediaAction mediaLogicEl, 
+            int? forwardedFromId)
         {
             _media = media;
             _senderImgName = senderImgName;

@@ -8,8 +8,8 @@ namespace TelegramVisualPart.Enums
 {
     public enum EmojiType
     {
-        Positive,
-        Negative,
+        Smiles,
+        Symbols,
         Other
     }
 }
