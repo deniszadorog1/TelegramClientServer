@@ -401,18 +401,11 @@ namespace TelegramVisualPart.Services
         // Get TelSystem
         public static async Task<TelSystem> GetTelSystem(string login, string password)
         {
-            /*            var date = new { Login = login, Password = password };
-
-                        var json = JsonConvert.SerializeObject(date);
-                        var contact = new StringContent(json, Encoding.UTF8, "application/json");*/
             var response = await _client.GetAsync($"api/StartPage/GetTelSystem?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
-            /*
-                        TelSystem? res = jsonResponse is null ? null :
-                            JsonConvert.DeserializeObject<TelSystem>(jsonResponse);
-            */
+
             TelSystem? res = jsonResponse is null ? null : JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
@@ -467,6 +460,19 @@ namespace TelegramVisualPart.Services
             var response = await _client.PostAsync("api/Settings/UpdateChatSettings", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task DeleteUserImage(
+            TelegramLib.MainClasses.UserParams.UserImage img, int userId)
+        {
+            var data = new { UserImg = img, UserId = userId };
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_host}api/Social/DeleteUserImage"),
+                Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
+            };
+            var response = await _client.SendAsync(request);
         }
 
         public static async Task ClearChat(UserChat chat)

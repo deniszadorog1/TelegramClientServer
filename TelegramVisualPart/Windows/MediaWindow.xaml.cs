@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,6 +25,7 @@ using TelegramLib.Models;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatControls.MediaActions;
 using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
 
 namespace TelegramVisualPart.Windows
@@ -58,13 +60,17 @@ namespace TelegramVisualPart.Windows
             if (_type == MediaShowType.UserImages ||
                 _type == MediaShowType.OtherUserImages) SetUserImages();
 
-
             godWindow.AddMediaWindow(this);
+
+            RemoveParamFromMenu();
         }
 
-        public void SetMenuParams()
+        public void RemoveParamFromMenu()
         {
-
+            if (_type != MediaShowType.UserImages)
+            {
+                UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
+            }
         }
 
         private List<string> _mediaPaths;
@@ -228,14 +234,10 @@ namespace TelegramVisualPart.Windows
             SetImageToShow(filePath);
         }
 
-
-
         //User Images(Profile) action 
-
         public (Image Img, DateTime sentTime, string Login)? _imgInfo;
         public List<(Image, DateTime, string)> _allImagesInfo = new List<(Image, DateTime, string)>();
        
-
         public void SetUserImages()
         {
             //_user - Chatter for who to set images
@@ -332,9 +334,49 @@ namespace TelegramVisualPart.Windows
             MediaMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
 
             UsersImageMenu.Copy.PreviewMouseDown += CopyFrame_PreviewMouseDown;
+            UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
             UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
             UsersImageMenu.WatchInFiles.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
             UsersImageMenu.Report.PreviewMouseDown += Report_PreviewMouseDown;
+        }
+
+        private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_system.LoggedUser.UserImages.Count <= 1) return;
+            
+            //TO MAKE REMOVE USER IMAGE FROM DB
+            //ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(filePath));
+            TelegramLib.MainClasses.UserParams.UserImage img = 
+                _system.LoggedUser.GetUserImageById(_tempMediaIndex);
+            ApiService.DeleteUserImage(img, _system.LoggedUser.Id);
+
+            //Remove in system 
+            _system.LoggedUser.RemoveImageByIndex(_tempMediaIndex);
+            
+            SetNewTempIndexAfterDeletion();
+
+            //Update in system
+            if (_godWindow is not null && 
+                _godWindow is MainWindow mainWindow)
+            {
+                //Update in temp page
+                SetUserImages();
+
+                //Update Chat(if visible)
+                mainWindow.UpdateChat();
+
+                //Update my profile
+                mainWindow.UpdateMyProfilePage();
+
+                //Update in SignalR (message, userTalkMessage)
+                SignalRService.UpdateUserImages(_system.LoggedUser);
+            }
+        }
+
+        private void SetNewTempIndexAfterDeletion()
+        {
+            if (_tempMediaIndex == 0) return;
+            _tempMediaIndex--;
         }
 
         private void Report_PreviewMouseDown(object sender, MouseEventArgs e)

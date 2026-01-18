@@ -73,6 +73,7 @@ namespace TelegramVisualPart.Services
 
         public static event Action<List<DateTime>, int>? RemoveManyMessagesDel;
 
+        public static event Action<TelegramLib.MainClasses.User>? UpdateUserImagesDel;
 
         private static bool _isChatEventsAreSet = false;
         public static bool GetIsChatEventsAreSet() => _isChatEventsAreSet;
@@ -344,6 +345,12 @@ namespace TelegramVisualPart.Services
                 RemoveManyMessagesDel?.Invoke(sentTimes, loggedUserId);
             });
 
+            _connection.On<TelegramLib.MainClasses.User>(
+                "UpdateUserImages", (user) =>
+            {
+                UpdateUserImagesDel?.Invoke(user);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -535,6 +542,12 @@ namespace TelegramVisualPart.Services
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("RemoveManyMessagesByDateTimes", 
                     sentTimes, loggedUserId, chatterId);
+        }
+
+        public static async Task UpdateUserImages(TelegramLib.MainClasses.User user)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateUserImages", user);
         }
     }
 }

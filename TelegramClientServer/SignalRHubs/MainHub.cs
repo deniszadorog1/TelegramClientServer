@@ -40,6 +40,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.All.SendAsync("UpdateContact", updatedContact);
         }
 
+        public async Task UpdateUserImages(TelegramLib.MainClasses.User user)
+        {
+            await Clients.All.SendAsync("UpdateUserImages", user);
+        }
+
         public async Task RemoveContact(User logged, User removed)
         {
             await Clients.User(removed.Id.ToString()).SendAsync("RemoveContact", logged, removed);

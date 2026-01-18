@@ -33,6 +33,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.MediaActions
             Copy.Icon.Kind = PackIconKind.ContentCopy;
             Copy.ButText.Text = "Copy";
 
+            Delete.Icon.Kind = PackIconKind.GarbageCanOutline;
+            Delete.ButText.Text = "Delete";
+
             SaveAs.Icon.Kind = PackIconKind.ContentSaveOutline;
             SaveAs.ButText.Text = "Save As...";
 

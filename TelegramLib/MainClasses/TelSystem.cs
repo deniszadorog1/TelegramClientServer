@@ -9,6 +9,7 @@ using System.Data.Entity.Migrations.Model;
 using System.Data.OleDb;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.FolderObjs;
@@ -805,6 +806,30 @@ namespace TelegramLib.MainClasses
         public void SetUserBlockParams(bool isBlock, User user)
         {
             Settings.SetBlockParams(isBlock, user);
+        }
+
+        public void UpdateChatterImage(User toUpdateUser)
+        {
+            User user = GetUserById(toUpdateUser.Id);
+            UserContactcs contact = GetContactById(toUpdateUser.Id);
+
+            if (user is null || LoggedUser.Id == toUpdateUser.Id) return;
+
+            //remove
+            int startRemoveIndex =
+                !(user.ImageMask is null) || IsChatterBlocked(user) ? 1 : 0;
+
+            user.UserImages.RemoveRange(startRemoveIndex, user.UserImages.Count - startRemoveIndex);
+            if(!(contact is null)) contact.UserImages.RemoveRange(startRemoveIndex, contact.UserImages.Count - startRemoveIndex);
+            
+            int startCount = !(toUpdateUser.ImageMask is null) ? 1 : 0;
+
+            //Remove others
+            for (int i = startCount; i < toUpdateUser.UserImages.Count; i++)
+            {
+                user.UserImages.Add(toUpdateUser.UserImages[i]);
+                if(!(contact is null)) contact.UserImages.Add(toUpdateUser.UserImages[i]);
+            }
         }
     }
 }

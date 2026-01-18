@@ -174,21 +174,25 @@ namespace TelegramLib.MainClasses
             ImageMask = null;
         }
 
-        public void AddUserImage(string fullPath)
+        public void AddUserImage(UserImage img)
         {
-            UserImage img = new UserImage()
-            {
-                Name = System.IO.Path.GetFileName(fullPath),
-                Date = DateTime.Now
-            };
-
             if(!(ImageMask is null))
             {
                 UserImages.Insert(1, img);
                 return;
             }
             UserImages.Insert(0, img);
+        }
 
+        public void RemoveImageByIndex(int index)
+        {
+            UserImages.RemoveAt(index);
+        }
+
+        public UserImage GetUserImageById(int id)
+        {
+            if (id < 0 || UserImages.Count - 1 < id) return null;
+            return UserImages[id];
         }
     }
 }

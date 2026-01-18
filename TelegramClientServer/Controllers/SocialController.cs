@@ -477,6 +477,8 @@ namespace TelegramClientServer.Controllers
             public UserContactcs? ToCheck { get; set; }
         }
 
+        
+
         [HttpPost("AddUserImage")]
         public void AddUserImage([FromBody] ToAddUserImage toAddUserImage)
         {
@@ -586,6 +588,18 @@ namespace TelegramClientServer.Controllers
         }
         public class AddSavedChatDTO
         {
+            public int UserId { get; set; }
+        }
+
+        [HttpDelete("DeleteUserImage")]
+        public void DeleteUserImage([FromBody] DeleteUserImageDTO dto)
+        {
+            DbService.RemoveUserImage(dto.UserImg, dto.UserId);
+        }
+
+        public class DeleteUserImageDTO
+        {
+            public TelegramLib.MainClasses.UserParams.UserImage UserImg { get; set; }
             public int UserId { get; set; }
         }
 

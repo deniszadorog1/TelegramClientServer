@@ -54,7 +54,8 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetUserImage()
         {
-            UserImage.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            UserImage.ImageSource = 
+                new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         public void SetUserParams()
@@ -263,8 +264,14 @@ namespace TelegramVisualPart.Pages.MyProfile
 
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
+                    UserImage img = new UserImage()
+                    {
+                        Name = System.IO.Path.GetFileName(filePath),
+                        Date = DateTime.Now
+                    };
+
                     //Add in system
-                    _system.LoggedUser.AddUserImage(filePath);
+                    _system.LoggedUser.AddUserImage(img);
 
                     //Add file in correct folder(if not added yet)
                     FilesAction.AddNewUserImage(filePath);
@@ -276,7 +283,14 @@ namespace TelegramVisualPart.Pages.MyProfile
                     Window window = Window.GetWindow(this);
                     if (window is MainWindow mainWindow)
                     {
-                            
+                        //Update in temp page
+                        SetUserImage();
+
+                        //Update Chat(if visible)
+                        mainWindow.UpdateChat();
+
+                        //Update in SignalR (message, userTalkMessage)
+                        SignalRService.UpdateUserImages(_system.LoggedUser);
                     }
                 }
 

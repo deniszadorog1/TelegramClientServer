@@ -1329,7 +1329,6 @@ namespace TelegramVisualPart.Pages
                     SetUnreadForUserTalk(mes, _system.Chats[i]);
 
                 items.Add(item);
-
                 _chatsDict.TryAdd(_system.Chats[i].Id, item);
             }
 
@@ -1348,6 +1347,20 @@ namespace TelegramVisualPart.Pages
             }
 
             MarkStartFolderChat();
+        }
+
+        public void UpdateChatTalkMessage(int userId)
+        {
+            TelegramLib.MainClasses.UserChat chat = 
+                _system.GetChatByChatterId(userId);
+            if (chat is null) return;
+
+            _chatsDict.TryGetValue(chat.Id, out ListBoxItem item);
+            if (item is null || item.Content is not UserTalkMessage talkMes) return;
+
+            talkMes.UpdateImage(chat.Chatter.GetFirstImageNameInString());
+
+           // SearchControl.SetContacts();
         }
 
         public void ClearAllChatsBgs(bool isLow = false)
@@ -1387,7 +1400,9 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat)
         {
             if (mes is null || chat is null) return;
-            mes.SetUnreadMessageValue(chat.GetAmountOfUnreadMessages(_system.LoggedUser.Id));
+            mes.SetUnreadMessageValue(
+                chat.GetAmountOfUnreadMessages(
+                _system.LoggedUser.Id));
         }
 
         public void SetMessageInUserTalkControl(int chatId, string message)
@@ -2823,6 +2838,14 @@ namespace TelegramVisualPart.Pages
         {
             if (UserChat is null) return;
             UserChat.ClearBasicSignalRMethods();
+        }
+
+        public void UpdateChat()
+        {
+            if (UserChat.Visibility != Visibility.Visible ||
+                UserChat.GetChat() is null) return;
+
+            UserChat.SetChatMessages();
         }
     }
 }

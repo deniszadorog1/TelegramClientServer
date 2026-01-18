@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -65,6 +66,12 @@ namespace TelegramVisualPart.UserControls
 
             ImageIcon.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
+        }
+
+        public void UpdateImage(string imgName)
+        {
+            _imgName = imgName;
+            SetContactImage();
         }
 
         public string GetLastMessageText()

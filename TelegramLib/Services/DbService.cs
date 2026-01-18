@@ -3296,9 +3296,34 @@ namespace TelegramLib.Services
             }
         }
 
+        public static void RemoveUserImage(
+            TelegramLib.MainClasses.UserParams.UserImage toRemove,
+            int userId)
+        {
+            if (toRemove is null) return;
+            const int maxDateDiffer = 100;
+            using (var model = new TelegramModel())
+            {
+/*                var from = toRemove.Date.AddMilliseconds(-maxDateDiffer);
+                var to = toRemove.Date.AddMilliseconds(maxDateDiffer);
+*/
+                model.UserImage img =
+                    model.UserImage.FirstOrDefault(x =>
+                        x.UserId == userId &&
+                        x.Name == toRemove.Name/* &&
+                        x.AddDate >= from &&
+                        x.AddDate <= to*/);
+
+                if (img is null) return;
+                model.UserImage.Remove(img);
+
+                model.SaveChanges();
+            }
+        }
+
         public static void AddUserImage(TelegramLib.MainClasses.User user, string userImageName)
         {
-            if (IsUserImageisExist(user, userImageName)) return;
+            if (IsUserImageIsExist(user, userImageName)) return;
             using (var model = new TelegramModel())
             {
                 model.UserImage img = new model.UserImage();
@@ -3313,7 +3338,9 @@ namespace TelegramLib.Services
             }
         }
 
-        private static bool IsUserImageisExist(TelegramLib.MainClasses.User user, string userImageNmae)
+
+
+        private static bool IsUserImageIsExist(TelegramLib.MainClasses.User user, string userImageNmae)
         {
             using (var model = new TelegramModel())
             {

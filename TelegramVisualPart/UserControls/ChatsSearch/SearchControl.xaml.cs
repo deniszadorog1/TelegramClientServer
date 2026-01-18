@@ -43,6 +43,12 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             SetContacts();
         }
 
+        public void UpdateContacts(TelSystem system)
+        {
+            _system = system;
+            SetContacts();
+        }
+
         public void SetContacts()
         {
             ChatsPanel.Children.Clear();
