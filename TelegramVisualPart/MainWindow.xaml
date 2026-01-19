@@ -31,7 +31,13 @@
         SizeChanged="Window_SizeChanged"
         LayoutUpdated="Window_LayoutUpdated"
         MouseMove="Window_MouseMove"
-        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp">
+        
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"
+        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        
+        MaxHeight="1040"
+        MaxWidth="1930"
+        >
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"

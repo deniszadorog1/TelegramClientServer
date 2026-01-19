@@ -1,5 +1,6 @@
 ﻿
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\MenuGlobalWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\ToastWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\EnterPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\EnterInAccount\RegistrationPage.xaml;;
@@ -15,6 +16,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageAuto
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageMenuPages\IsMakeActionOnBothSides.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\PinMessagePage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SavedMessagesChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SendMedia\SendMediaPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
@@ -84,6 +86,8 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Med
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaActions\UserImageMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MediaMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\MonthDay.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\SavedChatControls\MediaParam.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\SavedChatControls\SavedChatMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\TextMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserChatInfoMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\UserContactControls\UserContactMenu.xaml;;
@@ -95,6 +99,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\Sear
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatsSearch\SearchMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\SentLinkControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ContactsControls\UserContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\EnumPrivacyButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconButton.xaml;;
@@ -102,6 +107,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\IconT
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\MenuIconTextBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleIconBut.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\DifferButs\ToggleTextBut.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\FolderControls\FolderMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtons.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LeftButtonsButton.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\MainPage\LittleMainControls\TotalFoundMessasges.xaml;;
@@ -140,5 +146,4 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Windows\MediaWindow.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\FolderControls\FolderMenu.xaml;;
 

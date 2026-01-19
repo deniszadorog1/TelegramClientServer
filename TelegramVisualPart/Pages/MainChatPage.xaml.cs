@@ -48,6 +48,7 @@ using TelegramVisualPart.UserControls.MainPage.LittleMainControls;
 using TelegramVisualPart.Windows;
 using static MaterialDesignThemes.Wpf.Theme;
 using static MaterialDesignThemes.Wpf.Theme.ToolBar;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using ListBoxItem = System.Windows.Controls.ListBoxItem;
 using Page = System.Windows.Controls.Page;
@@ -99,6 +100,32 @@ namespace TelegramVisualPart.Pages
             SignalRService.RemoveContactDel += RemoveContact;
 
             SignalRService.UpdateChatsControlsDel += UpdateChatByChatter;
+
+            SignalRService.UpdateOnlineStatusDel += OnlineStatusUpdated;
+        }
+
+        public void OnlineStatusUpdated(TelegramLib.MainClasses.User toUpdate)
+        {
+            if (toUpdate is null) return;
+            Dispatcher.InvokeAsync(async () =>
+            {
+                IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.LastSeen);
+
+                bool isVis = await SignalRHelperService.IsCanBeAddedByShareType(toUpdate, shareType);
+
+                //Find user talk message 
+                ListBoxItem? message = GetChatControlItemByUserLogin(toUpdate.Name);
+
+                if (message is null || message.Content is not UserTalkMessage talkControl) return;
+
+                //Update circle visibility
+                if (!isVis)
+                {
+                    talkControl.SetOnlineCircleVisibility(false);
+                    return;
+                }
+                talkControl.SetOnlineCircleVisibility(toUpdate.IsOnline);
+            });
         }
 
         public async Task UpdateChatByChatter(TelegramLib.MainClasses.User user)
@@ -940,10 +967,12 @@ namespace TelegramVisualPart.Pages
             {
                 ChatsBox.Visibility = Visibility.Visible;
             }
-            if (sender is not UserContact userControl) return;
-
-            SetUserChat(userControl.UserLogin.Text);
-            await RepaintUserChatsPanel();
+            if (sender is ListBoxItem item &&
+                item.Content is UserContact userControl)
+            {
+                SetUserChat(userControl.UserLogin.Text);
+                await RepaintUserChatsPanel();
+            }
         }
 
         public void SetUserChat(string userLogin)
@@ -953,6 +982,16 @@ namespace TelegramVisualPart.Pages
             _system.SetTempChatter(userLogin);
             //Check isf set
             if (!_system.IsChatterIsSet()) return;
+
+            //Is other window
+            if (((MainWindow)Window.GetWindow(this)).IsChattersChatIsOnOtherWindow(_system.ChosenChatContact))
+            {
+                //Bring to front
+                ((MainWindow)Window.GetWindow(this)).BringWindowToView(_system.GetUserChatByChatterId(
+                _system.ChosenChatContact.Id));
+
+                return;
+            }
 
             ChosoeChatBorder.Visibility = Visibility.Hidden;
             UserChat.Visibility = Visibility.Visible;
@@ -1034,13 +1073,16 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat = talkControl.GetChat() is null ?
                 _system.GetChatById(id) : talkControl.GetChat();
 
+            ((MainWindow)Window.GetWindow(this)).BringWindowToView(chat);
+
             //Is Chat is opened on other window
-            if (chat is TelegramLib.MainClasses.SavedMessagesChat &&
-                ((MainWindow)Window.GetWindow(this)).IsSavedMessesIsOnlyChat()) return;
+            if (((MainWindow)Window.GetWindow(this)).IsSavedMessesIsOnlyChat() &&
+                chat is TelegramLib.MainClasses.SavedMessagesChat) return;
 
             else if (chat is not TelegramLib.MainClasses.SavedMessagesChat &&
                 (((MainWindow)Window.GetWindow(this)).IsSameOnlyChatById(id) ||
                 IsSameChatIsOpened(chat))) return;
+
 
             SetChosenChatBg(item);
             talkControl.SetVisibilityToUnreadEllipse(false);
@@ -1064,7 +1106,7 @@ namespace TelegramVisualPart.Pages
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
             chat.IsMarked = false;
-            if(chat is not TelegramLib.MainClasses.SavedMessagesChat) await ApiService.UpdateChat(chat);
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat) await ApiService.UpdateChat(chat);
 
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
             {
@@ -1335,6 +1377,7 @@ namespace TelegramVisualPart.Pages
             foreach (var item in items)
             {
                 ChatsBox.Items.Add(item);
+
             }
 
             for (int i = 0; i < ChatsBox.Items.Count; i++)
@@ -1346,12 +1389,26 @@ namespace TelegramVisualPart.Pages
                 }
             }
 
+            //Set Online circle
+            SetOnlineCircleVisibility();
+
             MarkStartFolderChat();
+        }
+
+        public void SetOnlineCircleVisibility()
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                for (int i = 0; i < _system.Chats.Count; i++)
+                {
+                    OnlineStatusUpdated(_system.Chats[i].GetChatter());
+                }
+            });
         }
 
         public void UpdateChatTalkMessage(int userId)
         {
-            TelegramLib.MainClasses.UserChat chat = 
+            TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByChatterId(userId);
             if (chat is null) return;
 
@@ -1360,7 +1417,7 @@ namespace TelegramVisualPart.Pages
 
             talkMes.UpdateImage(chat.Chatter.GetFirstImageNameInString());
 
-           // SearchControl.SetContacts();
+            // SearchControl.SetContacts();
         }
 
         public void ClearAllChatsBgs(bool isLow = false)
@@ -1664,6 +1721,9 @@ namespace TelegramVisualPart.Pages
 
                 ChatsBox.Items.Add(item);
                 UpdateAutoDelDurationVis(chat);
+
+                OnlineStatusUpdated(chat.GetChatter());
+
             }
 
             HideAllChatBlocks();
@@ -2220,7 +2280,7 @@ namespace TelegramVisualPart.Pages
 
             MainWindow window = new MainWindow(_system, chat, main);
 
-            window.Opacity = 0;      
+            window.Opacity = 0;
             window.Show();
 
             window.ContentRendered += (s, e) =>
@@ -2242,14 +2302,14 @@ namespace TelegramVisualPart.Pages
 
         public bool IsChatIsOpened(TelegramLib.MainClasses.UserChat chat)
         {
-            if (UserChat.Visibility == Visibility.Hidden || 
+            if (UserChat.Visibility == Visibility.Hidden ||
                 chat is null ||
                 UserChat._chat is null) return false;
-            
+
             if (UserChat._chat is TelegramLib.MainClasses.SavedMessagesChat &&
                chat is TelegramLib.MainClasses.SavedMessagesChat) return true;
 
-            return chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+            return chat is not TelegramLib.MainClasses.SavedMessagesChat &&
                 UserChat._chat is not TelegramLib.MainClasses.SavedMessagesChat &&
                 UserChat._chat.Id == chat.Id;
         }
@@ -2620,7 +2680,7 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.Messages.Message mes)
         {
             //Is blocked
-            if(userIdToSend is not null && 
+            if (userIdToSend is not null &&
                 _system.IsChatterBlocked(_system.GetUserById((int)userIdToSend)))
             {
                 return;

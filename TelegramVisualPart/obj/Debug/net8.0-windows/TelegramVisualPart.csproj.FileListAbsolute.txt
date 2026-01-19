@@ -140,7 +140,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\App.g
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart_Content.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart_MarkupCompile.cache
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart_MarkupCompile.lref
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.deps.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
@@ -380,3 +379,4 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\Pages\ChatActions\SavedMessagesChatPage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\CustWindows\MenuGlobalWindow.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\CustWindows\MenuGlobalWindow.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart_MarkupCompile.lref

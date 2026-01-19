@@ -139,7 +139,6 @@ namespace TelegramVisualPart.Pages.Contacts
                 ((MainWindow)Window.GetWindow(this)).AddChatInMainPage(toAdd);
             }
 
-
             ContactClicked?.Invoke(sender, EventArgs.Empty);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }

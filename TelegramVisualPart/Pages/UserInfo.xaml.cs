@@ -66,10 +66,10 @@ namespace TelegramVisualPart.Pages
 
         public void UpdateContact(UserContactcs contact)
         {
+            //Check this
             ContactInfo.UpdateParams(contact);
-
-            ContactInfo.SetContactInfo(_chat, _system,
-                _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
+            /*ContactInfo.SetContactInfo(_chat, _system,
+                _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);*/
         }
 
         public int GetHiddenLineIfContactNull()

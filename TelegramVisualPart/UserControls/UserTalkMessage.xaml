@@ -16,11 +16,23 @@
         <Grid Grid.Column="0">
 
             <Grid>
-                <Ellipse Name="UserEllipseImage" Width="55" Height="55">
-                    <Ellipse.Fill>
-                        <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+
+                <Grid>
+                    <Ellipse Name="UserEllipseImage" Width="55" Height="55">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="ImageIcon" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <Grid Margin="5 5 10 7">
+                        <Ellipse Name="OnlineCircle"
+                                 Width="10" Height="10"
+                                 Fill="{StaticResource TempActiveTextColor}"
+                                 VerticalAlignment="Bottom"
+                                 HorizontalAlignment="Right"
+                                 Visibility="Hidden"/>
+                    </Grid>
+                </Grid>
 
                 <materialDesign:PackIcon Name="SavedMassageIcon"
                                          Visibility="Hidden"
@@ -30,7 +42,7 @@
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"/>
             </Grid>
-            
+
             <Grid Name="AutoDelDurationGrid"
                   Visibility="Hidden"
                   VerticalAlignment="Bottom"

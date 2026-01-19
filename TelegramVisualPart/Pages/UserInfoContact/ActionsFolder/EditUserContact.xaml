@@ -94,7 +94,7 @@
                            FontFamily="{DynamicResource AppFont}"
                            FontSize="16"
                            Foreground="{StaticResource TempActiveTextColor}">
-                    <Run Text="SetPhoto for"/>
+                    <Run Text="Set photo for"/>
                     <Run Text="Name" Name="UserLogin"/>
                 </TextBlock>
             </Grid>
@@ -112,8 +112,7 @@
                            FontSize="16"
                                Margin="20 0 0 0"
                            Foreground="{StaticResource TempActiveTextColor}">
-                    <Run Text="Remove contact mask image"/>
-                    <Run Text="Name" Name="NameToRemoveRun"/>
+                    <Run Text="Remove contact mask"/>
                 </TextBlock>
             </Grid>
 

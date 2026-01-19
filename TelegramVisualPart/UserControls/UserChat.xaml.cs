@@ -747,7 +747,7 @@ namespace TelegramVisualPart.UserControls
 
             SetChatterImage();
 
-            SettingEnded?.Invoke();
+            SettingEnded?.Invoke(); 
         }
 
         public void SetIsSavedMessagesChat(TelegramLib.MainClasses.UserChat chat)
@@ -3177,7 +3177,10 @@ namespace TelegramVisualPart.UserControls
                     SystemParameters.PrimaryScreenWidth &&
                     !_mainWindow.GetIsLongContnetChatState())
                 {
+                    MoveWindowIfNeed(windowWidth);
+
                     _mainWindow.SetIsLongContnetChatState(true);
+
                     ((MainWindow)Window.GetWindow(this)).Width =
                         windowWidth + _userContactWidth;
                 }
@@ -3189,6 +3192,18 @@ namespace TelegramVisualPart.UserControls
 
             await info.SetContactInfo(_chat, _system,
                 _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
+        }
+
+        public void MoveWindowIfNeed(double windowWidth)
+        {
+            const int secondLevel = 1500;
+            if (secondLevel <= windowWidth) return;
+
+            Window window = Window.GetWindow(this);
+            double moveParam = SystemParameters.PrimaryScreenWidth - (window.Left + windowWidth + _userContactWidth);
+
+            if (moveParam > 0) return;
+            window.Left = window.Left - Math.Abs(moveParam);
         }
 
         public void UpdateContactInfoBlock()

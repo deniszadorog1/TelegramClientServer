@@ -117,7 +117,11 @@ namespace TelegramLib.MainClasses
         public User ChosenChatContact;
         public void SetTempChatter(string login)
         {
-            //ChosenChatContact = Chatters.Where(x => x.Name == login).FirstOrDefault();
+            TelegramLib.MainClasses.UserChat chat = 
+                Chats.FirstOrDefault(x => x.Chatter.Login == login);
+
+            if (chat is null && !(chat is SavedMessagesChat)) return;
+            ChosenChatContact = chat.Chatter;
         }
 
         public UserChat GetChosenChat()
@@ -165,15 +169,6 @@ namespace TelegramLib.MainClasses
 
             throw new Exception("cant be chat should be set!!!");
 
-            /*  UserChat newChat = new UserChat(Chats.Count + 1, GetContactByName(chatterName), new List<Message>(),
-                  new ChatFitures.ChatBackground("fray.jpg", false, true));
-
-              Chats.Add(newChat);
-
-              ChosenChatContact = newChat.Chatter;
-              SetChatBg();
-
-              return newChat;*/
         }
 
         public void SetChatBg(UserChat chat)

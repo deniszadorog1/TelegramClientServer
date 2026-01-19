@@ -141,6 +141,27 @@ namespace TelegramVisualPart.Services
                 textBlock, user.IsOnline, user.LastSeenOnline);
         }
 
+        public static async Task<bool> IsCanBeAddedByShareType(TelegramLib.MainClasses.User user,
+        IsPrivacyException type)
+        {
+            MainSettings settings = await ApiService.GetSettingsByUserId(user.Id);
+
+            bool isStop = await IsAndSetStopPath(PrivacySettingType.LastSeen, user,
+                settings: settings);
+
+            if (isStop) return false;
+
+            if (type == IsPrivacyException.Share) return true;
+
+            if (settings.PrivacySettings.LastSeenPrivacy.ShareType ==
+                TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
+                type == IsPrivacyException.NeverShare)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public static async Task SetPhoneNumber(TelegramLib.MainClasses.User user,
             IsPrivacyException type, TelegramLib.MainClasses.UserChat chat,
             TextBlock textBlock, MainSettings settings = null)

@@ -112,6 +112,8 @@ namespace TelegramVisualPart.Helper
             await SignalRService.UpdateContactForwardStatus(system.LoggedUser);
 
             await SignalRService.UpdateContactBioVis(system.LoggedUser);
+
+            await SignalRService.UpdateOnlineStatus(system.LoggedUser);
         }
     }
 }

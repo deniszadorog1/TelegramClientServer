@@ -16,10 +16,12 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
@@ -121,7 +123,8 @@ namespace TelegramVisualPart
 
         public bool IsSavedMessesIsOnlyChat()
         {
-            return _chatWindows.Any(x => x._onlyChatUserChat is TelegramLib.MainClasses.SavedMessagesChat);
+            MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat is TelegramLib.MainClasses.SavedMessagesChat);
+            return window is not null;
         }
 
         public bool GetIsOnlyChat()
@@ -171,13 +174,13 @@ namespace TelegramVisualPart
             });
         }
 
-        private void UpdateUserSignalR(User updated)
+        private void UpdateUserSignalR(TelegramLib.MainClasses.User updated)
         {
             Dispatcher.Invoke(() =>
             {
                 if (_system is null) return;
 
-                User? user = _system.Chats
+                TelegramLib.MainClasses.User? user = _system.Chats
                 .Select(x => x.Chatter)
                 .FirstOrDefault(x => x.Id == updated.Id);
 
@@ -250,7 +253,7 @@ namespace TelegramVisualPart
         {
             string testLogPas = "qwe";
 
-            User user = await ApiService.GetUser(testLogPas, testLogPas);
+            TelegramLib.MainClasses.User user = await ApiService.GetUser(testLogPas, testLogPas);
             if (user is not null)
             {
                 _system = await ApiService.GetTelSystem(testLogPas, testLogPas);
@@ -627,8 +630,11 @@ namespace TelegramVisualPart
 
         public void WindowSizeChanged()
         {
-            if (this.ActualHeight < SystemParameters.WorkArea.Height ||
-                this.ActualWidth < SystemParameters.WorkArea.Width)
+            double width = this.ActualWidth;
+            double height = this.ActualHeight;
+
+            if (height < SystemParameters.WorkArea.Height ||
+                width < SystemParameters.WorkArea.Width)
             {
                 WindowSizerIcon.Kind = PackIconKind.WindowMaximize;
                 _isMax = false;
@@ -923,7 +929,7 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
 
-            Folder folder = _system.GetFolderByName(folderName);
+            TelegramLib.MainClasses.FolderObjs.Folder folder = _system.GetFolderByName(folderName);
             if (folder is null) return;
 
             chatPage.SetChosenFolder(folder);
@@ -1011,6 +1017,7 @@ namespace TelegramVisualPart
 
             //window.Activate();          
             window.Topmost = true;
+            window.Topmost = false;
         }
 
         //from chat window
@@ -1199,7 +1206,7 @@ namespace TelegramVisualPart
             BlockFrame.Content = page;
         }
 
-        public async Task DeleteChat(User chatter, bool isDeleteForOtherUser)
+        public async Task DeleteChat(TelegramLib.MainClasses.User chatter, bool isDeleteForOtherUser)
         {
             if (MainFrame.Content is not MainChatPage page) return;
             await page.DeleteChat(chatter, isDeleteForOtherUser);
@@ -1479,5 +1486,40 @@ namespace TelegramVisualPart
             myProfSet.SetUserImage();
         }
 
+
+        public bool BringWindowToView(UserChat chat)
+        {
+            MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id &&
+            _onlyChatUserChat.GetType() == chat.GetType());
+
+            if (window is null) return false;
+
+            if (window is not null)
+            {
+                window.Topmost = true;
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    window.Topmost = false;
+                    window.UpperBorder.Focus();
+                }));
+            };
+            return true;
+        }
+
+        public bool IsChattersChatIsOnOtherWindow(TelegramLib.MainClasses.User user)
+        {
+            return _chatWindows.Any(x =>
+            (x._onlyChatUserChat is TelegramLib.MainClasses.SavedMessagesChat && _system.LoggedUser.Id == user.Id) ||
+            (x._onlyChatUserChat is not TelegramLib.MainClasses.SavedMessagesChat && x._onlyChatUserChat.Chatter.Id == user.Id));
+        }
+
+        private void Window_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_bossWindow is null)
+            {
+                this.Topmost = true;
+                this.Topmost = false;
+            }
+        }
     }
 }

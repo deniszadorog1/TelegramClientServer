@@ -57,7 +57,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private bool _isSetMaxHeight;
 
         public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
-            TelSystem system, TelegramLib.MainClasses.UserContactcs contact, bool isSetMaxHeight = true)
+            TelSystem system, TelegramLib.MainClasses.UserContactcs contact, 
+            bool isSetMaxHeight = true)
         {
             _system = system;
             _chat = chat;
@@ -347,6 +348,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 if (_chat is null || 
                (_chat is not TelegramLib.MainClasses.SavedMessagesChat && 
                _chat.GetChatter().Id != toUpdate.Id)) return;
+
                 HelperService.SetOnlineStatusInTextBox(LastSeenOnline, toUpdate.IsOnline, toUpdate.LastSeenOnline);
             });
         }

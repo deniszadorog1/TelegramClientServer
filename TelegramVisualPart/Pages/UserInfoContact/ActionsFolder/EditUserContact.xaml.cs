@@ -49,6 +49,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         public void AddNewUserBasicParams()
         {
             PageNameBlock.Text = "New Contact";
+            UserLogin.Text = _user.Login;
 
             BgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(System.IO.Path.GetFileName(_user.GetFirstImageName().Name)), UriKind.Absolute));
@@ -80,6 +81,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             BgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
 
+            UserLogin.Text = _user.Login;
+
             FirstNameBox.Text = _contact.Name;
             LastNameBox.Text = _contact.Surname;
 
@@ -104,7 +107,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             if (_isAddNewContact)
             {
                 //Add new contact
-
                 ToAddContact(_user);
             }
             else

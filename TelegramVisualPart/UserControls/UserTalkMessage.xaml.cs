@@ -154,5 +154,10 @@ namespace TelegramVisualPart.UserControls
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
             SavedMassageIcon.Visibility = Visibility.Visible;
         }
+
+        public void SetOnlineCircleVisibility(bool isVis)
+        {
+            OnlineCircle.Visibility = isVis ? Visibility.Visible : Visibility.Hidden;
+        }
     }
 }
