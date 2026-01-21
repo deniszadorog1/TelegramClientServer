@@ -20,9 +20,18 @@ namespace TelegramVisualPart.Pages.ChatActions
     /// </summary>
     public partial class CalendarPage : Page
     {
+        private bool? _isSelectDaysVis = null;
         public CalendarPage()
         {
             InitializeComponent();
+        }
+
+        public CalendarPage(bool isSelectDaysVis)
+        {
+            _isSelectDaysVis = isSelectDaysVis;
+            InitializeComponent();
+
+            if (!isSelectDaysVis) SelectDaysBut.Visibility = Visibility.Hidden;
         }
 
         private void CancelBut_MouseLeave(object sender, MouseEventArgs e)
@@ -89,6 +98,12 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private void Calendar_SelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(_isSelectDaysVis is not null)
+            {
+                ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                return;
+            }
+
             if (ClearHistoryBut.Visibility == Visibility.Visible) return;
 
             List<DateTime> chosenDates = Calendar.SelectedDates.ToList();

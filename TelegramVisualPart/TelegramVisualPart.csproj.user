@@ -49,6 +49,9 @@
     <Compile Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\SetScheduleMessage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\LittleMenuPages\CustomMute.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -215,6 +218,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\SelectionTick.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatControls\ChatMessages\SendMessageMenu.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml.cs">
@@ -489,6 +495,9 @@
     <Page Update="Pages\ChatActions\SendMedia\SendMediaPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ChatActions\SetScheduleMessage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\LittleMenuPages\CustomMute.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -655,6 +664,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\SelectionTick.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ChatMessages\SendMessageMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ChatMessages\ShareContactControl.xaml">

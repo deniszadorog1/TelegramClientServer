@@ -31,6 +31,8 @@ namespace TelegramLib.MainClasses
 
         public List<TelegramLib.MainClasses.Messages.Message> PinnedMessages { get; set; }
 
+        public List<Messages.Message> ScheduleMessages { get; set; }
+
         public UserChat(int id, User chatter,
             List<Messages.Message> messages,
             ChatBackground bg, AutoDeleteType type,
@@ -555,6 +557,23 @@ namespace TelegramLib.MainClasses
             {
                 Messages.Remove(mes);
             }
+        }
+
+        public void AddScheduleMessage(
+            TelegramLib.MainClasses.Messages.Message message)
+        {
+            ScheduleMessages.Add(message);
+        }
+
+        public void RemoveScheduleMessage(
+            int messId)
+        {
+            TelegramLib.MainClasses.Messages.Message toRemove =
+                ScheduleMessages.FirstOrDefault(x => x.Id == messId);
+
+            if (toRemove is null) return;
+
+            ScheduleMessages.Remove(toRemove);
         }
 
     }

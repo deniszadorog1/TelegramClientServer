@@ -1,0 +1,132 @@
+﻿<Page x:Class="TelegramVisualPart.Pages.ChatActions.SetScheduleMessage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="250" d:DesignWidth="400"
+      Height="250" Width="400"
+      Title="SetScheduleMessage">
+
+    <Border CornerRadius="10" 
+            Background="{StaticResource DarkThemeOne}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="75"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Name="PageName"
+                       Text="Send this message on..."
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="10 0 0 0"
+                       Foreground="White"
+                       FontSize="18"
+                       FontFamily="{DynamicResource AppFont}"/>
+
+            <StackPanel Name="DateGrid"
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+
+                <TextBox Name="DateBox"
+                         Width="90"
+                         HorizontalContentAlignment="Center"
+                         Foreground="White"
+                         materialDesign:TextFieldAssist.UnderlineBrush="White"                         
+                         Text="January 20"
+                         FontSize="16"
+                         FontFamily="{DynamicResource AppFont}"
+                         Background="Transparent"
+                         PreviewMouseLeftButtonDown="DateBox_PreviewMouseLeftButtonDown"/>
+
+                <TextBlock Name="DateDividerBlock"
+                           Text="at" 
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           Margin="10 0 10 0"
+                           FontSize="16"
+                           FontFamily="{DynamicResource AppFont}"/>
+
+                <Grid>
+                    <TextBox Name="EmptyTimeBox"
+                             Width="75"
+                             materialDesign:TextFieldAssist.UnderlineBrush="White"     
+                             CaretBrush="White"/>
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        <TextBox Name="HourBox"
+                                 Foreground="White"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="Transparent"                         
+                                 Text="12"
+                                 FontSize="16"
+                                 CaretBrush="White"
+                                 FontFamily="{DynamicResource AppFont}"
+                                 VerticalAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="2"
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                                 
+                                 PreviewTextInput="DigitInput_PreviewTextInput"
+                                 TextChanged="HourAndMinBox_TextChanged"/>
+
+                        <TextBlock Name="TimeDividerBlock"
+                                   Text=":" 
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   Margin="5 0 5 0"
+                                   FontSize="16"
+                                   FontFamily="{DynamicResource AppFont}"
+                                   />
+
+                        <TextBox Name="MinuteBox"
+                                 Foreground="White"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="Transparent"                         
+                                 Text="12"
+                                 CaretBrush="White"
+                                 FontSize="16"
+                                 FontFamily="{DynamicResource AppFont}"
+                                 MaxLength="2"
+                                 materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                                 
+                                 PreviewTextInput="DigitInput_PreviewTextInput"
+                                 TextChanged="HourAndMinBox_TextChanged"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </StackPanel>
+
+            <StackPanel Name="ButtonsStack"
+                        Grid.Row="2">
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal" 
+                        HorizontalAlignment="Right" Margin="0 15 10 5">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
+                            Content="Cancel" Background="Transparent" BorderThickness="0"
+                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            Foreground="{StaticResource TempActiveTextColor}"
+                            Click="CancelBut_Click"/>
+
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="ScheduleBut"
+                            Content="Schedule" Background="Transparent" BorderThickness="0"
+                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Left" FontSize="14"
+                            Click="ScheduleBut_Click"  Margin="5 0 5 0" 
+                            Foreground="{StaticResource TempActiveTextColor}"/>
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Page>

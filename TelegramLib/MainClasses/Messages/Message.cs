@@ -15,10 +15,11 @@ namespace TelegramLib.MainClasses.Messages
         public int SenderUserId { get; set; }
         public bool IsLoggedUserSent { get; set; }
         public DateTime SentTime { get; set; }
-        public bool IsRead { get; set; }       
+        public bool IsRead { get; set; }
         public bool IsPinned { get; set; }
         public int? ForwardedFromId { get; set; }
 
+        public bool IsSchedule { get; set; }
         public Message(int id, int senderUserId,
             DateTime sentTime, bool isRead, bool isPinned,
             int? forwardedFromId)
@@ -71,6 +72,6 @@ namespace TelegramLib.MainClasses.Messages
             return true;
         }
 
-        
+
     }
 }

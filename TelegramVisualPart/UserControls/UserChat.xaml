@@ -10,6 +10,7 @@
              xmlns:buts="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:Emojis="clr-namespace:TelegramVisualPart.UserControls.ChatControls.Emojis"
              xmlns:iconBut="clr-namespace:TelegramVisualPart.UserControls.DifferButs"   
+             xmlns:sendMenu="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              
              d:DesignHeight="450" d:DesignWidth="800" 
              
@@ -438,7 +439,8 @@
                       Background="Transparent"
                       MouseEnter="SendMessageGrid_MouseEnter"
                       MouseLeave="SendMessageGrid_MouseLeave"
-                      PreviewMouseDown="SendMessageGrid_PreviewMouseDown">
+                      PreviewMouseLeftButtonDown="SendMessageGrid_PreviewMouseDown"
+                      PreviewMouseRightButtonDown="SendMessageGrid_PreviewMouseRightButtonDown">
                     <materialDesign:PackIcon Kind="Send" Name="SendIcon"
                                              Width="35"
                                              Height="35"
@@ -496,6 +498,14 @@
                 VerticalAlignment="Top"
                 Panel.ZIndex="100"
                 Visibility="Hidden"/>
+
+        <sendMenu:SendMessageMenu x:Name="SendMesMenu"
+                                  Grid.Row="0" Grid.RowSpan="5" 
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Bottom"
+                                  Panel.ZIndex="100"
+                                  Margin="40"
+                                  Visibility="Hidden"/>
 
         <Canvas Name="MessageMenu"
               Grid.RowSpan="4" 

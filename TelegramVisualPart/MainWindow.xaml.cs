@@ -608,6 +608,8 @@ namespace TelegramVisualPart
             if (MainFrame.Content is MainChatPage page)
             {
                 page.UserChat.UserChatMenu.Visibility = Visibility.Hidden;
+                page.UserChat.SendMesMenu.Visibility = Visibility.Hidden;
+
                 page.ClearMenusCanvas();
             }
             if (SecondaryFrame.Content is UserInfo info)

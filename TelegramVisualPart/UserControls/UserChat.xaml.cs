@@ -57,6 +57,8 @@ namespace TelegramVisualPart.UserControls
             SetAutoDeleteTimer();
 
             SetBasicSignalRMethods();
+
+            SendMesMenu.SetUserChatControl(this, _system);
         }
 
         public void SetBasicSignalRMethods()
@@ -76,10 +78,10 @@ namespace TelegramVisualPart.UserControls
 
             SignalRService.DeleteMessageByIdDel += RemoveMessageById;
             SignalRService.RemoveManyMessagesDel += RemoveManyMessages;
-            
+
             SignalRService.ToPinMessageDel += PinMessage;
             SignalRService.StatMessageReceived += SetStatMessageInFromSignalR;
-            
+
             SignalRService.EditMessageDel += EditMessageSignlR;
             SignalRService.SendTypingActionDel += SetTypingAction;
         }
@@ -123,13 +125,13 @@ namespace TelegramVisualPart.UserControls
 
                 return false;
             });
-/*
-            Window window = Window.GetWindow(this);
-            if (window is MainWindow mainWind)
-            {
-                return mainWind.IsOnlyTempOnlyChatIsExist(chat);
-            }
-            return false;*/
+            /*
+                        Window window = Window.GetWindow(this);
+                        if (window is MainWindow mainWind)
+                        {
+                            return mainWind.IsOnlyTempOnlyChatIsExist(chat);
+                        }
+                        return false;*/
         }
 
         private CancellationTokenSource _typingCts;
@@ -591,7 +593,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetOnlyChat(TelegramLib.MainClasses.UserChat chat)
         {
-            TelegramLib.MainClasses.UserChat tempOnlyChat = 
+            TelegramLib.MainClasses.UserChat tempOnlyChat =
                 ((MainWindow)Window.GetWindow(this))._onlyChatUserChat;
 
             if (chat is null || tempOnlyChat is null) return;
@@ -639,7 +641,7 @@ namespace TelegramVisualPart.UserControls
             ScrollToNewMessage();
 
             chat.Messages.Add(message);
-            
+
             //if (!await ApiService.IsUserOnline(_system.LoggedUser.Id)) return;
 
             ToUpdateUserControlMessage();
@@ -747,7 +749,7 @@ namespace TelegramVisualPart.UserControls
 
             SetChatterImage();
 
-            SettingEnded?.Invoke(); 
+            SettingEnded?.Invoke();
         }
 
         public void SetIsSavedMessagesChat(TelegramLib.MainClasses.UserChat chat)
@@ -1644,20 +1646,27 @@ namespace TelegramVisualPart.UserControls
             return _system.GetMessageById(id);
         }
 
-        private async Task AddTextMessageControl(string senderImageName, string sendText)
+        public (Message, Message) GetTextMessageToSend(string sendText)
         {
-            await AddDateStatMessage();
-            //Is reply
             //Get reply message
             TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
 
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
-            TelegramLib.MainClasses.Messages.Message toAdd =
-                new TelegramLib.MainClasses.Messages.TextMessage(
+            Message toAdd =  new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, sendText, false, replyId, false, null, false);
+
+            return (toAdd, toReply);
+        }
+
+        private async Task AddTextMessageControl(string senderImageName, string sendText)
+        {
+            await AddDateStatMessage();
+            //Is reply
+
+            (Message toAdd, Message toReply) = GetTextMessageToSend(sendText);
 
             //Adding in DB
             toAdd = await GetAndAddMessage(toAdd);
@@ -4286,7 +4295,7 @@ namespace TelegramVisualPart.UserControls
             //Set new chat(in logic + in vis)
             //if (_chat.Id != chat.Id) SetNewChat(chat);
 
-            if ((_forwardSenderId is not null && chat.Id != _chat.Id) || 
+            if ((_forwardSenderId is not null && chat.Id != _chat.Id) ||
                 chat.GetType() != _chat.GetType())
                 await ((MainWindow)Window.GetWindow(this)).
                     SetOtherChatByUserId(chat.Chatter.Id);
@@ -4884,8 +4893,17 @@ namespace TelegramVisualPart.UserControls
                 animation,
                 HandoffBehavior.SnapshotAndReplace);
         }
-    }
 
+        private void SendMessageGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (SendMesMenu.Visibility == Visibility.Visible)
+            {
+                SendMesMenu.Visibility = Visibility.Hidden;
+                return;
+            }
+            SendMesMenu.Visibility = Visibility.Visible;
+        }
+    }
 
     public static class ScrollViewerBehavior
     {

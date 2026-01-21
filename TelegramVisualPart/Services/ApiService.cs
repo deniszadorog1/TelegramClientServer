@@ -22,6 +22,7 @@ using System.Net.WebSockets;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -546,6 +547,22 @@ namespace TelegramVisualPart.Services
             var response = await _client.PutAsync("api/Social/AddBlockedContact", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<TelegramLib.MainClasses.Messages.Message> AddAndGetSchedMessage(UserChat chat, Message mes)
+        {
+            var data = new { Chat = chat, ActionMessage = mes };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("api/Social/AddAndGetSchedMessage", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            TelegramLib.MainClasses.Messages.Message? res = 
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.Message>(jsonResponse);
+            return res;
         }
 
         //remove blocked contact

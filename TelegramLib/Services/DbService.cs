@@ -471,7 +471,7 @@ namespace TelegramLib.Services
             {
                 foreach (var mes in model.Messages)
                 {
-                    if (mes.ChatId == chatId)
+                    if (mes.ChatId == chatId && !mes.IsInSchedule)
                     {
                         res.Add(GetMessageByMessages(mes));
                     }
@@ -2317,6 +2317,7 @@ namespace TelegramLib.Services
                 toAdd.SenderId = message.SenderUserId;
                 toAdd.SentDate = message.SentTime;
                 toAdd.IsRead = false;
+                toAdd.IsInSchedule = message.IsSchedule;
 
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
@@ -2429,11 +2430,11 @@ namespace TelegramLib.Services
                 if (chosen.Message is null || chosen.Message == string.Empty) res = new MediaAction();
                 else res = new TextMessage();
 
-
                 res.Id = chosen.Id;
                 res.SenderUserId = (int)chosen.SenderId;
                 res.SentTime = chosen.SentDate is null ? DateTime.Now : (DateTime)chosen.SentDate;
                 res.IsPinned = (bool)chosen.IsPinned;
+                res.IsSchedule = chosen.IsInSchedule;
 
                 if (res is TextMessage text)
                 {
@@ -4338,6 +4339,13 @@ namespace TelegramLib.Services
             }
         }
 
+        public static TelegramLib.MainClasses.Messages.Message AddAndGetSchedMessage(UserChat chat, 
+            TelegramLib.MainClasses.Messages.Message mes)
+        {
+            mes.IsSchedule = true;
+            AddMessage(chat, mes);
 
+            return GetLastChatMessage(chat.Id);
+        }
     }
 }

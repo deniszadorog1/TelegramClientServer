@@ -33,7 +33,6 @@
                 </TextBlock>
             </StackPanel>
 
-
             <StackPanel Grid.Row="4" Orientation="Horizontal" 
                         HorizontalAlignment="Right" Margin="0 15 10 5">
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
@@ -50,9 +49,6 @@
                             Click="ActionBut_Click"  Margin="5 0 5 0" 
                             Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>
-
-
-
         </Grid>
     </Border>
 </Page>
