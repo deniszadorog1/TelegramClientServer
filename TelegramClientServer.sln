@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramClientServer", "TelegramClientServer\TelegramClientServer.csproj", "{35BEFD52-591A-44DD-9D19-9796E2C457F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{532DAD4B-B4BF-42E3-9CD1-CED37C365424} = {532DAD4B-B4BF-42E3-9CD1-CED37C365424}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramVisualPart", "TelegramVisualPart\TelegramVisualPart.csproj", "{532DAD4B-B4BF-42E3-9CD1-CED37C365424}"
 EndProject

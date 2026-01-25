@@ -58,7 +58,6 @@ namespace TelegramVisualPart.UserControls
 
             SetBasicSignalRMethods();
 
-            SendMesMenu.SetUserChatControl(this, _system);
         }
 
         public void SetBasicSignalRMethods()
@@ -711,6 +710,8 @@ namespace TelegramVisualPart.UserControls
         private bool _isSavedMessageChat;
         public async Task SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
+            SendMesMenu.SetUserChatControl(this, _system);
+
             HideSelectionRow();
             SetIsSavedMessagesChat(chat);
 
@@ -720,12 +721,14 @@ namespace TelegramVisualPart.UserControls
 
             MessageMenu.Children.Clear();
             ReplyMessageRow.Height = new GridLength(0);
+            SchedueleMessagesGrid.Visibility = Visibility.Hidden;
 
             if (chat is null) return;
             SetChatterImageVisibility();
 
             _chat = chat;
             SetNewAutoDelIconVisibility();
+            SetScheduleMessageIconVisibility();
 
             SetPinnedMessages();
 
@@ -799,6 +802,19 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
+        public void SetScheduleMessageIconVisibility()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (_chat.ScheduleMessages is null) return;
+
+                ScheduleMessageGrid.Visibility =
+                    _chat.ScheduleMessages.Count == 0
+                    ? Visibility.Hidden
+                    : Visibility.Visible;
+            });
+        }
+
         public void SetSystem(TelSystem system)
         {
             _system = system;
@@ -821,6 +837,30 @@ namespace TelegramVisualPart.UserControls
                 SetPinnedMessageInPanel(_chat.PinnedMessages[i]);
                 //Set them
             }
+        }
+
+        public void ScheduleMessageGrid_PreviewMouseLeftButtonDown(
+            object sender, MouseButtonEventArgs e)
+        {
+            SetScheduleMessages();
+        }
+
+        public void SetScheduleMessages()
+        {
+            if (_chat is null ||
+                _chat.ScheduleMessages is null ||
+                _chat.ScheduleMessages.Count == 0) return;
+
+            _chat.UpdateScheduleMessages(_system.LoggedUser);
+
+            SchedueleMessagesGrid.Visibility = Visibility.Visible;
+            SetChatMessages(isOnlySchedule: true);       
+        }
+
+        public void UpdateScheduleChatIfNeed()
+        {
+            if (SchedueleMessagesGrid.Visibility != Visibility.Visible) return;
+            SetScheduleMessages();
         }
 
         public bool IsChoseChatIdIsEqual(int id)
@@ -882,10 +922,13 @@ namespace TelegramVisualPart.UserControls
             else CustomBg.Effect = null;
         }
 
-        public void SetChatMessages(bool isOnlyPinned = false)
+        public void SetChatMessages(
+            bool isOnlyPinned = false,
+            bool isOnlySchedule = false)
         {
             //Get Chatter here (Contact type)
-            if (isOnlyPinned) _chatMessages = _chat.GetOnlyPinnedMessages();
+            if (isOnlySchedule) _chatMessages = _chat.GetScheduleMessages();
+            else if (isOnlyPinned) _chatMessages = _chat.GetOnlyPinnedMessages();
             else _chatMessages = _chat.GetChatMessages();
             SetMessagesInChat();
         }
@@ -1387,6 +1430,11 @@ namespace TelegramVisualPart.UserControls
 
         private async void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
+            if(e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
+            {
+                SetSchedulePage();
+                return;
+            }
             if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 int caret = CommentTextBox.CaretIndex;
@@ -1394,37 +1442,61 @@ namespace TelegramVisualPart.UserControls
                 CommentTextBox.Text = CommentTextBox.Text.Insert(caret, Environment.NewLine);
                 CommentTextBox.CaretIndex = caret + Environment.NewLine.Length;
 
-                //Set making commect textBox bigger
                 e.Handled = true;
             }
             else if (
                 (_system.Settings.ChatsSettings.GetIsSendWithEnter() && e.Key == System.Windows.Input.Key.Enter) ||
-                (!_system.Settings.ChatsSettings.GetIsSendWithEnter() && e.Key == System.Windows.Input.Key.Enter && Keyboard.Modifiers == ModifierKeys.Control))
+                
+                (!_system.Settings.ChatsSettings.GetIsSendWithEnter() && 
+                e.Key == System.Windows.Input.Key.Enter && Keyboard.Modifiers == ModifierKeys.Control))
             {
-                if (_isEdit)
-                {
-                    await ToEditMessage(_chat.Id);
-                    return;
-                }
-
-                _textHistory.Clear();
-                if (await SendSelectedMessagesToForward()) return;
-
-                if (string.IsNullOrEmpty(CommentTextBox.Text)) return;
-                MessageMenu.Children.Clear();
-
-                //Clear unused
-                string cleaned = Regex.Replace(CommentTextBox.Text, @"^\s+|\s+$", "");
-
-                //To send text message
-                await AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name,
-                    cleaned);
-
-                ReplyMessageRow.Height = new GridLength(0);
-
-                SetCommentBoxHeight();
-                CommentTextBox.Clear();
+                await SendMessage();
             }
+        }
+
+        private async Task SendMessage()
+        {
+            if (_isEdit)
+            {
+                await ToEditMessage(_chat.Id);
+                return;
+            }
+
+            _textHistory.Clear();
+            if (await SendSelectedMessagesToForward() ||
+                string.IsNullOrEmpty(CommentTextBox.Text)) return;
+
+            MessageMenu.Children.Clear();
+
+            //Clear unused
+            string cleaned = Regex.Replace(CommentTextBox.Text, @"^\s+|\s+$", "");
+
+            //To send text message
+            await AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name,
+                cleaned);
+
+            ReplyMessageRow.Height = new GridLength(0);
+
+            SetCommentBoxHeight();
+            CommentTextBox.Clear();
+        }
+
+        public void SetSchedulePage()
+        {
+            //form message
+            (TelegramLib.MainClasses.Messages.Message mes,
+             TelegramLib.MainClasses.Messages.Message toReply) =
+             GetTextMessageToSend(CommentTextBox.Text);
+
+            if (mes is null ||
+
+               (mes is TelegramLib.MainClasses.Messages.TextMessage textMes &&
+                textMes.Text == string.Empty)) return;
+
+            SetScheduleMessage message =
+                new SetScheduleMessage(GetChat(), mes, _system);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }
 
         private const int _maxCommentBoxHeight = 150;
@@ -4776,6 +4848,8 @@ namespace TelegramVisualPart.UserControls
         private void CommentTextBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBoxMenu textBoxMenu = new TextBoxMenu(CommentTextBox, _textHistory);
+            textBoxMenu.SetEnableStatus(CommentTextBox.Text == string.Empty);
+
             System.Windows.Point point = e.GetPosition(this);
 
             textBoxMenu.Loaded += (sender, e) =>
@@ -4793,6 +4867,8 @@ namespace TelegramVisualPart.UserControls
                     Canvas.SetTop(textBoxMenu, this.ActualHeight - textBoxMenu.ActualHeight);
                 }
                 else Canvas.SetTop(textBoxMenu, point.Y);
+
+                Keyboard.ClearFocus();
             };
 
             textBoxMenu.UnReDoAction += () =>
@@ -4902,6 +4978,46 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
             SendMesMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ScheduleMessageGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ScheduleMessagesIcon.Foreground = 
+                new SolidColorBrush(Colors.White);
+        }
+
+        private void ScheduleMessageGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ScheduleMessagesIcon.Foreground =
+                new SolidColorBrush(Colors.Gray);
+        }
+
+        private void ScheduleMessageGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ArrowLeftSchedGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            ArrowLeftSchedIcon.Foreground =
+                new SolidColorBrush(Colors.White);
+        }
+
+        private void ArrowLeftSchedGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            ArrowLeftSchedIcon.Foreground =
+                new SolidColorBrush(Colors.Gray);
+        }
+
+        private void ArrowLeftSchedGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Get back tpo chat 
+            SchedueleMessagesGrid.Visibility = Visibility.Hidden;
+
+            //Update chat messages
+            SetChatMessages();
         }
     }
 

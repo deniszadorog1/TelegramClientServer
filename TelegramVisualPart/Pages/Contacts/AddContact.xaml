@@ -7,8 +7,8 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:Icon="clr-namespace:TelegramVisualPart.UserControls.DifferButs"
       mc:Ignorable="d" 
-      d:DesignHeight="400" d:DesignWidth="500"
-      Height="400" Width="500"
+      d:DesignHeight="350" d:DesignWidth="500"
+      Height="350" Width="500"
       VerticalAlignment="Center"
       HorizontalAlignment="Center"
       Title="AddContact">
@@ -29,7 +29,7 @@
                    Margin="30 5 0 0" Name="PageName"/>
 
 
-            <Grid Grid.Row="1" Margin="10 0 40 5">
+            <Grid Grid.Row="1" Margin="0 0 40 5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition/>
@@ -40,31 +40,37 @@
                                          Margin="15 0 0 0" Grid.Column="0"/>
 
                 <TextBox Grid.Row="2" Grid.Column="1"
-                  Foreground="White" Margin="10 0 10 10" FontSize="16"
-                  materialDesign:HintAssist.Hint="First name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                  CaretBrush="White" Name="NameBox"
-                  materialDesign:HintAssist.Foreground="Gray"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                         Foreground="White" Margin="10 10 10 10" FontSize="16"
+                         materialDesign:HintAssist.Hint="First name"
+                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                         CaretBrush="White" Name="NameBox"
+                         materialDesign:HintAssist.Foreground="Gray"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus"/>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Margin="0 0 40 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Row="2" Grid.Column="1"
-                  Foreground="White" Margin="10" FontSize="16"
-                  materialDesign:HintAssist.Hint="Last name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                  CaretBrush="White" Name="LastnameBox"
-                  materialDesign:HintAssist.Foreground="Gray"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                         Foreground="White" Margin="10" FontSize="16"
+                         materialDesign:HintAssist.Hint="Last name"
+                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                         CaretBrush="White" Name="LastnameBox"
+                         materialDesign:HintAssist.Foreground="Gray"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                         
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus"/>
             </Grid>
 
 
-            <Grid Grid.Row="3">
+            <Grid Grid.Row="3" Margin="0 0 40 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60"/>
                     <ColumnDefinition/>
@@ -77,29 +83,47 @@
                 <TextBox Grid.Row="2" Grid.Column="1" MaxLength="15"
                          PreviewTextInput="PhoneBox_PreviewTextInput"
                          TextChanged="PhoneBox_TextChanged"
-                  Foreground="White" Margin="10" FontSize="16"
-                  materialDesign:HintAssist.Hint="Phone number"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
-                  CaretBrush="White" Name="PhoneBox"
-                  materialDesign:HintAssist.Foreground="Gray"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                         Foreground="White" Margin="10" FontSize="16"
+                         materialDesign:HintAssist.Hint="Phone number"
+                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                         CaretBrush="White" Name="PhoneBox"
+                         materialDesign:HintAssist.Foreground="Gray"
+                         materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                         
+                         GotFocus="TextBox_GotFocus"
+                         LostFocus="TextBox_LostFocus"/>
             </Grid>
 
-            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <StackPanel Grid.Row="4" Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
                                
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
-                    Content="Cancel" Background="Transparent" BorderThickness="0"
-                    HorizontalAlignment="Right" Margin="0 0 10 0"
-                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                    Foreground="{StaticResource TempActiveTextColor}"
-                    Click="CancelBut_Click"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Name="CancelBut"
+                        Content="Cancel" 
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        HorizontalAlignment="Right" 
+                        Margin="0 0 5 0"
+                        MouseEnter="But_MouseEnter" 
+                        MouseLeave="But_MouseLeave"
+                        FontSize="16"
+                        Foreground="{StaticResource TempActiveTextColor}"
+                        Click="CancelBut_Click"/>
 
-                <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CreateBut"
-                    Content="Create" Background="Transparent" BorderThickness="0"
-                    MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
-                    HorizontalAlignment="Left"
-                    Click="CreateBut_Click"  Margin="10 0 20 0" 
-                    Foreground="{StaticResource TempActiveTextColor}"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Name="CreateBut"
+                        Content="Create" 
+                        Background="Transparent" 
+                        BorderThickness="0"
+                        MouseEnter="But_MouseEnter" 
+                        MouseLeave="But_MouseLeave"
+                        HorizontalAlignment="Left"
+                        Click="CreateBut_Click"  
+                        Margin="5 0 20 0" 
+                        FontSize="16"
+                        Foreground="{StaticResource TempActiveTextColor}"/>
             </StackPanel>
 
 

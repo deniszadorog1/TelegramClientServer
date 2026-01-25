@@ -659,7 +659,7 @@ namespace TelegramVisualPart
                 SetMainChatPagePartsSize();
 
                 if (MainFrame.Content is MainChatPage mainChatPage &&
-                IsWindowIsMaxSize() && GetMaxState())
+                /*IsWindowIsMaxSize()*/ _isMax && GetMaxState())
                 {
                     mainChatPage.ClearAllLevels();
                 }
@@ -1522,6 +1522,24 @@ namespace TelegramVisualPart
                 this.Topmost = true;
                 this.Topmost = false;
             }
+        }
+
+        public void ClearCommentChatBox()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.ClearCommentChatBox();
+        }
+
+        public void UpdateScheduleIconVisibility()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.UpdateScheduleGridVisibility();
+        }
+
+        public void UpdateScheduleChat()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.UpdateScheduleChatIfNeed();
         }
     }
 }

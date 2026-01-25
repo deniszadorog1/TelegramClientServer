@@ -2907,5 +2907,24 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetChatMessages();
         }
+
+        public void ClearCommentChatBox()
+        {
+            if (UserChat.Visibility != Visibility.Visible) return;
+            UserChat.CommentTextBox.Text = string.Empty;
+        }
+
+        public void UpdateScheduleGridVisibility()
+        {
+            if (UserChat.Visibility != Visibility.Visible) return;
+            UserChat.SetScheduleMessageIconVisibility();
+        }
+
+        public void UpdateScheduleChatIfNeed()
+        {
+            if (UserChat.Visibility != Visibility.Visible) return;
+            UserChat.UpdateScheduleChatIfNeed();
+        }
+
     }
 }

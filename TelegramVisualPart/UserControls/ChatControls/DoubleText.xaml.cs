@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramVisualPart.UserControls.ChatControls.ContactInfoControls;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -38,7 +39,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             BottomText.Text = text;
         }
 
-        public void SetActions()
+        public void SetUsernameActions()
         {
             UpperTextGrid.MouseEnter += UpperText_MouseEnter;
             UpperTextGrid.MouseLeave += UpperText_MouseLeave;
@@ -46,6 +47,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UpperTextGrid.PreviewMouseLeftButtonDown += 
                 UpperTextGrid_PreviewMouseLeftButtonDown;
         }
+
+
 
         public void UpperText_MouseEnter(object sender, MouseEventArgs e)
         {

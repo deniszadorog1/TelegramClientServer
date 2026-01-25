@@ -346,10 +346,11 @@ namespace TelegramLib.Services
 
                         UserChat toAdd = new UserChat(chat.Id,
                             GetUserById((int)chat.ChatterId),
-                            GetMessagesByChatId(chat.Id),
+                            GetMessagesByChatId(chat.Id, false),
                             GetChosenBgByChatId(chat.Id),
                             GetAutoDelTypeById(correctAutoDelId),
-                            GetPinnedMessages(chat.Id));
+                            GetPinnedMessages(chat.Id),
+                            GetMessagesByChatId(chat.Id, true));
 
                         //Set mask for chatterId
                         SetMaskForChatterId(toAdd.Chatter, userId);
@@ -462,7 +463,7 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
+        private static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId, bool isGetSchedMessages)
         {
             List<TelegramLib.MainClasses.Messages.Message> res =
                 new List<TelegramLib.MainClasses.Messages.Message>();
@@ -471,7 +472,8 @@ namespace TelegramLib.Services
             {
                 foreach (var mes in model.Messages)
                 {
-                    if (mes.ChatId == chatId && !mes.IsInSchedule)
+                    if (mes.ChatId == chatId && 
+                        mes.IsInSchedule == isGetSchedMessages)
                     {
                         res.Add(GetMessageByMessages(mes));
                     }
@@ -2546,7 +2548,8 @@ namespace TelegramLib.Services
                 foreach (var mes in model.Messages)
                 {
                     if (mes.ChatId == chat.Id &&
-                        !chat.Messages.Where(x => x.Id == mes.Id).Any())
+                        !chat.Messages.Any(x => x.Id == mes.Id) && 
+                        !mes.IsInSchedule)
                     {
                         toRemove.Add(mes);
                     }
@@ -3158,10 +3161,13 @@ namespace TelegramLib.Services
 
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId /*contact.FriendId*/);
                 if (chat is null) return null;
-                return new UserChat(chat.Id, GetUserById((int)chat.ChatterId),
-                    GetMessagesByChatId(chat.Id), GetChosenBgByChatId(chat.Id),
+                return new UserChat(chat.Id, 
+                    GetUserById((int)chat.ChatterId),
+                    GetMessagesByChatId(chat.Id, false), 
+                    GetChosenBgByChatId(chat.Id),
                     GetAutoDelTypeById(chat.AutoDeleteId),
-                    new List<mainClass.Messages.Message>());
+                    new List<mainClass.Messages.Message>(),
+                    GetMessagesByChatId(chat.Id, true));
             }
         }
 

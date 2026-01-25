@@ -8,14 +8,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="200"
              Width="200"
-             Background="{StaticResource DarkThemeOne}">
-    <StackPanel>
-        <But:TextBoxMenuButton x:Name="Undo" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="Redo" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="Cut" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="Copy" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="Paste" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="Delete" PreviewMouseDown="Button_PreviewMouseDown"/>
-        <But:TextBoxMenuButton x:Name="SelectAll" PreviewMouseDown="Button_PreviewMouseDown"/>
-    </StackPanel>
+             >
+    <Border CornerRadius="10"
+            Background="{StaticResource DarkThemeOne}">
+        <StackPanel Margin="5">
+            <But:TextBoxMenuButton x:Name="Undo" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="Redo" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="Cut" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="Copy" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="Paste" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="Delete" PreviewMouseDown="Button_PreviewMouseDown"/>
+            <But:TextBoxMenuButton x:Name="SelectAll" PreviewMouseDown="Button_PreviewMouseDown"/>
+        </StackPanel>
+    </Border>
 </UserControl>

@@ -42,5 +42,22 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
             LeftTextBlock.Text = leftText;
             RightTextBlock.Text = rightText;
         }
+
+        public void SetEnableStatus(bool isEnable)
+        {
+            if (!isEnable)
+            {
+                IsEnabled = false;
+                LeftTextBlock.Foreground = new SolidColorBrush(Colors.Gray);
+                RightTextBlock.Foreground = new SolidColorBrush(Colors.Gray);
+                return;
+            }
+
+            IsEnabled = true;
+            LeftTextBlock.Foreground = 
+                (SolidColorBrush)Application.Current.Resources["UsualTextColor"];
+            RightTextBlock.Foreground =
+                (SolidColorBrush)Application.Current.Resources["UsualTextColor"];
+        }
     }
 }

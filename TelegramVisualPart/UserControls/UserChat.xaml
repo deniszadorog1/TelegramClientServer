@@ -110,6 +110,7 @@
                 </TextBlock>
             </Grid>
 
+
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Right" 
                         Grid.Column="3"
@@ -147,6 +148,44 @@
                                          Name="UserChatMenuIcon"/>
                 </Grid>
             </StackPanel>
+
+            <Grid Grid.Column="0" Grid.ColumnSpan="4" Name="SchedueleMessagesGrid"
+                  Visibility="Hidden"
+                  Background="{StaticResource DarkThemeOne}"
+                  MouseEnter="SavedMessagesGrid_MouseEnter"
+                  MouseLeave="SavedMessagesGrid_MouseLeave">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Name="ArrowLeftSchedGrid" Grid.Column="0" 
+                      Background="Transparent"
+                      MouseEnter="ArrowLeftSchedGrid_MouseEnter"
+                      MouseLeave="ArrowLeftSchedGrid_MouseLeave"
+                      PreviewMouseDown="ArrowLeftSchedGrid_PreviewMouseDown">
+                    <materialDesign:PackIcon Name="ArrowLeftSchedIcon"
+                                         Kind="ArrowLeft"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Width="35"
+                                         Height="35"
+                                         Foreground="Gray"/>
+                </Grid>
+
+                <TextBlock Name="ScheduleMessagesBlock" 
+                           Grid.Column="1"
+                           Foreground="White"
+                           Text="Scheduled Messages"
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Margin="0 0 0 0">
+
+                </TextBlock>
+            </Grid>
+
         </Grid>
 
         <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
@@ -383,14 +422,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Background="Transparent"
                   MouseEnter="AddFile_MouseEnter" 
                   MouseLeave="AddFile_MouseLeave"
                   PreviewMouseDown="AddFile_PreviewMouseDown">
-                <materialDesign:PackIcon Kind="Paperclip" Name ="AddFile"
+                <materialDesign:PackIcon Kind="Paperclip" 
+                                         Name ="AddFile"
                                          Margin="10 0 0 0" 
                                          Width="35" Height="35" 
                                          VerticalAlignment="Center" 
@@ -409,8 +449,7 @@
                      TextChanged="CommentTextBox_TextChanged"
                      PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" >
-
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <Grid Name="AutoDelGrid"  Margin="0 0 10 0"
                       Background="Transparent"
                       MouseEnter="AutoDelGrid_MouseEnter"
@@ -423,6 +462,19 @@
                                      Foreground="Gray"/>
                 </Grid>
 
+                <Grid Name="ScheduleMessageGrid" 
+                      Margin="0 0 10 0"
+                      Background="Transparent"
+                      MouseEnter="ScheduleMessageGrid_MouseEnter"
+                      MouseLeave="ScheduleMessageGrid_MouseLeave"
+                      PreviewMouseLeftButtonDown="ScheduleMessageGrid_PreviewMouseLeftButtonDown">
+                    <materialDesign:PackIcon Kind="CalendarBlank" Name="ScheduleMessagesIcon" 
+                                             Width="40" Height="40"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Foreground="Gray"/>
+                </Grid>
+                
                 <Grid Name="EmojisGrid" 
                       Margin="0 0 10 0"
                   Background="Transparent"

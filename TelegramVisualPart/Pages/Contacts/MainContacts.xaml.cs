@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -160,11 +161,6 @@ namespace TelegramVisualPart.Pages.Contacts
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void SortBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Set sorting action
-        }
-
         private void SortBut_MouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is PackIcon icon) icon.Foreground = Brushes.White;
@@ -209,6 +205,81 @@ namespace TelegramVisualPart.Pages.Contacts
         public void AddBlockedContact()
         {
             //Set it here
+        }
+
+        private void SortGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            SortBut.Foreground =
+                new SolidColorBrush(Colors.White);
+        }
+
+        private void SortGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            SortBut.Foreground =
+                new SolidColorBrush(Colors.Gray);
+        }
+
+        private PackIconKind _aKind = PackIconKind.HamburgerPlus;
+        private PackIconKind _bKind = PackIconKind.HamburgerCheck;
+
+        private async void SortGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (SortBut.IconType.Kind == PackIconKind.HamburgerMenu)
+            {
+                SortBut.IconType.Kind = _aKind;
+                //Sort by name
+                await SortByContactByName();
+                return;
+            }
+
+            SortBut.IconType.Kind = SortBut.IconType.Kind ==
+                _aKind ? _bKind : _aKind;
+
+            //Sort by Name
+            if (SortBut.IconType.Kind == _aKind)
+            {
+                await SortByContactByName();
+                return;
+            }
+
+            //Sort by last seen time
+            await SortByLastSeenTime();
+        }
+
+        public async Task SortByLastSeenTime()
+        {
+            var sortedItems = ContactsListBox.Items
+                .Cast<ListBoxItem>()
+                .OrderBy(i =>
+                    (i.Content as UserContact)?
+                        .LastSennOnline?
+                        .Text ?? string.Empty,
+                    StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
+
+            ContactsListBox.Items.Clear();
+
+            foreach (var item in sortedItems)
+            {
+                ContactsListBox.Items.Add(item);
+            }
+        }
+
+        public async Task SortByContactByName()
+        {
+            var sortedItems = ContactsListBox.Items
+                .Cast<ListBoxItem>()
+                .OrderBy(i => i.Tag?.ToString(), StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
+
+            ContactsListBox.Items.Clear();
+
+            foreach (var item in sortedItems)
+            {
+                ContactsListBox.Items.Add(item);
+            }
         }
     }
 }

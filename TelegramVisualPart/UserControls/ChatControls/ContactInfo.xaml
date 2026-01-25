@@ -10,131 +10,135 @@
              xmlns:menu="clr-namespace:TelegramVisualPart.UserControls.ChatControls.UserContactControls"
              mc:Ignorable="d" 
              d:DesignHeight="915" d:DesignWidth="450"
-             MaxHeight="915" Width="450" >
+             MaxHeight="915" Width="450"
+             >
     <Border Name="BgBorder" CornerRadius="5" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60" x:Name="UpperRow"/>
-                <RowDefinition Height="176*"/>
-                <RowDefinition Height="109*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="140"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
 
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+
+            <Grid PreviewMouseDown="Grid_MouseDown">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" x:Name="UpperRow"/>
+                    <RowDefinition Height="176*"/>
+                    <RowDefinition Height="109*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                            FontSize="22" Text="User Info" Name="PageNameBlock"
                            Foreground="{StaticResource UsualTextColor}"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1"
+                    <StackPanel Orientation="Horizontal" Grid.Column="1"
                             HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Grid Name ="MenuButGrid" Background="Transparent"
+                        <Grid Name ="MenuButGrid" Background="Transparent"
                           MouseEnter="MenuButGrid_MouseEnter"
                           MouseLeave="MenuButGrid_MouseLeave"
                           PreviewMouseDown="MenuButGrid_MouseDown">
-                        <materialDesign:PackIcon Kind="DotsVertical" Name="MoreInfoBut"
+                            <materialDesign:PackIcon Kind="DotsVertical" Name="MoreInfoBut"
                                              Margin="0 0 10 0"
                                              Width="25" Height="25"
                                              Foreground="Gray"/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid Name="CloseButGrid" Background="Transparent"
+                        <Grid Name="CloseButGrid" Background="Transparent"
                           MouseEnter="CloseButGrid_MouseEnter"
                           MouseLeave="CloseButGrid_MouseLeave"
                           MouseDown="CloseButGrid_MouseDown">
-                        <materialDesign:PackIcon Kind="Close" Name="CloseBut"
+                            <materialDesign:PackIcon Kind="Close" Name="CloseBut"
                                              Margin="0 0 20 0"
                                              Width="25" Height="25"
                                              Foreground="Gray"/>
-                    </Grid>
-                </StackPanel>
-            </Grid>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
 
-            <ScrollViewer Grid.Row="1" Margin="0,10,0,10" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="115"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="280" Name="InfoRow"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="205" Name="MediasRow"/>
-                        <RowDefinition Height="10" Name="DivRow"/>
-                        <RowDefinition Height="200" x:Name="ToBeHiddenButs"/>
-                    </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="1" Margin="0,10,0,10" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="115"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="280" Name="InfoRow"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="205" Name="MediasRow"/>
+                            <RowDefinition Height="10" Name="DivRow"/>
+                            <RowDefinition Height="200" x:Name="ToBeHiddenButs"/>
+                        </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" VerticalAlignment="Top" Margin="10 5 0 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" VerticalAlignment="Top" Margin="10 5 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
 
-                        <Ellipse Grid.Row="0" Name ="UserIcon" 
+                            <Ellipse Grid.Row="0" Name ="UserIcon" 
                                  Width="90" Height="90" HorizontalAlignment="Center"
                                  PreviewMouseDown="UserIcon_PreviewMouseDown"
                                  MouseEnter="UserIcon_MouseEnter"
                                  MouseLeave="UserIcon_MouseLeave"
                                  IsHitTestVisible="False">
-                            <Ellipse.Fill>
-                                <ImageBrush x:Name="ContactImgBrush"  ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                                <Ellipse.Fill>
+                                    <ImageBrush x:Name="ContactImgBrush"  ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
 
-                        <Grid Grid.Column="1" Margin="15 0 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                            <Grid Grid.Column="1" Margin="15 0 0 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Name="Username"  Margin="0 0 30 0"
+                                <TextBlock Grid.Row="0" Name="Username"  Margin="0 0 30 0"
                                        VerticalAlignment="Center" FontSize="18"
                                        Foreground="{StaticResource UsualTextColor}"
                                        TextTrimming="CharacterEllipsis"
                                        TextWrapping="NoWrap">
                                 <Run Name="ContName" Text="Name"/>
                                 <Run Name="ContSurname" Text="Surnmae"/>
-                            </TextBlock>
+                                </TextBlock>
 
 
-                            <TextBlock Grid.Row="1" Name="LastSeenOnline" 
+                                <TextBlock Grid.Row="1" Name="LastSeenOnline" 
                                        Text="There gona be last seen online" 
                                        Foreground="Gray" FontSize="14"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
 
-                    <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"/>
+                        <Grid Grid.Row="1" Background="{StaticResource DarkThemeDeviderField}"/>
 
-                    <Grid Grid.Row="2" Margin="0 5 0 5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="2" Margin="0 5 0 5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="55"/>
-                                <RowDefinition Height="55"/>
-                                <RowDefinition Height="55" Name="BirthdatRow"/>
-                                <RowDefinition Height="0" Name="BioRow"/>
-                                <RowDefinition Height="0" Name="AddContactRow"/>
-                                <RowDefinition Height="55"/>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="55"/>
+                                    <RowDefinition Height="55"/>
+                                    <RowDefinition Height="55" Name="BirthdatRow"/>
+                                    <RowDefinition Height="0" Name="BioRow"/>
+                                    <RowDefinition Height="0" Name="AddContactRow"/>
+                                    <RowDefinition Height="55"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
 
-                            <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
+                                <materialDesign:PackIcon Kind="InfoOutline" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="InfoIcon"
                                                  Foreground="{StaticResource UsualTextColor}"/>
 
-                            <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
-                            <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="UserName" VerticalAlignment="Center"/>
-                            <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
-                            <local:DoubleText Grid.Row="3" Grid.Column="1" x:Name="Bio" VerticalAlignment="Center"/>
+                                <local:DoubleText Grid.Row="0" Grid.Column="1" x:Name="MobileNumber" VerticalAlignment="Center"/>
+                                <local:DoubleText Grid.Row="1" Grid.Column="1" x:Name="UserName" VerticalAlignment="Center"/>
+                                <local:DoubleText Grid.Row="2" Grid.Column="1" x:Name="Birthdate" VerticalAlignment="Center"/>
+                                <local:DoubleText Grid.Row="3" Grid.Column="1" x:Name="Bio" VerticalAlignment="Center"/>
 
-                            <Grid Grid.Row="4" Grid.Column="0"                                
+                                <Grid Grid.Row="4" Grid.Column="0"                                
                                   Grid.ColumnSpan="3"
                                   Background="Transparent"
                                   Name="AddContactGrid"
@@ -142,7 +146,7 @@
                                   MouseLeave="AddContactGrid_MouseLeave"
                                   MouseDown="AddContactGrid_MouseDown">
 
-                                <TextBlock Name="AddContactBlock" 
+                                    <TextBlock Name="AddContactBlock" 
                                            Text="Add Contact"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
@@ -150,16 +154,16 @@
                                            Foreground="{StaticResource TempActiveTextColor}"
                                            FontSize="16"
                                            FontWeight="SemiBold"/>
-                            </Grid>
+                                </Grid>
 
-                            <materialDesign:PackIcon Kind="BellOutline" Grid.Row="5" Grid.Column="0"
+                                <materialDesign:PackIcon Kind="BellOutline" Grid.Row="5" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="BellIcon"
                                                  Foreground="{StaticResource UsualTextColor}"/>
-                            <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"
+                                <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"
                                        Foreground="{StaticResource UsualTextColor}" FontSize="16"
                                        Name="NotifsBlock"/>
-                            <ToggleButton Name ="NotificationToggle" Width="35"
+                                <ToggleButton Name ="NotificationToggle" Width="35"
                                           Grid.Column="2" Grid.Row="5"
                                           Checked="NotificationToggle_Checked"
                                           Unchecked="NotificationToggle_Unchecked"
@@ -173,73 +177,73 @@
                                           Background="{StaticResource TempActiveTextColor}"/>
 
 
-                            <Grid Grid.ColumnSpan="3" Grid.Row="6" Name ="SendMessageBut"
+                                <Grid Grid.ColumnSpan="3" Grid.Row="6" Name ="SendMessageBut"
                                   MouseEnter="But_MouseEnter"
                                   MouseLeave="But_MouseLeave" 
                                   Background="Transparent"
                                   PreviewMouseDown="SendMessageBut_PreviewMouseDown"
                                   Margin="2,0,-2,0"/>
 
-                            <TextBlock Grid.Column="1" Grid.Row="6" Text="Send message"
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="Send message"
                                        FontSize="16" Name="SendMesBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource TempActiveTextColor}"
                                        FontWeight="SemiBold" MouseEnter="But_MouseEnter"
                                        MouseLeave="But_MouseLeave"
                                        PreviewMouseDown="SendMessageBut_PreviewMouseDown"/>
+                            </Grid>
                         </Grid>
-                    </Grid>
 
-                    <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
+                        <Grid Grid.Row="3" Background="{StaticResource DarkThemeDeviderField}"/>
 
-                    <Grid Grid.Row="4" Margin="0 5 0 5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Name="PhotoRow" Height="50"/>
-                            <RowDefinition Name="VideosRow" Height="50"/>
-                            <!--<RowDefinition/>
+                        <Grid Grid.Row="4" Margin="0 5 0 5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Name="PhotoRow" Height="50"/>
+                                <RowDefinition Name="VideosRow" Height="50"/>
+                                <!--<RowDefinition/>
                             <RowDefinition/> -->
-                            <RowDefinition Name="GifRow" Height="50"/>
-                            <RowDefinition Name="LinkRow" Height="50"/>
-                        </Grid.RowDefinitions>
+                                <RowDefinition Name="GifRow" Height="50"/>
+                                <RowDefinition Name="LinkRow" Height="50"/>
+                            </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="PhotosLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="PhotosLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                               PreviewMouseDown="Line_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="VideosLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="VideosLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave"
                               PreviewMouseDown="Line_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" Name="GifLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="2" Background="Transparent" Name="GifLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <Grid Grid.ColumnSpan="2" Grid.Row="3" Background="Transparent" Name="LinkLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="3" Background="Transparent" Name="LinkLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="BrokenImage" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="ImageIcon"
                                                  MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"
                                                  MouseLeave="But_MouseLeave" Foreground="{StaticResource UsualTextColor}"/>
 
-                        <materialDesign:PackIcon Kind="VideoOutline" Grid.Row="1" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="VideoOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="VideoIcon"
                                                  Foreground="{StaticResource UsualTextColor}"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="2" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="FileGifBox" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="GifIcon"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"
                                                  Foreground="{StaticResource UsualTextColor}"/>
 
-                        <materialDesign:PackIcon Kind="Link" Grid.Row="3" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="Link" Grid.Row="3" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Name="LinkIcon"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
@@ -247,104 +251,104 @@
                                                  Foreground="{StaticResource UsualTextColor}"/>
 
 
-                        <TextBlock Grid.Column="1" Grid.Row="0" 
+                            <TextBlock Grid.Column="1" Grid.Row="0" 
                                    Name="AmountOfPhotosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}"
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="1" 
+                            <TextBlock Grid.Column="1" Grid.Row="1" 
                                    Name="AmountOfVideosTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="2"
+                            <TextBlock Grid.Column="1" Grid.Row="2"
                                    Name="AmountOfGifsTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="3"
+                            <TextBlock Grid.Column="1" Grid.Row="3"
                                    Name="AmountOfLinksTextBlock" FontSize="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" 
                                    MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
                                    PreviewMouseDown="Line_PreviewMouseDown"/>
-                    </Grid>
+                        </Grid>
 
-                    <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"
+                        <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"
                           Name="BottomDivideLine"/>
 
-                    <Grid Grid.Row="6" Margin="0 5 0 5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="6" Margin="0 5 0 5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition x:Name="ShareRow"/>
-                            <RowDefinition x:Name="EditRow"/>
-                            <RowDefinition x:Name="DeleteRow"/>
-                            <RowDefinition x:Name="BlockRow"/>
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="ShareRow"/>
+                                <RowDefinition x:Name="EditRow"/>
+                                <RowDefinition x:Name="DeleteRow"/>
+                                <RowDefinition x:Name="BlockRow"/>
+                            </Grid.RowDefinitions>
 
-                        <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="ShareLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="ShareLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="ShareLine_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="EditContactLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="EditContactLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="3" Grid.Row="2" Background="Transparent" Name="DeleteLine" 
+                            <Grid Grid.ColumnSpan="3" Grid.Row="2" Background="Transparent" Name="DeleteLine" 
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                   PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
-                        <Grid Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" Name="BlockLine" 
+                            <Grid Grid.ColumnSpan="3" Grid.Row="3" Background="Transparent" Name="BlockLine" 
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                   PreviewMouseDown="BlockLine_PreviewMouseDown"/>
 
 
-                        <materialDesign:PackIcon Kind="ShareOutline" Grid.Row="0" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="ShareOutline" Grid.Row="0" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="SendIcon"
                                                  MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="PencilOutline" Grid.Row="1" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name="PenIcon"
                                                  MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                                  PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
+                            <materialDesign:PackIcon Kind="TrashCan" Grid.Row="2" Grid.Column="0"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource UsualTextColor}" Name ="CanIcon"
                                                  MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                                  PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
 
-                        <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
+                            <materialDesign:PackIcon Kind="Hand" Grid.Row="3" Grid.Column="0" Name="HandIcon"
                                                  VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Height="30" Width="30" Foreground="{StaticResource ToBlockContact}"
                                                  MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                                                  PreviewMouseDown="BlockLine_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="0" 
+                            <TextBlock Grid.Column="1" Grid.Row="0" 
                                        FontSize="16" Name="ShareContactBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource UsualTextColor}" 
                                        MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16"
+                            <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16"
                                       Name="EditContactBlock"
                                       VerticalAlignment="Center" HorizontalAlignment="Left"
                                       Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
                                       MouseLeave="But_MouseLeave" PreviewMouseDown="EditContactLine_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="16"
+                            <TextBlock Grid.Column="1" Grid.Row="2" FontSize="16"
                                    Name="DeleteContactBlock"                                       
                                    VerticalAlignment="Center" HorizontalAlignment="Left"
                                    Foreground="{StaticResource UsualTextColor}" MouseEnter="But_MouseEnter" 
                                    MouseLeave="But_MouseLeave" PreviewMouseDown="DeleteLine_PreviewMouseDown"/>
 
-                        <TextBlock Grid.Column="1" Grid.Row="3" FontSize="16"
+                            <TextBlock Grid.Column="1" Grid.Row="3" FontSize="16"
                                    Name="BlockContactBlock"                                                                          
                                    FontWeight="SemiBold" 
                                    VerticalAlignment="Center" 
@@ -353,18 +357,22 @@
                                    MouseEnter="But_MouseEnter" 
                                    MouseLeave="But_MouseLeave" 
                                    PreviewMouseDown="BlockLine_PreviewMouseDown"/>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </ScrollViewer>
+                </ScrollViewer>
 
-            <Canvas Grid.RowSpan="3" Name="ContactMenusCanvas">
-                <menu:UserContactMenu x:Name="ContactMenu" 
+                <Canvas Grid.RowSpan="3" Name="ContactMenusCanvas">
+                    <menu:UserContactMenu x:Name="ContactMenu" 
                                     Grid.Column="1" Grid.RowSpan="3"  
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Panel.ZIndex="100"
                                     Visibility="Hidden"/>
-            </Canvas>
+                </Canvas>
+
+            </Grid>
+
+            <Canvas Name="MenuGrid" />
 
         </Grid>
     </Border>

@@ -103,6 +103,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(mesId);
 
+            if (mes is null) mes = _system.GetScheduleMessageById(mesId);
+
             if (mes.SenderUserId == _system.LoggedUser.Id)
             {
                 SolidColorBrush color =

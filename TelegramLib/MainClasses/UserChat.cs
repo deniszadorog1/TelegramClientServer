@@ -1,10 +1,12 @@
 ﻿using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,7 +15,10 @@ using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using static System.Net.Mime.MediaTypeNames;
+using AutoDeleteType = TelegramLib.Enums.Chat.AutoDeleteType;
+using ShareContactMessage = TelegramLib.MainClasses.Messages.ShareContactMessage;
 
 namespace TelegramLib.MainClasses
 {
@@ -35,8 +40,10 @@ namespace TelegramLib.MainClasses
 
         public UserChat(int id, User chatter,
             List<Messages.Message> messages,
-            ChatBackground bg, AutoDeleteType type,
-            List<Messages.Message> pinned)
+            ChatBackground bg,
+            AutoDeleteType type,
+            List<Messages.Message> pinned,
+            List<Messages.Message> scheduleMessages)
         {
             Id = id;
             Chatter = chatter;
@@ -44,6 +51,7 @@ namespace TelegramLib.MainClasses
             ChatBg = bg;
             AutoDel = type;
             PinnedMessages = pinned;
+            ScheduleMessages = scheduleMessages;
         }
 
         public UserChat()
@@ -98,6 +106,11 @@ namespace TelegramLib.MainClasses
         public List<Messages.Message> GetOnlyPinnedMessages()
         {
             return Messages.Where(x => x.IsPinned).ToList();
+        }
+
+        public List<Messages.Message> GetScheduleMessages()
+        {
+            return ScheduleMessages;
         }
 
         public DateTime? GetLastMessageDateTime()
@@ -324,7 +337,7 @@ namespace TelegramLib.MainClasses
             return PinnedMessages.FirstOrDefault();
         }
 
-        
+
 
         public bool IsAnyPinnedMessage()
         {
@@ -449,9 +462,9 @@ namespace TelegramLib.MainClasses
         private const int _maxSentTimeDiffer = 10;
         public TelegramLib.MainClasses.Messages.Message GetMessageByFullDateTime(DateTime time)
         {
-           TelegramLib.MainClasses.Messages.Message mes =  
-                Messages.FirstOrDefault(x => Math.Abs((x.SentTime - time).TotalMilliseconds)
-                    < _maxSentTimeDiffer);
+            TelegramLib.MainClasses.Messages.Message mes =
+                 Messages.FirstOrDefault(x => Math.Abs((x.SentTime - time).TotalMilliseconds)
+                     < _maxSentTimeDiffer);
 
             return mes;
         }
@@ -520,7 +533,7 @@ namespace TelegramLib.MainClasses
             media.IsVideo()).ToList().Count();
         }
 
-        
+
         public bool IsGifMessagesExist()
         {
             return Messages.Any(x => x is MediaAction media &&
@@ -537,9 +550,9 @@ namespace TelegramLib.MainClasses
         {
             List<StaticMessage> toRemove = new List<StaticMessage>();
             bool isUsualMessageWas = false;
-            for(int i = Messages.Count - 1; i > 0; i--)
+            for (int i = Messages.Count - 1; i > 0; i--)
             {
-                if (!isUsualMessageWas && 
+                if (!isUsualMessageWas &&
                     Messages[i] is StaticMessage stat &&
                     !(stat.Date is null))
                 {
@@ -553,16 +566,56 @@ namespace TelegramLib.MainClasses
                 else isUsualMessageWas = true;
             }
 
-            foreach(var mes in toRemove)
+            foreach (var mes in toRemove)
             {
                 Messages.Remove(mes);
             }
         }
 
         public void AddScheduleMessage(
-            TelegramLib.MainClasses.Messages.Message message)
+            TelegramLib.MainClasses.Messages.Message message,
+            TelegramLib.MainClasses.User user)
         {
             ScheduleMessages.Add(message);
+            UpdateScheduleMessages(user);
+        }
+
+        public void UpdateScheduleMessages(TelegramLib.MainClasses.User sender)
+        {
+            //Remove static messages
+            RemoveStaticMessagesFromSchedule();
+
+            //Sort by Date
+            ScheduleMessages.Sort((a, b) => a.SentTime.CompareTo(b.SentTime));
+
+            //Add Static messages(if need)
+
+            List<DateTime> toAddStatTimes = new List<DateTime>();
+
+            DateTime? lastDate = null;
+            for (int i = 0; i < ScheduleMessages.Count; i++)
+            {
+                if (ScheduleMessages[i] is StaticMessage stat)
+                {
+                    lastDate = stat.Date?.Date;
+                    continue;
+                }
+
+                var msgDate = ScheduleMessages[i].SentTime.Date;
+
+                if (lastDate != msgDate)
+                {
+                    var staticMsg = new StaticMessage
+                    {
+                        Date = msgDate,
+                        SenderUserId = sender.Id
+                    };
+
+                    ScheduleMessages.Insert(i, staticMsg);
+                    i++; 
+                    lastDate = msgDate;
+                }
+            }
         }
 
         public void RemoveScheduleMessage(
@@ -576,5 +629,24 @@ namespace TelegramLib.MainClasses
             ScheduleMessages.Remove(toRemove);
         }
 
+        public void RemoveStaticMessagesFromSchedule()
+        {
+            List<Messages.Message> toRemove = 
+                new List<Messages.Message>();
+
+            for(int i = 0; i < ScheduleMessages.Count; i++)
+            {
+                if (ScheduleMessages[i] is StaticMessage mes)
+                {
+                    toRemove.Add(mes);
+                }
+            }
+
+            foreach(var removeMes in toRemove)
+            {
+                ScheduleMessages.Remove(removeMes);
+            }
+
+        }
     }
 }

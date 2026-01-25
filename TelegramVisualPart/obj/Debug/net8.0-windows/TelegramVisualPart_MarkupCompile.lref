@@ -18,6 +18,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\MessageMenu
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\PinMessagePage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SavedMessagesChatPage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SendMedia\SendMediaPage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SetScheduleMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\AddContact.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\Contacts\MainContacts.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\LittleMenuPages\CustomMute.xaml;;
@@ -147,5 +148,5 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Windows\MediaWindow.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\Pages\ChatActions\SetScheduleMessage.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfoControls\LoginRowMenu.xaml;;
 

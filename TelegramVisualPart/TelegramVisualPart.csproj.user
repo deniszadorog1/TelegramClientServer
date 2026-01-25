@@ -229,6 +229,9 @@
     <Compile Update="UserControls\ChatControls\ContactInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatControls\ContactInfoControls\LoginRowMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ChatControls\DoubleText.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -673,6 +676,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\ContactInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatControls\ContactInfoControls\LoginRowMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatControls\DoubleText.xaml">

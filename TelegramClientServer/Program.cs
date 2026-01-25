@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using TelegramClientServer.SignalRHubs;
-
+using TelegramLib.Services;
 
 namespace TelegramClientServer
 {
@@ -51,6 +51,9 @@ namespace TelegramClientServer
             app.MapHub<SignalRHubs.MainHub>("/chatHub");
 
             app.Run();
+                
+            
+          
         }
     }
 }

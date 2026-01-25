@@ -407,6 +407,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "AddAndGetSchedMessage",
+    "RelativePath": "api/Social/AddAndGetSchedMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "AddBlockedContact",
     "RelativePath": "api/Social/AddBlockedContact",
     "HttpMethod": "PUT",
@@ -546,7 +572,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "message",
+        "Name": "dto",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BMessageDTO",
         "IsRequired": true
       }
@@ -836,7 +862,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BRemoveCOntactFromFolderDTO",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BRemoveContactFromFolderDTO",
         "IsRequired": true
       }
     ],

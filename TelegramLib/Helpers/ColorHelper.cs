@@ -20,6 +20,7 @@ namespace TelegramLib.Helpers
             R = r;
             G = g;
             B = b;
+            
         }
 
         public ColorHelper(int id, byte a, byte r, byte g, byte b)

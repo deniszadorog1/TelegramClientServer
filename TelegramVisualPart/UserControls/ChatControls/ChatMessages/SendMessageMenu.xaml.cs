@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.Models;
 using TelegramVisualPart.Pages.ChatActions;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
@@ -52,7 +53,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
              TelegramLib.MainClasses.Messages.Message toReply) = 
              _chatControl.GetTextMessageToSend(_chatControl.CommentTextBox.Text);
 
-            if (mes is null) return;
+            if (mes is null || 
+               
+               (mes is TelegramLib.MainClasses.Messages.TextMessage textMes && 
+                textMes.Text == string.Empty)) return;
 
             SetScheduleMessage message = 
                 new SetScheduleMessage(_chatControl.GetChat(), mes, _system);

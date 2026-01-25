@@ -28,10 +28,20 @@
                            HorizontalAlignment="Left" VerticalAlignment="Center"
                        FontSize="22" Foreground="{StaticResource UsualTextColor}" Margin="30 0 0 0"/>
 
-                <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"
-                                    HorizontalAlignment="Right"  VerticalAlignment="Center"
-                                    Margin="0 0 20 0"
-                                    PreviewMouseDown="SortBut_PreviewMouseDown"/>
+                <Grid Name="SortGrid"
+                      Width="40" Height="40"
+                      Margin="0 0 20 0"
+                      HorizontalAlignment="Right"  
+                      VerticalAlignment="Center"
+                      Background="Transparent"
+                      
+                      PreviewMouseDown="SortGrid_PreviewMouseDown"
+                      MouseEnter="SortGrid_MouseEnter"
+                      MouseLeave="SortGrid_MouseLeave">
+
+                    <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"                                      
+/>
+                </Grid>
             </Grid>
 
             <Grid Grid.Row="1">

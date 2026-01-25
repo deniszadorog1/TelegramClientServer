@@ -20,6 +20,7 @@ using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatControls.ContactInfoControls;
 using TelegramVisualPart.UserControls.ChatControls.UserContactControls;
 using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.Windows;
@@ -463,13 +464,34 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             UserName.SetUpperText(_chatterUser.Login);
             UserName.UpperText.Foreground = (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
-            UserName.SetActions();
+            UserName.SetUsernameActions();
+            UserName.UpperText.PreviewMouseRightButtonDown +=
+                UserNameUpperTextGrid_PreviewMouseRightButtonDown;
 
             SentObjsParams();
 
             await SetContactPhoto(settings);
 
             AddFoldersSubMenu();
+        }
+
+        public void UserNameUpperTextGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_chatterUser is null) return;
+            MenuGrid.Children.Clear();
+
+            LoginRowMenu menu = new LoginRowMenu(_chatterUser.Login);
+            menu.TextCopied += () =>
+            {
+                MenuGrid.Children.Clear();
+            };
+
+            Point tempPos = e.GetPosition(this);
+
+            Canvas.SetLeft(menu, tempPos.X);
+            Canvas.SetTop(menu, tempPos.Y);
+
+            MenuGrid.Children.Add(menu);
         }
 
         public void AddFoldersSubMenu()
@@ -982,6 +1004,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             EditUserContact contact =
                 new EditUserContact(_chat.Chatter, _system);
             ((MainWindow)Window.GetWindow(this)).SetThirdFrame(contact);
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if(MenuGrid.Children.Count > 0)
+            {
+                MenuGrid.Children.Clear();
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

@@ -656,6 +656,26 @@ namespace TelegramLib.MainClasses
             }
         }
 
+        public Messages.Message GetScheduleMessageById(int id)
+        {
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                Messages.Message mes = Chats[i].
+                    ScheduleMessages.FirstOrDefault(x => x.Id == id);
+                if (!(mes is null)) return mes;
+            }
+            return null;
+        }
+
+        public void RemoveSchedMessageById(int id)
+        {
+            for (int i = 0; i < Chats.Count; i++)
+            {
+                Messages.Message mes = Chats[i].ScheduleMessages.FirstOrDefault(x => x.Id == id);
+                if (!(mes is null)) Chats[i].ScheduleMessages.Remove(mes);
+            }
+        }
+
         public void SetChatParamsAfterMessageRemoved(
             TelegramLib.MainClasses.Messages.Message mes)
         {

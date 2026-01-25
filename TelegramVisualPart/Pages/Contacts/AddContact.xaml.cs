@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
+using static MaterialDesignThemes.Wpf.Theme;
+using Button = System.Windows.Controls.Button;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -29,7 +32,7 @@ namespace TelegramVisualPart.Pages.Contacts
             _system = system;
             InitializeComponent();
 
-            SetLanguageText.SetAddContact(this);
+            //SetLanguageText.SetAddContact(this);
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)
@@ -171,6 +174,33 @@ namespace TelegramVisualPart.Pages.Contacts
             if (PhoneBox.Text.Count() == 0 || PhoneBox.Text.First() == '+') return;
             //PhoneBox.Text = /*"+" +*/ new string(PhoneBox.Text.Where(x => x != '+').ToArray());
 
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.TextBox textBox) return;
+
+            textBox.SetValue(
+                MaterialDesignThemes.Wpf.TextFieldAssist.UnderlineBrushProperty,
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"]);
+
+            textBox.SetValue(
+                MaterialDesignThemes.Wpf.HintAssist.ForegroundProperty,
+                (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"]);
+        }
+        
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.TextBox textBox) return;
+
+            textBox.SetValue(
+                MaterialDesignThemes.Wpf.TextFieldAssist.UnderlineBrushProperty,
+                (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"]);
+
+            textBox.SetValue(
+                MaterialDesignThemes.Wpf.HintAssist.ForegroundProperty,
+                Brushes.Gray);
         }
     }
 }

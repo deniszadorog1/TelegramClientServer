@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:TelegramVisualPart.Pages.ChatActions" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="250" d:DesignWidth="400"
-      Height="250" Width="400"
+      d:DesignHeight="200" d:DesignWidth="400"
+      Height="200" Width="400"
       Title="SetScheduleMessage">
 
     <Border CornerRadius="10" 
@@ -16,7 +16,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
-                <RowDefinition Height="75"/>
+                <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
@@ -24,7 +24,7 @@
                        Text="Send this message on..."
                        VerticalAlignment="Center"
                        HorizontalAlignment="Left"
-                       Margin="10 0 0 0"
+                       Margin="20 5 0 0"
                        Foreground="White"
                        FontSize="18"
                        FontFamily="{DynamicResource AppFont}"/>
@@ -44,7 +44,8 @@
                          FontSize="16"
                          FontFamily="{DynamicResource AppFont}"
                          Background="Transparent"
-                         PreviewMouseLeftButtonDown="DateBox_PreviewMouseLeftButtonDown"/>
+                         PreviewMouseLeftButtonDown="DateBox_PreviewMouseLeftButtonDown"
+                         IsReadOnly="True"/>
 
                 <TextBlock Name="DateDividerBlock"
                            Text="at" 
@@ -58,7 +59,8 @@
                     <TextBox Name="EmptyTimeBox"
                              Width="75"
                              materialDesign:TextFieldAssist.UnderlineBrush="White"     
-                             CaretBrush="White"/>
+                             CaretBrush="White"
+                             IsReadOnly="True"/>
 
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
@@ -107,22 +109,35 @@
             </StackPanel>
 
             <StackPanel Name="ButtonsStack"
-                        Grid.Row="2">
+                        Grid.Row="2"
+                        VerticalAlignment="Center">
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal" 
-                        HorizontalAlignment="Right" Margin="0 15 10 5">
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="CancelBut"
-                            Content="Cancel" Background="Transparent" BorderThickness="0"
-                            HorizontalAlignment="Right" Margin="0 0 5 0" FontSize="14"
-                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center"
+                            Margin="0 0 10 5">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Name="CancelBut"
+                            Content="Cancel" 
+                            Background="Transparent" 
+                            BorderThickness="0"
+                            HorizontalAlignment="Right" 
+                            Margin="0 0 5 0" 
+                            FontSize="14"
+                            MouseEnter="But_MouseEnter"  
+                            MouseLeave="But_MouseLeave"
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
                     <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="ScheduleBut"
-                            Content="Schedule" Background="Transparent" BorderThickness="0"
-                            MouseEnter="But_MouseEnter"  MouseLeave="But_MouseLeave"
-                            HorizontalAlignment="Left" FontSize="14"
-                            Click="ScheduleBut_Click"  Margin="5 0 5 0" 
+                            Content="Schedule" Background="Transparent" 
+                            BorderThickness="0"
+                            MouseEnter="But_MouseEnter"  
+                            MouseLeave="But_MouseLeave"
+                            HorizontalAlignment="Left" 
+                            FontSize="14"
+                            Margin="5 0 5 0" 
+                            Click="ScheduleBut_Click"  
                             Foreground="{StaticResource TempActiveTextColor}"/>
                 </StackPanel>
             </StackPanel>

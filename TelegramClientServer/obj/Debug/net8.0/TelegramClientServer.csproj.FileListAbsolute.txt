@@ -75,3 +75,4 @@ B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramCli
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\ref\TelegramClientServer.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.MvcApplicationPartsAssemblyInfo.cs
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\.filenesting.json

@@ -560,8 +560,8 @@ namespace TelegramVisualPart.Services
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
-            TelegramLib.MainClasses.Messages.Message? res = 
-                JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.Message>(jsonResponse);
+            TelegramLib.MainClasses.Messages.TextMessage? res = 
+                JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.TextMessage>(jsonResponse);
             return res;
         }
 

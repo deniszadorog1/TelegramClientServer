@@ -190,6 +190,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
         public void SetPinVisStatus(TelegramLib.MainClasses.Messages.Message mes)
         {
+            if (mes is null) return;
             if (mes.IsPinned)
             {
                 PinBut.Icon.Kind = PackIconKind.PinOffOutline;
