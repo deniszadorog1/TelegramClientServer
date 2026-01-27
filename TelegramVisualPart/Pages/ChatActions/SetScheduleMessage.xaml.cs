@@ -30,18 +30,29 @@ namespace TelegramVisualPart.Pages.ChatActions
         private TelegramLib.MainClasses.UserChat _chat;
         private TelegramLib.MainClasses.TelSystem _system;
 
+        private bool _isUpdateDate = false;
+
         public SetScheduleMessage(
             TelegramLib.MainClasses.UserChat chat,
             TelegramLib.MainClasses.Messages.Message mes,
-            TelegramLib.MainClasses.TelSystem system)
+            TelegramLib.MainClasses.TelSystem system,
+            bool isUpdateDate = false)
         {
             _message = mes;
             _chat = chat;
             _system = system;
+            _isUpdateDate = isUpdateDate;
 
             InitializeComponent();
 
-            SetStartDate();
+            UpdateDate();
+            SetStartDate();       
+        }
+
+        private void UpdateDate()
+        {
+            if (!_isUpdateDate) return;
+            _schedDate = _message.SentTime;
         }
 
         public void SetStartDate()
@@ -68,23 +79,43 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         private async void ScheduleBut_Click(object sender, RoutedEventArgs e)
         {
-            const int minDifferInMInutes = 10;
-
-            if (_schedDate is null || (_schedDate.Value - DateTime.Now).TotalMinutes < minDifferInMInutes) return;
-
+            const int minDifferInMinutes = 0;
+            
             //Set hour and minutes to chosen date
             AddHourMinuteInDate();
 
-            //Add in db
-            /*            TelegramLib.MainClasses.Messages.Message addSched = 
-                            await ApiService.AddAndGetSchedMessage(_chat, _message);*/
+            if (_schedDate is null || (_schedDate.Value - DateTime.Now).TotalMinutes < minDifferInMinutes) return;
 
             _message.SentTime = (DateTime)_schedDate;
+
+            if (_isUpdateDate)
+            {
+                await ApiService.UpdateSchedMessageDate(_message.Id, (DateTime)_schedDate);
+                ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                ((MainWindow)Window.GetWindow(this)).UpdateScheduleChat();
+                return;
+            }
+
+            await ScheduleMessageAdding();
+            ClosePageAfterAddingSchedMessage();
+        }
+
+        public void ClosePageAfterAddingSchedMessage()
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearCommentChatBox();
+            ((MainWindow)Window.GetWindow(this)).UpdateScheduleIconVisibility();
+
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            ((MainWindow)Window.GetWindow(this)).UpdateScheduleChat();
+        }
+
+        public async Task ScheduleMessageAdding()
+        {
             _message.IsSchedule = true;
             await ApiService.AddMessage(_message, _chat);
 
-            TelegramLib.MainClasses.Messages.Message addSched 
-                =  await ApiService.GetLastChatMessage(_chat.Id);
+            TelegramLib.MainClasses.Messages.Message addSched
+                = await ApiService.GetLastChatMessage(_chat.Id);
 
             if (addSched.Id < 0)
             {
@@ -93,12 +124,6 @@ namespace TelegramVisualPart.Pages.ChatActions
             }
             //Add in Sched List
             _chat.AddScheduleMessage(addSched, _system.LoggedUser);
-
-            ((MainWindow)Window.GetWindow(this)).ClearCommentChatBox();
-            ((MainWindow)Window.GetWindow(this)).UpdateScheduleIconVisibility();
-
-            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-            ((MainWindow)Window.GetWindow(this)).UpdateScheduleChat();
         }
 
         public void AddHourMinuteInDate()
@@ -132,7 +157,7 @@ namespace TelegramVisualPart.Pages.ChatActions
             {
                 DateTime? date = calPage.Calendar.SelectedDate;
 
-                if (date is null || (date.Value - DateTime.Now).TotalSeconds < 0) return;
+                if (date is null || (date.Value - DateTime.Now).TotalDays < -1) return;
                 
                 _schedDate = date;
 

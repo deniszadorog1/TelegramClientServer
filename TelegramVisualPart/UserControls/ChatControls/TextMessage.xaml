@@ -24,7 +24,7 @@
                  Name="UserEllipseImage" Width="40" Height="40"
                  MouseEnter="UserEllipseImage_MouseEnter"
                  MouseLeave="UserEllipseImage_MouseLeave"
-                 PreviewMouseDown="UserEllipseImage_PreviewMouseDown">
+                 PreviewMouseLeftButtonDown="UserEllipseImage_PreviewMouseDown">
             <Ellipse.Fill>
                 <ImageBrush x:Name="BgBrush" />
             </Ellipse.Fill>

@@ -56,6 +56,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public event Action LoadEnd;
         private bool _isSetMaxHeight;
+        private bool _isUpdate;
 
         public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
             TelSystem system, TelegramLib.MainClasses.UserContactcs contact, 
@@ -68,6 +69,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (!_isSetMaxHeight) MaxHeight = int.MaxValue;
 
+            SetBasicRowHeight();
             await SetInfoVisibility();
 
             SignalRService.UpdateContactDel += UpdateContactParams;
@@ -90,6 +92,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetStartToggleState();
 
             LoadEnd?.Invoke();
+        }
+
+        private const int _baseUpperInfoRowHeight = 55;
+        public void SetBasicRowHeight()
+        {
+            BirthdatRow.Height = new GridLength(_baseUpperInfoRowHeight);
+            //BioRow.Height = new GridLength(_baseUpperInfoRowHeight);
+            //AddContactRow.Height = new GridLength(_baseUpperInfoRowHeight);
         }
 
         public void SetUnBlockAction()
@@ -260,7 +270,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 ShareRow.Height = new GridLength(50);
                 ToBeHiddenButs.Height = new GridLength(75);
             }
-
         }
 
         public int GetHiddenParamsHeight()
@@ -821,7 +830,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 //unblock in system
                 _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
-
                 ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, _chat.Chatter);
             }
             else
@@ -829,7 +837,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 //Set to block page
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(
                     new Pages.UserInfoContact.ActionsFolder.BlockContact(_system, _chat.GetChatter()));
-
             }
             ((MainWindow)Window.GetWindow(this)).SetFramesAfterBlockingContact();
         }

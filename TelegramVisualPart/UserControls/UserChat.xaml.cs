@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
@@ -854,7 +855,7 @@ namespace TelegramVisualPart.UserControls
             _chat.UpdateScheduleMessages(_system.LoggedUser);
 
             SchedueleMessagesGrid.Visibility = Visibility.Visible;
-            SetChatMessages(isOnlySchedule: true);       
+            SetChatMessages(isOnlySchedule: true);
         }
 
         public void UpdateScheduleChatIfNeed()
@@ -1095,7 +1096,8 @@ namespace TelegramVisualPart.UserControls
                 _system.GetMessageById(mesId);
 
             //Set message menu for text
-            AddMessageMenu(MessageMenuType.StatMessage, clickPosition, item, mes);
+            AddMessageMenu(MessageMenuType.StatMessage, clickPosition,
+                item, mes);
         }
 
         public int GetAmountOfPinnMesses()
@@ -1187,7 +1189,7 @@ namespace TelegramVisualPart.UserControls
             if (_tempSendTime is null)
             {
                 _tempSendTime = mes.SentTime;
-                return;
+                //return;
             }
 
             SetChatItemPadding(item, mes);
@@ -1198,14 +1200,18 @@ namespace TelegramVisualPart.UserControls
         private void SetChatItemPadding(ListBoxItem item,
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            const int maxSecDiffer = 60;
+            const int maxSecDiffer = 5;
             const int closeDiffer = 1;
 
             if (_tempSendTime is null) return;
 
             double secDiffer = (mes.SentTime - _tempSendTime.Value).TotalSeconds;
 
-            if (secDiffer > 0 && secDiffer < maxSecDiffer)
+            Console.WriteLine(item.Padding);
+
+            item.Padding = new Thickness(7, 15, 10, 0);
+
+            if (secDiffer >= 0 && secDiffer < maxSecDiffer)
             {
                 item.Padding = new Thickness(7, closeDiffer, 10, closeDiffer);
             }
@@ -1221,7 +1227,8 @@ namespace TelegramVisualPart.UserControls
             item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
 
             item.MouseMove += ChatBoxItems_MouseMove;
-            item.PreviewMouseLeftButtonDown += SetSeletingStstus_PreviewMouseDown;
+            
+            item.PreviewMouseLeftButtonDown += SetSelectingStatus_PreviewMouseDown;
 
             item.MouseEnter += MessageItem_MouseEnter;
             item.MouseLeave += MessageItem_MouseLeave;
@@ -1230,10 +1237,6 @@ namespace TelegramVisualPart.UserControls
 
             item.PreviewMouseLeftButtonDown += (sender, e) =>
             {
-                /*            if (Mouse.DirectlyOver is System.Windows.Controls.TextBoxView)
-                            {
-                                return;
-                            }*/
                 _isMouseDown = true;
             };
             item.MouseLeftButtonUp += (sender, e) =>
@@ -1257,7 +1260,7 @@ namespace TelegramVisualPart.UserControls
 
         private bool _isSelected = true;
         private ListBoxItem _startChosenItem;
-        public void SetSeletingStstus_PreviewMouseDown(
+        public void SetSelectingStatus_PreviewMouseDown(
             object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem item) return;
@@ -1430,8 +1433,15 @@ namespace TelegramVisualPart.UserControls
 
         private async void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
+            if (e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
             {
+                if (_isEdit)
+                {
+                    //await ToEditMessage(_chat.Id, isBoth:false, isSched:true);
+
+                    await ToEditSchedMessage();
+                    return;
+                }
                 SetSchedulePage();
                 return;
             }
@@ -1446,8 +1456,8 @@ namespace TelegramVisualPart.UserControls
             }
             else if (
                 (_system.Settings.ChatsSettings.GetIsSendWithEnter() && e.Key == System.Windows.Input.Key.Enter) ||
-                
-                (!_system.Settings.ChatsSettings.GetIsSendWithEnter() && 
+
+                (!_system.Settings.ChatsSettings.GetIsSendWithEnter() &&
                 e.Key == System.Windows.Input.Key.Enter && Keyboard.Modifiers == ModifierKeys.Control))
             {
                 await SendMessage();
@@ -1456,11 +1466,7 @@ namespace TelegramVisualPart.UserControls
 
         private async Task SendMessage()
         {
-            if (_isEdit)
-            {
-                await ToEditMessage(_chat.Id);
-                return;
-            }
+            if (await IsEditedMessage()) return;
 
             _textHistory.Clear();
             if (await SendSelectedMessagesToForward() ||
@@ -1481,6 +1487,16 @@ namespace TelegramVisualPart.UserControls
             CommentTextBox.Clear();
         }
 
+
+        public async Task<bool> IsEditedMessage()
+        {
+            if (_isEdit)
+            {
+                await ToEditMessage(_chat.Id);
+                return true;
+            }
+            return false;
+        }
         public void SetSchedulePage()
         {
             //form message
@@ -1521,8 +1537,36 @@ namespace TelegramVisualPart.UserControls
             CommentRow.Height = new GridLength(newSize);
         }
 
+        public async Task ToEditSchedMessage(TelegramLib.MainClasses.Messages.Message toEdit = null)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                ReplyMessageRow.Height = new GridLength(0);
+            });
+
+            _isEdit = false;
+
+            if (toEdit is null)
+            {
+                toEdit = GetMessageToEdit();
+            }
+            if (toEdit is null) return;
+
+            SetEditedParams(toEdit);
+
+            //Logic
+            _system.EditMessage(toEdit);
+
+            //DB 
+            //await ApiService.EditMessage(chatId, toEdit);
+
+            //Visual
+            await SetMessagesInChat();
+        }
+
         public async Task ToEditMessage(int chatId, bool isBoth = true,
-            TelegramLib.MainClasses.Messages.Message toEdit = null)
+            TelegramLib.MainClasses.Messages.Message toEdit = null,
+            bool isSched = false)
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -1563,6 +1607,8 @@ namespace TelegramVisualPart.UserControls
             }
 
             if (toEdit is TelegramLib.MainClasses.Messages.TextMessage textMes) textMes.IsEdited = true;
+
+            if(isSched) SetEditedParams(toEdit);
 
             //Logic
             _system.EditMessage(toEdit);
@@ -1726,7 +1772,7 @@ namespace TelegramVisualPart.UserControls
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
-            Message toAdd =  new TelegramLib.MainClasses.Messages.TextMessage(
+            Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, sendText, false, replyId, false, null, false);
 
@@ -1804,6 +1850,9 @@ namespace TelegramVisualPart.UserControls
             if (sender is not ListBoxItem item) return;
             System.Windows.Point clickPosition = e.GetPosition(this);
 
+            var clicked = e.OriginalSource as DependencyObject;
+            if (clicked is Ellipse) return;
+
             int.TryParse(item.Tag.ToString(), out int mesId);
 
             TelegramLib.MainClasses.Messages.Message mes =
@@ -1837,7 +1886,10 @@ namespace TelegramVisualPart.UserControls
             bool isOnlyPinnedChat = UnPinAllBorder.Visibility == Visibility.Visible ||
                 OnlyPinnedHeaderGrid.Visibility == Visibility.Visible;
 
-            _mesMenu = new MesMenu(menuType, isOnlyPinnedChat, toMenuMes, _system);
+            bool isSchedMessage = SchedueleMessagesGrid.Visibility == Visibility.Visible;
+
+            _mesMenu = new MesMenu(menuType, isOnlyPinnedChat,
+                toMenuMes, _system, isSchedMessage);
             _mesMenu.SetClickedListBoxItem(item);
 
             _mesMenu.Loaded += (sender, e) =>
@@ -1882,6 +1934,49 @@ namespace TelegramVisualPart.UserControls
             menu.SelectAct += () => SelectionAction();
 
             menu.EditAct += () => EditMessageAct();
+
+            menu.SendNowAct += () => SendSchedMessageNow();
+            menu.RescheduleMessageAct += () => RescheduleMessage();
+        }
+
+        public void RescheduleMessage()
+        {
+            TelegramLib.MainClasses.Messages.Message mes =
+                GetChosenMesInMesMenu();
+
+            if (mes is null ||
+
+               (mes is TelegramLib.MainClasses.Messages.TextMessage textMes &&
+                textMes.Text == string.Empty)) return;
+
+            SetScheduleMessage message =
+                new SetScheduleMessage(GetChat(), mes, _system, isUpdateDate: true);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
+        }
+
+        public async void SendSchedMessageNow()
+        {
+            TelegramLib.MainClasses.Messages.Message mes =
+                GetChosenMesInMesMenu();
+            if (mes is null) return;
+
+            //Update it in db
+            await ApiService.UpdateSchedMessageDate(mes.Id, DateTime.Now);
+
+            //Update in system
+            mes.SentTime = DateTime.Now;
+
+            //Send must be doing service in server part
+        }
+
+        public TelegramLib.MainClasses.Messages.Message GetChosenMesInMesMenu()
+        {
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            if (item is null || item.Content is not UserControl control) return null;
+
+            Message mes = GetMessageByListBoxTag(item);
+            return mes;
         }
 
         private bool _isEdit = false;
@@ -1948,8 +2043,11 @@ namespace TelegramVisualPart.UserControls
             Message mes = GetMessageByListBoxTag(item);
             if (mes is null) return;
 
-            TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessage(mes);
-            if (chat is null) return;
+            /*            if (!_system.IsMessageIsInSchedById(mes.Id))
+                        {
+                            TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessage(mes);
+                            if (chat is null) return;
+                        }*/
 
             ShowSelectionBar();
 
@@ -2125,7 +2223,7 @@ namespace TelegramVisualPart.UserControls
 
             int? lastMesId = await AddStatMessageInDb(toAdd, chat);
 
-            if (lastMesId is null) throw new ArgumentNullException("Wtf Bro?");
+            if (lastMesId is null)  throw new ArgumentNullException("Wtf Bro?");
             toAdd.Id = (int)lastMesId;
 
             //Add it in chat logic part
@@ -4982,12 +5080,14 @@ namespace TelegramVisualPart.UserControls
 
         private void ScheduleMessageGrid_MouseEnter(object sender, MouseEventArgs e)
         {
-            ScheduleMessagesIcon.Foreground = 
+            Cursor = Cursors.Hand;
+            ScheduleMessagesIcon.Foreground =
                 new SolidColorBrush(Colors.White);
         }
 
         private void ScheduleMessageGrid_MouseLeave(object sender, MouseEventArgs e)
         {
+            Cursor = null;
             ScheduleMessagesIcon.Foreground =
                 new SolidColorBrush(Colors.Gray);
         }
@@ -5019,7 +5119,29 @@ namespace TelegramVisualPart.UserControls
             //Update chat messages
             SetChatMessages();
         }
+
+        public void UpdateVisAfterSchedUpdate()
+        {
+            //if pinned
+            if (SavedMessagesGrid.Visibility == Visibility.Visible)
+            {
+                SetChatMessages(isOnlyPinned: true);
+                return;
+            }
+
+            //if sched messages
+            if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
+            {
+                SetChatMessages(isOnlySchedule: true);
+                return;
+            }
+
+            //if chat
+            SetChatMessages();
+        }
     }
+
+
 
     public static class ScrollViewerBehavior
     {

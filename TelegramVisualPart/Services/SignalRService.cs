@@ -75,6 +75,8 @@ namespace TelegramVisualPart.Services
 
         public static event Action<TelegramLib.MainClasses.User>? UpdateUserImagesDel;
 
+        public static event Action<HashSet<int>> UpdateChatsAfterSched;
+
         private static bool _isChatEventsAreSet = false;
         public static bool GetIsChatEventsAreSet() => _isChatEventsAreSet;
         public static void ChangeIsChatEventsAreSet(bool isSet)
@@ -87,7 +89,7 @@ namespace TelegramVisualPart.Services
             _system = system;
         }
 
-        public static async Task SetBasicSignalRConnetion()
+        public static async Task SetBasicSignalRConnection()
         {
             await SetSignalRConnection();
         }
@@ -349,6 +351,12 @@ namespace TelegramVisualPart.Services
                 "UpdateUserImages", (user) =>
             {
                 UpdateUserImagesDel?.Invoke(user);
+            });
+
+
+            _connection.On<HashSet<int>>("UpdateAfterSchedMessages", (chatIds) =>
+            {
+                UpdateChatsAfterSched?.Invoke(chatIds);
             });
 
             await _connection.StartAsync();

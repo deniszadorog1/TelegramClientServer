@@ -23,7 +23,7 @@
                          PreviewMouseLeftButtonDown="AllChatsItem_PreviewMouseDown"
                          PreviewMouseRightButtonDown="AllFolderMenu_PreviewMouseRightButtonDown">
                 <local:LeftButtonsButton x:Name="AllChats"/>
-            </ListBoxItem>
+            </ListBoxItem>   
 
             <ListBoxItem Name="PersonalItem"  
                          PreviewMouseLeftButtonDown="AllChatsItem_PreviewMouseDown"

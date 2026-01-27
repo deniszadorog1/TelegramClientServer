@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using TelegramClientServer.SignalRHubs;
 using TelegramLib.Services;
+using TelegramClientServer.Services;
 
 namespace TelegramClientServer
 {
@@ -23,7 +24,9 @@ namespace TelegramClientServer
 
 
             builder.Services.AddSignalR();
-            builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();
+            builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
+            builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
+
 
             // Add services to the container.
 
@@ -31,7 +34,6 @@ namespace TelegramClientServer
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
 
             var app = builder.Build();
 

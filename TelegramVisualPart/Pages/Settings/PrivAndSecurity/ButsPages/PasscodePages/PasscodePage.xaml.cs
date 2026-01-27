@@ -24,6 +24,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
     public partial class PasscodePage : Page
     {
         private TelSystem _system;
+
+        public event Action UpdateStats;
         public PasscodePage(TelSystem system)
         {
             _system = system;
@@ -131,7 +133,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
         {
             ((MainWindow)Window.GetWindow(this)).ClearTimer();
             _system.Settings.PrivacySettings.PassCode.MinutesTimer = -1;
-           
+
+            UpdateStats?.Invoke();
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new SetLocalCode(_system));
         }

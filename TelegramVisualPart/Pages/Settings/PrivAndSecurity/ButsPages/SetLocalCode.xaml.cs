@@ -24,7 +24,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
     {
         private TelSystem _system;
         private bool _isEnterCode;
-        
+
+        public event Action UpdateStatus;
+
         public SetLocalCode(TelSystem system, bool isEnterCode = false)
         {
             _system = system;
@@ -91,7 +93,17 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
             _system.Settings.PrivacySettings.PassCode.PassCode = FirstCodeBox.Text;
 
-           ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new PasscodePages.PasscodePage(_system));
+            UpdateStatus?.Invoke();
+
+            PasscodePages.PasscodePage page =
+                new PasscodePages.PasscodePage(_system);
+
+            page.UpdateStats += () =>
+            {
+                UpdateStatus?.Invoke();
+            };
+
+           ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
     }
 }

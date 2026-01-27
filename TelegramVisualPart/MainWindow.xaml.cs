@@ -1,43 +1,24 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.IdentityModel.Tokens;
-using System.Data.Entity.Core.EntityClient;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Eventing.Reader;
-using System.Formats.Tar;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
-using System.Text;
-using System.Transactions;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
-using TelegramLib.Services;
-using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
-using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.ChatActions.SendMedia;
 using TelegramVisualPart.Pages.MyProfile;
-using TelegramVisualPart.Pages.MyProfile.SetInformation;
 using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
-using TelegramVisualPart.UserControls.ChatControls;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.FolderControls;
 using TelegramVisualPart.Windows;
@@ -213,7 +194,7 @@ namespace TelegramVisualPart
             if (!isOnlyChat)
             {
                 SignalRService.SetSystem(_system);
-                await SignalRService.SetBasicSignalRConnetion();
+                await SignalRService.SetBasicSignalRConnection();
                 await SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             }
 
@@ -1211,7 +1192,27 @@ namespace TelegramVisualPart
         public async Task DeleteChat(TelegramLib.MainClasses.User chatter, bool isDeleteForOtherUser)
         {
             if (MainFrame.Content is not MainChatPage page) return;
+
+            //Close only chat window
+            CloseOnlyChatWindowByChatter(chatter);
+
             await page.DeleteChat(chatter, isDeleteForOtherUser);
+        }
+
+        private void CloseOnlyChatWindowByChatter(TelegramLib.MainClasses.User chatter)
+        {
+            if (_bossWindow is not null) return;
+
+            MainWindow? window = _chatWindows.FirstOrDefault(x =>
+            x._onlyChatUserChat is not null &&
+            x._onlyChatUserChat.GetChatter() is not null &&
+            x._onlyChatUserChat.GetChatter().Id == chatter.Id);
+
+            if (window is null) return;
+
+            _chatWindows.Remove(window);
+            window.Close();
+            
         }
 
         public void AddAddMediaPage(string firstMediaPath, string text)

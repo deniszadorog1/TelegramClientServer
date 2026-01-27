@@ -1,4 +1,4 @@
-﻿
+﻿B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\App.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\MenuGlobalWindow.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\CustWindows\ToastWindow.xaml;;
@@ -75,6 +75,7 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Cha
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\SendMessageMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ChatMessages\ShareContactControl.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfo.xaml;;
+FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfoControls\LoginRowMenu.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\DoubleText.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\Emoji.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\Emojis\EmojisBlock.xaml;;
@@ -148,5 +149,4 @@ FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\SettingsControls
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserChat.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\UserTalkMessage.xaml;;
 FB:\GitHub\TelegramClientServer\TelegramVisualPart\Windows\MediaWindow.xaml;;
-FB:\GitHub\TelegramClientServer\TelegramVisualPart\UserControls\ChatControls\ContactInfoControls\LoginRowMenu.xaml;;
 

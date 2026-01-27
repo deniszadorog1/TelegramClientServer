@@ -2,6 +2,7 @@
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Abstractions;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -463,7 +464,8 @@ namespace TelegramLib.Services
             return res;
         }
 
-        private static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId, bool isGetSchedMessages)
+        public static List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId,
+            bool isGetSchedMessages = false)
         {
             List<TelegramLib.MainClasses.Messages.Message> res =
                 new List<TelegramLib.MainClasses.Messages.Message>();
@@ -2365,9 +2367,9 @@ namespace TelegramLib.Services
             {
                 //Get message
                 Messages toEdit = model.Messages.FirstOrDefault(
-                    x => x.ChatId == chatId && x.Id == mes.Id);
+                    x =>/* x.ChatId == chatId &&*/ x.Id == mes.Id);
 
-                Messages pairDb = model.Messages.FirstOrDefault(x => x.Id == pair.Id);
+                Messages pairDb = pair is null ? null : model.Messages.FirstOrDefault(x => x.Id == pair.Id);
 
                 if (toEdit is null) return;
 
@@ -2378,10 +2380,11 @@ namespace TelegramLib.Services
 
                 if (mes is TextMessage text)
                 {
-                    TextMessage pairText = pair as TextMessage;
-
-                    pairDb.Message = text.Text;
-                    pairDb.IsEdited = true;
+                    if (!(pairDb is null))
+                    {
+                        pairDb.Message = text.Text;
+                        pairDb.IsEdited = true;
+                    }
 
                     toEdit.Message = text.Text;
                     toEdit.IsEdited = true;
@@ -4352,6 +4355,90 @@ namespace TelegramLib.Services
             AddMessage(chat, mes);
 
             return GetLastChatMessage(chat.Id);
+        }
+
+        public static void UpdateDateInSchedMessageById(int mesId, DateTime newDate)
+        {
+            using (var model = new TelegramModel())
+            {
+                Messages toUpdate = model.Messages.FirstOrDefault(x => x.Id == mesId);
+
+                if (toUpdate is null) return;
+                if (toUpdate.IsInSchedule) toUpdate.SentDate = newDate;
+
+                model.SaveChanges();
+            }
+        }
+
+        public static (HashSet<int>, HashSet<int>) GetUserIdsSentSchedMessages()
+        {
+            HashSet<int> userIds = new HashSet<int>();
+            HashSet<int> chatIds = new HashSet<int>();
+            using(var model = new TelegramModel())
+            {
+                IQueryable<Messages> toSendQuery = model.Messages.Where(
+                    x => x.IsInSchedule &&
+                    x.SentDate.HasValue &&
+                    x.SentDate.Value < DateTime.Now);
+
+                List<Messages> toSend = toSendQuery.ToList();
+
+                for(int i = 0; i < toSend.Count; i++)
+                {
+                    AddChatUserAndChatterInSet(userIds, (int)toSend[i].ChatId);
+
+                    toSend[i].IsInSchedule = false;
+
+                    var id = toSend[i].Id;
+                    var copy = model.Messages
+                        .AsNoTracking()
+                        .First(x => x.Id == id);
+
+                    copy.IsInSchedule = false;
+                    copy.Id = default;
+
+                    int pairChatId = GetPairChatIdByChatId((int)toSend[i].ChatId);
+                    copy.ChatId = pairChatId;
+
+                    chatIds.Add(pairChatId);
+                    chatIds.Add((int)toSend[i].ChatId);
+
+                    model.Messages.Add(copy);
+                }
+
+                model.SaveChanges();
+            }
+            return (userIds, chatIds);
+        }
+
+        private static void AddChatUserAndChatterInSet(HashSet<int> set, int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                if (chat is null) return;
+
+                set.Add((int)chat.UserId);
+                set.Add((int)chat.ChatterId);
+            }
+        }
+
+        private static int GetPairChatIdByChatId(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
+                
+                if (chat is null) return -1;
+
+
+                Chat pair = model.Chat.FirstOrDefault(
+                    x => x.UserId == chat.ChatterId && 
+                    x.ChatterId == chat.UserId);
+
+                return pair is null ? -1 : pair.Id;
+            }
+            
         }
     }
 }

@@ -100,6 +100,7 @@ namespace TelegramLib.MainClasses
 
         public List<Messages.Message> GetChatMessages()
         {
+            Messages = Messages.OrderBy(x => x.SentTime).ToList();
             return Messages;
         }
 
@@ -283,6 +284,11 @@ namespace TelegramLib.MainClasses
         public bool IsMessageContains(TelegramLib.MainClasses.Messages.Message mes)
         {
             return mes is null ? false : Messages.Any(x => x.Id == mes.Id);
+        }
+
+        public bool IsInSchedMessages(Messages.Message mes)
+        {
+            return ScheduleMessages.Any(x => x.Id == mes.Id);
         }
 
         public void AddPinnedMessage(
@@ -646,7 +652,25 @@ namespace TelegramLib.MainClasses
             {
                 ScheduleMessages.Remove(removeMes);
             }
+        }
 
+        public void UpdateChatMessages(List<TelegramLib.
+            MainClasses.Messages.Message> newMessages)
+        {
+            Messages = newMessages;
+        }
+
+        public void RemoveOldSchedMessages()
+        {
+            List<Messages.Message> toRemove = 
+               ScheduleMessages.Where(
+                   x => !(x is StaticMessage) && 
+               x.SentTime < DateTime.Now).ToList();
+
+            foreach(var mes in toRemove)
+            {
+                ScheduleMessages.Remove(mes);
+            }      
         }
     }
 }

@@ -68,7 +68,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetForwardedFromRow();
         }
 
-
         private const int _minMediaSize = 125;
         private const int _maxMediaSize = 225;
 

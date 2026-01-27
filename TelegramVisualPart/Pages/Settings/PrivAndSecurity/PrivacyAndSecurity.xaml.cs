@@ -1,6 +1,8 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignColors.Recommended;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,7 +68,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             CloseBut.IconType.Kind = PackIconKind.Close;
 
             //LocalPasscode.NamePart.Text = "Local passcode";
-            //LocalPasscode.EnumPart.Text = "STATUS";
+            SetLocalPasscodeStatus();
 
             //BlockedUsers.NamePart.Text = "Blocked users";
             //BlockedUsers.EnumPart.Text = "AMOUNT";
@@ -97,6 +99,14 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
             //DeleteAway.NamePart.Text = "If away for...";
             //DeleteAway.EnumPart.Text = "STATUS";
+        }
+
+        public void SetLocalPasscodeStatus()
+        {
+            LocalPasscode.EnumPart.Text = 
+                (_system.Settings.PrivacySettings.PassCode is null || 
+                _system.Settings.PrivacySettings.PassCode.MinutesTimer == -1)  ?
+                "Off" : "On";
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)
@@ -138,6 +148,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 if (page is SetLocalCode || page is BlockedUsers)
                 {
                     ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+
                 }
                 else ((MainWindow)Window.GetWindow(this)).SetThirdFrame((page));
             }
@@ -147,7 +158,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         {
             if (name == LocalPasscode.Name.ToString() && _system.Settings.PrivacySettings.PassCode is null)
             {
-                return new SetLocalCode(_system, false);
+                SetLocalCode code = new SetLocalCode(_system, false);
+                code.UpdateStatus += () =>
+                {
+                    SetLocalPasscodeStatus();
+                };
+                return code;
             }
 
             return name == LocalPasscode.Name.ToString() ? new SetLocalCode(_system, _system.Settings.PrivacySettings.PassCode.MinutesTimer != -1) :

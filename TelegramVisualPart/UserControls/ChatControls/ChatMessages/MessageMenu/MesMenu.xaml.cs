@@ -27,17 +27,24 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
     public partial class MesMenu : UserControl
     {
         private MessageMenuType _type;
+
         private bool _isOnlyPinnedChat;
+        private bool _isSchedMessages;
+
         private TelegramLib.MainClasses.Messages.Message _mes;
         private TelSystem _system;
 
-        public MesMenu(MessageMenuType type, bool isOnlyPinnedChat,
-            TelegramLib.MainClasses.Messages.Message mes, TelSystem system)
+        public MesMenu(MessageMenuType type,
+            bool isOnlyPinnedChat,
+            TelegramLib.MainClasses.Messages.Message mes,
+            TelSystem system,
+            bool isSchedMessages)
         {
             _type = type;
             _isOnlyPinnedChat = isOnlyPinnedChat;
             _mes = mes;
             _system = system;
+            _isSchedMessages = isSchedMessages;
 
             InitializeComponent();
 
@@ -64,6 +71,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
             SelectBut.SetParams(PackIconKind.ProgressTick, "Select");
 
+            SendNowBut.SetParams(PackIconKind.SendOutline, "Send now");
+            RescheduleBut.SetParams(PackIconKind.Refresh, "Reschedule");
+
+
             RemoveUnnesBlocks();
 
             if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
@@ -83,7 +94,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                 Buts.Children.Remove(EditBut);
             }
         }
-        
+
         public void RemoveUnnesBlocks()
         {
             switch (_type)
@@ -116,10 +127,31 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                         Buts.Children.Remove(CopyBut);
                         Buts.Children.Remove(ForwardBut);
                         Buts.Children.Remove(SelectBut);
-
                         break;
                     }
             }
+
+            if (_isSchedMessages)
+            {
+                RemoveButsForSchedMenu();
+            }
+            else RemoveSchedButs();
+        }
+
+        public void RemoveSchedButs()
+        {
+            Buts.Children.Remove(SendNowBut);
+            Buts.Children.Remove(RescheduleBut);
+        }
+
+        public void RemoveButsForSchedMenu()
+        {
+            Buts.Children.Remove(GoToMessage);
+            Buts.Children.Remove(ReplyBut);
+            Buts.Children.Remove(PinBut);
+            Buts.Children.Remove(ShowInFolder);
+            Buts.Children.Remove(SaveAsBut);
+            Buts.Children.Remove(ForwardBut);
         }
 
         public void IsAddEditBut()
@@ -152,7 +184,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         public event Action DeleteAct;
         public event Action SelectAct;
         public event Action EditAct;
-
+        public event Action SendNowAct;
+        public event Action RescheduleMessageAct;
         private void ReplyBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ReplyAct?.Invoke();
@@ -215,6 +248,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ShowInFolderAct?.Invoke();
+        }
+
+        private void SendNowBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SendNowAct?.Invoke();
+        }
+
+        private void RescheduleBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RescheduleMessageAct?.Invoke();
         }
     }
 }

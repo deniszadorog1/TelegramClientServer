@@ -46,7 +46,6 @@ namespace TelegramVisualPart.Pages.ChatActions
             ((MainWindow)Window.GetWindow(this)).DeleteChat(_user, (bool)ShowChatNameBox.IsChecked);
             
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-            //((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

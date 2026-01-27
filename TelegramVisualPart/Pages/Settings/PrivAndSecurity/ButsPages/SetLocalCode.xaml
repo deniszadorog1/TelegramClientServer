@@ -69,7 +69,7 @@
                    HorizontalAlignment="Center" Foreground="Gray"
                    FontSize="16" TextWrapping="Wrap"/>
 
-            <StackPanel Orientation="Vertical" Grid.Row="5">
+            <StackPanel Orientation="Vertical" Grid.Row="5" Margin="30 0 30 0">
                 <TextBox Name="FirstCodeBox"
                   Foreground="{StaticResource UsualTextColor}" Margin="15" FontSize="16"
                   materialDesign:HintAssist.Hint="Enter a passcode"

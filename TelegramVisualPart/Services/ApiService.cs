@@ -113,6 +113,23 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<List<Message>> GetMessagesByChatId(int chatId)
+        {
+            var response = 
+                await _client.GetAsync($"api/Social/GetMessagesByChatId?chatId={chatId}");
+            string jsonResponse = 
+                await response.Content.ReadAsStringAsync();
+
+            List<TelegramLib.MainClasses.Messages.Message>? mes =
+                JsonConvert.DeserializeObject<List<Message>>(
+                jsonResponse,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            return mes;
+        }
 
         public static async Task<bool> GetMessageReadStatus(int mesId)
         {
@@ -139,6 +156,17 @@ namespace TelegramVisualPart.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync("api/Social/SetReadStatus", content);
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<bool> UpdateSchedMessageDate(int mesId, DateTime newDate)
+        {
+            var data = new { MessageId = mesId, NewDate = newDate };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Social/UpdateSchedMessageDate", content);
             return response.IsSuccessStatusCode;
         }
 

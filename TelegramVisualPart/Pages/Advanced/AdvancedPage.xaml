@@ -137,7 +137,7 @@
 
                         <StackPanel Grid.Row="1" Margin="20 0 0 0" Orientation="Vertical">
                             <CheckBox   Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                        Name="ShowChatNameBox" Content="123kjbkj"
+                                        Name="ShowChatNameBox" Content="Show chat name"
                                         Margin="-3 10 7 7" Checked="ShowChatNameBox_Checked">
                                 <CheckBox.Resources>
                                     <SolidColorBrush x:Key="MaterialDesignCheckBoxOffOutline" Color="Orange"/>
@@ -167,25 +167,33 @@
                                        FontSize="17" Foreground="{StaticResource TempActiveTextColor}"/>
 
                             <StackPanel Grid.Row="1" Margin="20 0 0 0">
-                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0" 
-                                           Content="Show tray icon" Name="TrayIconBox"
-                                           Margin="-3 10 7 7"/>
+                                <CheckBox Name="TrayIconBox"
+                                          Style="{StaticResource CheckBoxStyle}" 
+                                          Padding="10 -1 0 0" 
+                                          Content="Show tray icon" 
+                                          Margin="-3 10 7 7"/>
 
-                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                           Content="Show taskbrar icon" Name="TaskBarBox"
-                                           Checked="TaskBarBox_Checked"
-                                           Unchecked="TaskBarBox_Unchecked"/>
+                                <CheckBox Name="TaskBarBox"
+                                          Style="{StaticResource CheckBoxStyle}" 
+                                          Padding="10 -1 0 0"
+                                          Content="Show taskbrar icon"
+                                          Checked="TaskBarBox_Checked"
+                                          Unchecked="TaskBarBox_Unchecked"/>
 
-                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                           Content="Close to taskbrar" Name="CloseToTaskBarBox"/>
+                                <CheckBox Name="CloseToTaskBarBox"
+                                          Style="{StaticResource CheckBoxStyle}" 
+                                          Padding="10 -1 0 0"
+                                          Content="Close to taskbrar"/>
 
-                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                           Content="Launch Telegram when system starts" 
-                                           Name="AtStartLaunchTelegramBox"/>
+                                <CheckBox Name="AtStartLaunchTelegramBox"
+                                          Style="{StaticResource CheckBoxStyle}" 
+                                          Padding="10 -1 0 0"
+                                          Content="Launch Telegram when system starts"/>
 
-                                <CheckBox  Style="{StaticResource CheckBoxStyle}" Padding="10 -1 0 0"
-                                           Content="Palce Telegram in Send To menu" 
-                                           Name="PalceInSendTo"/>
+                                <CheckBox Name="PalceInSendTo"
+                                          Style="{StaticResource CheckBoxStyle}" 
+                                          Padding="10 -1 0 0"
+                                          Content="Palce Telegram in Send To menu"/>
                             </StackPanel>
                         </Grid>
                     </Grid>

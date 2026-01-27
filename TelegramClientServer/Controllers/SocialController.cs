@@ -50,6 +50,19 @@ namespace TelegramClientServer.Controllers
             public string Message { get; set; }
         }
 
+        //Update date for schedMessage
+        [HttpPost("UpdateSchedMessageDate")]
+        public void UpdateSchedMessageDate([FromBody] UpdateSchedMessageDateDTO dto)
+        {
+            DbService.UpdateDateInSchedMessageById(dto.MessageId, dto.NewDate);
+        }
+
+        public class UpdateSchedMessageDateDTO
+        {
+            public int MessageId { get; set; }
+            public DateTime NewDate { get; set; }
+        }
+
         //update contact
         [HttpPost("UpdateContact")]
         public void UpdateContact([FromBody] ContactDTO contact)
@@ -88,11 +101,17 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetContactMask")]
-        public TelegramLib.MainClasses.UserParams.UserImage GetContactMask(int loggedUserId, int contactUserId)
+        public TelegramLib.MainClasses.UserParams.UserImage GetContactMask(int loggedUserId, 
+            int contactUserId)
         {
             return DbService.GetContactMaskByContactUserId(loggedUserId, contactUserId);
         }
 
+        [HttpGet("GetMessagesByChatId")]
+        public List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
+        {
+            return DbService.GetMessagesByChatId(chatId);
+        }
 
         [HttpGet("GetLastUserContact")]
         public UserContactcs GetContact(int userId)

@@ -150,6 +150,8 @@ namespace TelegramLib.MainClasses
             //UserChat chat = Chats.Where(x => x.IsNamesAreEqual(chatterName)).FirstOrDefault();
             UserChat chat = Chats.FirstOrDefault(x => x.IsChatterIdsAreEqual(id) /*IsUserLoginsAreEqual(chatterLogin)*/);
 
+            if (chat is null) return null;
+
             if (LoggedUser.Id == id)
             {
                 chat = SavedMesesChat;
@@ -160,15 +162,13 @@ namespace TelegramLib.MainClasses
             {
                 ChosenChatContact = chat is TelegramLib.MainClasses.SavedMessagesChat ? LoggedUser : chat.Chatter;
 
-                //is need to change for ekse bg
+                //is need to change for else bg
                 SetChatBg(chat);
                 return chat;
             }
             //Create new chat(if its absent)
 
-
             throw new Exception("cant be chat should be set!!!");
-
         }
 
         public void SetChatBg(UserChat chat)
@@ -621,7 +621,8 @@ namespace TelegramLib.MainClasses
                 Message mes = Chats[i].GetMessageById((int)id);
                 if (!(mes is null)) return mes;
             }
-            return null;
+
+            return GetScheduleMessageById((int)id);    
         }
 
         public void RemoveMessageById(int id)
@@ -676,11 +677,22 @@ namespace TelegramLib.MainClasses
             }
         }
 
+        public bool IsMessageIsInSchedById(int id)
+        {
+            for (int i = 0; i < Chats.Count; i++)
+            {
+                Messages.Message mes = Chats[i].ScheduleMessages.FirstOrDefault(x => x.Id == id);
+                if (!(mes is null)) return true;
+            }
+            return false;
+        }
+
         public void SetChatParamsAfterMessageRemoved(
             TelegramLib.MainClasses.Messages.Message mes)
         {
             UserChat chat = GetChatByMessage(mes);
 
+            if (chat is null) return;
             //Remove from replied
             chat.RemoveRepliedMessages(mes);
 
@@ -710,7 +722,8 @@ namespace TelegramLib.MainClasses
 
             for (int i = 0; i < Chats.Count; i++)
             {
-                if (Chats[i].IsMessageContains(mes)) return Chats[i];
+                if (Chats[i].IsMessageContains(mes) ||
+                    Chats[i].IsInSchedMessages(mes)) return Chats[i];
             }
             return null;
         }
@@ -806,8 +819,15 @@ namespace TelegramLib.MainClasses
             {
                 mes = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == toEdit.Id);
             }
-            else mes = Chats.Select(x => x.Messages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
-
+            else
+            {
+                mes = Chats.Select(x => x.Messages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
+            
+                if(mes is null)
+                {
+                    mes = Chats.Select(x => x.ScheduleMessages.FirstOrDefault(y => y.Id == toEdit.Id)).FirstOrDefault();
+                }
+            }
             if (mes is null) return;
 
             if (mes is TextMessage mesText &&
@@ -846,5 +866,28 @@ namespace TelegramLib.MainClasses
                 if(!(contact is null)) contact.UserImages.Add(toUpdateUser.UserImages[i]);
             }
         }
+
+        public bool IsChatContainsById(int id)
+        {
+            return Chats.Any(x => x.Id == id);
+        }
+
+        public void UpdateChatMessagesByChatId(int chatId, List<Message> newMessages)
+        {
+            UserChat chat = GetChatById(chatId);
+            if (chat is null) return;
+            
+            chat.UpdateChatMessages(newMessages);
+        }
+
+        public void RemoveOldSchedMessages(int chatId)
+        {
+            UserChat chat = GetChatById(chatId);
+            if (chat is null) return;
+
+            chat.RemoveOldSchedMessages();
+            chat.UpdateScheduleMessages(LoggedUser);
+        }
+
     }
 }

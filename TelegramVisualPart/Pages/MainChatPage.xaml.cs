@@ -102,6 +102,37 @@ namespace TelegramVisualPart.Pages
             SignalRService.UpdateChatsControlsDel += UpdateChatByChatter;
 
             SignalRService.UpdateOnlineStatusDel += OnlineStatusUpdated;
+
+            SignalRService.UpdateChatsAfterSched += UpdateAfterSchedMessages;
+        }
+
+        public async void UpdateAfterSchedMessages(HashSet<int> chatsToUpdate)
+        {
+            //Plan
+            //update in system
+            foreach(var chatId in chatsToUpdate)
+            {
+                if (_system.IsChatContainsById(chatId))
+                {
+                    //To update chat messages
+                    List<TelegramLib.MainClasses.Messages.Message> newMes =
+                        await ApiService.GetMessagesByChatId(chatId);
+
+                    _system.UpdateChatMessagesByChatId(chatId, newMes);
+
+                    //Remove old sched messages
+                    _system.RemoveOldSchedMessages(chatId);
+                }
+            }
+
+            //update in vis
+            if(UserChat.Visibility == Visibility.Visible &&
+               UserChat.GetChat() is not null &&
+               chatsToUpdate.Contains(UserChat.GetChat().Id))
+            {
+                //Update chat(sched + vis)
+                UserChat.UpdateVisAfterSchedUpdate();
+            }
         }
 
         public void OnlineStatusUpdated(TelegramLib.MainClasses.User toUpdate)
@@ -989,7 +1020,6 @@ namespace TelegramVisualPart.Pages
                 //Bring to front
                 ((MainWindow)Window.GetWindow(this)).BringWindowToView(_system.GetUserChatByChatterId(
                 _system.ChosenChatContact.Id));
-
                 return;
             }
 
@@ -1348,7 +1378,9 @@ namespace TelegramVisualPart.Pages
                     if (tempItem.Content is UserTalkMessage usTalk)
                     {
                         SetUnreadForUserTalk(usTalk, _system.Chats[i]);
+                        usTalk.LastMessage.Text = _system.Chats[i].GetLastMessageInString();
                     }
+
                     items.Add(tempItem);
                     continue;
                 }
@@ -1502,11 +1534,6 @@ namespace TelegramVisualPart.Pages
                     $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
             chatControl.LastMessage.Text = chat.GetLastMessageInString();
 
-            //Set Image icon
-
-            /*      
-                   await SignalRHelperService.SetContactPhoto(chatterUser, chat, chatControl.ImageIcon, chatControl.UserEllipseImage);
-      */
             return chatControl;
         }
 
@@ -1686,7 +1713,8 @@ namespace TelegramVisualPart.Pages
                 TelegramLib.MainClasses.User chatter = chat is TelegramLib.MainClasses.SavedMessagesChat ?
                     _system.LoggedUser : chat.GetChatter();
 
-                UserTalkMessage message = new UserTalkMessage(chatter.GetFirstImageName().Name)
+                UserTalkMessage message = new UserTalkMessage(
+                    chatter.GetFirstImageName().Name)
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     Width = ChatsGrid.ActualWidth,
