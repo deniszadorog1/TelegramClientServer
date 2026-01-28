@@ -2351,6 +2351,30 @@ namespace TelegramLib.Services
             return true;
         }
 
+        public static void EditSchedMessage(int mesId,
+                TextMessage textMes,
+                MediaAction mediaMes)
+        {
+            using (var model = new TelegramModel())
+            {
+                Messages toEdit = model.Messages.FirstOrDefault(x => x.Id == mesId);
+                if (toEdit is null) return;
+
+                if(!(textMes is null))
+                {
+                    toEdit.Message = textMes.Text;
+                }
+                else if(!(mediaMes is null))
+                {
+                    if (mediaMes is MediaAction video && video.IsVideo()) toEdit.VideoId = GetVideoIdByName(video.MediaName);
+                    if (mediaMes is MediaAction image && image.IsImage()) toEdit.ImageId = GetChatImageIdByName(image.MediaName);
+                    if (mediaMes is MediaAction gif && gif.IsGif()) toEdit.GifId = GetChatGifIdByName(gif.MediaName);
+                }
+
+                model.SaveChanges();
+            }
+        }
+
         public static void EditMessage(int chatId,
             TelegramLib.MainClasses.Messages.TextMessage textMes,
             TelegramLib.MainClasses.Messages.MediaAction mediaMes)
@@ -2438,8 +2462,8 @@ namespace TelegramLib.Services
                 res.Id = chosen.Id;
                 res.SenderUserId = (int)chosen.SenderId;
                 res.SentTime = chosen.SentDate is null ? DateTime.Now : (DateTime)chosen.SentDate;
-                res.IsPinned = (bool)chosen.IsPinned;
-                res.IsSchedule = chosen.IsInSchedule;
+                res.IsPinned = chosen.IsPinned is null ? false : (bool)chosen.IsPinned;
+                res.IsSchedule = /*chosen.IsInSchedule is null ? false :*/ chosen.IsInSchedule;
 
                 if (res is TextMessage text)
                 {

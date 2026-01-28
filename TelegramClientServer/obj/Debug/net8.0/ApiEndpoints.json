@@ -1030,6 +1030,28 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "EditSchedMessage",
+    "RelativePath": "api/Social/EditSchedMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editDTO",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BEditSchedMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetChatBgidByName",
     "RelativePath": "api/Social/GetChatBgIdByName",
     "HttpMethod": "GET",

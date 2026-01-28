@@ -107,7 +107,7 @@ namespace TelegramVisualPart.Pages.Contacts
             }
         }
 
-        private void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem item ||
                 item.Content is not UserContact contact) return;
@@ -129,7 +129,7 @@ namespace TelegramVisualPart.Pages.Contacts
                 //Update if its temp chat 
                 ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
 
-                ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(true, chat.GetChatter());
+                await ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(true, chat.GetChatter());
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace TelegramVisualPart.Pages.Contacts
             if (_system.GetChatByChatterId(contact._user.Id) is null)
             {
                 UserContactcs toAdd = _system.GetContactByUserId(contact._user.Id);
-                ((MainWindow)Window.GetWindow(this)).AddChatInMainPage(toAdd);
+                await ((MainWindow)Window.GetWindow(this)).AddChatInMainPage(toAdd);
             }
 
             ContactClicked?.Invoke(sender, EventArgs.Empty);

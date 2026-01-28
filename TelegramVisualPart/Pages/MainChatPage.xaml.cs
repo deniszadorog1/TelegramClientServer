@@ -2556,7 +2556,7 @@ namespace TelegramVisualPart.Pages
             //Add in db
             await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
 
-            TelegramLib.MainClasses.UserChat chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
+            TelegramLib.MainClasses.UserChat? chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
 
             //Add In system
             _system.AddChat(chat);
@@ -2568,6 +2568,7 @@ namespace TelegramVisualPart.Pages
         public void DeleteChatFromDb(TelegramLib.MainClasses.User chatter)
         {
             TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(chatter.Id);
+            if (chat is null) return;
 
             //Check this something wierd
             //await ApiService.DeleteChatByChatterId(chatter.Id);
@@ -2581,7 +2582,7 @@ namespace TelegramVisualPart.Pages
 
             for (int i = 0; i < foldersIds.Count; i++)
             {
-                ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
+                 ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
             }
         }
 

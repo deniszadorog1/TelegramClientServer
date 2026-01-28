@@ -39,8 +39,7 @@
                       MouseEnter="SortGrid_MouseEnter"
                       MouseLeave="SortGrid_MouseLeave">
 
-                    <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"                                      
-/>
+                    <iconBut:IconButton x:Name="SortBut" Width="35" Height="35"/>
                 </Grid>
             </Grid>
 

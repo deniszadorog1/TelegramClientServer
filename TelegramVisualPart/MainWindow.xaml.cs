@@ -1231,9 +1231,9 @@ namespace TelegramVisualPart
                 page.SetShareContactControl(chatId, contact);
         }
 
-        public void AddChatInMainPage(TelegramLib.MainClasses.UserContactcs contact)
+        public async Task AddChatInMainPage(TelegramLib.MainClasses.UserContactcs contact)
         {
-            if (MainFrame.Content is MainChatPage page) page.AddChat(contact);
+            if (MainFrame.Content is MainChatPage page) await page.AddChat(contact);
         }
 
         public void SetChosenChat(UserChat chat)

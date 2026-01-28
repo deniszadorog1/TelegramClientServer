@@ -58,7 +58,6 @@ namespace TelegramVisualPart.UserControls
             SetAutoDeleteTimer();
 
             SetBasicSignalRMethods();
-
         }
 
         public void SetBasicSignalRMethods()
@@ -562,12 +561,12 @@ namespace TelegramVisualPart.UserControls
                     TelegramLib.MainClasses.Messages.Message toGetPair = await ApiService.GetTextMessageById((int)message.RepliedMessageId);
                     if (toGetPair is not null)
                     {
-                        TelegramLib.MainClasses.Messages.Message replied = await ApiService.GetPairOfMessage(toGetPair);
+                        TelegramLib.MainClasses.Messages.Message? replied = await ApiService.GetPairOfMessage(toGetPair);
                         if (replied is not null) message.RepliedMessageId = replied.Id;
                     }
                 }
 
-                TelegramLib.MainClasses.UserChat chat =
+                TelegramLib.MainClasses.UserChat? chat =
                     await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
 
                 if (chat is null) return;
@@ -579,10 +578,10 @@ namespace TelegramVisualPart.UserControls
                 if (_chat is null ||
                 chat.Id != _chat.Id)
                 {
-                    AddTextMessageInUnChosenChat(chat, message);
+                    await AddTextMessageInUnChosenChat(chat, message);
                     ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
                 }
-                else AddTextMessageInChosenChat(message, sender, chat);
+                else await AddTextMessageInChosenChat(message, sender, chat);
 
                 //SetOnlyChat(chat);
 
@@ -694,13 +693,15 @@ namespace TelegramVisualPart.UserControls
             SetMessagesPosition(_isGluedToLeft);
         }
 
-        private async void AddTextMessageInUnChosenChat(TelegramLib.MainClasses.UserChat chat,
+        private async Task AddTextMessageInUnChosenChat(TelegramLib.MainClasses.UserChat chat,
             TelegramLib.MainClasses.Messages.TextMessage message)
         {
-            //Add in system 
-            chat.Messages.Add(message);
+            //chat.Messages.Add(message);
             //Add in db
             await ApiService.AddMessage(message, chat);
+
+            //Add in system 
+            chat.Messages.Add(await ApiService.GetLastChatMessage(chat.Id));
 
             ToUpdateUserControlMessage();
         }
@@ -711,6 +712,7 @@ namespace TelegramVisualPart.UserControls
         private bool _isSavedMessageChat;
         public async Task SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
+            if (chat is null) return;
             SendMesMenu.SetUserChatControl(this, _system);
 
             HideSelectionRow();
@@ -1227,7 +1229,7 @@ namespace TelegramVisualPart.UserControls
             item.PreviewMouseRightButtonDown += SetMessageMenu_PreviewRightMouseDown;
 
             item.MouseMove += ChatBoxItems_MouseMove;
-            
+
             item.PreviewMouseLeftButtonDown += SetSelectingStatus_PreviewMouseDown;
 
             item.MouseEnter += MessageItem_MouseEnter;
@@ -1546,10 +1548,7 @@ namespace TelegramVisualPart.UserControls
 
             _isEdit = false;
 
-            if (toEdit is null)
-            {
-                toEdit = GetMessageToEdit();
-            }
+            if (toEdit is null) toEdit = GetMessageToEdit();
             if (toEdit is null) return;
 
             SetEditedParams(toEdit);
@@ -1558,7 +1557,7 @@ namespace TelegramVisualPart.UserControls
             _system.EditMessage(toEdit);
 
             //DB 
-            //await ApiService.EditMessage(chatId, toEdit);
+            await ApiService.EditSchedMessage(toEdit.Id, toEdit);
 
             //Visual
             await SetMessagesInChat();
@@ -1608,7 +1607,7 @@ namespace TelegramVisualPart.UserControls
 
             if (toEdit is TelegramLib.MainClasses.Messages.TextMessage textMes) textMes.IsEdited = true;
 
-            if(isSched) SetEditedParams(toEdit);
+            if (isSched) SetEditedParams(toEdit);
 
             //Logic
             _system.EditMessage(toEdit);
@@ -2223,7 +2222,7 @@ namespace TelegramVisualPart.UserControls
 
             int? lastMesId = await AddStatMessageInDb(toAdd, chat);
 
-            if (lastMesId is null)  throw new ArgumentNullException("Wtf Bro?");
+            if (lastMesId is null) throw new ArgumentNullException("Wtf Bro?");
             toAdd.Id = (int)lastMesId;
 
             //Add it in chat logic part
@@ -2773,9 +2772,9 @@ namespace TelegramVisualPart.UserControls
             return copy;
         }
 
-        public async Task<TelegramLib.MainClasses.UserChat> GetChatByUserSendersIds(int userId, int senderId)
+        public async Task<TelegramLib.MainClasses.UserChat?> GetChatByUserSendersIds(int userId, int senderId)
         {
-            TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(senderId);
+            TelegramLib.MainClasses.UserChat? chat = _system.GetChatByChatterId(senderId);
 
             if (chat is null)
             {
@@ -2786,6 +2785,18 @@ namespace TelegramVisualPart.UserControls
                 await ApiService.AddNewChat(userId, senderId);
 
                 chat = await ApiService.GetChatByUserAndSenderId(userId, senderId);
+
+                if (chat is not null)
+                {
+                    StaticMessage date = new StaticMessage(DateTime.Now, userId);
+                    date.SentTime = DateTime.Now.AddMilliseconds(-300);
+                    await ApiService.AddStatMessage(date, chat.Id);
+
+                    TelegramLib.MainClasses.Messages.Message? mes = await ApiService.GetLastChatMessage(chat.Id);
+
+                    if (mes is not null) date.Id = mes.Id;
+                    chat.Messages.Add(date);
+                }
             }
             return chat;
         }

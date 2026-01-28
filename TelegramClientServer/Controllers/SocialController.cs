@@ -80,12 +80,27 @@ namespace TelegramClientServer.Controllers
             public UserContactcs Contact { get; set; }
             public int LoggedUserId { get; set; }
         }
+        
+        [HttpPost("EditSchedMessage")]
+        public void EditSchedMessage([FromBody] EditSchedMessageDTO editDTO)
+        {
+            DbService.EditSchedMessage(
+                editDTO.MesId, editDTO.TextMes, editDTO.MediaMes);
+        }
+
+        public class EditSchedMessageDTO
+        {
+            public int MesId { get; set; }
+            public TextMessage? TextMes { get; set; }
+            public MediaAction? MediaMes { get; set; }
+        }
 
         [HttpPost("EditSavedChatMessage")]
         public void EditSavedChatMessage([FromBody] EditMessageDTO editDTO)
         {
             DbService.EditSavedMessage(editDTO.TextMes, editDTO.MediaMes);
         }
+
 
         [HttpPost("EditMessage")]
         public void EditMessage([FromBody] EditMessageDTO editDTO)
