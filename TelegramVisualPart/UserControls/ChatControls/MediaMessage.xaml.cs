@@ -335,6 +335,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return setUserSettings.PrivacySettings.
                 ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, userId);
         }
+        public bool IsTickVisible()
+        {
+            return TickColumnDef.Width.Value != 0;
+        }
+
+        public void ChangeTickStatus()
+        {
+            if (!IsTickVisible()) return;
+            SelectionTickObj.SetMirrorStatus();
+        }
 
     }
 }

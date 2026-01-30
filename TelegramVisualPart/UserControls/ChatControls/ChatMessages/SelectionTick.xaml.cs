@@ -40,7 +40,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
         private void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ActivateTickAction();
+            //ActivateTickAction();
         }
 
         public void ActivateTickAction()
@@ -67,6 +67,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         {
             if (_isChosen) SetChosenState();
             else SetUnchosenState();
+        }
+
+        public void SetMirrorStatus()
+        {
+            _isChosen = !_isChosen;
+            SetVisPartByStatus();
         }
 
         public void SetUnchosenState()

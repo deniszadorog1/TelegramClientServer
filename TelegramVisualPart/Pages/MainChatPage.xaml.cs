@@ -110,7 +110,7 @@ namespace TelegramVisualPart.Pages
         {
             //Plan
             //update in system
-            foreach(var chatId in chatsToUpdate)
+            foreach (var chatId in chatsToUpdate)
             {
                 if (_system.IsChatContainsById(chatId))
                 {
@@ -126,7 +126,7 @@ namespace TelegramVisualPart.Pages
             }
 
             //update in vis
-            if(UserChat.Visibility == Visibility.Visible &&
+            if (UserChat.Visibility == Visibility.Visible &&
                UserChat.GetChat() is not null &&
                chatsToUpdate.Contains(UserChat.GetChat().Id))
             {
@@ -1034,8 +1034,27 @@ namespace TelegramVisualPart.Pages
         public Page? GetPageByIcon(MenuIconTextBut icon)
         {
             return icon.Name == MyProfileDrawBut.Name.ToString() ? new LoggedUserProfile(_system.LoggedUser, _system) :
-                icon.Name == ContactsDrawBut.Name.ToString() ? new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system, false) :
+                icon.Name == ContactsDrawBut.Name.ToString() ? GetNewMainContactsPage(Enums.ContactsPageAction.AddContact, false) : //?  new Contacts.MainContacts(Enums.ContactsPageAction.AddContact, _system, false) :
                 icon.Name == SettingsDrawBut.Name.ToString() ? new Settings.SettingsPage(_system) : null;
+        }
+
+        public MainContacts GetNewMainContactsPage(Enums.ContactsPageAction type, bool isBlock)
+        {
+            Contacts.MainContacts contactsPage = new MainContacts(type, _system, isBlock);
+
+            contactsPage.Opacity = 0;
+
+            contactsPage.Loaded += (s, e) =>
+            {
+                contactsPage.Opacity = 1;
+            };
+
+            contactsPage.ToCheckEnd += () =>
+            {
+                contactsPage.Opacity = 1;
+            };
+
+            return contactsPage;
         }
 
         private void ChatsGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -1709,6 +1728,8 @@ namespace TelegramVisualPart.Pages
             {
                 TelegramLib.MainClasses.UserChat chat =
                     _system.GetUserChatByChatterId(contact.Id);
+
+                if (chat is null) continue;
 
                 TelegramLib.MainClasses.User chatter = chat is TelegramLib.MainClasses.SavedMessagesChat ?
                     _system.LoggedUser : chat.GetChatter();
@@ -2557,6 +2578,7 @@ namespace TelegramVisualPart.Pages
             await ApiService.AddNewChat(_system.LoggedUser.Id, contact.ContactUserId);
 
             TelegramLib.MainClasses.UserChat? chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, contact.ContactUserId);
+            chat.Chatter.GetFirstImageName();
 
             //Add In system
             _system.AddChat(chat);
@@ -2582,7 +2604,7 @@ namespace TelegramVisualPart.Pages
 
             for (int i = 0; i < foldersIds.Count; i++)
             {
-                 ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
+                ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
             }
         }
 
@@ -2715,6 +2737,7 @@ namespace TelegramVisualPart.Pages
                 return;
             }
 
+           
             //To set forwarding params
             await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
             UserChat.ReplyBorder.Height = 50;

@@ -638,6 +638,10 @@ namespace TelegramLib.MainClasses
                 return;
             }
 
+            //Remove sched message
+            if (IsDeletedScheduleMessageById(id)) return;
+
+            //Basic message
             for (int i = 0; i < Chats.Count; i++)
             {
                 Message mes = Chats[i].Messages.FirstOrDefault(x => x.Id == id);
@@ -655,6 +659,21 @@ namespace TelegramLib.MainClasses
             {
                 Chats[i].RemoveDateMessages();
             }
+        }
+
+        public bool IsDeletedScheduleMessageById(int id)
+        {
+            for(int i = 0; i < Chats.Count; i++)
+            {
+                Message mes = 
+                    Chats[i].ScheduleMessages.FirstOrDefault(x => x.Id == id);
+                if(!(mes is null))
+                {
+                    Chats[i].ScheduleMessages.Remove(mes);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public Messages.Message GetScheduleMessageById(int id)

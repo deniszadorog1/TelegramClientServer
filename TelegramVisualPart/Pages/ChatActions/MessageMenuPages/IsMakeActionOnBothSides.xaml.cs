@@ -22,7 +22,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
     public partial class IsMakeActionOnBothSides : Page
     {
         private TelegramLib.MainClasses.User _user;
-        private BothUsersMessageAction _bothType;
+        
+        private BothUsersMessageAction _actionType;
+        private bool _isBothDelete;
 
         public event Func<ValueTask> MakeAction;
             
@@ -32,7 +34,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             BothUsersMessageAction bothType)
         {
             _user = user;
-            _bothType = bothType;
+            _actionType = bothType;
 
             InitializeComponent();
 
@@ -40,10 +42,11 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         }
 
         //To Delete selected messages
-        public IsMakeActionOnBothSides(TelegramLib.MainClasses.User user)
+        public IsMakeActionOnBothSides(TelegramLib.MainClasses.User user,
+            bool isBothDelete)
         {
             _user = user;
-            _bothType = BothUsersMessageAction.Delete;
+            _actionType = BothUsersMessageAction.Delete;
 
             InitializeComponent();
             SetBasicParams();
@@ -51,13 +54,14 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         public void SetBasicParams()
         {
-            ActionName.Text = _bothType.ToString();
-            ActionCheckText.Text = _bothType.ToString();
-            DeleteBut.Content = _bothType.ToString();
+            ActionName.Text = _actionType.ToString();
+            ActionCheckText.Text = _actionType.ToString();
+            DeleteBut.Content = _actionType.ToString();
            
             LoginPartCheckText.Text = _user.Login;
         
-            if(_bothType == BothUsersMessageAction.UnPin)
+            if(_actionType == BothUsersMessageAction.UnPin || 
+                _actionType == BothUsersMessageAction.SchedDelete)
             {
                 const int checkBoxRowHeight = 50;
 

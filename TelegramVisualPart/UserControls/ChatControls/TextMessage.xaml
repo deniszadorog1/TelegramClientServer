@@ -50,7 +50,7 @@
                              
                              MouseEnter="LoginForwarded_MouseEnter"
                              MouseLeave="LoginForwarded_MouseLeave"
-                             PreviewMouseDown="LoginForwarded_PreviewMouseDown"
+                             PreviewMouseLeftButtonDown="LoginForwarded_PreviewMouseDown"
                              />
                     </TextBlock>
                 </Grid>

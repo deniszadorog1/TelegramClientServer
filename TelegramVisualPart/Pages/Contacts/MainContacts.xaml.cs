@@ -38,6 +38,8 @@ namespace TelegramVisualPart.Pages.Contacts
         private TelSystem _system;
         private bool _isBlock;
 
+        public event Action ToCheckEnd;
+
         public MainContacts(ContactsPageAction type, TelSystem system,
             bool isBlock)
         {
@@ -49,7 +51,7 @@ namespace TelegramVisualPart.Pages.Contacts
             SetBasicParams();
 
             SetContactsParams();
-
+            
             SetLanguageText.SetUserContacts(this);
         }
 
@@ -58,8 +60,9 @@ namespace TelegramVisualPart.Pages.Contacts
             if (_isBlock)
             {
                 SetUsersToBlock();
+                ToCheckEnd?.Invoke();
                 return;
-            }
+            }   
 
             List<UserContactcs> toAdd = !_isBlock ? _system.Contacts :
                 _system.Contacts.Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Name).Contains(x.Name)).ToList();
@@ -69,6 +72,11 @@ namespace TelegramVisualPart.Pages.Contacts
                 TelegramLib.MainClasses.User user =
                     await ApiService.GetUserById(toAdd[i].ContactUserId);
                 UserContact contact = new UserContact(user);
+
+                contact.ImgSet += () =>
+                {
+                    Visibility = Visibility.Visible;
+                };
 
                 ListBoxItem item = new ListBoxItem
                 {
@@ -80,6 +88,8 @@ namespace TelegramVisualPart.Pages.Contacts
                 item.PreviewMouseDown += Contact_PreviewMouseDown;
                 ContactsListBox.Items.Add(item);
             }
+            if (toAdd.Count == 0) Visibility = Visibility.Visible;
+            ToCheckEnd?.Invoke();
         }
 
         private void SetUsersToBlock()
@@ -94,6 +104,10 @@ namespace TelegramVisualPart.Pages.Contacts
             for (int i = 0; i < toAdd.Count; i++)
             {
                 UserContact contact = new UserContact(toAdd[i]);
+                contact.ImgSet += () =>
+                {
+                    Visibility = Visibility.Visible;
+                };
 
                 ListBoxItem item = new ListBoxItem
                 {

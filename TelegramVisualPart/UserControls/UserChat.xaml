@@ -14,7 +14,7 @@
              
              d:DesignHeight="450" d:DesignWidth="800" 
              
-             KeyDown="UserControl_KeyDown"
+             PreviewKeyDown="UserControl_KeyDown"
              MouseLeave="UserControl_MouseLeave"
              PreviewMouseDown="UserControl_PreviewMouseDown"
              >
@@ -160,7 +160,8 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 
-                <Grid Name="ArrowLeftSchedGrid" Grid.Column="0" 
+                <Grid Name="ArrowLeftSchedGrid"
+                      Grid.Column="0" 
                       Background="Transparent"
                       MouseEnter="ArrowLeftSchedGrid_MouseEnter"
                       MouseLeave="ArrowLeftSchedGrid_MouseLeave"
@@ -447,10 +448,15 @@
                      FontSize="16" 
                      ContextMenuService.IsEnabled="False" 
                      TextChanged="CommentTextBox_TextChanged"
-                     PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"/>
+                     PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"
+                     LostFocus="CommentTextBox_LostFocus"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Grid Name="AutoDelGrid"  Margin="0 0 10 0"
+            <StackPanel Grid.Column="2" Orientation="Horizontal"
+                        Margin="0 0 10 0"
+                        HorizontalAlignment="Right">
+                <Grid Name="AutoDelGrid"  
+                      Margin="0 0 10 0"
+                      HorizontalAlignment="Right"
                       Background="Transparent"
                       MouseEnter="AutoDelGrid_MouseEnter"
                       MouseLeave="AutoDelGrid_MouseLeave"
@@ -462,7 +468,9 @@
                                      Foreground="Gray"/>
                 </Grid>
 
-                <Grid Name="ScheduleMessageGrid" 
+                <Grid Name="ScheduleMessageGrid"
+                      Visibility="Visible"
+                      HorizontalAlignment="Right"
                       Margin="0 0 10 0"
                       Background="Transparent"
                       MouseEnter="ScheduleMessageGrid_MouseEnter"
@@ -476,10 +484,11 @@
                 </Grid>
                 
                 <Grid Name="EmojisGrid" 
+                      HorizontalAlignment="Right"
                       Margin="0 0 10 0"
-                  Background="Transparent"
-                  MouseEnter="EmojisGrid_MouseEnter"
-                  MouseLeave="EmojisGrid_MouseLeave">
+                      Background="Transparent"
+                      MouseEnter="EmojisGrid_MouseEnter"
+                      MouseLeave="EmojisGrid_MouseLeave">
                     <materialDesign:PackIcon Kind="SmileyOutline" Name="Emojis" 
                                       Width="40" Height="40"
                                      VerticalAlignment="Center"
@@ -488,6 +497,7 @@
                 </Grid>
 
                 <Grid Name="SendMessageGrid"
+                      HorizontalAlignment="Right"
                       Background="Transparent"
                       MouseEnter="SendMessageGrid_MouseEnter"
                       MouseLeave="SendMessageGrid_MouseLeave"

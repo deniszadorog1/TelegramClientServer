@@ -58,6 +58,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 SetChatListBoxItem(_system.Chats[i]);
             }
             SetChatListBoxItem(_system.GetSavedChatMessages());
+
+            if (ChatsPanel.Children.Count == 0) Visibility = Visibility.Visible;
         }
 
         public void SetChatListBoxItem(TelegramLib.MainClasses.UserChat chat)

@@ -247,7 +247,7 @@ namespace TelegramVisualPart.Windows
                 _user.UserImages.Select(x => x.Date).ToList(),
                 GetSendersForUserImages(_user.UserImages.Count));
 
-            _imgInfo = _allImagesInfo.First();
+            _imgInfo = _allImagesInfo.FirstOrDefault();
 
             SetUserImage(_user.UserImages.First().Name);
             SetImgMediaParam();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses.UserParams;
@@ -110,6 +111,19 @@ namespace TelegramLib.MainClasses
                 UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
             }
             return UserImages.First();
+        }
+
+        public bool SetBasicUserImage()
+        {
+            if (!(UserImages is null) && UserImages.Count > 0) return false;
+
+/*            if (UserImages is null || UserImages.Count == 0)
+            {*/
+                UserImages = new List<UserImage>();
+                UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
+                return true;
+/*            }
+            return false;*/
         }
 
         public string GetFirstImageNameInString()

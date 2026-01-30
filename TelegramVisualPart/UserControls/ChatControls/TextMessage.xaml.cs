@@ -413,9 +413,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        public bool IsTickVisible()
+        {
+            return TickColumnDef.Width.Value != 0;
+        }
+
         public bool IsMessageIdTicked()
         {
             return SelectionTickObj.GetChosenStatus();
+        }
+
+        public void ChangeTickStatus()
+        {
+            if (!IsTickVisible()) return;
+            SelectionTickObj.SetMirrorStatus();
         }
 
         private void LinkPart_MouseEnter(object sender, MouseEventArgs e)

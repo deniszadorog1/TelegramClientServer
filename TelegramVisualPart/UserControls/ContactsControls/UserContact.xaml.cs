@@ -79,10 +79,13 @@ namespace TelegramVisualPart.UserControls.ContactsControls
             await SetActivePhotoImage();
         }
 
+        public event Action ImgSet;
         public async Task SetActivePhotoImage()
         {
             await SignalRHelperService.SetPhotoInEllipse(_user,
                 ImgBrushSource, UserImage);
+
+            ImgSet?.Invoke();
         }
 
         public void AddedUserImage(TelegramLib.MainClasses.User user)

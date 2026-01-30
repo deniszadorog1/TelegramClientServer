@@ -9,6 +9,7 @@ namespace TelegramVisualPart.Enums
     public enum BothUsersMessageAction
     {
         Delete,
+        SchedDelete,
         Pin,
         UnPin
     }
