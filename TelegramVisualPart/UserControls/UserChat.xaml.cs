@@ -1,7 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.Xaml.Behaviors.Media;
 using Newtonsoft.Json;
+using System.CodeDom;
 using System.IO;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +35,7 @@ using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ChatControls.SavedChatControls;
 using TelegramVisualPart.Windows;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -713,6 +716,8 @@ namespace TelegramVisualPart.UserControls
         private bool _isSavedMessageChat;
         public async Task SetUserChat(TelegramLib.MainClasses.UserChat chat)
         {
+            if (_isHiddenSender) _isHiddenSender = false;
+
             if (chat is null) return;
             SendMesMenu.SetUserChatControl(this, _system);
 
@@ -948,10 +953,33 @@ namespace TelegramVisualPart.UserControls
             bool isOnlySchedule = false)
         {
             //Get Chatter here (Contact type)
-            if (isOnlySchedule) _chatMessages = _chat.GetScheduleMessages();
+            if (isOnlySchedule)
+            {
+                _chatMessages = _chat.GetScheduleMessages();
+                SetSchedMessagesMessagesSentEvent(_chatMessages);
+            }
             else if (isOnlyPinned) _chatMessages = _chat.GetOnlyPinnedMessages();
             else _chatMessages = _chat.GetChatMessages();
             SetMessagesInChat();
+        }
+
+        public void SetSchedMessagesMessagesSentEvent(List<Message> messages)
+        {
+            foreach (var mes in messages)
+            {
+                mes.StartTimer();
+                mes.SentTimeIsNow += () =>
+                {
+                    ClearMenusAfterMessageReschedule();
+                    mes.EndTimer();
+                };
+            }
+        }
+
+        public bool IfSchedTimerActionCanByInvoked(Message mes)
+        {
+
+            return false;
         }
 
         private string _lastSeenDefault = "recently";
@@ -1263,6 +1291,7 @@ namespace TelegramVisualPart.UserControls
             {
                 _isMouseDown = false;
             };
+
         }
 
         private System.Windows.Point GetPointChatBoxScroll(System.Windows.Point tempPoint)
@@ -1459,12 +1488,12 @@ namespace TelegramVisualPart.UserControls
 
         private async void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
+            
+           if (e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
             {
+                HideSelectionRow();
                 if (_isEdit)
                 {
-                    //await ToEditMessage(_chat.Id, isBoth:false, isSched:true);
-
                     await ToEditSchedMessage();
                     return;
                 }
@@ -1486,8 +1515,10 @@ namespace TelegramVisualPart.UserControls
                 (!_system.Settings.ChatsSettings.GetIsSendWithEnter() &&
                 e.Key == System.Windows.Input.Key.Enter && Keyboard.Modifiers == ModifierKeys.Control))
             {
+                HideSelectionRow();
                 await SendMessage();
             }
+            if (_isHiddenSender) _isHiddenSender = false;
         }
 
         private async Task SendMessage()
@@ -1664,8 +1695,9 @@ namespace TelegramVisualPart.UserControls
 
                 await AddAdditionalToForwardsTextMessage();
 
-                await AddForwardedMessagesInDB(chat);
+                ClearResenderInForwardedMessages();
 
+                await AddForwardedMessagesInDB(chat);
                 chat.Messages.AddRange(_toForwardMessages);
 
                 await SetMessagesInChat();
@@ -1674,6 +1706,16 @@ namespace TelegramVisualPart.UserControls
                 return true;
             }
             return false;
+        }
+
+        public void ClearResenderInForwardedMessages()
+        {
+            if (!_isHiddenSender) return;
+       
+            foreach(var message in _toForwardMessages)
+            {
+                message.ClearForwarded();
+            }
         }
 
         public void UpdateSentDateForMessagesToForward()
@@ -1763,6 +1805,8 @@ namespace TelegramVisualPart.UserControls
         {
             _toForwardMessages = null;
             _forwardSenderId = null;
+            _isHiddenSender = false;
+
             ReplyMessageRow.Height = new GridLength(0);
 
             MessageMenu.Children.Clear();
@@ -1779,7 +1823,8 @@ namespace TelegramVisualPart.UserControls
         {
             if (!IsReplyMessage() || _mesMenu is null ||
                 _mesMenu.GetChosenListBoxItem() is null ||
-                ReplyMessageRow.Height.Value == 0) return null;
+                ReplyMessageRow.Height.Value == 0 || 
+                _isHiddenSender) return null;
 
             int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
 
@@ -1790,6 +1835,8 @@ namespace TelegramVisualPart.UserControls
         {
             //Get reply message
             TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
+
+            if (_isHiddenSender) _isHiddenSender = false;
 
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
@@ -1974,7 +2021,33 @@ namespace TelegramVisualPart.UserControls
             SetScheduleMessage message =
                 new SetScheduleMessage(GetChat(), mes, _system, isUpdateDate: true);
 
+            mes.StartTimer();
+            mes.SentTimeIsNow += () =>
+            {
+                mes.EndTimer();
+                if (message._message.Id != mes.Id)
+                {
+                    return;
+                }
+                ClearMenusAfterMessageReschedule();
+            };
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
+        }
+
+        public void ClearMenusAfterMessageReschedule()
+        {
+            HideSelectionRow();
+            ClearReschedulePage();
+        }
+
+        public void ClearReschedulePage()
+        {
+            Window window = Window.GetWindow(this);
+            if (window is MainWindow main)
+            {
+                main.ClearSchedulePage();
+            }
         }
 
         public async void SendSchedMessageNowFromMenu()
@@ -2155,7 +2228,7 @@ namespace TelegramVisualPart.UserControls
         public async Task SetPinDeleteAction(TelegramLib.MainClasses.Messages.Message mes,
             ListBoxItem itemMessage, BothUsersMessageAction actionType, bool isBoth)
         {
-            if (actionType == BothUsersMessageAction.Delete || 
+            if (actionType == BothUsersMessageAction.Delete ||
                 actionType == BothUsersMessageAction.SchedDelete)
             {
 
@@ -2444,9 +2517,20 @@ namespace TelegramVisualPart.UserControls
             if (mes is null) return;
 
             BothUsersMessageAction delType =
-                SelectedMessesGrid.Visibility == Visibility.Visible ?
+                SchedueleMessagesGrid.Visibility == Visibility.Visible ?
                 BothUsersMessageAction.SchedDelete :
                 BothUsersMessageAction.Delete;
+
+            //if(delType == BothUsersMessageAction.SchedDelete)
+            //{
+            //    mes.StartTimer();
+
+            //    mes.SentTimeIsNow += () =>
+            //    {
+            //        mes.EndTimer();
+            //        ClearMenusAfterMessageReschedule();
+            //    };
+            //}
 
             SetBothUsersPage(mes, item, delType);
         }
@@ -2572,7 +2656,7 @@ namespace TelegramVisualPart.UserControls
         {
             if (_isSavedMessageChat)
             {
-                await ApiService.RemoveSavedMessage(_chat.Id, mesId);
+                await ApiService.RemoveSavedMessage(_chat.Id, new List<int>() { mesId });
                 return;
             }
             await ApiService.DeleteMessageById(mesId);
@@ -2789,8 +2873,9 @@ namespace TelegramVisualPart.UserControls
             //await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
             if (chat is null) return;
 
-            if (toAddText.RepliedMessageId is not null &&
-                (_forwardSenderId is null || _toForwardMessages.Count == 0))
+            if ((_forwardSenderId is null || _toForwardMessages is null
+                || _toForwardMessages.Count == 0) &&
+                toAddText.RepliedMessageId is not null)
             {
                 TelegramLib.MainClasses.Messages.TextMessage text =
                      await ChangeReplyMessageId(toAddText);
@@ -4342,6 +4427,7 @@ namespace TelegramVisualPart.UserControls
                 CommentTextBox.Text = string.Empty;
             }
             ReplyMessageRow.Height = new GridLength(0);
+            Cursor = null;
         }
 
         public void SetReplyMessageRow()
@@ -4698,11 +4784,11 @@ namespace TelegramVisualPart.UserControls
 
         private async void ForwardSelectedBut_Click(object sender, RoutedEventArgs e)
         {
-            if(ForwardSelectedButText.Text == _ifSendNowSelected)
+            if (ForwardSelectedButText.Text == _ifSendNowSelected)
             {
                 List<Message> selected = GetSelectedMessages();
-               
-                foreach(var mes in selected)
+
+                foreach (var mes in selected)
                 {
                     await SendSchedMessageNow(mes);
                 }
@@ -4731,16 +4817,21 @@ namespace TelegramVisualPart.UserControls
         private void DeleteSelectedBut_Click(object sender, RoutedEventArgs e)
         {
             //Remove selected messages
-            SetDeleteMessagePage();
+            SetDeleteMessagePage(isBoth:_chat.GetType() != typeof(SavedMessagesChat));
         }
 
         public void SetDeleteMessagePage(bool isBoth = true)
         {
+            TelegramLib.MainClasses.User chatter = 
+                _chat.Chatter is null ? _system.LoggedUser :
+                _chat.Chatter;
+
             IsMakeActionOnBothSides page =
-            new IsMakeActionOnBothSides(_chat.Chatter, isBoth);
+            new IsMakeActionOnBothSides(chatter, isBoth);
 
             page.MakeAction += async () =>
             {
+
                 //Get selected messages
                 List<Message> toDelete = GetSelectedMessages();
 
@@ -4751,17 +4842,7 @@ namespace TelegramVisualPart.UserControls
 
                 await RemoveManyMessages(toDelete, (bool)isBoth);
 
-                //Delete them
-                /*                for (int i = 0; i < toDelete.Count; i++)
-                                {
-                                    ListBoxItem item = GetItemByTagId(toDelete[i].Id);
-                                    if (item is null) continue;
-
-                                    //Set page actions
-                                    await DeleteMessage(toDelete[i], item, (bool)isBoth);
-                                }*/
                 HideSelectionRow();
-
             };
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
@@ -4769,7 +4850,10 @@ namespace TelegramVisualPart.UserControls
         public async Task RemoveManyMessages(List<Message> toDelete, bool isBoth)
         {
             //Set one method for deleting in db (with static message)
-            await ApiService.DeleteManyMessages(toDelete.Select(x => x.Id).ToList(), isBoth);
+
+            if (_isSavedMessageChat) await ApiService.RemoveSavedMessage(_system.LoggedUser.Id, toDelete.Select(x => x.Id).ToList());
+            else await ApiService.DeleteManyMessages(toDelete.Select(x => x.Id).ToList(), isBoth);
+           
 
             for (int i = 0; i < toDelete.Count; i++)
             {
@@ -5244,9 +5328,86 @@ namespace TelegramVisualPart.UserControls
         {
 
         }
+
+        private bool _isHiddenSender = false;
+        private void ReplyBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            const string senderHidden = "Hidden";
+            _isHiddenSender = false;
+
+            if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
+
+            RepForType type = _toForwardMessages is not null ?
+                RepForType.ForwardAction : RepForType.ReplyAction;
+
+            ForRepMenu menuPage = new ForRepMenu(type, _toForwardMessages, _system);
+
+            menuPage.HideSenderNameDel += () =>
+            {
+                if (ReplyMessageRow.Height.Value == 0 ||
+                _toForwardMessages is null || 
+                _toForwardMessages.Count == 0) return;
+
+                _isHiddenSender = !_isHiddenSender;
+
+                ReplySenderText.Text = _isHiddenSender ? senderHidden : 
+                $"from {_system.GetUserById(_toForwardMessages.First().SenderUserId).Login}";
+
+                //((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            };
+
+            menuPage.DoNotSendDel += () =>
+            {
+                //Clear temp 
+                HideSelectionRow();
+                ReplyMessageRow.Height = new GridLength(0);
+                _toForwardMessages = null;
+            };
+
+            menuPage.ChangeRecipientDel += () =>
+            {
+                if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
+
+                HideSelectionRow();
+
+                ForwardToPage page = new ForwardToPage(_system);
+                page.CancelDel += () =>
+                {
+                    ReplyMessageRow.Height = new GridLength(0);
+                    _toForwardMessages = null;
+                };
+
+                page.ForwardSelected += async (senderId) =>
+                {
+                    HidePinnedChatAndShowChatMessages();
+
+                    await SetForwardedMessage(_toForwardMessages, senderId);
+
+                    CommentTextBox.Focus();
+                };
+
+
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+            };
+
+
+            Window window = Window.GetWindow(this);
+            if (window is MainWindow main)
+            {
+                main.SetSecondaryFrame(menuPage);
+            }
+        }
+
+        private void ReplyBorder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void ReplyBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
-
-
 
     public static class ScrollViewerBehavior
     {

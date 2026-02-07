@@ -26,7 +26,7 @@ namespace TelegramVisualPart.Pages.ChatActions
     {
         private DateTime? _schedDate = DateTime.Now.AddDays(1);
 
-        private TelegramLib.MainClasses.Messages.Message _message;
+        public TelegramLib.MainClasses.Messages.Message _message;
         private TelegramLib.MainClasses.UserChat _chat;
         private TelegramLib.MainClasses.TelSystem _system;
 

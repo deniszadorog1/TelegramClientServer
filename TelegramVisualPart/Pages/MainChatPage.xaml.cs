@@ -2761,6 +2761,8 @@ namespace TelegramVisualPart.Pages
 
             UserTalkMessage mes = GetChatById(chat);
 
+            if (mes is null) return;
+
             mes.SetAutoDelDurationCircle(chat.AutoDel,
                 _system.GetAutDelDurationInString(chat.AutoDel));
         }

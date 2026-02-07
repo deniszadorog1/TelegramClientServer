@@ -34,6 +34,9 @@
     <Compile Update="Pages\ChatActions\DeleteChat.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ChatActions\MessageMenuPages\ForRepMenu.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -481,6 +484,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\DeleteChat.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\ChatActions\MessageMenuPages\ForRepMenu.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\ChatActions\MessageMenuPages\ForwardToPage.xaml">

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TelegramLib.Enums.Messages;
 
 namespace TelegramLib.MainClasses.Messages
@@ -20,6 +22,9 @@ namespace TelegramLib.MainClasses.Messages
         public int? ForwardedFromId { get; set; }
 
         public bool IsSchedule { get; set; }
+
+        public event Action SentTimeIsNow;
+
         public Message(int id, int senderUserId,
             DateTime sentTime, bool isRead, bool isPinned,
             int? forwardedFromId)
@@ -30,6 +35,8 @@ namespace TelegramLib.MainClasses.Messages
             IsRead = isRead;
             IsPinned = isPinned;
             ForwardedFromId = forwardedFromId;
+
+            StartTimer();
         }
 
         public Message()
@@ -72,6 +79,36 @@ namespace TelegramLib.MainClasses.Messages
             return true;
         }
 
+        DispatcherTimer _timer;
+
+        public void StartTimer()
+        {
+            _timer = null;
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
+        }
+
+        public void EndTimer()
+        {
+            if (_timer is null) return;
+            _timer.Stop();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if(SentTime <= DateTime.Now)
+            {
+                SentTimeIsNow?.Invoke();
+                _timer.Stop();
+            }
+        }
+
+        public void ClearForwarded()
+        {
+            ForwardedFromId = null;
+        }
 
     }
 }

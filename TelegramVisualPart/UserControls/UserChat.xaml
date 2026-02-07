@@ -358,7 +358,9 @@
         <Border Grid.Row="3" Name="ReplyBorder" Visibility="Visible"
                 Background="{StaticResource DarkThemeSecond}"
                 BorderThickness="1 1 0 0"
-                BorderBrush="Black">
+                BorderBrush="Black"
+                MouseEnter="ReplyBorder_MouseEnter"
+                MouseLeave="ReplyBorder_MouseLeave">
             <!--Reply message grid-->
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -381,7 +383,9 @@
                 </Grid>
 
                 <!--Reply message params-->
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2"
+                      PreviewMouseLeftButtonDown="ReplyBorder_PreviewMouseLeftButtonDown">
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>

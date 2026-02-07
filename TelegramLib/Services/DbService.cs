@@ -4250,16 +4250,20 @@ namespace TelegramLib.Services
             return res;
         }
 
-        public static void RemoveSavedMessage(int savedChatId, int messageId)
+        public static void RemoveSavedMessage(int savedChatId, List<int> messageIds)
         {
             using (var model = new TelegramModel())
             {
-                SavedMessages toRemove = model.SavedMessages.
-                    FirstOrDefault(x => x.SavedMessagesChatId == savedChatId && x.Id == messageId);
 
-                if (toRemove is null) return;
+                foreach(var messageId in messageIds){
 
-                model.SavedMessages.Remove(toRemove);
+                    SavedMessages toRemove = model.SavedMessages.
+                        FirstOrDefault(x => x.SavedMessagesChatId == savedChatId && x.Id == messageId);
+
+                    if (toRemove is null) continue;
+                    model.SavedMessages.Remove(toRemove);
+                }
+                
                 model.SaveChanges();
             }
         }

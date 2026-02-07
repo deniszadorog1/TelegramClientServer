@@ -28,7 +28,7 @@
         <Grid Grid.Column="1">
 
             <Grid.RowDefinitions>
-                <RowDefinition Name="ForwardedRow" Height="40"/>
+                <RowDefinition Name="ForwardedRow" Height="0"/>
                 <RowDefinition Name="MediaRow"/>
                 <RowDefinition Name="AdditionalTextRow"/>
             </Grid.RowDefinitions>

@@ -12,6 +12,8 @@ using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Pages;
+using TelegramVisualPart.Pages.ChatActions;
+using TelegramVisualPart.Pages.ChatActions.MessageMenuPages;
 using TelegramVisualPart.Pages.ChatActions.SendMedia;
 using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings;
@@ -1541,6 +1543,15 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage page) return;
             page.UpdateScheduleChatIfNeed();
+        }
+
+        public void ClearSchedulePage()
+        {
+            if (SecondaryFrame.Content is SetScheduleMessage || 
+                SecondaryFrame.Content is IsMakeActionOnBothSides)
+            {
+                ClearSecFrame();
+            }
         }
     }
 }

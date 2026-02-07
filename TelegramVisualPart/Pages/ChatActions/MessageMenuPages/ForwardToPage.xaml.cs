@@ -28,6 +28,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private TelegramLib.MainClasses.Messages.Message _mes;
 
         public event Action<int?> ForwardSelected;
+        public event Action CancelDel;
 
         public ForwardToPage(TelSystem system,
             TelegramLib.MainClasses.Messages.Message mes)
@@ -138,6 +139,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            CancelDel?.Invoke();
         }
     }
 }

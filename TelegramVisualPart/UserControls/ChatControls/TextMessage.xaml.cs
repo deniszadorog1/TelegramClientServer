@@ -42,6 +42,30 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private int? _forwardedFrom = null;
         private TelegramLib.MainClasses.Messages.TextMessage _message;
 
+        public bool _isOnlyView = false;
+
+        public TextMessage(TelSystem system,  
+            TelegramLib.MainClasses.Messages.TextMessage text)
+        {
+            _isOnlyView = true;
+            _system = system;
+            _text = text.Text;
+            _message = text;
+            _forwardedFrom = text.ForwardedFromId;
+
+            InitializeComponent();
+
+            SetViewControlParams();
+        }
+
+        public async Task SetViewControlParams()
+        {
+            SetText(_text);
+            SetWidth(_system.Settings.GetChatSettings().FontName);
+            await SetForwardedFromRow();
+
+        }
+
         public TextMessage(TelSystem system,
             string text,
             string senderImageName,
@@ -169,6 +193,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             };
         }
 
+        private const int _visForwardRowHeight = 40;
         private async Task SetForwardedFromRow()
         {
             if (_forwardedFrom is null) return;
@@ -181,9 +206,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //Set forwarded from user id as tag
             LoginForwarded.Tag = from.Id;
 
-            ForwardedRow.Height = new GridLength(40);
+            ForwardedRow.Height = new GridLength(_visForwardRowHeight);
             LoginForwarded.Text = from.Login;
         }
+
+        public void SetForwardedRowHeight(bool isShow)
+        {
+            if (isShow) ForwardedRow.Height = new GridLength(_visForwardRowHeight);
+            else ForwardedRow.Height = new GridLength(0);
+        }
+
         private void SetMessageReplyControl()
         {
             if (_toReply is null || _system is null)
@@ -296,6 +328,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isOnlyView) return;
+
             int.TryParse(LoginForwarded.Tag.ToString(), out int userId);
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 
@@ -338,6 +372,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LoginForwarded_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (_isOnlyView) return;
             Cursor = Cursors.Hand;
         }
 
@@ -348,6 +383,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void UserEllipseImage_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (_isOnlyView) return;
             Cursor = Cursors.Hand;
         }
 
@@ -358,6 +394,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void UserEllipseImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isOnlyView) return;
             //Get user 
             DependencyObject check = this.Parent;
             if (check is not ListBoxItem item) return;

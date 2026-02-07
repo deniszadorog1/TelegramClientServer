@@ -645,13 +645,13 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteSavedMessage")]
         public void DeleteSavedMessage([FromBody] DeleteSavedMessageDTO dto)
         {
-            DbService.RemoveSavedMessage(dto.SavedChatId, dto.ToRemoveId);
+            DbService.RemoveSavedMessage(dto.SavedChatId, dto.ToRemoveIds);
         }
 
         public class DeleteSavedMessageDTO
         {
             public int SavedChatId { get; set; }
-            public int ToRemoveId { get; set; }
+            public List<int> ToRemoveIds { get; set; }
         }
 
     }

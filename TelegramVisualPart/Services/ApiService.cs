@@ -1239,9 +1239,9 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task RemoveSavedMessage(int savedChatId, int toRemoveId)
+        public static async Task RemoveSavedMessage(int savedChatId, List<int> toRemoveIds)
         {
-            var data = new { SavedChatId = savedChatId, ToRemoveId = toRemoveId};
+            var data = new { SavedChatId = savedChatId, ToRemoveIds = toRemoveIds};
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,

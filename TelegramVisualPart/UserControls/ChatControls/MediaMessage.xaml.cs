@@ -170,6 +170,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             };
         }
 
+        private const int _visForwardRowHeight = 20;
         private async Task SetForwardedFromRow()
         {
             if (_forwardedFrom is null) return;
@@ -182,8 +183,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //Set forwarded from user id as tag
             LoginForwarded.Tag = from.Id;
 
-            ForwardedRow.Height = new GridLength(20);
+            ForwardedRow.Height = new GridLength(_visForwardRowHeight);
             LoginForwarded.Text = from.Login;
+        }
+
+        public void SetForwardedRowHeight(bool isShow)
+        {
+            if (isShow) ForwardedRow.Height = new GridLength(_visForwardRowHeight);
+            else ForwardedRow.Height = new GridLength(0);
         }
 
         public bool IsMessageIdTicked()

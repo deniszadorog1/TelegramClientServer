@@ -12,6 +12,7 @@
 
     <Border BorderBrush="Black"
             BorderThickness="1"
+            CornerRadius="15"
             Background="{StaticResource DarkThemeSecond}">
 
         <Grid>

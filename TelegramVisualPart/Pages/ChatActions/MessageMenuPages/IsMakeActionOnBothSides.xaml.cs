@@ -24,7 +24,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private TelegramLib.MainClasses.User _user;
         
         private BothUsersMessageAction _actionType;
-        private bool _isBothDelete;
+        private bool _isBothDelete = true;
 
         public event Func<ValueTask> MakeAction;
             
@@ -47,6 +47,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             _user = user;
             _actionType = BothUsersMessageAction.Delete;
+            _isBothDelete = isBothDelete;
 
             InitializeComponent();
             SetBasicParams();
@@ -54,12 +55,24 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         public void SetBasicParams()
         {
-            ActionName.Text = _actionType.ToString();
-            ActionCheckText.Text = _actionType.ToString();
-            DeleteBut.Content = _actionType.ToString();
+            BothUsersMessageAction act = 
+                _actionType == BothUsersMessageAction.SchedDelete ? 
+                BothUsersMessageAction.Delete : _actionType;
+
+            ActionName.Text = act.ToString();
+            ActionCheckText.Text = act.ToString();
+            DeleteBut.Content = act.ToString();
            
             LoginPartCheckText.Text = _user.Login;
-        
+
+            IsInBoth.Visibility = _isBothDelete ? Visibility.Visible : Visibility.Hidden;
+            if(!_isBothDelete)
+            {
+                CheckBoxRow.Height = new GridLength(0);
+                Height -= 25;
+            }
+
+
             if(_actionType == BothUsersMessageAction.UnPin || 
                 _actionType == BothUsersMessageAction.SchedDelete)
             {

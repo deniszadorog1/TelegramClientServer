@@ -18,7 +18,10 @@
         WindowStartupLocation="CenterScreen"
         
         Background="Transparent"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        
+        MinWidth="500"
+        MinHeight="500">
 
     <Window.Resources>
         <Style x:Key="ButStyle" TargetType="{x:Type controls:ActionButton}">
@@ -30,7 +33,6 @@
             <Setter Property="Margin" Value="7 0 7 0"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
-
     </Window.Resources>
 
 
