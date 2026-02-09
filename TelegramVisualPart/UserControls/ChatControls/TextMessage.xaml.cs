@@ -216,6 +216,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             else ForwardedRow.Height = new GridLength(0);
         }
 
+        public bool IsForwardedRowIsHidden()
+        {
+            return ForwardedRow.Height.Value == 0;
+        }
+
         private void SetMessageReplyControl()
         {
             if (_toReply is null || _system is null)

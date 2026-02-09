@@ -32,7 +32,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             Cursor = Cursors.Hand;
             Background = 
                 (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
-
         }
 
         private void UserControl_MouseLeave(object sender, MouseEventArgs e)
@@ -45,6 +44,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         {
             Icon.Kind = kind;
             ButText.Text = text;
+        }
+
+        public void PaintBlocks(SolidColorBrush color)
+        {
+            Icon.Foreground = color;
+            ButText.Foreground = color;
         }
     }
 }

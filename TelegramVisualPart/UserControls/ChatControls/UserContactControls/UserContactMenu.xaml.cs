@@ -176,13 +176,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         {
             if (_chat is null || _chat.Chatter is null) return null;
             UserContactcs contact = _system.GetContactByUserId(_chat.Chatter.Id);
-            if (contact is null) return null;
+            if (contact is null && 
+                name != AddContact.Name.ToString() && 
+                name != AutoDelete.Name.ToString()) return null;
 
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :
 
                    name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
-
 
                    name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact, _system) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :

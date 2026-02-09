@@ -8,6 +8,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramVisualPart.EnterInAccount;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
@@ -649,11 +650,6 @@ namespace TelegramVisualPart
             }), System.Windows.Threading.DispatcherPriority.Render);
         }
 
-        private void Window_LayoutUpdated(object sender, EventArgs e)
-        {
-            /*            if (_isOnlyChat) return;
-                        SetMainChatPagePartsSize();*/
-        }
 
         private Enums.SizerActionType? _chosenWindowSizeType;
 
@@ -1057,9 +1053,8 @@ namespace TelegramVisualPart
             //Correct in SecFrame(user info)
             if (SecondaryFrame.Content is UserInfo info)
             {
-                info.ContactRemoveAction();
-
-                //info.UpdateContactVis(null);
+                ClearSecFrame();
+                //info.ContactRemoveAction();           
             }
         }
 
@@ -1102,6 +1097,20 @@ namespace TelegramVisualPart
         {
             if (SecondaryFrame.Content == page) ClearSecFrame();
             else if (ThirdFrame.Content == page) ClearThirdFrame();
+        }
+
+        public void FocusUserChat()
+        {
+            if (MainFrame.Content is MainChatPage main)
+            {
+                Dispatcher.BeginInvoke(
+                    DispatcherPriority.Input,
+                    new Action(() =>
+                    {
+                        main.UserChat.Focus();
+                        Keyboard.Focus(main.UserChat);
+                    }));
+            }
         }
 
         public void SetPageOnSameFrame(Page toCheck, Page toSet)
@@ -1191,8 +1200,15 @@ namespace TelegramVisualPart
             BlockFrame.Content = page;
         }
 
-        public async Task DeleteChat(TelegramLib.MainClasses.User chatter, bool isDeleteForOtherUser)
+        public async Task DeleteChat(TelegramLib.MainClasses.User chatter, 
+            bool isDeleteForOtherUser)
         {
+            if(_isOnlyChat && _bossWindow is not null)
+            {
+                _bossWindow.DeleteChat(chatter, isDeleteForOtherUser);
+                RemoveChatMainWindow();
+            }
+        
             if (MainFrame.Content is not MainChatPage page) return;
 
             //Close only chat window
@@ -1422,10 +1438,21 @@ namespace TelegramVisualPart
 
         public void SetContactMask(int userIdToSetMask)
         {
+            if (_isOnlyChat && _bossWindow is not null)
+            {
+                _bossWindow.SetContactMask(userIdToSetMask);
+            }
+
             if (MainFrame.Content is MainChatPage page)
             {
                 //Set for MainChatPage
                 page.SetContactMask(userIdToSetMask);
+
+                if (_isOnlyChat)
+                {
+                    TelegramLib.MainClasses.User chatter = _system.GetUserById(userIdToSetMask);
+                    page.UserChat.SetUserImage(chatter.GetFirstImageName().Name);
+                }
             }
 
             if (SecondaryFrame.Content is UserInfo info)

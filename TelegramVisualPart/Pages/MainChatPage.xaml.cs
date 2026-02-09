@@ -1148,9 +1148,11 @@ namespace TelegramVisualPart.Pages
                 AddChat(contact);
 
                 //change control Tag in new chat id
-                chat = _system.Chats.Last();
+                chat = _system.Chats.LastOrDefault();
 
                 RepaintUserChatsPanel();
+
+                
             }
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
@@ -2737,7 +2739,7 @@ namespace TelegramVisualPart.Pages
                 return;
             }
 
-           
+          
             //To set forwarding params
             await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
             UserChat.ReplyBorder.Height = 50;

@@ -29,7 +29,6 @@
         
         PreviewMouseDown="Window_MouseDown"
         SizeChanged="Window_SizeChanged"
-        LayoutUpdated="Window_LayoutUpdated"
         MouseMove="Window_MouseMove"
         
         PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"

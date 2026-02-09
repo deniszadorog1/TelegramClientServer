@@ -43,8 +43,7 @@
 
             <Grid Grid.Column="0"
                   MouseEnter="Grid_MouseEnter"
-                  MouseLeave="Grid_MouseLeave"
-                  PreviewMouseDown="BackButGrid_PreviewMouseDown">
+                  MouseLeave="Grid_MouseLeave">
                 <Ellipse  Width="45"
                      Height="45" Margin="7 0 0 0 ">
                     <Ellipse.Fill>

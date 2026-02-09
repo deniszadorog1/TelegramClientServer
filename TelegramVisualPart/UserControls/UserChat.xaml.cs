@@ -7,6 +7,7 @@ using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -1488,8 +1489,8 @@ namespace TelegramVisualPart.UserControls
 
         private async void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            
-           if (e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
+
+            if (e.Key == Key.Enter && SchedueleMessagesGrid.Visibility == Visibility.Visible)
             {
                 HideSelectionRow();
                 if (_isEdit)
@@ -1517,8 +1518,9 @@ namespace TelegramVisualPart.UserControls
             {
                 HideSelectionRow();
                 await SendMessage();
+
+                _isHiddenSender = false;
             }
-            if (_isHiddenSender) _isHiddenSender = false;
         }
 
         private async Task SendMessage()
@@ -1711,8 +1713,8 @@ namespace TelegramVisualPart.UserControls
         public void ClearResenderInForwardedMessages()
         {
             if (!_isHiddenSender) return;
-       
-            foreach(var message in _toForwardMessages)
+
+            foreach (var message in _toForwardMessages)
             {
                 message.ClearForwarded();
             }
@@ -1823,7 +1825,7 @@ namespace TelegramVisualPart.UserControls
         {
             if (!IsReplyMessage() || _mesMenu is null ||
                 _mesMenu.GetChosenListBoxItem() is null ||
-                ReplyMessageRow.Height.Value == 0 || 
+                ReplyMessageRow.Height.Value == 0 ||
                 _isHiddenSender) return null;
 
             int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
@@ -1836,7 +1838,7 @@ namespace TelegramVisualPart.UserControls
             //Get reply message
             TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
 
-            if (_isHiddenSender) _isHiddenSender = false;
+            //if (_isHiddenSender) _isHiddenSender = false;
 
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
@@ -4000,7 +4002,7 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateChatterName(UserContactcs contact)
         {
-            if (_chat.Chatter.Id != contact.ContactUserId) return;
+            if (_chat is null || _chat.Chatter.Id != contact.ContactUserId) return;
 
             ChatFriendLogin.Text = contact.Name;
             ChatFriendSurname.Text = contact.Surname;
@@ -4427,11 +4429,14 @@ namespace TelegramVisualPart.UserControls
                 CommentTextBox.Text = string.Empty;
             }
             ReplyMessageRow.Height = new GridLength(0);
+            _toForwardMessages = null;
             Cursor = null;
         }
 
         public void SetReplyMessageRow()
         {
+            HideSelectionRow();
+
             //Get ListBoxItem From Menu
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
             if (item is null || item.Content is not UserControl control) return;
@@ -4443,11 +4448,12 @@ namespace TelegramVisualPart.UserControls
             SetReplyRowParams(control, new List<Message>() { mes });
         }
 
+
+        private TelegramLib.MainClasses.Messages.Message _repliedMessage;
         public void SetReplyRowParams(UserControl control,
-            List<Message> messages)
+                List<Message> messages)
         {
             if (messages is null) return;
-
             ReplyMessageRow.Height = new GridLength(50);
 
             //Set Image to reply
@@ -4457,10 +4463,8 @@ namespace TelegramVisualPart.UserControls
                 ReplyedImageColumn.Width = new GridLength(50);
 
                 if (media._img is not null) ReplyedImage.Source = media._img.Source;
-
                 else if (media._gifPath is not null &&
                     media._gifPath != string.Empty) ReplyedImage.Source = FilesAction.GetFirstImageFromGif(media._gifPath);
-
                 else return;
             }
             else
@@ -4468,21 +4472,18 @@ namespace TelegramVisualPart.UserControls
                 ReplyedImageColumn.Width = new GridLength(0);
                 ReplyedImage.Source = null;
             }
-
-
-            Message mes = messages.First();
+            _repliedMessage = messages.First();
 
             //Set sender name
-            ReplySenderText.Text = $"Reply to {_system.GetMessageSender(mes.SenderUserId).Login}";
+            ReplySenderText.Text = $"Reply to {_system.GetMessageSender(_repliedMessage.SenderUserId).Login}";
 
             //Set text
             ReplyedMessageText.Text =
                 messages.Count > 1 ? $"{messages.Count} messages" :
-                mes is MediaAction ? "Reply media" :
-                mes is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
-                mes is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
+                _repliedMessage is MediaAction ? "Reply media" :
+                _repliedMessage is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
+                _repliedMessage is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
                 "Some shit";
-            //return;
         }
 
         public ListBoxItem? GetListBoxItemFromMenu()
@@ -4648,6 +4649,8 @@ namespace TelegramVisualPart.UserControls
                 await ApiService.AddSavedMessage(_system.SavedMesesChat.Id, _toForwardMessages[i]);
                 _system.SavedMesesChat.Messages.Add(_toForwardMessages[i]);
             }
+
+            ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Sent to save chat");
         }
 
         public void ClearForwardMessagesFromReply()
@@ -4817,12 +4820,12 @@ namespace TelegramVisualPart.UserControls
         private void DeleteSelectedBut_Click(object sender, RoutedEventArgs e)
         {
             //Remove selected messages
-            SetDeleteMessagePage(isBoth:_chat.GetType() != typeof(SavedMessagesChat));
+            SetDeleteMessagePage(isBoth: _chat.GetType() != typeof(SavedMessagesChat));
         }
 
         public void SetDeleteMessagePage(bool isBoth = true)
         {
-            TelegramLib.MainClasses.User chatter = 
+            TelegramLib.MainClasses.User chatter =
                 _chat.Chatter is null ? _system.LoggedUser :
                 _chat.Chatter;
 
@@ -4853,7 +4856,7 @@ namespace TelegramVisualPart.UserControls
 
             if (_isSavedMessageChat) await ApiService.RemoveSavedMessage(_system.LoggedUser.Id, toDelete.Select(x => x.Id).ToList());
             else await ApiService.DeleteManyMessages(toDelete.Select(x => x.Id).ToList(), isBoth);
-           
+
 
             for (int i = 0; i < toDelete.Count; i++)
             {
@@ -5108,7 +5111,8 @@ namespace TelegramVisualPart.UserControls
 
         public void ScrollToMessageByDateTime(DateTime dateTime)
         {
-            TelegramLib.MainClasses.Messages.Message mes = _chat.GetMessageByDateTime(dateTime);
+            TelegramLib.MainClasses.Messages.Message mes = 
+                _chat.GetMessageByDateTime(dateTime);
 
             if (mes is null)
             {
@@ -5330,30 +5334,49 @@ namespace TelegramVisualPart.UserControls
         }
 
         private bool _isHiddenSender = false;
+        private const string _senderHidden = "Hidden";
         private void ReplyBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            const string senderHidden = "Hidden";
             _isHiddenSender = false;
-
-            if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
+            SetReplySentFromText();
 
             RepForType type = _toForwardMessages is not null ?
                 RepForType.ForwardAction : RepForType.ReplyAction;
 
-            ForRepMenu menuPage = new ForRepMenu(type, _toForwardMessages, _system);
+            ForRepMenu menuPage = GetNewForRepPage(type);
+            if (menuPage is null) return;
 
+            SetForRepPageActions(menuPage);
+
+            Window window = Window.GetWindow(this);
+            if (window is MainWindow main)
+            {
+                main.SetSecondaryFrame(menuPage);
+            }
+        }
+
+        public ForRepMenu GetNewForRepPage(RepForType type)
+        {
+            if (_toForwardMessages is not null && _toForwardMessages.Count > 0)
+                 return new ForRepMenu(type, _toForwardMessages, _system);
+            else if (_repliedMessage is not null)
+            {
+                return new ForRepMenu(type, _repliedMessage, _system);
+            }
+            return null;
+        }
+
+        public void SetForRepPageActions(ForRepMenu menuPage)
+        {
             menuPage.HideSenderNameDel += () =>
             {
                 if (ReplyMessageRow.Height.Value == 0 ||
-                _toForwardMessages is null || 
+                _toForwardMessages is null ||
                 _toForwardMessages.Count == 0) return;
 
                 _isHiddenSender = !_isHiddenSender;
 
-                ReplySenderText.Text = _isHiddenSender ? senderHidden : 
-                $"from {_system.GetUserById(_toForwardMessages.First().SenderUserId).Login}";
-
-                //((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+                SetReplySentFromText();
             };
 
             menuPage.DoNotSendDel += () =>
@@ -5366,22 +5389,31 @@ namespace TelegramVisualPart.UserControls
 
             menuPage.ChangeRecipientDel += () =>
             {
-                if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
-
                 HideSelectionRow();
+                ReplyMessageRow.Height = new GridLength(0);
 
                 ForwardToPage page = new ForwardToPage(_system);
                 page.CancelDel += () =>
                 {
                     ReplyMessageRow.Height = new GridLength(0);
                     _toForwardMessages = null;
+                    _repliedMessage = null;
                 };
 
                 page.ForwardSelected += async (senderId) =>
                 {
                     HidePinnedChatAndShowChatMessages();
 
-                    await SetForwardedMessage(_toForwardMessages, senderId);
+                    if (_toForwardMessages is not null &&
+                    _toForwardMessages.Count > 0)
+                    {
+                        await SetForwardedMessage(_toForwardMessages, senderId);
+                    }
+                    else if(_repliedMessage is not null)
+                    {
+                        //To check this thing
+                        await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
+                    }
 
                     CommentTextBox.Focus();
                 };
@@ -5391,11 +5423,13 @@ namespace TelegramVisualPart.UserControls
             };
 
 
-            Window window = Window.GetWindow(this);
-            if (window is MainWindow main)
-            {
-                main.SetSecondaryFrame(menuPage);
-            }
+        }
+
+        public void SetReplySentFromText()
+        {
+            if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
+            ReplySenderText.Text = _isHiddenSender ? _senderHidden :
+                $"from {_system.GetUserById(_toForwardMessages.First().SenderUserId).Login}";
         }
 
         private void ReplyBorder_MouseEnter(object sender, MouseEventArgs e)
@@ -5407,6 +5441,13 @@ namespace TelegramVisualPart.UserControls
         {
             Cursor = null;
         }
+
+        public void SetUserImage(string imgName)
+        {
+            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+        }
+       
     }
 
     public static class ScrollViewerBehavior

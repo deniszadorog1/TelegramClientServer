@@ -62,6 +62,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TelSystem system, TelegramLib.MainClasses.UserContactcs contact, 
             bool isSetMaxHeight = true)
         {
+            Console.WriteLine(MaxHeight);
+
             _system = system;
             _chat = chat;
             _contact = contact;
@@ -91,6 +93,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             BlockButVisibility();
             SetStartToggleState();
 
+            Console.WriteLine(MaxHeight);
+            Console.WriteLine(Height);
+
             LoadEnd?.Invoke();
         }
 
@@ -98,6 +103,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetBasicRowHeight()
         {
             BirthdatRow.Height = new GridLength(_baseUpperInfoRowHeight);
+           // ToBeHiddenButs.Height = new GridLength(200);
             //BioRow.Height = new GridLength(_baseUpperInfoRowHeight);
             //AddContactRow.Height = new GridLength(_baseUpperInfoRowHeight);
         }
@@ -115,6 +121,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async Task SetInfoVisibility()
         {
             SetBlocksVisibility();
+            Console.WriteLine(MaxHeight);
             await SetUserParams();
         }
         public void BlockButVisibility()
@@ -131,6 +138,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetBlocksVisibility()
         {
             SetIsContactRemovedVis();
+            Console.WriteLine(MaxHeight);
             SetMediasGridsVisibility();
         }
 
@@ -281,6 +289,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Dispatcher.InvokeAsync(async () =>
             {
+                if (_chat is null || _chat.Chatter is null) return;
                 if (_chat.Chatter.Id == user.Id)
                 {
                     await SetBioRow(user);

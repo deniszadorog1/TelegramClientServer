@@ -42,6 +42,41 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private TelSystem _system;
 
+        private bool _isOnlyVisual = false;
+        private MediaAction _message;
+
+        public MediaMessage(TelSystem system, MediaAction media)
+        {
+            _isOnlyVisual = true;
+            _message = media;
+
+            _system = system;
+            IsSticker = media.IsSticker;
+            _forwardedFrom = media.ForwardedFromId;
+            //_senderImgName = media.SenderUserId;
+
+            InitializeComponent();
+            HideAllBorders();
+            SetMedia();
+
+            SetTime(media.SentTime);
+            SetForwardedFromRow();
+        }
+
+        public void SetMedia()
+        {
+            if(_message.IsImage())
+            {
+                ImgMessage.ImageSource =
+                    new BitmapImage(new Uri(
+                        FilesAction.GetFullChatImagePath(_message.MediaName),
+                        UriKind.Absolute));
+
+                //SetImgMessageSize(_img, ImageBorder);
+                ImageBorder.Visibility = Visibility.Visible;
+            }
+        }
+
         public MediaMessage(TelSystem system, 
             Image img, bool isSticker,
             string senderImgName, DateTime sendTime, 
@@ -174,11 +209,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private async Task SetForwardedFromRow()
         {
             if (_forwardedFrom is null) return;
-
             TelegramLib.MainClasses.User from =
                 await ApiService.GetUserById((int)_forwardedFrom);
             if (from is null) return;
-
 
             //Set forwarded from user id as tag
             LoginForwarded.Tag = from.Id;
@@ -191,6 +224,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (isShow) ForwardedRow.Height = new GridLength(_visForwardRowHeight);
             else ForwardedRow.Height = new GridLength(0);
+        }
+
+        public bool IsForwardedRowIsHidden()
+        {
+            return ForwardedRow.Height.Value == 0;
         }
 
         public bool IsMessageIdTicked()
@@ -248,6 +286,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (_isOnlyVisual) return;
             SendInfoGrid.Visibility = Visibility.Visible;
         }
 
@@ -292,6 +331,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LoginForwarded_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (_isOnlyVisual) return;
             Cursor = Cursors.Hand;
         }
 
@@ -302,7 +342,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //return;
+            if (_isOnlyVisual) return;
+
             int.TryParse(LoginForwarded.Tag.ToString(), out int userId);
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 

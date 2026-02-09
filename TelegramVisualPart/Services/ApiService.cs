@@ -316,7 +316,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> IsUserOnline(int userId)
         {
-            var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
+          var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return false;

@@ -36,6 +36,23 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         private RepForType _actType;
         private TelSystem _system;
+        private TelegramLib.MainClasses.Messages.Message _replied;
+
+        public ForRepMenu(RepForType actType,
+            TelegramLib.MainClasses.Messages.Message repliedMessage,
+            TelSystem system)
+        {
+            _actType = actType;
+            _replied = repliedMessage;
+            _system = system;
+
+            InitializeComponent();
+
+            SetBasicParams();
+            SetVisibleMessages();
+
+            RemoveRestButtons();
+        }
 
         public ForRepMenu(RepForType actType,
             List<TelegramLib.MainClasses.Messages.Message> messages,
@@ -49,6 +66,19 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             SetBasicParams();
             SetVisibleMessages();
+
+            RemoveRestButtons();
+        }
+
+        public void RemoveRestButtons()
+        {
+            if(_actType == RepForType.ForwardAction)
+            {
+                ActionButtonsStack.Children.Remove(ShowMessage);
+                return;
+            }
+
+            ActionButtonsStack.Children.Remove(HideSenderNameBut);
         }
 
         public void SetVisibleMessages()
@@ -57,23 +87,33 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             {
                 SetForwardedMessages();
             }
+            else if(_actType == RepForType.ReplyAction)
+            {
+                AddMessageInStack(_replied);
+            }
         }
 
         public void SetForwardedMessages()
         {
             for (int i = 0; i < _messages.Count; i++)
             {
-                if (_messages[i] is TelegramLib.MainClasses.Messages.TextMessage text)
-                {
-                    UserControls.ChatControls.TextMessage control = new
-                        UserControls.ChatControls.TextMessage(_system, text);
+                AddMessageInStack(_messages[i]);
+            }
+        }
 
-                    AddControlIsStack(control);
-                }
-                else if (_messages[i] is MediaAction media)
-                {
-                    //MediaMessage message = new MediaMessage()
-                }
+        public void AddMessageInStack(Message message)
+        {
+            if (message is TelegramLib.MainClasses.Messages.TextMessage text)
+            {
+                UserControls.ChatControls.TextMessage control = new
+                    UserControls.ChatControls.TextMessage(_system, text);
+
+                AddControlIsStack(control);
+            }
+            else if (message is MediaAction media)
+            {
+                MediaMessage mediaMes = new MediaMessage(_system, media);
+                AddControlIsStack(mediaMes);
             }
         }
 
@@ -88,8 +128,13 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         public void SetBasicParams()
         {
             ChangeRecipient.SetParams(MaterialDesignThemes.Wpf.PackIconKind.FormatRotateNinety, "Change sended");
-            DoNotSend.SetParams(MaterialDesignThemes.Wpf.PackIconKind.GarbageCanOutline, "Cancel action");
             HideSenderNameBut.SetParams(MaterialDesignThemes.Wpf.PackIconKind.HideOutline, "Hide Sender");
+            ShowMessage.SetParams(MaterialDesignThemes.Wpf.PackIconKind.EyeOutline, "Show in Chat");
+
+            DoNotSend.SetParams(MaterialDesignThemes.Wpf.PackIconKind.GarbageCanOutline, "Cancel action");
+
+            var brush = (SolidColorBrush)Application.Current.Resources["ToBlockContact"];
+            DoNotSend.PaintBlocks(brush);
         }
 
         private void HideSenderNameBut_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -113,6 +158,16 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             }
         }
 
+        public bool IsForwardedRowIsHidden()
+        {
+            if (MessagesStack.Children.Count == 0) return false;
+
+            if (MessagesStack.Children[0] is UserControls.ChatControls.TextMessage text) return text.IsForwardedRowIsHidden();
+            if (MessagesStack.Children[0] is MediaMessage media) return media.IsForwardedRowIsHidden();
+
+            return false;
+        }
+
         public bool GetForwardVisParam(UserControl control)
         {
             if (control is MediaMessage media) return media.ForwardedRow.Height.Value == 0;
@@ -129,7 +184,6 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         private void DoNotSend_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DoNotSendDel?.Invoke();
-
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
@@ -137,12 +191,24 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             //Set action
 
+            //if(IsForwardedRowIsHidden()) 
+
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            ((MainWindow)Window.GetWindow(this)).FocusUserChat();
         }
 
         private void CancelBut_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            ((MainWindow)Window.GetWindow(this)).FocusUserChat();
+        }
+
+        private void ShowMessage_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_replied is null) return;
+
+            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+            ((MainWindow)Window.GetWindow(this)).ShowChosenMessageByMessageId(_replied.Id);
         }
     }
 }

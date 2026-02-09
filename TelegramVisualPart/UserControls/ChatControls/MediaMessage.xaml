@@ -17,7 +17,6 @@
             <ColumnDefinition Name="TickColumnDef" Width="0"/>
         </Grid.ColumnDefinitions>
 
-         
         <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
                 Name="UserEllipseImage" Width="40" Height="40">
             <Ellipse.Fill>

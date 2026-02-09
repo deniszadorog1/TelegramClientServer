@@ -20,8 +20,8 @@
             <Grid PreviewMouseDown="Grid_MouseDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" x:Name="UpperRow"/>
-                    <RowDefinition Height="176*"/>
-                    <RowDefinition Height="109*"/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -293,7 +293,8 @@
                                 <RowDefinition x:Name="BlockRow"/>
                             </Grid.RowDefinitions>
 
-                            <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" Name="ShareLine"
+                            <Grid Grid.ColumnSpan="2" Grid.Row="0" Background="Transparent" 
+                                  Name="ShareLine"
                               MouseEnter="But_MouseEnter" MouseLeave="But_MouseLeave" 
                               PreviewMouseDown="ShareLine_PreviewMouseDown"/>
                             <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="Transparent" Name="EditContactLine"

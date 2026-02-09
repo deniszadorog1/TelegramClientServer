@@ -46,7 +46,10 @@
                 
                 <But:MesMenuBut x:Name="ChangeRecipient" 
                                 PreviewMouseLeftButtonDown="ChangeRecipient_PreviewMouseLeftButtonDown"/>
-                
+
+                <But:MesMenuBut x:Name="ShowMessage" 
+                                PreviewMouseLeftButtonDown="ShowMessage_PreviewMouseLeftButtonDown"/>
+
                 <But:MesMenuBut x:Name="DoNotSend" 
                                 PreviewMouseLeftButtonDown="DoNotSend_PreviewMouseLeftButtonDown"/>
             </StackPanel>
@@ -60,7 +63,8 @@
                            TextWrapping="Wrap"
                            FontSize="17"
                            Foreground="Gray"
-                           Margin="15 5 15 0"/>
+                           Margin="15 5 15 0"
+                           FontFamily="{DynamicResource AppFont}"/>
             </Grid>
             
             

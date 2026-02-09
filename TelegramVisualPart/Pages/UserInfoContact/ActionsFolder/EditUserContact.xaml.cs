@@ -44,6 +44,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             InitializeComponent();
 
             AddNewUserBasicParams();
+            SetMaskParamRowsVis();
         }
 
         public void AddNewUserBasicParams()
@@ -73,6 +74,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             SetBasicParams();
             SetRemoveMaskLine();
+            SetMaskParamRowsVis();
         }
 
 
@@ -89,6 +91,16 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             PhoneNumberBox.Text = _contact.PhoneNumber;
             LastSeenBox.Text = _contact.LastSeen is null ? "recently" :
                 $"{_contact.LastSeen.Value.Day}.{_contact.LastSeen.Value.Month}.{_contact.LastSeen.Value.Year}";
+        }
+
+        public void SetMaskParamRowsVis()
+        {
+            if (_contact is not null) return;
+
+            Height -= SetContactInfoRow.Height.Value + SetContactMaskRow.Height.Value;
+
+            SetContactInfoRow.Height = new GridLength(0);
+            SetContactMaskRow.Height = new GridLength(0);
         }
 
         private void But_MouseLeave(object sender, MouseEventArgs e)
@@ -293,7 +305,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
         public bool IsMaskExist()
         {
-            if (_contact.MaskImage is null) return false;
+            if (_contact is null || _contact.MaskImage is null) return false;
+
             if (_system is not null)
             {
                 User user = _system.GetUserById(_contact.ContactUserId);
