@@ -1562,6 +1562,10 @@ namespace TelegramVisualPart.Pages
         {
             TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
+            if (chat is null) chat = _chosenChat;
+
+            if (chat is null) return;
+
 
             UserTalkMessage message =
                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);

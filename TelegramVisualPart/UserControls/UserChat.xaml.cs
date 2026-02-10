@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.Xaml.Behaviors.Media;
 using Newtonsoft.Json;
+using System;
 using System.CodeDom;
 using System.IO;
 using System.Security.Policy;
@@ -414,6 +415,8 @@ namespace TelegramVisualPart.UserControls
                 //Is temp is Chosen -> clear vis
                 if (_chat.Id == chat.Id) ClearChat();
                 //Clear from system
+
+                _system.RemoveAllMessagesFromChat(chat);
                 chat.ClearChat();
                 //Clear from Db
                 await ApiService.ClearChat(chat);
@@ -1198,7 +1201,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message? reply =
                 message.RepliedMessageId is null ? null :
                 message.RepliedMessageId == -1 ? new Message() :
-                _chat.GetMessageById((int)message.RepliedMessageId);
+                _system.GetRepliedMessageById((int)message.RepliedMessageId);
 
             ChatControls.TextMessage newMes =
                 new ChatControls.TextMessage(_system,
@@ -1523,13 +1526,26 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
+        public bool IsTextMessageIsEmpty()
+        {
+            if (!string.IsNullOrWhiteSpace(CommentTextBox.Text)) return false;
+
+            MessageMenu.Children.Clear();
+            CommentTextBox.Text = string.Empty;
+
+            ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Misha, Stop It!!!");
+
+            return true;
+        }
+
         private async Task SendMessage()
         {
             if (await IsEditedMessage()) return;
 
             _textHistory.Clear();
-            if (await SendSelectedMessagesToForward() ||
-                string.IsNullOrEmpty(CommentTextBox.Text)) return;
+            if (await SendSelectedMessagesToForward()) return;
+            if (IsTextMessageIsEmpty()) return;
+
 
             MessageMenu.Children.Clear();
 
@@ -1830,7 +1846,7 @@ namespace TelegramVisualPart.UserControls
 
             int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
 
-            return _system.GetMessageById(id);
+            return _system.GetRepliedMessageById(id);
         }
 
         public (Message, Message) GetTextMessageToSend(string sendText)
@@ -3706,8 +3722,16 @@ namespace TelegramVisualPart.UserControls
             Cursor = null;
         }
 
-        public void ScrollToMessageByMessageId(int messageId)
+        public async void ScrollToMessageByMessageId(int messageId)
         {
+            if(messageId == -1)
+            {
+                ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Misha, why did you click here???");
+                return;
+            }
+            //Is replied from other chat
+            if (await IsRepliedFromOtherChat(messageId)) return;
+
             ListBoxItem? item = ChatBox.Items
                 .OfType<ListBoxItem>()
                 .FirstOrDefault(x => x.Tag.ToString() == messageId.ToString());
@@ -3717,6 +3741,28 @@ namespace TelegramVisualPart.UserControls
             if (index == -1) return;
 
             ScrollToChosenItem(index);
+        }
+
+        public async ValueTask<bool> IsRepliedFromOtherChat(int mesId)
+        {
+            if (_chat.IsMessageContains(mesId)) return false;
+
+            //Set chat
+            TelegramLib.MainClasses.UserChat chat = 
+                _system.GetChatByMessageId(mesId);
+
+            if (chat is null) return false;
+
+            HideChatControlFeatures();
+
+            await SetUserChat(chat);
+
+            await Dispatcher.BeginInvoke(new Action(() =>
+            {
+                ScrollToMessageByMessageId(mesId);
+            }), DispatcherPriority.ApplicationIdle);
+
+            return true;
         }
 
         public void ScrollToChosenItem(int index)
@@ -4584,9 +4630,7 @@ namespace TelegramVisualPart.UserControls
             _toForwardMessages.AddRange(messages);
         }
 
-        public async Task SetForwardedMessage(
-            List<Message> messages,
-            int? userIdToSend)
+        public void HideChatControlFeatures()
         {
             //SetForwardMessages(userIdToSend, messages);
             HidePinnedChatAndShowChatMessages();
@@ -4594,6 +4638,13 @@ namespace TelegramVisualPart.UserControls
             //Hide selection stuff
             HideSelectionRow();
             SetMessageSelectCircleVis(false);
+        }
+
+        public async Task SetForwardedMessage(
+            List<Message> messages,
+            int? userIdToSend)
+        {
+            HideChatControlFeatures();
 
             //Get control
             UserControl? messageControl = messages.Count > 1 ? null :
@@ -4617,9 +4668,6 @@ namespace TelegramVisualPart.UserControls
                 _system.GetChatByChatterId((int)userIdToSend);
             if (chat is null) return;
 
-            //Set new chat(in logic + in vis)
-            //if (_chat.Id != chat.Id) SetNewChat(chat);
-
             if ((_forwardSenderId is not null && chat.Id != _chat.Id) ||
                 chat.GetType() != _chat.GetType())
                 await ((MainWindow)Window.GetWindow(this)).
@@ -4630,7 +4678,7 @@ namespace TelegramVisualPart.UserControls
             //Set reply row in chat    
             SetReplyRowParams(messageControl, messages);
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            await Dispatcher.BeginInvoke(new Action(() =>
             {
                 this.Focusable = true;
                 this.Focus();
@@ -5411,18 +5459,16 @@ namespace TelegramVisualPart.UserControls
                     }
                     else if(_repliedMessage is not null)
                     {
+                        await SentRepliedMessage(_repliedMessage, senderId);
                         //To check this thing
-                        await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
+                       // await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
                     }
 
                     CommentTextBox.Focus();
                 };
 
-
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
             };
-
-
         }
 
         public void SetReplySentFromText()
@@ -5430,6 +5476,52 @@ namespace TelegramVisualPart.UserControls
             if (_toForwardMessages is null || _toForwardMessages.Count == 0) return;
             ReplySenderText.Text = _isHiddenSender ? _senderHidden :
                 $"from {_system.GetUserById(_toForwardMessages.First().SenderUserId).Login}";
+        }
+
+        public async Task SentRepliedMessage(Message mes, int? userIdToSend)
+        {
+            HideChatControlFeatures();
+
+            //Get control
+            UserControl? messageControl =  GetMessageControlById(mes.Id);
+
+            //Get temp active chat(From user chat control)
+            TelegramLib.MainClasses.UserChat chat =
+                 
+                userIdToSend is null || userIdToSend == _system.LoggedUser.Id ? _system.GetSavedChatMessages() :
+                
+                 _system.GetChatByChatterId((int)userIdToSend);
+
+            if (chat is null) return;
+
+            await SetUserChatByChat(chat);
+
+            _chat = chat;
+
+            //Set reply row in chat    
+            SetReplyRowParams(messageControl, new List<Message>() { mes });
+
+            await Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.Focusable = true;
+                this.Focus();
+                Keyboard.Focus(this);
+
+            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+
+
+        }
+
+        public async ValueTask SetUserChatByChat(TelegramLib.MainClasses.UserChat chat)
+        {
+            int chatterId =
+                chat.GetType() == typeof(SavedMessagesChat) ?
+                _system.LoggedUser.Id : chat.Chatter.Id;
+
+            if (chat.Id != _chat.Id ||
+                chat.GetType() != _chat.GetType())
+                await ((MainWindow)Window.GetWindow(this)).
+                   SetOtherChatByUserId(chatterId);
         }
 
         private void ReplyBorder_MouseEnter(object sender, MouseEventArgs e)

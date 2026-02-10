@@ -33,6 +33,8 @@ namespace TelegramLib.Models
 
         public bool? IsRead { get; set; }
 
+        public bool IsSavedMessagesChat { get; set; }
+
         public virtual AutoDeleteType AutoDeleteType { get; set; }
 
         public virtual ChatBG ChatBG { get; set; }

@@ -35,13 +35,11 @@
         </Style>
     </Window.Resources>
 
-
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                           ResizeBorderThickness="5"
                           GlassFrameThickness="0" />
     </WindowChrome.WindowChrome>
-
 
     <Grid>
         <Grid.RowDefinitions>
@@ -49,11 +47,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        
         <Border Background="{StaticResource DarkThemeOne}"  Opacity="0.85" 
                 Grid.RowSpan="2" Name="BgBorder"/>
-        
-        
+          
         <Grid Grid.Row="0" Name="UpperBorder" 
               Background="Transparent"
                   MouseLeftButtonDown="DragWindow"

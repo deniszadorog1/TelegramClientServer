@@ -69,6 +69,8 @@ namespace TelegramVisualPart.Pages.ChatActions
             //Saved messages
             if(_chat is TelegramLib.MainClasses.SavedMessagesChat saved)
             {
+                _system.RemoveAllMessagesFromChat(_chat);
+
                 //clear from system value 
                 _chat.ClearChat();
 
@@ -117,11 +119,15 @@ namespace TelegramVisualPart.Pages.ChatActions
         private async Task ClearTempUserChat()
         {
             await ApiService.ClearChat(_chat);
+
+            _system.RemoveAllMessagesFromChat(_chat);
             _chat.ClearChat();
 
             ((MainWindow)Window.GetWindow(this)).ClearChat();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
+
+
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
         {

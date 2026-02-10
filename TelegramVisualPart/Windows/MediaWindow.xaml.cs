@@ -76,7 +76,7 @@ namespace TelegramVisualPart.Windows
         private List<string> _mediaPaths;
         private MediaElement _media;
 
-        public void SetVideos(MediaElement media, List<string> vidPaths, 
+        public void SetVideos(MediaElement media, List<string> vidPaths,
             List<MediaAction> videos)
         {
             _media = media;
@@ -88,14 +88,14 @@ namespace TelegramVisualPart.Windows
             VideoToShow.Source = media.Source;
 
             //SetBasicParams();
-            
-            if(_type != MediaShowType.Videos) ImageToShow.Visibility = Visibility.Hidden;
-           
+
+            if (_type != MediaShowType.Videos) ImageToShow.Visibility = Visibility.Hidden;
+
             _allImagesInfo = null;
             SetMediaParams(_mediaMessages[_tempMediaIndex]);
         }
 
-        public void SetGif(int startIndex, List<string> gifPaths, 
+        public void SetGif(int startIndex, List<string> gifPaths,
             List<MediaAction> gifs)
         {
             _mediaPaths = gifPaths;
@@ -216,7 +216,7 @@ namespace TelegramVisualPart.Windows
         {
             //Get Img
 
-            for(int i = 0; i < _allImagesInfo.Count; i++)
+            for (int i = 0; i < _allImagesInfo.Count; i++)
             {
                 if (_allImagesInfo[i].Item1 == _imgInfo.Value.Img)
                 {
@@ -237,7 +237,7 @@ namespace TelegramVisualPart.Windows
         //User Images(Profile) action 
         public (Image Img, DateTime sentTime, string Login)? _imgInfo;
         public List<(Image, DateTime, string)> _allImagesInfo = new List<(Image, DateTime, string)>();
-       
+
         public void SetUserImages()
         {
             //_user - Chatter for who to set images
@@ -259,7 +259,7 @@ namespace TelegramVisualPart.Windows
         {
             List<string> res = new List<string>();
 
-            for(int i = 0; i < amount; i++)
+            for (int i = 0; i < amount; i++)
             {
                 res.Add(_user.Login);
             }
@@ -267,7 +267,7 @@ namespace TelegramVisualPart.Windows
         }
 
         public void SetAllUserImages(
-            List<string> names, 
+            List<string> names,
             List<DateTime> sentTime,
             List<string> senderLogin)
         {
@@ -294,13 +294,21 @@ namespace TelegramVisualPart.Windows
             SetImageToShow(filePath);
         }
 
-        public void SetImageToShow (string allPath)
+        public void SetImageToShow(string allPath)
         {
             Image img = new Image()
             {
                 Source = new BitmapImage(new Uri(allPath, UriKind.Absolute))
             };
             ImageToShow.Source = img.Source;
+
+            ClearRotationValues();
+        }
+
+        public void ClearRotationValues()
+        {
+            _rotation = 0;
+            ImageToShow.RenderTransform = null;
         }
 
         //Chat image 
@@ -343,20 +351,20 @@ namespace TelegramVisualPart.Windows
         private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_system.LoggedUser.UserImages.Count <= 1) return;
-            
+
             //TO MAKE REMOVE USER IMAGE FROM DB
             //ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(filePath));
-            TelegramLib.MainClasses.UserParams.UserImage img = 
+            TelegramLib.MainClasses.UserParams.UserImage img =
                 _system.LoggedUser.GetUserImageById(_tempMediaIndex);
             ApiService.DeleteUserImage(img, _system.LoggedUser.Id);
 
             //Remove in system 
             _system.LoggedUser.RemoveImageByIndex(_tempMediaIndex);
-            
+
             SetNewTempIndexAfterDeletion();
 
             //Update in system
-            if (_godWindow is not null && 
+            if (_godWindow is not null &&
                 _godWindow is MainWindow mainWindow)
             {
                 //Update in temp page
@@ -405,7 +413,7 @@ namespace TelegramVisualPart.Windows
             string? mediaName = string.Empty;
             //Show folder
             if ((_type == MediaShowType.UserImages ||
-                _type == MediaShowType.OtherUserImages) && 
+                _type == MediaShowType.OtherUserImages) &&
                 _imgInfo is not null)
             {
                 mediaName = _imgInfo.Value.Img.Tag.ToString();
@@ -552,7 +560,7 @@ namespace TelegramVisualPart.Windows
         private readonly Size _littleWindowSize = new Size(800, 600);
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
-            if(WindowState == WindowState.Maximized)
+            if (WindowState == WindowState.Maximized)
             {
                 this.WindowState = WindowState.Normal;
 
@@ -560,7 +568,7 @@ namespace TelegramVisualPart.Windows
                 var screenHeight = SystemParameters.WorkArea.Height;
 
                 this.Left = (screenWidth - this.Width) / 2;
-                this.Top  = (screenHeight - this.Height) / 2;
+                this.Top = (screenHeight - this.Height) / 2;
 
                 Width = _littleWindowSize.Width;
                 Height = _littleWindowSize.Height;
@@ -586,8 +594,8 @@ namespace TelegramVisualPart.Windows
 
         public void SaveElement()
         {
-            if (_type == MediaShowType.UserImages || 
-                _type == MediaShowType.OtherUserImages || 
+            if (_type == MediaShowType.UserImages ||
+                _type == MediaShowType.OtherUserImages ||
                 _type == MediaShowType.ChatImages) SaveElements.SaveImageAs(ImageToShow);
             else if (_type == MediaShowType.Videos) SaveElements.SaveVideoAs(VideoToShow);
         }
@@ -598,14 +606,12 @@ namespace TelegramVisualPart.Windows
         {
             UIElement el = _type == MediaShowType.Videos ? VideoToShow : ImageToShow;
 
-            double width =  _type == MediaShowType.Videos ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
+            double width = _type == MediaShowType.Videos ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
             double height = _type == MediaShowType.Videos ? VideoToShow.ActualHeight : ImageToShow.ActualHeight;
 
-            /* if (!(el.RenderTransform is RotateTransform rotateTransform))
-             {*/
-                RotateTransform rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
-                el.RenderTransform = rotateTransform;
-            //}
+            RotateTransform rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
+            el.RenderTransform = rotateTransform;
+
             _rotation += _rotateAngle;
 
             DoubleAnimation animation = new DoubleAnimation
@@ -755,21 +761,21 @@ namespace TelegramVisualPart.Windows
             if ((_tempMediaIndex - 1) >= 0)
             {
                 _tempMediaIndex--;
-                if (_type == MediaShowType.Videos||
+                if (_type == MediaShowType.Videos ||
                     _type == MediaShowType.Gif) UpdateVideoByTempIndex();
-                else  SetImageByIndex();
+                else SetImageByIndex();
             }
         }
 
         private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             int maxVal = (_type == MediaShowType.Videos ||
-                _type == MediaShowType.Gif)? _mediaMessages.Count : _allImagesInfo.Count;
+                _type == MediaShowType.Gif) ? _mediaMessages.Count : _allImagesInfo.Count;
 
             if ((_tempMediaIndex + 1) < maxVal)
             {
                 _tempMediaIndex++;
-                if (_type == MediaShowType.Videos || 
+                if (_type == MediaShowType.Videos ||
                     _type == MediaShowType.Gif) UpdateVideoByTempIndex();
                 else SetImageByIndex();
             }

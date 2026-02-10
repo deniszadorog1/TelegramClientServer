@@ -340,7 +340,7 @@ namespace TelegramLib.Services
             {
                 foreach (var chat in model.Chat)
                 {
-                    if (userId == chat.UserId)
+                    if (userId == chat.UserId && !chat.IsSavedMessagesChat)
                     {
                         int? correctAutoDelId = null;
                         if (!(chat.AutoDeleteId is null)) correctAutoDelId = (int)chat.AutoDeleteId;
@@ -509,7 +509,7 @@ namespace TelegramLib.Services
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
-            toAdd.SenderUserId = (int)mes.SenderId;
+            toAdd.SenderUserId = mes.SenderId is null ? -1 : (int)mes.SenderId;
 
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
@@ -2428,7 +2428,7 @@ namespace TelegramLib.Services
             using (var model = new TelegramModel())
             {
                 //Get message
-                SavedMessages toEdit = model.SavedMessages.FirstOrDefault(x => x.Id == mes.Id);
+                Messages toEdit = model.Messages.FirstOrDefault(x => x.Id == mes.Id);
 
                 if (toEdit is null) return;
 
@@ -2611,6 +2611,7 @@ namespace TelegramLib.Services
                 {
                     if (mes.ChatId == chatId)
                     {
+                        ChangeForRepPointers(mes.Id, model);
                         toRemove.Add(mes);
                     }
                 }
@@ -2670,9 +2671,20 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
+                foreach(var mes in model.Messages)
+                {
+                    if (mes.ChatId == chatId)
+                    {
+                        ChangeForRepPointers(mes.Id, model);
+                    }
+                }
+
                 model.Messages
                     .RemoveRange(model.Messages
                         .Where(x => x.ChatId == chatId));
+
+                
+
 
                 model.SaveChanges();
             }
@@ -3903,7 +3915,7 @@ namespace TelegramLib.Services
                 }
                 else
                 {
-                    SavedMessages mes = model.SavedMessages.FirstOrDefault(x => x.Id == messageId);
+                    Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
                     if (mes is null) return;
                     mes.IsPinned = isPin;
                 }
@@ -3932,8 +3944,6 @@ namespace TelegramLib.Services
                     {
                        Messages pairToRemove =  GetPairOfMessageById(mesIds[i], model);
                         if (!(pairToRemove is null)) RemoveMessageById(pairToRemove.Id, model);
-
-                        Console.WriteLine(pairToRemove.Id);
                     }
                     RemoveMessageById(mesIds[i], model);
                 }
@@ -3968,6 +3978,11 @@ namespace TelegramLib.Services
             if (mes is null) return;
             model.Messages.Remove(mes);
 
+            ChangeForRepPointers(id, model);
+        }
+
+        private static void ChangeForRepPointers(int id, TelegramModel model)
+        {
             model.Messages
                 .Where(x => x.ReplyId == id)
                 .ToList()
@@ -3977,8 +3992,17 @@ namespace TelegramLib.Services
                 .Where(x => x.ForwardedFrom == id)
                 .ToList()
                 .ForEach(x => x.ForwardedFrom = -1);
-        }
 
+/*            model.SavedMessages
+                .Where(x => x.ReplyId == id)
+                .ToList()
+                .ForEach(x => x.ReplyId = -1);
+
+            model.SavedMessages
+                .Where(x => x.ForwardedFrom == id)
+                .ToList()
+                .ForEach(x => x.ForwardedFrom = -1);*/
+        }
 
         public static void AddStatMessage(int chatId,
             TelegramLib.MainClasses.Messages.StaticMessage statMes)
@@ -4070,12 +4094,12 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                List<SavedMessages> toRemove =
-                    model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId).ToList();
+                List<Messages> toRemove =
+                    model.Messages.Where(x => x.ChatId == chatId && x.IsSavedMessage).ToList();
 
                 foreach (var mes in toRemove)
                 {
-                    model.SavedMessages.Remove(mes);
+                    model.Messages.Remove(mes);
                 }
 
                 model.SaveChanges();
@@ -4086,8 +4110,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                SavedMessages mes = model.SavedMessages
-                    .Where(x => x.SavedMessagesChatId == chatId &&
+                Messages mes = model.Messages
+                    .Where(x => x.ChatId == chatId &&
                                 x.StatDate.HasValue)
                     .OrderByDescending(x => x.StatDate)
                     .FirstOrDefault();
@@ -4100,7 +4124,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                SavedMessages mes = model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId)
+                Messages mes = model.Messages.Where(x => x.ChatId == chatId)
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefault();
 
@@ -4113,7 +4137,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                return model.SavedMessages.Any(x => x.SavedMessagesChatId == chatId &&
+                return model.Messages.Any(x => x.ChatId == chatId &&
                 x.StatDate.HasValue &&
                 x.StatDate.Value.Day == date.Day);
             }
@@ -4123,14 +4147,15 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                model.SavedMessagesChat toAdd = new model.SavedMessagesChat();
+                model.Chat toAdd = new model.Chat();
 
                 toAdd.UserId = userId;
                 toAdd.BgImageId = 1;
                 toAdd.IsRead = false;
                 toAdd.IsPinned = false;
+                toAdd.IsSavedMessagesChat = true;
 
-                model.SavedMessagesChat.Add(toAdd);
+                model.Chat.Add(toAdd);
                 model.SaveChanges();
             }
         }
@@ -4140,9 +4165,10 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                SavedMessages toAddObj = new SavedMessages();
+                Messages toAddObj = new Messages();
 
-                toAddObj.SavedMessagesChatId = savedMessageChatId;
+                toAddObj.ChatId = savedMessageChatId;
+                toAddObj.IsSavedMessage = true;
 
                 if (toAdd is TextMessage text)
                 {
@@ -4159,7 +4185,7 @@ namespace TelegramLib.Services
                 }
 
                 toAddObj.SentDate = toAdd.SentTime;
-                toAddObj.ReadDate = DateTime.Now;
+                //toAddObj. = DateTime.Now;
 
                 if (toAdd is TelegramLib.MainClasses.Messages.ShareContactMessage share)
                 {
@@ -4177,7 +4203,7 @@ namespace TelegramLib.Services
                     toAddObj.StatDate = statMes.Date;
                 }
 
-                model.SavedMessages.Add(toAddObj);
+                model.Messages.Add(toAddObj);
                 model.SaveChanges();
             }
         }
@@ -4188,8 +4214,8 @@ namespace TelegramLib.Services
             res.PinnedMessages = GetPinnedSavedChatMessages(res.Id);
             using (var model = new TelegramModel())
             {
-                Models.SavedMessagesChat chat =
-                    model.SavedMessagesChat.FirstOrDefault(x => x.UserId == userId);
+                Models.Chat chat =
+                    model.Chat.FirstOrDefault(x => x.UserId == userId && x.IsSavedMessagesChat);
                 if (chat is null) return null;
 
                 List<mainClass.Messages.Message> messages = GetSavedMessages(chat.Id);
@@ -4200,7 +4226,6 @@ namespace TelegramLib.Services
 
                 res.IsPinned = chat.IsPinned is null ? false : (bool)chat.IsPinned;
                 res.IsMarked = chat.IsRead is null ? false : (bool)chat.IsRead;
-
             }
 
             return res;
@@ -4211,8 +4236,8 @@ namespace TelegramLib.Services
             List<TelegramLib.MainClasses.Messages.Message> res = new List<mainClass.Messages.Message>();
             using (var model = new TelegramModel())
             {
-                List<SavedMessages> messes = model.SavedMessages.Where(
-                    x => x.SavedMessagesChatId == savedChatId && (bool)x.IsPinned).ToList();
+                List<Messages> messes = model.Messages.Where(
+                    x => x.ChatId == savedChatId && (bool)x.IsPinned && x.IsSavedMessage).ToList();
 
                 foreach (var mes in messes)
                 {
@@ -4226,8 +4251,16 @@ namespace TelegramLib.Services
         {
             using(var model = new TelegramModel())
             {
-                model.SavedMessages.RemoveRange(
-                    model.SavedMessages.Where(x => x.SavedMessagesChatId == chatId));
+                foreach(var mes in model.Messages)
+                {
+                    if(mes.ChatId == chatId && mes.IsSavedMessage)
+                    {
+                        ChangeForRepPointers(mes.Id, model);
+                    }
+                }
+
+                model.Messages.RemoveRange(
+                    model.Messages.Where(x => x.ChatId == chatId && x.IsSavedMessage));
 
                 model.SaveChanges();
             }
@@ -4239,7 +4272,7 @@ namespace TelegramLib.Services
 
             using (var model = new TelegramModel())
             {
-                List<SavedMessages> messages = model.SavedMessages.Where(x => x.SavedMessagesChatId == savedMessageChatId).ToList();
+                List<Messages> messages = model.Messages.Where(x => x.ChatId == savedMessageChatId && x.IsSavedMessage).ToList();
 
                 for (int i = 0; i < messages.Count; i++)
                 {
@@ -4254,21 +4287,22 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-
                 foreach(var messageId in messageIds){
 
-                    SavedMessages toRemove = model.SavedMessages.
-                        FirstOrDefault(x => x.SavedMessagesChatId == savedChatId && x.Id == messageId);
+                    Messages toRemove = model.Messages.
+                        FirstOrDefault(x => x.ChatId == savedChatId && x.Id == messageId);
+
+                    ChangeForRepPointers(messageId, model);
 
                     if (toRemove is null) continue;
-                    model.SavedMessages.Remove(toRemove);
+                    model.Messages.Remove(toRemove);
                 }
-                
+               
                 model.SaveChanges();
             }
         }
 
-        private static TelegramLib.MainClasses.Messages.Message GetSavedMessageByMessages(SavedMessages mes)
+        private static TelegramLib.MainClasses.Messages.Message GetSavedMessageByMessages(Messages mes)
         {
             TelegramLib.MainClasses.Messages.Message toAdd;
             if (!(mes.MessageRefference is null) ||

@@ -233,8 +233,6 @@
     <Compile Include="Models\PrivacySetting.cs" />
     <Compile Include="Models\PrivacySettingType.cs" />
     <Compile Include="Models\ProfilePhotoSettings.cs" />
-    <Compile Include="Models\SavedMessages.cs" />
-    <Compile Include="Models\SavedMessagesChat.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\ShareContactMessage.cs" />
     <Compile Include="Models\Sounds.cs" />

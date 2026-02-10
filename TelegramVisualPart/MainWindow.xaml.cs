@@ -918,6 +918,12 @@ namespace TelegramVisualPart
 
         public void UpdateFolders()
         {
+            if(_isOnlyChat && _bossWindow is not null)
+            {
+                _bossWindow.UpdateFolders();
+                return;
+            }
+
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateFolders();
         }

@@ -49,6 +49,8 @@ namespace TelegramLib.Models
 
         public bool IsInSchedule { get; set; }
 
+        public bool IsSavedMessage { get; set; }
+
         public virtual AutoDeleteType AutoDeleteType { get; set; }
 
         public virtual Chat Chat { get; set; }

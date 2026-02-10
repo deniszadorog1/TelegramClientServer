@@ -286,6 +286,11 @@ namespace TelegramLib.MainClasses
             return mes is null ? false : Messages.Any(x => x.Id == mes.Id);
         }
 
+        public bool IsMessageContains(int mesId)
+        {
+            return Messages.Any(x => x.Id == mesId);
+        }
+
         public bool IsInSchedMessages(Messages.Message mes)
         {
             return ScheduleMessages.Any(x => x.Id == mes.Id);

@@ -78,7 +78,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
                 
 
-                //ReplyImage.Source = firstGifImgSource;
+                // ReplyImage.Source = firstGifImgSource;
             }
         }
 

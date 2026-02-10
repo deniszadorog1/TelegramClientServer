@@ -26,7 +26,6 @@ namespace TelegramLib.Models
             Languages = new HashSet<Languages>();
             Messages = new HashSet<Messages>();
             MonitorNotifs = new HashSet<MonitorNotifs>();
-            SavedMessagesChat = new HashSet<SavedMessagesChat>();
             Settings = new HashSet<Settings>();
             UserColor = new HashSet<UserColor>();
             UserImage = new HashSet<UserImage>();
@@ -103,9 +102,6 @@ namespace TelegramLib.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MonitorNotifs> MonitorNotifs { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SavedMessagesChat> SavedMessagesChat { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Settings> Settings { get; set; }
