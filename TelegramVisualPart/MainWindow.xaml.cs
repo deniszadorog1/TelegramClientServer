@@ -892,6 +892,19 @@ namespace TelegramVisualPart
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UserChat.ClearChat();
             chatPage.ClearChosenUserTalkValue();
+
+            if(_isOnlyChat && _bossWindow is not null)
+            {
+                _bossWindow.ClearChatFromOnlyChatWindow(_onlyChatUserChat);
+            }
+        }
+
+        public void ClearChatFromOnlyChatWindow(TelegramLib.MainClasses.UserChat chat)
+        {
+            if(MainFrame.Content is MainChatPage chatPage)
+            {
+                chatPage.ClearTalkMessageFromOnlyChat(chat);
+            }
         }
 
         public void ClearVisChat()

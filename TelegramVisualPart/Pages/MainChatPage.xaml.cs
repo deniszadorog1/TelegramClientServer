@@ -1564,9 +1564,18 @@ namespace TelegramVisualPart.Pages
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
             if (chat is null) chat = _chosenChat;
 
-            if (chat is null) return;
+            if (chat is null || chat.Chatter is null) return;
 
+            UserTalkMessage message =
+                GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
+            if (message is null) return;
 
+            message.SetDefaultValues();
+        }
+
+        public void ClearTalkMessageFromOnlyChat(TelegramLib.MainClasses.UserChat chat)
+        {
+            if (chat is null || chat.Chatter is null) return;
             UserTalkMessage message =
                 GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
             if (message is null) return;

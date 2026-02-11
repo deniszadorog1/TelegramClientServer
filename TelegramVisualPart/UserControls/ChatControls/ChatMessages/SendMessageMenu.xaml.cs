@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramVisualPart.Pages.ChatActions;
 
@@ -48,6 +49,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         {
             if (_chatControl is null || _chatControl.GetChat() is null) return;
 
+            if (string.IsNullOrWhiteSpace(_chatControl.CommentTextBox.Text))
+            {
+                ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Misha, Stop doing weird tests!!!");
+                return;
+            }
+
             //form message
             (TelegramLib.MainClasses.Messages.Message mes,
              TelegramLib.MainClasses.Messages.Message toReply) = 
@@ -57,6 +64,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
                
                (mes is TelegramLib.MainClasses.Messages.TextMessage textMes && 
                 textMes.Text == string.Empty)) return;
+
+            if(mes is TelegramLib.MainClasses.Messages.TextMessage text)
+            {
+                text.Text = text.Text.Trim(' ');
+                text.Text = text.Text.Replace("\n", "");
+                text.Text = text.Text.Trim('\r');
+                text.Text = text.Text.Replace("\r\n", ""); 
+            }
 
             SetScheduleMessage message = 
                 new SetScheduleMessage(_chatControl.GetChat(), mes, _system);

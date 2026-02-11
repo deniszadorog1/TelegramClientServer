@@ -148,7 +148,8 @@
                 </Grid>
             </StackPanel>
 
-            <Grid Grid.Column="0" Grid.ColumnSpan="4" Name="SchedueleMessagesGrid"
+            <Grid Grid.Column="0" Grid.ColumnSpan="4" 
+                  Name="SchedueleMessagesGrid"
                   Visibility="Hidden"
                   Background="{StaticResource DarkThemeOne}"
                   MouseEnter="SavedMessagesGrid_MouseEnter"
@@ -172,7 +173,7 @@
                                          Width="35"
                                          Height="35"
                                          Foreground="Gray"/>
-                </Grid>
+                </Grid>   
 
                 <TextBlock Name="ScheduleMessagesBlock" 
                            Grid.Column="1"

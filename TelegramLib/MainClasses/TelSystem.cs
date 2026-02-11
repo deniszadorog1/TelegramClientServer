@@ -708,10 +708,12 @@ namespace TelegramLib.MainClasses
         {
             for(int i = 0; i < Chats.Count; i++)
             {
-          
                 Chats[i].RemovePinnedMessageById(mes.Id);
                 Chats[i].RemoveRepliedMessages(mes);
             }
+
+            SavedMesesChat.RemovePinnedMessageById(mes.Id);
+            SavedMesesChat.RemoveRepliedMessages(mes);
         }
 
         public bool IsDeletedScheduleMessageById(int id)

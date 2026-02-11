@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -112,6 +113,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         public async Task ScheduleMessageAdding()
         {
             _message.IsSchedule = true;
+
             await ApiService.AddMessage(_message, _chat);
 
             TelegramLib.MainClasses.Messages.Message addSched

@@ -2925,6 +2925,11 @@ namespace TelegramLib.Services
             {
                 List<Messages> toRemove = model.Messages.Where(x => x.ChatId == chatId).ToList();
 
+                foreach(var mes in toRemove)
+                {
+                    ChangeForRepPointers(mes.Id, model);
+                }
+
                 model.Messages.RemoveRange(toRemove);
                 model.SaveChanges();
             }
