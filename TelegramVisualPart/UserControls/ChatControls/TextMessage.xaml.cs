@@ -235,9 +235,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ReplyControl.PreviewMouseDown += (sender, e) =>
             {
                 if (_toReply is null) return;
+                
                 //Set scrolling to message
-                ((MainWindow)Window.GetWindow(this))
-                .ShowChosenMessageByMessageId(_toReply.Id);
+                var window = Window.GetWindow(this) as MainWindow;
+
+                if (window != null && _toReply != null)
+                {
+                    window.ShowChosenMessageByMessageId(_toReply.Id);
+                }
             };
         }
 
@@ -527,5 +532,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         }
 
+        private void SelectableText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void Message_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

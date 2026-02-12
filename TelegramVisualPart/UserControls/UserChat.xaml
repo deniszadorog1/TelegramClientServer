@@ -445,16 +445,19 @@
             <TextBox Grid.Column="1" x:Name="CommentTextBox" 
                      Background="{StaticResource DarkThemeOne}" 
                      Foreground="White" 
-                     VerticalContentAlignment="Center" 
+                     VerticalContentAlignment="Bottom"
+                     Margin="0 0 0 10"
                      CaretBrush="White"
-                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource DarkThemeMouseEnterBut}" 
+                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent" 
                      BorderThickness="0" 
                      FontSize="16" 
                      ContextMenuService.IsEnabled="False" 
                      TextChanged="CommentTextBox_TextChanged"
                      PreviewMouseRightButtonDown="CommentTextBox_PreviewMouseRightButtonDown"
                      LostFocus="CommentTextBox_LostFocus"
-                     MaxLength="100"/>
+                     materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                     MaxLength="100"
+                     ContextMenu="{x:Null}"/>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal"
                         Margin="0 0 10 0"

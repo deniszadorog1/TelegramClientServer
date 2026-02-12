@@ -10,6 +10,7 @@ namespace TelegramLib.Models
         public TelegramModel()
              : base("data source=(localdb)\\MSSQLLocalDB;initial catalog=TelegramClientServer;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework")
         {
+
         }
 
         public virtual DbSet<AdvancedSettings> AdvancedSettings { get; set; }

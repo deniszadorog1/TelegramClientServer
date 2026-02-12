@@ -22,6 +22,7 @@ namespace TelegramLib.MainClasses.Messages
         public int? ForwardedFromId { get; set; }
 
         public bool IsSchedule { get; set; }
+        public string RepliedQuote { get; set; }
 
         public event Action SentTimeIsNow;
 
@@ -79,13 +80,14 @@ namespace TelegramLib.MainClasses.Messages
             return true;
         }
 
-        DispatcherTimer _timer;
+        private DispatcherTimer _timer;
 
         public void StartTimer()
         {
             _timer = null;
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick -= Timer_Tick;
             _timer.Tick += Timer_Tick;
             _timer.Start();
         }
@@ -94,20 +96,30 @@ namespace TelegramLib.MainClasses.Messages
         {
             if (_timer is null) return;
             _timer.Stop();
+            _timer = null;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
-        {
+        {      
+            if (_timer is null) return;
             if(SentTime <= DateTime.Now)
-            {
-                SentTimeIsNow?.Invoke();
+            {     
                 _timer.Stop();
+                if (sender is DispatcherTimer timer) timer.Stop();
+
+                _timer = null;
+                SentTimeIsNow?.Invoke();
             }
         }
 
         public void ClearForwarded()
         {
             ForwardedFromId = null;
+        }
+
+        public void SetQuoteText(string text)
+        {
+            RepliedQuote = text;
         }
 
     }

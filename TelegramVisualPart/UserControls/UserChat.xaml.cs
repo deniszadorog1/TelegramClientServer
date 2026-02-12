@@ -1203,6 +1203,8 @@ namespace TelegramVisualPart.UserControls
                 message.RepliedMessageId == -1 ? new Message() :
                 _system.GetRepliedMessageById((int)message.RepliedMessageId);
 
+            if (reply is not null) reply.SetQuoteText(message.RepliedQuote);
+
             ChatControls.TextMessage newMes =
                 new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(message.Text),
@@ -1892,7 +1894,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
 
             //if (_isHiddenSender) _isHiddenSender = false;
-
+            
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
@@ -1900,6 +1902,11 @@ namespace TelegramVisualPart.UserControls
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, sendText, false, replyId, false, null, false);
 
+            if (toReply is not null)
+            {
+                toAdd.SetQuoteText(ReplyedMessageText.Text); 
+                toReply.SetQuoteText(ReplyedMessageText.Text);
+            }
             return (toAdd, toReply);
         }
 
@@ -2930,6 +2937,8 @@ namespace TelegramVisualPart.UserControls
             {
                 TelegramLib.MainClasses.Messages.TextMessage text =
                      await ChangeReplyMessageId(toAddText);
+                text.RepliedQuote = toAddText.RepliedQuote;
+
                 if (text is null) return;
                 await ApiService.AddMessage(text, chat);
                 return;
@@ -4553,6 +4562,21 @@ namespace TelegramVisualPart.UserControls
             }
             _repliedMessage = messages.First();
 
+            string quoteText = string.Empty;
+            if (control is ChatControls.TextMessage textControl &&
+                textControl.SelectableText.SelectedText != string.Empty)
+            {
+                _repliedMessage.SetQuoteText(textControl.SelectableText.SelectedText);
+
+                quoteText = textControl.SelectableText.SelectedText;
+                textControl.SelectableText.Select(0, 0);
+            }
+            else if(!_isSavedMessageChat)
+            {
+                _repliedMessage.RepliedQuote = string.Empty;
+            }
+            
+
             //Set sender name
             ReplySenderText.Text = $"Reply to {_system.GetMessageSender(_repliedMessage.SenderUserId).Login}";
 
@@ -4560,7 +4584,9 @@ namespace TelegramVisualPart.UserControls
             ReplyedMessageText.Text =
                 messages.Count > 1 ? $"{messages.Count} messages" :
                 _repliedMessage is MediaAction ? "Reply media" :
-                _repliedMessage is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
+
+                _repliedMessage is TelegramLib.MainClasses.Messages.TextMessage text ? _repliedMessage.RepliedQuote == string.Empty ? text.Text : _repliedMessage.RepliedQuote :
+                
                 _repliedMessage is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
                 "Some shit";
         }
@@ -4910,7 +4936,7 @@ namespace TelegramVisualPart.UserControls
                 _chat.Chatter is null ? _system.LoggedUser :
                 _chat.Chatter;
     
-            isBoth = SchedueleMessagesGrid.Visibility == Visibility.Visible ? 
+            isBoth = !isBoth ? false : SchedueleMessagesGrid.Visibility == Visibility.Visible ? 
                 false : true;
 
             IsMakeActionOnBothSides page =

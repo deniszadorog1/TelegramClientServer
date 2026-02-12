@@ -511,6 +511,7 @@ namespace TelegramLib.Services
             toAdd.Id = mes.Id;
             toAdd.SenderUserId = mes.SenderId is null ? -1 : (int)mes.SenderId;
 
+            toAdd.RepliedQuote = mes.MessageQuote;
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
 
@@ -2323,6 +2324,8 @@ namespace TelegramLib.Services
                 toAdd.IsRead = false;
                 toAdd.IsInSchedule = message.IsSchedule;
 
+                toAdd.MessageQuote = message.RepliedQuote;
+
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
                 if (message is MediaAction video && video.IsVideo()) toAdd.VideoId = GetVideoIdByName(video.MediaName);
@@ -2464,6 +2467,8 @@ namespace TelegramLib.Services
                 res.SentTime = chosen.SentDate is null ? DateTime.Now : (DateTime)chosen.SentDate;
                 res.IsPinned = chosen.IsPinned is null ? false : (bool)chosen.IsPinned;
                 res.IsSchedule = /*chosen.IsInSchedule is null ? false :*/ chosen.IsInSchedule;
+
+                res.RepliedQuote = chosen.MessageQuote;
 
                 if (res is TextMessage text)
                 {
@@ -3751,6 +3756,7 @@ namespace TelegramLib.Services
                 toAdd.SentDate = DateTime.Now;
                 toAdd.ShareContactId = GetLastShareMessageId();
                 toAdd.IsRead = false;
+                toAdd.MessageQuote = string.Empty;
 
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
@@ -4020,6 +4026,7 @@ namespace TelegramLib.Services
                 toAdd.SentDate = statMes.SentTime;
                 toAdd.MessageRefference = statMes.MessageReferenceId;
                 toAdd.StatDate = statMes.Date;
+                toAdd.MessageQuote = string.Empty;
 
                 if (statMes.DelType is null) toAdd.ChangedAutoDelId = null;
                 else toAdd.ChangedAutoDelId = ((int)((Enums.Chat.AutoDeleteType)statMes.DelType) + 1);
@@ -4174,6 +4181,7 @@ namespace TelegramLib.Services
 
                 toAddObj.ChatId = savedMessageChatId;
                 toAddObj.IsSavedMessage = true;
+                toAddObj.MessageQuote = toAdd.RepliedQuote;
 
                 if (toAdd is TextMessage text)
                 {
@@ -4319,7 +4327,7 @@ namespace TelegramLib.Services
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
-            
+            toAdd.RepliedQuote = mes.MessageQuote;
             toAdd.SenderUserId = 1;
 
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;

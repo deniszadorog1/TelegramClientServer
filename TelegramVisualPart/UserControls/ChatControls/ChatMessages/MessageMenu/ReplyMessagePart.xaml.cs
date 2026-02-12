@@ -51,7 +51,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
             ReplyedMessage.Text =
                 mes is MediaAction ? "Media" :
-                mes is TelegramLib.MainClasses.Messages.TextMessage secText ? secText.Text :
+                mes is TelegramLib.MainClasses.Messages.TextMessage secText ? secText.RepliedQuote == string.Empty ? secText.Text : secText.RepliedQuote :
                 "Message";
         }
 

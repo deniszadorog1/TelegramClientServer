@@ -68,7 +68,12 @@
                                TextWrapping="Wrap"
                                Style="{x:Null}" 
                                VerticalAlignment="Top"   
-                               Background="Transparent">
+                               Background="Transparent"
+                               
+                               ContextMenu="{x:Null}"
+                               ContextMenuService.IsEnabled="False"
+                               ContextMenuOpening="SelectableText_ContextMenuOpening"
+                               PreviewMouseRightButtonDown="Message_PreviewMouseRightButtonDown">
                             <Run Name="FirstPart"/>
                             <Hyperlink Name="LinkPart" 
                                  Foreground="{StaticResource TempActiveTextColor}"
@@ -92,7 +97,12 @@
                            AcceptsReturn="True"
                            VerticalScrollBarVisibility="Disabled"
                            HorizontalScrollBarVisibility="Disabled"
-                           CaretBrush="Transparent"/>
+                           CaretBrush="Transparent"
+                        
+                           ContextMenu="{x:Null}"
+                           ContextMenuService.IsEnabled="False"
+                           ContextMenuOpening="SelectableText_ContextMenuOpening"
+                           PreviewMouseRightButtonDown="Message_PreviewMouseRightButtonDown"/>
                 </Grid>
 
                 <Grid Grid.Row="3" Margin="0 0 7 5"
