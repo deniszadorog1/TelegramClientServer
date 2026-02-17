@@ -80,7 +80,7 @@ namespace TelegramClientServer.Controllers
             public UserContactcs Contact { get; set; }
             public int LoggedUserId { get; set; }
         }
-        
+
         [HttpPost("EditSchedMessage")]
         public void EditSchedMessage([FromBody] EditSchedMessageDTO editDTO)
         {
@@ -116,7 +116,7 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpGet("GetContactMask")]
-        public TelegramLib.MainClasses.UserParams.UserImage GetContactMask(int loggedUserId, 
+        public TelegramLib.MainClasses.UserParams.UserImage GetContactMask(int loggedUserId,
             int contactUserId)
         {
             return DbService.GetContactMaskByContactUserId(loggedUserId, contactUserId);
@@ -181,6 +181,13 @@ namespace TelegramClientServer.Controllers
             return DbService.UpdateFolder(folder.Folder, folder.UserId) ? Ok() : NotFound();
         }
 
+
+        [HttpPost("UpdateUserLogin")]
+        public void UpdateUserLogin([FromBody] UpdateUserLoginDTO dto)
+        {
+            DbService.UpdateUserLogin(dto.UserId, dto.NewLogin);
+        }
+        public record UpdateUserLoginDTO(int UserId, string NewLogin);
 
         [HttpDelete("ClearSaveChatById")]
         public void ClearSaveChatById([FromBody] ClearSaveMessagesChatDTO dto)
@@ -293,6 +300,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetMessageById(id);
         }
 
+        [HttpGet("IsLoginExist")]
+        public bool IsLoginExist(string login)
+        {
+            return DbService.IsLoginExist(login);
+        }
+
         [HttpGet("GetLastFolderIdByUserId")]
         public int GetLastFolderIdByUserId(int userId)
         {
@@ -305,6 +318,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetPhoneNumberFromUser();
         }
 
+        [HttpPost("UpdateUserNameSurname")]
+        public void UpdateUserNameSurname([FromBody] UpdateUserNameSurnameDTO dto)
+        {
+            DbService.UpdateUserNameSurname(dto.UserId, dto.Name, dto.Surname);
+        }
+        public record UpdateUserNameSurnameDTO(int UserId, string Name, string Surname);
 
         //Update chat
         [HttpPost("UpdateChat")]
@@ -507,7 +526,7 @@ namespace TelegramClientServer.Controllers
         [HttpPost("IsContactContactsInContacts")]
         public bool IsContactContactsInContacts([FromBody] ContactCheckRequest isContains)
         {
-            return DbService.IsContactContactinsInContacts(isContains.Contact, isContains.ToCheck);
+            return DbService.IsContactContactsInContacts(isContains.Contact, isContains.ToCheck);
         }
         public class ContactCheckRequest
         {

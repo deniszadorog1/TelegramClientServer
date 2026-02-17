@@ -332,7 +332,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public async Task SetUserPhoneNumber(TelegramLib.MainClasses.User contactUser)
         {
-            if (_chat.GetChatter().Id != contactUser.Id) return;
+            if (_chat is null || _chat.GetChatter() is null || _chat.GetChatter().Id != contactUser.Id) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(contactUser, Enums.PrivacySettingType.PhoneNumber);
 

@@ -174,11 +174,17 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         private Page? GetPageToOpen(string name)
         {
-            if (_chat is null || _chat.Chatter is null) return null;
-            UserContactcs contact = _system.GetContactByUserId(_chat.Chatter.Id);
+            if (_chat is null ||
+                (_chat.Chatter is null && name != ShareContact.Name.ToString()))
+            {
+                return null;
+            }
+
+            UserContactcs contact = _chat.Chatter is null ? null :  _system.GetContactByUserId(_chat.Chatter.Id);
             if (contact is null && 
                 name != AddContact.Name.ToString() && 
-                name != AutoDelete.Name.ToString()) return null;
+                name != AutoDelete.Name.ToString() &&
+                name != ShareContact.Name.ToString()) return null;
 
             return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
                    name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :

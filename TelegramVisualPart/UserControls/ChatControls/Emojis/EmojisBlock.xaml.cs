@@ -209,5 +209,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             BackIcon.Kind = isBack ? _backKind : PackIconKind.Magnify;
         }
 
+        private void ScrollViewer_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

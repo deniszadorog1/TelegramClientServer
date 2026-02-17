@@ -83,7 +83,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             BgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
 
-            UserLogin.Text = _user.Login;
+            UserLogin.Text = _contact.Login;
 
             FirstNameBox.Text = _contact.Name;
             LastNameBox.Text = _contact.Surname;

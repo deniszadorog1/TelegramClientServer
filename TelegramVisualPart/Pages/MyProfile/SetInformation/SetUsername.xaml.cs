@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramLib.Services;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 {
@@ -51,12 +54,26 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-            if (UserNameBox.Text.Count() <= _minAmountOfSymbols) return;
+            if (UserNameBox.Text.Count() <= _minAmountOfSymbols || 
+                string.IsNullOrWhiteSpace(UserNameBox.Text))
+            {
+                MessageBox.Show("Stop acting weird!!");
+                UserNameBox.Text = _user.Login;
+                return;
+            };
 
             //Set checks if this is exist
+            if(await ApiService.IsLoginExist(UserNameBox.Text))
+            {
+                MessageBox.Show("This is already exist");
+                UserNameBox.Text = _user.Login;
+                return;
+            };
+
             //+ Set Changings in DB
+            await ApiService.UpdateUserLogin(_user.Id, UserNameBox.Text);
 
             _user.Login = UserNameBox.Text;
 
@@ -74,6 +91,14 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
         {
             Regex regex = new Regex("^[a-zA-Z0-9_]$");
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void UserNameBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Space || e.Key == Key.Tab)
+            {
+                e.Handled = true; 
+            }
         }
     }
 }

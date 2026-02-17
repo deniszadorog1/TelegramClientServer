@@ -129,7 +129,8 @@
                             Foreground="{StaticResource TempActiveTextColor}"
                             Click="CancelBut_Click"/>
 
-                    <Button Style="{StaticResource MaterialDesignRaisedButton}" Name="ScheduleBut"
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}" 
+                            Name="ScheduleBut"
                             Content="Schedule" Background="Transparent" 
                             BorderThickness="0"
                             MouseEnter="But_MouseEnter"  

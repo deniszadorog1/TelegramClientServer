@@ -770,6 +770,7 @@ namespace TelegramLib.MainClasses
             }
             SavedMesesChat.RemoveRepliedMessages(mes);
 
+
             UserChat chat = GetChatByMessage(mes);
 
             if (chat is null) return;

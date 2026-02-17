@@ -85,11 +85,14 @@
             </Grid>
             
             <ScrollViewer Grid.Row="1"
-              Grid.RowSpan="2"
-              VerticalScrollBarVisibility="Auto"
-              HorizontalScrollBarVisibility="Disabled"
-              CanContentScroll="False"
-              PanningMode="VerticalOnly">
+                          Grid.RowSpan="2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          CanContentScroll="False"
+                          PanningMode="VerticalOnly"
+                          
+                          PreviewMouseRightButtonDown="ScrollViewer_PreviewMouseRightButtonDown"
+                          ContextMenu="{x:Null}">
 
                 <StackPanel>
                     <WrapPanel Name="EmojisPanel"

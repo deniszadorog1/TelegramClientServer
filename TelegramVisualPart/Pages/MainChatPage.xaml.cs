@@ -2983,6 +2983,12 @@ namespace TelegramVisualPart.Pages
             UserChat.CommentTextBox.Text = string.Empty;
         }
 
+        public void ClearReplyRow()
+        {
+            if (UserChat.Visibility != Visibility.Visible) return;
+            UserChat.ReplyMessageRow.Height = new GridLength(0);
+        }
+
         public void UpdateScheduleGridVisibility()
         {
             if (UserChat.Visibility != Visibility.Visible) return;

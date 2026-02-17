@@ -210,6 +210,20 @@ namespace TelegramLib.Services
             return true;
         }
 
+        public static void UpdateUserNameSurname(int userId, string name, string surname)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.User toUpdate = model.User.FirstOrDefault(x => x.Id == userId);
+                if (toUpdate is null) return;
+
+                toUpdate.Name = name;
+                toUpdate.Surname = surname;
+
+                model.SaveChanges();
+            }
+        }
+
         private static void AddExtraContacts(int folderId, List<mainClass.User> contacts, bool isExclude)
         {
             using (var model = new TelegramModel())
@@ -3342,13 +3356,36 @@ namespace TelegramLib.Services
             }
         }
 
-        public static bool IsContactContactinsInContacts(UserContactcs contact,
-            UserContactcs toCheckCotact)
+        public static bool IsContactContactsInContacts(UserContactcs contact,
+            UserContactcs toCheckContact)
         {
+            if (contact is null || toCheckContact is null) return false;
+
             using (var model = new TelegramModel())
             {
                 return model.Contacts.Where(x => x.UserId == contact.ContactUserId &&
-                x.FriendId == toCheckCotact.ContactUserId).Any();
+                x.FriendId == toCheckContact.ContactUserId).Any();
+            }
+        }
+
+        public static bool IsLoginExist(string login)
+        {
+            using(var model = new TelegramModel())
+            {
+                return model.User.Any(x => x.Login == login);
+            }
+        }
+
+        public static void UpdateUserLogin(int id, string newLogin)
+        {
+            using(var model = new TelegramModel())
+            {
+                model.User toUpdate = model.User.FirstOrDefault(x => x.Id == id);
+                if (toUpdate is null) return;
+
+                toUpdate.Login = newLogin;
+
+                model.SaveChanges();
             }
         }
 

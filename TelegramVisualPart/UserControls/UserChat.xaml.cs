@@ -723,6 +723,7 @@ namespace TelegramVisualPart.UserControls
             if (_isHiddenSender) _isHiddenSender = false;
 
             if (chat is null) return;
+            SetAddMediaButVisibility();
             SendMesMenu.SetUserChatControl(this, _system);
 
             HideSelectionRow();
@@ -835,6 +836,8 @@ namespace TelegramVisualPart.UserControls
                 ScheduleMessageGrid.Visibility == Visibility.Visible ?
                 10 : 0;
                 ScheduleMessageGrid.Margin = new Thickness(0, 0, newLeftMargin, 0);
+
+                SetAddMediaButVisibility();
             });
         }
 
@@ -879,6 +882,7 @@ namespace TelegramVisualPart.UserControls
             _chat.UpdateScheduleMessages(_system.LoggedUser);
 
             SchedueleMessagesGrid.Visibility = Visibility.Visible;
+            SetAddMediaButVisibility();
             SetChatMessages(isOnlySchedule: true);
         }
 
@@ -2937,9 +2941,10 @@ namespace TelegramVisualPart.UserControls
             {
                 TelegramLib.MainClasses.Messages.TextMessage text =
                      await ChangeReplyMessageId(toAddText);
-                text.RepliedQuote = toAddText.RepliedQuote;
 
                 if (text is null) return;
+
+                text.RepliedQuote = toAddText.RepliedQuote;
                 await ApiService.AddMessage(text, chat);
                 return;
             }
@@ -3065,9 +3070,15 @@ namespace TelegramVisualPart.UserControls
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
+                    if(SchedueleMessagesGrid.Visibility == Visibility.Visible) 
+                    {
+                        string name = openFileDialog.SafeFileName;
+                        SetMediaSchedMessage(filePath, false, filePath);
+                        return;
+                    }
+
                     AddMediaPage(filePath, CommentTextBox.Text);
                     CommentTextBox.Text = string.Empty;
                     /*                    AddImageMessage(filePath, false, _system.LoggedUser.GetFirstImageName().Name);
@@ -3087,6 +3098,15 @@ namespace TelegramVisualPart.UserControls
                     UpdateContactInfoBlock();
                 }
             }
+        }
+
+        public void SetMediaSchedMessage(string path, bool isSticker, string name)
+        {
+            Message media = new MediaAction(_chat.Messages.Count, 
+                _system.LoggedUser.Id, DateTime.Now, name, isSticker, false, false, null);
+
+            SetScheduleMessage sched = new SetScheduleMessage(_chat, media, _system, false);
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(sched);
         }
 
         public void AddMediaPage(string fullMediaPath, string text)
@@ -3448,7 +3468,10 @@ namespace TelegramVisualPart.UserControls
                 .Where(x => x.Content == message).First();
             int index = ChatBox.Items.IndexOf(item);
 
-            List<MediaAction> imgMedias = _chat.GetMediaMessages().Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
+            List<MediaAction> imgMedias = 
+                _chat.GetMediaMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible).
+                Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
+
             int imgIndex = imgMedias.FindIndex(x => x == _chat.Messages[index] as MediaAction);
 
 
@@ -3752,7 +3775,9 @@ namespace TelegramVisualPart.UserControls
         {
             UpdateColors();
             EmojisBoard.Visibility = Visibility.Visible;
+            
             EmojisBoard.EmojisPanel.SetEmojisList();
+            EmojisBoard.SetIsBlockMedias(SchedueleMessagesGrid.Visibility == Visibility.Visible);
 
             Emojis.Foreground = new SolidColorBrush(Colors.LightGray);
             Cursor = Cursors.Hand;
@@ -3787,7 +3812,8 @@ namespace TelegramVisualPart.UserControls
 
         public async ValueTask<bool> IsRepliedFromOtherChat(int mesId)
         {
-            if (_chat.IsMessageContains(mesId)) return false;
+            if (SchedueleMessagesGrid.Visibility == Visibility.Hidden && 
+                 _chat.IsMessageContains(mesId)) return false;
 
             //Set chat
             TelegramLib.MainClasses.UserChat chat =
@@ -3796,7 +3822,6 @@ namespace TelegramVisualPart.UserControls
             if (chat is null) return false;
 
             HideChatControlFeatures();
-
             await SetUserChat(chat);
 
             await Dispatcher.BeginInvoke(new Action(() =>
@@ -4155,7 +4180,7 @@ namespace TelegramVisualPart.UserControls
         {
             if (!string.IsNullOrEmpty(capture))
             {
-                AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name, capture);
+                await AddTextMessageControl(_system.LoggedUser.GetFirstImageName().Name, capture);
             }
 
             foreach (var img in imgs)
@@ -4539,7 +4564,7 @@ namespace TelegramVisualPart.UserControls
 
         private TelegramLib.MainClasses.Messages.Message _repliedMessage;
         public void SetReplyRowParams(UserControl control,
-                List<Message> messages)
+                List<Message> messages, bool isResend = false)
         {
             if (messages is null) return;
             ReplyMessageRow.Height = new GridLength(50);
@@ -4560,6 +4585,7 @@ namespace TelegramVisualPart.UserControls
                 ReplyedImageColumn.Width = new GridLength(0);
                 ReplyedImage.Source = null;
             }
+
             _repliedMessage = messages.First();
 
             string quoteText = string.Empty;
@@ -4571,14 +4597,15 @@ namespace TelegramVisualPart.UserControls
                 quoteText = textControl.SelectableText.SelectedText;
                 textControl.SelectableText.Select(0, 0);
             }
-            else if(!_isSavedMessageChat)
+            else if(/*!_isSavedMessageChat ||*/ !isResend)
             {
                 _repliedMessage.RepliedQuote = string.Empty;
             }
-            
+
+            string actionName = _toForwardMessages is null ? "Reply to" : "Forwarded from";
 
             //Set sender name
-            ReplySenderText.Text = $"Reply to {_system.GetMessageSender(_repliedMessage.SenderUserId).Login}";
+            ReplySenderText.Text = $"{actionName} {_system.GetMessageSender(_repliedMessage.SenderUserId).Login}";
 
             //Set text
             ReplyedMessageText.Text =
@@ -4593,7 +4620,7 @@ namespace TelegramVisualPart.UserControls
 
         public ListBoxItem? GetListBoxItemFromMenu()
         {
-            MesMenu menu = MessageMenu.Children.OfType<MesMenu>().FirstOrDefault();
+            MesMenu? menu = MessageMenu.Children.OfType<MesMenu>().FirstOrDefault();
             return menu is null ? null : menu.GetChosenListBoxItem();
         }
 
@@ -4697,6 +4724,8 @@ namespace TelegramVisualPart.UserControls
             //Hide selection stuff
             HideSelectionRow();
             SetMessageSelectCircleVis(false);
+
+            SchedueleMessagesGrid.Visibility = Visibility.Hidden;
         }
 
         public async Task SetForwardedMessage(
@@ -5412,6 +5441,8 @@ namespace TelegramVisualPart.UserControls
             //Get back tpo chat 
             SchedueleMessagesGrid.Visibility = Visibility.Hidden;
 
+            SetAddMediaButVisibility();
+
             //Update Icon Visibility
             SetScheduleMessageIconVisibility();
 
@@ -5522,7 +5553,7 @@ namespace TelegramVisualPart.UserControls
                     }
                     else if (_repliedMessage is not null)
                     {
-                        await SentRepliedMessage(_repliedMessage, senderId);
+                        await SentRepliedMessage(_repliedMessage, senderId, true);
                         //To check this thing
                         // await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
                     }
@@ -5541,7 +5572,7 @@ namespace TelegramVisualPart.UserControls
                 $"from {_system.GetUserById(_toForwardMessages.First().SenderUserId).Login}";
         }
 
-        public async Task SentRepliedMessage(Message mes, int? userIdToSend)
+        public async Task SentRepliedMessage(Message mes, int? userIdToSend, bool isResend = false)
         {
             HideChatControlFeatures();
 
@@ -5562,7 +5593,7 @@ namespace TelegramVisualPart.UserControls
             _chat = chat;
 
             //Set reply row in chat    
-            SetReplyRowParams(messageControl, new List<Message>() { mes });
+            SetReplyRowParams(messageControl, new List<Message>() { mes }, isResend);
 
             await Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -5601,6 +5632,13 @@ namespace TelegramVisualPart.UserControls
         {
             UserImage.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+        }
+
+        public void SetAddMediaButVisibility()
+        {
+/*            AddMediaButGrid.Visibility = 
+                SchedueleMessagesGrid.Visibility == Visibility.Visible ?
+                Visibility.Hidden : Visibility.Visible;*/
         }
 
     }

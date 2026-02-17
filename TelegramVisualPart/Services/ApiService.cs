@@ -159,6 +159,26 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task UpdateUserLogin(int userId, string newLogin)
+        {
+            var data = new { UserId = userId, NewLogin = newLogin };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Social/UpdateUserLogin", content);
+        }
+
+        public static async Task UpdateUserNameSurname(int userId, string name, string surname)
+        {
+            var data = new { UserId = userId, Name = name, Surname = surname };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Social/UpdateUserNameSurname", content);
+        }
+
         public static async Task<bool> UpdateSchedMessageDate(int mesId, DateTime newDate)
         {
             var data = new { MessageId = mesId, NewDate = newDate };
@@ -885,6 +905,16 @@ namespace TelegramVisualPart.Services
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
+        }
+
+        public static async Task<bool> IsLoginExist(string login)
+        {
+            var response = await _client.GetAsync($"api/Social/IsLoginExist?login={login}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return true;
+
+            return JsonConvert.DeserializeObject<bool>(jsonResponse);
         }
 
         public static async Task<bool?> IsChatterIdIsContact(int userId, int friendUserId)

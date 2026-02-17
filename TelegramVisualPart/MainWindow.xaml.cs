@@ -1579,6 +1579,12 @@ namespace TelegramVisualPart
             page.ClearCommentChatBox();
         }
 
+        public void ClearReplyRow()
+        {
+            if (MainFrame.Content is not MainChatPage page) return;
+            page.ClearReplyRow();
+        }
+
         public void UpdateScheduleIconVisibility()
         {
             if (MainFrame.Content is not MainChatPage page) return;

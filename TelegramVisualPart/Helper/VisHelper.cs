@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using TelegramVisualPart.Services;
 using TelegramLib.MainClasses;
+using System.Text.RegularExpressions;
 
 namespace TelegramVisualPart.Helper
 {
@@ -114,6 +115,16 @@ namespace TelegramVisualPart.Helper
             await SignalRService.UpdateContactBioVis(system.LoggedUser);
 
             await SignalRService.UpdateOnlineStatus(system.LoggedUser);
+        }
+
+        public static string CleanText(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            input = input.Trim();
+            input = Regex.Replace(input, @"\s{2,}", " ");
+            return input;
         }
     }
 }

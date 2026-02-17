@@ -45,7 +45,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             {
                 //is contact has temp contact in contacts (WTF)
                 bool isContains = await ApiService.IsContactContainsInContacts(_system.Contacts[i], _contact);
-                if (isContains || _contact.Id == _system.Contacts[i].Id) continue;
+                if (isContains || _contact is null || _contact.Id == _system.Contacts[i].Id) continue;
 
                 _checkedContact = await ApiService.GetUserById(_system.Contacts[i].ContactUserId);
                 UserContact toAdd = new UserContact(_checkedContact);

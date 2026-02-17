@@ -104,6 +104,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         public void ClosePageAfterAddingSchedMessage()
         {
             ((MainWindow)Window.GetWindow(this)).ClearCommentChatBox();
+            ((MainWindow)Window.GetWindow(this)).ClearReplyRow();
             ((MainWindow)Window.GetWindow(this)).UpdateScheduleIconVisibility();
 
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);

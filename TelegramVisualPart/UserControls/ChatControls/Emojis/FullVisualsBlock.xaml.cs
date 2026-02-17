@@ -65,6 +65,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             ((MainWindow)Window.GetWindow(this)).SendStickerInChat(img, _system.LoggedUser.GetFirstImageName().Name);
         }
 
+        private bool _isBlockMedias;
+        public void SetIsBlockMedias(bool isBlock)
+        {
+            _isBlockMedias = isBlock;
+        }
+
         public void SetGifs()
         {
             //Set gifs here
@@ -102,6 +108,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isBlockMedias) return;
+
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
 
@@ -150,12 +158,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         private void GIFsTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isBlockMedias) return;
             HideAllPanels();
             GifScroll.Visibility = Visibility.Visible;
         }
 
         private void StickersTab_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isBlockMedias) return; 
             HideAllPanels();
             StickerScroll.Visibility = Visibility.Visible;
         }

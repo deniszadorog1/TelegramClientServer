@@ -1747,6 +1747,32 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "IsLoginExist",
+    "RelativePath": "api/Social/IsLoginExist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "IsUserIsBlocked",
     "RelativePath": "api/Social/IsUserIsBlocked",
     "HttpMethod": "GET",
@@ -2049,6 +2075,50 @@
       {
         "Name": "dto",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BUpdateSchedMessageDateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "UpdateUserLogin",
+    "RelativePath": "api/Social/UpdateUserLogin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BUpdateUserLoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.SocialController",
+    "Method": "UpdateUserNameSurname",
+    "RelativePath": "api/Social/UpdateUserNameSurname",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.SocialController\u002BUpdateUserNameSurnameDTO",
         "IsRequired": true
       }
     ],

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics.Contracts;
@@ -59,8 +60,13 @@ namespace TelegramLib.MainClasses
             //Set Test Params Here
         }
 
-        public List<MediaAction> GetMediaMessages()
+        public List<MediaAction> GetMediaMessages(bool isSched = false)
         {
+            if (isSched)
+            {
+                return ScheduleMessages.OfType<MediaAction>().Where(x => !x.IsSticker).ToList();
+            }
+
             //not Images(can be gifs or video) 
             return Messages.OfType<MediaAction>()
                 .Where(x => !x.IsSticker).ToList();
@@ -367,11 +373,18 @@ namespace TelegramLib.MainClasses
         public void RemoveRepliedMessages(
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            for (int i = 0; i < Messages.Count; i++)
+            ClearRepliedInMessage(Messages, mes.Id);
+            ClearRepliedInMessage(ScheduleMessages, mes.Id);
+        }
+
+        public void ClearRepliedInMessage(List<Messages.Message> messages, int mesId)
+        {
+            if (messages is null) return;
+            for (int i = 0; i < messages.Count; i++)
             {
-                if (Messages[i] is TextMessage text &&
+                if (messages[i] is TextMessage text &&
                     !(text.RepliedMessageId is null) &&
-                    text.RepliedMessageId == mes.Id)
+                    text.RepliedMessageId == mesId)
                 {
                     text.RepliedMessageId = -1;
                 }

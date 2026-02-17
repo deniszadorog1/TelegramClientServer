@@ -63,7 +63,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetText(_text);
             SetWidth(_system.Settings.GetChatSettings().FontName);
             await SetForwardedFromRow();
-
         }
 
         public TextMessage(TelSystem system,

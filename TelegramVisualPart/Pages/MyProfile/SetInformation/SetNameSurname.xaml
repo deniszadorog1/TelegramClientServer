@@ -28,20 +28,24 @@
                        Name="PageName"/>
 
             <TextBox Grid.Row="1" Name="FirstNameBox" Margin="25 15 15 15"
-                  Foreground="{StaticResource UsualTextColor}" FontSize="20"
-                  materialDesign:HintAssist.Hint="First name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
-                  materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
-                  CaretBrush="{StaticResource UsualTextColor}"
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                     Foreground="{StaticResource UsualTextColor}" FontSize="20"
+                     materialDesign:HintAssist.Hint="First name"
+                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                     materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"
+                     materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                     CaretBrush="{StaticResource UsualTextColor}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     MaxLength="5"/>
 
             <TextBox Grid.Row="2" Name="LastNameBox"
-                  Foreground="{StaticResource UsualTextColor}" Margin="25 15 15 15" FontSize="20"
-                  materialDesign:HintAssist.Hint="Last name"
-                  materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
-                  CaretBrush="{StaticResource UsualTextColor}"
-                  materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"                              
-                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                     Foreground="{StaticResource UsualTextColor}" Margin="25 15 15 15" FontSize="20"
+                     materialDesign:HintAssist.Hint="Last name"
+                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource TempActiveTextColor}" 
+                     materialDesign:HintAssist.Foreground="{StaticResource TempActiveTextColor}"                              
+                     materialDesign:TextFieldAssist.CharacterCounterVisibility="Hidden"
+                     CaretBrush="{StaticResource UsualTextColor}"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     MaxLength="5"/>
 
             <StackPanel Grid.Row="3" HorizontalAlignment="Right"  
                     VerticalAlignment="Bottom" Margin="10 10 15 15" Orientation="Horizontal">
