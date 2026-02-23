@@ -23,7 +23,7 @@
             <RowDefinition Height="60" Name="UpperRow"/>
             <RowDefinition Name="PinRow" Height="50"/>
             <RowDefinition/>
-            <RowDefinition Name="ReplyMessageRow"  Height="50"/>
+            <RowDefinition Name="ReplyMessageRow" Height="50"/>
             <RowDefinition Height="50" Name="CommentRow"/>
         </Grid.RowDefinitions>
 
@@ -333,19 +333,33 @@
                     <ColumnDefinition x:Name="SelectColumn" Width="0"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Background="Transparent" 
+                <ListBox Background="Transparent"
                          BorderThickness="0"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
                          Name="ChatBox"
-                         VerticalAlignment="Bottom"
-                     
-                         ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"                  
-
+                         ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"
                          ScrollViewer.CanContentScroll="True"
                          VirtualizingPanel.IsVirtualizing="True"
                          VirtualizingPanel.VirtualizationMode="Recycling"
-                         
-                         ScrollViewer.PanningRatio="0.3" />
+                         ScrollViewer.PanningRatio="0.3">
+
+                    <ListBox.Template>
+                        <ControlTemplate TargetType="ListBox">
+                            <Border Background="{TemplateBinding Background}">
+                                <ScrollViewer x:Name="ScrollViewer"
+                              VerticalScrollBarVisibility="Auto"
+                              CanContentScroll="True">
+
+                                    <Grid>
+                                        <ItemsPresenter VerticalAlignment="Bottom"/>
+                                    </Grid>
+
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </ListBox.Template>
+
+                </ListBox>
 
             </Grid>
         </Grid>

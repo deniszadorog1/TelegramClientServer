@@ -41,5 +41,11 @@ namespace TelegramLib.MainClasses.Messages
             SenderUserId = pinnerId;
             SentTime = DateTime.Now;
         }
+
+        public override string GetLastMessage()
+        {
+            if (!(DelType is null)) return "Set deleted type";
+            return "Pinned message";
+        }
     }
 }

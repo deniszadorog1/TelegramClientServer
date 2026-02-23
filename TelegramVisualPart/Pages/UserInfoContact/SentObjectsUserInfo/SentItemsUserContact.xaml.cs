@@ -186,7 +186,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                 null, (MainWindow)Window.GetWindow(this),
                 Enums.MediaShow.MediaShowType.Gif, _system);
 
-            mediaWindow.SetGif(imgIndex, _gifPaths, gifs);
+            mediaWindow.SetGif(imgIndex, _gifPaths, gifs, false);
             mediaWindow.Show();
 
             //SetVideo Paths
@@ -340,7 +340,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             for(int i = 0; i < _medias.Count; i++)
             {
-                if(!FilesAction.IsFileIsImage(_medias[i].MediaName))
+                if(_medias[i].IsSticker || !FilesAction.IsFileIsImage(_medias[i].MediaName))
                 {
                     toRemove.Add(_medias[i]);
                 }
@@ -358,7 +358,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             int.TryParse(img.Tag.ToString(), out int chosenId);
 
-
             Message chosen = _system.GetMessageById(chosenId);
 
             MediaWindow mediaWindow = new MediaWindow(
@@ -369,13 +368,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             //Is exist
             mediaWindow.Show();
-
-
-/*            VisualActionPage page = new VisualActionPage(img, _imgs);
-
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
-
-            page.SetUserChat(_system, GetImageMessages(), _imgs.IndexOf(img), _chat);*/
         }
 
         public List<MediaAction> GetImageMessages()
@@ -399,12 +391,13 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             List<Image> res = new List<Image>();
             for (int i = 0; i < _chat.Messages.Count; i++)
             {
-                if (_chat.Messages[i] is MediaAction media && 
+                if (_chat.Messages[i] is MediaAction media &&
                     FilesAction.IsFileIsImage(media.MediaName))
                 {
-                    if (!FilesAction.IsUserChatMediaIsExist(media.MediaName)) continue;
-
-                    res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));
+                    if (media.IsImage() && !media.IsSticker)//!FilesAction.IsUserChatMediaIsExist(media.MediaName)) continue;
+                    {
+                        res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));
+                    }
                 }
             }
             return res;
@@ -416,10 +409,12 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             for (int i = 0; i < _chat.Messages.Count; i++)
             {
-                if (_chat.Messages[i] is not MediaAction media ||
-                    !FilesAction.IsGifNameIsExist(media.MediaName)) continue;
-
-                res.Add(media);
+                if (_chat.Messages[i] is MediaAction media &&
+                    media.IsGif()/*
+                    !FilesAction.IsGifNameIsExist(media.MediaName)*/)
+                {
+                    res.Add(media);
+                }
             }
             return res;
         }

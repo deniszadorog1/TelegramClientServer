@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,6 +44,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private TelegramLib.MainClasses.Messages.TextMessage _message;
 
         public bool _isOnlyView = false;
+
+        public event Action PushForwarded;
 
         public TextMessage(TelSystem system,  
             TelegramLib.MainClasses.Messages.TextMessage text)
@@ -95,10 +98,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetMessageReplyControl();
 
-            SetForwardedFromRow();
+            SetForwardedRow();
             SetIsEditedVis(isEdited);
 
             SetEvents();
+        }
+
+        public TelegramLib.MainClasses.Messages.TextMessage GetMessage()
+        {
+            return _message;
+        }
+
+        public async void SetForwardedRow() 
+        {
+            await SetForwardedFromRow();
         }
 
         public void SetIsEditedVis(bool isVis)
@@ -201,6 +214,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 await ApiService.GetUserById((int)_forwardedFrom);
             if (from is null) return;
 
+            if (_message is not null && _system.SavedMesesChat.Messages.Any(x => x.Id == _message.Id)) return;
 
             //Set forwarded from user id as tag
             LoginForwarded.Tag = from.Id;
@@ -539,6 +553,32 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void Message_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void GoToForwardedGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void GoToForwardedGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void GoToForwardedGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            PushForwarded.Invoke();
+        }
+
+        public void SetPushForwardedVis()
+        {
+            const int goToMesGridWidth = 30;
+
+            GoToMessage.Width = new GridLength(goToMesGridWidth);
+            Width += goToMesGridWidth;
+
+            Height -= _visForwardRowHeight;
+            ForwardedRow.Height = new GridLength(0);
         }
     }
 }

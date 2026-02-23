@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlTypes;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -72,6 +73,11 @@ namespace TelegramLib.MainClasses
                 .Where(x => !x.IsSticker).ToList();
         }
 
+
+        public List<MediaAction> GetSchedVideos()
+        {
+            return ScheduleMessages.OfType<MediaAction>().Where(x => x.IsVideo()).ToList();
+        }
         /*        public int GetMessageId(Message message)
                 {
                     return Messages.Where(x => x.Id == message.Id).First().Id;
@@ -426,8 +432,10 @@ namespace TelegramLib.MainClasses
             return -1;
         }
 
-        public List<MediaAction> GetGifMessages()
+        public List<MediaAction> GetGifMessages(bool isSched = false)
         {
+            if (isSched) return ScheduleMessages.OfType<MediaAction>().Where(x => x.IsGif()).ToList();
+
             List<MediaAction> gifs = new List<MediaAction>();
             for (int i = 0; i < Messages.Count; i++)
             {
@@ -689,6 +697,15 @@ namespace TelegramLib.MainClasses
             {
                 ScheduleMessages.Remove(mes);
             }      
+        }
+
+        public int? GetMessageIdByText(string text)
+        {
+            TextMessage res =
+                Messages.OfType<TextMessage>().FirstOrDefault(x => x.Text == text);
+
+            if (res is null) return null;
+            else return res.Id;
         }
     }
 }

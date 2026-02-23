@@ -15,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums.Menus;
@@ -56,9 +57,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         public ForRepMenu(RepForType actType,
             List<TelegramLib.MainClasses.Messages.Message> messages,
-            TelSystem system)
+            TelSystem system, bool isForwardVis)
         {
-            _actType = actType;   
+            _actType = actType;
             _messages = messages;
             _system = system;
 
@@ -68,11 +69,16 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             SetVisibleMessages();
 
             RemoveRestButtons();
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                SetVisForForwardedFromParam(isForwardVis);
+            }), DispatcherPriority.Loaded);
         }
 
         public void RemoveRestButtons()
         {
-            if(_actType == RepForType.ForwardAction)
+            if (_actType == RepForType.ForwardAction)
             {
                 ActionButtonsStack.Children.Remove(ShowMessage);
                 return;
@@ -87,7 +93,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             {
                 SetForwardedMessages();
             }
-            else if(_actType == RepForType.ReplyAction)
+            else if (_actType == RepForType.ReplyAction)
             {
                 AddMessageInStack(_replied);
             }
@@ -101,7 +107,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             }
         }
 
-        public void AddMessageInStack(Message message)
+        public async void AddMessageInStack(Message message)
         {
             if (message is TelegramLib.MainClasses.Messages.TextMessage text)
             {
@@ -151,11 +157,23 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             if (MessagesStack.Children.Count == 0) return;
             bool isShow = GetForwardVisParam(MessagesStack.Children[0] as UserControl);
 
-            for(int i = 0; i < MessagesStack.Children.Count; i++)
+            SetVisForForwardedFromParam(isShow);
+        }
+
+        public void SetVisForForwardedFromParam(bool isShow)
+        {
+            for (int i = 0; i < MessagesStack.Children.Count; i++)
             {
                 if (MessagesStack.Children[i] is UserControls.ChatControls.TextMessage text) text.SetForwardedRowHeight(isShow);
                 if (MessagesStack.Children[i] is MediaMessage media) media.SetForwardedRowHeight(isShow);
             }
+
+            ChangeForwardText(isShow);
+        }
+
+        public void ChangeForwardText(bool isShow)
+        {
+            HideSenderNameBut.ButText.Text = isShow ? "Hide sender" : "Show sender";
         }
 
         public bool IsForwardedRowIsHidden()

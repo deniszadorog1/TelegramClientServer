@@ -516,7 +516,7 @@ namespace TelegramVisualPart
 
         public async void LogOut()
         {
-            CloseAllMediaWindow();
+            CloseAllMediaWindows();
             if (MainFrame.Content is EnterPage)
             {
                 this.Close();
@@ -540,7 +540,7 @@ namespace TelegramVisualPart
             await SignalRService.DisconnectAsync();
         }
 
-        public void CloseAllMediaWindow()
+        public void CloseAllMediaWindows()
         {
             for (int i = 0; i < _mediaWidows.Count; i++)
             {
@@ -893,7 +893,7 @@ namespace TelegramVisualPart
             chatPage.UserChat.ClearChat();
             chatPage.ClearChosenUserTalkValue();
 
-            if(_isOnlyChat && _bossWindow is not null)
+            if (_isOnlyChat && _bossWindow is not null)
             {
                 _bossWindow.ClearChatFromOnlyChatWindow(_onlyChatUserChat);
             }
@@ -901,7 +901,7 @@ namespace TelegramVisualPart
 
         public void ClearChatFromOnlyChatWindow(TelegramLib.MainClasses.UserChat chat)
         {
-            if(MainFrame.Content is MainChatPage chatPage)
+            if (MainFrame.Content is MainChatPage chatPage)
             {
                 chatPage.ClearTalkMessageFromOnlyChat(chat);
             }
@@ -931,7 +931,7 @@ namespace TelegramVisualPart
 
         public void UpdateFolders()
         {
-            if(_isOnlyChat && _bossWindow is not null)
+            if (_isOnlyChat && _bossWindow is not null)
             {
                 _bossWindow.UpdateFolders();
                 return;
@@ -996,6 +996,13 @@ namespace TelegramVisualPart
                 window.Close();
             }
             _chatWindows.Clear();
+        }
+
+        public void ClearAllChatWindowsFromBosWindow()
+        {
+            if (_bossWindow is null) return;
+
+            _bossWindow.ClearAllChatWindows();
         }
 
         public void DeleteMediaWindow(MediaWindow mediaWindow)
@@ -1219,15 +1226,15 @@ namespace TelegramVisualPart
             BlockFrame.Content = page;
         }
 
-        public async Task DeleteChat(TelegramLib.MainClasses.User chatter, 
+        public async Task DeleteChat(TelegramLib.MainClasses.User chatter,
             bool isDeleteForOtherUser)
         {
-            if(_isOnlyChat && _bossWindow is not null)
+            if (_isOnlyChat && _bossWindow is not null)
             {
                 _bossWindow.DeleteChat(chatter, isDeleteForOtherUser);
                 RemoveChatMainWindow();
             }
-        
+
             if (MainFrame.Content is not MainChatPage page) return;
 
             //Close only chat window
@@ -1249,7 +1256,7 @@ namespace TelegramVisualPart
 
             _chatWindows.Remove(window);
             window.Close();
-            
+
         }
 
         public void AddAddMediaPage(string firstMediaPath, string text)
@@ -1599,11 +1606,32 @@ namespace TelegramVisualPart
 
         public void ClearSchedulePage()
         {
-            if (SecondaryFrame.Content is SetScheduleMessage || 
+            if (SecondaryFrame.Content is SetScheduleMessage ||
                 SecondaryFrame.Content is IsMakeActionOnBothSides)
             {
                 ClearSecFrame();
             }
         }
+
+        public void HideEnnesChat(int? senderChatId)
+        {
+            if (_bossWindow is null) return;
+            _bossWindow.HideChatIfOpened(senderChatId);
+        }
+
+        public void HideChatIfOpened(int? senderChatId)
+        {
+            if (MainFrame.Content is not MainChatPage chatPage) return;
+            TelegramLib.MainClasses.UserChat chat = chatPage.GetUserChat();
+
+            if ((chat is SavedMessagesChat && (senderChatId is null ||  _system.LoggedUser.Id == senderChatId)) || 
+                (chat.Chatter is not null && chat.Chatter.Id == senderChatId))
+            {
+                //clear chat in boos window
+                chatPage.HideChat();
+            }
+        }
+
+
     }
 }

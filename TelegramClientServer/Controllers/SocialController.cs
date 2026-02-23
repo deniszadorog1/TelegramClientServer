@@ -122,6 +122,13 @@ namespace TelegramClientServer.Controllers
             return DbService.GetContactMaskByContactUserId(loggedUserId, contactUserId);
         }
 
+        [HttpGet("GetLastSavedMessage")]
+        public TelegramLib.MainClasses.Messages.Message GetLastSavedMessage(int chatId)
+        {
+            return DbService.GetLastSavedMessage(chatId);
+        }
+
+
         [HttpGet("GetMessagesByChatId")]
         public List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
         {

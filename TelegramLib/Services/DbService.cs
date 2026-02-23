@@ -4209,6 +4209,8 @@ namespace TelegramLib.Services
             }
         }
 
+        
+
         public static void AddSavedMessage(int savedMessageChatId,
             TelegramLib.MainClasses.Messages.Message toAdd)
         {
@@ -4276,9 +4278,21 @@ namespace TelegramLib.Services
 
                 res.IsPinned = chat.IsPinned is null ? false : (bool)chat.IsPinned;
                 res.IsMarked = chat.IsRead is null ? false : (bool)chat.IsRead;
-            }
 
+                res.ScheduleMessages = GetSchedMessagesForSavedMesChat(userId);
+            }
             return res;
+        }
+
+        private static List<TelegramLib.MainClasses.Messages.Message> GetSchedMessagesForSavedMesChat(int userId)
+        {
+            using(var model = new TelegramModel())
+            {
+                Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.IsSavedMessagesChat);
+                if (chat is null) return null;
+
+                return GetMessagesByChatId(chat.Id, true);
+            }
         }
 
         private static List<mainClass.Messages.Message> GetPinnedSavedChatMessages(int savedChatId)
@@ -4331,6 +4345,19 @@ namespace TelegramLib.Services
             }
 
             return res;
+        }
+
+        public static TelegramLib.MainClasses.Messages.Message GetLastSavedMessage(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                var message = model.Messages
+                    .Where(x => x.ChatId == chatId && x.IsSavedMessage)
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefault();
+
+                return GetSavedMessageByMessages(message);
+            }
         }
 
         public static void RemoveSavedMessage(int savedChatId, List<int> messageIds)
@@ -4497,30 +4524,46 @@ namespace TelegramLib.Services
 
                 for(int i = 0; i < toSend.Count; i++)
                 {
+                    bool isInSavedChat = IsChatIsSavedChat((int)toSend[i].ChatId);
                     AddChatUserAndChatterInSet(userIds, (int)toSend[i].ChatId);
-
                     toSend[i].IsInSchedule = false;
 
-                    var id = toSend[i].Id;
-                    var copy = model.Messages
-                        .AsNoTracking()
-                        .First(x => x.Id == id);
+                    if (isInSavedChat) toSend[i].IsSavedMessage = true;
 
-                    copy.IsInSchedule = false;
-                    copy.Id = default;
+                    if (!isInSavedChat)
+                    {
+                        var id = toSend[i].Id;
+                        var copy = model.Messages
+                            .AsNoTracking()
+                            .First(x => x.Id == id);
 
-                    int pairChatId = GetPairChatIdByChatId((int)toSend[i].ChatId);
-                    copy.ChatId = pairChatId;
+                        copy.IsInSchedule = false;
+                        copy.Id = default;
 
-                    chatIds.Add(pairChatId);
+                        int pairChatId = GetPairChatIdByChatId((int)toSend[i].ChatId);
+
+                        if (pairChatId != -1)
+                        {
+                            copy.ChatId = pairChatId;
+
+                            chatIds.Add(pairChatId);
+                            model.Messages.Add(copy);
+                        }
+                    }
                     chatIds.Add((int)toSend[i].ChatId);
-
-                    model.Messages.Add(copy);
                 }
 
                 model.SaveChanges();
             }
             return (userIds, chatIds);
+        }
+
+        private static bool IsChatIsSavedChat(int chatId)
+        {
+            using(var model = new TelegramModel())
+            {
+                return model.Chat.Any(x => x.Id == chatId && x.IsSavedMessagesChat);
+            }
         }
 
         private static void AddChatUserAndChatterInSet(HashSet<int> set, int chatId)
@@ -4530,8 +4573,10 @@ namespace TelegramLib.Services
                 Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
                 if (chat is null) return;
 
+                int chatterId = chat.ChatterId is null ? -1 : (int)chat.ChatterId;
+
                 set.Add((int)chat.UserId);
-                set.Add((int)chat.ChatterId);
+                if(chatterId != -1)set.Add(chatterId);
             }
         }
 
@@ -4542,7 +4587,6 @@ namespace TelegramLib.Services
                 Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
                 
                 if (chat is null) return -1;
-
 
                 Chat pair = model.Chat.FirstOrDefault(
                     x => x.UserId == chat.ChatterId && 

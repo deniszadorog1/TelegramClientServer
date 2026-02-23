@@ -191,7 +191,6 @@
                                                              Kind="LockOpenOutline" />
 
                                 </Grid>
-
                             </Grid>
                         </Border>
 
@@ -265,16 +264,17 @@
                 </Grid>
 
                 <GridSplitter Grid.Column="2"
-                  Width="3" Name="MySplitter"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Background="Transparent"
-                  ShowsPreview="False"
-                  Focusable="False"
-                  ResizeBehavior="PreviousAndNext"
-                  ResizeDirection="Columns"
-                  Cursor="SizeWE"
-                  DragDelta="GridSplitter_DragDelta"/>
+                              Width="3" Name="MySplitter"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Background="Transparent"
+                              ShowsPreview="False"
+                              Focusable="False"
+                              ResizeBehavior="PreviousAndNext"
+                              ResizeDirection="Columns"
+                              Cursor="SizeWE"
+                              DragDelta="GridSplitter_DragDelta"/>
+                
                 <Border Name="ChatBg" Grid.Column="3" 
                         Background="{StaticResource DarkThemeSecond}">
                     <Grid>

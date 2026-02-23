@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="240" d:DesignWidth="150"
              Width="150" Height="240">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical" Name="MenuPanel">
         <local:ActionMenuButton x:Name="GoToMessage"/>
         <local:ActionMenuButton x:Name="ShowInFolder"/>
         <local:ActionMenuButton x:Name="CopyFrame"/>

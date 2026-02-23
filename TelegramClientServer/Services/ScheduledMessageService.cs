@@ -44,10 +44,10 @@ namespace TelegramClientServer.Services
                     }
                 }
             }
-            catch (Exception ex)
+/*            catch (Exception ex)
             {
                 Console.WriteLine("Cant set message box there!!(");
-            }
+            }*/
             finally
             {
                 _isRunning = false;

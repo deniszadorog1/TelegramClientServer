@@ -53,9 +53,7 @@ namespace TelegramClientServer
             app.MapHub<SignalRHubs.MainHub>("/chatHub");
 
             app.Run();
-                
-            
-          
+   
         }
     }
 }

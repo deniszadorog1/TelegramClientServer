@@ -8,7 +8,7 @@
              xmlns:Replyed="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu"
              xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="200"
+             d:DesignHeight="100" d:DesignWidth="250"
              
              Loaded="UserControl_Loaded"
              >
@@ -18,6 +18,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Name="TickColumnDef" Width="0"/>
             <ColumnDefinition Name="GoTOMessageButton" Width="0"/>
+            <ColumnDefinition Name="GoToMessage" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
@@ -46,8 +47,7 @@
                     <TextBlock FontSize="12" TextWrapping="Wrap"
                         Foreground="{StaticResource TempActiveTextColor}">
                         <Run Name="FromRun" Text="Forwarded from"/>
-                        <Run Name="LoginForwarded" Text="Login" Background="Transparent"
-                             
+                        <Run Name="LoginForwarded" Text="Login" Background="Transparent"                             
                              MouseEnter="LoginForwarded_MouseEnter"
                              MouseLeave="LoginForwarded_MouseLeave"
                              PreviewMouseLeftButtonDown="LoginForwarded_PreviewMouseDown"
@@ -176,6 +176,24 @@
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"/>
             </Grid>
+
+        </Grid>
+
+        <Grid Grid.Column="4" Width="30" Height="30"
+              Name="GoToForwardedGrid"
+              MouseEnter="GoToForwardedGrid_MouseEnter"
+              MouseLeave="GoToForwardedGrid_MouseLeave"
+              PreviewMouseLeftButtonDown="GoToForwardedGrid_PreviewMouseLeftButtonDown">
+
+            <Ellipse Height="25" Width="25"
+                     Fill="Black" Opacity="0.2"/>
+
+            <materialDesign:PackIcon Kind="MessageTextOutline"
+                                     Height="15" Width="15"
+                                     Name="Text"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"
+                                     Foreground="White"/>
 
         </Grid>
 

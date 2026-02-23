@@ -779,7 +779,7 @@ namespace TelegramVisualPart.UserControls
         {
             if (_isSavedMessageChat)
             {
-                SetSavedmessagesChatView();
+                SetSavedMessagesChatView();
                 return;
             }
 
@@ -791,7 +791,7 @@ namespace TelegramVisualPart.UserControls
             SavedMessagesGrid.Visibility = Visibility.Hidden;
         }
 
-        public void SetSavedmessagesChatView()
+        public void SetSavedMessagesChatView()
         {
             SavedMessagesGrid.Visibility = Visibility.Visible;
         }
@@ -800,8 +800,8 @@ namespace TelegramVisualPart.UserControls
         {
             if (!_isSavedMessageChat) return;
             //Set the saved messages menu
-            SavedMessagesChatPage page = new SavedMessagesChatPage(_system.SavedMesesChat);
 
+            SavedMessagesChatPage page = new SavedMessagesChatPage(_system.SavedMesesChat);
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
 
@@ -868,6 +868,8 @@ namespace TelegramVisualPart.UserControls
         public void ScheduleMessageGrid_PreviewMouseLeftButtonDown(
             object sender, MouseButtonEventArgs e)
         {
+            if (SchedueleMessagesGrid.Visibility == Visibility.Visible) return;
+
             SetScheduleMessages();
         }
 
@@ -1221,6 +1223,7 @@ namespace TelegramVisualPart.UserControls
 
             newMes.SetTime(message.SentTime);
 
+
             ListBoxItem item = new ListBoxItem()
             {
                 Content = newMes,
@@ -1234,6 +1237,12 @@ namespace TelegramVisualPart.UserControls
             ChatBox.Items.Add(item);
 
             SetTickStatusIfCorrectMes(item, message);
+
+            if (_chat is SavedMessagesChat chat && 
+                message.ForwardedFromId is not null)
+            {
+                newMes.SetPushForwardedVis();
+            }
 
             ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
             SetMessagesPosition(_isGluedToLeft);
@@ -1301,6 +1310,25 @@ namespace TelegramVisualPart.UserControls
             {
                 _isMouseDown = false;
             };
+
+            if(item.Content is ChatControls.TextMessage text)
+            {
+                text.PushForwarded += () =>
+                {
+                    //show needed chat
+                    TelegramLib.MainClasses.Messages.TextMessage mes = 
+                        text.GetMessage();
+                    if (mes is null || mes.ForwardedFromId is null) return;
+
+                    int? mesId = _system.GetMessageIdByText(mes.Text);
+                    if (mesId is null)
+                    {
+                        ((MainWindow)Window.GetWindow(this)).SetTemporaryText("There is no such message");
+                        return;
+                    }
+                    ScrollToMessageByMessageId((int)mesId);
+                };
+            }
 
         }
 
@@ -1898,7 +1926,7 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message toReply = GetMessageToReply();
 
             //if (_isHiddenSender) _isHiddenSender = false;
-            
+
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
             // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
@@ -1908,7 +1936,7 @@ namespace TelegramVisualPart.UserControls
 
             if (toReply is not null)
             {
-                toAdd.SetQuoteText(ReplyedMessageText.Text); 
+                toAdd.SetQuoteText(ReplyedMessageText.Text);
                 toReply.SetQuoteText(ReplyedMessageText.Text);
             }
             return (toAdd, toReply);
@@ -2489,6 +2517,7 @@ namespace TelegramVisualPart.UserControls
         {
             ForwardToPage page = new ForwardToPage(_system, mes);
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
         public void ShowInFolderAction()
@@ -3072,7 +3101,7 @@ namespace TelegramVisualPart.UserControls
 
                 if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
                 {
-                    if(SchedueleMessagesGrid.Visibility == Visibility.Visible) 
+                    if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
                     {
                         string name = openFileDialog.SafeFileName;
                         SetMediaSchedMessage(filePath, false, filePath);
@@ -3087,6 +3116,13 @@ namespace TelegramVisualPart.UserControls
                 else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
                 {
                     //bool isAdd = AddMediaPath(filePath).Result; //??
+
+                    if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
+                    {
+                        SetMediaSchedMessage(filePath, false, filePath);
+                        return;
+                    }
+
                     bool isAdd = Task.Run(async () => await AddMediaPath(filePath)).GetAwaiter().GetResult();
 
                     if (isAdd)
@@ -3102,11 +3138,16 @@ namespace TelegramVisualPart.UserControls
 
         public void SetMediaSchedMessage(string path, bool isSticker, string name)
         {
-            Message media = new MediaAction(_chat.Messages.Count, 
+            Message media = new MediaAction(_chat.Messages.Count,
                 _system.LoggedUser.Id, DateTime.Now, name, isSticker, false, false, null);
 
             SetScheduleMessage sched = new SetScheduleMessage(_chat, media, _system, false);
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(sched);
+        }
+
+        public void SetStickerSchedMessage(TelegramLib.MainClasses.Messages.MediaAction sticker)
+        {
+
         }
 
         public void AddMediaPage(string fullMediaPath, string text)
@@ -3146,6 +3187,10 @@ namespace TelegramVisualPart.UserControls
 
             Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
                 DateTime.Now, fileName, isSticker, false, false, null);
+
+
+        
+            
 
             if (isAdd)
             {
@@ -3188,6 +3233,14 @@ namespace TelegramVisualPart.UserControls
         public void SendGif(string gifPath, string senderImageName,
             bool isAdd = true, MediaAction mes = null)
         {
+            if (SchedueleMessagesGrid.Visibility == Visibility.Visible && 
+                mes is null)
+            {
+                string fileName = Path.GetFileName(gifPath);
+                SetMediaSchedMessage(fileName, false, fileName);
+                return;
+            }
+
             DateTime sentDate = mes is null ? DateTime.Now : mes.SentTime;
             int? forwardedSenderId = mes is null ? null : mes.ForwardedFromId;
 
@@ -3230,16 +3283,10 @@ namespace TelegramVisualPart.UserControls
 
             int.TryParse(message.Tag.ToString(), out int chosenMesId);
 
-            //string path = _gifPaths[imgIndex];
-            //string chosenGifPath = FilesAction.GetFullGifPath(_gifPaths[int.Parse(img.Tag.ToString())]);
-
             List<string> baseGifPaths = GetChatMediaPaths(MediaType.Gif);
 
             baseGifPaths = FilesAction.GetFullGifPaths(baseGifPaths);
-            List<MediaAction> gifs = _chat.GetGifMessages();
-
-            //List<MediaAction> videos = _system.GetAllVideoMessages();
-            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+            List<MediaAction> gifs = _chat.GetGifMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible);
 
             int chosenMesIndex = gifs.FindIndex(x => x.Id == chosenMesId);
 
@@ -3247,7 +3294,8 @@ namespace TelegramVisualPart.UserControls
                 null, (MainWindow)Window.GetWindow(this),
                 Enums.MediaShow.MediaShowType.Gif, _system);
 
-            mediaWindow.SetGif(chosenMesIndex, baseGifPaths, gifs);
+            mediaWindow.SetGif(chosenMesIndex, baseGifPaths, gifs, 
+                SchedueleMessagesGrid.Visibility == Visibility.Visible);
             mediaWindow.Show();
 
             /*
@@ -3296,9 +3344,9 @@ namespace TelegramVisualPart.UserControls
             if (sender is not MediaMessage) return;
             MediaMessage message = sender as MediaMessage;
 
-
             MediaElement videoElement = message.GetVideo();
-            List<MediaAction> videos = _system.GetAllVideoMessages();
+            List<MediaAction> videos = new List<MediaAction>();
+            SetVideosInList(videos);
 
             List<string> allVideoPaths = GetChatMediaPaths(MediaType.Video);
 
@@ -3308,24 +3356,17 @@ namespace TelegramVisualPart.UserControls
                 null, (MainWindow)Window.GetWindow(this),
                 Enums.MediaShow.MediaShowType.Videos, _system);
 
-            mediaWindow.SetVideos(videoElement, allVideoPaths, videos);
+            mediaWindow.SetVideos(videoElement, allVideoPaths, videos, isShed: SchedueleMessagesGrid.Visibility == Visibility.Visible);
             mediaWindow.Show();
+        }
 
-
-
-            /*
-                        VisualActionPage page = new VisualActionPage(message.GetVideo(), GetChatMediaPaths(MediaType.Video));
-
-                        ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
-
-                        VisualActionPageParams(message, MediaType.Video, page);*/
-
-            /*            List<MediaAction> videos =
-                            FilesAction.GetMediaElementsFromListByType(_chat.GetMediaMessages(), MediaType.Video);
-
-                        int chosenVideoIndex = GetChosenVideoIndex(message, videos);
-
-                        page.SetUserChat(_system, videos, chosenVideoIndex);*/
+        public void SetVideosInList(List<MediaAction> videos)
+        {
+            if (SchedueleMessagesGrid.Visibility == Visibility.Visible && _chat is not null)
+            {
+                videos.AddRange(_chat.GetSchedVideos());
+            }
+            else videos.AddRange(_system.GetAllVideoMessages());
         }
 
         public void VisualActionPageParams(MediaMessage mediaMes, MediaType type,
@@ -3425,6 +3466,13 @@ namespace TelegramVisualPart.UserControls
             var message = new MediaMessage(_system, img, true,
                 senderImageName, DateTime.Now);
 
+            if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
+            {
+                SetMediaSchedMessage(fileName, true, fileName);
+                return;
+            }
+
+
             //message.PreviewMouseDown += ChatImage_PreviewMouseDown;
             ListBoxItem item = new ListBoxItem()
             {
@@ -3468,7 +3516,7 @@ namespace TelegramVisualPart.UserControls
                 .Where(x => x.Content == message).First();
             int index = ChatBox.Items.IndexOf(item);
 
-            List<MediaAction> imgMedias = 
+            List<MediaAction> imgMedias =
                 _chat.GetMediaMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible).
                 Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
 
@@ -3775,7 +3823,7 @@ namespace TelegramVisualPart.UserControls
         {
             UpdateColors();
             EmojisBoard.Visibility = Visibility.Visible;
-            
+
             EmojisBoard.EmojisPanel.SetEmojisList();
             EmojisBoard.SetIsBlockMedias(SchedueleMessagesGrid.Visibility == Visibility.Visible);
 
@@ -3812,7 +3860,7 @@ namespace TelegramVisualPart.UserControls
 
         public async ValueTask<bool> IsRepliedFromOtherChat(int mesId)
         {
-            if (SchedueleMessagesGrid.Visibility == Visibility.Hidden && 
+            if (SchedueleMessagesGrid.Visibility == Visibility.Hidden &&
                  _chat.IsMessageContains(mesId)) return false;
 
             //Set chat
@@ -3820,6 +3868,8 @@ namespace TelegramVisualPart.UserControls
                 _system.GetChatByMessageId(mesId);
 
             if (chat is null) return false;
+
+            //((MainWindow)Window.GetWindow(this)).HideEnnesChat(chat.Id);
 
             HideChatControlFeatures();
             await SetUserChat(chat);
@@ -4597,7 +4647,7 @@ namespace TelegramVisualPart.UserControls
                 quoteText = textControl.SelectableText.SelectedText;
                 textControl.SelectableText.Select(0, 0);
             }
-            else if(/*!_isSavedMessageChat ||*/ !isResend)
+            else if (/*!_isSavedMessageChat ||*/ !isResend)
             {
                 _repliedMessage.RepliedQuote = string.Empty;
             }
@@ -4613,7 +4663,7 @@ namespace TelegramVisualPart.UserControls
                 _repliedMessage is MediaAction ? "Reply media" :
 
                 _repliedMessage is TelegramLib.MainClasses.Messages.TextMessage text ? _repliedMessage.RepliedQuote == string.Empty ? text.Text : _repliedMessage.RepliedQuote :
-                
+
                 _repliedMessage is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
                 "Some shit";
         }
@@ -4783,7 +4833,9 @@ namespace TelegramVisualPart.UserControls
             for (int i = 0; i < _toForwardMessages.Count; i++)
             {
                 await ApiService.AddSavedMessage(_system.SavedMesesChat.Id, _toForwardMessages[i]);
-                _system.SavedMesesChat.Messages.Add(_toForwardMessages[i]);
+
+                Message newMes = await ApiService.GetLastSavedMessage(_system.SavedMesesChat.Id);
+                _system.SavedMesesChat.Messages.Add(newMes);
             }
 
             ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Sent to save chat");
@@ -4964,8 +5016,8 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User chatter =
                 _chat.Chatter is null ? _system.LoggedUser :
                 _chat.Chatter;
-    
-            isBoth = !isBoth ? false : SchedueleMessagesGrid.Visibility == Visibility.Visible ? 
+
+            isBoth = !isBoth ? false : SchedueleMessagesGrid.Visibility == Visibility.Visible ?
                 false : true;
 
             IsMakeActionOnBothSides page =
@@ -5452,17 +5504,17 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateVisAfterSchedUpdate()
         {
-            //if pinned
-            if (SavedMessagesGrid.Visibility == Visibility.Visible)
-            {
-                SetChatMessages(isOnlyPinned: true);
-                return;
-            }
-
             //if sched messages
             if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
             {
                 SetChatMessages(isOnlySchedule: true);
+                return;
+            }
+            
+            //if pinned
+            if (SavedMessagesGrid.Visibility == Visibility.Visible)
+            {
+                SetChatMessages(isOnlyPinned: false); //Check
                 return;
             }
 
@@ -5479,7 +5531,7 @@ namespace TelegramVisualPart.UserControls
         private const string _senderHidden = "Hidden";
         private void ReplyBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _isHiddenSender = false;
+            //_isHiddenSender = false;
             SetReplySentFromText();
 
             RepForType type = _toForwardMessages is not null ?
@@ -5500,7 +5552,10 @@ namespace TelegramVisualPart.UserControls
         public ForRepMenu GetNewForRepPage(RepForType type)
         {
             if (_toForwardMessages is not null && _toForwardMessages.Count > 0)
-                return new ForRepMenu(type, _toForwardMessages, _system);
+            {
+                bool isShow = ReplySenderText.Text != _senderHidden;
+                return new ForRepMenu(type, _toForwardMessages, _system, isShow);
+            }
             else if (_repliedMessage is not null)
             {
                 return new ForRepMenu(type, _repliedMessage, _system);
@@ -5550,10 +5605,18 @@ namespace TelegramVisualPart.UserControls
                     _toForwardMessages.Count > 0)
                     {
                         await SetForwardedMessage(_toForwardMessages, senderId);
+                        //((MainWindow)Window.GetWindow(this)).ClearAllChatWindowsFromBosWindow();
+
+                        //Check is this is chatWindow + sender id is opened in main MainWindow
+                        if(senderId is not null) ((MainWindow)Window.GetWindow(this)).HideEnnesChat((int)senderId);
+
                     }
                     else if (_repliedMessage is not null)
                     {
                         await SentRepliedMessage(_repliedMessage, senderId, true);
+                        //((MainWindow)Window.GetWindow(this)).ClearAllChatWindowsFromBosWindow();
+
+                        ((MainWindow)Window.GetWindow(this)).HideEnnesChat(senderId);
                         //To check this thing
                         // await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
                     }
@@ -5636,9 +5699,9 @@ namespace TelegramVisualPart.UserControls
 
         public void SetAddMediaButVisibility()
         {
-/*            AddMediaButGrid.Visibility = 
-                SchedueleMessagesGrid.Visibility == Visibility.Visible ?
-                Visibility.Hidden : Visibility.Visible;*/
+            /*            AddMediaButGrid.Visibility = 
+                            SchedueleMessagesGrid.Visibility == Visibility.Visible ?
+                            Visibility.Hidden : Visibility.Visible;*/
         }
 
     }

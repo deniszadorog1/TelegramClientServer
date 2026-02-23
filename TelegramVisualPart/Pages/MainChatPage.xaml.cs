@@ -133,6 +133,14 @@ namespace TelegramVisualPart.Pages
                 //Update chat(sched + vis)
                 UserChat.UpdateVisAfterSchedUpdate();
             }
+
+
+            Dispatcher.Invoke(() =>
+            {
+                //Close media windows
+                ((MainWindow)Window.GetWindow(this)).CloseAllMediaWindows();
+
+            });
         }
 
         public void OnlineStatusUpdated(TelegramLib.MainClasses.User toUpdate)
@@ -422,7 +430,6 @@ namespace TelegramVisualPart.Pages
             if (sender is not Image img ||
                 img.Tag is not string tag) return;
 
-
             MediaElement videoElement = FilesAction.GetMediaElementByVideoName(tag);
             List<MediaAction> videos = _system.GetAllVideoMessages();
 
@@ -659,33 +666,6 @@ namespace TelegramVisualPart.Pages
         {
             ChatsBox.Items.Clear();
             //_allContactDict - all contacts
-
-            /* for (int i = 0; i < _system.Contacts.Count; i++)
-             {
-                 if (_allContactDict.ContainsKey(_system.Contacts[i].Id))
-                 {
-                     GlobalMessageSearch.Items.Add(_allContactDict[_system.Contacts[i].Id]);
-                 }
-
-                 System.Windows.Controls.ListBoxItem item = new
-                     System.Windows.Controls.ListBoxItem()
-                 {
-                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                     Tag = _system.Chats[i].Id
-                 };
-
-                 item.Content = await GetTalkMessage(i);
-
-                 item.PreviewMouseLeftButtonDown += UserChat_PreviewLeftMouseDown;
-                 item.PreviewMouseRightButtonDown += TalkMessage_PreviewRightMouseDown;
-                 item.MouseEnter += UserChat_MouseEnter;
-                 item.MouseLeave += UserChat_MouseLeave;
-                 //ChatsBox.Items.Add(item);
-                 items.Add(item);
-
-                 _chatsDict.TryAdd(_system.Chats[i].Id, item);
-
-             }*/
 
             foreach (var pair in _chatsDict)
             {
@@ -1704,6 +1684,13 @@ namespace TelegramVisualPart.Pages
             }
         }
 
+        public void HideChat()
+        {
+            ChosoeChatBorder.Visibility = Visibility.Visible;
+            UserChat.Visibility = Visibility.Hidden;
+            ClearChatBgs();
+        }
+
         public void ClearChatBgs(bool isLow = false)
         {
             if (UserChat.Visibility == Visibility.Hidden) ClearAllChatsBgs(isLow: isLow);
@@ -2390,6 +2377,12 @@ namespace TelegramVisualPart.Pages
         }
 
 
+        public TelegramLib.MainClasses.UserChat GetUserChat()
+        {
+            if (UserChat.Visibility == Visibility.Hidden) return null;
+            return UserChat.GetChat();
+        }
+
         public void SetOnlyChatPage(TelegramLib.MainClasses.UserChat chat, TelSystem system)
         {
             _system = system;
@@ -2894,6 +2887,9 @@ namespace TelegramVisualPart.Pages
             SetSizerActionWithUserChatMouseDown();
 
             MainDrawerHost.IsLeftDrawerOpen = false;
+
+            ((MainWindow)Window.GetWindow(this)).CloseAllMediaWindows();
+            ((MainWindow)Window.GetWindow(this)).ClearAllChatWindows();
         }
 
         private void SearchGrid_GotFocus(object sender, RoutedEventArgs e)

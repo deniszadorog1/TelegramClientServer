@@ -401,6 +401,11 @@ namespace TelegramLib.MainClasses
             return Chats.FirstOrDefault(x => x.Id == id);
         }
 
+        public UserChat GetChatWithSavedById(int id)
+        {
+            return SavedMesesChat.Id == id ? SavedMesesChat : GetChatById(id);             
+        }
+
         public UserChat GetChatByMessageId(int mesId)
         {
             for(int i = 0; i < Chats.Count; i++)
@@ -416,10 +421,11 @@ namespace TelegramLib.MainClasses
             return GetMessagesByType(MediaType.Image);
         }
 
-        public List<MediaAction> GetAllVideoMessages()
+        public List<MediaAction> GetAllVideoMessages(bool isSched = false)
         {
             return GetMessagesByType(MediaType.Video);
         }
+
 
         private List<MediaAction> GetMessagesByType(MediaType type)
         {
@@ -635,6 +641,18 @@ namespace TelegramLib.MainClasses
             }
 
             return GetScheduleMessageById((int)id);
+        }
+
+        public int? GetMessageIdByText(string text)
+        {
+            for (int i = 0; i < Chats.Count; i++)
+            {
+                int? id = Chats[i].GetMessageIdByText(text);
+                if (id is null) continue;
+                else return (int)id;
+            }
+
+            return null;
         }
 
         public Message GetRepliedMessageById(int? id)
@@ -950,12 +968,12 @@ namespace TelegramLib.MainClasses
 
         public bool IsChatContainsById(int id)
         {
-            return Chats.Any(x => x.Id == id);
+            return Chats.Any(x => x.Id == id) || SavedMesesChat.Id == id;
         }
 
         public void UpdateChatMessagesByChatId(int chatId, List<Message> newMessages)
         {
-            UserChat chat = GetChatById(chatId);
+            UserChat chat = GetChatWithSavedById(chatId);
             if (chat is null) return;
 
             chat.UpdateChatMessages(newMessages);
@@ -963,7 +981,7 @@ namespace TelegramLib.MainClasses
 
         public void RemoveOldSchedMessages(int chatId)
         {
-            UserChat chat = GetChatById(chatId);
+            UserChat chat = GetChatWithSavedById(chatId);
             if (chat is null) return;
 
             chat.RemoveOldSchedMessages();

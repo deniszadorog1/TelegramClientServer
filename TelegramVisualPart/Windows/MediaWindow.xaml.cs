@@ -42,6 +42,8 @@ namespace TelegramVisualPart.Windows
 
         public event EventHandler ToRemoveImage;
 
+        private bool _isSchedule = false;
+
         //Base
         public MediaWindow(TelegramLib.MainClasses.User user,
             MainWindow godWindow,
@@ -77,11 +79,12 @@ namespace TelegramVisualPart.Windows
         private MediaElement _media;
 
         public void SetVideos(MediaElement media, List<string> vidPaths,
-            List<MediaAction> videos)
+            List<MediaAction> videos, bool isShed = false)
         {
             _media = media;
             _mediaPaths = vidPaths;
             _mediaMessages = videos;
+            _isSchedule = isShed;
 
             SetVidIndex();
 
@@ -93,23 +96,34 @@ namespace TelegramVisualPart.Windows
 
             _allImagesInfo = null;
             SetMediaParams(_mediaMessages[_tempMediaIndex]);
+
+            SetMenuWithSchedMessages();
         }
 
         public void SetGif(int startIndex, List<string> gifPaths,
-            List<MediaAction> gifs)
+            List<MediaAction> gifs, bool isSched)
         {
             _mediaPaths = gifPaths;
             _mediaMessages = gifs;
             _tempMediaIndex = startIndex;
+            _isSchedule = isSched;
 
             //SetBasicParams();
 
             _allImagesInfo = null;
             UpdateVideoByTempIndex();
+            SetMenuWithSchedMessages();
+
+            MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.SaveAs);
+            UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.SaveAs);
+
+            SaveBut.Visibility = Visibility.Hidden;
         }
 
         public void UpdateVideoByTempIndex()
         {
+            if (_tempMediaIndex == -1) return;
+
             SetMediaParams(_mediaMessages[_tempMediaIndex]);
             SetMediaFileByTempIndex();
         }
@@ -211,6 +225,7 @@ namespace TelegramVisualPart.Windows
             SetStratImgIndex();
 
             SetImgMediaParam();
+            SetMenuWithSchedMessages();
         }
 
         public void SetStratImgIndex()
@@ -253,7 +268,7 @@ namespace TelegramVisualPart.Windows
             SetUserImage(_user.UserImages.First().Name);
             SetImgMediaParam();
 
-            MediaMenu = null;
+            MediaMenuEl = null;
         }
 
         public List<string> GetSendersForUserImages(int amount)
@@ -335,18 +350,31 @@ namespace TelegramVisualPart.Windows
 
         public void SetEventsForMenu()
         {
-            MediaMenu.GoToMessage.PreviewMouseDown += MoveToMessage_PreviewMouseDown;
-            MediaMenu.ShowInFolder.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
-            MediaMenu.CopyFrame.PreviewMouseDown += CopyFrame_PreviewMouseDown;
-            MediaMenu.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
-            MediaMenu.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
-            MediaMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
+            MediaMenuEl.GoToMessage.PreviewMouseDown += MoveToMessage_PreviewMouseDown;
+            MediaMenuEl.ShowInFolder.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
+            MediaMenuEl.CopyFrame.PreviewMouseDown += CopyFrame_PreviewMouseDown;
+            MediaMenuEl.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
+            MediaMenuEl.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
+            MediaMenuEl.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
 
             UsersImageMenu.Copy.PreviewMouseDown += CopyFrame_PreviewMouseDown;
             UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
             UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
             UsersImageMenu.WatchInFiles.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
             UsersImageMenu.Report.PreviewMouseDown += Report_PreviewMouseDown;
+        }
+
+        private const int _thickMult = -30;
+        public void SetMenuWithSchedMessages()
+        {
+            if (!_isSchedule) return;
+
+            MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Forward);
+            MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Delete);
+            MediaMenuEl.Margin = new Thickness(-200, MediaMenuEl.MenuPanel.Children.Count * _thickMult, 0, 0); 
+
+            UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
+            UsersImageMenu.Margin = new Thickness(-200, UsersImageMenu.ChildrenPanel.Children.Count * _thickMult, 0, 0);
         }
 
         private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -632,13 +660,13 @@ namespace TelegramVisualPart.Windows
 
         private void MenuBut_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (MediaMenu is not null) MediaMenu.Visibility = Visibility.Visible;
+            if (MediaMenuEl is not null) MediaMenuEl.Visibility = Visibility.Visible;
             else UsersImageMenu.Visibility = Visibility.Visible;
         }
 
         private void MediaMenu_MouseLeave(object sender, MouseEventArgs e)
         {
-            MediaMenu.Visibility = Visibility.Hidden;
+            MediaMenuEl.Visibility = Visibility.Hidden;
         }
 
         private void UsersImageMenu_MouseLeave(object sender, MouseEventArgs e)

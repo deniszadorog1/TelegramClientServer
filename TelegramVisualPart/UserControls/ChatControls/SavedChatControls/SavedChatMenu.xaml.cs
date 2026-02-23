@@ -152,8 +152,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
         {
             return name == PhotoMedia.Name.ToString() ? Enums.SentItemsTypes.Photos :
                 name == VideoMedia.Name.ToString() ? Enums.SentItemsTypes.Video :
-                name == LinkMedia.Name.ToString() ? Enums.SentItemsTypes.GIFs :
-                name == GifMedia.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
+                name == GifMedia.Name.ToString() ? Enums.SentItemsTypes.GIFs :
+                name == LinkMedia.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
                 Enums.SentItemsTypes.Photos;
         }
 

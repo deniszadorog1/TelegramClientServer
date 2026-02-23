@@ -1217,6 +1217,24 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<TelegramLib.MainClasses.Messages.Message> GetLastSavedMessage(int chatId)
+        {
+            var response =
+                await _client.GetAsync($"api/Social/GetLastSavedMessage?chatId={chatId}");
+            string jsonResponse =
+                await response.Content.ReadAsStringAsync();
+
+            TelegramLib.MainClasses.Messages.Message? mes =
+                JsonConvert.DeserializeObject<Message>(
+                jsonResponse,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            return mes;
+        }
+
         public static async Task<bool> AddSavedMessagesChat(int userId)
         {
             var data = new
