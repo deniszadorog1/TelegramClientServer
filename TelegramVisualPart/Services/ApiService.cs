@@ -131,6 +131,18 @@ namespace TelegramVisualPart.Services
             return mes;
         }
 
+        public static async Task<int> GetLastMessageBandId()
+        {
+            var response =
+                await _client.GetAsync($"api/Social/GetLastMessageBandId");
+            string jsonResponse =
+                await response.Content.ReadAsStringAsync();
+
+            int id = JsonConvert.DeserializeObject<int>(jsonResponse);
+
+            return id;
+        }
+
         public static async Task<bool> GetMessageReadStatus(int mesId)
         {
             var response = await _client.GetAsync($"api/Social/GetReadStatus?mesId={mesId}");

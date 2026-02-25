@@ -86,5 +86,10 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
         {
             Img.Source = null;
         }
+
+        public string GetMediaPath()
+        {
+            return _mediaPath;
+        }
     }
 }

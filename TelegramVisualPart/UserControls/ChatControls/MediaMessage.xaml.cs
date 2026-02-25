@@ -45,6 +45,85 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private bool _isOnlyVisual = false;
         private MediaAction _message;
 
+        public event Action PushForwarded;
+
+        private List<string> _bandPaths;
+        private bool _isImageBand;
+        private List<Border> _bandBorders;
+        private List<ImageBrush> _bandBrushes;
+
+        //Send band of medias
+        public MediaMessage(TelSystem system, List<string> paths, bool isImage)
+        {
+            _isOnlyVisual = false;
+            _system = system;
+            IsSticker = false;
+
+            _bandPaths = paths;
+            _isImageBand = isImage;
+
+            InitializeComponent();
+
+            ImgGroupBorder.Visibility = Visibility.Visible;
+            SetBandBorder();
+            SetMessages();
+        }
+
+        public void SetMessages()
+        {
+            if (!_isImageBand) return;
+
+            for (int i = 0; i < _bandPaths.Count; i++)
+            {
+                SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i]);
+            }
+
+            if (_bandBorders.Count <= 6) BottomBandRow.Height = new GridLength(0);
+            if (_bandBorders.Count <= 3) MiddleBandRow.Height = new GridLength(0);
+            if (_bandBorders.Count <= 2) RightBandColumn.Width = new GridLength(0);
+            if (_bandBorders.Count <= 1) MiddleBandColumn.Width = new GridLength(0);
+
+        }
+
+        public void SetBandImg(Border border, ImageBrush brush, string path)
+        {
+            path = System.IO.Path.GetFileName(path);
+
+            border.Visibility = Visibility.Visible;
+            brush.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetSystemImagePath(path), UriKind.Absolute));
+        }
+
+        private void SetBandBorder()
+        {
+            _bandBorders.Add(OneInGroupBorder);
+            _bandBorders.Add(TwoInGroupBorder);
+            _bandBorders.Add(ThreeInGroupBorder);
+            _bandBorders.Add(FourInGroupBorder);
+            _bandBorders.Add(FiveInGroupBorder);
+            _bandBorders.Add(SixInGroupBorder);
+            _bandBorders.Add(SevenInGroupBorder);
+            _bandBorders.Add(EightInGroupBorder);
+            _bandBorders.Add(NineInGroupBorder);
+
+            _bandBrushes.Add(OneImg);
+            _bandBrushes.Add(TwoImg);
+            _bandBrushes.Add(ThreeImg);
+            _bandBrushes.Add(FourImg);
+            _bandBrushes.Add(FiveImg);
+            _bandBrushes.Add(SixImg);
+            _bandBrushes.Add(SevenImg);
+            _bandBrushes.Add(EightImg);
+            _bandBrushes.Add(NineImg);
+        }
+
+        private void HideBordersExceptBand()
+        {
+            GifBorder.Visibility = Visibility.Hidden;
+            VideoBorder.Visibility = Visibility.Hidden;
+            ImageBorder.Visibility = Visibility.Hidden;
+        }
+
         public MediaMessage(TelSystem system, MediaAction media)
         {
             _isOnlyVisual = true;
@@ -63,9 +142,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetForwardedFromRow();
         }
 
-        public void SetMedia()
+        public async ValueTask SetMedia()
         {
-            if(_message.IsImage())
+            if (_message.IsImage())
             {
                 ImgMessage.ImageSource =
                     new BitmapImage(new Uri(
@@ -75,11 +154,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 //SetImgMessageSize(_img, ImageBorder);
                 ImageBorder.Visibility = Visibility.Visible;
             }
+            else if (_message.IsVideo())
+            {
+                string name = System.IO.Path.GetFileName(_message.MediaName);
+                Image img = await VisHelper.GetFirstFrameAsync(name);
+
+                GifBorder.Visibility = Visibility.Visible;
+                GifImage.Source = img.Source;
+            }
+            else if (_message.IsGif())
+            {
+                string name = System.IO.Path.GetFileName(_message.MediaName);
+                string gifPath = FilesAction.GetFullGifPath(name);
+
+                BitmapSource source = FilesAction.GetFirstImageFromGif(gifPath);
+                if (source is null) return;
+
+                GifBorder.Tag = name;
+                GifBorder.Visibility = Visibility.Visible;
+                GifImage.Source = source;
+            }
         }
 
-        public MediaMessage(TelSystem system, 
+        public MediaMessage(TelSystem system,
             Image img, bool isSticker,
-            string senderImgName, DateTime sendTime, 
+            string senderImgName, DateTime sendTime,
             int? forwardedFromId = null)
         {
             _img = img;
@@ -120,10 +219,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
-        public MediaMessage(string gifPath, 
+        public MediaMessage(TelSystem system, string gifPath,
             string senderImgName, DateTime sentTime,
             int? forwardedFromId)
         {
+            _system = system;
             _gifPath = gifPath;
             _senderImgName = senderImgName;
             _forwardedFrom = forwardedFromId;
@@ -173,11 +273,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
-        public MediaMessage(MediaElement media,
+        public MediaMessage(TelSystem system,
+            MediaElement media,
             string senderImgName,
-            MediaAction mediaLogicEl, 
+            MediaAction mediaLogicEl,
             int? forwardedFromId)
         {
+            _system = system;
             _media = media;
             _senderImgName = senderImgName;
             _forwardedFrom = forwardedFromId;
@@ -240,12 +342,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_senderImgName is null)
             {
-                BgBrush.ImageSource = BgBrush.ImageSource = new BitmapImage(new Uri(
+                BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
                 return;
             }
-/*            await SignalRHelperService.SetPhotoInEllipse(_system.GetUserById(_message.SenderUserId),
-                    BgBrush, UserEllipseImage);*/
 
             BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
@@ -394,5 +494,99 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SelectionTickObj.SetMirrorStatus();
         }
 
+        public MediaAction GetMessage()
+        {
+            return _message;
+        }
+
+        private void GoToForwardedGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void GoToForwardedGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void GoToForwardedGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            PushForwarded.Invoke();
+        }
+
+        public void SetPushForwardedVis()
+        {
+            const int goToMesGridWidth = 30;
+
+            GoToMessage.Width = new GridLength(goToMesGridWidth);
+            Width += goToMesGridWidth;
+
+            ForwardedGrid.Visibility = Visibility.Hidden;
+            Height -= _visForwardRowHeight;
+            ForwardedRow.Height = new GridLength(0);
+        }
+
+        private void ImageBorder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void ImageBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void ImageBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_system is null) return;
+            //Get user 
+            DependencyObject check = this.Parent;
+            if (check is not ListBoxItem item) return;
+
+            int.TryParse(item.Tag.ToString(), out int mesId);
+
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(mesId);
+            if (mes is null) return;
+
+            bool isSavedChat = _system.GetIsSavedMesChatStatus();
+
+            //Settings logged user page
+            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) ||
+
+                (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0) ||
+                (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
+            {
+
+                UserInfo logged = new UserInfo(_system.SavedMesesChat, _system);
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);
+                return;
+            }
+
+            //Set other user page
+            TelegramLib.MainClasses.UserChat chat = isSavedChat && mes.ForwardedFromId is not null ?
+                _system.GetChatByChatterId((int)mes.ForwardedFromId) :
+                _system.GetChatByMessage(mes);
+
+            UserInfo info = new UserInfo(chat, _system);
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+        }
+
+        public string GetMediaPath()
+        {
+            if (_gifPath is not null && _gifPath != string.Empty) return _gifPath;
+            if (_stickerPath is not null && _stickerPath != string.Empty) return _stickerPath;
+            if (_message is not null) return _message.MediaName;
+
+            Console.WriteLine(GifImage.Source);
+            Console.WriteLine(ImgMessage.ImageSource);
+            Console.WriteLine(MyVideoPlayer);
+
+            return string.Empty;
+        }
+
+
     }
+
+
 }

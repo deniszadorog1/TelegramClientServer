@@ -128,6 +128,12 @@ namespace TelegramClientServer.Controllers
             return DbService.GetLastSavedMessage(chatId);
         }
 
+        [HttpGet("GetLastMessageBandId")]
+        public int GetLastMessageBandId()
+        {
+            return DbService.GetLastMessageBandId();
+        }
+
 
         [HttpGet("GetMessagesByChatId")]
         public List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)

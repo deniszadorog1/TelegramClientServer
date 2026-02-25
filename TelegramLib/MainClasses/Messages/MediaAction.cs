@@ -13,15 +13,17 @@ namespace TelegramLib.MainClasses.Messages
     {
         public bool IsSticker { get; set; }
         public string MediaName { get; set; }
+        public int BandId { get; set; }
 
         public MediaAction(int id, int senderUserId, 
             DateTime sentTime, string mediaName, 
             bool isSticker, bool isRead, bool isPinned,
-            int? forwardedFromId) : 
+            int? forwardedFromId, int bandId = 0) : 
             base(id, senderUserId, sentTime, isRead, isPinned, forwardedFromId)
         {
             IsSticker = isSticker;
             MediaName = mediaName;
+            BandId = bandId;
         }
 
         public MediaAction()
@@ -58,4 +60,5 @@ namespace TelegramLib.MainClasses.Messages
             return "Media";
         }
     }
+
 }

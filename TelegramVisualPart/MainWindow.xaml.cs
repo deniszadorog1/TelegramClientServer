@@ -1264,9 +1264,9 @@ namespace TelegramVisualPart
             SetSecondaryFrame(new SendMediaPage(firstMediaPath, text));
         }
 
-        public void SendBigImagesMessage(string capture, List<Image> imgs)
+        public void SendBigImagesMessage(string capture, List<Image> imgs, List<string> paths)
         {
-            if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs);
+            if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs, paths);
         }
 
         public void SetSharedContact(int chatId, UserContactcs contact)
@@ -1615,11 +1615,33 @@ namespace TelegramVisualPart
 
         public void HideEnnesChat(int? senderChatId)
         {
+            if (senderChatId is not null && 
+                _bossWindow is null) CloseChatWindowsWithSameChat((int)senderChatId);
+           
             if (_bossWindow is null) return;
             _bossWindow.HideChatIfOpened(senderChatId);
         }
 
-        public void HideChatIfOpened(int? senderChatId)
+        public void CloseChatWindowsWithSameChat(int chatId)
+        {
+            List<MainWindow> toRemove = new List<MainWindow>();
+
+            for(int i = 0; i < _chatWindows.Count; i++)
+            {
+                if (_chatWindows[i].GetOnlyChat().Id == chatId)
+                {
+                    _chatWindows[i].Close();
+                    toRemove.Add(_chatWindows[i]);
+                }
+            }
+
+            foreach (var remove in toRemove)
+            {
+                _chatWindows.Remove(remove);
+            }    
+        }
+
+            public void HideChatIfOpened(int? senderChatId)
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             TelegramLib.MainClasses.UserChat chat = chatPage.GetUserChat();

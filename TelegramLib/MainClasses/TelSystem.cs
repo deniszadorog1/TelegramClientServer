@@ -439,6 +439,14 @@ namespace TelegramLib.MainClasses
             return res;
         }
 
+  /*      public List<MediaAction> GetMessagesByChatFromChat(MediaType type, int chatId)
+        {
+            UserChat chat = SavedMesesChat.Id == chatId ? SavedMesesChat : Chats.FirstOrDefault(x => x.Id == chatId);
+            if (chat is null) return null;
+
+            for(int i = 0; i < SavedMesesChat.Id; )
+        }*/
+
         public List<MediaAction> GetMessagesByTypeFromChat(TelegramLib.MainClasses.UserChat chat, MediaType type)
         {
             List<MediaAction> res = new List<MediaAction>();

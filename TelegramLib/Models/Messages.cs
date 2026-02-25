@@ -54,6 +54,8 @@ namespace TelegramLib.Models
         [StringLength(1024)]
         public string MessageQuote { get; set; }
 
+        public int? BandId { get; set; }
+
         public virtual AutoDeleteType AutoDeleteType { get; set; }
 
         public virtual Chat Chat { get; set; }

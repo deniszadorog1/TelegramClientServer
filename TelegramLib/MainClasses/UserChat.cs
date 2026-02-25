@@ -78,6 +78,11 @@ namespace TelegramLib.MainClasses
         {
             return ScheduleMessages.OfType<MediaAction>().Where(x => x.IsVideo()).ToList();
         }
+
+        public List<MediaAction> GetChatVideos()
+        {
+            return Messages.OfType<MediaAction>().Where(x => x.IsVideo()).ToList();
+        }
         /*        public int GetMessageId(Message message)
                 {
                     return Messages.Where(x => x.Id == message.Id).First().Id;

@@ -826,7 +826,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetBlockStatus();
         }
 
-        public void SetBlockStatus()
+        public async void SetBlockStatus()
         {
             if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
 
@@ -835,11 +835,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (isBlocked)//unblock action
             {
                 // unblock in db
-                ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
+                await ApiService.RemoveBlockedContact(_system.LoggedUser.Id, _chat.Chatter.Id);
 
                 //unblock in system
                 _system.LoggedUser.UnblockUserById(_chat.Chatter.Id);
-                ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, _chat.Chatter);
+                await ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, _chat.Chatter);
             }
             else
             {

@@ -529,6 +529,8 @@ namespace TelegramLib.Services
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
 
+            if (toAdd is MediaAction band) band.BandId = mes.BandId is null ? -1 : (int)mes.BandId;
+
             if (toAdd is TextMessage)
             {
                 ((TextMessage)toAdd).Text = mes.Message;
@@ -2339,6 +2341,7 @@ namespace TelegramLib.Services
                 toAdd.IsInSchedule = message.IsSchedule;
 
                 toAdd.MessageQuote = message.RepliedQuote;
+                toAdd.BandId = message is MediaAction bandMedia ? bandMedia.BandId : -1;
 
                 toAdd.Message = message is TextMessage text ? text.Text : null;
 
@@ -4221,6 +4224,7 @@ namespace TelegramLib.Services
                 toAddObj.ChatId = savedMessageChatId;
                 toAddObj.IsSavedMessage = true;
                 toAddObj.MessageQuote = toAdd.RepliedQuote;
+                toAddObj.BandId = -1;
 
                 if (toAdd is TextMessage text)
                 {
@@ -4234,6 +4238,7 @@ namespace TelegramLib.Services
                     toAddObj.StickerId = media.IsSticker ? GetStickerIdByName(media.MediaName) : (int?)null;
                     toAddObj.GifId = media.IsGif() ? GetChatGifIdByName(media.MediaName) : (int?)null;
                     toAddObj.VideoId = media.IsVideo() ? GetVideoIdByName(media.MediaName) : (int?)null;
+                    toAddObj.BandId = media.BandId;
                 }
 
                 toAddObj.SentDate = toAdd.SentTime;
@@ -4594,7 +4599,19 @@ namespace TelegramLib.Services
 
                 return pair is null ? -1 : pair.Id;
             }
-            
+        }
+
+        public static int GetLastMessageBandId()
+        {
+            using(var model = new TelegramModel())
+            {
+                var maxMessage = model.Messages
+                        .OrderByDescending(m => m.BandId)
+                        .FirstOrDefault();
+
+                if (!(maxMessage is null && !(maxMessage.BandId is null))) return (int)maxMessage.BandId;
+                return -1;
+            }
         }
     }
 }

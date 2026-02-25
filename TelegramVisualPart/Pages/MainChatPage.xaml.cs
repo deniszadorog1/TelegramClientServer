@@ -438,23 +438,9 @@ namespace TelegramVisualPart.Pages
 
             MediaWindow mediaWindow = new MediaWindow(
                 null, (MainWindow)Window.GetWindow(this),
-                Enums.MediaShow.MediaShowType.OtherUserImages, _system);
+                Enums.MediaShow.MediaShowType.Videos, _system);
 
             mediaWindow.SetVideos(videoElement, _videoPaths, videos);
-
-            mediaWindow.Show();
-
-
-
-
-            /*            //SetVideo Paths
-                        VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
-
-                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
-
-
-
-                        page.SetUserChat(_system, videos, chosenVideoIndex, null);*/
         }
 
 
@@ -2616,9 +2602,9 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void SetImageMessages(string capture, List<Image> imgs)
+        public void SetImageMessages(string capture, List<Image> imgs, List<string> paths)
         {
-            UserChat.AddBigMediaImagesMessage(capture, imgs);
+            UserChat.AddBigMediaImagesMessage(capture, imgs, paths);
         }
 
         public async Task SetShareContactControl(int chatId, UserContactcs contactToSend,

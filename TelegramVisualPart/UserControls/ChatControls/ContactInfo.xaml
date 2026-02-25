@@ -252,29 +252,32 @@
 
 
                             <TextBlock Grid.Column="1" Grid.Row="0" 
-                                   Name="AmountOfPhotosTextBlock" FontSize="16"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}"
-                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
+                                       Name="AmountOfPhotosTextBlock" FontSize="16"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource UsualTextColor}"
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                       PreviewMouseDown="Line_PreviewMouseDown"/>
 
                             <TextBlock Grid.Column="1" Grid.Row="1" 
-                                   Name="AmountOfVideosTextBlock" FontSize="16"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" 
-                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
+                                       Name="AmountOfVideosTextBlock" FontSize="16"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource UsualTextColor}" 
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                       PreviewMouseDown="Line_PreviewMouseDown"/>
 
                             <TextBlock Grid.Column="1" Grid.Row="2"
-                                   Name="AmountOfGifsTextBlock" FontSize="16"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" 
-                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="Line_PreviewMouseDown"/>
+                                       Name="AmountOfGifsTextBlock" FontSize="16"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource UsualTextColor}" 
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                       PreviewMouseDown="Line_PreviewMouseDown"/>
 
                             <TextBlock Grid.Column="1" Grid.Row="3"
-                                   Name="AmountOfLinksTextBlock" FontSize="16"
-                                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                                   Foreground="{StaticResource UsualTextColor}" 
-                                   MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
-                                   PreviewMouseDown="Line_PreviewMouseDown"/>
+                                       Name="AmountOfLinksTextBlock" FontSize="16"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Foreground="{StaticResource UsualTextColor}" 
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                       PreviewMouseDown="Line_PreviewMouseDown"/>
                         </Grid>
 
                         <Grid Grid.Row="5" Background="{StaticResource DarkThemeDeviderField}"

@@ -151,8 +151,9 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         {
             //Send all messge
             List<Image> imgs = GetImagesFromMediaBox();
+            List<string> paths = GetPathsFromMedias();
 
-            ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs);
+            ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs, paths);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
@@ -165,6 +166,21 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     item.Content is MediaElBoxItem el)
                 {
                     res.Add(el.Img);
+                }
+            }
+            return res;
+        }
+
+        public List<string> GetPathsFromMedias()
+        {
+            List<string> res = new List<string>();
+
+            for (int i = 0; i < MediasBox.Items.Count; i++)
+            {
+                if (MediasBox.Items[i] is ListBoxItem item &&
+                    item.Content is MediaElBoxItem el)
+                {
+                    res.Add(el.GetMediaPath());
                 }
             }
             return res;

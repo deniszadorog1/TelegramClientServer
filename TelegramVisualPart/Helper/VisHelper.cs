@@ -11,6 +11,9 @@ using System.Windows.Media;
 using TelegramVisualPart.Services;
 using TelegramLib.MainClasses;
 using System.Text.RegularExpressions;
+using System.Windows.Media.Imaging;
+using System.IO;
+using FFMpegCore;
 
 namespace TelegramVisualPart.Helper
 {
@@ -90,7 +93,7 @@ namespace TelegramVisualPart.Helper
         private const int _correctTimeLength = 2;
         public static string GetCorrectTimeParamVis(string timeParam)
         {
-            return timeParam.Count() == _correctTimeLength ? 
+            return timeParam.Count() == _correctTimeLength ?
                 timeParam : timeParam.Insert(0, "0");
         }
 
@@ -125,6 +128,59 @@ namespace TelegramVisualPart.Helper
             input = input.Trim();
             input = Regex.Replace(input, @"\s{2,}", " ");
             return input;
+        }
+
+        public static T FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+            if (parentObject == null) return null;
+
+            T parent = parentObject as T;
+            return parent ?? FindParent<T>(parentObject);
+        }
+
+        
+
+        public static async Task<Image> GetFirstFrameAsync(string fileName)
+        {
+            string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));
+            if (!File.Exists(videoPath))
+                throw new FileNotFoundException("Видео не найдено", videoPath);
+
+            string tempImage = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".png");
+
+            try
+            {
+                // Берём кадр
+                await FFMpeg.SnapshotAsync(videoPath, tempImage, null, TimeSpan.FromSeconds(0));
+
+                if (!File.Exists(tempImage))
+                    throw new Exception("FFMpeg не создал скриншот");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("FFMpeg не смог создать скриншот: " + ex.Message, ex);
+            }
+
+            BitmapImage bitmap;
+
+            using (var stream = new FileStream(tempImage, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.EndInit();
+                bitmap.Freeze();
+            }
+
+            File.Delete(tempImage);
+
+            return new Image
+            {
+                Source = bitmap,
+                Stretch = Stretch.UniformToFill
+            };
         }
     }
 }

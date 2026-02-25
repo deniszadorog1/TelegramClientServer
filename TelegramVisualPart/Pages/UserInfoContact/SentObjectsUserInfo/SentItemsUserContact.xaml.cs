@@ -252,8 +252,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             _videoPaths = FilesAction.GetFullPathForVideos(_videoPaths);
 
-            List<MediaAction> videos = _system.GetAllVideoMessages();
-
+            List<MediaAction> videos = _chat.GetChatVideos();// _system.GetAllVideoMessages();
             //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
             MediaWindow mediaWindow = new MediaWindow(

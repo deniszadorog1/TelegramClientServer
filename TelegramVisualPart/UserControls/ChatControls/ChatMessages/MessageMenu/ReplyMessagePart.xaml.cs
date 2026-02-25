@@ -55,7 +55,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                 "Message";
         }
 
-        public void SetMediaPath(string mediaName)
+        public async void SetMediaPath(string mediaName)
         {
             if (FilesAction.IsFileIsImage(mediaName))
             {
@@ -74,11 +74,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             }
             else if (FilesAction.IsFileIsVideo(mediaName))
             {
-                //string fullGifName = FilesAction.GetFullVideoPath(mediaName);
+                mediaName = System.IO.Path.GetFileName(mediaName);
 
-                
-
-                // ReplyImage.Source = firstGifImgSource;
+                Image img = await VisHelper.GetFirstFrameAsync(mediaName);
+                ReplyImage.Source = img.Source;
             }
         }
 

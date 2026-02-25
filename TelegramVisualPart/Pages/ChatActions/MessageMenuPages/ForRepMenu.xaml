@@ -63,7 +63,7 @@
                            TextWrapping="Wrap"
                            FontSize="17"
                            Foreground="Gray"
-                           Margin="15 5 15 0"
+                           Margin="15 10 15 0"
                            FontFamily="{DynamicResource AppFont}"/>
             </Grid>
             
