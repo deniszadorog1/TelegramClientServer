@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,7 @@ using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
+using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -47,10 +50,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public event Action PushForwarded;
 
-        private List<string> _bandPaths;
+        private List<string> _bandPaths = new List<string>();
         private bool _isImageBand;
-        private List<Border> _bandBorders;
-        private List<ImageBrush> _bandBrushes;
+        public List<Border> _bandBorders = new List<Border>();
+        private List<ImageBrush> _bandBrushes = new List<ImageBrush>();
 
         //Send band of medias
         public MediaMessage(TelSystem system, List<string> paths, bool isImage)
@@ -64,10 +67,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             InitializeComponent();
 
-            ImgGroupBorder.Visibility = Visibility.Visible;
-            SetBandBorder();
+            HideBordersExceptBand();
+            SetBandBorderLists();
             SetMessages();
         }
+
+        public bool IsBandBorderContainsId(int mesId)
+        {
+            return _bandBorders.Any(x => x.Tag is not null && x.Tag.ToString() == mesId.ToString());
+        }
+
+        public bool IsBandMedia() => _bandPaths.Count > 1;
 
         public void SetMessages()
         {
@@ -78,11 +88,32 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i]);
             }
 
-            if (_bandBorders.Count <= 6) BottomBandRow.Height = new GridLength(0);
-            if (_bandBorders.Count <= 3) MiddleBandRow.Height = new GridLength(0);
-            if (_bandBorders.Count <= 2) RightBandColumn.Width = new GridLength(0);
-            if (_bandBorders.Count <= 1) MiddleBandColumn.Width = new GridLength(0);
+            if (_bandPaths.Count <= 6) BottomBandRow.Height = new GridLength(0);
+            if (_bandPaths.Count <= 3) MiddleBandRow.Height = new GridLength(0);
+            if (_bandPaths.Count <= 2) RightBandColumn.Width = new GridLength(0);
+            if (_bandPaths.Count <= 1) MiddleBandColumn.Width = new GridLength(0);
 
+
+            for(int i = _bandPaths.Count; i < _bandBorders.Count; i++)
+            {
+                _bandBorders[i].Width = 0;
+                _bandBorders[i].Height = 0;
+                _bandBorders[i].Visibility = Visibility.Hidden;
+            }
+        }
+
+        public string GetImageBorderSource(int messageId)
+        {
+            for(int i = 0; i < _bandBorders.Count; i++)
+            {
+                if (_bandBorders[i].Tag is not null && 
+                    _bandBorders[i].Tag.ToString() == messageId.ToString())
+                {
+                    string res = System.IO.Path.GetFileName(_bandPaths[i]);
+                    return FilesAction.GetFullChatImagePath(res);
+                }
+            }
+            return string.Empty;
         }
 
         public void SetBandImg(Border border, ImageBrush brush, string path)
@@ -91,10 +122,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             border.Visibility = Visibility.Visible;
             brush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetSystemImagePath(path), UriKind.Absolute));
+                FilesAction.GetFullChatImagePath(path), UriKind.Absolute));
         }
 
-        private void SetBandBorder()
+        private void SetBandBorderLists()
         {
             _bandBorders.Add(OneInGroupBorder);
             _bandBorders.Add(TwoInGroupBorder);
@@ -117,11 +148,36 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _bandBrushes.Add(NineImg);
         }
 
+        public void SetTagIdsToBandBorders(List<MediaAction> medias)
+        {
+            for(int i = 0; i < medias.Count; i++)
+            {
+                _bandBorders[i].Tag = medias[i].Id;
+            }
+        }
+
+        public List<int> GetBandMessagesIds()
+        {
+            List<int> res = new List<int>();
+
+            for(int i = 0; i < _bandBorders.Count; i++)
+            {
+                if (_bandBorders[i] is not null &&  _bandBorders[i].Tag is not null &&
+                    int.TryParse(_bandBorders[i].Tag.ToString(), out int id))
+                {
+                    res.Add(id);
+                } 
+            }
+            return res;
+        }
+
         private void HideBordersExceptBand()
         {
             GifBorder.Visibility = Visibility.Hidden;
             VideoBorder.Visibility = Visibility.Hidden;
             ImageBorder.Visibility = Visibility.Hidden;
+
+            ImgGroupBorder.Visibility = Visibility.Visible;
         }
 
         public MediaMessage(TelSystem system, MediaAction media)
@@ -177,7 +233,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
 
         public MediaMessage(TelSystem system,
-            Image img, bool isSticker,
+            System.Windows.Controls.Image img, bool isSticker,
             string senderImgName, DateTime sendTime,
             int? forwardedFromId = null)
         {
@@ -241,7 +297,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetTickEvent();
         }
 
-        private void SetTime(DateTime time)
+        public void SetTime(DateTime time)
         {
             TimeBlock.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
                 $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";

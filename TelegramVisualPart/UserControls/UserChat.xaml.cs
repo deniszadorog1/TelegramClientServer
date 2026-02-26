@@ -1,16 +1,10 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.Xaml.Behaviors.Media;
 using Newtonsoft.Json;
 using System;
-using System.CodeDom;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Automation.Peers;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -23,7 +17,6 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Enums.Menus;
@@ -39,7 +32,6 @@ using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ChatControls.SavedChatControls;
 using TelegramVisualPart.Windows;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -673,6 +665,7 @@ namespace TelegramVisualPart.UserControls
             {
                 if (percent >= minScrollOffset)
                 {
+                    if (ChatBox.Items.Count == 0) return;
                     ListBoxItem asd = ChatBox.Items[ChatBox.Items.Count - 1] as ListBoxItem;
 
                     Console.WriteLine(asd.ActualHeight);
@@ -1057,8 +1050,29 @@ namespace TelegramVisualPart.UserControls
                 CommentTextBox.Text = string.Empty;
                 _isEdit = false;
 
+                List<MediaAction> mediaBand = new List<MediaAction>();
+                int bandId = -1;
                 for (int i = 0; i < _chatMessages.Count; i++)
                 {
+                    if (_chatMessages[i] is MediaAction mediaAct &&
+                        mediaAct.BandId != -1)
+                    {
+                        mediaBand.Add(mediaAct);
+                        bandId = mediaAct.BandId;
+
+                        if (i + 1 < _chatMessages.Count &&
+                        _chatMessages[i + 1] is MediaAction next && next.BandId == bandId) continue;
+                    }
+
+                    if (mediaBand.Count > 0)
+                    {
+                        SetBandMessage(mediaBand);
+
+                        mediaBand.Clear();
+                        bandId = -1;
+                        continue;
+                    }
+
                     string imgName = _chatMessages[i].SenderUserId == _system.LoggedUser.Id || _isSavedMessageChat ?
                             _system.LoggedUser.GetFirstImageName().Name :
                             _chat.GetChatter().GetFirstImageName().Name;
@@ -1949,7 +1963,9 @@ namespace TelegramVisualPart.UserControls
                 ReplyMessageRow.Height.Value == 0 ||
                 _isHiddenSender) return null;
 
-            int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
+            //int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
+
+            int id = _mesMenu.GetMessage().Id;
 
             return _system.GetRepliedMessageById(id);
         }
@@ -2050,7 +2066,8 @@ namespace TelegramVisualPart.UserControls
             var clicked = e.OriginalSource as DependencyObject;
             if (clicked is Ellipse) return;
 
-            int.TryParse(item.Tag.ToString(), out int mesId);
+            int mesId = GetMessageIdByListBoxItem(item, e);
+            if (mesId == -1) return;
 
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(mesId);
@@ -2068,6 +2085,34 @@ namespace TelegramVisualPart.UserControls
             {
                 AddMessageMenu(MessageMenuType.ShareContact, clickPosition, item, mes);
             }
+        }
+
+        public int GetMessageIdByListBoxItem(ListBoxItem item, MouseEventArgs e)
+        {
+            if (item.Content is MediaMessage media && media.IsBandMedia())
+            {
+                Point mousePosition = e.GetPosition(item);
+                IInputElement clickedElement = item.InputHitTest(mousePosition);
+                DependencyObject obj = clickedElement as DependencyObject;
+
+                while (obj != null)
+                {
+                    if (obj is Border b && b.Name != media.ImgGroupBorder.Name)
+                    {
+                        if (b.Tag != null)
+                        {
+                            Console.WriteLine($"Нашли нужный: {b.Name}");
+                            return int.Parse(b.Tag.ToString());
+                        }
+                    }
+                    obj = VisualTreeHelper.GetParent(obj);
+                }
+
+                return -1;
+            }
+
+            int.TryParse(item.Tag.ToString(), out int mesId);
+            return mesId;
         }
 
         private MesMenu _mesMenu;
@@ -2107,8 +2152,15 @@ namespace TelegramVisualPart.UserControls
                 else Canvas.SetTop(_mesMenu, point.Y);
             };
 
-            Message mes = GetMessageByListBoxTag(item);
-            _mesMenu.SetPinVisStatus(mes);
+            //WTF is this???
+            /*            Message mes = GetMessageByListBoxTag(item);
+                        _mesMenu.SetPinVisStatus(mes);*/
+
+            if (toMenuMes is not null) _mesMenu.SetPinVisStatus(toMenuMes);
+            else
+            {
+
+            }
 
             MessageMenu.Children.Add(_mesMenu);
             SetMesMenuActions(_mesMenu);
@@ -2559,9 +2611,10 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
-            Message mes = GetMessageByListBoxTag(item);
+            Message mes = _mesMenu.GetMessage();
+            if (mes is null) mes = GetMessageByListBoxTag(item);
+            
             if (mes is null || mes is not MediaAction media) return;
-
 
             (string name, MediaShowType type) mediaParams = GetParamsToShowInFolder(media);
 
@@ -2589,9 +2642,10 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
-            Message mes = GetMessageByListBoxTag(item);
+            Message mes = _mesMenu.GetMessage();
+            if(mes is null) mes = GetMessageByListBoxTag(item);
+            
             if (mes is null || mes is not MediaAction media) return;
-
             if (media.IsGif())
             {
                 string gifFullPath = FilesAction.GetFullGifPath(media.MediaName);
@@ -2616,7 +2670,9 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
-            Message mes = GetMessageByListBoxTag(item);
+            Message mes = _mesMenu.GetMessage();
+            if (mes is null) mes = GetMessageByListBoxTag(item);
+               
             if (mes is null) return;
 
             if (mes is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -2639,6 +2695,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetIsBothDeletePage()
         {
+            //GetMessagesFromBandMessage
+
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
@@ -3125,7 +3183,8 @@ namespace TelegramVisualPart.UserControls
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose image or video",
-                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi"
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi",
+                Multiselect = false
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -3469,7 +3528,7 @@ namespace TelegramVisualPart.UserControls
 
             message.ImageBorder.MouseLeftButtonDown += (sender, e) =>
             {
-                ChatImage_MouseDowm(message);
+                ChatImage_MouseDown(message);
             };
 
             //Set tick vis
@@ -3495,7 +3554,7 @@ namespace TelegramVisualPart.UserControls
             ScrollChatToEnd();
         }
 
-        
+
 
         public void SetMediaTickVis(MediaAction media, MediaMessage message)
         {
@@ -3555,12 +3614,11 @@ namespace TelegramVisualPart.UserControls
             ScrollChatToEnd();
         }
 
-        public void ChatImage_MouseDowm(MediaMessage message)
+        public void ChatImage_MouseDown(MediaMessage message)
         {
             //if (sender is not MediaMessage message) return;
             _isGetStickers = message.IsSticker;
             if (_isGetStickers) return; //NO TO STICKERS
-
 
             ListBoxItem item = ChatBox.Items.OfType<ListBoxItem>()
                 .Where(x => x.Content == message).First();
@@ -3582,8 +3640,6 @@ namespace TelegramVisualPart.UserControls
                 Enums.MediaShow.MediaShowType.ChatImages, _system);
 
             mediaWindow.SetChatImageMessages(chosen, imgMedias);
-
-            //Is exist
             mediaWindow.Show();
         }
 
@@ -3891,15 +3947,38 @@ namespace TelegramVisualPart.UserControls
             //Is replied from other chat
             if (await IsRepliedFromOtherChat(messageId)) return;
 
-            ListBoxItem? item = ChatBox.Items
+            ListBoxItem? item = GetChatListBoxItemByMessageId(messageId); /*ChatBox.Items
                 .OfType<ListBoxItem>()
-                .FirstOrDefault(x => x.Tag.ToString() == messageId.ToString());
+                .FirstOrDefault(x => x.Tag.ToString() == messageId.ToString());*/
+
+
             if (item is null) return;
 
             int index = ChatBox.Items.IndexOf(item);
             if (index == -1) return;
 
             ScrollToChosenItem(index);
+        }
+
+        public ListBoxItem GetChatListBoxItemByMessageId(int mesId)
+        {
+            for(int i = 0; i < ChatBox.Items.Count; i++)
+            {
+                if (ChatBox.Items[i] is not ListBoxItem item) continue;
+                if (item.Tag is null)
+                {
+                    if(item.Content is MediaMessage media && media.IsBandBorderContainsId(mesId))
+                    {
+                        return item;
+                    }
+                }
+                else if(item.Tag.ToString() == mesId.ToString())
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         public async ValueTask<bool> IsRepliedFromOtherChat(int mesId)
@@ -4269,6 +4348,56 @@ namespace TelegramVisualPart.UserControls
             EmojisBoard.Visibility = Visibility.Hidden;
         }
 
+        private void SetBandMessage(List<MediaAction> medias)
+        {
+            List<string> paths = medias.Select(x => x.MediaName).ToList();
+            if (paths is null && paths.Count == 0) return;
+
+            MediaMessage bandMessage = new MediaMessage(_system, paths, FilesAction.IsFileIsImage(paths[0]));
+
+            //Set tag to every band image border
+            bandMessage.SetTagIdsToBandBorders(medias);
+            bandMessage.SetTime(medias[0].SentTime);
+
+            //Add in vis
+            AddBandImgMessage(bandMessage, medias);
+
+            ScrollToNewMessage();
+        }
+
+        private async Task CreateBandMessage(List<string> paths)
+        {
+            MediaMessage bandMessage = new MediaMessage(_system, paths, FilesAction.IsFileIsImage(paths[0]));
+
+            //Get last band id 
+            int lastBandId = await ApiService.GetLastMessageBandId();
+
+            //Adding in system + DB
+            List<MediaAction> bandMessages = new List<MediaAction>();
+            for (int i = 0; i < paths.Count; i++)
+            {
+                Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
+                    DateTime.Now, paths[i], false, false, false, null, lastBandId + 1);
+
+                AddMediaIntoMediasFolder(paths[i]);
+                newMediaMes = await GetAndAddMessage(newMediaMes);
+
+                bandMessages.Add((MediaAction)newMediaMes);
+                _chatMessages.Add(newMediaMes);
+                await SendMessageToReceiver(newMediaMes); //check this shit
+            }
+            bandMessage.SetTime(DateTime.Now);
+
+
+            //Set tag to every band image border
+            bandMessage.SetTagIdsToBandBorders(bandMessages);
+
+            //Add in vis
+            AddBandImgMessage(bandMessage, bandMessages);
+
+            ScrollToNewMessage();
+        }
+
         public async Task AddBigMediaImagesMessage(string capture, List<Image> imgs, List<string> paths)
         {
             if (!string.IsNullOrEmpty(capture))
@@ -4280,27 +4409,7 @@ namespace TelegramVisualPart.UserControls
 
             if (paths.Count > 1)
             {
-                MediaMessage bandMessage = new MediaMessage(_system, paths, FilesAction.IsFileIsImage(paths[0]));
-
-                //Get last band id 
-                int lastBandId = await ApiService.GetLastMessageBandId();
-
-                //Adding in system + DB
-                for (int i = 0; i < paths.Count; i++)
-                {
-                    Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
-                        DateTime.Now, paths[i], false, false, false, null, lastBandId + 1);
-                    AddMediaIntoMediasFolder(paths[i]);
-
-                    newMediaMes = await GetAndAddMessage(newMediaMes);
-                    _chatMessages.Add(newMediaMes);
-                    await SendMessageToReceiver(newMediaMes); //check this shit
-                }
-
-                //Add in vis
-
-
-                ScrollToNewMessage();
+                CreateBandMessage(paths);
             }
             else
             {
@@ -4322,22 +4431,53 @@ namespace TelegramVisualPart.UserControls
             UpdateContactInfoBlock();
         }
 
-        public void AddBandImgMessage(MediaMessage message, MediaAction media)
+        public void AddBandImgMessage(MediaMessage bandMessage, List<MediaAction> medias)
         {
             // think about tag etc...
             // message.Tag = media.Id;
 
-            message.ImageBorder.MouseLeftButtonDown += (sender, e) =>
+            MediaAction media = medias.First();
+
+            for (int i = 0; i < bandMessage._bandBorders.Count; i++)
             {
-                ChatImage_MouseDowm(message);
-            };
+                int localIndex = i;
+                bandMessage._bandBorders[i].PreviewMouseLeftButtonDown += (sender, e) =>
+                {
+                    #region //There is action to show band media window
+
+                    //if (sender is not MediaMessage message) return;
+
+                    ListBoxItem item = ChatBox.Items.OfType<ListBoxItem>()
+                        .Where(x => x.Content == bandMessage).First();
+                    int index = ChatBox.Items.IndexOf(item);
+
+                    List<MediaAction> imgMedias =
+                        _chat.GetMediaMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible).
+                        Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
+
+                    int imgIndex = imgMedias.FindIndex(x => x == _chat.Messages[index] as MediaAction);
+
+                    int.TryParse(bandMessage._bandBorders[localIndex].Tag.ToString(), out int chosenId);
+
+                    Message chosen = _system.GetMessageById(chosenId);
+
+                    MediaWindow mediaWindow = new MediaWindow(
+                        null, (MainWindow)Window.GetWindow(this),
+                        Enums.MediaShow.MediaShowType.ChatImages, _system);
+
+                    mediaWindow.SetChatImageMessages(chosen, imgMedias);
+                    mediaWindow.Show();
+
+                    #endregion
+                };
+            }
 
             //Set tick vis
-            SetMediaTickVis(media, message);
+            SetMediaTickVis(medias.First(), bandMessage);
 
             ListBoxItem item = new ListBoxItem()
             {
-                Content = message,
+                Content = bandMessage,
                 //Tag = media.Id.ToString(),
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
@@ -4346,7 +4486,7 @@ namespace TelegramVisualPart.UserControls
             SetChatItemEvents(item);
             SetPaddingToMessageItem(item, media);
 
-            SetMediaForwardButVis(media, message);
+            SetMediaForwardButVis(media, bandMessage);
 
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
@@ -4355,6 +4495,17 @@ namespace TelegramVisualPart.UserControls
             //Check is via signalR
             //ScrollToNewMessage();
             ScrollChatToEnd();
+        }
+
+
+        private void ClearAllMediaWindows()
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && window is MainWindow main)
+            {
+                main.CloseAllMediaWindows();
+            }
         }
 
 
@@ -4714,7 +4865,9 @@ namespace TelegramVisualPart.UserControls
             if (item is null || item.Content is not UserControl control) return;
 
             //item.Tag == message id; Get message by system
-            Message mes = GetMessageByListBoxTag(item);
+            Message mes = _mesMenu.GetMessage();
+            if (mes is null) mes = GetMessageByListBoxTag(item);
+            
             if (mes is null) return;
 
             SetReplyRowParams(control, new List<Message>() { mes });
@@ -4734,7 +4887,15 @@ namespace TelegramVisualPart.UserControls
             {
                 ReplyedImageColumn.Width = new GridLength(50);
 
-                if (media._img is not null) ReplyedImage.Source = media._img.Source;
+                if(media.IsBandMedia())
+                {
+                    //Check is Image
+
+                    //for image
+                    ReplyedImage.Source = new BitmapImage(new Uri(
+                        media.GetImageBorderSource(messages.First().Id), UriKind.Absolute)); 
+                }
+                else if (media._img is not null) ReplyedImage.Source = media._img.Source;
                 else if (media._gifPath is not null &&
                     media._gifPath != string.Empty)
                 {
@@ -4797,6 +4958,22 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(id);
             return mes;
+        }
+
+        public List<MediaAction> GetMessagesFromBandMessage(ListBoxItem item)
+        {
+            List<MediaAction> res = new List<MediaAction>();
+            if (item.Content is not MediaMessage media) return res;
+
+            List<int> mesIds = media.GetBandMessagesIds();
+
+            foreach (var id in mesIds)
+            {
+                Message mes = _system.GetMessageById(id);
+                if (mes is not null && mes is MediaAction act) res.Add(act);
+            }
+
+            return res;
         }
 
         public ListBoxItem? GetChatItemByMessageId(int id)
@@ -4998,9 +5175,9 @@ namespace TelegramVisualPart.UserControls
 
         public UserControl? GetMessageControlById(int id)
         {
-            ListBoxItem? item = ChatBox.Items
+            ListBoxItem? item = GetChatListBoxItemByMessageId(id); /*ChatBox.Items
                 .OfType<ListBoxItem>()
-                .FirstOrDefault(x => x.Tag.ToString() == id.ToString());
+                .FirstOrDefault(x => x.Tag.ToString() == id.ToString());*/
 
             return item is null || item.Content is null ? null
                 : item.Content is UserControl control ? control : null;

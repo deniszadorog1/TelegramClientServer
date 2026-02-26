@@ -51,6 +51,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             SetBasicParams();
         }
 
+        public TelegramLib.MainClasses.Messages.Message GetMessage() => _mes;
+
         public void SetBasicParams()
         {
             GoToMessage.SetParams(PackIconKind.EyeOutline, "Go to message");

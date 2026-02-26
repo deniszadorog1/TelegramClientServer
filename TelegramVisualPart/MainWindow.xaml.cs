@@ -542,6 +542,8 @@ namespace TelegramVisualPart
 
         public void CloseAllMediaWindows()
         {
+            if (_bossWindow is not null) _bossWindow.CloseAllMediaWindows();
+
             for (int i = 0; i < _mediaWidows.Count; i++)
             {
                 _mediaWidows[i].Close();

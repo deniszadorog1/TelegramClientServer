@@ -62,9 +62,27 @@ namespace TelegramVisualPart.Windows
             if (_type == MediaShowType.UserImages ||
                 _type == MediaShowType.OtherUserImages) SetUserImages();
 
+            godWindow.CloseAllMediaWindows();
             godWindow.AddMediaWindow(this);
 
             RemoveParamFromMenu();
+        }
+
+        public void SetMediaTypeString(string mediaName)
+        {
+            //Image
+            if(mediaName.Contains(".png") || mediaName.Contains(".jpg") || mediaName.Contains(".jpeg"))
+            {
+
+                return;
+            }
+
+            //Video
+            if(mediaName.Contains(".mp4") || mediaName.Contains(".mov") || mediaName.Contains(".avi"))
+            {
+
+                return;
+            }
         }
 
         public void RemoveParamFromMenu()
@@ -174,8 +192,8 @@ namespace TelegramVisualPart.Windows
 
         public void SetMediaParams(MediaAction media)
         {
-            ElementName.Text = media.MediaName;
-            PositionInFolder.Text = $"Photo {_mediaMessages.FindIndex(x => x.Id == media.Id) + 1} of {_mediaMessages.Count}";
+            ElementName.Text = System.IO.Path.GetFileName(media.MediaName);
+            PositionInFolder.Text = $"{_mediaMessages.FindIndex(x => x.Id == media.Id) + 1} of {_mediaMessages.Count}";
 
             SentDate.Text = $"{media.GetSentDate().Value.Day} {media.GetSentDate().Value.Month} {media.GetSentDate().Value.Year}";
 
@@ -749,7 +767,7 @@ namespace TelegramVisualPart.Windows
         {
             if (_imgInfo is null) return;
 
-            ElementName.Text = _imgInfo.Value.Img.Tag.ToString();
+            ElementName.Text = System.IO.Path.GetFileName(_imgInfo.Value.Img.Tag.ToString());
             PositionInFolder.Text = $"{_tempMediaIndex + 1} of {_allImagesInfo.Count}";
             SenderName.Text = _imgInfo.Value.Login;
             SentDate.Text = $"{_imgInfo.Value.sentTime.Date.Day}.{_imgInfo.Value.sentTime.Date.Month}.{_imgInfo.Value.sentTime.Date.Year}";

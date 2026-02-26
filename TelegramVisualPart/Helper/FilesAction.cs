@@ -243,6 +243,7 @@ namespace TelegramVisualPart.Helper
         {
             fileName = Path.GetFileName(fileName);
 
+
             string sysImage = Path.Combine(GetImagesPath(), "SystemImages");
             return Path.Combine(sysImage, fileName);
         }
