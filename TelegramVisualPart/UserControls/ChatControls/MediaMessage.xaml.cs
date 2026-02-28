@@ -51,19 +51,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public event Action PushForwarded;
 
         private List<string> _bandPaths = new List<string>();
-        private bool _isImageBand;
         public List<Border> _bandBorders = new List<Border>();
         private List<ImageBrush> _bandBrushes = new List<ImageBrush>();
 
         //Send band of medias
-        public MediaMessage(TelSystem system, List<string> paths, bool isImage)
+        public MediaMessage(TelSystem system, List<string> paths)
         {
             _isOnlyVisual = false;
             _system = system;
             IsSticker = false;
 
             _bandPaths = paths;
-            _isImageBand = isImage;
 
             InitializeComponent();
 
@@ -77,12 +75,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return _bandBorders.Any(x => x.Tag is not null && x.Tag.ToString() == mesId.ToString());
         }
 
-        public bool IsBandMedia() => _bandPaths.Count > 1;
+        public bool IsBandMedia() => _bandPaths.Count > 0;
 
         public void SetMessages()
         {
-            if (!_isImageBand) return;
-
             for (int i = 0; i < _bandPaths.Count; i++)
             {
                 SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i]);
@@ -116,9 +112,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return string.Empty;
         }
 
-        public void SetBandImg(Border border, ImageBrush brush, string path)
+        public async void SetBandImg(Border border, ImageBrush brush, string path)
         {
             path = System.IO.Path.GetFileName(path);
+
+            string videoExt = System.IO.Path.GetExtension(path);
+
+            if(videoExt == ".mp4" || videoExt == ".amv")
+            {
+                string videoPath = FilesAction.GetFullVideoPath(path);
+                Image videoFrame = await VisHelper.GetFirstFrameAsync(videoPath);
+
+                brush.ImageSource = videoFrame.Source;
+                return;
+            }
+
 
             border.Visibility = Visibility.Visible;
             brush.ImageSource = new BitmapImage(new Uri(
@@ -597,7 +605,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_system is null) return;
             //Get user 
             DependencyObject check = this.Parent;
-            if (check is not ListBoxItem item) return;
+            if (check is not ListBoxItem item || item.Tag is null) return;
 
             int.TryParse(item.Tag.ToString(), out int mesId);
 
@@ -641,7 +649,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return string.Empty;
         }
 
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
 
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
     }
 
 

@@ -25,22 +25,28 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
     /// </summary>
     public partial class SendMediaPage : Page
     {
-        private string _firstMediaPath;
+        private List<string> _firstMediaPath;
         private string _text;
         public SendMediaType _sendType = SendMediaType.Single;
 
-        public SendMediaPage(string firstMediaPath, string text)
+        public SendMediaPage(List<string> firstMediaPath, string text)
         {
             _firstMediaPath = firstMediaPath;
             _text = text;
             InitializeComponent();
 
-            AddMedia(_firstMediaPath);
+            _paths.AddRange(firstMediaPath);
 
-            SetMediaRowInList();
-            SetMediaGroupList();
             SetCaptureText();
-            _paths.Add(_firstMediaPath);
+            SetBasePaths();
+        }
+
+        public void SetBasePaths()
+        {
+            foreach(var path in _firstMediaPath)
+            {
+                AddMedia(path);
+            }
         }
 
         private void SetCaptureText()
@@ -50,13 +56,10 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         public void AddMedia(string mediaPath)
         {
-            if (FilesAction.IsFileIsImage(mediaPath))
-            {
-                AddImage(mediaPath);
-            }
+            AddMediaInVis(mediaPath);
         }
 
-        public void AddImage(string path)
+        public void AddMediaInVis(string path)
         {
             MediaElBoxItem toAdd = new MediaElBoxItem(path);
             toAdd.SetChosenSize();
@@ -149,11 +152,11 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         private void SendBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Send all messge
+            //Send all message
             List<Image> imgs = GetImagesFromMediaBox();
             List<string> paths = GetPathsFromMedias();
 
-            ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs, paths);
+            ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs, paths, _sendType);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 
@@ -188,26 +191,40 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         private void AddBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Add 1 more media
+            //Add more media
             SetMediaFile(null);
         }
 
-        private void SetMediaFile(MediaElBoxItem toChange)
+        private async void SetMediaFile(MediaElBoxItem toChange)
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose image",
-                Filter = "Image files|*.png;*.jpg;*.jpeg;"
+                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi",
+                Multiselect = true
             };
 
             //*.mp4;*.mov;*.avi
 
             if (openFileDialog.ShowDialog() == true)
             {
+                string[] names = openFileDialog.FileNames;
+
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                if(names.Length > 1)
+                {
+                    foreach (var path in names) AddMediaInVis(path);
+
+                    _paths.AddRange(names.ToList());
+                    GroupImages();
+                    return;
+                }
+
+
+                if (extension == ".png" || extension == ".jpg" ||
+                    extension == ".jpeg")
                 {
                     if (toChange is not null)
                     {
@@ -215,14 +232,20 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                         return;
                     }
                     //to add Image 
-                    AddImage(filePath);
+                    AddMediaInVis(filePath);
 
                     _paths.Add(filePath);
                     GroupImages();
                 }
                 else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
                 {
-                    //
+                    Image img = await VisHelper.GetFirstFrameAsync(filePath);
+
+                    if (toChange is not null) return;
+                    AddMediaInVis(filePath);
+
+                    _paths.Add(filePath);
+                    GroupImages();
                 }
             }
         }
@@ -238,7 +261,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             GroupImages();
 
             MediasBox.Visibility = Visibility.Hidden;
-            GroupImgGrid.Visibility = Visibility.Visible;
+            GroupScroll.Visibility = Visibility.Visible;
         }
 
         private void GroupItems_Unchecked(object sender, RoutedEventArgs e)
@@ -246,7 +269,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             _sendType = SendMediaType.Single;
 
             MediasBox.Visibility = Visibility.Visible;
-            GroupImgGrid.Visibility = Visibility.Hidden;
+            GroupScroll.Visibility = Visibility.Hidden;
         }
 
         private void CompressImage_Checked(object sender, RoutedEventArgs e)
@@ -255,7 +278,6 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         }
 
         public List<string> _paths = new List<string>();
-        public List<RowDefinition> _medRows = new List<RowDefinition>();
         public void GroupImages()
         {
             //going through all media
@@ -263,84 +285,34 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             //if i >= imgs.Count
             //set size = 0 to other blocks
 
-            for (int i = 0; i < _mediaGroupItems.Count; i++)
+            GroupPanel.Children.Clear();
+            for (int i = 0; i < _paths.Count; i++)
             {
-                if (i >= _paths.Count)
+                MediaElBoxItem toAdd = new MediaElBoxItem(_paths[i]);
+                toAdd.SetChosenSize();
+
+                toAdd.ChangeMedia += () =>
                 {
-                    int divider = (int)Math.Ceiling(i / 2.0);
-                    //Hide row which is no need
-                    for (int j = divider; j < _medRows.Count; j++)
-                    {
-                        _medRows[j].Height =
-                           new GridLength(0, GridUnitType.Star);
-                    }
+                    SetMediaFile(toAdd);
+                };
 
-                    //Show rows which is chosen
-                    for (int j = 0; j < divider; j++)
-                    {
-                        _medRows[j].Height =
-                            new GridLength(1, GridUnitType.Star);
-                    }
-                    break;
-                }
-                else
+                toAdd.DeleteMedia += () =>
                 {
-                    _mediaGroupItems[i].SetImage(_paths[i]);
+                    GroupPanel.Children.Remove(GroupPanel.Children
+                        .OfType<MediaElBoxItem>()
+                        .FirstOrDefault(x => x.Content == toAdd));
 
-                    int divider = (int)Math.Ceiling(i / 2.0);
-                    _medRows[divider].Height =
-                        new GridLength(1, GridUnitType.Star);
-                }
-            }
+                    if (MediasBox.Items.Count == 0)
+                    {
+                        ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                    }
+                };
 
-            if (_paths.Count <= 1)
-            {
-                TwoMedCol.Width =
-                    new GridLength(0, GridUnitType.Star);
-            }
-            else
-            {
-                TwoMedCol.Width =
-                    new GridLength(1, GridUnitType.Star);
+                GroupPanel.Children.Add(toAdd);
             }
         }
 
-        private void SetMediaRowInList()
-        {
-            _medRows.Clear();
-
-            _medRows.Add(OneMedRow);
-            _medRows.Add(TwoMedRow);
-            _medRows.Add(ThreeMedRow);
-            _medRows.Add(FourMedRow);
-            _medRows.Add(FiveMedRow);
-
-        }
-
-        private List<MediaElBoxItem> _mediaGroupItems = new List<MediaElBoxItem>();
-        private void SetMediaGroupList()
-        {
-            _mediaGroupItems.Clear();
-
-            _mediaGroupItems.Add(OneMedia);
-            _mediaGroupItems.Add(TwoMedia);
-
-            _mediaGroupItems.Add(ThreeMedia);
-            _mediaGroupItems.Add(FourMedia);
-
-            _mediaGroupItems.Add(FiveMedia);
-            _mediaGroupItems.Add(SixMedia);
-
-            _mediaGroupItems.Add(SevenMedia);
-            _mediaGroupItems.Add(EightMedia);
-
-            _mediaGroupItems.Add(NineMedia);
-            _mediaGroupItems.Add(TenMedia);
-
-            SetEventsForGroupedItems();
-        }
-
-        private void SetEventsForGroupedItems()
+       /* private void SetEventsForGroupedItems()
         {
             //Set events
             //Set index tag
@@ -369,6 +341,6 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     }
                 };
             }
-        }
+        }*/
     }
 }

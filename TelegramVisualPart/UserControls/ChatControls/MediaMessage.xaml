@@ -16,6 +16,9 @@
             <Setter Property="Width" Value="75"/>
             <Setter Property="Height" Value="75"/>
             <Setter Property="Background" Value="Green"/>
+
+            <EventSetter Event="MouseEnter" Handler="Border_MouseEnter"/>
+            <EventSetter Event="MouseLeave" Handler="Border_MouseLeave"/>
         </Style>
     </UserControl.Resources>
     

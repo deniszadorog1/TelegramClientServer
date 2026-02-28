@@ -137,9 +137,10 @@ namespace TelegramVisualPart.Pages
 
             Dispatcher.Invoke(() =>
             {
-                //Close media windows
-                ((MainWindow)Window.GetWindow(this)).CloseAllMediaWindows();
+                Window window = Window.GetWindow(this);
 
+                //Close media windows
+                if(window is not null && window is MainWindow main) main.CloseAllMediaWindows();
             });
         }
 
@@ -1659,6 +1660,7 @@ namespace TelegramVisualPart.Pages
 
                 ClearChatBgs();
 
+                CloseMediaWindows();
 
                 //If all are hidden -> show all chats
                 if (ChatsBox.Visibility == Visibility.Visible)
@@ -1667,6 +1669,16 @@ namespace TelegramVisualPart.Pages
                     ChatsBox.Visibility = Visibility.Visible;
                 }
 
+            }
+        }
+
+        public void CloseMediaWindows()
+        {
+            Window window = Window.GetWindow(this);
+
+            if(window is not null && window is MainWindow main)
+            {
+                main.CloseAllMediaWindows();
             }
         }
 
@@ -2602,9 +2614,9 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void SetImageMessages(string capture, List<Image> imgs, List<string> paths)
+        public void SetImageMessages(string capture, List<Image> imgs, List<string> paths, SendMediaType type)
         {
-            UserChat.AddBigMediaImagesMessage(capture, imgs, paths);
+            UserChat.AddBigMediaImagesMessage(capture, imgs, paths, type);
         }
 
         public async Task SetShareContactControl(int chatId, UserContactcs contactToSend,

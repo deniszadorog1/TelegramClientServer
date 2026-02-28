@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,16 +40,31 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
             SetBaseParams();
         }
 
-        public void SetBaseParams()
+        public async ValueTask SetBaseParams()
         {
             if (FilesAction.IsFileIsImage(_mediaPath))
             {
                 SetImage(_mediaPath);
             }
+            if (FilesAction.IsFileIsVideo(_mediaPath))
+            {
+                Image img = await VisHelper.GetFirstFrameAsync(_mediaPath);
+                Img.Source = img.Source;
+                Img.Tag = _mediaPath;
+            }
         }
 
-        public void SetImage(string path)
+        public async void SetImage(string path)
         {
+            if (FilesAction.IsFileIsVideo(path))
+            {
+                Image img = await VisHelper.GetFirstFrameAsync(path);
+                Img.Source = img.Source;
+                Img.Tag = path;
+
+                return;
+            }
+
             //path == Full file path
             Img.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
             Img.Tag = path;

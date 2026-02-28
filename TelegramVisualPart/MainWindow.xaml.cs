@@ -1258,17 +1258,16 @@ namespace TelegramVisualPart
 
             _chatWindows.Remove(window);
             window.Close();
-
         }
 
-        public void AddAddMediaPage(string firstMediaPath, string text)
+        public void AddAddMediaPage(List<string> firstMediaPath, string text)
         {
             SetSecondaryFrame(new SendMediaPage(firstMediaPath, text));
         }
 
-        public void SendBigImagesMessage(string capture, List<Image> imgs, List<string> paths)
+        public void SendBigImagesMessage(string capture, List<Image> imgs, List<string> paths, SendMediaType type)
         {
-            if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs, paths);
+            if (MainFrame.Content is MainChatPage page) page.SetImageMessages(capture, imgs, paths, type);
         }
 
         public void SetSharedContact(int chatId, UserContactcs contact)

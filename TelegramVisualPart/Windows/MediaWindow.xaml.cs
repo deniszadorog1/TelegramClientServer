@@ -158,9 +158,11 @@ namespace TelegramVisualPart.Windows
             }
             else if (_type == MediaShowType.Videos)
             {
+                string fullVideoPath = FilesAction.GetFullVideoPath(System.IO.Path.GetFileName(_mediaPaths[_tempMediaIndex]));
+
                 var media = new MediaElement
                 {
-                    Source = new Uri(_mediaPaths[_tempMediaIndex], UriKind.Absolute),
+                    Source = new Uri(fullVideoPath, UriKind.Absolute),
                     Width = 300,
                     Height = 200,
                     LoadedBehavior = MediaState.Manual,
@@ -805,6 +807,11 @@ namespace TelegramVisualPart.Windows
 
         private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            MoveMediaToLeft();
+        }
+
+        public void MoveMediaToLeft()
+        {
             if ((_tempMediaIndex - 1) >= 0)
             {
                 _tempMediaIndex--;
@@ -825,6 +832,32 @@ namespace TelegramVisualPart.Windows
                 if (_type == MediaShowType.Videos ||
                     _type == MediaShowType.Gif) UpdateVideoByTempIndex();
                 else SetImageByIndex();
+            }
+        }
+
+        public void MoveMediaToRight()
+        {
+            int maxVal = (_type == MediaShowType.Videos ||
+                _type == MediaShowType.Gif) ? _mediaMessages.Count : _allImagesInfo.Count;
+
+            if ((_tempMediaIndex + 1) < maxVal)
+            {
+                _tempMediaIndex++;
+                if (_type == MediaShowType.Videos ||
+                    _type == MediaShowType.Gif) UpdateVideoByTempIndex();
+                else SetImageByIndex();
+            }
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Left)
+            {
+                MoveMediaToLeft();
+            }
+            else if(e.Key == Key.Right)
+            {
+                MoveMediaToRight();
             }
         }
     }

@@ -996,5 +996,14 @@ namespace TelegramLib.MainClasses
             chat.UpdateScheduleMessages(LoggedUser);
         }
 
+        public void AddMessagesInList(List<int> ids, List<Message> res)
+        {
+            for (int i = 0; i < ids.Count; i++)
+            {
+                TelegramLib.MainClasses.Messages.Message mes = GetMessageById(ids[i]);
+                if (mes is null) continue;
+                res.Add(mes);
+            }
+        }
     }
 }

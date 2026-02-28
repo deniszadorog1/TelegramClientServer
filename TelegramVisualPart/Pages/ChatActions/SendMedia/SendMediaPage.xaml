@@ -56,36 +56,14 @@
                             
                         </ListBox>
 
-                        <Grid Name="GroupImgGrid"
-                              Visibility="Hidden">
-                            <Grid.RowDefinitions>
-                                <RowDefinition x:Name="OneMedRow"/>
-                                <RowDefinition x:Name="TwoMedRow"/>
-                                <RowDefinition x:Name="ThreeMedRow"/>
-                                <RowDefinition x:Name="FourMedRow"/>
-                                <RowDefinition x:Name="FiveMedRow"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="OneMedCol"/>
-                                <ColumnDefinition x:Name="TwoMedCol"/>
-                            </Grid.ColumnDefinitions>
-
-                            <MediaEls:MediaElBoxItem x:Name="OneMedia" Grid.Row="0" Grid.Column="0"/>
-                            <MediaEls:MediaElBoxItem x:Name="TwoMedia" Grid.Row="0" Grid.Column="1"/>
-
-                            <MediaEls:MediaElBoxItem x:Name="ThreeMedia" Grid.Row="1" Grid.Column="0"/>
-                            <MediaEls:MediaElBoxItem x:Name="FourMedia" Grid.Row="1" Grid.Column="1"/>
-
-                            <MediaEls:MediaElBoxItem x:Name="FiveMedia" Grid.Row="2" Grid.Column="0"/>
-                            <MediaEls:MediaElBoxItem x:Name="SixMedia" Grid.Row="2" Grid.Column="1"/>
-
-                            <MediaEls:MediaElBoxItem x:Name="SevenMedia" Grid.Row="3" Grid.Column="0"/>
-                            <MediaEls:MediaElBoxItem x:Name="EightMedia" Grid.Row="3" Grid.Column="1"/>
-
-                            <MediaEls:MediaElBoxItem x:Name="NineMedia" Grid.Row="4" Grid.Column="0"/>
-                            <MediaEls:MediaElBoxItem x:Name="TenMedia" Grid.Row="4" Grid.Column="1"/>
-                        </Grid>
+                        <ScrollViewer Name="GroupScroll"
+                            VerticalScrollBarVisibility="Auto" 
+                             HorizontalScrollBarVisibility="Disabled"
+                                      Visibility="Hidden">
+                            <WrapPanel Name="GroupPanel" Orientation="Horizontal">
+                                
+                            </WrapPanel>
+                        </ScrollViewer>
 
                     </Grid>
                 </Grid>

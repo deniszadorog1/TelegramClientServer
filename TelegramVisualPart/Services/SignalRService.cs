@@ -157,14 +157,12 @@ namespace TelegramVisualPart.Services
                 //sender converts into contact id -> find chat in db by this params -> add message to chat
 
                 TextMessageReceived?.Invoke(user, message);
-
                 return;
             });
 
             _connection.On<User, MediaAction>("ReceiveMediaMessage", (sender, message) =>
             {
                 MediaMessageReceived?.Invoke(sender, message);
-
                 return;
             });
 

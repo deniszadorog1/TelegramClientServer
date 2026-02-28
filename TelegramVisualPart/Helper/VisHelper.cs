@@ -138,9 +138,7 @@ namespace TelegramVisualPart.Helper
             T parent = parentObject as T;
             return parent ?? FindParent<T>(parentObject);
         }
-
-        
-
+       
         public static async Task<Image> GetFirstFrameAsync(string fileName)
         {
             string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));

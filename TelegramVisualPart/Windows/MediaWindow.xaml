@@ -21,7 +21,9 @@
         AllowsTransparency="True"
         
         MinWidth="500"
-        MinHeight="500">
+        MinHeight="500"
+        
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Window.Resources>
         <Style x:Key="ButStyle" TargetType="{x:Type controls:ActionButton}">
