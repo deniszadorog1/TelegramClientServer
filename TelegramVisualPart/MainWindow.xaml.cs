@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -1616,9 +1617,9 @@ namespace TelegramVisualPart
 
         public void HideEnnesChat(int? senderChatId)
         {
-            if (senderChatId is not null && 
+            if (senderChatId is not null &&
                 _bossWindow is null) CloseChatWindowsWithSameChat((int)senderChatId);
-           
+
             if (_bossWindow is null) return;
             _bossWindow.HideChatIfOpened(senderChatId);
         }
@@ -1627,7 +1628,7 @@ namespace TelegramVisualPart
         {
             List<MainWindow> toRemove = new List<MainWindow>();
 
-            for(int i = 0; i < _chatWindows.Count; i++)
+            for (int i = 0; i < _chatWindows.Count; i++)
             {
                 if (_chatWindows[i].GetOnlyChat().Id == chatId)
                 {
@@ -1639,15 +1640,15 @@ namespace TelegramVisualPart
             foreach (var remove in toRemove)
             {
                 _chatWindows.Remove(remove);
-            }    
+            }
         }
 
-            public void HideChatIfOpened(int? senderChatId)
+        public void HideChatIfOpened(int? senderChatId)
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             TelegramLib.MainClasses.UserChat chat = chatPage.GetUserChat();
 
-            if ((chat is SavedMessagesChat && (senderChatId is null ||  _system.LoggedUser.Id == senderChatId)) || 
+            if ((chat is SavedMessagesChat && (senderChatId is null || _system.LoggedUser.Id == senderChatId)) ||
                 (chat.Chatter is not null && chat.Chatter.Id == senderChatId))
             {
                 //clear chat in boos window
@@ -1655,6 +1656,22 @@ namespace TelegramVisualPart
             }
         }
 
+        public ListBoxItem GetChatListBoxItemByMesId(int mesId)
+        {
+            if (MainFrame.Content is MainChatPage mainChatPage)
+            {
+                return mainChatPage.GetChatListBoxItemByMesId(mesId);
+            }
+            return null;
+        }
+
+        public void SetReplyMessage(UserControl control, List<TelegramLib.MainClasses.Messages.Message> messes)
+        {
+            if (MainFrame.Content is MainChatPage mainChatPage)
+            {
+                mainChatPage.SetReplyMessage(control, messes);
+            }
+        }
 
     }
 }

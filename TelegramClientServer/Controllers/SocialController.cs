@@ -286,7 +286,7 @@ namespace TelegramClientServer.Controllers
         {
             TelegramLib.MainClasses.User res = DbService.GetUserByPhoneNumber(phoneNumber);
 
-            if (res is null) return NotFound("Some SHIT");
+            if (res is null) return NotFound(null);
 
             return Ok(res);
         }

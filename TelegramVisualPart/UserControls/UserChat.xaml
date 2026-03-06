@@ -17,7 +17,8 @@
              PreviewKeyDown="UserControl_KeyDown"
              MouseLeave="UserControl_MouseLeave"
              PreviewMouseDown="UserControl_PreviewMouseDown"
-             >
+             
+            >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60" Name="UpperRow"/>

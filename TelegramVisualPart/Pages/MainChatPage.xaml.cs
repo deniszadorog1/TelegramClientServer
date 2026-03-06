@@ -140,7 +140,7 @@ namespace TelegramVisualPart.Pages
                 Window window = Window.GetWindow(this);
 
                 //Close media windows
-                if(window is not null && window is MainWindow main) main.CloseAllMediaWindows();
+                if (window is not null && window is MainWindow main) main.CloseAllMediaWindows();
             });
         }
 
@@ -877,6 +877,11 @@ namespace TelegramVisualPart.Pages
             UserChat.ScrollToMessageByMessageId(mesId);
         }
 
+        public ListBoxItem GetChatListBoxItemByMesId(int mesId)
+        {
+            return UserChat.GetListBoxItemByMessageId(mesId);
+        }
+
         public void DeleteMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
             if (UserChat.Visibility != Visibility.Visible) return;
@@ -1052,6 +1057,7 @@ namespace TelegramVisualPart.Pages
             if (sender is not System.Windows.Controls.ListBoxItem item ||
                 item.Content is not UserTalkMessage talkControl) return;
 
+            CloseMediaWindows();
             await SetChatParams(item, talkControl);
         }
 
@@ -1119,7 +1125,7 @@ namespace TelegramVisualPart.Pages
 
                 RepaintUserChatsPanel();
 
-                
+
             }
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
@@ -1676,7 +1682,7 @@ namespace TelegramVisualPart.Pages
         {
             Window window = Window.GetWindow(this);
 
-            if(window is not null && window is MainWindow main)
+            if (window is not null && window is MainWindow main)
             {
                 main.CloseAllMediaWindows();
             }
@@ -1807,14 +1813,12 @@ namespace TelegramVisualPart.Pages
             Point relativePoint = e.GetPosition(this);
 
             //Get point to menu
-            Point point = new Point(relativePoint.X /*+ targetElement.ActualWidth + 5*/, relativePoint.Y - 15);
+            Point point = new Point(relativePoint.X, relativePoint.Y - 15);
 
             int.TryParse(boxItem.Tag.ToString(), out int id);
 
             TelegramLib.MainClasses.UserChat chat = targetElement.GetChat() is null ?
                 _system.GetChatById(id) : targetElement.GetChat();
-
-            /*TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();*/
 
             AddMenuElement(new UserChatMenu(chat, _system), point);
         }
@@ -2312,13 +2316,14 @@ namespace TelegramVisualPart.Pages
             _menuChatterTalk.SetVisibilityToUnreadEllipse(false);
 
             //If temp chat is on
-            if (_system.GetChosenChat() is not null &&
-                _system.GetChosenChat().Id == chat.Id)
-            {
-                //Clear chat
-                UserChat.Visibility = Visibility.Hidden;
-                ChosoeChatBorder.Visibility = Visibility.Visible;
-            }
+            /* if (_system.GetChosenChat() is not null &&
+                 _system.GetChosenChat().Id == chat.Id)
+             {*/
+            //Clear chat
+            UserChat.Visibility = Visibility.Hidden;
+            ChosoeChatBorder.Visibility = Visibility.Visible;
+            CloseMediaWindows();
+            //}
             //If chat is already y on main page
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
             {
@@ -2743,7 +2748,7 @@ namespace TelegramVisualPart.Pages
                 return;
             }
 
-          
+
             //To set forwarding params
             await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);
             UserChat.ReplyBorder.Height = 50;
@@ -2867,6 +2872,7 @@ namespace TelegramVisualPart.Pages
 
         private void SavedMessagesDrawBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            CloseMediaWindows();
             //Get saved chat
             SetSavedChatMessages();
         }
@@ -2993,6 +2999,14 @@ namespace TelegramVisualPart.Pages
         {
             if (UserChat.Visibility != Visibility.Visible) return;
             UserChat.UpdateScheduleChatIfNeed();
+        }
+
+        public void SetReplyMessage(UserControl control, List<TelegramLib.MainClasses.Messages.Message> messes)
+        {
+            if (UserChat.Visibility == Visibility.Hidden) return;
+            UserChat.SetReplyRowParams(control, messes);
+
+            UserChat.SetRepliedMessage(messes.First());
         }
 
     }

@@ -45,6 +45,11 @@
                     <WrapPanel Name="ElemsPanel"/>
                 </ScrollViewer>
             </StackPanel>
+
+            <Canvas Name="MessageMenu"
+              Grid.RowSpan="4" 
+              Grid.ColumnSpan="2" Margin="10,50,-10,0"/>
+
         </Grid>
     </Border>
 </Page>

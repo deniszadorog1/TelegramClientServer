@@ -51,6 +51,28 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             SetBasicParams();
         }
 
+
+        //Menu fro, contact info items
+        public MesMenu(TelSystem system, TelegramLib.MainClasses.Messages.Message mes)
+        {
+            _mes = mes;
+            _system = system;
+
+            _type = MessageMenuType.ContactInfoMedias;
+            _isSchedMessages = false;
+
+            InitializeComponent();
+
+            SetBasicParams();
+        }
+
+        //reset 
+        public MesMenu(TelegramLib.MainClasses.Messages.Message mes)
+        {
+            _mes = mes;
+            InitializeComponent();
+        }
+
         public TelegramLib.MainClasses.Messages.Message GetMessage() => _mes;
 
         public void SetBasicParams()
@@ -79,8 +101,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
 
             RemoveUnnesBlocks();
 
-            if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
-            else Buts.Children.Remove(ReplyBut);
+            if (_type != MessageMenuType.ContactInfoMedias)
+            {
+                if (!_isOnlyPinnedChat) Buts.Children.Remove(GoToMessage);
+                else Buts.Children.Remove(ReplyBut);
+            }
 
             if (_mes is MediaAction media && !media.IsImage()) Buts.Children.Remove(CopyBut);
             if (_mes is TelegramLib.MainClasses.Messages.TextMessage text) SetEditMesVis(text);
@@ -129,6 +154,19 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                         Buts.Children.Remove(CopyBut);
                         Buts.Children.Remove(ForwardBut);
                         Buts.Children.Remove(SelectBut);
+                        break;
+                    }
+                case MessageMenuType.ContactInfoMedias:
+                    {
+                        Buts.Children.Remove(EditBut);
+                        Buts.Children.Remove(PinBut);
+                        Buts.Children.Remove(ShowInFolder);
+                        Buts.Children.Remove(SaveAsBut);
+                        Buts.Children.Remove(CopyBut);
+                        Buts.Children.Remove(SendNowBut);
+                        Buts.Children.Remove(SelectBut);
+                        Buts.Children.Remove(RescheduleBut);
+                        Buts.Children.Remove(ForwardBut);
                         break;
                     }
             }

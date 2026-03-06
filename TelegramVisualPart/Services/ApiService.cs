@@ -439,7 +439,6 @@ namespace TelegramVisualPart.Services
             var response = await _client.GetAsync($"api/Social/GetUserByPhoneNumber?phoneNumber={phoneNumber}");
 
 
-
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 

@@ -2497,6 +2497,7 @@ namespace TelegramLib.Services
                 {
                     media.IsSticker = chosen.StickerId is null ? false : true;
                     media.MediaName = GetMediaNameByMessageId(chosen.Id);
+                    media.BandId = chosen.BandId is null ? -1 : (int)chosen.BandId;
                 }
                 return res;
             }

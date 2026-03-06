@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using MahApps.Metro.Behaviors;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Linq;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
@@ -66,19 +68,32 @@ namespace TelegramVisualPart.Windows
             godWindow.AddMediaWindow(this);
 
             RemoveParamFromMenu();
+
+            if (_type == MediaShowType.Videos) SetVideoTimer();
+            else VideoPanel.Visibility = Visibility.Hidden;
+        }
+
+        private double _tickTime = 0.1;
+        public void SetVideoTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(_tickTime);
+            timer.Tick += timer_Tick;
+
+            //SetLoadBehavior();
         }
 
         public void SetMediaTypeString(string mediaName)
         {
             //Image
-            if(mediaName.Contains(".png") || mediaName.Contains(".jpg") || mediaName.Contains(".jpeg"))
+            if (mediaName.Contains(".png") || mediaName.Contains(".jpg") || mediaName.Contains(".jpeg"))
             {
 
                 return;
             }
 
             //Video
-            if(mediaName.Contains(".mp4") || mediaName.Contains(".mov") || mediaName.Contains(".avi"))
+            if (mediaName.Contains(".mp4") || mediaName.Contains(".mov") || mediaName.Contains(".avi"))
             {
 
                 return;
@@ -108,6 +123,7 @@ namespace TelegramVisualPart.Windows
 
             VideoToShow.Source = media.Source;
 
+
             //SetBasicParams();
 
             if (_type != MediaShowType.Videos) ImageToShow.Visibility = Visibility.Hidden;
@@ -116,6 +132,9 @@ namespace TelegramVisualPart.Windows
             SetMediaParams(_mediaMessages[_tempMediaIndex]);
 
             SetMenuWithSchedMessages();
+
+            SetLoadBehavior();
+            VideoToShow.Play();
         }
 
         public void SetGif(int startIndex, List<string> gifPaths,
@@ -240,7 +259,7 @@ namespace TelegramVisualPart.Windows
                 if (_mediaMessages[i].Id == _chosenMedia.Id) _imgInfo = (img, _mediaMessages[i].SentTime, _system.GetTrueUserById(_mediaMessages[i].SenderUserId).Login);
             }
 
-            
+
             SetChatImage(_imgInfo.Value.Img.Tag.ToString());
             SetStratImgIndex();
 
@@ -391,7 +410,7 @@ namespace TelegramVisualPart.Windows
 
             MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Forward);
             MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Delete);
-            MediaMenuEl.Margin = new Thickness(-200, MediaMenuEl.MenuPanel.Children.Count * _thickMult, 0, 0); 
+            MediaMenuEl.Margin = new Thickness(-200, MediaMenuEl.MenuPanel.Children.Count * _thickMult, 0, 0);
 
             UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
             UsersImageMenu.Margin = new Thickness(-200, UsersImageMenu.ChildrenPanel.Children.Count * _thickMult, 0, 0);
@@ -399,6 +418,8 @@ namespace TelegramVisualPart.Windows
 
         private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            _godWindow.ClearThirdFrame();
+
             if (_system.LoggedUser.UserImages.Count <= 1) return;
 
             //TO MAKE REMOVE USER IMAGE FROM DB
@@ -444,6 +465,9 @@ namespace TelegramVisualPart.Windows
         private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set move to message on chat
+            _godWindow.ClearThirdFrame();
+            _godWindow.ClearSecFrame();
+
 
             //Get message
             MediaAction mediaAction = GetChosenMedia();
@@ -550,6 +574,8 @@ namespace TelegramVisualPart.Windows
 
         private void Delete_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            _godWindow.ClearThirdFrame();
+
             //Get message
             MediaAction mediaAction = GetChosenMedia();
             if (mediaAction is null) return;
@@ -763,6 +789,8 @@ namespace TelegramVisualPart.Windows
             {
                 VideoToShow.RenderTransform = new RotateTransform(_rotation, width / 2, height / 2);
             }
+
+            VideoIsOpened();
         }
 
         private void SetImgMediaParam()
@@ -851,13 +879,94 @@ namespace TelegramVisualPart.Windows
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Left)
+            if (e.Key == Key.Left)
             {
                 MoveMediaToLeft();
             }
-            else if(e.Key == Key.Right)
+            else if (e.Key == Key.Right)
             {
                 MoveMediaToRight();
+            }
+        }
+
+
+        DispatcherTimer timer;
+        bool isDragging = false;
+        private bool _isPlaying = false;
+
+        private void VideoIsOpened()
+        {
+            if (VideoToShow.NaturalDuration.HasTimeSpan)
+            {
+                TimelineSlider.Maximum = VideoToShow.NaturalDuration.TimeSpan.TotalSeconds;
+                TotalTimeText.Text = VideoToShow.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+            }
+
+            timer.Start();
+            //VideoToShow.Play();
+            _isPlaying = true;
+
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (!isDragging && VideoToShow.NaturalDuration.HasTimeSpan)
+            {
+                TimelineSlider.Value = VideoToShow.Position.TotalSeconds;
+                CurrentTimeText.Text = VideoToShow.Position.ToString(@"mm\:ss");
+            }
+        }
+
+        private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isPlaying)
+            {
+                //SetLoadBehavior();
+                VideoToShow.Pause();
+                PlayPauseIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+            }
+            else
+            {
+                VideoToShow.Play();
+                PlayPauseIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+            }
+            _isPlaying = !_isPlaying;
+        }
+
+        private void TimelineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (isDragging || Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                VideoToShow.Position = TimeSpan.FromSeconds(TimelineSlider.Value);
+            }
+        }
+
+        private void TimelineSlider_DragStarted(object sender, EventArgs e)
+        {
+            SetLoadBehavior();
+            isDragging = true;
+            VideoToShow.Stop();
+        }
+
+        public void SetLoadBehavior()
+        {
+            if (VideoToShow.LoadedBehavior != MediaState.Manual) VideoToShow.LoadedBehavior = MediaState.Manual;
+            if (VideoToShow.UnloadedBehavior != MediaState.Manual) VideoToShow.UnloadedBehavior = MediaState.Manual;
+        }
+
+        private void TimelineSlider_DragCompleted(object sender, EventArgs e)
+        {
+            isDragging = false;
+            VideoToShow.Position = TimeSpan.FromSeconds(TimelineSlider.Value);
+
+            if (_isPlaying) VideoToShow.Play();
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (VideoToShow != null)
+            {
+                VideoToShow.Volume = e.NewValue;
             }
         }
     }

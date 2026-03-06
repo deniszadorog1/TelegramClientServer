@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -17,6 +18,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
@@ -25,6 +27,7 @@ using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
 using Image = System.Windows.Controls.Image;
+using Size = System.Windows.Size;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -79,30 +82,205 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetMessages()
         {
-            for (int i = 0; i < _bandPaths.Count; i++)
+            _maxHeight = 0;
+            if (_bandPaths.Count == 3)
             {
-                SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i]);
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                OneInGroupBorder.Width = _maxSize.Width;
+                OneInGroupBorder.Height = _maxSize.Height;
+
+                _maxHeight = 0;
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], _minSize, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], _minSize, _maxSize);
+
+                HideBandBorder(TwoInGroupBorder);
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+                HideBandBorder(SevenInGroupBorder);
+                HideBandBorder(EightInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
             }
-
-            if (_bandPaths.Count <= 6) BottomBandRow.Height = new GridLength(0);
-            if (_bandPaths.Count <= 3) MiddleBandRow.Height = new GridLength(0);
-            if (_bandPaths.Count <= 2) RightBandColumn.Width = new GridLength(0);
-            if (_bandPaths.Count <= 1) MiddleBandColumn.Width = new GridLength(0);
-
-
-            for(int i = _bandPaths.Count; i < _bandBorders.Count; i++)
+            else if (_bandPaths.Count == 4)
             {
-                _bandBorders[i].Width = 0;
-                _bandBorders[i].Height = 0;
-                _bandBorders[i].Visibility = Visibility.Hidden;
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                OneInGroupBorder.Width = _maxSize.Width;
+                OneInGroupBorder.Height = _maxSize.Height;
+
+                _maxHeight = 0;
+
+                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+
+                HideBandBorder(TwoInGroupBorder);
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(SevenInGroupBorder);
+                HideBandBorder(EightInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
             }
+            else if (_bandPaths.Count == 5)
+            {
+                DownBandRow.Height = new GridLength(0);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                OneInGroupBorder.Width = _maxSize.Width;
+                OneInGroupBorder.Height = _maxSize.Height;
+
+                _maxHeight = 0;
+
+                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], secondPart, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], secondPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[3], secondPart, _maxSize);
+                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[4], secondPart, _maxSize);
+
+
+                HideBandBorder(TwoInGroupBorder);
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
+            }
+            else if (_bandPaths.Count == 6)
+            {
+                DownBandRow.Height = new GridLength(0);
+
+                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], secondPart, _maxSize);
+                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], secondPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[2], secondPart, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[3], secondPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], secondPart, _maxSize);
+                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], secondPart, _maxSize);
+
+
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
+            }
+            else if (_bandPaths.Count == 7)
+            {
+                DownBandRow.Height = new GridLength(0);
+
+                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                Size basePart = new Size(_maxSize.Width, _maxSize.Height);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
+                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
+                SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
+                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
+                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+
+                HideBandBorder(FiveInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+            }
+            else if (_bandPaths.Count == 8)
+            {
+                DownBandRow.Height = new GridLength(0);
+
+                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
+                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
+                SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], secondPart, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[4], secondPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[5], thirdPart, _maxSize);
+                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[6], thirdPart, _maxSize);
+                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[7], thirdPart, _maxSize);
+
+                HideBandBorder(SixInGroupBorder);
+            }
+            else if(_bandPaths.Count == 9)
+            {
+                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
+                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+
+                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+
+                _maxHeight = 0;
+
+                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
+                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
+                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+
+
+                _maxHeight = 0;
+
+                SetBandImg(TenInGroupBorder, NineImg, _bandPaths[7], secondPart, _maxSize);
+                SetBandImg(ElevenInGroupBorder, NineImg, _bandPaths[8], secondPart, _maxSize);
+            }
+            else
+            {
+                DownBandRow.Height = new GridLength(0);
+
+                if (_bandPaths.Count <= 6) BottomBandRow.Height = new GridLength(0);
+                if (_bandPaths.Count <= 3) MiddleBandRow.Height = new GridLength(0);
+
+                for (int i = 0; i < _bandPaths.Count; i++)
+                {
+                    SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i], _minSize, _maxSize);
+                }
+
+                for (int i = _bandPaths.Count; i < _bandBorders.Count; i++)
+                {
+                    HideBandBorder(_bandBorders[i]);
+                }
+            }
+        }
+
+        public void HideBandBorder(Border border)
+        {
+            border.Width = 0;
+            border.Height = 0;
+            border.Visibility = Visibility.Hidden;
         }
 
         public string GetImageBorderSource(int messageId)
         {
-            for(int i = 0; i < _bandBorders.Count; i++)
+            for (int i = 0; i < _bandBorders.Count; i++)
             {
-                if (_bandBorders[i].Tag is not null && 
+                if (_bandBorders[i].Tag is not null &&
                     _bandBorders[i].Tag.ToString() == messageId.ToString())
                 {
                     string res = System.IO.Path.GetFileName(_bandPaths[i]);
@@ -112,53 +290,358 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return string.Empty;
         }
 
-        public async void SetBandImg(Border border, ImageBrush brush, string path)
-        {
-            path = System.IO.Path.GetFileName(path);
+        private double _maxHeight = 0;
 
+        Size _minSize = new Size(150, 150);
+        Size _maxSize = new Size(300, 250);
+
+        public async void SetBandImg(Border border, ImageBrush brush,
+            string path, Size minSize, Size maxSize)
+        {
+            const Stretch strech = Stretch.Fill;
+
+            path = System.IO.Path.GetFileName(path);
             string videoExt = System.IO.Path.GetExtension(path);
 
-            if(videoExt == ".mp4" || videoExt == ".amv")
+            if (videoExt == ".mp4" || videoExt == ".amv")
             {
-                string videoPath = FilesAction.GetFullVideoPath(path);
-                Image videoFrame = await VisHelper.GetFirstFrameAsync(videoPath);
+                Image videoFrame = await VisHelper.GetFirstFrameAsync(path);
 
                 brush.ImageSource = videoFrame.Source;
+
+                border.Visibility = Visibility.Visible;
+                brush.Stretch = strech;
+
+                border.Width = minSize.Width;
+                border.Height = minSize.Height;
+
                 return;
             }
 
-
             border.Visibility = Visibility.Visible;
-            brush.ImageSource = new BitmapImage(new Uri(
+            brush.Stretch = strech;
+
+            BitmapImage bitMap = new BitmapImage(new Uri(
                 FilesAction.GetFullChatImagePath(path), UriKind.Absolute));
+
+
+            double width = bitMap.Width / 2;
+            double height = bitMap.Height / 2;
+
+
+
+            border.Width = width > minSize.Width && width < maxSize.Width ? width : minSize.Width;
+            border.Height = height > minSize.Height && height < maxSize.Height ? height : minSize.Height;
+
+
+
+            if (_maxHeight == 0) _maxHeight = border.Height;
+            else border.Height = _maxHeight;
+
+
+            brush.ImageSource = bitMap;
         }
 
         private void SetBandBorderLists()
         {
-            _bandBorders.Add(OneInGroupBorder);
-            _bandBorders.Add(TwoInGroupBorder);
-            _bandBorders.Add(ThreeInGroupBorder);
-            _bandBorders.Add(FourInGroupBorder);
-            _bandBorders.Add(FiveInGroupBorder);
-            _bandBorders.Add(SixInGroupBorder);
-            _bandBorders.Add(SevenInGroupBorder);
-            _bandBorders.Add(EightInGroupBorder);
-            _bandBorders.Add(NineInGroupBorder);
+            _bandBorders.Clear();
+            _bandBrushes.Clear();
 
-            _bandBrushes.Add(OneImg);
-            _bandBrushes.Add(TwoImg);
-            _bandBrushes.Add(ThreeImg);
-            _bandBrushes.Add(FourImg);
-            _bandBrushes.Add(FiveImg);
-            _bandBrushes.Add(SixImg);
-            _bandBrushes.Add(SevenImg);
-            _bandBrushes.Add(EightImg);
-            _bandBrushes.Add(NineImg);
+            if (_bandPaths.Count == 2)
+            {
+                #region //Count two 
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+
+
+                #endregion
+            }
+            else if (_bandPaths.Count == 3)
+            {
+                #region //Count three
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 4)
+            {
+                #region //Count four
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SixImg);
+
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 5)
+            {
+                #region //Count five
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 6)
+            {
+                #region //Count six
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 7)
+            {
+                #region //Count seven
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 8)
+            {
+                #region //Count eight
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+            else if (_bandPaths.Count == 9)
+            {
+                #region //Count base
+                _bandBorders.Add(OneInGroupBorder);
+
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+                
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);                
+                _bandBrushes.Add(TwelveImg);
+                
+                #endregion
+            }
+            else
+            {
+                #region //Count base
+                _bandBorders.Add(OneInGroupBorder);
+                _bandBorders.Add(TwoInGroupBorder);
+                _bandBorders.Add(ThreeInGroupBorder);
+                _bandBorders.Add(FourInGroupBorder);
+                _bandBorders.Add(FiveInGroupBorder);
+                _bandBorders.Add(SixInGroupBorder);
+                _bandBorders.Add(SevenInGroupBorder);
+                _bandBorders.Add(EightInGroupBorder);
+                _bandBorders.Add(NineInGroupBorder);
+                _bandBorders.Add(TenInGroupBorder);
+                _bandBorders.Add(ElevenInGroupBorder);
+                _bandBorders.Add(TwelveInGroupBorder);
+
+                _bandBrushes.Add(OneImg);
+                _bandBrushes.Add(TwoImg);
+                _bandBrushes.Add(ThreeImg);
+                _bandBrushes.Add(FourImg);
+                _bandBrushes.Add(FiveImg);
+                _bandBrushes.Add(SixImg);
+                _bandBrushes.Add(SevenImg);
+                _bandBrushes.Add(EightImg);
+                _bandBrushes.Add(NineImg);
+                _bandBrushes.Add(TenImg);
+                _bandBrushes.Add(ElevenImg);
+                _bandBrushes.Add(TwelveImg);
+                #endregion
+            }
+
         }
 
         public void SetTagIdsToBandBorders(List<MediaAction> medias)
         {
-            for(int i = 0; i < medias.Count; i++)
+            for (int i = 0; i < medias.Count; i++)
             {
                 _bandBorders[i].Tag = medias[i].Id;
             }
@@ -168,13 +651,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             List<int> res = new List<int>();
 
-            for(int i = 0; i < _bandBorders.Count; i++)
+            for (int i = 0; i < _bandBorders.Count; i++)
             {
-                if (_bandBorders[i] is not null &&  _bandBorders[i].Tag is not null &&
+                if (_bandBorders[i] is not null && _bandBorders[i].Tag is not null &&
                     int.TryParse(_bandBorders[i].Tag.ToString(), out int id))
                 {
                     res.Add(id);
-                } 
+                }
             }
             return res;
         }
@@ -182,7 +665,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void HideBordersExceptBand()
         {
             GifBorder.Visibility = Visibility.Hidden;
-            VideoBorder.Visibility = Visibility.Hidden;
+            MyVideoPlayer.Visibility = Visibility.Hidden;
             ImageBorder.Visibility = Visibility.Hidden;
 
             ImgGroupBorder.Visibility = Visibility.Visible;
@@ -266,7 +749,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetForwardedFromRow();
         }
 
-        private const int _minMediaSize = 125;
+        private const int _minMediaSize = 205;
         private const int _maxMediaSize = 225;
 
         public void SetImgMessageSize(Image img, Border border)
@@ -314,7 +797,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetGif(string gifPath)
         {
             ImgMessage = null;
-            VideoBorder.Visibility = Visibility.Hidden;
+            MyVideoPlayer.Visibility = Visibility.Hidden;
             ImageBorder.Visibility = Visibility.Hidden;
 
             var uri = new Uri(gifPath, UriKind.RelativeOrAbsolute);
@@ -359,7 +842,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetTickEvent();
 
             SetTime(mediaLogicEl.SentTime);
+
         }
+
 
         public void SetTickEvent()
         {
@@ -422,13 +907,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Image img = FilesAction.GetImagePreviewForVideo(fileName);
 
             ImgMessage.ImageSource = img.Source;
+            VideoParams.Visibility = Visibility.Visible;
+
+            if (_media.NaturalDuration.HasTimeSpan)
+            {
+                VideoDuration.Text = _media.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+            }
 
             SetImgMessageSize(img, ImageBorder);
         }
 
         public void HideAllBorders()
         {
-            VideoBorder.Visibility = Visibility.Hidden;
+            MyVideoPlayer.Visibility = Visibility.Hidden;
             ImageBorder.Visibility = Visibility.Hidden;
             GifBorder.Visibility = Visibility.Hidden;
         }
@@ -642,10 +1133,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_stickerPath is not null && _stickerPath != string.Empty) return _stickerPath;
             if (_message is not null) return _message.MediaName;
 
-            Console.WriteLine(GifImage.Source);
-            Console.WriteLine(ImgMessage.ImageSource);
-            Console.WriteLine(MyVideoPlayer);
-
             return string.Empty;
         }
 
@@ -658,7 +1145,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Cursor = null;
         }
+
+
     }
-
-
 }

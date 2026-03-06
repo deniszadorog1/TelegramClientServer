@@ -35,8 +35,7 @@
         PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
         
         MaxHeight="1040"
-        MaxWidth="1930"
-        >
+        MaxWidth="1930">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"

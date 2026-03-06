@@ -51,7 +51,7 @@
 
         <Border Background="{StaticResource DarkThemeOne}"  Opacity="0.85" 
                 Grid.RowSpan="2" Name="BgBorder"/>
-          
+
         <Grid Grid.Row="0" Name="UpperBorder" 
               Background="Transparent"
                   MouseLeftButtonDown="DragWindow"
@@ -113,9 +113,66 @@
             <Grid Name="ElementPanel" Grid.Column="1" Grid.Row="0">
                 <Image Name="ImageToShow" Stretch="Uniform" Loaded="ImageToShow_Loaded"/>
 
-                <MediaElement Name="VideoToShow"
-                      Stretch="Fill"
-                      MediaOpened="VideoToShow_MediaOpened"/>
+                <StackPanel Name="VideoPanel">
+                    <MediaElement Name="VideoToShow"
+                                  Stretch="Fill"
+                                  ScrubbingEnabled="True"   
+                                  MediaOpened="VideoToShow_MediaOpened"/>
+
+                    <Grid>
+                        <DockPanel Margin="5,2" Width="100" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="VolumeHigh" 
+                                 Foreground="White" 
+                                 VerticalAlignment="Center" 
+                                 Width="20" Height="20"/>
+
+                            <Slider Name="VolumeSlider" 
+                                Minimum="0" Maximum="1" 
+                                Value="0.5" 
+                                Margin="5,0"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource MaterialDesignSlider}"
+                                ValueChanged="VolumeSlider_ValueChanged">
+                                <Slider.Resources>
+                                    <SolidColorBrush x:Key="MaterialDesign.Brush.Primary" Color="White" />
+                                    <SolidColorBrush x:Key="MaterialDesign.Brush.Secondary" Color="Gray" />
+                                </Slider.Resources>
+                            </Slider>
+                        </DockPanel>
+
+
+                        <Button Name="PlayPauseButton" 
+                            Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                            HorizontalAlignment="Center" Margin="0,5"
+                            Width="30" Height="30" Click="PlayPauseButton_Click"
+                            Background="{StaticResource TempActiveTextColor}">
+                            <materialDesign:PackIcon Name="PlayPauseIcon" Kind="Pause" />
+                        </Button>
+                    </Grid>
+                    
+                    <Slider Name="TimelineSlider" 
+                            Minimum="0" 
+                            IsMoveToPointEnabled="True"
+                            IsSnapToTickEnabled="False"
+                            Thumb.DragStarted="TimelineSlider_DragStarted" 
+                            Thumb.DragCompleted="TimelineSlider_DragCompleted" 
+                            ValueChanged="TimelineSlider_ValueChanged"
+                            Style="{StaticResource MaterialDesignSlider}">
+
+                        <Slider.Resources>
+                            <SolidColorBrush x:Key="MaterialDesign.Brush.Primary" Color="Red" />
+                            <SolidColorBrush x:Key="MaterialDesign.Brush.Secondary" Color="DarkRed" />
+                        </Slider.Resources>
+
+                    </Slider>
+
+
+                    <DockPanel>
+                        <TextBlock Name="CurrentTimeText" Text="00:00" Foreground="White" FontSize="10"/>
+                        <TextBlock Name="TotalTimeText" Text="00:00" Foreground="White" FontSize="10" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                </StackPanel>
+
             </Grid>
 
 
@@ -166,5 +223,5 @@
 
         </Grid>
     </Grid>
-    
+
 </Window>

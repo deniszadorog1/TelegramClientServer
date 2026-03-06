@@ -6,22 +6,31 @@
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="65" d:DesignWidth="200" 
+             d:DesignHeight="365" d:DesignWidth="300" 
+             
              xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              MouseEnter="UserControl_MouseEnter"
              MouseLeave="UserControl_MouseLeave">
 
     <UserControl.Resources>
         <Style x:Key="ImageBorderStyle" TargetType="Border">
-            <Setter Property="Width" Value="75"/>
-            <Setter Property="Height" Value="75"/>
+
+            <!-- <Setter Property="Width" Value="75"/>
+            <Setter Property="Height" Value="75"/>-->
+
             <Setter Property="Background" Value="Green"/>
+
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush Stretch="Uniform"/>
+                </Setter.Value>
+            </Setter>
 
             <EventSetter Event="MouseEnter" Handler="Border_MouseEnter"/>
             <EventSetter Event="MouseLeave" Handler="Border_MouseLeave"/>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" Name="ImageColumnSize"/>
@@ -49,112 +58,166 @@
             </Grid.RowDefinitions>
 
             <Border Name="ImageBorder" Grid.Row="1"
-                    Visibility="Hidden"
+                    Visibility="Visible"
                     CornerRadius="15" BorderThickness="1" 
                     Width="125" Height="125">
                 <Border.Background>
                     <ImageBrush x:Name="ImgMessage" 
                                 ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                 </Border.Background>
+
+                <Grid Name="VideoParams" Visibility="Hidden">
+                    <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                            Height="20" Width="55" Background="Black" CornerRadius="5" 
+                            Opacity="0.5">
+
+                        <TextBlock Name="VideoDuration" Text="0000" 
+                                   VerticalAlignment="Center"
+                                   Margin="5 0 0 0" Foreground="White"/>
+                    </Border>
+
+                    <Grid Name="BottomVideoLine" Height="5" 
+                          Background="{StaticResource TempActiveTextColor}" 
+                          Margin="10 0 10 0" 
+                          VerticalAlignment="Bottom"/>
+                </Grid>
             </Border>
 
             <Border Name="ImgGroupBorder" 
-                    Grid.Row="1" 
+                    Grid.Row="1"         
                     Visibility="Hidden">
                 <Grid Name="ImgGroupGrid" 
-                      Grid.Row="1" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Name = "TopBandRow"/>
-                        <RowDefinition Name = "MiddleBandRow"/>
-                        <RowDefinition Name = "BottomBandRow"/>
-                    </Grid.RowDefinitions>
+                      Grid.Row="1">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Name = "LeftBandColumn"/>
-                        <ColumnDefinition Name = "MiddleBandColumn"/>
-                        <ColumnDefinition Name = "RightBandColumn"/>
+                        <ColumnDefinition Name="FirstMediaColumn" Width="0"/>
+                        <ColumnDefinition Name="SecondMediaColumn"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Name="OneInGroupBorder" 
-                            Grid.Row="0" Grid.Column="0"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="OneImg"
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Name = "TopBandRow" />
+                        <RowDefinition Name = "MiddleBandRow"/>
+                        <RowDefinition Name = "BottomBandRow"/>
+                        <RowDefinition Name = "DownBandRow"/>
+                    </Grid.RowDefinitions>
 
-                    <Border Name="TwoInGroupBorder" 
-                            Grid.Row="0" Grid.Column="1"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="TwoImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                    <StackPanel Name="LeftColumn"
+                                Grid.Column="0" Grid.Row="0"
+                                Grid.RowSpan="3">
 
-                    <Border Name="ThreeInGroupBorder" 
-                            Grid.Row="0" Grid.Column="2"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="ThreeImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                    </StackPanel>
 
-                    <Border Name="FourInGroupBorder" 
-                            Grid.Row="1" Grid.Column="0"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="FourImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                    <StackPanel Name="UpperRowPanel" 
+                                Grid.Row="0" Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Border Name="OneInGroupBorder" 
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="OneImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
 
-                    <Border Name="FiveInGroupBorder" 
-                            Grid.Row="1" Grid.Column="1"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="FiveImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                        <Border Name="TwoInGroupBorder" 
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="TwoImg"
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
 
-                    <Border Name="SixInGroupBorder" 
-                            Grid.Row="1" Grid.Column="2"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="SixImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                        <Border Name="ThreeInGroupBorder" 
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="ThreeImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
 
-                    <Border Name="SevenInGroupBorder" 
-                            Grid.Row="2" Grid.Column="0"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="SevenImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                    <StackPanel Name="MiddleRowPanel" 
+                                Grid.Row="1" Grid.Column="1"                                
+                                Orientation="Horizontal">
+                        <Border Name="FourInGroupBorder" 
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="FourImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
 
-                    <Border Name="EightInGroupBorder" 
-                            Grid.Row="2" Grid.Column="1"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="EightImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                        <Border Name="FiveInGroupBorder" 
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="FiveImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
 
-                    <Border Name="NineInGroupBorder" 
-                            Grid.Row="2" Grid.Column="2"
-                            Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                        <Border.Background>
-                            <ImageBrush x:Name="NineImg" 
-                                ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
-                        </Border.Background>
-                    </Border>
+                        <Border Name="SixInGroupBorder"
+                                Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="SixImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Name="BottomRowPanel" 
+                                Grid.Row="2" Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Border Name="SevenInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="SevenImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+
+                        <Border Name="EightInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="EightImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+
+                        <Border Name="NineInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="NineImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
+                    
+                    <StackPanel Name="DownRowPanel" 
+                                Grid.Row="3" Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Border Name="TenInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="TenImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+
+                        <Border Name="ElevenInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="ElevenImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+
+                        <Border Name="TwelveInGroupBorder"
+                                    Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                            <Border.Background>
+                                <ImageBrush x:Name="TwelveImg" 
+                                    ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
+                            </Border.Background>
+                        </Border>
+                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -168,18 +231,26 @@
                 <Image Name="GifImage"/>
             </Border>
 
-            <Border Name="VideoBorder" Grid.Row="1"
-                    Visibility="Hidden"
-                    CornerRadius="20"
-                    Background="Black"
-                    Width="125" Height="125"
-                    ClipToBounds="True"
-                    SnapsToDevicePixels="True">
-                <MediaElement Name="MyVideoPlayer"
+            <Border Name="VideoBorder" 
+                        Grid.Row="1"
+                        Visibility="Hidden"
+                        CornerRadius="20"
+                        Background="Black"
+                        Width="125" Height="125"
+                        ClipToBounds="True"
+                        SnapsToDevicePixels="True">
+                <Grid>
+                    <MediaElement Name="MyVideoPlayer"
                               LoadedBehavior="Manual"
                               UnloadedBehavior="Manual"
                               Stretch="UniformToFill"/>
+
+
+                </Grid>
             </Border>
+
+
+
 
             <Grid VerticalAlignment="Bottom" Grid.Row="1"
                   HorizontalAlignment="Right"

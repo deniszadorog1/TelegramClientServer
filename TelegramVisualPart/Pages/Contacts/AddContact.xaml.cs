@@ -56,6 +56,7 @@ namespace TelegramVisualPart.Pages.Contacts
                 _system.LoggedUser.PhoneNumber == PhoneBox.Text.Trim('+'))
             {
                 ClearFields();
+                ((MainWindow)Window.GetWindow(this)).SetTemporaryText("Not good bruh");
                 return;
             }
 

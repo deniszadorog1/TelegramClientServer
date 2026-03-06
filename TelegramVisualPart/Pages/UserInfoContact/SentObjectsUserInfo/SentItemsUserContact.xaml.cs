@@ -26,8 +26,11 @@ using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.UserControls.ChatControls;
+using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.Windows;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
@@ -295,6 +298,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             return res;
         }
 
+        private MesMenu _menu;
         public void SetImagesInPanel()
         {
             SetChatMediaObjs();
@@ -311,13 +315,89 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
                 _imgs[i].Margin = new Thickness(5);
 
-                _imgs[i].PreviewMouseDown += MediaImages_PreviewMouseDown;
+                _imgs[i].PreviewMouseLeftButtonDown += MediaImages_PreviewMouseDown;
+
+                int index = i;
+                _imgs[i].PreviewMouseRightButtonDown += (sender, e) =>
+                {
+                    MessageMenu.Children.Clear();
+
+                    _menu = new MesMenu(_system, _medias[index]);
+
+                    ListBoxItem item = ((MainWindow)Window.GetWindow(this)).GetChatListBoxItemByMesId(_medias[index].Id);
+                    if (item is null) return;
+                    _menu.SetClickedListBoxItem(item);
+
+                    System.Windows.Point point = e.GetPosition(this);
+                    _menu.Loaded += (send, ev) =>
+                    {
+                        //is x to big
+                        if (point.X + _menu.ActualWidth > this.ActualWidth)
+                        {
+                            Canvas.SetLeft(_menu, point.X - _menu.Width);
+                        }
+                        else Canvas.SetLeft(_menu, point.X);
+
+                        //is y too big
+                        if (point.Y + _menu.ActualHeight > this.ActualHeight)
+                        {
+                            Canvas.SetTop(_menu, this.ActualHeight - _menu.ActualHeight);
+                        }
+                        else Canvas.SetTop(_menu, point.Y);
+
+                        Keyboard.ClearFocus();
+                    };
+
+                    MessageMenu.Children.Add(_menu);
+                    SetMediaEvents();
+
+                };
 
                 _imgs[i].MouseEnter += MediaElement_MouseEnter;
                 _imgs[i].MouseLeave += MediaElement_MouseLeave;
 
+
+
                 ElemsPanel.Children.Add(_imgs[i]);
             }
+        }
+
+        public void SetMediaEvents()
+        {
+            if (_menu is null) return;
+
+            _menu.GoToMessageAct += () =>
+            {
+                ClearPages();
+                ((MainWindow)Window.GetWindow(this)).ShowChosenMessageByMessageId(_menu.GetMessage().Id);
+            };
+
+            _menu.ReplyAct += () =>
+            {
+                ClearPages();
+
+                ListBoxItem item = _menu.GetChosenListBoxItem();
+                TelegramLib.MainClasses.Messages.Message mes = _menu.GetMessage();
+               
+                if (item.Content is not UserControl control || mes is null) return;
+
+                ((MainWindow)Window.GetWindow(this)).SetReplyMessage(control, new List<TelegramLib.MainClasses.Messages.Message>() { mes });
+            };
+
+            _menu.DeleteAct += () =>
+            {
+                ClearPages();
+                TelegramLib.MainClasses.Messages.Message mes = _menu.GetMessage();
+                if (mes is null) return;
+
+                ((MainWindow)Window.GetWindow(this)).DeleteMessage(mes);
+            };
+        }
+
+        public void ClearPages()
+        {
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
+            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
         private List<MediaAction> _medias = new List<MediaAction>();
