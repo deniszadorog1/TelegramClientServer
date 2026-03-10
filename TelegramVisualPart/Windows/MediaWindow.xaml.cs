@@ -1,8 +1,10 @@
 ﻿using MahApps.Metro.Behaviors;
 using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Routing.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -69,18 +71,29 @@ namespace TelegramVisualPart.Windows
 
             RemoveParamFromMenu();
 
-            if (_type == MediaShowType.Videos) SetVideoTimer();
+            if (_type == MediaShowType.Videos) SetVideoTimers();
             else VideoPanel.Visibility = Visibility.Hidden;
         }
 
         private double _tickTime = 0.1;
-        public void SetVideoTimer()
+        public void SetVideoTimers()
         {
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(_tickTime);
             timer.Tick += timer_Tick;
 
-            //SetLoadBehavior();
+            _videoLimitTimer = new DispatcherTimer();
+            _videoLimitTimer.Interval = TimeSpan.FromSeconds(_videoDurCheckTime);
+            _videoLimitTimer.Tick += VideoLimitTimer_Tick;
+        }
+
+        private void VideoLimitTimer_Tick(object sender, EventArgs e)
+        {
+            if (VideoToShow.Position >= TimeSpan.FromSeconds(_maxVideoDuration))
+            {
+                VideoToShow.Position = TimeSpan.Zero;
+                VideoToShow.Play();
+            }
         }
 
         public void SetMediaTypeString(string mediaName)
@@ -168,8 +181,6 @@ namespace TelegramVisualPart.Windows
         public void SetMediaFileByTempIndex()
         {
             HideAllShows();
-            //MediaType type = FilesAction.GetMediaTypeFromFilename(_mediaPaths[_tempMediaIndex]);
-
             if (_type == MediaShowType.Gif)
             {
                 ImageToShow.Visibility = Visibility.Visible;
@@ -410,7 +421,7 @@ namespace TelegramVisualPart.Windows
 
             MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Forward);
             MediaMenuEl.MenuPanel.Children.Remove(MediaMenuEl.Delete);
-            MediaMenuEl.Margin = new Thickness(-200, MediaMenuEl.MenuPanel.Children.Count * _thickMult, 0, 0);
+            //MediaMenuEl.Margin = new Thickness(-200, MediaMenuEl.MenuPanel.Children.Count * _thickMult, 0, 0);
 
             UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
             UsersImageMenu.Margin = new Thickness(-200, UsersImageMenu.ChildrenPanel.Children.Count * _thickMult, 0, 0);
@@ -632,10 +643,36 @@ namespace TelegramVisualPart.Windows
             this.WindowState = WindowState.Minimized;
         }
 
-        private readonly Size _littleWindowSize = new Size(800, 600);
+        private readonly Size _littleWindowSize = new Size(1000, 550);
+
+        private bool _isMax = false;
+
         private void Maximize_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
+
+            if (!_isMax)
+            {
+                this.Height = SystemParameters.WorkArea.Height;
+                this.Width = SystemParameters.WorkArea.Width;
+
+                this.Left = SystemParameters.WorkArea.Left;
+                this.Top = SystemParameters.WorkArea.Top;
+
+                _isMax = true;
+            }
+            else
+            {
+                this.Height = _littleWindowSize.Height;
+                this.Width = _littleWindowSize.Width;
+
+                this.Left = (SystemParameters.WorkArea.Width - this.Width) / 2 + SystemParameters.WorkArea.Left;
+                this.Top = (SystemParameters.WorkArea.Height - this.Height) / 2 + SystemParameters.WorkArea.Top;
+
+                this.WindowState = WindowState.Normal;
+                _isMax = false;
+            }
+
+/*            if (WindowState == WindowState.Maximized)
             {
                 this.WindowState = WindowState.Normal;
 
@@ -652,7 +689,7 @@ namespace TelegramVisualPart.Windows
                 return;
             }
             this.WindowState = WindowState.Maximized;
-            WindowSizerIcon.Kind = PackIconKind.WindowRestore;
+            WindowSizerIcon.Kind = PackIconKind.WindowRestore;*/
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -704,11 +741,6 @@ namespace TelegramVisualPart.Windows
 
         }
 
-        private void MenuBut_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (MediaMenuEl is not null) MediaMenuEl.Visibility = Visibility.Visible;
-            else UsersImageMenu.Visibility = Visibility.Visible;
-        }
 
         private void MediaMenu_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -791,6 +823,11 @@ namespace TelegramVisualPart.Windows
             }
 
             VideoIsOpened();
+
+            double maxDuration = VideoToShow.NaturalDuration.TimeSpan.TotalSeconds;
+            TimelineSlider.Maximum = Math.Min(maxDuration, 20);
+
+            _videoLimitTimer.Start();
         }
 
         private void SetImgMediaParam()
@@ -890,8 +927,13 @@ namespace TelegramVisualPart.Windows
         }
 
 
-        DispatcherTimer timer;
-        bool isDragging = false;
+        private DispatcherTimer timer;
+        private DispatcherTimer _videoLimitTimer;
+
+        private const int _maxVideoDuration = 20;
+        private const int _videoDurCheckTime = 500;
+        
+        private bool isDragging = false;
         private bool _isPlaying = false;
 
         private void VideoIsOpened()
@@ -912,9 +954,14 @@ namespace TelegramVisualPart.Windows
         {
             if (!isDragging && VideoToShow.NaturalDuration.HasTimeSpan)
             {
-                TimelineSlider.Value = VideoToShow.Position.TotalSeconds;
-                CurrentTimeText.Text = VideoToShow.Position.ToString(@"mm\:ss");
+                UpdateVideoDurationBlocks();
             }
+        }
+
+        public void UpdateVideoDurationBlocks()
+        {
+            TimelineSlider.Value = VideoToShow.Position.TotalSeconds;
+            CurrentTimeText.Text = VideoToShow.Position.ToString(@"mm\:ss");
         }
 
         private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
@@ -931,6 +978,9 @@ namespace TelegramVisualPart.Windows
                 PlayPauseIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
             }
             _isPlaying = !_isPlaying;
+
+            if (_videoLimitTimer.IsEnabled) _videoLimitTimer.Stop();
+            else _videoLimitTimer.Start();
         }
 
         private void TimelineSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -938,6 +988,7 @@ namespace TelegramVisualPart.Windows
             if (isDragging || Mouse.LeftButton == MouseButtonState.Pressed)
             {
                 VideoToShow.Position = TimeSpan.FromSeconds(TimelineSlider.Value);
+                UpdateVideoDurationBlocks();
             }
         }
 
@@ -968,6 +1019,91 @@ namespace TelegramVisualPart.Windows
             {
                 VideoToShow.Volume = e.NewValue;
             }
+        }
+
+        private void MenuBut_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (MediaMenuEl is not null)
+            {
+                MediaMenuEl.Visibility = Visibility.Visible;
+
+                MediaMenuEl.VerticalAlignment = VerticalAlignment.Bottom;
+                MediaMenuEl.HorizontalAlignment = HorizontalAlignment.Right;
+                MediaMenuEl.Margin = new Thickness(0);
+
+                return;
+            }
+            UsersImageMenu.Visibility = Visibility.Visible;
+
+            UsersImageMenu.VerticalAlignment = VerticalAlignment.Bottom;
+            UsersImageMenu.HorizontalAlignment = HorizontalAlignment.Right;
+            UsersImageMenu.Margin = new Thickness(0);
+        }
+
+        private void VideoToShow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SetMediaMenuPosition(e);
+        }
+
+        public void SetMediaMenuPosition(MouseButtonEventArgs e)
+        {
+            MediaMenuEl.VerticalAlignment = VerticalAlignment.Top;
+            MediaMenuEl.HorizontalAlignment = HorizontalAlignment.Left;
+
+            MediaMenuEl.Visibility = Visibility.Visible;
+            MediaMenuEl.UpdateLayout();
+
+            (double x, double y) cord = GetMenuMargin
+                (e, MediaMenuEl.ActualWidth, MediaMenuEl.ActualHeight);
+
+            MediaMenuEl.Margin = new Thickness(cord.x, cord.y, 0, 0);
+
+            e.Handled = true;
+        }
+
+        private void ImageToShow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MediaMenuEl is not null)
+            {
+                SetMediaMenuPosition(e);
+                return;
+            }
+
+            UsersImageMenu.VerticalAlignment = VerticalAlignment.Top;
+            UsersImageMenu.HorizontalAlignment = HorizontalAlignment.Left;
+
+            UsersImageMenu.Visibility = Visibility.Visible;
+            UsersImageMenu.UpdateLayout();
+
+            (double x, double y) cord = GetMenuMargin
+                (e, UsersImageMenu.ActualWidth, UsersImageMenu.ActualHeight);
+
+            UsersImageMenu.Margin = new Thickness(cord.x, cord.y, 0, 0);
+
+            e.Handled = true;
+        }
+
+        private (double, double) GetMenuMargin(MouseButtonEventArgs e, double menuW, double menuH)
+        {
+            Point clickPoint = e.GetPosition(this);
+
+
+            double winW = this.ActualWidth;
+            double winH = this.ActualHeight;
+
+            double x = clickPoint.X;
+            double y = clickPoint.Y;
+
+            if (x + menuW > winW)
+                x = winW - menuW;
+
+            if (y + menuH > winH)
+                y = winH - menuH;
+
+            x = Math.Max(0, x);
+            y = Math.Max(0, y);
+
+            return (x, y);
         }
     }
 }

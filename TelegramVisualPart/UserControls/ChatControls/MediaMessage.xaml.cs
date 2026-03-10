@@ -15,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Converters;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -56,6 +57,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private List<string> _bandPaths = new List<string>();
         public List<Border> _bandBorders = new List<Border>();
         private List<ImageBrush> _bandBrushes = new List<ImageBrush>();
+        public List<Border> _selectBorders = new List<Border>();
 
         //Send band of medias
         public MediaMessage(TelSystem system, List<string> paths)
@@ -80,7 +82,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public bool IsBandMedia() => _bandPaths.Count > 0;
 
-        public void SetMessages()
+        public async void SetMessages()
         {
             _maxHeight = 0;
             if (_bandPaths.Count == 3)
@@ -94,8 +96,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 _maxHeight = 0;
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], _minSize, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], _minSize, _maxSize);
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], _minSize, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], _minSize, _maxSize);
+
+                SetupImageRow(
+                    new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                    new List<ImageBrush>() { FourImg, FiveImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
+                    _maxSize.Width, _maxSize.Height);
 
                 HideBandBorder(TwoInGroupBorder);
                 HideBandBorder(ThreeInGroupBorder);
@@ -115,11 +123,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 _maxHeight = 0;
 
-                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
-                SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                // SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+
+                SetupImageRow(
+                    new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
+                    new List<ImageBrush>() { FourImg, FiveImg, SixImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
+                    _maxSize.Width, _maxSize.Height);
 
                 HideBandBorder(TwoInGroupBorder);
                 HideBandBorder(ThreeInGroupBorder);
@@ -135,17 +149,29 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 OneInGroupBorder.Width = _maxSize.Width;
                 OneInGroupBorder.Height = _maxSize.Height;
 
-                _maxHeight = 0;
+                //_maxHeight = 0;
 
-                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+                // Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], secondPart, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], secondPart, _maxSize);
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], secondPart, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], secondPart, _maxSize);
 
-                _maxHeight = 0;
+                SetupImageRow(
+                     new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                     new List<ImageBrush>() { FourImg, FiveImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
+                     _maxSize.Width, _maxSize.Height);
 
-                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[3], secondPart, _maxSize);
-                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[4], secondPart, _maxSize);
+                //_maxHeight = 0;
+
+                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[3], secondPart, _maxSize);
+                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[4], secondPart, _maxSize);
+
+                SetupImageRow(
+                     new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
+                     new List<ImageBrush>() { SevenImg, EightImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
+                     _maxSize.Width, _maxSize.Height);
 
 
                 HideBandBorder(TwoInGroupBorder);
@@ -157,20 +183,36 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 DownBandRow.Height = new GridLength(0);
 
-                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], secondPart, _maxSize);
-                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], secondPart, _maxSize);
+                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], secondPart, _maxSize);
+                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], secondPart, _maxSize);
 
-                _maxHeight = 0;
+                SetupImageRow(
+                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
+                     new List<ImageBrush>() { OneImg, TwoImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
+                     _maxSize.Width, _maxSize.Height);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[2], secondPart, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[3], secondPart, _maxSize);
+                //_maxHeight = 0;
 
-                _maxHeight = 0;
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[2], secondPart, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[3], secondPart, _maxSize);
+                SetupImageRow(
+                     new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                     new List<ImageBrush>() { FourImg, FiveImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[2], _bandPaths[3] }),
+                     _maxSize.Width, _maxSize.Height);
 
-                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], secondPart, _maxSize);
-                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], secondPart, _maxSize);
+                //_maxHeight = 0;
+                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], secondPart, _maxSize);
+                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], secondPart, _maxSize);
+
+                SetupImageRow(
+                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
+                      new List<ImageBrush>() { SevenImg, EightImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5] }),
+                      _maxSize.Width, _maxSize.Height);
 
 
                 HideBandBorder(ThreeInGroupBorder);
@@ -184,19 +226,36 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
                 Size basePart = new Size(_maxSize.Width, _maxSize.Height);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
-                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
-                SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
+                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
+                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
+                //SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
 
-                _maxHeight = 0;
+                SetupImageRow(
+                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
+                     new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
+                     _maxSize.Width, _maxSize.Height);
 
+                //_maxHeight = 0;
                 SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
 
-                _maxHeight = 0;
+                /*  SetupImageRow(
+                        new List<Border>() { FourInGroupBorder },
+                        new List<ImageBrush>() { FourImg },
+                        await GetBitImagesByPaths(new List<string>() { _bandPaths[3] }),
+                        _maxSize.Width, _maxSize.Height);*/
 
-                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
-                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
-                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+                //_maxHeight = 0;
+
+                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
+                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
+                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+
+                SetupImageRow(
+                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
+                      _maxSize.Width, _maxSize.Height);
 
                 HideBandBorder(FiveInGroupBorder);
                 HideBandBorder(SixInGroupBorder);
@@ -205,50 +264,85 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 DownBandRow.Height = new GridLength(0);
 
-                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
-                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height);
+                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
-                SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
-                SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
+                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
+                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
+                //SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
 
-                _maxHeight = 0;
+                SetupImageRow(
+                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
+                     new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
+                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
+                     _maxSize.Width, _maxSize.Height);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], secondPart, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[4], secondPart, _maxSize);
+                //_maxHeight = 0;
 
-                _maxHeight = 0;
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], secondPart, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[4], secondPart, _maxSize);
 
-                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[5], thirdPart, _maxSize);
-                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[6], thirdPart, _maxSize);
-                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[7], thirdPart, _maxSize);
+                SetupImageRow(
+                      new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                      new List<ImageBrush>() { FourImg, FiveImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
+                      _maxSize.Width, _maxSize.Height);
+
+
+                //_maxHeight = 0;
+
+                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[5], thirdPart, _maxSize);
+                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[6], thirdPart, _maxSize);
+                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[7], thirdPart, _maxSize);
+
+                SetupImageRow(
+                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[5], _bandPaths[6], _bandPaths[7] }),
+                      _maxSize.Width, _maxSize.Height);
 
                 HideBandBorder(SixInGroupBorder);
             }
-            else if(_bandPaths.Count == 9)
+            else if (_bandPaths.Count == 9)
             {
-                Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
-                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
+                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
 
                 SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
 
-                _maxHeight = 0;
+                //_maxHeight = 0;
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                //SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
-                SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
-                SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+                SetupImageRow(
+                      new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
+                      new List<ImageBrush>() { FourImg, FiveImg, SixImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
+                      _maxSize.Width, _maxSize.Height);
 
-                _maxHeight = 0;
+                //_maxHeight = 0;
 
-                SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
-                SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
-                SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
+                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
+                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
 
+                SetupImageRow(
+                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
+                      _maxSize.Width, _maxSize.Height);
 
-                _maxHeight = 0;
+                //_maxHeight = 0;
+                //SetBandImg(TenInGroupBorder, NineImg, _bandPaths[7], secondPart, _maxSize);
+                //SetBandImg(ElevenInGroupBorder, NineImg, _bandPaths[8], secondPart, _maxSize);
 
-                SetBandImg(TenInGroupBorder, NineImg, _bandPaths[7], secondPart, _maxSize);
-                SetBandImg(ElevenInGroupBorder, NineImg, _bandPaths[8], secondPart, _maxSize);
+                SetupImageRow(
+                      new List<Border>() { TenInGroupBorder, ElevenInGroupBorder },
+                      new List<ImageBrush>() { TenImg, ElevenImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[7], _bandPaths[8] }),
+                      _maxSize.Width, _maxSize.Height);
+
             }
             else
             {
@@ -267,6 +361,31 @@ namespace TelegramVisualPart.UserControls.ChatControls
                     HideBandBorder(_bandBorders[i]);
                 }
             }
+        }
+
+        public async Task<List<BitmapImage>> GetBitImagesByPaths(List<string> paths)
+        {
+            List<BitmapImage> res = new List<BitmapImage>();
+
+            foreach (var path in paths)
+            {
+                string tempPath = System.IO.Path.GetFileName(path);
+                string videoExt = System.IO.Path.GetExtension(tempPath);
+
+                if (videoExt == ".mp4" || videoExt == ".amv")
+                {
+                    Image videoFrame = await VisHelper.GetFirstFrameAsync(tempPath);
+
+                    if (videoFrame.Source is BitmapImage bitImg) res.Add(bitImg);
+                    continue;
+                }
+
+                BitmapImage bitMap = new BitmapImage(new Uri(
+                    FilesAction.GetFullChatImagePath(path), UriKind.Absolute));
+                if (bitMap is not null) res.Add(bitMap);
+            }
+
+            return res;
         }
 
         public void HideBandBorder(Border border)
@@ -328,8 +447,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             double width = bitMap.Width / 2;
             double height = bitMap.Height / 2;
 
-
-
             border.Width = width > minSize.Width && width < maxSize.Width ? width : minSize.Width;
             border.Height = height > minSize.Height && height < maxSize.Height ? height : minSize.Height;
 
@@ -342,10 +459,56 @@ namespace TelegramVisualPart.UserControls.ChatControls
             brush.ImageSource = bitMap;
         }
 
+        public void SetupImageRow(List<Border> borders, List<ImageBrush> brushes, List<BitmapImage> images, double maxWidth, double maxHeight)
+        {
+            // Проверка на соответствие количества (как ты и сказал, они равны)
+            if (borders == null || images == null || borders.Count != images.Count || borders.Count == 0)
+                return;
+
+            // 1. Считаем суммарный аспект всех картинок
+            double totalAspectRatio = 0;
+            for (int i = 0; i < images.Count; i++)
+            {
+                totalAspectRatio += (double)images[i].PixelWidth / images[i].PixelHeight;
+            }
+
+            // 2. Вычисляем высоту ряда, чтобы заполнить maxWidth
+            double finalHeight = maxWidth / totalAspectRatio;
+
+            // 3. Ограничиваем высоту, если она превышает допустимую
+            if (finalHeight > maxHeight)
+            {
+                finalHeight = maxHeight;
+            }
+
+            // 4. Применяем размеры и кисти к существующим бордерам
+            for (int i = 0; i < borders.Count; i++)
+            {
+                var border = borders[i];
+                var img = images[i];
+
+                double aspect = (double)img.PixelWidth / img.PixelHeight;
+
+                // Устанавливаем размеры
+                border.Height = finalHeight;
+                border.Width = finalHeight * aspect;
+
+                // Обнуляем отступы для плотного прилегания
+                border.Margin = new Thickness(0);
+
+
+                brushes[i].ImageSource = img;
+                brushes[i].Stretch = Stretch.UniformToFill;
+
+            }
+        }
+
+
         private void SetBandBorderLists()
         {
             _bandBorders.Clear();
             _bandBrushes.Clear();
+            _selectBorders.Clear();
 
             if (_bandPaths.Count == 2)
             {
@@ -376,6 +539,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
 
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
 
                 #endregion
             }
@@ -410,6 +585,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
+
                 #endregion
             }
             else if (_bandPaths.Count == 4)
@@ -442,6 +632,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
+
                 #endregion
             }
             else if (_bandPaths.Count == 5)
@@ -474,6 +679,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
             else if (_bandPaths.Count == 6)
@@ -506,6 +725,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
             else if (_bandPaths.Count == 7)
@@ -538,6 +771,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
             else if (_bandPaths.Count == 8)
@@ -570,6 +817,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
             else if (_bandPaths.Count == 9)
@@ -589,7 +850,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBorders.Add(TwoInGroupBorder);
                 _bandBorders.Add(ThreeInGroupBorder);
                 _bandBorders.Add(TwelveInGroupBorder);
-                
+
                 _bandBrushes.Add(OneImg);
                 _bandBrushes.Add(FourImg);
                 _bandBrushes.Add(FiveImg);
@@ -601,9 +862,23 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(ElevenImg);
 
                 _bandBrushes.Add(TwoImg);
-                _bandBrushes.Add(ThreeImg);                
+                _bandBrushes.Add(ThreeImg);
                 _bandBrushes.Add(TwelveImg);
-                
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
+
                 #endregion
             }
             else
@@ -634,6 +909,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _bandBrushes.Add(TenImg);
                 _bandBrushes.Add(ElevenImg);
                 _bandBrushes.Add(TwelveImg);
+
+                _selectBorders.Add(OneSelectedBorder);
+                _selectBorders.Add(TwoSelectedBorder);
+                _selectBorders.Add(ThreeSelectedBorder);
+                _selectBorders.Add(FourSelectedBorder);
+                _selectBorders.Add(FiveSelectedBorder);
+                _selectBorders.Add(SixSelectedBorder);
+                _selectBorders.Add(SevenSelectedBorder);
+                _selectBorders.Add(EightSelectedBorder);
+                _selectBorders.Add(NineSelectedBorder);
+                _selectBorders.Add(TenSelectedBorder);
+                _selectBorders.Add(ElevenSelectedBorder);
+                _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
 
@@ -644,6 +932,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             for (int i = 0; i < medias.Count; i++)
             {
                 _bandBorders[i].Tag = medias[i].Id;
+                _selectBorders[i].Tag = medias[i].Id;
             }
         }
 
@@ -752,8 +1041,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _minMediaSize = 205;
         private const int _maxMediaSize = 225;
 
-        public void SetImgMessageSize(Image img, Border border)
+        public void SetImgMessageSize(Image img, Border border, bool isVideo = false)
         {
+            if (isVideo)
+            {
+                ScaleVideo(img, border);
+                return;
+            }
+
             if (img.Source is not BitmapImage bitmap) return;
 
             border.Width = bitmap.PixelWidth;
@@ -764,6 +1059,33 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (border.Height < _minMediaSize) border.Height = _minMediaSize;
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
+        }
+
+        public void ScaleVideo(Image img, Border border)
+        {
+            if (img.Source is not BitmapImage bitmap) return;
+
+            double w = bitmap.PixelWidth;
+            double h = bitmap.PixelHeight;
+
+            double longestSide = Math.Max(w, h);
+            if (longestSide > _maxMediaSize)
+            {
+                double ratio = _maxMediaSize / longestSide;
+                w *= ratio;
+                h *= ratio;
+            }
+
+            double shortestSide = Math.Min(w, h);
+            if (shortestSide < _minMediaSize)
+            {
+                double ratio = _minMediaSize / shortestSide;
+                w *= ratio;
+                h *= ratio;
+            }
+
+            border.Width = w;
+            border.Height = h;
         }
 
         public MediaMessage(TelSystem system, string gifPath,
@@ -845,7 +1167,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         }
 
-
         public void SetTickEvent()
         {
             SelectionTickObj.StatusChanged += () =>
@@ -914,7 +1235,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 VideoDuration.Text = _media.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
             }
 
-            SetImgMessageSize(img, ImageBorder);
+            SetImgMessageSize(img, ImageBorder, isVideo: true);
         }
 
         public void HideAllBorders()
@@ -1146,6 +1467,79 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Cursor = null;
         }
 
+        public void HideAllSelectionBorders()
+        {
+            foreach (var border in _selectBorders)
+            {
+                border.Visibility = Visibility.Hidden;
+            }
+        }
+
+        public void ChangeSelectionBorderStatus(MediaAction action)
+        {
+            for (int i = 0; i < _bandBorders.Count; i++)
+            {
+                if (_bandBorders[i].Tag is null) continue;
+                int.TryParse(_bandBorders[i].Tag.ToString(), out int index);
+
+                if (index == action.Id)
+                {
+                    _selectBorders[i].Visibility =
+                        _selectBorders[i].Visibility == Visibility.Visible ?
+                        Visibility.Hidden : Visibility.Visible;
+                }
+            }
+        }
+
+        public bool IsAllMediasInBandAreChosen()
+        {
+            for (int i = 0; i < _selectBorders.Count; i++)
+            {
+                if (_selectBorders[i].Visibility == Visibility.Hidden) return false;
+
+                if (i == _bandPaths.Count - 1) return true;
+            }
+            return true;
+        }
+
+
+        public int GetAmountOfSelectedMediasInBand()
+        {
+            int res = 0;
+            foreach (var border in _selectBorders)
+            {
+                if (border.Visibility == Visibility.Visible) res++;
+            }
+            return res;
+        }
+
+        public void SetBandSelection(bool isVis)
+        {
+            for(int i = 0; i < _selectBorders.Count; i++)
+            {
+                _selectBorders[i].Visibility = isVis ? Visibility.Visible : Visibility.Hidden;
+
+                if (i == _bandPaths.Count - 1) return;
+            }
+        }
+
+        public List<int> GetSelectedMessagesIdsInBand()
+        {
+            List<int> res = new List<int>();
+
+            for (int i = 0; i < _selectBorders.Count; i++)
+            {
+                if (_selectBorders[i].Visibility == Visibility.Visible)
+                {
+                    if (_selectBorders[i].Tag is null) continue;
+                    int.TryParse(_selectBorders[i].Tag.ToString(), out int id);
+
+                    res.Add(id);
+                }
+                if (i == _bandPaths.Count - 1) return res;
+            }
+            return res;
+        }
 
     }
 }

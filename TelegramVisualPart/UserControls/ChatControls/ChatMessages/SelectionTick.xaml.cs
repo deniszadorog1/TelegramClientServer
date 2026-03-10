@@ -43,11 +43,26 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             //ActivateTickAction();
         }
 
-        public void ActivateTickAction()
+        public void ActivateTickAction(UserControl control)
         {
             _isChosen = !_isChosen;
-            SetVisPartByStatus();
 
+            if (control is MediaMessage media && media.IsBandMedia())
+            {
+                _isChosen = media.IsAllMediasInBandAreChosen();
+
+                if (!_isChosen)
+                {
+                    ChosenTickIcon.Visibility = Visibility.Hidden;
+                    ChooseEllipse.Fill =
+                        (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
+
+                    StatusChanged?.Invoke();
+                    return;
+                }
+            }
+
+            SetVisPartByStatus();
             StatusChanged?.Invoke();
         }
 
@@ -79,13 +94,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         {
             ChosenTickIcon.Visibility = Visibility.Hidden;
             ChooseEllipse.Fill =
-                (SolidColorBrush)Application.Current.Resources["DarkThemeOne"]; 
+                (SolidColorBrush)Application.Current.Resources["DarkThemeOne"];
         }
 
         public void SetChosenState()
         {
             ChosenTickIcon.Visibility = Visibility.Visible;
-            ChooseEllipse.Fill = 
+            ChooseEllipse.Fill =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
         }
 

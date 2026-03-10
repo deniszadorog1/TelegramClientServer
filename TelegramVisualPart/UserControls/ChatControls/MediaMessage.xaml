@@ -15,20 +15,26 @@
     <UserControl.Resources>
         <Style x:Key="ImageBorderStyle" TargetType="Border">
 
-            <!-- <Setter Property="Width" Value="75"/>
-            <Setter Property="Height" Value="75"/>-->
-
             <Setter Property="Background" Value="Green"/>
 
             <Setter Property="Background">
                 <Setter.Value>
-                    <ImageBrush Stretch="Uniform"/>
+                    <ImageBrush Stretch="UniformToFill"/>
                 </Setter.Value>
             </Setter>
 
             <EventSetter Event="MouseEnter" Handler="Border_MouseEnter"/>
             <EventSetter Event="MouseLeave" Handler="Border_MouseLeave"/>
         </Style>
+
+        <Style x:Key="SelectBorder" TargetType="Border">
+
+            <Setter Property="Background" Value="{StaticResource TempActiveTextColor}"/>
+            <Setter Property="Opacity" Value="0.2"/>
+            <Setter Property="Visibility" Value="Hidden"/>
+
+        </Style>
+        
     </UserControl.Resources>
 
     <Grid>
@@ -50,7 +56,6 @@
         </Ellipse>
 
         <Grid Grid.Column="1" x:Name="BigGrid">
-
             <Grid.RowDefinitions>
                 <RowDefinition Name="ForwardedRow" Height="0"/>
                 <RowDefinition Name="MediaRow"/>
@@ -58,7 +63,7 @@
             </Grid.RowDefinitions>
 
             <Border Name="ImageBorder" Grid.Row="1"
-                    Visibility="Visible"
+                    Visibility="Hidden"
                     CornerRadius="15" BorderThickness="1" 
                     Width="125" Height="125">
                 <Border.Background>
@@ -67,14 +72,25 @@
                 </Border.Background>
 
                 <Grid Name="VideoParams" Visibility="Hidden">
-                    <Border VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
-                            Height="20" Width="55" Background="Black" CornerRadius="5" 
-                            Opacity="0.5">
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                            Height="25" Width="65">
+
+                        <Border Background="Black" Opacity="0.5" CornerRadius="8"
+                                />
 
                         <TextBlock Name="VideoDuration" Text="0000" 
                                    VerticalAlignment="Center"
+                                   FontSize="14" 
                                    Margin="5 0 0 0" Foreground="White"/>
-                    </Border>
+
+
+                        <materialDesign:PackIcon Kind="VolumeHigh" 
+                                                 VerticalAlignment="Center"
+                                                 HorizontalAlignment="Right"
+                                                 Margin="0 0 5 0"
+                                                 Width="18" Height="18"
+                                                 Foreground="White"/>
+                    </Grid>
 
                     <Grid Name="BottomVideoLine" Height="5" 
                           Background="{StaticResource TempActiveTextColor}" 
@@ -110,12 +126,13 @@
                     <StackPanel Name="UpperRowPanel" 
                                 Grid.Row="0" Grid.Column="1"
                                 Orientation="Horizontal">
-                        <Border Name="OneInGroupBorder" 
+                        <Border Name="OneInGroupBorder" Width="50" Height="50" 
                                 Style="{StaticResource ResourceKey=ImageBorderStyle}">
                             <Border.Background>
                                 <ImageBrush x:Name="OneImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="OneSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="TwoInGroupBorder" 
@@ -124,6 +141,7 @@
                                 <ImageBrush x:Name="TwoImg"
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="TwoSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="ThreeInGroupBorder" 
@@ -132,6 +150,7 @@
                                 <ImageBrush x:Name="ThreeImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="ThreeSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
                     </StackPanel>
 
@@ -144,6 +163,7 @@
                                 <ImageBrush x:Name="FourImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="FourSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="FiveInGroupBorder" 
@@ -152,6 +172,7 @@
                                 <ImageBrush x:Name="FiveImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="FiveSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="SixInGroupBorder"
@@ -160,6 +181,7 @@
                                 <ImageBrush x:Name="SixImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="SixSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
                     </StackPanel>
 
@@ -172,6 +194,7 @@
                                 <ImageBrush x:Name="SevenImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="SevenSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="EightInGroupBorder"
@@ -180,6 +203,7 @@
                                 <ImageBrush x:Name="EightImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="EightSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="NineInGroupBorder"
@@ -188,9 +212,10 @@
                                 <ImageBrush x:Name="NineImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="NineSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
                     </StackPanel>
-                    
+
                     <StackPanel Name="DownRowPanel" 
                                 Grid.Row="3" Grid.Column="1"
                                 Orientation="Horizontal">
@@ -200,6 +225,7 @@
                                 <ImageBrush x:Name="TenImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="TenSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="ElevenInGroupBorder"
@@ -208,6 +234,7 @@
                                 <ImageBrush x:Name="ElevenImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="ElevenSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
 
                         <Border Name="TwelveInGroupBorder"
@@ -216,6 +243,7 @@
                                 <ImageBrush x:Name="TwelveImg" 
                                     ImageSource="/Visuals/Images/UserImages/fray.jpg"/>
                             </Border.Background>
+                            <Border Name="TwelveSelectedBorder" Style="{StaticResource ResourceKey = SelectBorder}"/>
                         </Border>
                     </StackPanel>
                 </Grid>

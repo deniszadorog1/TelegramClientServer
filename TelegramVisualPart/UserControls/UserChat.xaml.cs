@@ -1444,10 +1444,20 @@ namespace TelegramVisualPart.UserControls
             if (tempPoint.Y < _stratSelectionPoint.Y ||
                tempPoint.Y > _stratSelectionPoint.Y)
             {
+                SetAllBandMessages(item, true);
+
                 SetSelectionTick(true, item);
 
                 //Update Amount of chosen
                 UpdateSelectedAmount();
+            }
+        }
+
+        public void SetAllBandMessages(ListBoxItem item, bool isSelectAll)
+        {
+            if(item.Content is MediaMessage band && band.IsBandMedia())
+            {
+                band.SetBandSelection(isSelectAll);
             }
         }
 
@@ -1467,6 +1477,7 @@ namespace TelegramVisualPart.UserControls
                 (tempPoint.Y > _stratSelectionPoint.Y &&
                 _prevSelectionPoint.Y > tempPoint.Y))
             {
+                SetAllBandMessages(item, false);
                 SetSelectionTick(false, item);
 
                 //Update Amount of chosen
@@ -1493,25 +1504,6 @@ namespace TelegramVisualPart.UserControls
             }
             //To show Selection params
             ShowSelectionBar();
-
-            return;
-
-            //Check is set correctly
-            if (IsTickSetCorrectly(item)) return;
-
-            //Set if incorrect
-            //Activate item
-            ActivateSelectionTick(item);
-
-            //Update Amount of chosen
-            ((MainWindow)Window.GetWindow(this)).UpdateUserChatSelectedAmount();
-
-            if (GetSelectedAmount() == 0)
-            {
-                HideSelectionRow();
-                _isSelected = false;
-                _isMouseDown = false;
-            }
         }
 
         private bool SetTickForStrtChosenItem(ListBoxItem item,
@@ -1523,11 +1515,15 @@ namespace TelegramVisualPart.UserControls
                 if (_stratSelectionPoint.Y + _emptySelStartDiffer > tempPoint.Y &&
                     _stratSelectionPoint.Y - _emptySelStartDiffer < tempPoint.Y)
                 {
+                    SetAllBandMessages(item, false);
+
                     SetSelectionTick(false, item);
                     UpdateSelectedAmount();
                 }
                 else
                 {
+                    SetAllBandMessages(item, true);
+
                     SetSelectionTick(true, item);
                     UpdateSelectedAmount();
                 }
@@ -2352,22 +2348,48 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
-            Message mes = GetMessageByListBoxTag(item);
+            Message mes = _mesMenu.GetMessage();
+            if (mes is null) mes = GetMessageByListBoxTag(item);
+            if (mes is null) return; 
+            
             if (mes is null) return;
 
-            /*            if (!_system.IsMessageIsInSchedById(mes.Id))
-                        {
-                            TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessage(mes);
-                            if (chat is null) return;
-                        }*/
-
             ShowSelectionBar();
+
+            bool isBandMedia = IsListBoxItemIsBandMessage(item);
+            if (isBandMedia && mes is MediaAction mediaMes)
+            {
+                SwapSelVisStateInMediaBand(item, mediaMes);
+            }
 
             //Activate item
             ActivateSelectionTick(item);
 
             ((MainWindow)Window.GetWindow(this)).UpdateUserChatSelectedAmount();
         }
+
+        public void SwapSelVisStateInMediaBand(ListBoxItem item, MediaAction mes)
+        {
+            MediaMessage media = item.Content as MediaMessage;
+            media.ChangeSelectionBorderStatus(mes);
+        }
+
+        public bool IsListBoxItemIsBandMessage(ListBoxItem item)
+        {
+            return item.Content is MediaMessage media &&
+                media.IsBandMedia();
+        }
+
+        public bool IsAllMessagesInMediaAreChosen(ListBoxItem item)
+        {
+            if (!IsListBoxItemIsBandMessage(item)) return false;
+
+            MediaMessage media = item.Content as MediaMessage;
+
+            return media.IsAllMediasInBandAreChosen();
+        }
+
+
 
         public void ShowSelectionBar()
         {
@@ -2394,11 +2416,11 @@ namespace TelegramVisualPart.UserControls
         {
             if (item.Content is ChatControls.TextMessage text)
             {
-                text.SelectionTickObj.ActivateTickAction();
+                text.SelectionTickObj.ActivateTickAction(text);
             }
             else if (item.Content is ChatControls.MediaMessage media)
             {
-                media.SelectionTickObj.ActivateTickAction();
+                media.SelectionTickObj.ActivateTickAction(media);
             }
         }
 
@@ -3236,8 +3258,13 @@ namespace TelegramVisualPart.UserControls
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
+                if (ScheduleMessageGrid.Visibility == Visibility.Visible) return;
+
                 if (names.Length > 1)
                 {
+                    //Check this
+                    if (SchedueleMessagesGrid.Visibility == Visibility.Visible) return;
+
                     AddMediaPage(names.ToList(), CommentTextBox.Text);
                     CommentTextBox.Text = string.Empty;
                     return;
@@ -3358,7 +3385,7 @@ namespace TelegramVisualPart.UserControls
                 LoadedBehavior = MediaState.Manual,
                 UnloadedBehavior = MediaState.Manual
             };
-            media.Play();
+            media.Stop();
 
             //Is video is contains in user chat folder
             if (!FilesAction.IsVideoIsExistInSecFolder(Path.GetFileName(filePath)))
@@ -5063,6 +5090,7 @@ namespace TelegramVisualPart.UserControls
 
         public Message GetMessageByListBoxTag(ListBoxItem item)
         {
+            if (item.Tag is null) return null;
             int.TryParse(item.Tag.ToString(), out int id);
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(id);
@@ -5348,9 +5376,25 @@ namespace TelegramVisualPart.UserControls
         public void ClearSelectionRow()
         {
             SelectedMessesGrid.Visibility = Visibility.Hidden;
+            
             SetMessageSelectCircleVis(false);
+            ClearAllSelectedBands();
 
             ChatterInfoGrid.Visibility = Visibility.Visible;
+        }
+
+        public void ClearAllSelectedBands()
+        {
+            for(int i = 0; i < ChatBox.Items.Count; i++)
+            {
+                if (ChatBox.Items[i] is not ListBoxItem item) continue;
+
+                if(item.Content is MediaMessage band && band.IsBandMedia())
+                {
+                    band.SetBandSelection(false);
+                }
+
+            }
         }
 
         public void SetMessageSelectCircleVis(bool isVis)
@@ -5509,10 +5553,20 @@ namespace TelegramVisualPart.UserControls
             for (int i = 0; i < ChatBox.Items.Count; i++)
             {
                 if (ChatBox.Items[i] is not ListBoxItem item) continue;
+
+                if(item.Content is MediaMessage band && 
+                    band.IsBandMedia())
+                {
+                    List<int> ids =  band.GetSelectedMessagesIdsInBand();
+                    _system.AddMessagesInList(ids, res);
+                    continue;
+                }
+
                 if ((item.Content is ChatControls.TextMessage text &&
                     text.IsMessageIdTicked())
 
                     ||
+                
                     (item.Content is ChatControls.MediaMessage media &&
                     media.IsMessageIdTicked())
                     )
@@ -5524,6 +5578,7 @@ namespace TelegramVisualPart.UserControls
                         _system.AddMessagesInList(ids, res);
                         continue;
                     }
+
                     int.TryParse(item.Tag.ToString(), out int id);
 
                     TelegramLib.MainClasses.Messages.Message mes =
@@ -5561,6 +5616,14 @@ namespace TelegramVisualPart.UserControls
             for (int i = 0; i < ChatBox.Items.Count; i++)
             {
                 if (ChatBox.Items[i] is not ListBoxItem item) continue;
+
+                if (item.Content is MediaMessage band &&
+                    band.IsBandMedia())
+                {
+                    amount += band.GetAmountOfSelectedMediasInBand();
+                    continue;
+                }
+
 
                 if ((item.Content is ChatControls.TextMessage text &&
                     text.IsMessageIdTicked())

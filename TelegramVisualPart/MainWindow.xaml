@@ -59,16 +59,17 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                     <Button Content="—" Width="43" Click="Minimize_Click"  Margin="5 0 5 0"
-                                Background="Transparent" BorderBrush="Transparent"
-                                Name="CloseBut"
-                                MouseEnter="UpperBut_MouseEnter"
-                                MouseLeave="UpperBut_MouseLeave"/>
+                            Background="Transparent" BorderBrush="Transparent"
+                            Name="CloseBut"
+                            MouseEnter="UpperBut_MouseEnter"
+                            MouseLeave="UpperBut_MouseLeave"/>
 
-                    <Grid Width="50" PreviewMouseDown="Maximize_Click"  Margin="5 0 5 0"
-                                Background="Transparent" 
-                                Name="WholeWindowBut"
-                                MouseEnter="UpperBut_MouseEnter"
-                                MouseLeave="UpperBut_MouseLeave">
+                    <Grid Width="50" Margin="5 0 5 0"
+                          PreviewMouseDown="Maximize_Click"  
+                          Background="Transparent" 
+                          Name="WholeWindowBut"
+                          MouseEnter="UpperBut_MouseEnter"
+                          MouseLeave="UpperBut_MouseLeave">
 
                         <materialDesign:PackIcon Kind="WindowRestore" Name="WindowSizerIcon"
                                              Height="20" Width="20"
@@ -112,7 +113,8 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     CornerRadius="7"
-                    Background="Black" Opacity="0.8">
+                    Background="Black" 
+                    Opacity="0.8">
 
                 <TextBlock Name="TempTextBlock"
                            Text="This is temporary text" 
@@ -120,7 +122,7 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center" 
                            Padding="15 10 15 10"
-                           FontSize="16"/>
+                           FontSize="18"/>
             </Border>
             
         </Grid>
