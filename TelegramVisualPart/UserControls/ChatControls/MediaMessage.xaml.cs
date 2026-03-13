@@ -1491,6 +1491,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        public void MirrorSelectionById(int id)
+        {
+            Border? border = _selectBorders.FirstOrDefault(x => x.Tag is not null && x.Tag.ToString() == id.ToString());
+
+            if (border is null) return;
+            border.Visibility = border.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+        }
+
         public bool IsAllMediasInBandAreChosen()
         {
             for (int i = 0; i < _selectBorders.Count; i++)

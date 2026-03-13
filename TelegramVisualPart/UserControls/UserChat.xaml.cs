@@ -1,4 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -6,6 +8,7 @@ using System.IO;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -127,13 +130,6 @@ namespace TelegramVisualPart.UserControls
 
                 return false;
             });
-            /*
-                        Window window = Window.GetWindow(this);
-                        if (window is MainWindow mainWind)
-                        {
-                            return mainWind.IsOnlyTempOnlyChatIsExist(chat);
-                        }
-                        return false;*/
         }
 
         private CancellationTokenSource _typingCts;
@@ -1425,6 +1421,14 @@ namespace TelegramVisualPart.UserControls
             {
                 _isSelected = !media.SelectionTickObj._isChosen;
                 media.ChangeTickStatus();
+
+                DependencyObject clickedElement = e.OriginalSource as DependencyObject;
+
+                if (media.IsBandMedia() &&
+                    media.IsTickVisible() && clickedElement is not Border)
+                {
+                    media.SetBandSelection(_isSelected);
+                }
             }
             //ShowSelectionBar();
             //SetSelectionTick(false, item);
@@ -1455,7 +1459,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetAllBandMessages(ListBoxItem item, bool isSelectAll)
         {
-            if(item.Content is MediaMessage band && band.IsBandMedia())
+            if (item.Content is MediaMessage band && band.IsBandMedia())
             {
                 band.SetBandSelection(isSelectAll);
             }
@@ -1497,8 +1501,10 @@ namespace TelegramVisualPart.UserControls
             //Update prev Point
             UpdatePrevPoint(GetPointChatBoxScroll(e.GetPosition(this)));
 
+            bool isUnderBandMedia = IsMouseUnderBandElement(sender, e);
+
             //Set for start item
-            if (SetTickForStrtChosenItem(item, GetPointChatBoxScroll(e.GetPosition(this))))
+            if (SetTickForStrtChosenItem(item, GetPointChatBoxScroll(e.GetPosition(this)), isUnderBandMedia))
             {
                 return;
             }
@@ -1506,8 +1512,43 @@ namespace TelegramVisualPart.UserControls
             ShowSelectionBar();
         }
 
+
+        public bool IsMouseUnderBandElement(object sender, MouseEventArgs e)
+        {
+            if (sender is ListBoxItem item)
+            {
+                if (item.Content is not MediaMessage media || !media.IsBandMedia()) return false;
+
+                Point mousePos = e.GetPosition(item);
+
+                IInputElement hitElement = item.InputHitTest(mousePos);
+
+                if (hitElement == item || IsSystemVisual(hitElement))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
+
+        private bool IsSystemVisual(IInputElement element)
+        {
+            if (element is FrameworkElement fe)
+            {
+                return fe.Name == "Bd" || fe.TemplatedParent != null && fe.DataContext == null;
+            }
+            return false;
+        }
+
+
         private bool SetTickForStrtChosenItem(ListBoxItem item,
-            System.Windows.Point tempPoint)
+            System.Windows.Point tempPoint, bool isUnderMediaBand)
         {
             if (item == _startChosenItem)
             {
@@ -1515,18 +1556,24 @@ namespace TelegramVisualPart.UserControls
                 if (_stratSelectionPoint.Y + _emptySelStartDiffer > tempPoint.Y &&
                     _stratSelectionPoint.Y - _emptySelStartDiffer < tempPoint.Y)
                 {
-                    SetAllBandMessages(item, false);
+                    if (!isUnderMediaBand)
 
+                    {
+                        SetAllBandMessages(item, false);
+                    }
                     SetSelectionTick(false, item);
-                    UpdateSelectedAmount();
                 }
                 else
                 {
-                    SetAllBandMessages(item, true);
+                    if (!isUnderMediaBand)
 
+                    {
+                        SetAllBandMessages(item, true);
+                    }
                     SetSelectionTick(true, item);
-                    UpdateSelectedAmount();
+
                 }
+                UpdateSelectedAmount();
                 return true;
             }
             return false;
@@ -1879,12 +1926,12 @@ namespace TelegramVisualPart.UserControls
             if (_toForwardMessages is null) return;
             bool isChatterOnline = UpdateChatStatusAsync(chat);
 
-            ListBoxItem tempBand = null;
+            await ChangeBandIdsInForward();
+
             for (int i = 0; i < _toForwardMessages.Count; i++)
             {
 
                 //GetChatListBoxItemByMessageId
-
 
                 //Add In Db (for sender user)
                 await ApiService.AddMessage(_toForwardMessages[i], chat);
@@ -1895,6 +1942,21 @@ namespace TelegramVisualPart.UserControls
                 //Add for chatter
                 await AddForwardedMessageInDB(_toForwardMessages[i], chat, isChatterOnline);
             }
+        }
+
+        public async Task ChangeBandIdsInForward()
+        {
+            int lastBandId = await ApiService.GetLastMessageBandId();
+        
+            for(int i = 0; i < _toForwardMessages.Count; i++)
+            {
+                if (_toForwardMessages[i] is MediaAction media &&
+                    media.BandId != -1)
+                {
+                    media.BandId = lastBandId + 1;
+                }
+            }
+        
         }
 
         public async Task UpdateIdForMessageBySentDate(TelegramLib.MainClasses.Messages.Message mes)
@@ -2350,8 +2412,8 @@ namespace TelegramVisualPart.UserControls
 
             Message mes = _mesMenu.GetMessage();
             if (mes is null) mes = GetMessageByListBoxTag(item);
-            if (mes is null) return; 
-            
+            if (mes is null) return;
+
             if (mes is null) return;
 
             ShowSelectionBar();
@@ -2388,8 +2450,6 @@ namespace TelegramVisualPart.UserControls
 
             return media.IsAllMediasInBandAreChosen();
         }
-
-
 
         public void ShowSelectionBar()
         {
@@ -2432,6 +2492,11 @@ namespace TelegramVisualPart.UserControls
             }
             else if (item.Content is ChatControls.MediaMessage media)
             {
+                if (media.IsBandMedia())
+                {
+                    isSet = media.IsAllMediasInBandAreChosen();
+                }
+
                 media.SelectionTickObj.SetTickByGivenParam(isSet);
             }
         }
@@ -4553,6 +4618,17 @@ namespace TelegramVisualPart.UserControls
                 int localIndex = i;
                 bandMessage._bandBorders[i].PreviewMouseLeftButtonDown += (sender, e) =>
                 {
+                    //Set Selection action
+                    if (SelectedMessesGrid.Visibility == Visibility.Visible)
+                    {
+                        if (bandMessage._bandBorders[localIndex].Tag is null) return;
+                        int.TryParse(bandMessage._bandBorders[localIndex].Tag.ToString(), out int id);
+
+                        bandMessage.MirrorSelectionById(id);
+                        return;
+                    };
+
+                    //If its selection action -> return
                     #region //There is action to show band media window
 
                     ListBoxItem item = ChatBox.Items.OfType<ListBoxItem>()
@@ -4594,6 +4670,7 @@ namespace TelegramVisualPart.UserControls
                         mediaWindow.SetVideos(videoElement, imgMedias.Select(x => x.MediaName).ToList(), imgMedias, ScheduleMessageGrid.Visibility == Visibility.Visible);
                     }
 
+
                     mediaWindow.Show();
                     #endregion
                 };
@@ -4601,8 +4678,6 @@ namespace TelegramVisualPart.UserControls
 
             //Set tick vis
             SetMediaTickVis(medias.First(), bandMessage);
-
-
 
             ListBoxItem item = new ListBoxItem()
             {
@@ -5376,7 +5451,7 @@ namespace TelegramVisualPart.UserControls
         public void ClearSelectionRow()
         {
             SelectedMessesGrid.Visibility = Visibility.Hidden;
-            
+
             SetMessageSelectCircleVis(false);
             ClearAllSelectedBands();
 
@@ -5385,11 +5460,11 @@ namespace TelegramVisualPart.UserControls
 
         public void ClearAllSelectedBands()
         {
-            for(int i = 0; i < ChatBox.Items.Count; i++)
+            for (int i = 0; i < ChatBox.Items.Count; i++)
             {
                 if (ChatBox.Items[i] is not ListBoxItem item) continue;
 
-                if(item.Content is MediaMessage band && band.IsBandMedia())
+                if (item.Content is MediaMessage band && band.IsBandMedia())
                 {
                     band.SetBandSelection(false);
                 }
@@ -5554,10 +5629,10 @@ namespace TelegramVisualPart.UserControls
             {
                 if (ChatBox.Items[i] is not ListBoxItem item) continue;
 
-                if(item.Content is MediaMessage band && 
+                if (item.Content is MediaMessage band &&
                     band.IsBandMedia())
                 {
-                    List<int> ids =  band.GetSelectedMessagesIdsInBand();
+                    List<int> ids = band.GetSelectedMessagesIdsInBand();
                     _system.AddMessagesInList(ids, res);
                     continue;
                 }
@@ -5566,7 +5641,7 @@ namespace TelegramVisualPart.UserControls
                     text.IsMessageIdTicked())
 
                     ||
-                
+
                     (item.Content is ChatControls.MediaMessage media &&
                     media.IsMessageIdTicked())
                     )

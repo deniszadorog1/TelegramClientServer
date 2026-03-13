@@ -127,7 +127,7 @@
 
                     <Grid Panel.ZIndex="1000" Margin="0 20 0 25" VerticalAlignment="Bottom"> 
                         <Border Background="Black" Width="370" Height="95" 
-                            CornerRadius="15" Opacity="0.3"/>
+                            CornerRadius="15" Opacity="0.5"/>
 
                         <StackPanel Width="350" Margin="5">
                             <Grid>

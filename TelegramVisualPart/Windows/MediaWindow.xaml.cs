@@ -694,6 +694,9 @@ namespace TelegramVisualPart.Windows
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            if (VideoToShow is not null && 
+                VideoToShow.LoadedBehavior == MediaState.Manual) VideoToShow.Stop();
+
             this.Close();
             //Remove from MainWindow
             _godWindow.RemoveFromGodWindow(this);
