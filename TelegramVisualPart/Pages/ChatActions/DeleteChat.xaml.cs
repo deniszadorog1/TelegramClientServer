@@ -42,10 +42,15 @@ namespace TelegramVisualPart.Pages.ChatActions
         }
 
         private void DeleteBut_Click(object sender, RoutedEventArgs e)
-        {    
-            ((MainWindow)Window.GetWindow(this)).DeleteChat(_user, (bool)ShowChatNameBox.IsChecked);
-            
-            ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is MainWindow main)
+            {
+                main.DeleteChat(_user, (bool)ShowChatNameBox.IsChecked);
+                main.CloseAllMediaWindows();
+                main.ClearTempPageFrame(this);
+            }
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

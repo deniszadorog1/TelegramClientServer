@@ -241,6 +241,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
         private async void ChangeContactImageGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            Window window = Window.GetWindow(this);
+
             //Set change getting new image source
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -266,6 +268,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                         {
                             return;
                         }
+
+                        if (window is MainWindow main) main.CloseAllMediaWindows();
 
                         img.Source = new BitmapImage(new Uri(filePath, UriKind.Absolute));
                         img.Tag = filePath;

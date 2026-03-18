@@ -491,7 +491,7 @@
                 </Grid>
 
                 <Grid Name="ScheduleMessageGrid"
-                      Visibility="Visible"
+                      Visibility="Hidden"
                       HorizontalAlignment="Right"
                       Margin="0 0 10 0"
                       Background="Transparent"

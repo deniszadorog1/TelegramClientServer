@@ -283,6 +283,8 @@ namespace TelegramVisualPart.Pages.MyProfile
                     Window window = Window.GetWindow(this);
                     if (window is MainWindow mainWindow)
                     {
+                        mainWindow.CloseAllMediaWindows();
+
                         //Update in temp page
                         SetUserImage();
 

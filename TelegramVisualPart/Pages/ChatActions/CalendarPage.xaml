@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Calendar Name="Calendar" Background="Transparent"
+                      SelectionMode="MultipleRange"
                       materialDesign:CalendarAssist.HeaderBackground="Transparent"
                       materialDesign:CalendarAssist.SelectionColor="Red"
                       Style="{StaticResource MaterialDesignCalendarPortrait}"
@@ -30,8 +31,7 @@
                     </Calendar.Resources>
             </Calendar>
 
-            <Grid Grid.Row="1" Margin="10 0 10 0">
-
+            <Grid Grid.Row="1" Margin="10 0 10 0"> 
                 <Button Style="{StaticResource MaterialDesignRaisedButton}" 
                         Name="SelectDaysBut"
                         Content="Select Days" Background="Transparent" 

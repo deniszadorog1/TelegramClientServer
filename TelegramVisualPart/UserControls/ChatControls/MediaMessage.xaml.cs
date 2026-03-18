@@ -1,28 +1,13 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.SignalR.Protocol;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Converters;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
@@ -85,14 +70,44 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async void SetMessages()
         {
             _maxHeight = 0;
-            if (_bandPaths.Count == 3)
+            if(_bandPaths.Count == 2)
             {
                 BottomBandRow.Height = new GridLength(0);
                 DownBandRow.Height = new GridLength(0);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                OneInGroupBorder.Width = _maxSize.Width;
-                OneInGroupBorder.Height = _maxSize.Height;
+
+                SetupImageRow(
+                    new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
+                    new List<ImageBrush>() { OneImg, TwoImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
+                    _maxSize.Width, _maxSize.Height);
+
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(FourInGroupBorder);
+                HideBandBorder(FiveInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+                HideBandBorder(SevenInGroupBorder);
+                HideBandBorder(EightInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
+                HideBandBorder(TenInGroupBorder);
+                HideBandBorder(ElevenInGroupBorder);
+                HideBandBorder(TwelveInGroupBorder);
+            }
+            else if (_bandPaths.Count == 3)
+            {
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+
+                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                OneInGroupBorder.Width = _maxSize.Width;
+                                OneInGroupBorder.Height = _maxSize.Height;*/
+
+                SetupImageRow(
+                    new List<Border>() { OneInGroupBorder },
+                    new List<ImageBrush>() { OneImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                    _maxSize.Width, _maxSize.Height);
+
 
                 _maxHeight = 0;
 
@@ -117,9 +132,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 BottomBandRow.Height = new GridLength(0);
                 DownBandRow.Height = new GridLength(0);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                OneInGroupBorder.Width = _maxSize.Width;
-                OneInGroupBorder.Height = _maxSize.Height;
+                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                OneInGroupBorder.Width = _maxSize.Width;
+                                OneInGroupBorder.Height = _maxSize.Height;*/
+
+                SetupImageRow(
+                    new List<Border>() { OneInGroupBorder },
+                    new List<ImageBrush>() { OneImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                    _maxSize.Width, _maxSize.Height);
+
 
                 _maxHeight = 0;
 
@@ -145,9 +167,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 DownBandRow.Height = new GridLength(0);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                OneInGroupBorder.Width = _maxSize.Width;
-                OneInGroupBorder.Height = _maxSize.Height;
+                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                OneInGroupBorder.Width = _maxSize.Width;
+                                OneInGroupBorder.Height = _maxSize.Height;*/
+
+                SetupImageRow(
+                    new List<Border>() { OneInGroupBorder },
+                    new List<ImageBrush>() { OneImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                    _maxSize.Width, _maxSize.Height);
+
 
                 //_maxHeight = 0;
 
@@ -223,12 +252,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 DownBandRow.Height = new GridLength(0);
 
-                Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
                 Size basePart = new Size(_maxSize.Width, _maxSize.Height);
 
-                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
-                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
-                //SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
 
                 SetupImageRow(
                      new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
@@ -236,20 +261,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                      await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
                      _maxSize.Width, _maxSize.Height);
 
-                //_maxHeight = 0;
                 SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
-
-                /*  SetupImageRow(
-                        new List<Border>() { FourInGroupBorder },
-                        new List<ImageBrush>() { FourImg },
-                        await GetBitImagesByPaths(new List<string>() { _bandPaths[3] }),
-                        _maxSize.Width, _maxSize.Height);*/
-
-                //_maxHeight = 0;
-
-                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
-                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
-                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
 
                 SetupImageRow(
                       new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
@@ -461,27 +473,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetupImageRow(List<Border> borders, List<ImageBrush> brushes, List<BitmapImage> images, double maxWidth, double maxHeight)
         {
-            // Проверка на соответствие количества (как ты и сказал, они равны)
             if (borders == null || images == null || borders.Count != images.Count || borders.Count == 0)
                 return;
 
-            // 1. Считаем суммарный аспект всех картинок
             double totalAspectRatio = 0;
             for (int i = 0; i < images.Count; i++)
             {
                 totalAspectRatio += (double)images[i].PixelWidth / images[i].PixelHeight;
             }
 
-            // 2. Вычисляем высоту ряда, чтобы заполнить maxWidth
             double finalHeight = maxWidth / totalAspectRatio;
 
-            // 3. Ограничиваем высоту, если она превышает допустимую
             if (finalHeight > maxHeight)
             {
                 finalHeight = maxHeight;
             }
 
-            // 4. Применяем размеры и кисти к существующим бордерам
             for (int i = 0; i < borders.Count; i++)
             {
                 var border = borders[i];
@@ -489,20 +496,15 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 double aspect = (double)img.PixelWidth / img.PixelHeight;
 
-                // Устанавливаем размеры
                 border.Height = finalHeight;
                 border.Width = finalHeight * aspect;
 
-                // Обнуляем отступы для плотного прилегания
                 border.Margin = new Thickness(0);
-
 
                 brushes[i].ImageSource = img;
                 brushes[i].Stretch = Stretch.UniformToFill;
-
             }
         }
-
 
         private void SetBandBorderLists()
         {
@@ -1043,11 +1045,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetImgMessageSize(Image img, Border border, bool isVideo = false)
         {
-            if (isVideo)
-            {
-                ScaleVideo(img, border);
-                return;
-            }
+            if (isVideo) return;
+
+            ScaleVideo(img, border);
+
+            return;
 
             if (img.Source is not BitmapImage bitmap) return;
 
@@ -1164,7 +1166,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetTickEvent();
 
             SetTime(mediaLogicEl.SentTime);
-
         }
 
         public void SetTickEvent()
@@ -1230,12 +1231,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ImgMessage.ImageSource = img.Source;
             VideoParams.Visibility = Visibility.Visible;
 
-            if (_media.NaturalDuration.HasTimeSpan)
-            {
-                VideoDuration.Text = _media.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
-            }
+            SetImgMessageSize(img, ImageBorder, isVideo: false);
 
-            SetImgMessageSize(img, ImageBorder, isVideo: true);
+            _media.MediaOpened += (sender, e) =>
+            {
+                if (_media.NaturalDuration.HasTimeSpan)
+                {
+                    VideoDuration.Text = _media.NaturalDuration.TimeSpan.ToString(@"mm\:ss");
+                }
+                else VideoDurationGrid.Visibility = Visibility.Hidden;
+            };
         }
 
         public void HideAllBorders()
@@ -1523,7 +1528,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetBandSelection(bool isVis)
         {
-            for(int i = 0; i < _selectBorders.Count; i++)
+            for (int i = 0; i < _selectBorders.Count; i++)
             {
                 _selectBorders[i].Visibility = isVis ? Visibility.Visible : Visibility.Hidden;
 
@@ -1549,5 +1554,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return res;
         }
 
+        public bool IsBandMessageExistById(int id)
+        {
+            return _selectBorders.Any(x => x.Tag is not null && x.Tag.ToString() == id.ToString());
+        }
     }
 }

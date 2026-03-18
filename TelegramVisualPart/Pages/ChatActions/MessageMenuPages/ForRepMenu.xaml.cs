@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Security.Policy;
 using System.Security.RightsManagement;
@@ -123,12 +124,58 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             }
         }
 
+
+        private Size _maxMediaSize = new Size(200, 200);
         public void AddControlIsStack(UserControl control)
         {
             control.HorizontalAlignment = HorizontalAlignment.Right;
             control.Margin = new Thickness(0, 5, 5, 5);
 
+            if (control is MediaMessage media)
+            {
+                BitmapImage source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapImage : media.ImgMessage.ImageSource as BitmapImage;
+                if (source is not null)
+                {
+/*                    media.Background = new SolidColorBrush(Colors.Red);
+                    media.ImageBorder.Background = new SolidColorBrush(Colors.Green);
+                    media.GifBorder.Background = new SolidColorBrush(Colors.Blue);*/
+
+                    media.AdditionalTextRow.Height = new GridLength(0);
+
+                    SetupImageRow(source, media);
+                }
+            }
+
             MessagesStack.Children.Add(control);
+        }
+
+        private const double _mediaMultiplier = 0.75;
+        public void SetupImageRow(BitmapImage image, MediaMessage media)
+        {
+            double totalAspectRatio = 0;
+
+            totalAspectRatio += (double)image.PixelWidth / image.PixelHeight;
+
+            double finalHeight = _maxMediaSize.Width / totalAspectRatio;
+
+            if (finalHeight > _maxMediaSize.Height)
+            {
+                finalHeight = _maxMediaSize.Height;
+            }
+
+            double aspect = (double)image.PixelWidth / image.PixelHeight;
+          
+            media.Height = finalHeight;
+            media.Width = finalHeight * aspect;
+
+            media.ImageBorder.Width = media.Width * _mediaMultiplier;
+            media.ImageBorder.Height = media.Height * _mediaMultiplier;
+
+            media.GifImage.Width = media.Width * _mediaMultiplier;
+            media.GifImage.Height = media.Height * _mediaMultiplier;
+
+            media.ImgMessage.Stretch = Stretch.Fill;
+            media.GifImage.Stretch = Stretch.Fill;
         }
 
         public void SetBasicParams()

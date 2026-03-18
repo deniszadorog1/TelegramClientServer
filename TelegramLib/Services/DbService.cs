@@ -4403,6 +4403,8 @@ namespace TelegramLib.Services
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;
 
+            if (toAdd is MediaAction media) media.BandId = mes.BandId is null ? -1 : (int)mes.BandId;
+
             if (toAdd is TextMessage) ((TextMessage)toAdd).Text = mes.Message;
             else if (!(mes.ImageId is null))
             {

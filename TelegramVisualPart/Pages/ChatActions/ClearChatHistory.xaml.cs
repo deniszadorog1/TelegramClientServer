@@ -67,6 +67,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         private async Task ClearChat()
         {
             //Saved messages
+            Window window = Window.GetWindow(this);
             if(_chat is TelegramLib.MainClasses.SavedMessagesChat saved)
             {
                 _system.RemoveAllMessagesFromChat(_chat);
@@ -75,9 +76,9 @@ namespace TelegramVisualPart.Pages.ChatActions
                 _chat.ClearChat();
 
                 //clear chat in vis
-                Window window = Window.GetWindow(this);
                 if(window is MainWindow mainWindow)
                 {
+                    mainWindow.CloseAllMediaWindows();
                     mainWindow.ClearVisChat();
                 }
 
@@ -87,6 +88,8 @@ namespace TelegramVisualPart.Pages.ChatActions
                 ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
                 return;
             }
+
+            if(window is MainWindow main) main.CloseAllMediaWindows();
 
             //Is to clear both users
             bool isClearBoth = (bool)ShowChatNameBox.IsChecked;
@@ -126,7 +129,6 @@ namespace TelegramVisualPart.Pages.ChatActions
             ((MainWindow)Window.GetWindow(this)).ClearChat();
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
-
 
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)
