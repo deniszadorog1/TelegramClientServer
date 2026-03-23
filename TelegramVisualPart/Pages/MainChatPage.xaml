@@ -48,15 +48,15 @@
                       StrokeThickness="1" X1="0" X2="275"/>
 
                 <menuIconTextBut:MenuIconTextBut x:Name="MyProfileDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="WalletDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="WalletDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown" IsEnabled="False"/>
 
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>
 
-                <menuIconTextBut:MenuIconTextBut x:Name="NewGroupDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="NewGroupDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown" IsEnabled="False"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="NewChannelDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown" IsEnabled="False"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="ContactsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
-                <menuIconTextBut:MenuIconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>
+                <menuIconTextBut:MenuIconTextBut x:Name="CallsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown" IsEnabled="False"/>
                 <menuIconTextBut:MenuIconTextBut x:Name="SavedMessagesDrawBut" PreviewMouseDown="SavedMessagesDrawBut_PreviewMouseDown"/>
                
                 <menuIconTextBut:MenuIconTextBut x:Name="SettingsDrawBut" PreviewMouseDown="LeftBut_PreviewMouseDown"/>

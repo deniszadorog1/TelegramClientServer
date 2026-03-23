@@ -63,7 +63,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             ActionCheckText.Text = act.ToString();
             DeleteBut.Content = act.ToString();
            
-            LoginPartCheckText.Text = _user.Login;
+            LoginPartCheckText.Text = _user is null ? string.Empty : _user.Login;
 
             IsInBoth.Visibility = _isBothDelete ? Visibility.Visible : Visibility.Hidden;
             if(!_isBothDelete)

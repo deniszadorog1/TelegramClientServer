@@ -174,6 +174,14 @@ namespace TelegramVisualPart.Pages.Settings
         {
             if (sender is not TextBlock block) return;
             Clipboard.SetText(block.Text);
+
+
+            Window window = Window.GetWindow(this);
+
+            if(window is MainWindow main)
+            {
+                main.SetTemporaryText("Login is copied!");
+            }
         }
 
         private void Page_PreviewMouseDown(object sender, MouseButtonEventArgs e)

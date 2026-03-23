@@ -1,17 +1,9 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.IO;
-using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Provider;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -490,33 +482,46 @@ namespace TelegramVisualPart.UserControls
         }
 
         public void OnMediaMessageReceived(TelegramLib.MainClasses.User sender,
-            TelegramLib.MainClasses.Messages.MediaAction message)
+            List<TelegramLib.MainClasses.Messages.MediaAction> messages)
         {
             Dispatcher.Invoke(async Task () =>
             {
-                //Get chat wherer Logged is Sender 
-                TelegramLib.MainClasses.UserChat chat =
-                await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
-                //_system.GetChatByChatterId(sender.Id);
-                if (chat is null) return;
-
-                SetNewUserChatMessageControl(chat);
-                if (IsOnlyChatWindowWithChatIsExist(chat)) return;
-
-                //Add media message in chat in db
-                Task.Run(() => ApiService.AddMessage(message, chat)).Wait();
-
-                //THere is no pair yet
-                message = GetPairOfMedia(message);
-
-                if (_chat is null || chat.Id != _chat.Id)
+                bool isBandUpdate = false;
+                TelegramLib.MainClasses.UserChat? chat = null;
+                for (int i = 0; i < messages.Count; i++)
                 {
-                    AddMediaMessageInUnChosenChat(chat, message);
-                    ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
-                }
-                else AddMediaMessageInChosenChat(message, sender);
+                    MediaAction message = messages[i];
+                    //Get chat where Logged is Sender 
+                    chat = await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
+                    //_system.GetChatByChatterId(sender.Id);
+                    if (chat is null) return;
 
-                ToUpdateUserControlMessage();
+                    SetNewUserChatMessageControl(chat);
+                    if (IsOnlyChatWindowWithChatIsExist(chat)) return;
+
+                    //Add media message in chat in db
+                    Task.Run(() => ApiService.AddMessage(message, chat)).Wait(); 
+
+                    //There is no pair yet
+                    message = GetPairOfMedia(message);
+
+                    if (_chat is null || chat.Id != _chat.Id)
+                    {
+                        AddMediaMessageInUnChosenChat(chat, message);
+                        ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
+                    }
+                    else
+                    {
+                        isBandUpdate = true;
+                        AddMediaMessageInChosenChat(message, sender);
+                    }
+                    ToUpdateUserControlMessage();
+                }
+
+                if(isBandUpdate && _chat is not null && chat.Id == _chat.Id)
+                {
+                    SetChatMessages();
+                }
             });
         }
 
@@ -535,8 +540,8 @@ namespace TelegramVisualPart.UserControls
             //Add media in vis
             if (!IsOnlyPinnedChatIsOn())
             {
-                SetMediaMessageInChat(message,
-                   await SignalRHelperService.GetUserPhotoToSet(sender) /*sender.GetFirstImageNameInString()*/);
+              /*  SetMediaMessageInChat(message,
+                   await SignalRHelperService.GetUserPhotoToSet(sender) *//*sender.GetFirstImageNameInString()*//*);*/
             }
             //Add in system
             _chat.Messages.Add(message);
@@ -1057,7 +1062,6 @@ namespace TelegramVisualPart.UserControls
                 List<int> bandBankIds = new List<int>();
                 for (int i = 0; i < _chatMessages.Count; i++)
                 {
-
                     if (_chatMessages[i] is MediaAction mediaAct &&
                         mediaAct.BandId != -1 && !bandBankIds.Contains(mediaAct.BandId))
                     {
@@ -1374,6 +1378,10 @@ namespace TelegramVisualPart.UserControls
             {
                 media.PushForwarded += () =>
                 {
+
+                    MediaAction mediaEl = media.GetMessage();
+                    Console.WriteLine(mediaEl);
+
                     TelegramLib.MainClasses.UserChat chat = _system.Chats.FirstOrDefault();
                     if (chat is null)
                     {
@@ -1671,6 +1679,7 @@ namespace TelegramVisualPart.UserControls
                 e.Key == System.Windows.Input.Key.Enter && Keyboard.Modifiers == ModifierKeys.Control))
             {
                 HideSelectionRow();
+
                 await SendMessage();
 
                 _isHiddenSender = false;
@@ -2710,6 +2719,7 @@ namespace TelegramVisualPart.UserControls
 
         public void ForwardMesAction()
         {
+
             //Get message to resend
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
@@ -2822,6 +2832,7 @@ namespace TelegramVisualPart.UserControls
         public void SetIsBothDeletePage()
         {
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+            RemoveRightContactInfo();
 
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
@@ -2844,10 +2855,13 @@ namespace TelegramVisualPart.UserControls
         {
             if (!_chat.Messages.Any(x => x.Id == mes.Id)) return;
 
+            RemoveRightContactInfo();
+
             IsMakeActionOnBothSides page =
                 new IsMakeActionOnBothSides(_chat.Chatter, true);
             page.MakeAction += async () =>
             {
+
                 //Get selected messages
                 List<Message> toDelete = GetSelectedMessages();
 
@@ -2866,6 +2880,8 @@ namespace TelegramVisualPart.UserControls
 
         public void RemoveMessagesByDates(List<DateTime> dates)
         {
+            ClearSelectionRow();
+
             Window window = Window.GetWindow(this);
 
             //Set is both page 
@@ -2887,26 +2903,6 @@ namespace TelegramVisualPart.UserControls
 
                     ListBoxItem item = GetItemByTagId(current.Id);
                     //if (item is null) continue;
-
-                    /*                    if (current is MediaAction media && media.BandId != -1)
-                                        {
-                                            List<MediaAction> toRemove = toDelete.OfType<MediaAction>()
-                                                                        .Where(x => x.BandId == media.BandId && x.Id != media.Id)
-                                                                        .ToList();
-
-                                            foreach (var med in toRemove)
-                                            {
-                                                toDelete.Remove(med);
-
-                                                if (_chat is not null)
-                                                {
-                                                    Message? removeFromChat = _chat.Messages.FirstOrDefault(x => x.Id == med.Id);
-                                                    if (removeFromChat is not null) _chat.Messages.Remove(removeFromChat);
-                                                }
-                                            }
-
-                                            if (i >= toDelete.Count) i = toDelete.Count - 1;
-                                        }*/
 
                     if (i == 0) isVisUpdate = true;
                     await DeleteMessage(current,
@@ -4381,6 +4377,13 @@ namespace TelegramVisualPart.UserControls
                         if (chat is null) return;*/
             if (_chat is null) return;
 
+            //If send as band
+            if (_system.IsSendingBand(messages))
+            {
+                await SignalRService.SendMediaMessage(_system.LoggedUser, messages.Cast<MediaAction>().ToList(), _chat.Chatter);
+                return;
+            }
+
             foreach (var message in messages)
             {
                 if (message is TelegramLib.MainClasses.Messages.TextMessage text)
@@ -4389,7 +4392,7 @@ namespace TelegramVisualPart.UserControls
                 }
                 else if (message is TelegramLib.MainClasses.Messages.MediaAction media)
                 {
-                    await SignalRService.SendMediaMessage(_system.LoggedUser, media, _chat.Chatter);
+                    await SignalRService.SendMediaMessage(_system.LoggedUser, new List<MediaAction>() { media }, _chat.Chatter);
                 }
             }
         }
@@ -4580,6 +4583,7 @@ namespace TelegramVisualPart.UserControls
                 {
                     Message newMediaMes = new MediaAction(-1, _system.LoggedUser.Id,
                         DateTime.Now, ninePaths[j], false, false, false, null, lastBandId + 1);
+                    newMediaMes.IsRead = true;
 
                     AddMediaIntoMediasFolder(ninePaths[j]);
                     newMediaMes = await GetAndAddMessage(newMediaMes);
@@ -4861,13 +4865,13 @@ namespace TelegramVisualPart.UserControls
 
                     //Update read amount
                     UpdateUserTalkReadAmount();
+                    await SetChatterMessagesReadStatus();
                 }
             }
 
             //Send signalR To set message as read
             //var objsInView = Helper.VisHelper.GetVisibleItems(ChatBox);
 
-            await SetChatterMessagesReadStatus();
         }
 
         public void UpdateUserTalkReadAmount()
@@ -4918,6 +4922,11 @@ namespace TelegramVisualPart.UserControls
                                 int.TryParse(item.Tag.ToString(), out int id);
                                 res.Add(id);
                             }
+                            else if (media.IsBandMedia())
+                            {
+                                List<int> ids = media.GetBandMessagesIds();
+                                res.AddRange(ids);
+                            }
                         }
                     }
                 }
@@ -4936,7 +4945,6 @@ namespace TelegramVisualPart.UserControls
             List<Message> messages =
                 chat.GetMessageByGivenIds(GetIdsByVisibleElems());
 
-
             if (chat is null) return;
             //Go through it
             //compare every chat in db(by time)
@@ -4952,11 +4960,15 @@ namespace TelegramVisualPart.UserControls
                         ApiService.GetMessageReadStatus(messages[i].Id).Result;
 
                     messages[i].IsRead = updatedStatus;
+
+                    //Set for band message
                 }
             }
             UpdateReadStatus(chat);
             //change vis state
         }
+
+
 
         public void UpdateReadStatus(TelegramLib.MainClasses.UserChat chat)
         {
@@ -4987,6 +4999,32 @@ namespace TelegramVisualPart.UserControls
                     }
                     else if (item.Content is MediaMessage mediaImg)//image (Sticker, image, etc...)
                     {
+                        if (mediaImg.Tag is null)
+                        {
+                            if (mediaImg.IsBandMedia())
+                            {
+                                List<int> ids = mediaImg.GetBandMessagesIds();
+
+                                bool isTick = true;
+                                for (int j = 0; j < ids.Count; j++)
+                                {
+                                    Message? mes = chat.Messages.FirstOrDefault(x => x.Id == ids[j]);
+                                    if (mes is not null && !mes.IsRead)
+                                    {
+                                        isTick = false;
+                                        break;
+                                    }
+                                }
+
+                                Message? toPutIn = chat.Messages.FirstOrDefault(x => x.Id == ids[0]);
+                                if (toPutIn is not null && isTick)
+                                {
+                                    SetVisualReadIconKind(item, toPutIn);
+                                }
+                            }
+                            continue;
+                        }
+
                         int.TryParse(item.Tag.ToString(), out int mesId);
                         SetVisualReadIconKind(item,
                             chat.Messages.FirstOrDefault(x => x.Id == mesId));
@@ -5108,7 +5146,9 @@ namespace TelegramVisualPart.UserControls
 
         public void SetReplyMessageRow()
         {
+            ClearSelectionRow();
             HideSelectionRow();
+            ClearReplyRowParams();
 
             //Get ListBoxItem From Menu
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
@@ -5197,13 +5237,20 @@ namespace TelegramVisualPart.UserControls
 
             //Set text
             ReplyedMessageText.Text =
-                messages.Count > 1 ? $"{messages.Count} messages" :
+                _toForwardMessages is not null && messages.Count == 1 ? "1 message" :
+                (messages.Count > 1 || _toForwardMessages is not null) ? $"{messages.Count} messages" :
                 _repliedMessage is MediaAction ? "Reply media" :
 
                 _repliedMessage is TelegramLib.MainClasses.Messages.TextMessage text ? _repliedMessage.RepliedQuote == string.Empty ? text.Text : _repliedMessage.RepliedQuote :
 
                 _repliedMessage is TelegramLib.MainClasses.Messages.ShareContactMessage share ? "Contact" :
                 "Some shit";
+        }
+
+        public void ClearReplyRowParams()
+        {
+            _toForwardMessages = null;
+            _repliedMessage = null;
         }
 
         public ListBoxItem? GetListBoxItemFromMenu()
@@ -5426,6 +5473,8 @@ namespace TelegramVisualPart.UserControls
                 copy.SenderUserId = _system.LoggedUser.Id;
                 copy.IsPinned = false;
                 copy.IsRead = false;
+                copy.SentTime = DateTime.Now;
+
 
                 if (copy is TelegramLib.MainClasses.Messages.TextMessage text)
                     text.RepliedMessageId = null;
@@ -5614,6 +5663,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetDeleteMessagePage(bool isBoth = true)
         {
+            RemoveRightContactInfo();
+
             TelegramLib.MainClasses.User chatter =
                 _chat.Chatter is null ? _system.LoggedUser :
                 _chat.Chatter;

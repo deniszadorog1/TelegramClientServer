@@ -35,7 +35,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             _system = system;
             _mes = mes;
-
+            
             InitializeComponent();
 
             SetBasicParams();

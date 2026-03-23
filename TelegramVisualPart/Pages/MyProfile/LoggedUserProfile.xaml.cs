@@ -183,6 +183,13 @@ namespace TelegramVisualPart.Pages
         private void UserNameBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(UserNameBlock.Text);
+
+            Window window = Window.GetWindow(this);
+
+            if(window is MainWindow main)
+            {
+                main.SetTemporaryText("Username is copied!");
+            }
         }
     }
 }

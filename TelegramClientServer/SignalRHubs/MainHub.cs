@@ -16,7 +16,7 @@ namespace TelegramClientServer.SignalRHubs
             //await Clients.All.SendAsync("ReceiveTextMessage", user, message);
         }
 
-        public async Task SendMediaMessage(User user, MediaAction message, User chatter)
+        public async Task SendMediaMessage(User user,List<MediaAction> message, User chatter)
         {
             //Send to only one 
             await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", user, message);

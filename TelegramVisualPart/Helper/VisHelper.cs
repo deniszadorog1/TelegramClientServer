@@ -39,20 +39,35 @@ namespace TelegramVisualPart.Helper
         public static IEnumerable<object> GetVisibleItems(ListBox listBox)
         {
             var sv = GetScrollViewer(listBox);
-            if (sv == null)
-                yield break;
+            if (sv == null) yield break;
 
-            VirtualizingStackPanel vsp = FindVisualChild<VirtualizingStackPanel>(listBox);
-            if (vsp == null)
-                yield break;
-
-            int firstVisibleIndex = (int)Math.Floor(vsp.VerticalOffset);
-            int lastVisibleIndex = (int)Math.Ceiling(vsp.VerticalOffset + vsp.ViewportHeight);
-
-            for (int i = firstVisibleIndex; i <= lastVisibleIndex && i < listBox.Items.Count; i++)
+            for (int i = 0; i < listBox.Items.Count; i++)
             {
-                yield return listBox.Items[i];
+                var container = listBox.ItemContainerGenerator.ContainerFromIndex(i) as FrameworkElement;
+
+                if (container == null) continue;
+
+                if (listBox.Items[i] is ListBoxItem item)
+                {
+                    Console.WriteLine(item.Content);
+                }
+
+                if (IsElementVisibleInContainer(container, sv))
+                {
+                    yield return listBox.Items[i];
+                }
             }
+        }
+
+        private static bool IsElementVisibleInContainer(FrameworkElement element, FrameworkElement container)
+        {
+            if (!element.IsVisible) return false;
+
+            Rect bounds = element.TransformToAncestor(container)
+                                 .TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+
+            Rect viewport = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+            return viewport.IntersectsWith(bounds);
         }
 
         private static ScrollViewer GetScrollViewer(DependencyObject d)

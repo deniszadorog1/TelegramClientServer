@@ -46,7 +46,35 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             MediasBox.Items.Clear();
             for (int i = 0; i < _paths.Count; i++)
             {
-                AddMediaInVis(i);
+                int pathIndex = i;
+
+                MediaElBoxItem toAdd = new MediaElBoxItem(_paths[pathIndex]);
+                toAdd.SetChosenSize();
+
+                toAdd.ChangeMedia += () =>
+                {
+                    SetMediaFile(toAdd, pathIndex);
+                };
+
+                toAdd.DeleteMedia += () =>
+                {
+                    MediasBox.Items.Remove(MediasBox.Items
+                        .OfType<ListBoxItem>()
+                        .FirstOrDefault(x => x.Content == toAdd));
+                    _paths.RemoveAt(pathIndex);
+
+                    if (MediasBox.Items.Count == 0)
+                    {
+                        ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                    }
+                };
+
+                ListBoxItem item = new ListBoxItem()
+                {
+                    Content = toAdd
+                };
+
+                MediasBox.Items.Add(item);
             }
         }
 
@@ -57,32 +85,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         public void AddMediaInVis(int pathIndex)
         {
-            MediaElBoxItem toAdd = new MediaElBoxItem(_paths[pathIndex]);
-            toAdd.SetChosenSize();
 
-            toAdd.ChangeMedia += () =>
-            {
-                SetMediaFile(toAdd, pathIndex);
-            };
-
-            toAdd.DeleteMedia += () =>
-            {
-                MediasBox.Items.Remove(MediasBox.Items
-                    .OfType<ListBoxItem>()
-                    .FirstOrDefault(x => x.Content == toAdd));
-
-                if (MediasBox.Items.Count == 0)
-                {
-                    ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-                }
-            };
-
-            ListBoxItem item = new ListBoxItem()
-            {
-                Content = toAdd
-            };
-
-            MediasBox.Items.Add(item);
         }
 
         private void SmileGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -251,6 +254,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         private void GroupItems_Checked(object sender, RoutedEventArgs e)
         {
             _sendType = SendMediaType.Group;
+
             GroupImages();
 
             MediasBox.Visibility = Visibility.Hidden;
@@ -260,6 +264,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         private void GroupItems_Unchecked(object sender, RoutedEventArgs e)
         {
             _sendType = SendMediaType.Single;
+
+            SetBasePaths();
 
             MediasBox.Visibility = Visibility.Visible;
             GroupScroll.Visibility = Visibility.Hidden;
@@ -283,6 +289,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             {
                 MediaElBoxItem toAdd = new MediaElBoxItem(_paths[i]);
                 int index = i;
+
                 toAdd.SetChosenSize();
 
                 toAdd.ChangeMedia += () =>
@@ -292,9 +299,15 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
                 toAdd.DeleteMedia += () =>
                 {
-                    GroupPanel.Children.Remove(GroupPanel.Children
+                    MediaElBoxItem? toRemove = GroupPanel.Children
                         .OfType<MediaElBoxItem>()
-                        .FirstOrDefault(x => x.Content == toAdd));
+                        .FirstOrDefault(x => x == toAdd);
+
+                    if (toRemove is null) return;
+                    _paths.RemoveAt(index);
+
+                    
+                    GroupPanel.Children.Remove(toRemove);
 
                     if (MediasBox.Items.Count == 0)
                     {

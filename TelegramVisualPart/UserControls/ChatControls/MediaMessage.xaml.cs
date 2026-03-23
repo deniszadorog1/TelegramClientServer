@@ -70,11 +70,36 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async void SetMessages()
         {
             _maxHeight = 0;
-            if(_bandPaths.Count == 2)
+
+            if (_bandPaths.Count == 1)
             {
                 BottomBandRow.Height = new GridLength(0);
                 DownBandRow.Height = new GridLength(0);
+                MiddleBandRow.Height = new GridLength(0);
 
+                SetupImageRow(
+                    new List<Border>() { OneInGroupBorder },
+                    new List<ImageBrush>() { OneImg },
+                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0]}),
+                    _maxSize.Width, _maxSize.Height);
+
+                HideBandBorder(TwoInGroupBorder);
+                HideBandBorder(ThreeInGroupBorder);
+                HideBandBorder(FourInGroupBorder);
+                HideBandBorder(FiveInGroupBorder);
+                HideBandBorder(SixInGroupBorder);
+                HideBandBorder(SevenInGroupBorder);
+                HideBandBorder(EightInGroupBorder);
+                HideBandBorder(NineInGroupBorder);
+                HideBandBorder(TenInGroupBorder);
+                HideBandBorder(ElevenInGroupBorder);
+                HideBandBorder(TwelveInGroupBorder);
+            }
+            else if(_bandPaths.Count == 2)
+            {
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+                MiddleBandRow.Height = new GridLength(0);
 
                 SetupImageRow(
                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
@@ -261,7 +286,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
                      await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
                      _maxSize.Width, _maxSize.Height);
 
-                SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
+                SetupImageRow(
+                      new List<Border>() { FourInGroupBorder },
+                      new List<ImageBrush>() { FourImg },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[3] }),
+                      _maxSize.Width, _maxSize.Height);
+
+                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
 
                 SetupImageRow(
                       new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
@@ -476,33 +507,47 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (borders == null || images == null || borders.Count != images.Count || borders.Count == 0)
                 return;
 
+            double minHeight = 60; 
+
             double totalAspectRatio = 0;
             for (int i = 0; i < images.Count; i++)
             {
                 totalAspectRatio += (double)images[i].PixelWidth / images[i].PixelHeight;
             }
-
             double finalHeight = maxWidth / totalAspectRatio;
 
-            if (finalHeight > maxHeight)
-            {
-                finalHeight = maxHeight;
-            }
+            finalHeight = Math.Max(minHeight, Math.Min(finalHeight, maxHeight));
+
+            double widthPerAspectUnit = maxWidth / totalAspectRatio;
+
+            double currentTotalWidth = 0;
 
             for (int i = 0; i < borders.Count; i++)
             {
                 var border = borders[i];
                 var img = images[i];
+                var brush = brushes[i];
 
                 double aspect = (double)img.PixelWidth / img.PixelHeight;
 
                 border.Height = finalHeight;
-                border.Width = finalHeight * aspect;
+
+                double targetWidth = widthPerAspectUnit * aspect;
+
+                if (i == borders.Count - 1)
+                {
+                    border.Width = maxWidth - currentTotalWidth;
+                }
+                else
+                {
+                    border.Width = targetWidth;
+                    currentTotalWidth += targetWidth;
+                }
 
                 border.Margin = new Thickness(0);
 
-                brushes[i].ImageSource = img;
-                brushes[i].Stretch = Stretch.UniformToFill;
+                brush.ImageSource = img;
+                brush.Stretch = Stretch.UniformToFill; 
             }
         }
 

@@ -36,7 +36,7 @@ namespace TelegramVisualPart.Services
         public static TelSystem? _system;
 
         public static event Action<User, TextMessage>? TextMessageReceived;
-        public static event Action<User, MediaAction>? MediaMessageReceived;
+        public static event Action<User, List<MediaAction>>? MediaMessageReceived;
         public static event Func<User, StaticMessage, Task>? StatMessageReceived;
 
         public static event Action<User>? UpdateContactDel;
@@ -160,7 +160,7 @@ namespace TelegramVisualPart.Services
                 return;
             });
 
-            _connection.On<User, MediaAction>("ReceiveMediaMessage", (sender, message) =>
+            _connection.On<User, List<MediaAction>>("ReceiveMediaMessage", (sender, message) =>
             {
                 MediaMessageReceived?.Invoke(sender, message);
                 return;
@@ -366,7 +366,7 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
         }
 
-        public static async Task SendMediaMessage(User sender, MediaAction message, User chatter)
+        public static async Task SendMediaMessage(User sender, List<MediaAction> message, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);

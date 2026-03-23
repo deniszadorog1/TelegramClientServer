@@ -1005,5 +1005,19 @@ namespace TelegramLib.MainClasses
                 res.Add(mes);
             }
         }
+
+        public bool IsSendingBand(List<Message> messages)
+        {
+            bool isAllMedia = messages.Where(x => !(x is MediaAction)).ToList().Count == 0;
+            if (!isAllMedia) return false;
+
+            List<MediaAction> actions = messages.Cast<MediaAction>().ToList();
+
+            bool isBandAreTheSame = actions.Count <= 1 || actions.All(m => m.BandId == actions[0].BandId);
+            if (!isBandAreTheSame) return false;
+
+
+            return actions[0].BandId != -1;
+        }
     }
 }

@@ -112,8 +112,8 @@
                         <menuIconTextBut:MenuIconTextBut x:Name="ChatSettings" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
                         <menuIconTextBut:MenuIconTextBut x:Name="Folders" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
                         <menuIconTextBut:MenuIconTextBut x:Name="Advanced" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                        <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
-                        <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="SpeakersAndCamera" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown" IsEnabled="False"/>
+                        <menuIconTextBut:MenuIconTextBut x:Name="BatteryAnimation" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown" IsEnabled="False"/>
                         <menuIconTextBut:MenuIconTextBut x:Name="Language" Style="{StaticResource SettingsBut}"  PreviewMouseDown="Buts_PreviewMouseDown"/>
                     </StackPanel>
                 </ScrollViewer>

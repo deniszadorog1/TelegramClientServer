@@ -246,8 +246,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //Set change getting new image source
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Choose image or video",
-                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi"
+                Title = "Choose image",
+                Filter = "Image files|*.png;*.jpg;*.jpeg;"
             };
 
             if (openFileDialog.ShowDialog() == true)

@@ -297,7 +297,7 @@ namespace TelegramVisualPart.Pages
 
         }
         public void SetMediaMessage(TelegramLib.MainClasses.User user,
-            MediaAction media)
+            List<MediaAction> media)
         {
             Dispatcher.Invoke(() =>
             {

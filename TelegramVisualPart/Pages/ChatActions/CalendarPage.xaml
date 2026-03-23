@@ -55,7 +55,6 @@
                         Foreground="{StaticResource CloseWindowColor}"/>
                 
 
-
                 <Button Name="CancelBut" Visibility="Hidden"
                         Style="{StaticResource MaterialDesignRaisedButton}"           
                         Content="Cancel" Background="Transparent" 

@@ -223,9 +223,7 @@
 
                     <controls:ActionButton HorizontalAlignment="Right" x:Name="MenuBut"
                                Style="{StaticResource ButStyle}"
-                               MouseEnter="MenuBut_MouseEnter"
-                               PreviewMouseDown="MenuBut_PreviewMouseDown"/>
-
+                               MouseEnter="MenuBut_MouseEnter"/>
 
                 </StackPanel>
             </Grid>

@@ -739,11 +739,6 @@ namespace TelegramVisualPart.Windows
             rotateTransform.BeginAnimation(RotateTransform.AngleProperty, animation);
         }
 
-        private void MenuBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
 
         private void MediaMenu_MouseLeave(object sender, MouseEventArgs e)
         {

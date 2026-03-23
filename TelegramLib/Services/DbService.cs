@@ -2337,7 +2337,7 @@ namespace TelegramLib.Services
                 toAdd.ChatId = chat.Id;
                 toAdd.SenderId = message.SenderUserId;
                 toAdd.SentDate = message.SentTime;
-                toAdd.IsRead = false;
+                toAdd.IsRead = !(chat is null) && !(chat.Chatter is null) && chat.Chatter.Id != message.SenderUserId ? true : false;
                 toAdd.IsInSchedule = message.IsSchedule;
 
                 toAdd.MessageQuote = message.RepliedQuote;
