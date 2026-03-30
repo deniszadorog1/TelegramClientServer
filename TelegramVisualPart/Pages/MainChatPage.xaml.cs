@@ -259,6 +259,7 @@ namespace TelegramVisualPart.Pages
 
             SignalRService.UpdateUserImage += AddedUserImage;
             SignalRService.UpdateContactPhotoDel += AddedUserImage;
+            SignalRService.UpdateLittlePhotoVisInChatDel += UpdateLittlePhotoVisInChat;
 
             //Check with last message
             SignalRService.ClearChatDel += ClearChatAction;
@@ -267,6 +268,21 @@ namespace TelegramVisualPart.Pages
             SignalRService.MediaMessageReceived += SetMediaMessage;
             SignalRService.DeleteChat += DeleteChat;
             SignalRService.SetShareContactMessage += AddShareContactMesInDb;
+        }
+
+        public void UpdateLittlePhotoVisInChat(TelegramLib.MainClasses.User toCheckUser)
+        {
+            Dispatcher.Invoke(async () =>
+            {
+                //if (UserChat.Visibility == Visibility.Hidden) return;
+                TelegramLib.MainClasses.UserChat chat = UserChat.GetChat();
+
+               /* if (chat is null || chat.Chatter is null ||
+                    chat.Chatter.Id != toCheckUser.Id) return;*/
+
+                UserChat.SetChatterLittlePhotoVisibility(toCheckUser);
+
+            });
         }
 
         public void SetColorToSettingsButs()
@@ -1124,8 +1140,6 @@ namespace TelegramVisualPart.Pages
                 chat = _system.Chats.LastOrDefault();
 
                 RepaintUserChatsPanel();
-
-
             }
 
             //_system.GetUserChatByChatterLogin(talkControl.FriendLogin.Text);
@@ -1403,7 +1417,6 @@ namespace TelegramVisualPart.Pages
             foreach (var item in items)
             {
                 ChatsBox.Items.Add(item);
-
             }
 
             for (int i = 0; i < ChatsBox.Items.Count; i++)
@@ -1641,6 +1654,8 @@ namespace TelegramVisualPart.Pages
 
                 EscLevels level = GetEscapeLevel();
 
+                //
+
                 switch (level)
                 {
                     case EscLevels.First:
@@ -1656,6 +1671,7 @@ namespace TelegramVisualPart.Pages
                         }
                     case EscLevels.Third:
                         {
+                            BackButton_MouseDown();
                             break;
                         }
                     case EscLevels.Forth:
@@ -1710,10 +1726,12 @@ namespace TelegramVisualPart.Pages
 
                 EscLevels.First :
 
-                UserChat.Visibility == Visibility.Visible ?
+                UserChat.Visibility == Visibility.Visible &&
+                UserChat.BackButColumn.Width.Value == 0 ?
 
                 EscLevels.Second :
-                EscLevels.Third;
+
+                UserChat.BackButColumn.Width.Value > 0 ? EscLevels.Third : EscLevels.Forth;
         }
 
         public void SetFirstLEvelEscVisibility()
@@ -2288,7 +2306,8 @@ namespace TelegramVisualPart.Pages
             if (tempWindow is not MainWindow main ||
                 _menuChatterTalk is null) return;
 
-            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+            TelegramLib.MainClasses.UserChat? chat = GetChosenUserChat();
+            if (chat is null) return;
 
             _menuChatterTalk.ChangeUnreadEllipseVisOnOtherDirection();
             chat.IsMarked = !chat.IsMarked;
@@ -2747,7 +2766,6 @@ namespace TelegramVisualPart.Pages
             {
                 return;
             }
-
 
             //To set forwarding params
             await UserChat.SetForwardedMessage(new List<Message>() { mes }, userIdToSend);

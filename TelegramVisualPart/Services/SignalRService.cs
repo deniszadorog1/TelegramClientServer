@@ -64,6 +64,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User, Message>? ForwardMesAction;
         public static event Action<User, Message, bool>? DeleteMessageByIdDel;
         public static event Action<User, Message>? ToPinMessageDel;
+        public static event Action<User>? UpdateLittlePhotoVisInChatDel;
 
         public static event Func<User, Task>? RemoveContactDel;
         public static event Func<User, Task>? AddContactDel;
@@ -357,6 +358,11 @@ namespace TelegramVisualPart.Services
                 UpdateChatsAfterSched?.Invoke(chatIds);
             });
 
+            _connection.On<TelegramLib.MainClasses.User>("UpdateLittlePhotoVisInChat", (loggedUser) =>
+            {
+                UpdateLittlePhotoVisInChatDel?.Invoke(loggedUser);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -406,6 +412,16 @@ namespace TelegramVisualPart.Services
             if (_connection is null) return;
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
+        }
+
+        public static async Task UpdateLittlePhotoVisInChat(User loggedUser)
+        {
+            if (_connection is null) return;
+
+            if(_connection.State == HubConnectionState.Connected)
+            {
+                await _connection.InvokeAsync("UpdateLittlePhotoVisInChat", loggedUser);
+            }
         }
 
         public static async Task AddUserImage(User addedImage)

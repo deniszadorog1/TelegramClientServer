@@ -610,12 +610,17 @@ namespace TelegramLib.MainClasses
         }
 
         public void AddScheduleMessage(
-            TelegramLib.MainClasses.Messages.Message message,
+            List<TelegramLib.MainClasses.Messages.Message> messages,
             TelegramLib.MainClasses.User user)
         {
-            ScheduleMessages.Add(message);
+            for (int i = 0; i < messages.Count; i++)
+            {
+                ScheduleMessages.Add(messages[i]);
+            }
             UpdateScheduleMessages(user);
         }
+
+       
 
         public void UpdateScheduleMessages(TelegramLib.MainClasses.User sender)
         {

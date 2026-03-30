@@ -74,7 +74,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             }
 
             SetScheduleMessage message = 
-                new SetScheduleMessage(_chatControl.GetChat(), mes, _system);
+                new SetScheduleMessage(_chatControl.GetChat(), new List<Message>() { mes }, _system);
             
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }

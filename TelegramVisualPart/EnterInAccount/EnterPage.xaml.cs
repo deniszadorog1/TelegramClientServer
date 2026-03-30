@@ -75,6 +75,7 @@ namespace TelegramVisualPart.EnterInAccount
                 ClearBoxes();
                 return;
             }
+            
 
             _system.Settings.ChatsSettings.SetBasicThemes();
 

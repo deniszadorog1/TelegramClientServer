@@ -255,6 +255,8 @@ namespace TelegramVisualPart.Windows
             _chosenMedia = chosen;
             _mediaMessages = messages;
 
+            if (_chosenMedia is null) return;
+
             _allImagesInfo.Clear();
             for (int i = 0; i < _mediaMessages.Count; i++)
             {

@@ -29,10 +29,14 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         private string _text;
         public SendMediaType _sendType = SendMediaType.Single;
 
-        public SendMediaPage(List<string> firstMediaPath, string text)
+        public bool _isScheduleSend;
+
+        public SendMediaPage(List<string> firstMediaPath, string text, bool isSchedule = false)
         {
             _firstMediaPath = firstMediaPath;
             _text = text;
+            _isScheduleSend = isSchedule;
+
             InitializeComponent();
 
             _paths.AddRange(firstMediaPath);
@@ -151,6 +155,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         private void SendBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (_isScheduleSend) return;
+
             //Send all message
             List<Image> imgs = GetImagesFromMediaBox();
             List<string> paths = GetPathsFromMedias();
@@ -318,36 +324,5 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                 GroupPanel.Children.Add(toAdd);
             }
         }
-
-        /* private void SetEventsForGroupedItems()
-         {
-             //Set events
-             //Set index tag
-             for (int i = 0; i < _mediaGroupItems.Count; i++)
-             {
-                 MediaElBoxItem item = _mediaGroupItems[i];
-                 item.Tag = i.ToString();
-
-                 item.ChangeMedia += () =>
-                 {
-                     SetMediaFile(item);
-                 };
-
-                 item.DeleteMedia += () =>
-                 {
-                     int.TryParse(item.Tag.ToString(), out int index);
-                     _paths.RemoveAt(index);
-
-                     item.ClearParams();
-
-                     GroupImages();
-
-                     if (_paths.Count == 0)
-                     {
-                         ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-                     }
-                 };
-             }
-         }*/
     }
 }

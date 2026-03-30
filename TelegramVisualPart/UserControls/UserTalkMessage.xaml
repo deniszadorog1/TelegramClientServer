@@ -108,11 +108,6 @@
                                          Width="20" Height="20"
                                          Foreground="Gray"/>
 
-                <Ellipse Name="UnreadEllipse" Visibility="Hidden"
-                         Width="20" Height="20"
-                    Fill="{StaticResource TempActiveTextColor}">
-
-                </Ellipse>
 
                 <Border Background="Gray" CornerRadius="10"
                         Name="UnredCountBorder" Visibility="Hidden">
@@ -122,6 +117,12 @@
                                HorizontalAlignment="Center"
                                FontFamily="{DynamicResource AppFont}"/>
                 </Border>
+
+                <Ellipse Name="UnreadEllipse" Visibility="Hidden"
+                         Width="20" Height="20"
+                    Fill="{StaticResource TempActiveTextColor}">
+
+                </Ellipse>
 
             </Grid>
 

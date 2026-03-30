@@ -133,6 +133,9 @@ namespace TelegramVisualPart.Helper
             await SignalRService.UpdateContactBioVis(system.LoggedUser);
 
             await SignalRService.UpdateOnlineStatus(system.LoggedUser);
+
+            //Set little chat image visibility
+            await SignalRService.UpdateLittlePhotoVisInChat(system.LoggedUser);
         }
 
         public static string CleanText(string input)

@@ -367,6 +367,8 @@ namespace TelegramLib.Services
                             GetPinnedMessages(chat.Id),
                             GetMessagesByChatId(chat.Id, true));
 
+                        if(!(toAdd.Chatter is null)) toAdd.Chatter.BlockedUsers = GetBlockedContactsByUserId(userId);
+
                         //Set mask for chatterId
                         SetMaskForChatterId(toAdd.Chatter, userId);
 
@@ -2562,16 +2564,16 @@ namespace TelegramLib.Services
         public static void UpdateChat(UserChat chat)
         {
             //Update chat messages
-
+            if (chat is null) return;
             UpdateMessages(chat);
+
             using (var model = new TelegramModel())
             {
                 Chat toUpdate = model.Chat.FirstOrDefault(x => x.Id == chat.Id);
                 if (toUpdate is null) return;
 
-                if (!(chat.ChatBg is null)) toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
+                if (!(chat.ChatBg is null) && !(chat.GetBackground() is null)) toUpdate.BgImageId = GetChatBgIdByName(chat.GetBackground().FileName);
                 toUpdate.AutoDeleteId = GetAutoDelIdByType(chat.AutoDel);
-                //toUpdate.IsMute = chat.Chatter.IsBlockedUserBlocked;
 
                 //Update general BG
 
@@ -3346,6 +3348,7 @@ namespace TelegramLib.Services
                 if (toSet is null) return;
 
                 toSet.IsOnline = isOnline;
+                toSet.LastOnline = DateTime.Now;
                 model.SaveChanges();
             }
         }
@@ -3898,7 +3901,7 @@ namespace TelegramLib.Services
 
         public static TelegramLib.MainClasses.Messages.Message GetPairOfMessageBySentTime(int mesId)
         {
-            //Add chat chacker if need
+            //Add chat checker if need
             using (var model = new TelegramModel())
             {
                 Messages toCompare = model.Messages.FirstOrDefault(x => x.Id == mesId);
@@ -3911,7 +3914,7 @@ namespace TelegramLib.Services
                         x.Id != mesId &&
                         x.SentDate.HasValue && toCompare.SentDate.HasValue &&
                         Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds)
-                        < 10);
+                        == 0);
 
                 return res is null ? null : GetMessageByMessages(res);
             }
@@ -4018,7 +4021,7 @@ namespace TelegramLib.Services
                     x.Id != mesId &&
                     x.SentDate.HasValue && toCompare.SentDate.HasValue &&
                     Math.Abs((x.SentDate.Value - toCompare.SentDate.Value).TotalMilliseconds)
-                    < 10);
+                    == 0);
 
             return res;
         }
