@@ -364,7 +364,7 @@
           }
         }
       },
-      "Microsoft.Bcl.AsyncInterfaces/10.0.0-preview.7.25380.108": {
+      "Microsoft.Bcl.AsyncInterfaces/10.0.5": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll": {
@@ -2878,10 +2878,10 @@
         "microsoft.aspnetcore.signalr.protocols.json.nuspec"
       ]
     },
-    "Microsoft.Bcl.AsyncInterfaces/10.0.0-preview.7.25380.108": {
-      "sha512": "bFv9W1Q6lacazW0WGrpCRG3BYE6j8fqkkeHtlpINDlC/tDqN18aLmSQTesfTJ6iJh325FZoVipFIKkOo6cIz9A==",
+    "Microsoft.Bcl.AsyncInterfaces/10.0.5": {
+      "sha512": "hQB3Hq1LlF0NkGVNyZIvwIQIY3LM7Cw1oYjNiTvdNqmzzipVAWEK1c5sj2H5aFX0udnjgPLxSYKq2fupueS8ow==",
       "type": "package",
-      "path": "microsoft.bcl.asyncinterfaces/10.0.0-preview.7.25380.108",
+      "path": "microsoft.bcl.asyncinterfaces/10.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2896,7 +2896,7 @@
         "lib/netstandard2.0/Microsoft.Bcl.AsyncInterfaces.xml",
         "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll",
         "lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.xml",
-        "microsoft.bcl.asyncinterfaces.10.0.0-preview.7.25380.108.nupkg.sha512",
+        "microsoft.bcl.asyncinterfaces.10.0.5.nupkg.sha512",
         "microsoft.bcl.asyncinterfaces.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -7451,6 +7451,7 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.8",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 8.0.8",
       "Microsoft.AspNetCore.SignalR.Client >= 10.0.0-preview.7.25380.108",
+      "Microsoft.Bcl.AsyncInterfaces >= 10.0.5",
       "Newtonsoft.Json >= 13.0.3",
       "System.Data.SqlClient >= 4.9.0",
       "TelegramLib >= 1.0.0",
@@ -7554,6 +7555,10 @@
           "Microsoft.AspNetCore.SignalR.Client": {
             "target": "Package",
             "version": "[10.0.0-preview.7.25380.108, )"
+          },
+          "Microsoft.Bcl.AsyncInterfaces": {
+            "target": "Package",
+            "version": "[10.0.5, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

@@ -119,6 +119,8 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             //Apply folder settings
             if (_isSaveAction)
             {
+                if (!IsFolderWithSuchNameExist()) return;
+
                 //Update folder
                 _folder.SetContacts(_toAddContacts);
                 _folder.SetExcludeContacts(_toExcludeContacts);
@@ -147,9 +149,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public async Task<bool> CreateNewFolder()
         {
-            if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||
-                _system.IsFolderNameExists(FolderNameBox.Text)) return false;
-
+            if (!IsFolderWithSuchNameExist()) return false;
             TelegramLib.MainClasses.FolderObjs.Folder toAdd =
                 new Folder(-1, FolderNameBox.Text, ChosenFolderIcon.Kind.ToString(),
                 _toAddContacts, _toExcludeContacts);
@@ -160,6 +160,18 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             toAdd.Id = newFolderId;
 
             _system.AddFolder(toAdd);
+
+            return true;
+        }
+
+        public bool IsFolderWithSuchNameExist()
+        {
+            if (string.IsNullOrWhiteSpace(FolderNameBox.Text) ||
+                _system.IsFolderNameExists(FolderNameBox.Text))
+            {
+                MessageBox.Show("Somthing went wrong");
+                return false;
+            }
 
             return true;
         }

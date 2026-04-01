@@ -15,8 +15,6 @@
     <Border Name="BgBorder" CornerRadius="5" 
             Background="{StaticResource DarkThemeOne}">
         <Grid>
-
-
             <Grid PreviewMouseDown="Grid_MouseDown">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" x:Name="UpperRow"/>

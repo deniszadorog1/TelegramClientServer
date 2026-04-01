@@ -73,7 +73,10 @@ namespace TelegramLib.MainClasses.Messages
         {
             if (SentTime.Year != date.Year ||
                SentTime.Month != date.Month ||
-               SentTime.Day != date.Day) return false;
+               SentTime.Day != date.Day ||
+               SentTime.Hour != date.Hour ||
+               SentTime.Minute != date.Minute ||
+               SentTime.Second != date.Second) return false;
 
             if (this is StaticMessage stat && !(stat.Date is null)) return false;
 

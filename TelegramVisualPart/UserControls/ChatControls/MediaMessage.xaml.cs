@@ -1332,7 +1332,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _selectTickColWidth = 30;
         public void SetTickVisibility(bool isVis)
         {
-            if (isVis)
+            if (isVis && TickColumnDef.Width.Value == 0)
             {
                 this.Width += _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(_selectTickColWidth);
@@ -1340,6 +1340,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             else
             {
                 this.Width -= _selectTickColWidth;
+                TickColumnDef.Width = new GridLength(0);
+            }
+        }
+
+        public void SetTickVisOnlyTockCol(bool isVis)
+        {
+            if (isVis)
+            {
+                TickColumnDef.Width = new GridLength(_selectTickColWidth);
+            }
+            else if (TickColumnDef.Width.Value != 0)
+            {
                 TickColumnDef.Width = new GridLength(0);
             }
         }
@@ -1547,6 +1559,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (border is null) return;
             border.Visibility = border.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        public void SetChoseVisById(int id, Visibility vis)
+        {
+            Border? border = _selectBorders.FirstOrDefault(x => x.Tag is not null && x.Tag.ToString() == id.ToString());
+
+            if (border is null) return;
+            border.Visibility = vis;
         }
 
         public bool IsAllMediasInBandAreChosen()

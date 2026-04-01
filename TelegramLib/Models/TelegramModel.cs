@@ -5,6 +5,16 @@ using System.Linq;
 
 namespace TelegramLib.Models
 {
+    public class EfConfiguration : System.Data.Entity.DbConfiguration
+    {
+        public EfConfiguration()
+        {
+            SetProviderServices("System.Data.SqlClient",
+                System.Data.Entity.SqlServer.SqlProviderServices.Instance);
+        }
+    }
+
+    [System.Data.Entity.DbConfigurationType(typeof(EfConfiguration))]
     public partial class TelegramModel : DbContext
     {
         public TelegramModel()

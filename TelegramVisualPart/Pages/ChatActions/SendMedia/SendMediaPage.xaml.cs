@@ -324,5 +324,26 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                 GroupPanel.Children.Add(toAdd);
             }
         }
+
+        private void SendBut_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            SchedMesBorder.Visibility = Visibility.Visible;
+        }
+
+        private void SchedMesBorder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void SchedMesBorder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            SchedMesBorder.Visibility = Visibility.Hidden;
+        }
+
+        private void SchedMesBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set sched action
+        }
     }
 }

@@ -25,6 +25,8 @@ using TelegramVisualPart.Windows;
 using TelegramLib.MainClasses.DTOsHelper;
 using Microsoft.Xaml.Behaviors.Core;
 using TelegramVisualPart.Helper;
+using Microsoft.Extensions.Hosting;
+using System.Windows;
 
 namespace TelegramVisualPart.Services
 {
@@ -151,12 +153,6 @@ namespace TelegramVisualPart.Services
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
             {
-                //Need to be: senderUSERid, receiverUSERid, message
-                //sender already added message to hiss chatDB
-                //there receiver should add message to RECEIVERSdb
-
-                //sender converts into contact id -> find chat in db by this params -> add message to chat
-
                 TextMessageReceived?.Invoke(user, message);
                 return;
             });

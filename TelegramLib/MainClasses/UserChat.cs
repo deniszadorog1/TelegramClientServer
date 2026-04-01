@@ -484,6 +484,19 @@ namespace TelegramLib.MainClasses
             Messages.Remove(toRemove);
         }
 
+        public void RemoveMessagesByList(List<TelegramLib.MainClasses.Messages.Message> messages)
+        {
+            for (int i = 0; i < messages.Count; i++)
+            {
+                TelegramLib.MainClasses.Messages.Message toRemove =
+                    Messages.FirstOrDefault(x => x.Id == messages[i].Id);
+
+                if (toRemove is null) return;
+
+                Messages.Remove(toRemove);
+            }
+        }
+
         public TelegramLib.MainClasses.Messages.Message GetMessageByDateTime(DateTime date)
         {
             //Check for Same Day
@@ -620,7 +633,7 @@ namespace TelegramLib.MainClasses
             UpdateScheduleMessages(user);
         }
 
-       
+
 
         public void UpdateScheduleMessages(TelegramLib.MainClasses.User sender)
         {
@@ -654,7 +667,7 @@ namespace TelegramLib.MainClasses
                     };
 
                     ScheduleMessages.Insert(i, staticMsg);
-                    i++; 
+                    i++;
                     lastDate = msgDate;
                 }
             }
@@ -673,10 +686,10 @@ namespace TelegramLib.MainClasses
 
         public void RemoveStaticMessagesFromSchedule()
         {
-            List<Messages.Message> toRemove = 
+            List<Messages.Message> toRemove =
                 new List<Messages.Message>();
 
-            for(int i = 0; i < ScheduleMessages.Count; i++)
+            for (int i = 0; i < ScheduleMessages.Count; i++)
             {
                 if (ScheduleMessages[i] is StaticMessage mes)
                 {
@@ -684,7 +697,7 @@ namespace TelegramLib.MainClasses
                 }
             }
 
-            foreach(var removeMes in toRemove)
+            foreach (var removeMes in toRemove)
             {
                 ScheduleMessages.Remove(removeMes);
             }
@@ -698,15 +711,15 @@ namespace TelegramLib.MainClasses
 
         public void RemoveOldSchedMessages()
         {
-            List<Messages.Message> toRemove = 
+            List<Messages.Message> toRemove =
                ScheduleMessages.Where(
-                   x => !(x is StaticMessage) && 
+                   x => !(x is StaticMessage) &&
                x.SentTime < DateTime.Now).ToList();
 
-            foreach(var mes in toRemove)
+            foreach (var mes in toRemove)
             {
                 ScheduleMessages.Remove(mes);
-            }      
+            }
         }
 
         public int? GetMessageIdByText(string text)

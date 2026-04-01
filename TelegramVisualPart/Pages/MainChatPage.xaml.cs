@@ -1667,11 +1667,13 @@ namespace TelegramVisualPart.Pages
                         {
                             ChosoeChatBorder.Visibility = Visibility.Visible;
                             UserChat.Visibility = Visibility.Hidden;
+                            if (UserChat is not null) UserChat.SetIsMouseDownValue(false);
                             break;
                         }
                     case EscLevels.Third:
                         {
                             BackButton_MouseDown();
+                            if(UserChat is not null) UserChat.SetIsMouseDownValue(false);
                             break;
                         }
                     case EscLevels.Forth:

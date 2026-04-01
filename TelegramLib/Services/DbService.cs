@@ -16,6 +16,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
@@ -4617,6 +4618,20 @@ namespace TelegramLib.Services
 
                 if (!(maxMessage is null && !(maxMessage.BandId is null))) return (int)maxMessage.BandId;
                 return -1;
+            }
+        }
+
+        // Это метод для Раздела 3.1 (демонстрация Async Iterator)
+        public static async IAsyncEnumerable<TelegramLib.MainClasses.Messages.Message> StreamMessagesById(int chatId)
+        {
+            using (var model = new TelegramModel())
+            {
+                foreach (var mes in model.Messages.Where(x => x.ChatId == chatId))
+                {
+                    //await Task.Delay(100);
+
+                    yield return GetMessageByMessages(mes);
+                }
             }
         }
     }

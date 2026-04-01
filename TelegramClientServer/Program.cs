@@ -27,6 +27,7 @@ namespace TelegramClientServer
             builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
 
+            builder.Services.AddHostedService<MessageDispatcher>();
 
             // Add services to the container.
 

@@ -12,8 +12,21 @@ namespace TelegramClientServer.SignalRHubs
     {
         public async Task SendTextMessage(User user, TextMessage message, User chatter)
         {
-            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
-            //await Clients.All.SendAsync("ReceiveTextMessage", user, message);
+
+            // Створюємо обгортку з даними
+            var envelope = new MessageEnvelope
+            {
+                Sender = user,
+                Content = message,
+                ReceiverId = chatter.Id.ToString()
+            };
+
+            // Просто кидаємо в канал і ЗАБУВАЄМО (Fire and Forget для Хаба)
+            await MessageBus.PublishAsync(envelope);
+
+            // Хаб вільний! Він може приймати наступне повідомлення від іншого юзера.
+
+            //await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
         }
 
         public async Task SendMediaMessage(User user,List<MediaAction> message, User chatter)
@@ -173,4 +186,30 @@ namespace TelegramClientServer.SignalRHubs
                 SendAsync("RemoveManyMessagesByDateTimes", sentTimes, loggedUserId);
         }
     }
+
+    public class MessageDispatcher : BackgroundService
+    {
+        private readonly IHubContext<MainHub> _hubContext;
+
+        public MessageDispatcher(IHubContext<MainHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            // Це наша корутина-спостерігач. Вона "спить", поки канал порожній.
+            // Як тільки в MessageBus з'являється дані, вона "прокидається" (resume)
+            await foreach (var envelope in MessageBus.SubscribeAsync(stoppingToken))
+            {
+                // Логіка розсилки
+                await _hubContext.Clients.User(envelope.ReceiverId)
+                    .SendAsync("ReceiveTextMessage", envelope.Sender, envelope.Content, stoppingToken);
+
+                // Тут же можна паралельно писати в базу, не гальмуючи клієнта
+                // await DbService.SaveMessage(envelope); 
+            }
+        }
+    }
+
 }

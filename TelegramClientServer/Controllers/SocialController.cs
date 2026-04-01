@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Data.Entity.Core.Common.CommandTrees;
+//using System.Data.Entity.Core.Common.CommandTrees;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Policy;
@@ -683,6 +684,23 @@ namespace TelegramClientServer.Controllers
         {
             public int SavedChatId { get; set; }
             public List<int> ToRemoveIds { get; set; }
+        }
+
+
+        //Diploma
+        [HttpGet("stream/{chatId}")]
+        public async Task GetStream(int chatId)
+        {
+            Response.ContentType = "application/x-ndjson"; 
+
+            var messageStream = DbService.StreamMessagesById(chatId);
+
+            await foreach (var message in messageStream)
+            {
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(message);
+                await Response.Body.WriteAsync(System.Text.Encoding.UTF8.GetBytes(json + "\n"));
+                await Response.Body.FlushAsync(); 
+            }
         }
 
     }

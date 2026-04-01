@@ -59,7 +59,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private bool _isUpdate;
 
         public async Task SetContactInfo(TelegramLib.MainClasses.UserChat chat,
-            TelSystem system, TelegramLib.MainClasses.UserContactcs contact, 
+            TelSystem system, TelegramLib.MainClasses.UserContactcs contact,
             bool isSetMaxHeight = true)
         {
             Console.WriteLine(MaxHeight);
@@ -84,6 +84,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SignalRService.UpdateContactPhotoDel += UpdateContactPhoto;
             SignalRService.UpdateContactBioDel += UpdateContactBio;
 
+            SignalRService.MediaMessageReceived += ReceivedMedias;
+            SignalRService.DeleteMessageByIdDel += RemovedMedia;
+            SignalRService.RemoveManyMessagesDel += RemovedMedia;
+
+
             ContactMenu.UnblockUser += SetUnBlockAction;
 
             this.Visibility = Visibility.Visible;
@@ -93,9 +98,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             BlockButVisibility();
             SetStartToggleState();
 
-            Console.WriteLine(MaxHeight);
-            Console.WriteLine(Height);
-
             LoadEnd?.Invoke();
         }
 
@@ -103,9 +105,49 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetBasicRowHeight()
         {
             BirthdatRow.Height = new GridLength(_baseUpperInfoRowHeight);
-           // ToBeHiddenButs.Height = new GridLength(200);
+            // ToBeHiddenButs.Height = new GridLength(200);
             //BioRow.Height = new GridLength(_baseUpperInfoRowHeight);
             //AddContactRow.Height = new GridLength(_baseUpperInfoRowHeight);
+        }
+
+        public void ReceivedMedias(TelegramLib.MainClasses.User user, List<MediaAction> medias)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                await SetInfoVisibility();
+            });
+        }
+
+        public void RemovedMedia(TelegramLib.MainClasses.User logged,
+            TelegramLib.MainClasses.Messages.Message mes, bool isUpdate)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (_chat is not null && _chat.Chatter is not null && _chat.Chatter.Id == logged.Id)
+                {
+                    //_chat.RemoveMessagesByList(medias.Cast<TelegramLib.MainClasses.Messages.Message>().ToList());
+                    TelegramLib.MainClasses.Messages.Message? pair =
+                        await ApiService.GetPairOfMessage(mes);
+
+                    if(pair is not null) _chat.RemoveMessageById(pair.Id);
+                }
+                await SetInfoVisibility();
+            });
+        }
+
+        public void RemovedMedia(List<DateTime> dates, int contId)
+        {
+            Dispatcher.InvokeAsync(async () =>
+            {
+                if (_chat is not null && _chat.Chatter is not null && _chat.Chatter.Id == contId)
+                {
+                    for (int i = 0; i < dates.Count; i++)
+                    {
+                        //_chat.Messages.Remove(_chat.GetMessageByDateTime(dates[i]));
+                    }
+                }
+                await SetInfoVisibility();
+            });
         }
 
         public void SetUnBlockAction()
@@ -121,7 +163,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async Task SetInfoVisibility()
         {
             SetBlocksVisibility();
-            Console.WriteLine(MaxHeight);
             await SetUserParams();
         }
         public void BlockButVisibility()
@@ -138,7 +179,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public void SetBlocksVisibility()
         {
             SetIsContactRemovedVis();
-            Console.WriteLine(MaxHeight);
+
             SetMediasGridsVisibility();
         }
 
@@ -159,6 +200,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        private const int _mediaRowHeight = 50;
         public void SetMediasGridsVisibility()
         {
             List<MediaAction> medias = _chat.GetMediaMessages();
@@ -170,6 +212,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 MaxHeight -= PhotoRow.Height.Value;
                 PhotoRow.Height = new GridLength(0);
             }
+            else if(PhotoRow.Height.Value == 0)
+            {
+                PhotosLine.Visibility = Visibility.Visible;
+                MaxHeight += _mediaRowHeight;
+                PhotoRow.Height = new GridLength(_mediaRowHeight);
+            }
+
 
             //is videos amount == 0
             if (FilesAction.GetVideosAmount(medias) == 0)
@@ -177,6 +226,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 VideosLine.Visibility = Visibility.Hidden;
                 MaxHeight -= VideosRow.Height.Value;
                 VideosRow.Height = new GridLength(0);
+            }
+            else if (VideosRow.Height.Value == 0)
+            {
+                VideosLine.Visibility = Visibility.Visible;
+                MaxHeight += _mediaRowHeight;
+                VideosRow.Height = new GridLength(_mediaRowHeight);
             }
 
             //is gifs amount == 0
@@ -186,12 +241,24 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 MaxHeight -= GifRow.Height.Value;
                 GifRow.Height = new GridLength(0);
             }
+            else if(GifRow.Height.Value == 0)
+            {
+                GifLine.Visibility = Visibility.Visible;
+                MaxHeight += _mediaRowHeight;
+                GifRow.Height = new GridLength(_mediaRowHeight);
+            }
 
             if (_chat.GetLinksAmount() == 0)
             {
                 LinkLine.Visibility = Visibility.Hidden;
                 MaxHeight -= LinkRow.Height.Value;
                 LinkRow.Height = new GridLength(0);
+            }
+            else if(LinkRow.Height.Value == 0)
+            {
+                LinkLine.Visibility = Visibility.Visible;
+                MaxHeight += _mediaRowHeight;
+                LinkRow.Height = new GridLength(_mediaRowHeight);
             }
 
             if (GifLine.Visibility == Visibility.Hidden &&
@@ -273,7 +340,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 MaxHeight += _hiddenParasHeight;
             }
 
-            if(_chat is TelegramLib.MainClasses.SavedMessagesChat)
+            if (_chat is TelegramLib.MainClasses.SavedMessagesChat)
             {
                 ShareRow.Height = new GridLength(50);
                 ToBeHiddenButs.Height = new GridLength(75);
@@ -364,8 +431,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             Dispatcher.Invoke(() =>
             {
-                if (_chat is null || 
-               (_chat is not TelegramLib.MainClasses.SavedMessagesChat && 
+                if (_chat is null ||
+               (_chat is not TelegramLib.MainClasses.SavedMessagesChat &&
                _chat.GetChatter().Id != toUpdate.Id)) return;
 
                 HelperService.SetOnlineStatusInTextBox(LastSeenOnline, toUpdate.IsOnline, toUpdate.LastSeenOnline);
@@ -448,7 +515,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (user.BIO is null || user.BIO == string.Empty)
             {
-                if(BioRow.Height.Value == 0)
+                if (BioRow.Height.Value == 0)
                 {
                     InfoRow.Height = new GridLength(InfoRow.Height.Value);
                     return;
@@ -782,8 +849,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //Set User chat 
             if (_chat is null) return;
 
-            int chatterId = _chat is TelegramLib.MainClasses.SavedMessagesChat ? 
-                _system.LoggedUser.Id : _chat.GetChatter().Id; 
+            int chatterId = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser.Id : _chat.GetChatter().Id;
 
             ((MainWindow)Window.GetWindow(this))
                 .SetOtherChatByUserId(chatterId);
@@ -1024,7 +1091,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(MenuGrid.Children.Count > 0)
+            if (MenuGrid.Children.Count > 0)
             {
                 MenuGrid.Children.Clear();
                 e.Handled = true;

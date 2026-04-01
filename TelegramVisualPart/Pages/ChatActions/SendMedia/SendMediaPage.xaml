@@ -53,7 +53,7 @@
                         <ListBox Name="MediasBox" Width="300" Height="170"
                                  Margin="10 10 10 10">
 
-                            
+
                         </ListBox>
 
                         <ScrollViewer Name="GroupScroll"
@@ -61,7 +61,7 @@
                              HorizontalScrollBarVisibility="Disabled"
                                       Visibility="Hidden">
                             <WrapPanel Name="GroupPanel" Orientation="Horizontal">
-                                
+
                             </WrapPanel>
                         </ScrollViewer>
 
@@ -168,12 +168,45 @@
                                 Foreground="{StaticResource TempActiveTextColor}"
                                 MouseEnter="BottomBut_MouseEnter"
                                 MouseLeave="BottomBut_MouseLeave"
-                                PreviewMouseDown="SendBut_PreviewMouseDown"/>
+                                PreviewMouseLeftButtonDown="SendBut_PreviewMouseDown"
+                                PreviewMouseRightButtonDown="SendBut_PreviewMouseRightButtonDown"/>
                     </StackPanel>
                 </Grid>
             </Grid>
 
-            <Emoji:EmojisBlock x:Name="SmileBlock"
+            <Border Name="SchedMesBorder"
+                    BorderThickness="1"
+                    BorderBrush="Black"
+                    CornerRadius="10"
+                    Background="{StaticResource DarkThemeSecond}"                    
+                    Width="120" Height="45"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Margin="25"
+                    
+                    MouseEnter="SchedMesBorder_MouseEnter"
+                    MouseLeave="SchedMesBorder_MouseLeave"
+                    PreviewMouseLeftButtonDown="SchedMesBorder_PreviewMouseLeftButtonDown">
+                
+                <Grid Name="SchedMenuGrid">
+                    <materialDesign:PackIcon Kind="Calendar" Foreground="White"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Left"
+                                             Margin="5 0 0 0" 
+                                             Width="20" Height="20"/>
+
+                    <TextBlock Name="SchedText" Text="Set sched" 
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Foreground="White"
+                               Margin="0 0 5 0"
+                               FontSize="15"/>
+                </Grid>                
+            </Border>
+
+
+
+        <Emoji:EmojisBlock x:Name="SmileBlock"
                                Visibility="Hidden"
                                VerticalAlignment="Top" Height="300"
                                HorizontalAlignment="Right"

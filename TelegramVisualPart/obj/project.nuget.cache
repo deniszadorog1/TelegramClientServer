@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6hgD7i+AGho=",
+  "dgSpecHash": "xO2BI6vVBwo=",
   "success": true,
   "projectFilePath": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
   "expectedPackageFiles": [
@@ -24,7 +24,7 @@
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\10.0.0-preview.7.25380.108\\microsoft.aspnetcore.signalr.client.core.10.0.0-preview.7.25380.108.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\10.0.0-preview.7.25380.108\\microsoft.aspnetcore.signalr.common.10.0.0-preview.7.25380.108.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\10.0.0-preview.7.25380.108\\microsoft.aspnetcore.signalr.protocols.json.10.0.0-preview.7.25380.108.nupkg.sha512",
-    "C:\\Users\\denis\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\10.0.0-preview.7.25380.108\\microsoft.bcl.asyncinterfaces.10.0.0-preview.7.25380.108.nupkg.sha512",
+    "C:\\Users\\denis\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\10.0.5\\microsoft.bcl.asyncinterfaces.10.0.5.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.bcl.timeprovider\\10.0.0-preview.7.25380.108\\microsoft.bcl.timeprovider.10.0.0-preview.7.25380.108.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\microsoft.extensions.configuration\\1.1.2\\microsoft.extensions.configuration.1.1.2.nupkg.sha512",

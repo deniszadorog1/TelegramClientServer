@@ -473,6 +473,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        public void SetTickVisOnlyTickCol(bool isVis)
+        {
+            if (isVis)
+            {
+                TickColumnDef.Width = new GridLength(_selectTickColWidth);
+            }
+            else if (TickColumnDef.Width.Value != 0)
+            {
+                TickColumnDef.Width = new GridLength(0);
+            }
+        }
+
         public bool IsTickVisible()
         {
             return TickColumnDef.Width.Value != 0;

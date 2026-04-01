@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
+using TelegramLib.Services;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
@@ -57,8 +58,16 @@ namespace TelegramVisualPart.EnterInAccount
             if (string.IsNullOrWhiteSpace(LoginBox.Text) ||
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
+
             _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
             SignalRHelperService.SetStatSystem(_system);
+
+
+/*            UserChat chat = _system.Chats.First(x => x.Id == 11);
+            for (int i = 0; i < 10000; i++)
+            {
+                DbService.AddMessage(chat, new TelegramLib.MainClasses.Messages.TextMessage(-1, 1, DateTime.Now, "asd", false, -1, false, null, false));
+            }*/
 
             if (_system is null)
             {
