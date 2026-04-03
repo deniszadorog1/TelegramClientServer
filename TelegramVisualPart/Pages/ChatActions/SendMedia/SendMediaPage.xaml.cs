@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TelegramLib.MainClasses;
+using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.ChatsControls.ToSendMedias;
@@ -23,19 +26,31 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
     /// <summary>
     /// Логика взаимодействия для SendMediaPage.xaml
     /// </summary>
-    public partial class SendMediaPage : Page
+    public partial class SendMediaPage : System.Windows.Controls.Page
     {
         private List<string> _firstMediaPath;
         private string _text;
         public SendMediaType _sendType = SendMediaType.Single;
 
         public bool _isScheduleSend;
+        private TelSystem _system;
+        private UserChat _chat;
 
-        public SendMediaPage(List<string> firstMediaPath, string text, bool isSchedule = false)
+        private List<TelegramLib.MainClasses.Messages.Message> _forwardMessages;
+
+        public SendMediaPage(List<string> firstMediaPath,
+            string text, TelSystem system, 
+            UserChat chat,
+            List<TelegramLib.MainClasses.Messages.Message> forwardMessages,
+            bool isSchedule = false)
         {
             _firstMediaPath = firstMediaPath;
             _text = text;
             _isScheduleSend = isSchedule;
+            _forwardMessages = forwardMessages;
+            
+            _system = system;
+            _chat = chat;
 
             InitializeComponent();
 
@@ -312,7 +327,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     if (toRemove is null) return;
                     _paths.RemoveAt(index);
 
-                    
+
                     GroupPanel.Children.Remove(toRemove);
 
                     if (MediasBox.Items.Count == 0)
@@ -343,7 +358,25 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         private void SchedMesBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            bool isBand = GroupItems.IsChecked is null ? false : (bool)GroupItems.IsChecked;
+
+            Window window = Window.GetWindow(this);
+            if (window is null || window is not MainWindow main || _chat is null) return;
+
+            main.ClearSecFrame();
+            main.ClearThirdFrame();
+
             //Set sched action
+            List<MediaAction> medias = new List<MediaAction>();
+            for (int i = 0; i < _paths.Count; i++)
+            {
+                medias.Add(new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), System.IO.Path.GetFileName(_paths[i]), false, false, false, null));
+            }
+
+            SetScheduleMessage message =
+                new SetScheduleMessage(_chat, medias.Cast<Message>().ToList(), _system, _forwardMessages, isBandMessages:isBand);
+
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }
     }
 }

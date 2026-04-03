@@ -986,11 +986,14 @@ namespace TelegramVisualPart.Pages
             {
                 ChatsBox.Visibility = Visibility.Visible;
             }
+
             if (sender is ListBoxItem item &&
                 item.Content is UserContact userControl)
             {
-                SetUserChat(userControl.UserLogin.Text);
-                await RepaintUserChatsPanel();
+               await RepaintUserChatsPanel();
+               SetUserChat(userControl.UserLogin.Text);
+
+               SetSizerActionWithUserChatMouseDown();
             }
         }
 

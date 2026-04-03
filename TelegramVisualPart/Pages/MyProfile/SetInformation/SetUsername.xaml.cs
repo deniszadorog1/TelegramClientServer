@@ -26,7 +26,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
     /// </summary>
     public partial class SetUsername : Page
     {
-        private const int _minAmountOfSymbols = 5;
+        private const int _minAmountOfSymbols = 2;
         private User _user;
         public SetUsername(User user)
         {

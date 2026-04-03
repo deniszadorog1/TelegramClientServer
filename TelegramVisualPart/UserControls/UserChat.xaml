@@ -155,7 +155,7 @@
                     <ColumnDefinition Width="75"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Grid Name="ArrowLeftSchedGrid"
                       Grid.Column="0" 
                       Background="Transparent"
@@ -169,7 +169,7 @@
                                          Width="35"
                                          Height="35"
                                          Foreground="Gray"/>
-                </Grid>   
+                </Grid>
 
                 <TextBlock Name="ScheduleMessagesBlock" 
                            Grid.Column="1"
@@ -182,7 +182,6 @@
 
                 </TextBlock>
             </Grid>
-
         </Grid>
 
         <Grid Name="OnlyPinnedHeaderGrid" Grid.Row="0" Visibility="Hidden"
@@ -339,7 +338,11 @@
                          ScrollViewer.CanContentScroll="True"
                          VirtualizingPanel.IsVirtualizing="True"
                          VirtualizingPanel.VirtualizationMode="Recycling"
-                         ScrollViewer.PanningRatio="0.3">
+                         ScrollViewer.PanningRatio="0.3"
+                         
+                         AllowDrop="True"
+                         Drop="ChatBox_Drop"
+                         DragOver="ChatBox_DragOver">
 
                     <ListBox.Template>
                         <ControlTemplate TargetType="ListBox">

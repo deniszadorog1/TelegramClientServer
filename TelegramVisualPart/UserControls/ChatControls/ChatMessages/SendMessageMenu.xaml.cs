@@ -60,6 +60,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
              TelegramLib.MainClasses.Messages.Message toReply) = 
              _chatControl.GetTextMessageToSend(_chatControl.CommentTextBox.Text);
 
+            List<Message> forwardMes = _chatControl.GetToForwardMessages();
+
             if (mes is null || 
                
                (mes is TelegramLib.MainClasses.Messages.TextMessage textMes && 
@@ -73,8 +75,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
                 text.Text = text.Text.Replace("\r\n", ""); 
             }
 
-            SetScheduleMessage message = 
-                new SetScheduleMessage(_chatControl.GetChat(), new List<Message>() { mes }, _system);
+            SetScheduleMessage message =
+                new SetScheduleMessage(_chatControl.GetChat(), new List<Message>() { mes }, _system, _chatControl.GetToForwardMessages());
             
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }

@@ -623,8 +623,8 @@ namespace TelegramLib.MainClasses
         }
 
         public void AddScheduleMessage(
-            List<TelegramLib.MainClasses.Messages.Message> messages,
-            TelegramLib.MainClasses.User user)
+            List<Messages.Message> messages,
+            User user)
         {
             for (int i = 0; i < messages.Count; i++)
             {

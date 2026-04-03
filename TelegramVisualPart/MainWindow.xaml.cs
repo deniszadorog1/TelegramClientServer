@@ -1262,9 +1262,9 @@ namespace TelegramVisualPart
             window.Close();
         }
 
-        public void AddAddMediaPage(List<string> firstMediaPath, string text)
+        public void AddAddMediaPage(List<string> firstMediaPath, string text, UserChat chat, List<Message> forwardMessages)
         {
-            SetSecondaryFrame(new SendMediaPage(firstMediaPath, text));
+            SetSecondaryFrame(new SendMediaPage(firstMediaPath, text, _system, chat, forwardMessages));
         }
 
         public void SendBigImagesMessage(string capture, List<Image> imgs, List<string> paths, SendMediaType type)

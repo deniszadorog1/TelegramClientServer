@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -27,22 +15,30 @@ namespace TelegramVisualPart.Pages.ChatActions
     {
         private DateTime? _schedDate = DateTime.Now.AddDays(1);
 
-        public List<TelegramLib.MainClasses.Messages.Message> _messages;
+        public List<Message> _messages;
         private TelegramLib.MainClasses.UserChat _chat;
         private TelegramLib.MainClasses.TelSystem _system;
+        private List<Message> _forwarded;
 
         private bool _isUpdateDate = false;
+        private bool _isBandMessage = false;
 
         public SetScheduleMessage(
             TelegramLib.MainClasses.UserChat chat,
-            List<TelegramLib.MainClasses.Messages.Message> messages,
+            List<Message> messages,
             TelegramLib.MainClasses.TelSystem system,
-            bool isUpdateDate = false)
+
+            List<Message> forwardMeses,
+
+            bool isUpdateDate = false,
+            bool isBandMessages = false)
         {
             _messages = messages;
             _chat = chat;
             _system = system;
             _isUpdateDate = isUpdateDate;
+            _forwarded = forwardMeses;
+            _isBandMessage = isBandMessages;
 
             InitializeComponent();
 
@@ -87,8 +83,10 @@ namespace TelegramVisualPart.Pages.ChatActions
 
             if (_schedDate is null || (_schedDate.Value - DateTime.Now).TotalMinutes < minDifferInMinutes) return;
 
-            for(int i = 0; i < _messages.Count; i++) _messages[i].SentTime = (DateTime)_schedDate;
+            for (int i = 0; i < _messages.Count; i++) _messages[i].SentTime = (DateTime)_schedDate;
+            if (_forwarded is not null) _forwarded.ForEach(x => x.SentTime = (DateTime)_schedDate);
 
+            
             if (_isUpdateDate)
             {
                 for (int i = 0; i < _messages.Count; i++)
@@ -117,30 +115,10 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         public async Task ScheduleMessageAdding()
         {
-            for (int i = 0; i < _messages.Count; i++) _messages[i].IsSchedule = true;
-
             List<Message> addedMessages = new List<Message>();
 
-            if (IsBandMessage())
-            {
-                List<MediaAction> medias = _messages.Cast<MediaAction>().ToList();
-
-                //Set band messages
-                int newBandId = await ApiService.GetLastMessageBandId() + 1;
-
-                for(int i = 0; i < _messages.Count; i++)
-                {
-                    medias[i].BandId = newBandId;
-                    await ApiService.AddMessage(medias[i], _chat);
-
-                    addedMessages.Add(await ApiService.GetLastChatMessage(_chat.Id));
-                }
-            }
-            else
-            {
-                await ApiService.AddMessage(_messages.First(), _chat);
-                addedMessages.Add(await ApiService.GetLastChatMessage(_chat.Id));
-            }
+            await SetMessagesInSchedList(addedMessages, _messages);
+            if(_forwarded is not null) await SetMessagesInSchedList(addedMessages, _forwarded);
 
             if (addedMessages.First().Id < 0)
             {
@@ -149,11 +127,68 @@ namespace TelegramVisualPart.Pages.ChatActions
             }
             //Add in Sched List
             _chat.AddScheduleMessage(addedMessages, _system.LoggedUser);
+
+            if(_forwarded is not null)
+            {
+                _forwarded.Clear();
+                _forwarded = null;
+            }
+        }
+
+        public async Task SetMessagesInSchedList(List<Message> schedMeses,
+            List<Message> toSetIn)
+        {
+            for (int i = 0; i < toSetIn.Count; i++) toSetIn[i].IsSchedule = true;
+
+            List<MediaAction> bandMesses = new List<MediaAction>();
+            for (int i = 0; i < toSetIn.Count; i++)
+            {
+                if (bandMesses.Count > 0 &&
+                  (toSetIn[i] is TelegramLib.MainClasses.Messages.TextMessage ||
+                  toSetIn[i] is MediaAction mediaCheck && mediaCheck.BandId != bandMesses.First().BandId))
+                {
+                    await SetBandInList(bandMesses, schedMeses);
+                }
+
+                if (toSetIn[i] is MediaAction media &&
+                    (media.BandId != -1 || 
+                    (toSetIn == _messages && _isBandMessage)) )
+                {
+                    bandMesses.Add(media);
+                    continue;
+                }
+
+                await ApiService.AddMessage(toSetIn[i], _chat);
+
+                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));
+            }
+
+            if(bandMesses.Count != 0)
+            {
+                await SetBandInList(bandMesses, schedMeses);
+            }
+        }
+
+        public async Task SetBandInList(List<MediaAction> bandMesses, 
+            List<TelegramLib.MainClasses.Messages.Message> schedMeses)
+        {
+            int newBandId = await ApiService.GetLastMessageBandId() + 1;
+
+            for (int j = 0; j < bandMesses.Count; j++)
+            {
+                bandMesses[j].BandId = newBandId;
+                await ApiService.AddMessage(bandMesses[j], _chat);
+
+                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));
+            }
+            bandMesses.Clear();
         }
 
         public bool IsBandMessage()
         {
-            return _messages.Count == _messages.OfType<MediaAction>().ToList().Count;
+            List<MediaAction> medias = _messages.OfType<MediaAction>().ToList();
+
+            return medias.Count == _messages.Count && !medias.Any(x => x.IsSticker) && !medias.Any(x => x.IsGif());
         }
 
         public async Task AddBandMessage(List<Message> addedMessages)

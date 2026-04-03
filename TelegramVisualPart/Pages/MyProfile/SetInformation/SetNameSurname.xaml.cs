@@ -53,7 +53,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private int _minAmountOfNums = 5;
+        private int _minAmountOfNums = 2;
 
         private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {

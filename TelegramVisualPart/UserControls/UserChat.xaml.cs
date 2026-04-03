@@ -1,20 +1,16 @@
-﻿using MahApps.Metro.Controls;
-using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
+﻿using MaterialDesignThemes.Wpf;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.Enums.Chat;
@@ -22,7 +18,6 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Enums.Menus;
@@ -39,7 +34,6 @@ using TelegramVisualPart.UserControls.ChatControls.ChatMessages;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ChatControls.SavedChatControls;
 using TelegramVisualPart.Windows;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -290,9 +284,13 @@ namespace TelegramVisualPart.UserControls
 
         public void RemoveManyMessages(List<DateTime> sentTimes, int chatterId)
         {
+            TelegramLib.MainClasses.UserChat tempChat = _chat;
             _chat = _system.GetChatByChatterId(chatterId);
-            if (_chat is null) return;
-
+            if (_chat is null)
+            {
+                _chat = tempChat;
+                return;
+            }
             for (int i = 0; i < sentTimes.Count; i++)
             {
                 _chat.RemoveMessageBySentTime(sentTimes[i]);
@@ -300,11 +298,6 @@ namespace TelegramVisualPart.UserControls
 
             Dispatcher.Invoke(async () =>
             {
-                if (SavedMessagesGrid.Visibility == Visibility.Visible)
-                {
-                    return; 
-                }
-
                 List<Message> selected = GetSelectedMessages();
 
                 await RemoveDateStateIfNoMesOnDate();
@@ -314,10 +307,17 @@ namespace TelegramVisualPart.UserControls
                 if (isOnlyPinnedChat) IsOnlyPinnedChatPinAction();
                 else
                 {
-                    await SetChatMessages();
+                    if (SavedMessagesGrid.Visibility != Visibility.Visible &&
+                        SchedueleMessagesGrid.Visibility != Visibility.Visible &&
+                        tempChat is not null && _chat is not null && tempChat.Id == _chat.Id)
+                    {
+                        await SetChatMessages();
+                        HideSelectionRowFromSignalR(selected);
+                    }
                 }
 
-                HideSelectionRowFromSignalR(selected);
+                _chat = tempChat;
+                _mainWindow.UpdateChatControls();
             });
 
         }
@@ -328,24 +328,40 @@ namespace TelegramVisualPart.UserControls
             //Get Pair message from mes to delete
             Message? pair = await ApiService.GetPairOfMessage(mes);
 
-            if (pair is null)
+            if (pair is null) return;
+
+            TelegramLib.MainClasses.UserChat tempChat = _chat;
+
+            _chat = _system.GetChatByMessage(pair);
+            if (IsOnlyChatWindowWithChatIsExist(_chat))
             {
+                _chat = tempChat; 
                 return;
             }
-            _chat = _system.GetChatByMessage(pair);
-            if (IsOnlyChatWindowWithChatIsExist(_chat)) return;
-
             RemoveMessageFromSigR(pair);
 
             await Dispatcher.InvokeAsync(async () =>
             {
-                if (!isUpdateVis || _chat is null) return;
+                if (!isUpdateVis || _chat is null)
+                {
+                    _chat = tempChat; 
+                    return;
+                }
 
                 List<Message> selected = GetSelectedMessages();
 
-                if (SavedMessagesGrid.Visibility == Visibility.Hidden) await SetChatMessages();
-                HideSelectionRowFromSignalR(selected);
+                if (SavedMessagesGrid.Visibility != Visibility.Visible &&
+                    SchedueleMessagesGrid.Visibility != Visibility.Visible && 
+                    tempChat is not null && _chat is not null && tempChat.Id == _chat.Id)
+                {
+                    await SetChatMessages();
+                    HideSelectionRowFromSignalR(selected);
+                }
+
                 //Update UserTalkMessage(Chat) - if last message was removed
+
+                _chat = tempChat;
+                _mainWindow.UpdateChatControls();
             });
         }
 
@@ -415,7 +431,9 @@ namespace TelegramVisualPart.UserControls
                 HideSelectionRowFromSignalR(new List<Message>());
                 TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.Id == user.Id);
                 if (chat is null) return;
+           
                 if (_chat is null) SetChatById(chat.Id);
+
                 if (_chat is null) return;
                 await RemoveAllMessagesFromChat(chat);
             });
@@ -1916,7 +1934,7 @@ namespace TelegramVisualPart.UserControls
                 textMes.Text == string.Empty)) return;
 
             SetScheduleMessage message =
-                new SetScheduleMessage(GetChat(), new List<Message>() { mes }, _system);
+                new SetScheduleMessage(GetChat(), new List<Message>() { mes }, _system, _toForwardMessages);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }
@@ -2480,7 +2498,7 @@ namespace TelegramVisualPart.UserControls
                 textMes.Text == string.Empty)) return;
 
             SetScheduleMessage message =
-                new SetScheduleMessage(GetChat(), messages, _system, isUpdateDate: true);
+                new SetScheduleMessage(GetChat(), messages, _system, _toForwardMessages, isUpdateDate: true);
 
 
             for (int i = 0; i < messages.Count; i++)
@@ -3579,19 +3597,26 @@ namespace TelegramVisualPart.UserControls
                 if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
                 {
                     //0 - Set medias 
-                    SendMediaPage page = new SendMediaPage(names.ToList(), CommentTextBox.Text, true);
+                    SendMediaPage page = new SendMediaPage(names.ToList(), CommentTextBox.Text, _system, GetChat(), _toForwardMessages, true);
                     ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
 
                     page.SendBut.PreviewMouseDown += (sender, e) =>
                     {
+                        bool isBand = page.GroupItems.IsChecked is null ? false : (bool)page.GroupItems.IsChecked;
+
+                        List<string> paths = page.GetPathsFromMedias();
+
                         List<MediaAction> medias = new List<MediaAction>();
-                        for (int i = 0; i < names.Length; i++)
+                        for (int i = 0; i < paths.Count; i++)
                         {
-                            medias.Add(new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), Path.GetFileName(names[i]), false, false, false, null));
+                            medias.Add(new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), Path.GetFileName(paths[i]), false, false, false, null));
                         }
 
                         SetScheduleMessage message =
-                            new SetScheduleMessage(GetChat(), medias.Cast<Message>().ToList(), _system);
+                            new SetScheduleMessage(GetChat(),
+                            medias.Cast<Message>().ToList(), _system,
+                            _toForwardMessages,
+                            isBandMessages: isBand);
 
                         ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
                     };
@@ -3613,7 +3638,9 @@ namespace TelegramVisualPart.UserControls
             Message media = new MediaAction(_chat.Messages.Count,
                 _system.LoggedUser.Id, DateTime.Now, name, isSticker, false, false, null);
 
-            SetScheduleMessage sched = new SetScheduleMessage(_chat, new List<Message>() { media }, _system, false);
+            SetScheduleMessage sched = new SetScheduleMessage(_chat,
+                new List<Message>() { media }, _system, _toForwardMessages, false);
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(sched);
         }
 
@@ -3624,7 +3651,7 @@ namespace TelegramVisualPart.UserControls
 
         public void AddMediaPage(List<string> fullMediaPath, string text)
         {
-            ((MainWindow)Window.GetWindow(this)).AddAddMediaPage(fullMediaPath, text);
+            ((MainWindow)Window.GetWindow(this)).AddAddMediaPage(fullMediaPath, text, GetChat(), GetToForwardMessages());
         }
 
         public void AddImageMessage(string filePath, bool isSticker,
@@ -4013,6 +4040,8 @@ namespace TelegramVisualPart.UserControls
             List<MediaAction> imgMedias =
                 _chat.GetMediaMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible).
                 Where(x => FilesAction.IsFileIsImage(x.MediaName)).ToList();
+
+            if (index >= _chat.Messages.Count) return;
 
             int imgIndex = imgMedias.FindIndex(x => x == _chat.Messages[index] as MediaAction);
 
@@ -5831,6 +5860,11 @@ namespace TelegramVisualPart.UserControls
         private List<Message> _toForwardMessages;
         private int? _forwardSenderId;
 
+        public List<Message> GetToForwardMessages()
+        {
+            return _toForwardMessages;
+        }
+
         private async void ForwardSelectedBut_Click(object sender, RoutedEventArgs e)
         {
             if (ForwardSelectedButText.Text == _ifSendNowSelected)
@@ -6644,6 +6678,78 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
+        private void ChatBox_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Получаем массив путей к файлам
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                //Remove wrong paths
+
+                List<string> paths = new List<string>();
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    if (FilesAction.IsFileIsImage(files[i]) ||
+                        FilesAction.IsFileIsVideo(files[i]))
+                    {
+                        paths.Add(files[i]);
+                    }
+                }
+
+                Window window = Window.GetWindow(this);
+
+                if (window is MainWindow main)
+                {
+                    main.ClearSecFrame();
+                    main.ClearThirdFrame();
+
+                    bool isSched = SchedueleMessagesGrid.Visibility == Visibility.Visible;
+                    SendMediaPage page = new SendMediaPage(paths, CommentTextBox.Text, _system, GetChat(), _toForwardMessages, isSched);
+
+                    page.SendBut.PreviewMouseDown += (sender, e) =>
+                    {
+                        if (SchedueleMessagesGrid.Visibility != Visibility.Visible) return;
+
+                        paths = page.GetPathsFromMedias();
+
+                        bool isBand = page.GroupItems.IsChecked is null ? false : (bool)page.GroupItems.IsChecked;
+
+                        List<MediaAction> medias = new List<MediaAction>();
+                        for (int i = 0; i < paths.Count; i++)
+                        {
+                            medias.Add(new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), Path.GetFileName(paths[i]), false, false, false, null));
+                        }
+
+                        SetScheduleMessage message =
+                            new SetScheduleMessage(GetChat(),
+                            medias.Cast<Message>().ToList(), _system,
+                            _toForwardMessages,
+                            isBandMessages: isBand);
+
+                        ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
+                    };
+
+                    main.SetSecondaryFrame(page);
+                }
+            }
+        }
+
+
+        private void ChatBox_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+
+            e.Handled = true;
+        }
     }
 
     public static class ScrollViewerBehavior

@@ -272,7 +272,7 @@ namespace TelegramVisualPart.Windows
                 if (_mediaMessages[i].Id == _chosenMedia.Id) _imgInfo = (img, _mediaMessages[i].SentTime, _system.GetTrueUserById(_mediaMessages[i].SenderUserId).Login);
             }
 
-
+            if (_imgInfo is null) return;
             SetChatImage(_imgInfo.Value.Img.Tag.ToString());
             SetStratImgIndex();
 
