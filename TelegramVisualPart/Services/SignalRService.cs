@@ -146,10 +146,13 @@ namespace TelegramVisualPart.Services
             if (_connection is not null) await DisconnectAsync();
 
             _connection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7164/chatHub", options =>
-            {
-                options.Headers.Add("userId", _system.LoggedUser.Id.ToString());
-            }).Build();
+                .WithUrl("https://localhost:7164/chatHub", options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult(_system.Token);
+                })
+                .WithAutomaticReconnect()
+                .Build();
+
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
             {

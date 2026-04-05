@@ -24,6 +24,7 @@ namespace TelegramLib.MainClasses
 {
     public class TelSystem
     {
+        public string Token { get; set; }
         public User LoggedUser { get; set; }
         public MainSettings Settings { get; set; }
         public List<UserChat> Chats { get; set; }

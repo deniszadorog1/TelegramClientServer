@@ -70,6 +70,14 @@ namespace TelegramVisualPart.Services
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public static void SetAuthToken(string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = null;
+
+            _client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+
         public static async Task<bool> AddNewUser(string login,
             string password, string name, string surname,
             string phoneNumber, DateTime? birthDate)
@@ -459,8 +467,20 @@ namespace TelegramVisualPart.Services
         }
 
         // Get TelSystem
-        public static async Task<TelSystem> GetTelSystem(string login, string password)
+        public static async Task<TelSystem?> GetTelSystem(/*string login, string password*/)
         {
+            var response = await _client.GetAsync("api/StartPage/GetTelSystem");
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+
+/*
             var response = await _client.GetAsync($"api/StartPage/GetTelSystem?login={login}&password={password}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -471,7 +491,7 @@ namespace TelegramVisualPart.Services
                 TypeNameHandling = TypeNameHandling.Auto
             });
 
-            return res;
+            return res;*/
         }
 
         public static async Task<bool> AddWallpaper(string imgName)
@@ -483,6 +503,26 @@ namespace TelegramVisualPart.Services
             var response = await _client.PostAsync("api/Settings/AddWallpaper", content);
 
             return response.IsSuccessStatusCode;
+        }
+
+
+        public static async Task<string> GetToken(string login, string password)
+        {
+            var data = new { Login = login, Password = password};
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/StartPage/Login", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                dynamic result = JsonConvert.DeserializeObject(jsonResponse);
+                return result?.token;
+            }
+
+            return null;
         }
 
         //SETTINGS

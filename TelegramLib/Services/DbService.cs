@@ -42,18 +42,20 @@ namespace TelegramLib.Services
 {
     public static class DbService
     {
-        public static TelSystem GetTelSystem(string login, string password)
+        public static TelSystem GetTelSystem(int id)
         {
-            mainClass.User user = GetUserByLoginAndPassword(login, password);
+            mainClass.User user = GetUserById(id);// GetUserByLoginAndPassword(login, password);
             if (user is null) return null;
             TelSystem system = new TelSystem();
 
             system.LoggedUser = user;
-            system.Settings = GetSettingsByUserId(user.Id);
-            system.Chats = GetUserChatsByUserId(user.Id);
-            system.Contacts = GetUserContactsByUserId(user.Id);
-            system.Folders = GetFoldersByUserId(user.Id);
-            system.SavedMesesChat = GetSavedMessageChat(user.Id);
+            user.BlockedUsers = GetBlockedContactsByUserId(id);
+
+            system.Settings = GetSettingsByUserId(id);
+            system.Chats = GetUserChatsByUserId(id);
+            system.Contacts = GetUserContactsByUserId(id);
+            system.Folders = GetFoldersByUserId(id);
+            system.SavedMesesChat = GetSavedMessageChat(id);
 
             return system;
         }
@@ -4618,6 +4620,23 @@ namespace TelegramLib.Services
 
                 if (!(maxMessage is null && !(maxMessage.BandId is null))) return (int)maxMessage.BandId;
                 return -1;
+            }
+        }
+
+        public static Models.User? GetUser(string login, string password)
+        {
+            using (var db = new TelegramModel())
+            {
+                // Ищем пользователя с таким логином и паролем
+                return db.User.FirstOrDefault(u => u.Login == login && u.Password == password);
+            }
+        }
+
+        public static model.User GetUserModelByLogin(string login)
+        {
+            using(TelegramModel model = new TelegramModel())
+            {
+                return model.User.FirstOrDefault(x => x.Login == login);
             }
         }
 

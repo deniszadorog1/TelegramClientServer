@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "QDRB/6ASZqg=",
+  "dgSpecHash": "s44kpAjcVQM=",
   "success": true,
   "projectFilePath": "B:\\GitHub\\TelegramClientServer\\TelegramBenchmarks\\TelegramBenchmarks.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\denis\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\denis\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\benchmarkdotnet\\0.15.8\\benchmarkdotnet.0.15.8.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\benchmarkdotnet.annotations\\0.15.8\\benchmarkdotnet.annotations.0.15.8.nupkg.sha512",
     "C:\\Users\\denis\\.nuget\\packages\\commandlineparser\\2.9.1\\commandlineparser.2.9.1.nupkg.sha512",

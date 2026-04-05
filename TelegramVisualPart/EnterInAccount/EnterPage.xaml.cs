@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,30 @@ namespace TelegramVisualPart.EnterInAccount
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
 
-            _system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
+            string token = await ApiService.GetToken(LoginBox.Text, PasswordBox.Text);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                ApiService.SetAuthToken(token);
+                _system = await ApiService.GetTelSystem();
+
+                _system.Token = token;
+
+                if(_system is null)
+                {
+                    MessageBox.Show("Bruh...");
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Wrong login or password");
+                return;
+            }
+
+
+            //_system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
+            
             SignalRHelperService.SetStatSystem(_system);
 
 

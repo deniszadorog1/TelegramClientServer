@@ -13,6 +13,7 @@ using TelegramLib.MainClasses.Messages;
 using TelegramLib.Models;
 using TelegramLib.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,6 +21,7 @@ namespace TelegramClientServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SocialController : ControllerBase
     {
         //Add contact
@@ -653,6 +655,7 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpPut("AddSavedChat")]
+        [AllowAnonymous]
         public void AddSavedChat([FromBody] AddSavedChatDTO dto)
         {
             DbService.AddSavedMessagesChat(dto.UserId);

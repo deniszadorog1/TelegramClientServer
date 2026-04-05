@@ -91,3 +91,4 @@ B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\refint\Tele
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\ref\TelegramClientServer.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\BCrypt.Net-Next.dll

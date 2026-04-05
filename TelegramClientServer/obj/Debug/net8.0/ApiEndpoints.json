@@ -2301,18 +2301,7 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "password",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "TelegramLib.MainClasses.TelSystem",
@@ -2417,6 +2406,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
+    "Method": "Login",
+    "RelativePath": "api/StartPage/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "TelegramClientServer.Controllers.StartPageController\u002BGetTokenDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.StartPageController",

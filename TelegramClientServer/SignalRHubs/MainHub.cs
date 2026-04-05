@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.DTOsHelper;
 using TelegramLib.MainClasses.Messages;
@@ -8,6 +9,7 @@ using User = TelegramLib.MainClasses.User;
 
 namespace TelegramClientServer.SignalRHubs
 {
+    [Authorize]
     public class MainHub : Hub
     {
         public async Task SendTextMessage(User user, TextMessage message, User chatter)
@@ -24,17 +26,14 @@ namespace TelegramClientServer.SignalRHubs
             // Просто кидаємо в канал і ЗАБУВАЄМО (Fire and Forget для Хаба)
             await MessageBus.PublishAsync(envelope);
 
-            // Хаб вільний! Він може приймати наступне повідомлення від іншого юзера.
-
             //await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
         }
 
         public async Task SendMediaMessage(User user,List<MediaAction> message, User chatter)
         {
-            //Send to only one 
-            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", user, message);
+            var senderId = Context.UserIdentifier;
 
-            //await Clients.All.SendAsync("ReceiveMediaMessage", user, message);               
+            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", user, message);
         }
 
         public async Task SendStatMessage(User user, StaticMessage message, User chatter)

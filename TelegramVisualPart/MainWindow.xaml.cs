@@ -226,42 +226,6 @@ namespace TelegramVisualPart
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             return;
-            await SetTestSystem();
-
-            Application.Current.Resources["TempActiveTextColor"] =
-                new SolidColorBrush(Color.FromRgb(_system.LoggedUser.MainColor.R,
-                _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
-
-            MainFrame.Content = new MainChatPage(_system);
-        }
-
-        public async Task SetTestSystem()
-        {
-            string testLogPas = "qwe";
-
-            TelegramLib.MainClasses.User user = await ApiService.GetUser(testLogPas, testLogPas);
-            if (user is not null)
-            {
-                _system = await ApiService.GetTelSystem(testLogPas, testLogPas);
-
-                if (_system.Settings.GetChatSettings().Wallpaper is null)
-                    _system.Settings.GetChatSettings().Wallpaper =
-                        new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
-                return;
-            }
-
-            await ApiService.AddNewUser(testLogPas, testLogPas, "testName", "testSurname", "testPhoneNumber", DateTime.Now);
-
-            user = await ApiService.GetUser(testLogPas, testLogPas);
-
-            await ApiService.AddUserBasicColor(user.Id);
-            await ApiService.AddUserSettings(user.Id);
-
-            _system = await ApiService.GetTelSystem(testLogPas, testLogPas);
-
-            if (_system.Settings.GetChatSettings().Wallpaper is null)
-                _system.Settings.GetChatSettings().Wallpaper =
-                    new TelegramLib.UserSettings.SettingsTypes.SubSettings.ChatWallpaper();
         }
 
         public TelSystem GetSystem()
