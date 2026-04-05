@@ -1209,6 +1209,8 @@ namespace TelegramVisualPart
             CloseOnlyChatWindowByChatter(chatter);
 
             await page.DeleteChat(chatter, isDeleteForOtherUser);
+
+            page.EscapePressedAction();
         }
 
         private void CloseOnlyChatWindowByChatter(TelegramLib.MainClasses.User chatter)

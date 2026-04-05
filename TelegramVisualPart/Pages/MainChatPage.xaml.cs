@@ -14,6 +14,7 @@ using System.Diagnostics.Contracts;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Security.Permissions;
 using System.Security.RightsManagement;
 using System.Windows;
@@ -1645,57 +1646,60 @@ namespace TelegramVisualPart.Pages
             if (e.Key == Key.Escape)
             {
                 if (!((MainWindow)Window.GetWindow(this)).EscapePressed()) return;
+                EscapePressedAction();
+            }
+        }
 
-                SarchBox.Text = string.Empty;
-                FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
-                Keyboard.ClearFocus();
+        public void EscapePressedAction()
+        {
+            SarchBox.Text = string.Empty;
+            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(SarchBox), null);
+            Keyboard.ClearFocus();
 
-                //1 - clear search stuff (on chats box)
-                //2 - clear chat
-                //3 - Choose chat Box
-                //4 - sett all chats
+            //1 - clear search stuff (on chats box)
+            //2 - clear chat
+            //3 - Choose chat Box
+            //4 - sett all chats
 
-                EscLevels level = GetEscapeLevel();
+            EscLevels level = GetEscapeLevel();
 
-                //
+            //
 
-                switch (level)
-                {
-                    case EscLevels.First:
-                        {
-                            SetFirstLEvelEscVisibility();
-                            break;
-                        }
-                    case EscLevels.Second:
-                        {
-                            ChosoeChatBorder.Visibility = Visibility.Visible;
-                            UserChat.Visibility = Visibility.Hidden;
-                            if (UserChat is not null) UserChat.SetIsMouseDownValue(false);
-                            break;
-                        }
-                    case EscLevels.Third:
-                        {
-                            BackButton_MouseDown();
-                            if(UserChat is not null) UserChat.SetIsMouseDownValue(false);
-                            break;
-                        }
-                    case EscLevels.Forth:
-                        {
-                            break;
-                        }
-                }
+            switch (level)
+            {
+                case EscLevels.First:
+                    {
+                        SetFirstLEvelEscVisibility();
+                        break;
+                    }
+                case EscLevels.Second:
+                    {
+                        ChosoeChatBorder.Visibility = Visibility.Visible;
+                        UserChat.Visibility = Visibility.Hidden;
+                        if (UserChat is not null) UserChat.SetIsMouseDownValue(false);
+                        break;
+                    }
+                case EscLevels.Third:
+                    {
+                        BackButton_MouseDown();
+                        if (UserChat is not null) UserChat.SetIsMouseDownValue(false);
+                        break;
+                    }
+                case EscLevels.Forth:
+                    {
+                        break;
+                    }
+            }
 
-                ClearChatBgs();
+            ClearChatBgs();
 
-                CloseMediaWindows();
+            CloseMediaWindows();
 
-                //If all are hidden -> show all chats
-                if (ChatsBox.Visibility == Visibility.Visible)
-                {
-                    SetActiveChats();
-                    ChatsBox.Visibility = Visibility.Visible;
-                }
-
+            //If all are hidden -> show all chats
+            if (ChatsBox.Visibility == Visibility.Visible)
+            {
+                SetActiveChats();
+                ChatsBox.Visibility = Visibility.Visible;
             }
         }
 
@@ -2266,13 +2270,10 @@ namespace TelegramVisualPart.Pages
         {
             TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
 
-            if (chat is null)
-            {
-                return;
-            }
+            if (chat is null) return;
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
                     new DeleteChat(await ApiService.GetUserById(chat.GetChatter().Id)));
-
         }
 
         public void SetClearChat()
@@ -2603,6 +2604,8 @@ namespace TelegramVisualPart.Pages
                 //Clear user chat (temp)
                 UserChat.Visibility = Visibility.Hidden;
                 ChosoeChatBorder.Visibility = Visibility.Visible;
+
+                EscapePressedAction();
             });
         }
 

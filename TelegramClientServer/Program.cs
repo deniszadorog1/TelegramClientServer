@@ -33,7 +33,7 @@ namespace TelegramClientServer
             builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
             builder.Services.AddSingleton<IHashPassword, PasswordHasherService>();
-
+            builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
             builder.Services.AddHostedService<MessageDispatcher>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

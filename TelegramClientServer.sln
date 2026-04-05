@@ -14,10 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestThing", "TestThing\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramLib", "TelegramLib\TelegramLib.csproj", "{58DCF614-E194-4C31-9DCD-953CE327240C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBenchmarks", "TelegramBenchmarks\TelegramBenchmarks.csproj", "{181CAB2E-2769-4E47-BCC2-A5CDAF0884AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBenchmarks", "TelegramBenchmarks\TelegramBenchmarks.csproj", "{181CAB2E-2769-4E47-BCC2-A5CDAF0884AB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{58DCF614-E194-4C31-9DCD-953CE327240C} = {58DCF614-E194-4C31-9DCD-953CE327240C}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengerTests", "MessengerTests\MessengerTests.csproj", "{27E95634-5F3B-4CE8-9A66-9A9808E471F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{181CAB2E-2769-4E47-BCC2-A5CDAF0884AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{181CAB2E-2769-4E47-BCC2-A5CDAF0884AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{181CAB2E-2769-4E47-BCC2-A5CDAF0884AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27E95634-5F3B-4CE8-9A66-9A9808E471F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27E95634-5F3B-4CE8-9A66-9A9808E471F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27E95634-5F3B-4CE8-9A66-9A9808E471F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27E95634-5F3B-4CE8-9A66-9A9808E471F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

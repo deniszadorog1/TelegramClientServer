@@ -275,7 +275,7 @@ namespace TelegramVisualPart.Services
                 UpdateReadStatus?.Invoke(loggedUser);
             });
 
-            _connection.On<User, User, UserContactcs>("AddShareContactMessage", 
+            _connection.On<User, User, UserContactcs>("AddShareContactMessage",
                 (logged, chatter, contactToSend) =>
             {
                 //chatter is now logged
@@ -317,7 +317,7 @@ namespace TelegramVisualPart.Services
 
                 Message mes = dto.TextMes is not null ? dto.TextMes : dto.MediaMes;
                 if (mes is null) return;
-                
+
                 EditMessageDel?.Invoke(logged, mes);
             });
 
@@ -367,6 +367,11 @@ namespace TelegramVisualPart.Services
 
         public static async Task SendTextMessage(User sender, TextMessage message, User chatter)
         {
+/*            if (_connection.State == HubConnectionState.Connected)
+            {
+                await _connection.InvokeAsync("TestConnection");
+            }*/
+
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
         }
@@ -375,6 +380,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
+            else
+                MessageBox.Show($"Нет связи! Текущий статус: {_connection.State}");
+
+
+            /*            if (_connection.State == HubConnectionState.Connected)
+                            await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);*/
         }
 
         public static async Task AddStatMessage(User sender, StaticMessage message, User chatter)
@@ -417,7 +428,7 @@ namespace TelegramVisualPart.Services
         {
             if (_connection is null) return;
 
-            if(_connection.State == HubConnectionState.Connected)
+            if (_connection.State == HubConnectionState.Connected)
             {
                 await _connection.InvokeAsync("UpdateLittlePhotoVisInChat", loggedUser);
             }
@@ -435,19 +446,19 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("ClearChat", clientId, user);
         }
 
-        public static async Task SetUserPhonenumberVisibility(bool IsVisisble, 
+        public static async Task SetUserPhonenumberVisibility(bool IsVisisble,
             TelegramLib.MainClasses.User user)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SetContactPhoneNumberVisibility", IsVisisble, user);
-        } 
+        }
 
         public static async Task SetContactLastSeenVisState(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SetContactLastSeenVisState", user);
         }
-        
+
         public static async Task SetPhoneNumVisByExps(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
@@ -509,7 +520,7 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("PinMessage", logged, chatter, toPin);
-        } 
+        }
 
 
         public static async Task ForwardMessage(User logged, User chatter,
@@ -518,7 +529,7 @@ namespace TelegramVisualPart.Services
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("ForwardMessage", logged, chatter, toForward);
         }
-        
+
         public static async Task SendReplyMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.TextMessage replyMes)
         {
@@ -526,7 +537,7 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("ReplyMessage", logged, chatter, replyMes);
         }
 
-        public static async Task EditMessage(User logged, User chatter, 
+        public static async Task EditMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message toEdit)
         {
             EditDTO dto = GetEditDTO(toEdit);
@@ -561,7 +572,7 @@ namespace TelegramVisualPart.Services
             List<DateTime> sentTimes, int loggedUserId, int chatterId)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("RemoveManyMessagesByDateTimes", 
+                await _connection.InvokeAsync("RemoveManyMessagesByDateTimes",
                     sentTimes, loggedUserId, chatterId);
         }
 

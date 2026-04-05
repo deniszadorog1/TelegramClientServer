@@ -114,3 +114,4 @@ B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\refint\Telegr
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.pdb
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\ref\TelegramBenchmarks.dll
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\BCrypt.Net-Next.dll

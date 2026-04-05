@@ -305,6 +305,7 @@ namespace TelegramLib.MainClasses
 
         public bool IsMessageContains(int mesId)
         {
+            if (Messages is null) return false;
             return Messages.Any(x => x.Id == mesId);
         }
 

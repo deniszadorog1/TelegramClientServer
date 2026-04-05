@@ -12,6 +12,17 @@ namespace TelegramClientServer.SignalRHubs
     [Authorize]
     public class MainHub : Hub
     {
+/*        public async Task TestConnection()
+        {
+            var myId = Context.UserIdentifier;
+            System.Diagnostics.Debug.WriteLine($"Мой ID в системе SignalR: {myId}");
+
+            await Clients.Caller.SendAsync("ReceiveTextMessage", new User { Name = "System" }, new TextMessage { Text = "Связь есть!" });
+
+            await Clients.All.SendAsync("ReceiveTextMessage", new User { Name = "System" }, new TextMessage { Text = "Видят все!" });
+        }*/
+
+
         public async Task SendTextMessage(User user, TextMessage message, User chatter)
         {
 
@@ -23,7 +34,6 @@ namespace TelegramClientServer.SignalRHubs
                 ReceiverId = chatter.Id.ToString()
             };
 
-            // Просто кидаємо в канал і ЗАБУВАЄМО (Fire and Forget для Хаба)
             await MessageBus.PublishAsync(envelope);
 
             //await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
