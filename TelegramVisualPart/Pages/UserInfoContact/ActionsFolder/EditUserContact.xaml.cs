@@ -126,8 +126,12 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 if (string.IsNullOrWhiteSpace(FirstNameBox.Text) ||
                 string.IsNullOrWhiteSpace(LastNameBox.Text)) return;
 
-                _contact.Name = FirstNameBox.Text;
-                _contact.Surname = LastNameBox.Text;
+  /*              _contact.Name = FirstNameBox.Text;
+                _contact.Surname = LastNameBox.Text;*/
+
+                _contact.Name = string.Join(" ", FirstNameBox.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)).Trim();
+                _contact.Surname = string.Join(" ", LastNameBox.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)).Trim();
+
 
                 await ApiService.UpdateContact(_user.Id, _contact);
 

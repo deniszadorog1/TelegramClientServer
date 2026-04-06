@@ -14,9 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-
             <Grid>
-
                 <Grid>
                     <Ellipse Name="UserEllipseImage" Width="55" Height="55">
                         <Ellipse.Fill>
@@ -60,7 +58,6 @@
                            Foreground="White"
                            FontFamily="{DynamicResource AppFont}"/>
             </Grid>
-
         </Grid>
 
         <Grid Grid.Column="1" Name="InfoGrid">
@@ -83,13 +80,28 @@
                            TextWrapping="NoWrap"
                            FontFamily="{DynamicResource AppFont}"/>
 
-                <TextBlock x:Name="LastMessageTime" 
+
+                <StackPanel x:Name="TickStack" HorizontalAlignment="Right" Grid.Column="1"
+                            Orientation="Horizontal">
+
+                    <materialDesign:PackIcon Name="ReadTick"
+                                             Visibility="Hidden"
+                                             VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"
+                                             Foreground="{StaticResource TempActiveTextColor}"
+                                             Width="20" Height="20"
+                                             Kind="TickAll"/>
+
+                    <TextBlock x:Name="LastMessageTime" 
                            HorizontalAlignment="Right" 
                            VerticalAlignment="Center" 
                            Text="mestime" Margin="10 5 25 5" 
-                           Foreground="Gray" FontSize="16"
-                           Grid.Column="1"
+                           Foreground="Gray" FontSize="16"                           
                            FontFamily="{DynamicResource AppFont}"/>
+
+                </StackPanel>
+                
+
             </Grid>
 
             <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 

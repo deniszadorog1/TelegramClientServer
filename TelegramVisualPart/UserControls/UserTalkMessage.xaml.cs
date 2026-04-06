@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -158,6 +159,28 @@ namespace TelegramVisualPart.UserControls
         public void SetOnlineCircleVisibility(bool isVis)
         {
             OnlineCircle.Visibility = isVis ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void SetTickVisibility(bool isVis)
+        {
+            ReadTick.Visibility = isVis ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void SetReadStatus(bool isSeen)
+        {
+            ReadTick.Kind = isSeen ? PackIconKind.TickAll : PackIconKind.Tick;
+        }
+
+        public void SetTick(TelegramLib.MainClasses.Messages.Message mes, TelSystem system)
+        {
+            if(mes is null || mes.SenderUserId != system.LoggedUser.Id)
+            {
+                ReadTick.Visibility = Visibility.Hidden;
+                return;
+            }
+
+            ReadTick.Visibility = Visibility.Visible;
+            ReadTick.Kind = mes.IsRead ? PackIconKind.TickAll : PackIconKind.Tick;
         }
     }
 }

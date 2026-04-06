@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.Models;
 using TelegramVisualPart.Pages.Contacts;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls;
 using User = TelegramLib.MainClasses.User;
 
@@ -66,6 +67,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
                         x => x.Name == blockedControl.ChaterLogin.Text).First();
 
                     _system.LoggedUser.BlockedUsers.Remove(contact);
+
+                    if(contact is not null) ApiService.RemoveBlockedContact(_system.LoggedUser.Id, contact.Id);
 
                     BlockedUsersPanel.Items.Remove(item);
 

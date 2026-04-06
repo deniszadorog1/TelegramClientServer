@@ -1640,5 +1640,13 @@ namespace TelegramVisualPart
             }
         }
 
+        public void UpdateUserTalkTickStatus(UserChat chat)
+        {
+            if(MainFrame.Content is MainChatPage main)
+            {
+                main.UpdateUserTalkTickStatus(chat);
+            }
+        }
+
     }
 }

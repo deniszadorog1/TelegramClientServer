@@ -278,8 +278,8 @@ namespace TelegramVisualPart.Pages
                 //if (UserChat.Visibility == Visibility.Hidden) return;
                 TelegramLib.MainClasses.UserChat chat = UserChat.GetChat();
 
-               /* if (chat is null || chat.Chatter is null ||
-                    chat.Chatter.Id != toCheckUser.Id) return;*/
+                /* if (chat is null || chat.Chatter is null ||
+                     chat.Chatter.Id != toCheckUser.Id) return;*/
 
                 UserChat.SetChatterLittlePhotoVisibility(toCheckUser);
 
@@ -991,10 +991,10 @@ namespace TelegramVisualPart.Pages
             if (sender is ListBoxItem item &&
                 item.Content is UserContact userControl)
             {
-               await RepaintUserChatsPanel();
-               SetUserChat(userControl.UserLogin.Text);
+                await RepaintUserChatsPanel();
+                SetUserChat(userControl.UserLogin.Text);
 
-               SetSizerActionWithUserChatMouseDown();
+                SetSizerActionWithUserChatMouseDown();
             }
         }
 
@@ -1168,6 +1168,7 @@ namespace TelegramVisualPart.Pages
         public bool IsSameChatIsOpened(TelegramLib.MainClasses.UserChat chat)
         {
             bool isOpened =
+               UserChat.Width != double.NaN && UserChat.Height != double.NaN &&
                UserChat.Visibility == Visibility.Visible &&
                UserChat._chat is not null &&
                UserChat._chat.Id == chat.Id &&
@@ -1533,6 +1534,7 @@ namespace TelegramVisualPart.Pages
                 Tag = chatterUser.Id
             };
 
+            chatControl.SetTick(chat.GetLastMessage(), _system);
             chatControl.SetVisibilityToPinBlock(chat.IsPinned);
             chatControl.SetVisibilityToUnreadEllipse(chat.IsMarked);
 
@@ -1546,6 +1548,22 @@ namespace TelegramVisualPart.Pages
             chatControl.LastMessage.Text = chat.GetLastMessageInString();
 
             return chatControl;
+        }
+
+        public void UpdateUserTalkTickStatus(TelegramLib.MainClasses.UserChat chat)
+        {
+            int chatterId = chat is null || chat.Chatter is null ? -1 : chat.Chatter.Id;
+
+            ListBoxItem? item = ChatsBox.Items.OfType<ListBoxItem>()
+                .Where(x => x.Content is UserTalkMessage mes && mes.Tag.ToString() == chatterId.ToString())
+                .FirstOrDefault();
+            if (item is null) return;
+
+            Message? lastMes = 
+                chat.Messages is null || chat.Messages.Count == 0 ? null : chat.GetLastMessage();
+
+            UserTalkMessage talkMes = (UserTalkMessage)item.Content;
+            talkMes.SetTick(lastMes, _system);
         }
 
         public void ClearChosenUserTalkValue()
@@ -1593,10 +1611,7 @@ namespace TelegramVisualPart.Pages
         {
             UserTalkMessage message =
                  GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
-
             if (message is null) return;
-
-            TelegramLib.MainClasses.Messages.Message mes = null;
 
             //Get chat
             message.LastMessage.Text = chat.GetLastMessageInString();
@@ -1604,6 +1619,12 @@ namespace TelegramVisualPart.Pages
                 string.Empty :
                 chat.Messages.Last().GetSentTimeInString();
 
+            //Tick is read
+            Message mes = chat.GetLastMessage();
+            if (mes is not null)
+            {
+                message.SetTick(mes, _system);
+            }
             SetUnreadForUserTalk(message, chat);
         }
 

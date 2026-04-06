@@ -163,6 +163,11 @@ namespace TelegramLib.MainClasses
             return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
         }
 
+        public Messages.Message GetLastMessage()
+        {
+            return Messages is null || Messages.Count == 0 ? null : Messages.Last();
+        }
+
         public Messages.Message GetLastMessageObj()
         {
             return Messages.Last();

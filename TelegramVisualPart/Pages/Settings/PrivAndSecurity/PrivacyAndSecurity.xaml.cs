@@ -175,7 +175,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
                 name == DateOfBirth.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.DateBirth, _system.Settings.GetPrivacySettings(), _system.Contacts, _system) :
                 name == BioBut.Name.ToString() ? new SetPrivacyByType(Enums.PrivacySettingType.Bio, _system.Settings.GetPrivacySettings(), _system.Contacts, _system) :
                 name == DeleteAway.Name.ToString() ? new PrivacyDeleteAccount(_system.Settings.GetPrivacySettings()) :
-                name == Messages.Name.ToString() ? new PrivacyMessages(_system.Settings.GetPrivacySettings().MessagesPrivacy) : null;
+                name == Messages.Name.ToString() ? new PrivacyMessages(_system.Settings.GetPrivacySettings().MessagesPrivacy, _system.Settings.PrivacySettings) : null;
                 
         }
     }

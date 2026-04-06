@@ -634,6 +634,20 @@ namespace TelegramLib.MainClasses
                 (x => x.Id == chatter.Id);
         }
 
+        public bool IsUserBlockedForMesSend(User chatter)
+        {
+            return LoggedUser.BlockedUsers.Any(x => x.Id == chatter.Id);
+        }
+
+        public bool IsAllowedToWriteNessages(User chatter)
+        {
+            if (Settings.PrivacySettings.MessagesPrivacy.WhoCanSend == 
+                Enums.Settings.PrivacyAndSecurity.ShareWith.Everybody) return true;
+
+            //Only for contacts
+            return Contacts.Any(x => x.ContactUserId == chatter.Id);
+        }
+
         public Message GetMessageById(int? id)
         {
             if (id is null) return null;

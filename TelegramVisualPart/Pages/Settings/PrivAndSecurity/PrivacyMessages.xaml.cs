@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.PrivacyAndSecurity;
+using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 {
@@ -23,9 +26,13 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
     public partial class PrivacyMessages : Page
     {
         private MessagesSub _mesSubs;
-        public PrivacyMessages(MessagesSub messSettings)
+        private PrivAndSecSettings _settings;
+
+        public PrivacyMessages(MessagesSub messSettings, PrivAndSecSettings settings)
         {
             _mesSubs = messSettings;
+            _settings = settings;
+
             InitializeComponent();
 
             SetClassParam();
@@ -60,6 +67,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         private void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            ApiService.UpdatePrivSettings(_settings);
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

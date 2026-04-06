@@ -2826,6 +2826,8 @@ namespace TelegramLib.Services
             //if (IsContactIsBlocked(userId, contactId)) return;
             using (var model = new TelegramModel())
             {
+                if (model.BlockedContacts.Any(x => x.UserId == userId && x.BlockedContactId == contactId)) return;
+
                 BlockedContacts toBlock = new BlockedContacts();
 
                 toBlock.UserId = userId;

@@ -335,7 +335,7 @@ namespace TelegramVisualPart.UserControls
             _chat = _system.GetChatByMessage(pair);
             if (IsOnlyChatWindowWithChatIsExist(_chat))
             {
-                _chat = tempChat; 
+                _chat = tempChat;
                 return;
             }
             RemoveMessageFromSigR(pair);
@@ -344,14 +344,14 @@ namespace TelegramVisualPart.UserControls
             {
                 if (!isUpdateVis || _chat is null)
                 {
-                    _chat = tempChat; 
+                    _chat = tempChat;
                     return;
                 }
 
                 List<Message> selected = GetSelectedMessages();
 
                 if (SavedMessagesGrid.Visibility != Visibility.Visible &&
-                    SchedueleMessagesGrid.Visibility != Visibility.Visible && 
+                    SchedueleMessagesGrid.Visibility != Visibility.Visible &&
                     tempChat is not null && _chat is not null && tempChat.Id == _chat.Id)
                 {
                     await SetChatMessages();
@@ -431,11 +431,13 @@ namespace TelegramVisualPart.UserControls
                 HideSelectionRowFromSignalR(new List<Message>());
                 TelegramLib.MainClasses.UserChat? chat = _system.Chats.FirstOrDefault(x => x.Chatter.Id == user.Id);
                 if (chat is null) return;
-           
+
                 if (_chat is null) SetChatById(chat.Id);
 
                 if (_chat is null) return;
                 await RemoveAllMessagesFromChat(chat);
+
+                UpdateTalkMessageTickStatus(chat);
             });
         }
 
@@ -535,6 +537,13 @@ namespace TelegramVisualPart.UserControls
                     MediaAction message = messages[i];
                     //Get chat where Logged is Sender 
                     chat = await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
+
+                    //is Chatter is blocked
+                    if (chat is not null && _system.IsChatterBlocked(chat.Chatter))
+                    {
+                        return;
+                    }
+
                     //_system.GetChatByChatterId(sender.Id);
                     if (chat is null) return;
 
@@ -633,6 +642,13 @@ namespace TelegramVisualPart.UserControls
                 //Set user talk if not contains un chats
                 SetNewUserChatMessageControl(chat);
                 if (IsOnlyChatWindowWithChatIsExist(chat)) return;
+
+
+                //is Chatter is blocked
+                if (chat is null || chat.Chatter is null || !_system.IsAllowedToWriteNessages(chat.Chatter) || _system.IsUserBlockedForMesSend(chat.Chatter))
+                {
+                    return;
+                }
 
                 if (_chat is null ||
                 chat.Id != _chat.Id)
@@ -3431,8 +3447,10 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.TextMessage toAddText)
         {
             if (_chat.Chatter is null) return;
-            if (await ApiService.IsUserIsBlocked(_chat.Chatter.Id, _system.LoggedUser.Id)) return;
-
+            if (await ApiService.IsUserIsBlocked(_chat.Chatter.Id, _system.LoggedUser.Id))
+            {
+                return;
+            }
             //TO add in both chats if chatter online
             if (await ApiService.IsUserOnline(_chat.Chatter.Id))
             {
@@ -5175,7 +5193,7 @@ namespace TelegramVisualPart.UserControls
             return res;
         }
 
-        public void UpdateReadStatus(TelegramLib.MainClasses.User chatter)
+        public async void UpdateReadStatus(TelegramLib.MainClasses.User chatter)
         {
             if (_system is null) return;
             //COMPARE IN DB by SEND TIME
@@ -5194,7 +5212,7 @@ namespace TelegramVisualPart.UserControls
             {
                 if (!messages[i].IsRead)
                 {
-                    ApiService.SetReadStatus(messages[i].Id);
+                    await ApiService.SetReadStatus(messages[i].Id);
 
                     //Get and change status from db
                     bool updatedStatus =
@@ -5206,10 +5224,25 @@ namespace TelegramVisualPart.UserControls
                 }
             }
             UpdateReadStatus(chat);
-            //change vis state
+
+            //Update UserTalkControl read tick
+            UpdateTalkMessageTickStatus(chat);
         }
 
+        public void UpdateTalkMessageTickStatus(TelegramLib.MainClasses.UserChat chat)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                //if (chat is null || chat.Chatter is null || chat.GetLastMessage() is null) return;
 
+                //need main thread...bruh...
+                Window window = Window.GetWindow(this);
+                if (window is MainWindow main)
+                {
+                    main.UpdateUserTalkTickStatus(chat);
+                }
+            });
+        }
 
         public void UpdateReadStatus(TelegramLib.MainClasses.UserChat chat)
         {
