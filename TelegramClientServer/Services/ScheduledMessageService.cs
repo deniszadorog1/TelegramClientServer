@@ -13,7 +13,7 @@ namespace TelegramClientServer.Services
         private bool _isRunning = false;
 
         public ScheduledMessageService(IHubContext<MainHub> hubContext)
-        {
+        {             
             _hubContext = hubContext;
         }
 

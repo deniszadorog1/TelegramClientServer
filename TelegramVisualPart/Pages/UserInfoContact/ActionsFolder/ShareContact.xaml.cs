@@ -72,14 +72,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 .SetSharedContact(tagId, _contact);
 
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-
-            return;
-            //set in db 
-            User user = await ApiService.GetUserById(_contact.ContactUserId);
-
-            //set in system
-            AddContacts(user, _checkedContact);
-            SetContactsToShareWith();
         }
 
         public void AddContacts(User user, User toAdd)

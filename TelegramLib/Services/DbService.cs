@@ -523,8 +523,8 @@ namespace TelegramLib.Services
                 !(mes.ChangedAutoDelId is null) ||
                 !(mes.StatDate is null)) toAdd = new mainClass.Messages.StaticMessage();
 
+            else if (!(mes.ShareContactId is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
             else if (mes.Message is null) toAdd = new MediaAction();
-            else if (!(mes.ShareContactMessage is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
@@ -3788,7 +3788,7 @@ namespace TelegramLib.Services
         }
 
         public static void AddShareMessage(int userId,
-            string contactName, int chatId, int senderId, string message)
+            string contactName, int chatId, int senderId,  DateTime? sent)
         {
             AddShareContactMessage(contactName, userId);
 
@@ -3797,15 +3797,17 @@ namespace TelegramLib.Services
                 Messages toAdd = new Messages();
                 toAdd.ChatId = chatId;
                 toAdd.SenderId = senderId;
-                toAdd.Message = message;
+                toAdd.Message = null;
                 toAdd.ImageId = null;
                 toAdd.StickerId = null;
                 toAdd.GifId = null;
                 toAdd.VideoId = null;
-                toAdd.SentDate = DateTime.Now;
+                toAdd.SentDate = sent;
                 toAdd.ShareContactId = GetLastShareMessageId();
                 toAdd.IsRead = false;
-                toAdd.MessageQuote = string.Empty;
+                toAdd.MessageQuote = null;
+                toAdd.IsPinned = false;
+
 
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
@@ -3828,11 +3830,11 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                model.ShareContactMessage res =
-                    model.ShareContactMessage.ToList().LastOrDefault();
+                var res = model.ShareContactMessage
+                                       .OrderByDescending(m => m.Id)
+                                       .FirstOrDefault();
 
-                if (res is null) return null;
-                return res.Id;
+                return res is null ? null : res.Id;
             }
         }
 
@@ -3871,31 +3873,20 @@ namespace TelegramLib.Services
                 Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
                 if (mes is null) return;
 
+                mes.IsRead = true;
+
+                model.SaveChanges();
+                return;
+
                 //Get message with same sendTime (but differ id)
                 var sameTimeMessage = model.Messages
                 .AsEnumerable()
                 .FirstOrDefault(x =>
                     x.Id != mes.Id &&
                     x.SentDate.HasValue && mes.SentDate.HasValue &&
-                    Math.Abs((x.SentDate.Value - mes.SentDate.Value).TotalMilliseconds) < 100);
+                    Math.Abs((x.SentDate.Value - mes.SentDate.Value).TotalMilliseconds) < 10);
 
 
-                /*                var sameTimeMessage = model.Messages
-                                    .FirstOrDefault(x =>
-                                        x.Id != mes.Id &&
-                                        x.SentDate.HasValue && mes.SentDate.HasValue &&
-                                        x.SentDate.Value.Year == mes.SentDate.Value.Year &&
-                                        x.SentDate.Value.Month == mes.SentDate.Value.Month &&
-                                        x.SentDate.Value.Day == mes.SentDate.Value.Day &&
-                                        x.SentDate.Value.Hour == mes.SentDate.Value.Hour &&
-                                        x.SentDate.Value.Minute == mes.SentDate.Value.Minute &&
-                                        x.SentDate.Value.Second == mes.SentDate.Value.Second &&
-                                        x.SentDate.Value.Millisecond == mes.SentDate.Value.Millisecond);*/
-
-                //1 mil sec differ
-                /*  sameTimeMessage = model.Messages
-                     .FirstOrDefault(x => x.Id != mes.Id &&
-                          Math.Abs(((TimeSpan)(x.SentDate - mes.SentDate)).TotalMilliseconds) < 1);*/
                 if (sameTimeMessage is null) return;
 
                 //compare them(read status)
@@ -4397,11 +4388,11 @@ namespace TelegramLib.Services
         {
             TelegramLib.MainClasses.Messages.Message toAdd;
             if (!(mes.MessageRefference is null) ||
+                !(mes.ChangedAutoDelId is null) ||
                 !(mes.StatDate is null)) toAdd = new mainClass.Messages.StaticMessage();
 
-            else if (mes.Message is null) toAdd = new MediaAction();
-            else if (!(mes.ShareContactMessage is null)) toAdd =
-                    new TelegramLib.MainClasses.Messages.ShareContactMessage();
+            else if (!(mes.ShareContactId is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
+            else if (mes.Message is null) toAdd = new MediaAction();          
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;

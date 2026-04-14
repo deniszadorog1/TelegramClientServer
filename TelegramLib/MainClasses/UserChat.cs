@@ -262,10 +262,10 @@ namespace TelegramLib.MainClasses
         }
 
         public void AddSharedMessage(int senderUserId, int id,
-            User sharedUser, string sharedContactName)
+            User sharedUser, string sharedContactName, DateTime date)
         {
             ShareContactMessage toAdd = new ShareContactMessage(id,
-                senderUserId, DateTime.Now, sharedContactName,
+                senderUserId, date, sharedContactName,
                 sharedUser, false, false, null);
 
             Messages.Add(toAdd);
@@ -735,6 +735,17 @@ namespace TelegramLib.MainClasses
 
             if (res is null) return null;
             else return res.Id;
+        }
+
+        public DateTime GetSentTimeOfLastShareMessage()
+        {
+            for(int i = Messages.Count - 1; i >= 0; i--)
+            {
+                if (Messages[i] is not ShareContactMessage share) continue;
+
+                return share.SentTime;
+            }
+            return DateTime.Now;
         }
     }
 }

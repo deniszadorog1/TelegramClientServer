@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Security.RightsManagement;
 using System.Windows;
 using System.Windows.Controls;
@@ -194,7 +195,6 @@ namespace TelegramVisualPart
         {
             _system = system;
             SetLanguageFile();
-
 
             if (!isOnlyChat)
             {
@@ -1646,6 +1646,18 @@ namespace TelegramVisualPart
             {
                 main.UpdateUserTalkTickStatus(chat);
             }
+        }
+
+        public void UpdateGlobalMedias()
+        {
+            if (MainFrame.Content is not MainChatPage main) return;
+
+            TelegramLib.Enums.Messages.MediaType? type = 
+                main.SearchControl.GetChosenTabType();
+
+            if (type is null) return;
+
+            main.SetSearchedParams((TelegramLib.Enums.Messages.MediaType)type);
         }
 
     }

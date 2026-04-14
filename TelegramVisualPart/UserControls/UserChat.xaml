@@ -115,9 +115,9 @@
                       MouseEnter="FindMessageBut_MouseEnter"
                       MouseLeave="FindMessageBut_MouseLeave">
                     <materialDesign:PackIcon Kind="Magnify" Foreground="Gray"
-                                         HorizontalAlignment="Center" Width="30" Height="30" 
-                                         VerticalAlignment="Center" 
-                                         Name="FindMessageIcon"/>
+                                             HorizontalAlignment="Center" Width="30" Height="30" 
+                                             VerticalAlignment="Center" 
+                                             Name="FindMessageIcon"/>
                 </Grid>
 
                 <Grid Margin="5" Name="UserInfoBut" 
@@ -346,13 +346,11 @@
                         <ControlTemplate TargetType="ListBox">
                             <Border Background="{TemplateBinding Background}">
                                 <ScrollViewer x:Name="ScrollViewer"
-                              VerticalScrollBarVisibility="Auto"
-                              CanContentScroll="True">
-
+                                        VerticalScrollBarVisibility="Auto"
+                                        CanContentScroll="True">
                                     <Grid>
                                         <ItemsPresenter VerticalAlignment="Bottom"/>
                                     </Grid>
-
                                 </ScrollViewer>
                             </Border>
                         </ControlTemplate>

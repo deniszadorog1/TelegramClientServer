@@ -132,7 +132,15 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             //Animation
             SetBlockAnimation(sender);
 
-            if (sender == ChatTab)
+            TelegramLib.Enums.Messages.MediaType type =
+                sender == PhotosTab ? TelegramLib.Enums.Messages.MediaType.Image :
+                sender == VideosTab ? TelegramLib.Enums.Messages.MediaType.Video :
+                TelegramLib.Enums.Messages.MediaType.Unknown;
+
+            SetSearchType?.Invoke(type);
+
+
+/*            if (sender == ChatTab)
             {
                 SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Unknown);
             } 
@@ -143,7 +151,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             else if(sender == VideosTab)
             {
                 SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Video);
-            }
+            }*/
         }
 
         public void SetBlockAnimation(object sender)
@@ -205,6 +213,32 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = null;
+        }
+
+        public TextBlock GetChosenTab()
+        {
+            for (int i = 0; i < TabsPanel.Children.Count; i++)
+            {
+                if (TabsPanel.Children[i] is TextBlock textBlock && 
+                    textBlock.Foreground ==
+                    (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"])
+                {
+                    return textBlock;
+                }
+            }
+
+            return null;
+        }
+
+        public TelegramLib.Enums.Messages.MediaType? GetChosenTabType()
+        {
+            TextBlock block = GetChosenTab();
+            if (block is null) return null;
+
+            return
+                block == PhotosTab ? TelegramLib.Enums.Messages.MediaType.Image :
+                block == VideosTab ? TelegramLib.Enums.Messages.MediaType.Video :
+                TelegramLib.Enums.Messages.MediaType.Unknown;
         }
     }
 }

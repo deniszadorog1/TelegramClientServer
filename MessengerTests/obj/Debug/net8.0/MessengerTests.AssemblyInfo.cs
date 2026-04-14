@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MessengerTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48b8b262e178abdf5fce04e4fda6e4de75143f16")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba07fdc5a191c51cfe77cc1a7a5e89608d6a571d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MessengerTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MessengerTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

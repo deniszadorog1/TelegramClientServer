@@ -102,11 +102,6 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             CaptureBox.Text = _text;
         }
 
-        public void AddMediaInVis(int pathIndex)
-        {
-
-        }
-
         private void SmileGrid_MouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Hand;
@@ -178,6 +173,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
             ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs, paths, _sendType);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+
+            //((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
 
         public List<Image> GetImagesFromMediaBox()

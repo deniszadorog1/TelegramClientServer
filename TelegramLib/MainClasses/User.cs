@@ -74,7 +74,7 @@ namespace TelegramLib.MainClasses
         }
 
         //Smth like test params
-        public User()
+       public User()
         {
             return;
             Id = -1;

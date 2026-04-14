@@ -5,14 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
+             xmlns:Tick="clr-namespace:TelegramVisualPart.UserControls.ChatControls.ChatMessages"
              mc:Ignorable="d" 
-             d:DesignHeight="110" d:DesignWidth="260"
+             d:DesignHeight="110" d:DesignWidth="300"
              Height="110" Width="260">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition/>
+            <ColumnDefinition Name="TickColumnDef" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <Grid>
@@ -116,5 +118,14 @@
 
             </Grid>
         </Border>
+
+        <Grid Grid.Column="2">
+            <Tick:SelectionTick x:Name="SelectionTickObj"
+                                Width="20" Height="20"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Right"/>
+        </Grid>
+        
+        
     </Grid>
 </UserControl>

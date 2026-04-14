@@ -639,7 +639,7 @@ namespace TelegramLib.MainClasses
             return LoggedUser.BlockedUsers.Any(x => x.Id == chatter.Id);
         }
 
-        public bool IsAllowedToWriteNessages(User chatter)
+        public bool IsAllowedToWriteMessages(User chatter)
         {
             if (Settings.PrivacySettings.MessagesPrivacy.WhoCanSend == 
                 Enums.Settings.PrivacyAndSecurity.ShareWith.Everybody) return true;
@@ -652,9 +652,12 @@ namespace TelegramLib.MainClasses
         {
             if (id is null) return null;
 
-            if (_isSavedMesChat)
+            TelegramLib.MainClasses.Messages.Message message = 
+                SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
+
+            if (/*_isSavedMesChat*/message is not null)
             {
-                return SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
+                return message;
             }
 
             for (int i = 0; i < Chats.Count; i++)

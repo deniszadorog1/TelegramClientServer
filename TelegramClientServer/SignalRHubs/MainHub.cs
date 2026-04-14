@@ -149,10 +149,10 @@ namespace TelegramClientServer.SignalRHubs
         }
 
         public async Task AddShareContactMessage(User logged, 
-            User chatter, UserContactcs contactToSend)
+            User chatter, int id)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("AddShareContactMessage", logged, chatter, contactToSend);
+                .SendAsync("AddShareContactMessage", logged, chatter, id);
         }
 
 

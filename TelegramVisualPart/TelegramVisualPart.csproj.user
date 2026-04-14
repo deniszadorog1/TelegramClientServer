@@ -295,6 +295,12 @@
     <Compile Update="UserControls\ChatsControls\UserChatsMenuElement.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -745,6 +751,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ChatsControls\UserChatsMenuElement.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\ContactsControls\AutoDeleteControls\RadioBut.xaml">

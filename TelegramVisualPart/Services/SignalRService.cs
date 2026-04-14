@@ -59,7 +59,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User>? DeleteChat;
 
         public static event Action<User>? UpdateReadStatus;
-        public static event Func<User, UserContactcs, Task>? SetShareContactMessage;
+        public static event Func<User, int, Task>? SetShareContactMessage;
 
 
         public static event Action<User, TextMessage>? ReplyMesAction;
@@ -275,14 +275,13 @@ namespace TelegramVisualPart.Services
                 UpdateReadStatus?.Invoke(loggedUser);
             });
 
-            _connection.On<User, User, UserContactcs>("AddShareContactMessage",
-                (logged, chatter, contactToSend) =>
+            _connection.On<User, User, int>("AddShareContactMessage",
+                (logged, chatter, id) =>
             {
                 //chatter is now logged
                 //logged is now chatter
-                SetShareContactMessage?.Invoke(logged, contactToSend);
+                SetShareContactMessage?.Invoke(logged, id);
             });
-
 
             _connection.On<User, TextMessage>("ReplyMessage", (logged, message) =>
             {
@@ -380,12 +379,16 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
-            else
-                MessageBox.Show($"Нет связи! Текущий статус: {_connection.State}");
-
 
             /*            if (_connection.State == HubConnectionState.Connected)
                             await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);*/
+        }
+
+        public static async Task AddShareContactMessage(User logged, User chatter,
+                int id)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("AddShareContactMessage", logged, chatter, id);
         }
 
         public static async Task AddStatMessage(User sender, StaticMessage message, User chatter)
@@ -499,13 +502,6 @@ namespace TelegramVisualPart.Services
         {
             if (_connection?.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateReadStatus", loggedUser, chatter.Id);
-        }
-
-        public static async Task AddShareContactMessage(User logged, User chatter,
-            UserContactcs contactToSend)
-        {
-            if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("AddShareContactMessage", logged, chatter, contactToSend);
         }
 
         public static async Task DeleteMessageById(User logged, User chatter,

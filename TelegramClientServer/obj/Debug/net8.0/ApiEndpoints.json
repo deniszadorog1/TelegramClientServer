@@ -1,5 +1,1444 @@
 [
   {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "AddNewUserSystem",
+    "RelativePath": "api/Auth/AddTellSystem",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newUser",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BAddUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "RegisterUser",
+    "RelativePath": "api/Auth/AddUser",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "newUser",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BAddUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "AddUserBasicColor",
+    "RelativePath": "api/Auth/AddUserBasicColor",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BUserIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "AddUserSettings",
+    "RelativePath": "api/Auth/AddUserSettings",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BUserIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "GetTellSystemByUser",
+    "RelativePath": "api/Auth/GetTelSystem",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.TelSystem",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "GetUser",
+    "RelativePath": "api/Auth/GetUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "GetUserByLoginPassword",
+    "RelativePath": "api/Auth/GetUserByLoginPassword",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.User",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "IsRegistrationParamsAreExist",
+    "RelativePath": "api/Auth/IsRegistrationParamsAreExist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "login",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "phoneNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BGetTokenDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Auth/UpdateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "TelegramClientServer.Controllers.AuthController\u002BUserDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "AddChat",
+    "RelativePath": "api/Chat/AddChat",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addChat",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BAddChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "AddChatBg",
+    "RelativePath": "api/Chat/AddChatBg",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chat",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "AddSavedChat",
+    "RelativePath": "api/Chat/AddSavedChat",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BAddSavedChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "ClearChat",
+    "RelativePath": "api/Chat/ClearChat",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chat",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "ClearSaveChatById",
+    "RelativePath": "api/Chat/ClearSaveChatById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BClearSaveMessagesChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "DeleteChatById",
+    "RelativePath": "api/Chat/DeleteChatById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatterIdDTO",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BDeleteChatByChatterIdDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetChatBgidByName",
+    "RelativePath": "api/Chat/GetChatBgIdByName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetChatByUserAndContactId",
+    "RelativePath": "api/Chat/GetChatByUserAndContactId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "contactId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.UserChat",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetIdOfLastSavedMessage",
+    "RelativePath": "api/Chat/GetIdOfLastSavedMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastChatMessage",
+    "RelativePath": "api/Chat/GetLastChatMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastMessageBandId",
+    "RelativePath": "api/Chat/GetLastMessageBandId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastSavedMessage",
+    "RelativePath": "api/Chat/GetLastSavedMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastSharedMessageIdByChatId",
+    "RelativePath": "api/Chat/GetLastSharedMessageIdByChatId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastStatDateIdInSavedChat",
+    "RelativePath": "api/Chat/GetLastStatDateIdInSavedChat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetLastStatMesIdByChatId",
+    "RelativePath": "api/Chat/GetLastStatMesIdByChatId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetMessagesByChatId",
+    "RelativePath": "api/Chat/GetMessagesByChatId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[TelegramLib.MainClasses.Messages.Message, TelegramLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetSavedMessagesChat",
+    "RelativePath": "api/Chat/GetSavedMessagesChat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.SavedMessagesChat",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "IsChatExist",
+    "RelativePath": "api/Chat/IsChatExist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "contactId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "IsDateMesIsExistInChat",
+    "RelativePath": "api/Chat/IsDateMesIsExistInChat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loggedId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "chatterId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "date",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "IsDateStatContainsInSavedMessageChat",
+    "RelativePath": "api/Chat/IsDateStatContainsInSavedMessageChat",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "SetChatWallpaper",
+    "RelativePath": "api/Chat/SetChatWallpaper",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "toSetPaper",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BChatWallpaperDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "UpdateChat",
+    "RelativePath": "api/Chat/UpdateChat",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chat",
+        "Type": "TelegramClientServer.Controllers.ChatController\u002BChatDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "AddContact",
+    "RelativePath": "api/Contact/AddContact",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contact",
+        "Type": "TelegramClientServer.Controllers.ContactController\u002BContactDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "GetContactMask",
+    "RelativePath": "api/Contact/GetContactMask",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loggedUserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "contactUserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.UserParams.UserImage",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "GetContact",
+    "RelativePath": "api/Contact/GetLastUserContact",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.UserContactcs",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "IsChatterIdIsContact",
+    "RelativePath": "api/Contact/IsChatterIdIsContact",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "friendUserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "IsContactContactsInContacts",
+    "RelativePath": "api/Contact/IsContactContactsInContacts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "isContains",
+        "Type": "TelegramClientServer.Controllers.ContactController\u002BContactCheckRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "IsContactExist",
+    "RelativePath": "api/Contact/IsContactExist",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "friendId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "SetContactMask",
+    "RelativePath": "api/Contact/SetContactMask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.ContactController\u002BSetContactMaskDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ContactController",
+    "Method": "UpdateContact",
+    "RelativePath": "api/Contact/UpdateContact",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contact",
+        "Type": "TelegramClientServer.Controllers.ContactController\u002BContactDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "AddAndGetSchedMessage",
+    "RelativePath": "api/Message/AddAndGetSchedMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "AddMessage",
+    "RelativePath": "api/Message/AddMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "AddSavedMessage",
+    "RelativePath": "api/Message/AddSavedMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mesDTO",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BAddSavedMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "AddShareContactMessage",
+    "RelativePath": "api/Message/AddShareContactMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "shareMessage",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BAddShareContactMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "AddStatMessage",
+    "RelativePath": "api/Message/AddStatMessage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BAddStatMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "DeleteManyMessages",
+    "RelativePath": "api/Message/DeleteManyMessages",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BDeleteManyMessagesDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "DeleteMessageById",
+    "RelativePath": "api/Message/DeleteMessageById",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BDeleteMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "DeleteSavedMessage",
+    "RelativePath": "api/Message/DeleteSavedMessage",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BDeleteSavedMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "EditMessage",
+    "RelativePath": "api/Message/EditMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editDTO",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BEditMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "EditSavedChatMessage",
+    "RelativePath": "api/Message/EditSavedChatMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editDTO",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BEditMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "EditSchedMessage",
+    "RelativePath": "api/Message/EditSchedMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "editDTO",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BEditSchedMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "GetMessageById",
+    "RelativePath": "api/Message/GetMessageById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.Messages.Message",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "GetMessageIdByDateTime",
+    "RelativePath": "api/Message/GetMessageIdByDateTime",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sentTime",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "GetPairToMessage",
+    "RelativePath": "api/Message/GetPairToMessage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mesId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "GetReadStatus",
+    "RelativePath": "api/Message/GetReadStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "mesId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Boolean",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "ReadMessage",
+    "RelativePath": "api/Message/ReadMessage",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "readMessage",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BReadMessageDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "SetPinStatus",
+    "RelativePath": "api/Message/SetPinStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pinDto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BSetPinStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "SetReadStatus",
+    "RelativePath": "api/Message/SetReadStatus",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "readStatDTO",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BSetReadStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MessageController",
+    "Method": "UpdateSchedMessageDate",
+    "RelativePath": "api/Message/UpdateSchedMessageDate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TelegramClientServer.Controllers.MessageController\u002BUpdateSchedMessageDateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "TelegramClientServer.Controllers.SettingsController",
     "Method": "AddSound",
     "RelativePath": "api/Settings/AddSound",
@@ -407,32 +1846,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddAndGetSchedMessage",
-    "RelativePath": "api/Social/AddAndGetSchedMessage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.Messages.Message",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "AddBlockedContact",
     "RelativePath": "api/Social/AddBlockedContact",
     "HttpMethod": "PUT",
@@ -442,50 +1855,6 @@
       {
         "Name": "contact",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BBlockedContactDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddChat",
-    "RelativePath": "api/Social/AddChat",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "addChat",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BAddChatDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddChatBg",
-    "RelativePath": "api/Social/AddChatBg",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chat",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BChatDTO",
         "IsRequired": true
       }
     ],
@@ -521,28 +1890,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddContact",
-    "RelativePath": "api/Social/AddContact",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "contact",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BContactDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "AddFolder",
     "RelativePath": "api/Social/AddFolder",
     "HttpMethod": "PUT",
@@ -552,110 +1899,6 @@
       {
         "Name": "folder",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BFolderDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddMessage",
-    "RelativePath": "api/Social/AddMessage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddSavedChat",
-    "RelativePath": "api/Social/AddSavedChat",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BAddSavedChatDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddSavedMessage",
-    "RelativePath": "api/Social/AddSavedMessage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "mesDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BAddSavedMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddShareContactMessage",
-    "RelativePath": "api/Social/AddShareContactMessage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "shareMessage",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BAddShareContactMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "AddStatMessage",
-    "RelativePath": "api/Social/AddStatMessage",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BAddStatMessageDTO",
         "IsRequired": true
       }
     ],
@@ -735,50 +1978,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "ClearChat",
-    "RelativePath": "api/Social/ClearChat",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chat",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BChatDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "ClearSaveChatById",
-    "RelativePath": "api/Social/ClearSaveChatById",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BClearSaveMessagesChatDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetContactBySenderAndReceiverIds",
     "RelativePath": "api/Social/ContactBySenderAndReceiverIds",
     "HttpMethod": "GET",
@@ -819,28 +2018,6 @@
       {
         "Name": "contact",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BBlockedContactDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "DeleteChatById",
-    "RelativePath": "api/Social/DeleteChatById",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatterIdDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteChatByChatterIdDTO",
         "IsRequired": true
       }
     ],
@@ -898,72 +2075,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "DeleteManyMessages",
-    "RelativePath": "api/Social/DeleteManyMessages",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteManyMessagesDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "DeleteMessageById",
-    "RelativePath": "api/Social/DeleteMessageById",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "DeleteSavedMessage",
-    "RelativePath": "api/Social/DeleteSavedMessage",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BDeleteSavedMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "DeleteUserImage",
     "RelativePath": "api/Social/DeleteUserImage",
     "HttpMethod": "DELETE",
@@ -980,212 +2091,6 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "EditMessage",
-    "RelativePath": "api/Social/EditMessage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "editDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BEditMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "EditSavedChatMessage",
-    "RelativePath": "api/Social/EditSavedChatMessage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "editDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BEditMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "EditSchedMessage",
-    "RelativePath": "api/Social/EditSchedMessage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "editDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BEditSchedMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetChatBgidByName",
-    "RelativePath": "api/Social/GetChatBgIdByName",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Int32",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetChatByUserAndContactId",
-    "RelativePath": "api/Social/GetChatByUserAndContactId",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "contactId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.UserChat",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetContactMask",
-    "RelativePath": "api/Social/GetContactMask",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loggedUserId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "contactUserId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.UserParams.UserImage",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetIdOfLastSavedMessage",
-    "RelativePath": "api/Social/GetIdOfLastSavedMessage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastChatMessage",
-    "RelativePath": "api/Social/GetLastChatMessage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.Messages.Message",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
         "StatusCode": 200
       }
     ]
@@ -1218,234 +2123,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastMessageBandId",
-    "RelativePath": "api/Social/GetLastMessageBandId",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Int32",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastSavedMessage",
-    "RelativePath": "api/Social/GetLastSavedMessage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.Messages.Message",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastSharedMessageIdByChatId",
-    "RelativePath": "api/Social/GetLastSharedMessageIdByChatId",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Int32",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastStatDateIdInSavedChat",
-    "RelativePath": "api/Social/GetLastStatDateIdInSavedChat",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetLastStatMesIdByChatId",
-    "RelativePath": "api/Social/GetLastStatMesIdByChatId",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetContact",
-    "RelativePath": "api/Social/GetLastUserContact",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.UserContactcs",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetMessageById",
-    "RelativePath": "api/Social/GetMessageById",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.Messages.Message",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetMessageIdByDateTime",
-    "RelativePath": "api/Social/GetMessageIdByDateTime",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "sentTime",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetMessagesByChatId",
-    "RelativePath": "api/Social/GetMessagesByChatId",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[TelegramLib.MainClasses.Messages.Message, TelegramLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "GetPairToMessage",
     "RelativePath": "api/Social/GetPairToMessage",
     "HttpMethod": "GET",
@@ -1459,58 +2136,6 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetReadStatus",
-    "RelativePath": "api/Social/GetReadStatus",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "mesId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "GetSavedMessagesChat",
-    "RelativePath": "api/Social/GetSavedMessagesChat",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.SavedMessagesChat",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
@@ -1607,192 +2232,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsChatExist",
-    "RelativePath": "api/Social/IsChatExist",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "contactId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsChatterIdIsContact",
-    "RelativePath": "api/Social/IsChatterIdIsContact",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "friendUserId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsContactContactsInContacts",
-    "RelativePath": "api/Social/IsContactContactsInContacts",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "isContains",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BContactCheckRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsContactExist",
-    "RelativePath": "api/Social/IsContactExist",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "friendId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsDateMesIsExistInChat",
-    "RelativePath": "api/Social/IsDateMesIsExistInChat",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loggedId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "chatterId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "date",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "IsDateStatContainsInSavedMessageChat",
-    "RelativePath": "api/Social/IsDateStatContainsInSavedMessageChat",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chatId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "date",
-        "Type": "System.DateTime",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "IsLoginExist",
     "RelativePath": "api/Social/IsLoginExist",
     "HttpMethod": "GET",
@@ -1876,28 +2315,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "ReadMessage",
-    "RelativePath": "api/Social/ReadMessage",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "readMessage",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BReadMessageDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "RemoveContact",
     "RelativePath": "api/Social/RemoveContact",
     "HttpMethod": "DELETE",
@@ -1929,94 +2346,6 @@
       {
         "Name": "autDel",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BAutoDelDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "SetChatWallpaper",
-    "RelativePath": "api/Social/SetChatWallpaper",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "toSetPaper",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BChatWallpaperDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "SetContactMask",
-    "RelativePath": "api/Social/SetContactMask",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BSetContactMaskDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "SetPinStatus",
-    "RelativePath": "api/Social/SetPinStatus",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "pinDto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BSetPinStatusDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "SetReadStatus",
-    "RelativePath": "api/Social/SetReadStatus",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "readStatDTO",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BSetReadStatusDTO",
         "IsRequired": true
       }
     ],
@@ -2074,50 +2403,6 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "UpdateChat",
-    "RelativePath": "api/Social/UpdateChat",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "chat",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BChatDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "UpdateContact",
-    "RelativePath": "api/Social/UpdateContact",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "contact",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BContactDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
     "Method": "UpdateFolder",
     "RelativePath": "api/Social/UpdateFolder",
     "HttpMethod": "POST",
@@ -2131,28 +2416,6 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.SocialController",
-    "Method": "UpdateSchedMessageDate",
-    "RelativePath": "api/Social/UpdateSchedMessageDate",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "TelegramClientServer.Controllers.SocialController\u002BUpdateSchedMessageDateDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.SocialController",
@@ -2187,253 +2450,6 @@
       {
         "Name": "dto",
         "Type": "TelegramClientServer.Controllers.SocialController\u002BUpdateUserNameSurnameDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "AddNewUserSystem",
-    "RelativePath": "api/StartPage/AddTellSystem",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newUser",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BAddUserDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "RegisterUser",
-    "RelativePath": "api/StartPage/AddUser",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "newUser",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BAddUserDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "AddUserBasicColor",
-    "RelativePath": "api/StartPage/AddUserBasicColor",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BUserIdDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "AddUserSettings",
-    "RelativePath": "api/StartPage/AddUserSettings",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BUserIdDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "GetTellSystemByUser",
-    "RelativePath": "api/StartPage/GetTelSystem",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.TelSystem",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "GetUser",
-    "RelativePath": "api/StartPage/GetUser",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "password",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "GetUserByLoginPassword",
-    "RelativePath": "api/StartPage/GetUserByLoginPassword",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "password",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "TelegramLib.MainClasses.User",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "IsRegistrationParamsAreExist",
-    "RelativePath": "api/StartPage/IsRegistrationParamsAreExist",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "login",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "phoneNumber",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Boolean",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "Login",
-    "RelativePath": "api/StartPage/Login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BGetTokenDTO",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "TelegramClientServer.Controllers.StartPageController",
-    "Method": "UpdateUser",
-    "RelativePath": "api/StartPage/UpdateUser",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "user",
-        "Type": "TelegramClientServer.Controllers.StartPageController\u002BUserDTO",
         "IsRequired": true
       }
     ],

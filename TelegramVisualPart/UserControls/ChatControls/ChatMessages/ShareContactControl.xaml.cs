@@ -27,6 +27,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         public ShareContactControl()
         {
             InitializeComponent();
+
+            SetEvents();
         }
 
         private void ContactRow_MouseEnter(object sender, MouseEventArgs e)
@@ -92,5 +94,58 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             else PinnIcon.Visibility = Visibility.Hidden;
         }
 
+
+        private const int _selectTickColWidth = 30;
+        public void SetTickVisibility(bool isVis)
+        {
+            if (isVis)
+            {
+                this.Width += _selectTickColWidth;
+                TickColumnDef.Width = new GridLength(_selectTickColWidth);
+            }
+            else if (TickColumnDef.Width.Value != 0)
+            {
+                this.Width -= _selectTickColWidth;
+                TickColumnDef.Width = new GridLength(0);
+            }
+        }
+
+        public void SetTickVisOnlyTickCol(bool isVis)
+        {
+            if (isVis)
+            {
+                TickColumnDef.Width = new GridLength(_selectTickColWidth);
+            }
+            else if (TickColumnDef.Width.Value != 0)
+            {
+                TickColumnDef.Width = new GridLength(0);
+            }
+        }
+
+        public bool IsTickVisible()
+        {
+            return TickColumnDef.Width.Value != 0;
+        }
+
+        public void SetEvents()
+        {
+            SelectionTickObj.StatusChanged += () =>
+            {
+                //Pressed on tick
+                //Update counter on user chat
+                ((MainWindow)Window.GetWindow(this)).UpdateUserChatSelectedAmount();
+            };
+        }
+
+        public void ChangeTickStatus()
+        {
+            if (!IsTickVisible()) return;
+            SelectionTickObj.SetMirrorStatus();
+        }
+
+        public bool IsMessageIdTicked()
+        {
+            return SelectionTickObj.GetChosenStatus();
+        }
     }
 }
