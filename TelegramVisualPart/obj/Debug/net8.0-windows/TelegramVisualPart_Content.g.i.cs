@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/gifs/testgif.gif")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/images/stickers/figure.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/images/stickers/girl.png")]
 

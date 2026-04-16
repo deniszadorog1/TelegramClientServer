@@ -25,5 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\TelegramLib\TelegramLib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Images\" />
+    <Folder Include="wwwroot\Uploads\Videos\" />
+    <Folder Include="wwwroot\Uploads\GIFs\" />
+  </ItemGroup>
 
 </Project>

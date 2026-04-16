@@ -282,7 +282,6 @@ namespace TelegramLib.MainClasses
         {
             return;
             List<UserImage> imageNames = new List<UserImage>();
-            imageNames.Add(new UserImage("fray.jpg", DateTime.Now));
             imageNames.Add(new UserImage("Minato.jpg", DateTime.Now));
             imageNames.Add(new UserImage("WhiteCat.png", DateTime.Now));
 

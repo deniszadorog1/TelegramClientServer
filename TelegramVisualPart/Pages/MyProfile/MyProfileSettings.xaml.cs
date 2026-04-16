@@ -54,7 +54,7 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetUserImage()
         {
-            UserImage.ImageSource = 
+            UserImage.ImageSource =
                 new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
@@ -247,7 +247,7 @@ namespace TelegramVisualPart.Pages.MyProfile
             Cursor = null;
         }
 
-        private void SetPhotoGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private async void SetPhotoGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //Get photo
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -261,41 +261,40 @@ namespace TelegramVisualPart.Pages.MyProfile
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
+                if (extension != ".png" && extension != ".jpg" && extension != ".jpeg") return;
 
-                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
+                string newImagePath = await ApiService.UploadUserImageAsync(filePath);
+
+                UserImage img = new UserImage()
                 {
-                    UserImage img = new UserImage()
-                    {
-                        Name = System.IO.Path.GetFileName(filePath),
-                        Date = DateTime.Now
-                    };
+                    Name = System.IO.Path.GetFileName(newImagePath),
+                    Date = DateTime.Now
+                };
 
-                    //Add in system
-                    _system.LoggedUser.AddUserImage(img);
+                //Add in system
+                _system.LoggedUser.AddUserImage(img);
 
-                    //Add file in correct folder(if not added yet)
-                    FilesAction.AddNewUserImage(filePath);
+                //Add file in correct folder(if not added yet)
+                //FilesAction.AddNewUserImage(newImagePath);
 
-                    //Add in db
-                    ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(filePath));
+                //Add in db
+                ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(newImagePath));
 
-                    //Update in system
-                    Window window = Window.GetWindow(this);
-                    if (window is MainWindow mainWindow)
-                    {
-                        mainWindow.CloseAllMediaWindows();
+                //Update in system
+                Window window = Window.GetWindow(this);
+                if (window is MainWindow mainWindow)
+                {
+                    mainWindow.CloseAllMediaWindows();
 
-                        //Update in temp page
-                        SetUserImage();
+                    //Update in temp page
+                    SetUserImage();
 
-                        //Update Chat(if visible)
-                        mainWindow.UpdateChat();
+                    //Update Chat(if visible)
+                    mainWindow.UpdateChat();
 
-                        //Update in SignalR (message, userTalkMessage)
-                        SignalRService.UpdateUserImages(_system.LoggedUser);
-                    }
+                    //Update in SignalR (message, userTalkMessage)
+                    SignalRService.UpdateUserImages(_system.LoggedUser);
                 }
-
             }
         }
     }

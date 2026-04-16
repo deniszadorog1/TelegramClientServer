@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TelegramBenchmarks")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba07fdc5a191c51cfe77cc1a7a5e89608d6a571d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b37ed9d4ceec2bbcbea9b706c13afb74fc8fa1af")]
 [assembly: System.Reflection.AssemblyProductAttribute("TelegramBenchmarks")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TelegramBenchmarks")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

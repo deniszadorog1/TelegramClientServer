@@ -16,12 +16,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Visuals\Gifs\TestGif.gif" />
 		<None Remove="Visuals\Icon\TelIcon.ico" />
-		<None Remove="Visuals\Images\Stickers\Figure.png" />
-		<None Remove="Visuals\Images\Stickers\Girl.png" />
 		<None Remove="Visuals\Images\SystemImages\kchau.jpg" />
-		<None Remove="Visuals\Images\UserImages\fray.jpg" />
 		<None Remove="Visuals\Images\UserImages\Minato.jpg" />
 		<None Remove="Visuals\Images\UserImages\WhiteCat.png" />
 	</ItemGroup>
@@ -44,9 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Visuals\Gifs\TestGif.gif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
 		<Content Include="Visuals\Images\Stickers\Figure.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
@@ -57,9 +50,7 @@
 		<Resource Include="Visuals\Images\SystemImages\kchau.jpg">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
-		<Resource Include="Visuals\Images\UserImages\fray.jpg">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Resource>
+
 		<Resource Include="Visuals\Images\UserImages\Minato.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>

@@ -2,7 +2,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestT
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramVisualPart.exe
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Gifs\TestGif.gif
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Figure.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Girl.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TelegramVisualPart.deps.json
@@ -170,6 +169,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsControls\UserChatsMenuElement.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\ChatButton.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchControl.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMessage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\RadioBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.g.cs
@@ -326,6 +327,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserC
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsControls\UserChatsMenuElement.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\ChatButton.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchControl.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMessage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\RadioBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.baml
@@ -388,7 +391,3 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.g.cs
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .baml
-B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.baml

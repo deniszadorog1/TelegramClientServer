@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums.MediaShow;
+using TelegramVisualPart.Services;
 using Path = System.IO.Path;
 
 namespace TelegramVisualPart.Helper
@@ -211,16 +212,6 @@ namespace TelegramVisualPart.Helper
             return resNames;
         }
 
-        public static List<Image> GetUserImages(List<string> names)
-        {
-            List<Image> res = new List<Image>();
-
-            for (int i = 0; i < names.Count; i++)
-            {
-                res.Add(GetUserImage(names[i]));
-            }
-            return res;
-        }
 
         public static Image GetUserImage(string path)
         {
@@ -232,8 +223,17 @@ namespace TelegramVisualPart.Helper
         }
 
         public static string GetUserImagePath(string fileName)
-        {
+        {           
             fileName = Path.GetFileName(fileName);
+
+            if (!fileName.Contains("Minato"))
+            {
+                var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
+
+                string res = MediaServerUrl.Url + pseudoPath;
+                return res;
+            }
+            //Get from images 
 
             string userImage = Path.Combine(GetImagesPath(), "UserImages");
             return Path.Combine(userImage, fileName);
@@ -242,7 +242,6 @@ namespace TelegramVisualPart.Helper
         public static string GetSystemImagePath(string fileName)
         {
             fileName = Path.GetFileName(fileName);
-
 
             string sysImage = Path.Combine(GetImagesPath(), "SystemImages");
             return Path.Combine(sysImage, fileName);
@@ -509,7 +508,6 @@ namespace TelegramVisualPart.Helper
                     BitmapCreateOptions.PreservePixelFormat,
                     BitmapCacheOption.OnLoad);
 
-                // Первый кадр всегда по индексу 0
                 return decoder.Frames[0];
             }
         }

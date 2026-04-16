@@ -16,7 +16,7 @@ namespace TestThing
             string visPath = Path.Combine(tempPath, "Visuals");
             string imagesPath = Path.Combine(visPath, "Images");
             string userImagesPath = Path.Combine(imagesPath, "UserImages");
-            string fryPath = Path.Combine(userImagesPath, "fray.jpg");
+            string fryPath = Path.Combine(userImagesPath, "Minato.jpg");
 
             return fryPath;
         }

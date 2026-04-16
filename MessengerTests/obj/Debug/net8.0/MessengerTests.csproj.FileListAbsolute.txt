@@ -5,6 +5,7 @@ B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\TelegramClientSer
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\.filenesting.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\appsettings.Development.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\appsettings.json
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\TelegramClientServer.staticwebassets.runtime.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\testhost.exe
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Debug\net8.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll

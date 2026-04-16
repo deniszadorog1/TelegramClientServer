@@ -73,6 +73,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         public void SetGifs()
         {
+            return;
             //Set gifs here
             
             Image img = new Image()

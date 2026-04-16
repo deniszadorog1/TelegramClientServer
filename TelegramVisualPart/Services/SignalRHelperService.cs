@@ -319,20 +319,31 @@ namespace TelegramVisualPart.Services
 
         private static BitmapImage LoadBitmap(string path)
         {
-            using var fs = new FileStream(
-                path,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.Read);
+            byte[] imageData;
 
-            var bmp = new BitmapImage();
-            bmp.BeginInit();
-            bmp.CacheOption = BitmapCacheOption.OnLoad; 
-            bmp.StreamSource = fs;
-            bmp.EndInit();
-            bmp.Freeze();
+            if (path.StartsWith("http"))
+            {
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    imageData = client.GetByteArrayAsync(path).GetAwaiter().GetResult();
+                }
+            }
+            else
+            {
+                imageData = System.IO.File.ReadAllBytes(path);
+            }
 
-            return bmp;
+            using (var ms = new MemoryStream(imageData))
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.StreamSource = ms;
+                bmp.EndInit();
+                bmp.Freeze();
+
+                return bmp;
+            }
         }
 
         public static async Task<string> GetUserPhotoToSet(TelegramLib.MainClasses.User user)

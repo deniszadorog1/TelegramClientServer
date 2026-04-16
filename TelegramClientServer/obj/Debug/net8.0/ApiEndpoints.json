@@ -1017,6 +1017,38 @@
     ]
   },
   {
+    "ContainingType": "TelegramClientServer.Controllers.MediaController",
+    "Method": "GetPath",
+    "RelativePath": "api/Media/GetPath/{fileName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fileName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MediaController",
+    "Method": "Upload",
+    "RelativePath": "api/Media/UploadMedia",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TelegramClientServer.Controllers.MessageController",
     "Method": "AddAndGetSchedMessage",
     "RelativePath": "api/Message/AddAndGetSchedMessage",

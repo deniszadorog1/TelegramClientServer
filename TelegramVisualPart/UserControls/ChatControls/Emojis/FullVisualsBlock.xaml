@@ -73,8 +73,8 @@
                     <Image Width="100"
                            Height="100"
                            Margin="2"
-                           Stretch="Uniform"
-                           wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif"/>
+                           Stretch="Uniform"/>
+                    <!--wpfAnimatedGif:ImageBehavior.AnimatedSource="/Visuals/Gifs/TestGif.gif"-->
                 </WrapPanel>
             </ScrollViewer>
 

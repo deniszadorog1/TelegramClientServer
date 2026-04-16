@@ -108,7 +108,7 @@ namespace TelegramLib.MainClasses
             if (UserImages is null || UserImages.Count == 0)
             {
                 UserImages = new List<UserImage>();
-                UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
+                UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
             }
             return UserImages.First();
         }
@@ -120,7 +120,7 @@ namespace TelegramLib.MainClasses
 /*            if (UserImages is null || UserImages.Count == 0)
             {*/
                 UserImages = new List<UserImage>();
-                UserImages.Add(new UserImage("fray.jpg", DateTime.Now));
+                UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
                 return true;
 /*            }
             return false;*/
@@ -131,7 +131,7 @@ namespace TelegramLib.MainClasses
             if (UserImages is null || UserImages.Count == 0 ||
                 UserImages.First().Name == string.Empty)
             {
-                return "fray.jpg";
+                return "Minato.jpg";
             }
             return UserImages.First().Name;
         }

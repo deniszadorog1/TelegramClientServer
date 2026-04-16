@@ -13,6 +13,7 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -104,7 +105,7 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<bool> AddShareContactMessage(int sharedUserId, 
+        public static async Task<bool> AddShareContactMessage(int sharedUserId,
             string shareName, int chatId, int senderId, DateTime date)
         {
             var data = new
@@ -125,9 +126,9 @@ namespace TelegramVisualPart.Services
 
         public static async Task<List<Message>> GetMessagesByChatId(int chatId)
         {
-            var response = 
+            var response =
                 await _client.GetAsync($"api/Chat/GetMessagesByChatId?chatId={chatId}");
-            string jsonResponse = 
+            string jsonResponse =
                 await response.Content.ReadAsStringAsync();
 
             List<TelegramLib.MainClasses.Messages.Message>? mes =
@@ -358,7 +359,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> IsUserOnline(int userId)
         {
-          var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
+            var response = await _client.GetAsync($"api/Social/IsUserOnline?userId={userId}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return false;
@@ -510,7 +511,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<string> GetToken(string login, string password)
         {
-            var data = new { Login = login, Password = password};
+            var data = new { Login = login, Password = password };
 
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -661,7 +662,7 @@ namespace TelegramVisualPart.Services
             string jsonResponse = await response.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
-            TelegramLib.MainClasses.Messages.TextMessage? res = 
+            TelegramLib.MainClasses.Messages.TextMessage? res =
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.TextMessage>(jsonResponse);
             return res;
         }
@@ -724,7 +725,7 @@ namespace TelegramVisualPart.Services
             bool contact = JsonConvert.DeserializeObject<bool>(jsonResponse);
             return contact;
         }
-        
+
         public static async Task<bool> IsUserIsBlocked(int userId, int contactId)
         {
             var response = await _client.GetAsync($"api/Social/IsUserIsBlocked?userId={userId}&contactId={contactId}");
@@ -919,9 +920,9 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> ChangeNotificationState(int chatId, bool state)
         {
-            var data = new 
-            { 
-                ChatId = chatId, 
+            var data = new
+            {
+                ChatId = chatId,
                 State = state
             };
 
@@ -1077,7 +1078,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task SetPinStatus(int mesId, bool pinStatus, bool isSavedChat)
         {
-            var data = new { MesId = mesId, PinStatus = pinStatus, IsSaveMessageChat = isSavedChat};
+            var data = new { MesId = mesId, PinStatus = pinStatus, IsSaveMessageChat = isSavedChat };
 
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -1144,16 +1145,17 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<bool> EditMessage(int chatId, 
+        public static async Task<bool> EditMessage(int chatId,
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            var data = new { 
-                ChatId = chatId, 
+            var data = new
+            {
+                ChatId = chatId,
                 TextMes = mes is TextMessage text ? text : null,
                 MediaMes = mes is MediaAction media ? media : null
             };
 
-            string json = JsonConvert.SerializeObject(data); 
+            string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Message/EditMessage", content);
 
@@ -1225,8 +1227,8 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> AddStatMessage(StaticMessage message, int chatId)
         {
-            var data = new 
-            { 
+            var data = new
+            {
                 StatMessage = message,
                 ChatId = chatId
             };
@@ -1256,7 +1258,7 @@ namespace TelegramVisualPart.Services
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-            
+
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PutAsync("api/Message/AddSavedMessage", content);
@@ -1321,7 +1323,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> ClearSaveChatById(int chatId)
         {
-            var data = new {Id = chatId};
+            var data = new { Id = chatId };
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -1335,7 +1337,7 @@ namespace TelegramVisualPart.Services
 
         public static async Task RemoveSavedMessage(int savedChatId, List<int> toRemoveIds)
         {
-            var data = new { SavedChatId = savedChatId, ToRemoveIds = toRemoveIds};
+            var data = new { SavedChatId = savedChatId, ToRemoveIds = toRemoveIds };
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
@@ -1369,5 +1371,43 @@ namespace TelegramVisualPart.Services
         }
 
 
+        //Medias on Server
+        public static async Task<string> UploadUserImageAsync(string localPath)
+        {
+            byte[] fileBytes = File.ReadAllBytes(localPath);
+            string fileName = Path.GetFileName(localPath);
+
+            var form = new MultipartFormDataContent();
+
+            var fileContent = new ByteArrayContent(fileBytes);
+
+            form.Add(fileContent, "file", fileName);
+
+            var response = await _client.PostAsync("/api/Media/UploadMedia", form);
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                
+                return result["url"]; 
+            }
+            return null;
+        }
+
+        public static async Task<string?> GetPathOnMediaServer(string fileName)
+        {
+            var response = await _client.GetAsync($"api/Media/GetPath/{fileName}");
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
+
+            return result?["url"];
+        }
     }
 }

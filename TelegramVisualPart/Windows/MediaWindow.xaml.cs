@@ -96,23 +96,6 @@ namespace TelegramVisualPart.Windows
             }
         }
 
-        public void SetMediaTypeString(string mediaName)
-        {
-            //Image
-            if (mediaName.Contains(".png") || mediaName.Contains(".jpg") || mediaName.Contains(".jpeg"))
-            {
-
-                return;
-            }
-
-            //Video
-            if (mediaName.Contains(".mp4") || mediaName.Contains(".mov") || mediaName.Contains(".avi"))
-            {
-
-                return;
-            }
-        }
-
         public void RemoveParamFromMenu()
         {
             if (_type != MediaShowType.UserImages)
@@ -283,7 +266,6 @@ namespace TelegramVisualPart.Windows
         public void SetStratImgIndex()
         {
             //Get Img
-
             for (int i = 0; i < _allImagesInfo.Count; i++)
             {
                 if (_allImagesInfo[i].Item1 == _imgInfo.Value.Img)
@@ -558,7 +540,16 @@ namespace TelegramVisualPart.Windows
 
             if (_type == MediaShowType.UserImages ||
                 _type == MediaShowType.OtherUserImages ||
-                _type == MediaShowType.ChatImages) Clipboard.SetImage((BitmapSource)ImageToShow.Source);
+                _type == MediaShowType.ChatImages)
+            {
+                string mediaPath = FilesAction.GetFullChatImagePath(_allImagesInfo[_tempMediaIndex].Item1.Tag.ToString());
+
+                DataObject data = new DataObject();
+                data.SetData(DataFormats.FileDrop, new string[] { mediaPath });
+                data.SetImage((BitmapSource)ImageToShow.Source);
+
+                Clipboard.SetDataObject(data);
+            }
             else if (_type == MediaShowType.Videos)
             {
                 RenderTargetBitmap rtb = new RenderTargetBitmap(
@@ -674,29 +665,29 @@ namespace TelegramVisualPart.Windows
                 _isMax = false;
             }
 
-/*            if (WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
+            /*            if (WindowState == WindowState.Maximized)
+                        {
+                            this.WindowState = WindowState.Normal;
 
-                var screenWidth = SystemParameters.WorkArea.Width;
-                var screenHeight = SystemParameters.WorkArea.Height;
+                            var screenWidth = SystemParameters.WorkArea.Width;
+                            var screenHeight = SystemParameters.WorkArea.Height;
 
-                this.Left = (screenWidth - this.Width) / 2;
-                this.Top = (screenHeight - this.Height) / 2;
+                            this.Left = (screenWidth - this.Width) / 2;
+                            this.Top = (screenHeight - this.Height) / 2;
 
-                Width = _littleWindowSize.Width;
-                Height = _littleWindowSize.Height;
+                            Width = _littleWindowSize.Width;
+                            Height = _littleWindowSize.Height;
 
-                WindowSizerIcon.Kind = PackIconKind.CropSquare;
-                return;
-            }
-            this.WindowState = WindowState.Maximized;
-            WindowSizerIcon.Kind = PackIconKind.WindowRestore;*/
+                            WindowSizerIcon.Kind = PackIconKind.CropSquare;
+                            return;
+                        }
+                        this.WindowState = WindowState.Maximized;
+                        WindowSizerIcon.Kind = PackIconKind.WindowRestore;*/
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            if (VideoToShow is not null && 
+            if (VideoToShow is not null &&
                 VideoToShow.LoadedBehavior == MediaState.Manual) VideoToShow.Stop();
 
             this.Close();
@@ -932,7 +923,7 @@ namespace TelegramVisualPart.Windows
 
         private const int _maxVideoDuration = 20;
         private const int _videoDurCheckTime = 500;
-        
+
         private bool isDragging = false;
         private bool _isPlaying = false;
 

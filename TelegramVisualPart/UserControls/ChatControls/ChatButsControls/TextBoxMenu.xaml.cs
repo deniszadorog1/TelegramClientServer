@@ -27,6 +27,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
         private int _histIndex;
 
         public event Action UnReDoAction;
+        public event Action SetPhoto;
 
         public TextBoxMenu(TextBox box, List<string> history)
         {
@@ -84,6 +85,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
             }
             else if (button == Paste)
             {
+                if (Clipboard.ContainsFileDropList())
+                {
+                    SetPhoto?.Invoke();
+                    return;
+                }
                 _box.SelectedText = Clipboard.GetText();
             }
             else if (button == Delete)

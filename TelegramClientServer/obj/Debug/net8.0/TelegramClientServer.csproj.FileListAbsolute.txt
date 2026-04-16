@@ -1,13 +1,15 @@
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\.filenesting.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\appsettings.Development.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\appsettings.json
-B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.exe
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.staticwebassets.runtime.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.deps.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\Azure.Core.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\Azure.Identity.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\BCrypt.Net-Next.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\DotNetEnv.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\EntityFramework.SqlServer.dll
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\EntityFramework.dll
@@ -91,4 +93,3 @@ B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\refint\Tele
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\ref\TelegramClientServer.dll
-B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\BCrypt.Net-Next.dll

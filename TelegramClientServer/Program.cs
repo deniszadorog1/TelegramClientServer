@@ -10,6 +10,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using TelegramClientServer.Interfaces;
+using Microsoft.Extensions.FileProviders;
 
 namespace TelegramClientServer
 {
@@ -92,6 +93,9 @@ namespace TelegramClientServer
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
+            app.UseStaticFiles();
+
 
             app.UseHttpsRedirection();
 

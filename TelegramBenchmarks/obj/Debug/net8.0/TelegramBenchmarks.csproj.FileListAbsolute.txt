@@ -1,9 +1,3 @@
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.csproj.AssemblyReference.cache
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.GeneratedMSBuildEditorConfig.editorconfig
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.AssemblyInfoInputs.cache
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.AssemblyInfo.cs
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.csproj.CoreCompileInputs.cache
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.sourcelink.json
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TraceReloggerLib.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\Dia2Lib.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramClientServer.deps.json
@@ -11,6 +5,7 @@ B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramClien
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\.filenesting.json
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\appsettings.Development.json
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\appsettings.json
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramClientServer.staticwebassets.runtime.json
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\x86\KernelTraceControl.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\x86\KernelTraceControl.Win61.dll
@@ -26,6 +21,7 @@ B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramBench
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramBenchmarks.pdb
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\Azure.Core.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\Azure.Identity.dll
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\BCrypt.Net-Next.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\BenchmarkDotNet.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\BenchmarkDotNet.Annotations.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\CommandLine.dll
@@ -108,10 +104,15 @@ B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramLib.d
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramLib.pdb
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\TelegramLib.dll.config
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.csproj.AssemblyReference.cache
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.GeneratedMSBuildEditorConfig.editorconfig
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.AssemblyInfoInputs.cache
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.AssemblyInfo.cs
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.csproj.CoreCompileInputs.cache
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.sourcelink.json
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\Telegram.DD881175.Up2Date
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\refint\TelegramBenchmarks.dll
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.pdb
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\TelegramBenchmarks.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramBenchmarks\obj\Debug\net8.0\ref\TelegramBenchmarks.dll
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Debug\net8.0\BCrypt.Net-Next.dll

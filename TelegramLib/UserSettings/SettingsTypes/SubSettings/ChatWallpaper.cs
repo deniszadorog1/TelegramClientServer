@@ -23,7 +23,7 @@ namespace TelegramLib.UserSettings.SettingsTypes.SubSettings
         public ChatWallpaper()
         {
             Id = -1;
-            WallpaperName = "fray.jpg"; // GetTestParams.GetTestFryImagePath();
+            WallpaperName = "Minato.jpg"; // GetTestParams.GetTestFryImagePath();
             IsBlurred = true;
         }
 

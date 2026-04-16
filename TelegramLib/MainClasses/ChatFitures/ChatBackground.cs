@@ -16,7 +16,7 @@
 
         public ChatBackground()
         {
-            FileName = "fray.jpg";
+            FileName = "Minato.jpg";
             IsBlurred = false;
             IsGeneral = false;
         }

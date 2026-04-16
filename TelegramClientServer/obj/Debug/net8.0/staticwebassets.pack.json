@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\28e57efd-0140-4746-a58c-748ef7460c5c.png",
+      "PackagePath": "staticwebassets\\Uploads\\Images\\28e57efd-0140-4746-a58c-748ef7460c5c.png"
+    },
+    {
+      "Id": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\440c5235-d6c9-4d01-a840-2afe5ecf1318.png",
+      "PackagePath": "staticwebassets\\Uploads\\Images\\440c5235-d6c9-4d01-a840-2afe5ecf1318.png"
+    },
+    {
+      "Id": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\67eb1ff1-dbb7-468c-bd83-c378f47731db.png",
+      "PackagePath": "staticwebassets\\Uploads\\Images\\67eb1ff1-dbb7-468c-bd83-c378f47731db.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TelegramClientServer.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TelegramClientServer.props",
+      "PackagePath": "build\\TelegramClientServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TelegramClientServer.props",
+      "PackagePath": "buildMultiTargeting\\TelegramClientServer.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TelegramClientServer.props",
+      "PackagePath": "buildTransitive\\TelegramClientServer.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

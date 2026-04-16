@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Accessibility;
+using MaterialDesignThemes.Wpf;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Security.RightsManagement;
 using System.Windows;
@@ -158,7 +159,18 @@ namespace TelegramVisualPart
                 //update user TalkMessage
                 if (MainFrame.Content is not MainChatPage chatPage) return;
                 chatPage.UpdateChatTalkMessage(user.Id);
+
+                ClearMediaWindows();
             });
+        }
+
+        public void ClearMediaWindows()
+        {
+            for(int i = 0; i < _mediaWidows.Count; i++)
+            {
+                _mediaWidows[i].Hide();
+            }
+            _mediaWidows.Clear();
         }
 
         private void UpdateUserSignalR(TelegramLib.MainClasses.User updated)

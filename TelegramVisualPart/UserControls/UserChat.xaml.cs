@@ -3122,10 +3122,6 @@ namespace TelegramVisualPart.UserControls
                 data.SetImage(new BitmapImage(new Uri(mediaPath)));
 
                 Clipboard.SetDataObject(data);
-
-                /*string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
-                  var image = new BitmapImage(new Uri(mediaPath));
-                  Clipboard.SetImage(image);*/
             }
             else if (mes is TelegramLib.MainClasses.Messages.ShareContactMessage share)
             {
@@ -3169,7 +3165,6 @@ namespace TelegramVisualPart.UserControls
                 new IsMakeActionOnBothSides(_chat.Chatter, true);
             page.MakeAction += async () =>
             {
-
                 //Get selected messages
                 List<Message> toDelete = GetSelectedMessages();
 
@@ -6402,8 +6397,16 @@ namespace TelegramVisualPart.UserControls
         {
             TextBoxMenu textBoxMenu = new TextBoxMenu(CommentTextBox, _textHistory);
             textBoxMenu.SetEnableStatus(CommentTextBox.Text == string.Empty);
-
             System.Windows.Point point = e.GetPosition(this);
+
+            textBoxMenu.SetPhoto += () =>
+            {
+                var pathList = Clipboard.GetFileDropList().Cast<string>().ToList();
+                AddMediaPage(pathList, CommentTextBox.Text);
+                CommentTextBox.Text = string.Empty;
+
+                Clipboard.Clear();
+            };
 
             textBoxMenu.Loaded += (sender, e) =>
             {
