@@ -1,15 +1,11 @@
 ﻿using FFMpegCore;
 using FFMpegCore.Pipes;
 using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xml.Linq;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums.MediaShow;
@@ -123,6 +119,14 @@ namespace TelegramVisualPart.Helper
 
         public static string GetFullVideoPath(string fileName)
         {
+            var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
+
+            if (pseudoPath is not null)
+            {
+                string res = MediaServerUrl.Url + pseudoPath;
+                return res;
+            }
+
             return Path.Combine(GetVideosPath(), fileName);
         }
 
@@ -198,12 +202,12 @@ namespace TelegramVisualPart.Helper
                 resNames = files.Select(Path.GetFileName).ToList();
 
                 List<string> toRemove = new List<string>();
-                foreach(string name in resNames)
+                foreach (string name in resNames)
                 {
                     if (!names.Contains(name)) toRemove.Add(name);
                 }
 
-                for(int i = 0; i < toRemove.Count; i++)
+                for (int i = 0; i < toRemove.Count; i++)
                 {
                     resNames.Remove(toRemove[i]);
                 }
@@ -223,7 +227,7 @@ namespace TelegramVisualPart.Helper
         }
 
         public static string GetUserImagePath(string fileName)
-        {           
+        {
             fileName = Path.GetFileName(fileName);
 
             if (!fileName.Contains("Minato"))
@@ -237,6 +241,24 @@ namespace TelegramVisualPart.Helper
 
             string userImage = Path.Combine(GetImagesPath(), "UserImages");
             return Path.Combine(userImage, fileName);
+        }
+
+        public static string GetPathByPseudoPath(string pseudoPath)
+        {
+            if (pseudoPath.Contains("Minato")) return string.Empty;
+
+            string res = MediaServerUrl.Url + pseudoPath;
+            return res;
+        }
+
+        public static string GetPathByName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+
+            var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
+
+            if (pseudoPath is null) return null;
+            return GetPathByPseudoPath(pseudoPath);
         }
 
         public static string GetSystemImagePath(string fileName)
@@ -347,7 +369,12 @@ namespace TelegramVisualPart.Helper
 
         public static Image GetImageFromChatImageFolder(string fileName)
         {
-            string path = Path.Combine(GetChatImageFolderPath(), fileName);
+            string name = Path.GetFileName(fileName);
+            string path = FilesAction.GetPathByName(fileName);
+            if (path is null) return null;
+
+
+            //string path = Path.Combine(GetChatImageFolderPath(), fileName);
 
             return new Image()
             {
@@ -410,7 +437,7 @@ namespace TelegramVisualPart.Helper
             return PackIconKind.Folder;
         }
 
-        public static string GetFilePathByMediaType(MediaType type, string name)
+        public static async Task<string> GetFilePathByMediaType(MediaType type, string name)
         {
             switch (type)
             {
@@ -420,18 +447,22 @@ namespace TelegramVisualPart.Helper
                     }
                 case MediaType.Image:
                     {
+                        return await ApiService.GetPathOnMediaServer(name);
                         return Path.Combine(GetChatImageFolderPath(), name);
                     }
                 case MediaType.Gif:
                     {
+                        return await ApiService.GetPathOnMediaServer(name);
                         return Path.Combine(GetGifsPath(), name);
                     }
                 case MediaType.Video:
                     {
+                        return await ApiService.GetPathOnMediaServer(name);
                         return Path.Combine(GetVideosPath(), name);
                     }
                 case MediaType.Sticker:
                     {
+                        return await ApiService.GetPathOnMediaServer(name);
                         return Path.Combine(GetStickerPath(), name);
                     }
                 default:
@@ -448,41 +479,70 @@ namespace TelegramVisualPart.Helper
 
         public static Image GetImagePreviewForVideo(string videoName)
         {
-            GlobalFFOptions.Configure(new FFOptions
+            var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
+
+            if (string.IsNullOrEmpty(pseudoPath))
+                return new Image();
+
+            string fullUrl = FilesAction.GetPathByPseudoPath(pseudoPath);
+
+            using (var client = new System.Net.WebClient())
             {
-                BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),
-                TemporaryFilesFolder = Path.GetTempPath()
-            });
+                byte[] imageData = client.DownloadData(fullUrl);
+
+                using (var ms = new MemoryStream(imageData))
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = ms;
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+                    bitmap.Freeze(); 
+
+                    return new Image { Source = bitmap };
+                }
+            }
+
+            /*
+                        GlobalFFOptions.Configure(new FFOptions
+                        {
+                            BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),
+                            TemporaryFilesFolder = Path.GetTempPath()
+                        });
 
 
-            string videoPath = Path.Combine(GetVideosPath(), videoName);
-
-            using var ms = new MemoryStream();
-
-            FFMpegArguments
-                .FromFileInput(videoPath)
-                .OutputToPipe(new StreamPipeSink(ms), options => options
-                    .WithVideoCodec("png")
-                    .WithFrameOutputCount(1)
-                    .ForceFormat("image2pipe"))
-                .ProcessSynchronously();
+                        //string videoPath = Path.Combine(GetVideosPath(), videoName);
+                        var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
 
 
-            ms.Seek(0, SeekOrigin.Begin);
 
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.StreamSource = ms;
-            bitmap.EndInit();
-            bitmap.Freeze();
+                        using var ms = new MemoryStream();
 
-            return new Image { Source = bitmap };
+                        FFMpegArguments
+                            .FromFileInput(videoPath)
+                            .OutputToPipe(new StreamPipeSink(ms), options => options
+                                .WithVideoCodec("png")
+                                .WithFrameOutputCount(1)
+                                .ForceFormat("image2pipe"))
+                            .ProcessSynchronously();
+
+
+                        ms.Seek(0, SeekOrigin.Begin);
+
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.StreamSource = ms;
+                        bitmap.EndInit();
+                        bitmap.Freeze();
+
+                        return new Image { Source = bitmap };*/
         }
 
         public static MediaElement GetMediaElementByVideoName(string name)
         {
-            string videoPath = Path.Combine(GetVideosPath(), name);
+            //string videoPath = Path.Combine(GetVideosPath(), name);
+            string videoPath = GetPathByName(name);
 
             MediaElement res = new MediaElement()
             {
@@ -540,6 +600,32 @@ namespace TelegramVisualPart.Helper
                     {
                         return string.Empty;
                     }
+            }
+        }
+
+        public static BitmapImage ToBitmapImage(BitmapSource bitmapSource)
+        {
+            if (bitmapSource is BitmapImage bitmapImage)
+            {
+                return bitmapImage;
+            }
+
+            using (var ms = new MemoryStream())
+            {
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(ms);
+
+                ms.Seek(0, SeekOrigin.Begin);
+
+                var result = new BitmapImage();
+                result.BeginInit();
+                result.StreamSource = ms;
+                result.CacheOption = BitmapCacheOption.OnLoad;
+                result.EndInit();
+                result.Freeze(); 
+
+                return result;
             }
         }
     }

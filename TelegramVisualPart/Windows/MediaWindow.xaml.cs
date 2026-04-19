@@ -232,7 +232,7 @@ namespace TelegramVisualPart.Windows
         private TelegramLib.MainClasses.Messages.Message _chosenMedia;
         private List<TelegramLib.MainClasses.Messages.MediaAction> _mediaMessages;
         //Chat messages
-        public void SetChatImageMessages(TelegramLib.MainClasses.Messages.Message chosen,
+        public async void SetChatImageMessages(TelegramLib.MainClasses.Messages.Message chosen,
             List<TelegramLib.MainClasses.Messages.MediaAction> messages)
         {
             _chosenMedia = chosen;
@@ -243,7 +243,10 @@ namespace TelegramVisualPart.Windows
             _allImagesInfo.Clear();
             for (int i = 0; i < _mediaMessages.Count; i++)
             {
-                string filePath = FilesAction.GetFullChatImagePath(_mediaMessages[i].MediaName);
+                string? filePath = await ApiService.GetPathOnMediaServer(_mediaMessages[i].MediaName);// FilesAction.GetFullChatImagePath(_mediaMessages[i].MediaName);
+                if (filePath is null) continue;
+
+                filePath = FilesAction.GetPathByPseudoPath(filePath);
 
                 Image img = new Image()
                 {
@@ -280,7 +283,10 @@ namespace TelegramVisualPart.Windows
         {
             //we have a name of image
             //Get path to it
-            string filePath = FilesAction.GetFullChatImagePath(imgName);
+            var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(imgName)).Result;
+            if (pseudoPath is null) return;
+
+            string filePath = FilesAction.GetPathByPseudoPath(pseudoPath);// FilesAction.GetFullChatImagePath(imgName);
             SetImageToShow(filePath);
         }
 
@@ -542,10 +548,14 @@ namespace TelegramVisualPart.Windows
                 _type == MediaShowType.OtherUserImages ||
                 _type == MediaShowType.ChatImages)
             {
-                string mediaPath = FilesAction.GetFullChatImagePath(_allImagesInfo[_tempMediaIndex].Item1.Tag.ToString());
+                string fileName = _allImagesInfo[_tempMediaIndex].Item1.Tag.ToString();
+                if (fileName is null) return;
+
+                string path = FilesAction.GetPathByName(fileName);
+                if (path is null) return;
 
                 DataObject data = new DataObject();
-                data.SetData(DataFormats.FileDrop, new string[] { mediaPath });
+                data.SetData(DataFormats.FileDrop, new string[] { path });
                 data.SetImage((BitmapSource)ImageToShow.Source);
 
                 Clipboard.SetDataObject(data);

@@ -263,7 +263,7 @@ namespace TelegramVisualPart.Pages.MyProfile
 
                 if (extension != ".png" && extension != ".jpg" && extension != ".jpeg") return;
 
-                string newImagePath = await ApiService.UploadUserImageAsync(filePath);
+                string newImagePath = await ApiService.UploadMediaAsync(filePath);
 
                 UserImage img = new UserImage()
                 {

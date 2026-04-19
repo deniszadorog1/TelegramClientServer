@@ -63,8 +63,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             TelSystem system, TelegramLib.MainClasses.UserContactcs contact,
             bool isSetMaxHeight = true)
         {
-            Console.WriteLine(MaxHeight);
-
             _system = system;
             _chat = chat;
             _contact = contact;

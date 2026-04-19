@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FFMpegCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace TelegramClientServer.Controllers
 {
@@ -14,6 +16,13 @@ namespace TelegramClientServer.Controllers
         public MediaController(IWebHostEnvironment env)
         {
             _env = env;
+
+            GlobalFFOptions.Configure(new FFOptions
+            {
+                BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),
+                TemporaryFilesFolder = Path.GetTempPath()
+            });
+
         }
 
         [HttpPost("UploadMedia")]
@@ -22,28 +31,28 @@ namespace TelegramClientServer.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("No File");
 
-                var extension = Path.GetExtension(file.FileName);
-                var fileName = $"{Guid.NewGuid()}{extension}";
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = $"{Guid.NewGuid()}{extension}";
 
-                string subFolder = extension == ".mp4" || extension== ".mov"
-                    ? "Videos" 
-                    : extension == ".gif" || extension == ".gifif" ? "GIFs" 
-                    : "Images";
+            string subFolder = extension == ".mp4" || extension == ".mov"
+                ? "Videos"
+                : extension == ".gif" || extension == ".gifif" ? "GIFs"
+                : "Images";
 
-                var uploadsPath = Path.Combine(_env.WebRootPath, "Uploads", subFolder);
+            var uploadsPath = Path.Combine(_env.WebRootPath, "Uploads", subFolder);
 
-                if (!Directory.Exists(uploadsPath))
-                    Directory.CreateDirectory(uploadsPath);
+            if (!Directory.Exists(uploadsPath))
+                Directory.CreateDirectory(uploadsPath);
 
-                var fullPath = Path.Combine(uploadsPath, fileName);
+            var fullPath = Path.Combine(uploadsPath, fileName);
 
-                using (var stream = new FileStream(fullPath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+            using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
 
-                var relativeUrl = $"/Uploads/{subFolder}/{fileName}";
-                return Ok(new { url = relativeUrl });
+            var relativeUrl = $"/Uploads/{subFolder}/{fileName}";
+            return Ok(new { url = relativeUrl });
         }
 
         [HttpGet("GetPath/{fileName}")]
@@ -62,6 +71,23 @@ namespace TelegramClientServer.Controllers
             }
 
             return NotFound("Bruh moment...");
+        }
+
+        [HttpGet("Preview/{videoName}")]
+        public async Task<IActionResult> GetVideoPreview(string videoName)
+        {
+            string videoPath = Path.Combine(_env.ContentRootPath, "wwwroot/Uploads/Videos", videoName);
+            string previewName = Path.GetFileNameWithoutExtension(videoName) + ".png";
+            string previewPath = Path.Combine(_env.ContentRootPath, "wwwroot/Uploads/Images", previewName);
+
+
+            if (System.IO.File.Exists(videoPath))
+            {
+                await FFMpeg.SnapshotAsync(videoPath, previewPath, new Size(480, 270), TimeSpan.FromSeconds(1));
+                return PhysicalFile(previewPath, "image/png");
+            }
+
+            return NotFound("Video not found on server");
         }
     }
 }

@@ -27,6 +27,7 @@ using Microsoft.Xaml.Behaviors.Core;
 using TelegramVisualPart.Helper;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
+using System.Net.NetworkInformation;
 
 namespace TelegramVisualPart.Services
 {
@@ -78,7 +79,8 @@ namespace TelegramVisualPart.Services
 
         public static event Action<TelegramLib.MainClasses.User>? UpdateUserImagesDel;
 
-        public static event Action<HashSet<int>> UpdateChatsAfterSched;
+        public static event Action<HashSet<int>>? UpdateChatsAfterSched;
+        public static event Action<User>? UpdatePagePhotoDel;
 
         private static bool _isChatEventsAreSet = false;
         public static bool GetIsChatEventsAreSet() => _isChatEventsAreSet;
@@ -361,6 +363,11 @@ namespace TelegramVisualPart.Services
                 UpdateLittlePhotoVisInChatDel?.Invoke(loggedUser);
             });
 
+            _connection.On<User>("UpdatePagePhoto", (loggedUser) =>
+            {
+                UpdatePagePhotoDel?.Invoke(loggedUser);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -435,6 +442,16 @@ namespace TelegramVisualPart.Services
             {
                 await _connection.InvokeAsync("UpdateLittlePhotoVisInChat", loggedUser);
             }
+        }
+
+        public static async Task UpdatePagePhoto(User loggedUser)
+        {
+            if (_connection is null) return;
+
+            if(_connection.State == HubConnectionState.Connected)
+            {
+                await _connection.InvokeAsync("UpdatePagePhoto", loggedUser);
+            }       
         }
 
         public static async Task AddUserImage(User addedImage)

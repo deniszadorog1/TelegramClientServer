@@ -23,6 +23,7 @@ using TelegramVisualPart.Pages.MyProfile;
 using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
+using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
@@ -78,6 +79,7 @@ namespace TelegramVisualPart
 
             SignalRService.UpdateContactDel += UpdateUserSignalR;
             SignalRService.UpdateUserImagesDel += UpdateUserImages;
+            SignalRService.UpdatePagePhotoDel += UpdatePagePhoto;
         }
 
         //Chat in other Window
@@ -162,6 +164,18 @@ namespace TelegramVisualPart
 
                 ClearMediaWindows();
             });
+
+        }
+
+        public void UpdatePagePhoto(TelegramLib.MainClasses.User user)
+        {
+            Dispatcher.InvokeAsync(() =>
+            {
+                if (ThirdFrame.Content is EditUserContact edit)
+                {
+                    edit.UpdateImage();
+                }
+            });
         }
 
         public void ClearMediaWindows()
@@ -193,6 +207,11 @@ namespace TelegramVisualPart
                 if (contactToUpdate is null) return;
 
                 contactToUpdate.UpdateByUser(updated);
+
+                if (ThirdFrame.Content is EditUserContact edit)
+                {
+                    edit.UpdateImage();
+                }
             });
         }
 
@@ -1046,6 +1065,11 @@ namespace TelegramVisualPart
                 info.UpdateContact(contact);
             }
             //check in UserChat thing
+
+            if (ThirdFrame.Content is EditUserContact edit)
+            {
+                edit.UpdateImage();
+            }
         }
 
         public void UpdateDeletedUser(UserContactcs contact)
@@ -1466,6 +1490,11 @@ namespace TelegramVisualPart
             {
                 //Set for contact info
                 info.UpdateImage();
+            }
+
+            if(ThirdFrame.Content is EditUserContact edit)
+            {
+                edit.UpdateImage();
             }
         }
 

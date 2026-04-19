@@ -1034,6 +1034,22 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.MediaController",
+    "Method": "GetVideoPreview",
+    "RelativePath": "api/Media/Preview/{videoName}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "videoName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.MediaController",
     "Method": "Upload",
     "RelativePath": "api/Media/UploadMedia",
     "HttpMethod": "POST",

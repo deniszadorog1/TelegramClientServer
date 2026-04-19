@@ -423,8 +423,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
                     continue;
                 }
 
-                BitmapImage bitMap = new BitmapImage(new Uri(
-                    FilesAction.GetFullChatImagePath(path), UriKind.Absolute));
+                BitmapImage bitMap = new BitmapImage(new Uri(path, UriKind.Absolute));
+
+/*                BitmapImage bitMap = new BitmapImage(new Uri(
+                    FilesAction.GetFullChatImagePath(path), UriKind.Absolute));*/
                 if (bitMap is not null) res.Add(bitMap);
             }
 
@@ -446,7 +448,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                     _bandBorders[i].Tag.ToString() == messageId.ToString())
                 {
                     string res = System.IO.Path.GetFileName(_bandPaths[i]);
-                    return FilesAction.GetFullChatImagePath(res);
+                    return FilesAction.GetPathByName(res);// FilesAction.GetFullChatImagePath(res);
                 }
             }
             return string.Empty;

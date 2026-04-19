@@ -17,11 +17,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramLib.Services;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
 using Image = System.Windows.Controls.Image;
+using User = TelegramLib.MainClasses.User;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 {
@@ -75,6 +78,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             SetBasicParams();
             SetRemoveMaskLine();
             SetMaskParamRowsVis();
+
+            UpdateImage();
         }
 
 
@@ -270,7 +275,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
                 if (window is MainWindow main) main.CloseAllMediaWindows();
 
-                string newPath = await ApiService.UploadUserImageAsync(filePath);
+                string newPath = await ApiService.UploadMediaAsync(filePath);
 
                 img.Source = new BitmapImage(new Uri(FilesAction.GetUserImagePath(newPath), UriKind.Absolute));
                 //new BitmapImage(new Uri(filePath, UriKind.Absolute));
@@ -281,7 +286,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 {
                     //Remove added mask
                     _contact.UserImages.RemoveAt(0);
-                }
+                }              
 
                 _contact.MaskImage =
                     new TelegramLib.MainClasses.UserParams.UserImage(newPath, DateTime.Now);
@@ -382,6 +387,22 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             BgBrush.ImageSource = new BitmapImage(new Uri
                 (FilesAction.GetUserImagePath(System.IO.Path.GetFileName(contactUser.GetFirstImageName().Name)), UriKind.Absolute));
+        }
+
+        public async Task UpdateImage(MainSettings settings = null)
+        {
+            if (_user is null || _contact is null) return;
+
+            User user = _system.GetUserById(_contact.ContactUserId);
+            if (user is null) return;
+
+            UserChat chat = _system.GetChatByUserId(_contact.ContactUserId);
+            if (chat is null) return;
+
+            //Check for mask
+            _user = chat is TelegramLib.MainClasses.SavedMessagesChat ? _system.LoggedUser : chat.GetChatter();
+            await SignalRHelperService.SetContactPhoto(user,
+                chat, BgBrush, UserEllipseImage, settings: settings);
         }
     }
 }

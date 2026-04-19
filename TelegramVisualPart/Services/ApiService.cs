@@ -1372,7 +1372,7 @@ namespace TelegramVisualPart.Services
 
 
         //Medias on Server
-        public static async Task<string> UploadUserImageAsync(string localPath)
+        public static async Task<string> UploadMediaAsync(string localPath)
         {
             byte[] fileBytes = File.ReadAllBytes(localPath);
             string fileName = Path.GetFileName(localPath);
@@ -1384,7 +1384,6 @@ namespace TelegramVisualPart.Services
             form.Add(fileContent, "file", fileName);
 
             var response = await _client.PostAsync("/api/Media/UploadMedia", form);
-
 
             if (response.IsSuccessStatusCode)
             {
@@ -1399,6 +1398,8 @@ namespace TelegramVisualPart.Services
 
         public static async Task<string?> GetPathOnMediaServer(string fileName)
         {
+            fileName = Path.GetFileName(fileName);
+
             var response = await _client.GetAsync($"api/Media/GetPath/{fileName}");
 
             if (!response.IsSuccessStatusCode) return null;
@@ -1409,5 +1410,19 @@ namespace TelegramVisualPart.Services
 
             return result?["url"];
         }
+
+        public static async Task<string?> GetVideoPreviewPath(string videoName)
+        {
+            videoName = Path.GetFileName(videoName);
+
+            var response = await _client.GetAsync($"api/Media/Preview/{videoName}");
+
+            if (!response.IsSuccessStatusCode) return null;
+            string previewName = Path.GetFileNameWithoutExtension(videoName) + ".png";
+
+            return $"/Uploads/Images/{previewName}";
+        }
+
+
     }
 }

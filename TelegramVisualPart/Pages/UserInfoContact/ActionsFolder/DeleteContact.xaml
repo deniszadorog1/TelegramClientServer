@@ -23,7 +23,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Ellipse Grid.Column="0" VerticalAlignment="Center"
+                <Ellipse Grid.Column="0" VerticalAlignment="Center" Visibility="Hidden"
                         Name="UserEllipseImage" Width="40" Height="40">
                     <Ellipse.Fill>
                         <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>

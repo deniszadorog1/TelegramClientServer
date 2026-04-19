@@ -462,7 +462,7 @@ namespace TelegramVisualPart.Pages
             _searchGridImags = new List<Image>();
             for (int i = 0; i < _mediasinSearhPanel.Count; i++)
             {
-                if (!FilesAction.IsUserChatMediaIsExist(_mediasinSearhPanel[i].MediaName)) continue;
+                //if (!FilesAction.IsUserChatMediaIsExist(_mediasinSearhPanel[i].MediaName)) continue;
 
                 Image img = FilesAction.GetImageFromChatImageFolder(_mediasinSearhPanel[i].MediaName);
 

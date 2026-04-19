@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelegramBenchmarks", "Teleg
 		{58DCF614-E194-4C31-9DCD-953CE327240C} = {58DCF614-E194-4C31-9DCD-953CE327240C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengerTests", "MessengerTests\MessengerTests.csproj", "{27E95634-5F3B-4CE8-9A66-9A9808E471F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessengerTests", "MessengerTests\MessengerTests.csproj", "{27E95634-5F3B-4CE8-9A66-9A9808E471F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47474CB1-43F7-411C-A14F-0754CC5EEAAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

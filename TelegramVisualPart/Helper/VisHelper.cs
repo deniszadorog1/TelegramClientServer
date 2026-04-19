@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 using System.IO;
 using FFMpegCore;
+using System.Net.Http;
 
 namespace TelegramVisualPart.Helper
 {
@@ -136,7 +137,9 @@ namespace TelegramVisualPart.Helper
 
             //Set little chat image visibility
             await SignalRService.UpdateLittlePhotoVisInChat(system.LoggedUser);
-        }
+
+            await SignalRService.UpdatePagePhoto(system.LoggedUser);
+        }    
 
         public static string CleanText(string input)
         {
@@ -160,22 +163,30 @@ namespace TelegramVisualPart.Helper
         public static async Task<Image> GetFirstFrameAsync(string fileName)
         {
             string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));
-            if (!File.Exists(videoPath))
-                throw new FileNotFoundException("Видео не найдено", videoPath);
+
+            if (!videoPath.StartsWith("http") && !File.Exists(videoPath))
+                throw new FileNotFoundException("Video not Found", videoPath);
 
             string tempImage = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".png");
 
             try
             {
-                // Берём кадр
-                await FFMpeg.SnapshotAsync(videoPath, tempImage, null, TimeSpan.FromSeconds(0));
+                string tempVideoFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".mp4");
 
-                if (!File.Exists(tempImage))
-                    throw new Exception("FFMpeg не создал скриншот");
+                using (var client = new HttpClient())
+                {
+                    var bytes = await client.GetByteArrayAsync(videoPath);
+                    await File.WriteAllBytesAsync(tempVideoFile, bytes);
+                }
+
+                await FFMpeg.SnapshotAsync(tempVideoFile, tempImage, null, TimeSpan.FromSeconds(0));
+                File.Delete(tempVideoFile);
+
+                //await FFMpeg.SnapshotAsync(videoPath, tempImage, null, TimeSpan.FromSeconds(0));
             }
             catch (Exception ex)
             {
-                throw new Exception("FFMpeg не смог создать скриншот: " + ex.Message, ex);
+                throw new Exception("FFMpeg Could not make a screen shot: " + ex.Message, ex);
             }
 
             BitmapImage bitmap;

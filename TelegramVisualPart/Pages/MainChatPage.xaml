@@ -67,7 +67,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Name="LeftButtonsColumn" Width="100"/>
-                    <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" Width="*" />
+                    <ColumnDefinition MinWidth="0" x:Name="ChatsColumn" Width="*"/>
                     <ColumnDefinition Width="3" x:Name="GridSplitterColumn"/>
                     <ColumnDefinition x:Name="ChatColumn" MinWidth="250" Width="*"/>
                 </Grid.ColumnDefinitions>

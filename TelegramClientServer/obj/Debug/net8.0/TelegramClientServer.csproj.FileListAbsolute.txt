@@ -93,3 +93,9 @@ B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\refint\Tele
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\TelegramClientServer.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Debug\net8.0\ref\TelegramClientServer.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\FFMpegCore.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\Instances.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\System.IO.Pipelines.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\System.Text.Json.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll

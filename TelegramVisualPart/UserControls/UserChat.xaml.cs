@@ -1,7 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.Xaml.Behaviors.Media;
 using Newtonsoft.Json;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -1385,13 +1386,14 @@ namespace TelegramVisualPart.UserControls
             return count;
         }
 
-        public void SetMediaMessageInChat(MediaAction message, string senderImgName)
+        public async void SetMediaMessageInChat(MediaAction message, string senderImgName)
         {
             //Got type (To know what folder to search in)
             MediaType type = message.IsSticker ? MediaType.Sticker :
                 FilesAction.GetMediaTypeFromFilename(message.MediaName);
 
-            string path = FilesAction.GetFilePathByMediaType(type, message.MediaName);
+            string path = await FilesAction.GetFilePathByMediaType(type, message.MediaName);
+            path = FilesAction.GetPathByPseudoPath(path);
 
             switch (type)
             {
@@ -3055,7 +3057,7 @@ namespace TelegramVisualPart.UserControls
 
             if (fullPath is null || fullPath == string.Empty || !File.Exists(fullPath))
             {
-                MessageBox.Show("Not exist man!");
+                MessageBox.Show("Its Server!");
                 return;
             }
             System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{fullPath}\"");
@@ -3080,14 +3082,17 @@ namespace TelegramVisualPart.UserControls
             if (mes is null || mes is not MediaAction media) return;
             if (media.IsGif())
             {
-                string gifFullPath = FilesAction.GetFullGifPath(media.MediaName);
+                //string gifFullPath = FilesAction.GetFullGifPath(media.MediaName);
+                string gifFullPath = FilesAction.GetPathByName(media.MediaName);
                 SaveElements.SaveGifAs(gifFullPath);
             }
             else if (media.IsImage())
             {
-                string imgPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                //string imgPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                string imgPath = FilesAction.GetPathByName(media.MediaName);
+                
                 var image = new Image();
-                image.Source = new BitmapImage(new Uri(imgPath));
+                image.Source = new BitmapImage(new Uri(imgPath, UriKind.Absolute));
                 SaveElements.SaveImageAs(image);
             }
             else if (media.IsVideo())
@@ -3115,7 +3120,10 @@ namespace TelegramVisualPart.UserControls
             {
                 if (!media.IsImage()) return;
 
-                string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
+                //string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
+
+                string mediaPath = FilesAction.GetPathByName(media.MediaName);
+                if (mediaPath is null) return;
 
                 DataObject data = new DataObject();
                 data.SetData(DataFormats.FileDrop, new string[] { mediaPath });
@@ -3652,7 +3660,7 @@ namespace TelegramVisualPart.UserControls
             AddFile.Foreground = Brushes.Gray;
         }
 
-        private void AddFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void AddFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -3665,12 +3673,14 @@ namespace TelegramVisualPart.UserControls
 
             if (openFileDialog.ShowDialog() == true)
             {
-                //ClearSelectionRow();
-
                 string[] names = openFileDialog.FileNames;
 
-                string filePath = openFileDialog.FileName;
-                string extension = System.IO.Path.GetExtension(filePath).ToLower();
+                //Upload medias
+                for(int i = 0; i < names.Length; i++)
+                {
+                   names[i] = await ApiService.UploadMediaAsync(names[i]);
+                   names[i] = FilesAction.GetPathByPseudoPath(names[i]);
+                }
 
                 //Set media with schedule messages
                 if (SchedueleMessagesGrid.Visibility == Visibility.Visible)
@@ -3699,11 +3709,6 @@ namespace TelegramVisualPart.UserControls
 
                         ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
                     };
-
-                    //1 - Set time for medias 
-                    //2 - Set schedule medias
-
-                    //SetMediaSchedMessage(filePath, false, filePath);
                     return;
                 }
 
@@ -3748,10 +3753,11 @@ namespace TelegramVisualPart.UserControls
 
         public void AddMediaIntoMediasFolder(string filePath)
         {
+            return;
             //Is image is contains in user chat folder
             if (!FilesAction.IsUserChatMediaIsExist(Path.GetFileName(filePath)))
             {
-                FilesAction.CopyImageToImageFolder(filePath);
+                //FilesAction.CopyImageToImageFolder(filePath);
             }
         }
 
@@ -3787,12 +3793,11 @@ namespace TelegramVisualPart.UserControls
             };
             media.Stop();
 
-
-            //Is video is contains in user chat folder
+/*            //Is video is contains in user chat folder
             if (!FilesAction.IsVideoIsExistInSecFolder(Path.GetFileName(filePath)))
             {
                 FilesAction.CopyVideoToVideoFolder(filePath);
-            }
+            }*/
 
             AddVideoMessage(media, senderImageName, mes);
         }
@@ -3846,7 +3851,7 @@ namespace TelegramVisualPart.UserControls
         }
 
 
-        private void ChatGif_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ChatGif_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (SelectedMessesGrid.Visibility == Visibility.Visible) return;
 
@@ -3857,7 +3862,7 @@ namespace TelegramVisualPart.UserControls
 
             int.TryParse(message.Tag.ToString(), out int chosenMesId);
 
-            List<string> baseGifPaths = GetChatMediaPaths(MediaType.Gif);
+            List<string> baseGifPaths = await GetChatMediaPaths(MediaType.Gif);
 
             baseGifPaths = FilesAction.GetFullGifPaths(baseGifPaths);
             List<MediaAction> gifs = _chat.GetGifMessages(isSched: SchedueleMessagesGrid.Visibility == Visibility.Visible);
@@ -3917,7 +3922,7 @@ namespace TelegramVisualPart.UserControls
             //ScrollChatToEnd();
         }
 
-        private void ChatVideo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ChatVideo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (SelectedMessesGrid.Visibility == Visibility.Visible) return;
 
@@ -3930,7 +3935,7 @@ namespace TelegramVisualPart.UserControls
             List<MediaAction> videos = GetChatMedias(MediaType.Video);// new List<MediaAction>();
                                                                       //GetChatMedias(MediaType.Video);// SetVideosInList(videos);
 
-            List<string> allVideoPaths = GetChatMediaPaths(MediaType.Video);
+            List<string> allVideoPaths = await GetChatMediaPaths(MediaType.Video);
 
             //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
@@ -3975,7 +3980,7 @@ namespace TelegramVisualPart.UserControls
             return videos.IndexOf((MediaAction)_chat.Messages[messageItemIndex]);
         }
 
-        public List<string> GetChatMediaPaths(MediaType type)
+        public async Task<List<string>> GetChatMediaPaths(MediaType type)
         {
             List<string> res = new List<string>();
             for (int i = 0; i < _chatMessages.Count; i++)
@@ -3983,7 +3988,7 @@ namespace TelegramVisualPart.UserControls
                 if (_chatMessages[i] is MediaAction media &&
                     FilesAction.GetMediaTypeFromFilename(media.MediaName) == type)
                 {
-                    string path = FilesAction.GetFilePathByMediaType(type, media.MediaName);
+                    string path = await FilesAction.GetFilePathByMediaType(type, media.MediaName);
                     res.Add(path);
                 }
             }
@@ -4138,7 +4143,7 @@ namespace TelegramVisualPart.UserControls
         }
 
 
-        public List<Image> GetChatImages()
+/*        public List<Image> GetChatImages()
         {
             List<Image> res = new List<Image>();
 
@@ -4157,7 +4162,7 @@ namespace TelegramVisualPart.UserControls
                 }
             }
             return res;
-        }
+        }*/
 
         public bool _isLoopPressed = false;
         private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)

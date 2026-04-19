@@ -20,6 +20,7 @@ using System.Windows.Threading;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums.Menus;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.UserControls.ChatControls;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 
@@ -133,8 +134,12 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             if (control is MediaMessage media)
             {
-                BitmapImage source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapImage : media.ImgMessage.ImageSource as BitmapImage;
-                if (source is not null)
+                //BitmapImage source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapImage : media.ImgMessage.ImageSource as BitmapImage;
+                BitmapSource source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapSource : media.ImgMessage.ImageSource as BitmapSource;
+
+                BitmapImage bitmap = FilesAction.ToBitmapImage(source);
+
+                if (bitmap is not null)
                 {
 /*                    media.Background = new SolidColorBrush(Colors.Red);
                     media.ImageBorder.Background = new SolidColorBrush(Colors.Green);
@@ -142,7 +147,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
                     media.AdditionalTextRow.Height = new GridLength(0);
 
-                    SetupImageRow(source, media);
+                    SetupImageRow(bitmap, media);
                 }
             }
 
