@@ -168,10 +168,12 @@ namespace TelegramVisualPart.Helper
 
         private static string GetVisualPath()
         {
-            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+/*            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
             string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
-            return Path.Combine(tempPath, "Visuals");
+            return Path.Combine(tempPath, "Visuals");*/
+
+            return Path.Combine(AppContext.BaseDirectory, "Visuals");
         }
 
         private static string GetImagesPath()
@@ -232,9 +234,11 @@ namespace TelegramVisualPart.Helper
 
             if (!fileName.Contains("Minato"))
             {
+                //MessageBox.Show("Getting pseudo path");
                 var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
-
                 string res = MediaServerUrl.Url + pseudoPath;
+
+                //MessageBox.Show(res);               
                 return res;
             }
             //Get from images 
@@ -245,6 +249,10 @@ namespace TelegramVisualPart.Helper
 
         public static string GetPathByPseudoPath(string pseudoPath)
         {
+            if (pseudoPath is null)
+            {
+                return string.Empty;
+            }
             if (pseudoPath.Contains("Minato")) return string.Empty;
 
             string res = MediaServerUrl.Url + pseudoPath;

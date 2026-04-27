@@ -1027,6 +1027,28 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private async void UserIcon_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            TelegramLib.MainClasses.User user =
+                _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                _system.LoggedUser : _chat.GetChatter();
+
+            if (!await IsCanShowMediaWindow(user)) return;
+            
+            //Set window here
+            MediaWindow mediaWindow = new MediaWindow(
+                user, (MainWindow)Window.GetWindow(this),
+                Enums.MediaShow.MediaShowType.OtherUserImages, _system);
+
+            //Is exist
+            if (((MainWindow)Window.GetWindow(this))
+                .IsMediaWindowIsExistByUserId(user.Id)) return;
+
+            mediaWindow.Show();
+        }
+
+        public async Task<bool> IsCanShowMediaWindow(TelegramLib.MainClasses.User user)
+        {
+            if (user.ImageMask is not null) return true;
+
             if (_chat is not SavedMessagesChat && _chat.GetChatter() is not null)
             {
                 MainSettings settings =
@@ -1038,81 +1060,67 @@ namespace TelegramVisualPart.UserControls.ChatControls
                   (sub.ShareType == TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Contacts &&
                    !_system.Contacts.Any(x => x.Id == _chat.GetChatter().Id)))
                 {
-                    return;
+                    return false;
                 }
 
-                if (await ApiService.IsUserIsBlocked(_chat.GetChatter().Id, _system.LoggedUser.Id)) return;                   
+                if (await ApiService.IsUserIsBlocked(_chat.GetChatter().Id, _system.LoggedUser.Id)) return false;
             }
-        
 
-        TelegramLib.MainClasses.User user =
-            _chat is TelegramLib.MainClasses.SavedMessagesChat ?
-            _system.LoggedUser : _chat.GetChatter();
+            return true;
+        } 
 
-        //Set window here
-        MediaWindow mediaWindow = new MediaWindow(
-            user, (MainWindow)Window.GetWindow(this),
-            Enums.MediaShow.MediaShowType.OtherUserImages, _system);
-
-            //Is exist
-            if (((MainWindow) Window.GetWindow(this))
-                .IsMediaWindowIsExistByUserId(user.Id)) return;
-
-            mediaWindow.Show();
-        }
-
-    private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
-    {
-        Cursor = Cursors.Hand;
-    }
-
-    private void UserIcon_MouseLeave(object sender, MouseEventArgs e)
-    {
-        Cursor = null;
-    }
-
-    public void UpdateParams(UserContactcs contact)
-    {
-        ContName.Text = contact.Name;
-        ContSurname.Text = contact.Surname;
-    }
-
-    public void ContactRemovedAction()
-    {
-        ContName.Text = _chat.Chatter.Name;
-        ContSurname.Text = _chat.Chatter.Surname;
-
-        //Set hide action params
-    }
-
-    private void AddContactGrid_MouseEnter(object sender, MouseEventArgs e)
-    {
-        if (sender is Grid grid) SetBgToGrid(grid);
-    }
-
-    private void AddContactGrid_MouseLeave(object sender, MouseEventArgs e)
-    {
-        if (sender is Grid grid) ClearGridBg(grid);
-    }
-
-    private void AddContactGrid_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
-
-        //Set Add Contact Page
-        EditUserContact contact =
-            new EditUserContact(_chat.Chatter, _system);
-        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(contact);
-    }
-
-    private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-        if (MenuGrid.Children.Count > 0)
+        private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
         {
-            MenuGrid.Children.Clear();
-            e.Handled = true;
-            return;
+            Cursor = Cursors.Hand;
+        }
+
+        private void UserIcon_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        public void UpdateParams(UserContactcs contact)
+        {
+            ContName.Text = contact.Name;
+            ContSurname.Text = contact.Surname;
+        }
+
+        public void ContactRemovedAction()
+        {
+            ContName.Text = _chat.Chatter.Name;
+            ContSurname.Text = _chat.Chatter.Surname;
+
+            //Set hide action params
+        }
+
+        private void AddContactGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Grid grid) SetBgToGrid(grid);
+        }
+
+        private void AddContactGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Grid grid) ClearGridBg(grid);
+        }
+
+        private void AddContactGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
+
+            //Set Add Contact Page
+            EditUserContact contact =
+                new EditUserContact(_chat.Chatter, _system);
+            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(contact);
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MenuGrid.Children.Count > 0)
+            {
+                MenuGrid.Children.Clear();
+                e.Handled = true;
+                return;
+            }
         }
     }
-}
 }

@@ -254,7 +254,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                 }
                 else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
                 {
-                    Image img = await VisHelper.GetFirstFrameAsync(filePath);
+                    //Image img = await VisHelper.GetFirstFrameAsync(filePath);
 
                     if (toChange is not null) return;
                     _paths.Add(filePath);

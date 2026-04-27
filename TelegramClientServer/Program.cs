@@ -97,7 +97,7 @@ namespace TelegramClientServer
             app.UseStaticFiles();
 
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 

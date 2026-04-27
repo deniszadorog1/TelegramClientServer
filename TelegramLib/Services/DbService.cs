@@ -4633,15 +4633,13 @@ namespace TelegramLib.Services
             }
         }
 
-        // Это метод для Раздела 3.1 (демонстрация Async Iterator)
+        // Chapter 3.1 (Async Iterator)
         public static async IAsyncEnumerable<TelegramLib.MainClasses.Messages.Message> StreamMessagesById(int chatId)
         {
             using (var model = new TelegramModel())
             {
                 foreach (var mes in model.Messages.Where(x => x.ChatId == chatId))
                 {
-                    //await Task.Delay(100);
-
                     yield return GetMessageByMessages(mes);
                 }
             }

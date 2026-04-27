@@ -9,17 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="bin\**" />
-	  <EmbeddedResource Remove="bin\**" />
-	  <None Remove="bin\**" />
-	  <Page Remove="bin\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="Visuals\Icon\TelIcon.ico" />
-		<None Remove="Visuals\Images\SystemImages\kchau.jpg" />
-		<None Remove="Visuals\Images\UserImages\Minato.jpg" />
-		<None Remove="Visuals\Images\UserImages\WhiteCat.png" />
+		<Compile Remove="bin\**" />
+		<EmbeddedResource Remove="bin\**" />
+		<None Remove="bin\**" />
+		<Page Remove="bin\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,23 +33,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Visuals\Images\Stickers\Figure.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+
+		<Content Include="Visuals\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Visuals\Images\Stickers\Girl.png">
+
+		<Resource Include="Visuals\Images\Stickers\Figure.png" />
+
+		<Resource Include="Visuals\Images\Stickers\Girl.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Resource Include="Visuals\Icon\TelIcon.ico" />
-		<Resource Include="Visuals\Images\SystemImages\kchau.jpg">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
+
+		<Resource Include="Visuals\Icon\TelIcon.ico" />
+		<Resource Include="Visuals\Images\SystemImages\kchau.jpg" />
 
 		<Resource Include="Visuals\Images\UserImages\Minato.jpg">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Resource>
-		<Resource Include="Visuals\Images\UserImages\WhiteCat.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Resource>
+
+		<Resource Include="Visuals\Images\UserImages\WhiteCat.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,7 +66,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="LanguageFiles\" />
+		<Content Include="LanguageFiles\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update=".env">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

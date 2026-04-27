@@ -142,7 +142,6 @@ namespace TelegramClientServer.Controllers
 
             int userId = int.Parse(userIdClaim.Value);
 
-            // Теперь в DbService тебе нужен метод, который ищет по ID, а не по паре логин/пароль
             var system = DbService.GetTelSystem(userId);
 
             if (system == null) return NotFound();
@@ -159,12 +158,13 @@ namespace TelegramClientServer.Controllers
 
         [HttpGet("IsRegistrationParamsAreExist")]
         [AllowAnonymous]
-        public bool IsRegistrationParamsAreExist(string login, string phoneNumber)
+        public IActionResult IsRegistrationParamsAreExist(string login, string phoneNumber)
         {
-            return DbService.IsRegistrationParamsareExist(login, phoneNumber);
+            var exists = DbService.IsRegistrationParamsareExist(login, phoneNumber);
+            return Ok(exists); 
         }
 
-        private string GenerateJwtToken(TelegramLib.Models.User user)
+            private string GenerateJwtToken(TelegramLib.Models.User user)
         {
             var keyString = _config["Jwt:Key"];
 

@@ -147,13 +147,20 @@ namespace TelegramVisualPart.Services
         {
             if (_connection is not null) await DisconnectAsync();
 
+            string connection = ApiService.GetConnectionString().Trim().TrimEnd('/');
+
+            //MessageBox.Show($"{connection}   ___   {str}");
+
             _connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7164/chatHub", options =>
+                .WithUrl($"{connection}/chatHub", options =>
                 {
+                    options.Headers["ngrok-skip-browser-warning"] = "true";
                     options.AccessTokenProvider = () => Task.FromResult(_system.Token);
                 })
                 .WithAutomaticReconnect()
                 .Build();
+
+            //MessageBox.Show("Its done!");
 
 
             _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>

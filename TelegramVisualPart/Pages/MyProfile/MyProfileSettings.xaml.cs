@@ -54,8 +54,9 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetUserImage()
         {
-            UserImage.ImageSource =
-                new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
+                //new BitmapImage(new Uri(path), UriKind.Absolute);
         }
 
         public void SetUserParams()
@@ -228,8 +229,12 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
         {
-            UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
+            //new BitmapImage(new Uri(path), UriKind.Absolute);
+
+/*            UserImage.ImageSource = new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));*/
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

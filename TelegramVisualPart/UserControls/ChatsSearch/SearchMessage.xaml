@@ -34,7 +34,8 @@
                         Margin="10 10 0 10" Orientation="Horizontal">
                 <Ellipse Name="UserEllipseImage" Grid.Column="0" Width="45" Height="45">
                     <Ellipse.Fill>
-                        <ImageBrush x:Name="ImgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+                        <!-- ImageSource="/Visuals/Images/UserImages/Minato.jpg"-->
+                        <ImageBrush x:Name="ImgBrush" />
                     </Ellipse.Fill>
                 </Ellipse>
 

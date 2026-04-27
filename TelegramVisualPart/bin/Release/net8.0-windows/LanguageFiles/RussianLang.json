@@ -1,0 +1,414 @@
+{
+  "_commentMAINCHAT": "MainChatPage PARAMS------------------------------------------------------",
+  "SearcBoxHint": "Поиск",
+  "SetChatBlock": "Сначала чат выбери!",
+  "AllChatsBut": "AllChats",
+  "PersonalBut": "Personal",
+  "EditBut": "Edit",
+
+  "ChatsTab": "Чаты",
+  "PhotosTab": "Фото",
+  "VideosTab": "Видео",
+  "DownloadsTab": "Downloads",
+  "LinksTab": "Links",
+  "FrqContactsBlockName": "Frequent contacts",
+  "ShowFreqChats": "show all",
+  "ShowFreqChatsCollapse": "collapse",
+
+  "CantSeeStuff": "Тебе нельзя этого видеть())((",
+  "BirthDatNotSet": "Not born year",
+  "OnlineStat": "online",
+  "RecentlyStat": "recently",
+
+  "_commentCHAT": "UserCHAT PARAMS",
+  "SendTextHint": "Enter message here...",
+
+  "EmBoardEmoji": "Emoji",
+  "EmBoardSticker": "Stickers",
+  "EmBoardGIFs": "GIFs",
+
+  "ViewProfBut": "View profile",
+  "SetWallpaperBut": "Set Wallpaper",
+  "ExportHistoryBut": "Export chat history",
+  "ClearChatBut": "Clear history",
+  "DeleteChatBut": "Delete chat",
+
+  "MyProfileDrawBut": "My Profile",
+  "WalletDrawBut": "Wallet",
+  "NewGroupDrawBut": "New Group",
+  "NewChannelDrawBut": "New Channel",
+  "ContactsDrawBut": "Contacts",
+  "CallsDrawBut": "Calls",
+  "SettingsDrawBut": "Settings",
+
+  "_commentContactInfo": "ContactInfo PARAMS--------------------------------------------",
+  "ContInfoPageName": "User Info",
+
+  "BirthdayNeverBeen": "Never been",
+  "MobileNumber": "Mobile",
+  "UserName": "Username",
+  "Birthdate": "Date of Birth",
+  "NotifsBlock": "Notifications",
+  "SendMessage": "SEND MESSAGE",
+
+  "AmountOfPhotosTextBlock": "Amount of photos",
+  "AmountOfVideosTextBlock": "Amount of videos",
+  "AmountOfGifsTextBlock": "Amount of GIFs",
+
+  "ShareContactBlock": "Share this contact",
+  "EditContactBlock": "Edit contact",
+  "DeleteContactBlock": "Delete contact",
+  "BlockContactBlock": "Block user",
+
+  "AutoDelete": "Auto-Delete",
+  "ShareContact": "Share this contact",
+  "EditContact": "Edit contact",
+  "ExportHistory": "Export chat history",
+  "AddToFolder": "Add to folder",
+  "BlockUser": "Block user",
+  "DeleteContact": "Delete contact",
+
+  "_commentCNewMessagesDeletion": "NewMesDeletion PARAMS--------------------------------------------",
+  "MesDeletionPageName": "Auto-delete messages",
+  "MesDelPgInfoText": "Automatically delete new messages for you and USERNAME after a certain period of time.",
+  "MesDelPgInActiveFirstPart": "You can also set a default ",
+  "MesDelPgSetDestructBut": "self-destract time",
+  "MesDelPgInActiveEndPart": " for all your chats in settings",
+
+
+  "_commentSelfDestTimer": "SelfDestTimer PARAMS--------------------------------------------",
+  "SelfDestPageName": "Auto-Delete Messages",
+  "SelfDestInfoInActiveText": "If enabled, all new messages in chats you start will be automaticlly deleted for everyone at some point after they sent. you can also",
+  "SelfDestActiveText": "apply this settings for your existing chats.",
+
+  "SelfDestOffRadioBut": "Off",
+  "SelfDestOneDayBut": "After 1 day",
+  "SelfDestOneWeekBut": "After 1 week",
+  "SelfDestOneMonthBut": "After 1 month",
+  "SelfDestCustomTimeBut": "Set Custom Time",
+
+  "_commentSetCustTimer": "SetCustomTimer PARAMS--------------------------------------------",
+  "SetCustTimerPageNameBlock": "Auto-Delete Messages",
+
+  "_commentToChooseChat": "ToChooseChat PARAMS--------------------------------------------",
+  "PageNameToChooseChat": "Auto-Delete Messages",
+
+  "_commentSetChatWallpaper": "SetChatWallpaper PARAMS--------------------------------------------",
+  "SetChatWallPageName": "Choose a wallpaper",
+  "SetChatWallFileBlock": "Choose from file",
+
+
+  "_commentWallpaperPreview": "WallpaperPreview PARAMS--------------------------------------------",
+  "WallperPreviewPageName": "Wallpaper preview",
+  "TestPrevDate": "July 4",
+  "FirstTestMessageTextBlock": "Ah, you kids today with techno music! You should enjoy the classic, licke Hasselhoff!",
+  "SecondTestMessageTextBlock": "I cant even take you seriously right now.",
+  "IsBlurCheckBox": "Blurred",
+
+
+  "_commentClearChatHist": "ClearChatHistPARAMS--------------------------------------------",
+  "FirstInfoTextClChatHist": "Are you sure you want to delete all message history with",
+  "SecondInfoTextClChatHist": "This action cannot be undone.",
+  "CheckBoxTextClChatHist": "Also delete for ",
+  "EnAutoDeleteClChatHist": "Enable Auto-Delete",
+
+
+  "_commentDeleteChat": "DeleteChatARAMS--------------------------------------------",
+  "DeleteChatPageName": "Delete chat",
+  "DeleteChatFirstInfoText": "Are you sure you want to delete all message history with ",
+  "QuestText": "?",
+  "DeleteChatSecInfoText": "This action cannot be undone.",
+  "DeleteChatCheckBoxText": "Also delete for",
+
+  "_commentLoggedUserProfile": "LoggedUserProfilePARAMS--------------------------------------------",
+  "LogUseProfPageName": "My Profile",
+  "LogUseProfMobile": "Mobile",
+  "LogUseProfUserName": "Username",
+
+  "_commentMyProfileSettings": "MyProfileSettingsPARAMS--------------------------------------------",
+  "Bio": "Bio",
+  "PageNameProfSet": "Info",
+  "ProfSetInfoText": "Any details such as age, occupation or city. Example: 23 y.o. designer from San Francisco.",
+
+  "ProfSetName": "Name",
+  "ProfSetAdditName": "name here",
+
+  "ProfSetPhoneNumber": "Phone number",
+  "ProfSetAdditPhoneNumber": "phone numb here",
+
+  "ProfSetUsername": "Username",
+  "ProfSetAdditUsername": "username here",
+
+  "ProfSetSecInfoText": "Username laet people contact you on Telegram without needing your phone number.",
+
+  "ProfSetPersonalChannel": "Personal channel",
+  "ProfSetAdditPersonalChannel": "Add",
+
+  "ProfSetBirthdayBut": "Date of Birth",
+  "ProfSetAdditBirthdayBut": "Add",
+
+  "NotInvented": "not invented!",
+
+  "_commentNameSurname": "SetNameSurnamePARAMS--------------------------------------------",
+  "NameSuranmePageName": "Edit your name",
+
+  "NameSuranmeFirstNmHint": "First name",
+  "NameSuranmeFirstLastNmHint": "Last name",
+
+  "_commentPhoneNumber": "PhoneNumberPARAMS--------------------------------------------",
+  "PhoneNumberText": "You can only change your phone number using mobile Telegram apps. Please use an official Telegram app on your phone to update your numer.",
+
+  "_commentSetUsername": "SetUsernamePARAMS--------------------------------------------",
+  "SetUsernamePageName": "Username",
+
+  "SetUsernameFirstTextInfo": "You can choose a username on Telegram. If you do, other people will be able to find you by this username and contact you without knowing your phone number.",
+  "SetUsernameSecTextInfo": "You can use a-z, 0-9 ad underscores. Minimum length is in 5 characters.",
+
+  "_commentUserContacts": "UserContactsPARAMS--------------------------------------------",
+  "UsContsPageName": "Contacts",
+  "UsAddContactBut": "Add Contact",
+
+  "_commentAddContact": "AddContactPARAMS--------------------------------------------",
+  "AddContactPageName": "new Contact",
+
+  "AddContFirstNameHint": "First name",
+  "AddContLastNameHint": "Last name",
+  "AddContPhoneNumHint": "Phone number",
+
+  "_commentUserTalk": "UserTalkPARAMS--------------------------------------------",
+
+  "ToOpenNewWindow": "Open in Window",
+  "ToArchive": "Archive",
+  "ToUnArchive": "UnArchived",
+  "ToUnpin": "Unpin",
+  "ToPin": "Pin",
+  "ToMuteNotifs": "Mute notifications",
+  "ToUnMuteNotifs": "Unmute",
+  "ToMarkRead": "Mark as read",
+  "ToMarkUnRead": "Mark as unread",
+  "ToAddToFolder": "Add to folder",
+  "ToClearChat": "Clear Chat",
+  "ToDeleteChat": "Delete Chat",
+
+  "SetTone": "SetTone",
+  "DisSound": "DisSound",
+  "MuteDur": "MuteFor",
+  "MFor": "MuteForever",
+
+  "SelectTone": "Select Tone",
+  "DisableSound": "Disable Sound",
+  "EnableSound": "Enable Sound",
+  "MuteFor": "Mute for",
+  "MuteForever": "Mute forever",
+  "CreateNewFolder": "Create new folder",
+
+
+  "_commentNotificationAndSoundSettings": "NotificationAndSoundSettingsPARAMS--------------------------------------------",
+  "NotAndSoundPageName": "Notifications and Sounds",
+
+  "NotAndSoundGlobSubMenu": "Global settings",
+  "NotForChatbMenuSubMenu": "Notification for chat",
+  "EventsMenuSubMenu": "Events",
+  "ScreenLocMenuSubMenu": "Location On Screen",
+  "MessAmountMenuSubMenu": "Location On Screen",
+
+  "NotSoundDesktopNotif": "Desktop notifications",
+  "NotSoundFlashBarIconFlashBarIcon": "Flash the taskbar icon",
+  "NotSoundAllowSound": "Allow sound",
+  "NotSoundPrivateChat": "Private chats",
+  "NotSoundPinnedMessages": "Pinned messages",
+
+
+  "_commentChatSetPage": "ChatSetPagePARAMS--------------------------------------------",
+  "ChatSetPageName": "Chat Settings",
+  "ChatSetThemesTextBlock": "Themes",
+
+  "ChatSetThemesClassicCard": "Classic",
+  "ChatSetThemesDayCard": "Day",
+  "ChatSetThemesTintedCard": "Tinted",
+  "ChatSetThemesNightCard": "Night",
+
+  "ChatSetThemeSettingsBlock": "Theme settings",
+
+  "ChatSetAutoNightBut": "Auto-night mode",
+  "ChatSetFontFamalyBut": "Font family",
+
+  "ChatWalpsBlock": "Chat wallpaper",
+
+  "ChatSetChooseWallpaperFromGalery": "Choose from gallery",
+  "ChatSetChooseWallpaperFromFile": "Choose from file",
+
+  "ChatSetSendEnterRadio": "Send with Enter",
+  "ChatSetSendCtrlEnterRadio": "Send with Ctrl+Enter",
+
+  "_commentChatSetPalette": "ChatSetPalettePARAMS--------------------------------------------",
+  "ChatSetPalettePageName": "Choose accent color",
+
+  "_commentChooseFontFamily": "ChooseFontFamilyPARAMS--------------------------------------------",
+  "FontFamPageNameBlock": "Choose font famaly",
+
+  "FontFamCheckFontBlock": "Ah, you kids today with techno music! You should enjoy the classics, like Hasselhoff!",
+  "FontFamSearchBoxHint": "Search",
+
+  "_commentAdvancedPage": "AdvancedPagePARAMS--------------------------------------------",
+  "AdvPagePageName": "Advanced",
+
+  "AdvPageDataStorageBlock": "Data and storage",
+  "AdvPageMediaDownloadBlock": "Automatic media download",
+  "AdvPageTitleBarBlock": "Window title bar",
+  "AdvPageSysIntegrationBlock": "System integration",
+  "AdvPageVersionsTextBlock": "Versions and updates",
+
+
+  "AdvPageDownloadPathButButName": "Download path",
+  "AdvPageDownloadPathButTempStatusBut": "Default folder",
+
+  "AdvPageDownloadsButName": "Downloads",
+
+  "AdvPageIsAskDownloadPathTextBlock": "Ask download path for each file",
+
+  "AdvPagePrivateChatsButButName": "In private chats",
+
+  "AdvPageShowChatNameBox": "Show chat name",
+  "AdvPageUnreadCountBox": "Total unread count",
+  "AdvPageWindowFrame": "Use system window frame",
+
+  "AdvPageTrayIconBox": "Show tray icon",
+  "AdvPageTaskBarBox": "Show taskbrar icon",
+  "AdvPageCloseToTaskBarBox": "Close to taskbrar",
+  "AdvPageAtStartLaunchTelegramBox": "Launch Telegram when system starts",
+  "AdvPagePalceInSendTo": "Palce Telegram in Send To menu",
+
+  "AdvPageVersionButFirstTextBlock": "Update automatically",
+  "AdvPageSecondTextBlock": "temp version",
+
+  "AdvPageInstalBetaButTextBlock": "Install beta version",
+  "AdvPageCheckForUpdatesTextBlock": "Check for updates",
+
+
+  "_commentFoldersPage": "FoldersPagePARAMS--------------------------------------------",
+  "FoldersPageName": "Folders",
+
+  "FoldersPageInfoText": "Create folders for different groups of chats and quickly switch between them.",
+  "FoldersPageFoldersBlock": "My Folder",
+
+  "FoldersPageTestThingFolderName": "Folder Name",
+  "FoldersPageTestThingAmountOfChats": "Amount of Users",
+
+  "FoldersPageCreateNewFolderBut": "Create new Folder",
+
+  "FoldersPageFolderBlock": "My Folder",
+
+  "FoldersPageLeftTabs": "Tabs on the Left",
+  "FoldersPageShitTabs": "Tabs at the Top",
+
+  "FoldersPageKchau": "ITS Kchau",
+
+  "_commentFoldersAction": "FoldersActionPARAMS--------------------------------------------",
+  "FolActionPageName": "New Folder",
+
+  "FolActionFolderNameBoxHint": "Folder name",
+
+  "FolActionWhoCanUseBlock": "Included chats",
+
+  "FolActionCreateNewFolderBut": "Add chat",
+
+  "FolActionInfoText": "Choose chats or types of chats that will appear in this folder.",
+  "FolActionExcludedChatsBlock": "Excluded chats",
+
+  "FolActionChatToExcludeBut": "Add chat to Exclude",
+  "FolActionSecondInfoText": "Choose chats or types of chats that will NOT appear in this folder.",
+
+
+  "_commentFoldersChatAction": "FoldersChatActionPARAMS--------------------------------------------",
+  "FolChatActChatSearchBoxHint": "Search",
+
+  "FolChatActContactsChats": "Contacts",
+  "FolChatActNoneContactsChats": "Non-Contacts",
+  "FolChatActGroupsChats": "Groups",
+  "FolChatActChannelsChats": "Channels",
+  "FolChatActBotsChats": "Bots",
+
+  "FolChatChatsTextBlock": "Chats",
+
+  "IncludeChats": "Include Chats",
+  "ExcludeChats": "Exclude Chats",
+
+  "_commentLangPage": "LangPagePARAMS--------------------------------------------",
+  "LangPagePageName": "Language",
+
+  "LangPageSarchBoxHint": "Search",
+
+  "_commentPrivacyAndSecurity": "PrivacyAndSecurityPARAMS--------------------------------------------",
+  "PrivAndSecPageName": "Privacy and Security",
+
+  "PrivAndSecSecBlock": "Sucurity",
+
+  "PrivAndSecLocalPasscodeNamePart": "Local passcode",
+  "PrivAndSecLocalPasscodeEnumPart": "STATUS",
+
+  "PrivAndSecBlockedUsersNamePart": "Blocked users",
+  "PrivAndSecBlockedUsersEnumPart": "AMOUNT",
+
+  "PrivAndSecPrivBlock": "Privacy",
+
+  "PrivAndSecPhoneNumberNamePart": "Phone number",
+  "PrivAndSecPhoneNumberEnumPart": "STATUS",
+
+  "PrivAndSecLastSeenNamePart": "Last seen & online",
+  "PrivAndSecLastSeenEnumPart": "STATUS",
+
+  "PrivAndSecProfilePhotosNamePart": "Profile photos",
+  "PrivAndSecProfilePhotosEnumPart": "STATUS",
+
+  "PrivAndSecForwardedMessagesNamePart": "Forwarded messages",
+  "PrivAndSecForwardedMessagesEnumPart": "STATUS",
+
+  "PrivAndSecMessagesNamePart": "Messages",
+  "PrivAndSecMessagesEnumPart": "STATUS",
+
+  "PrivAndSecDateOfBirthNamePart": "Date of Birth",
+  "PrivAndSecDateOfBirthEnumPart": "STATUS",
+
+  "PrivAndSecBioButNamePart": "Forwarded messages",
+  "PrivAndSecBioButEnumPart": "BIO",
+
+  "PrivAndSecBotsWebBlock": "Bots and websites",
+
+  "PrivAndSecClearPaymentsNamePart": "Clear Payments and Shipping Info",
+  "PrivAndSecClearPaymentsEnumPart": "STATUS",
+
+  "PrivAndSecDeletAccBlockk": "Delete my account",
+
+  "PrivAndSecDeleteAwayNamePart": "If away for...",
+  "PrivAndSecDeleteAwayEnumPart": "BIO",
+
+
+  "_commentDeleteAccount": "DeleteAccountPARAMS--------------------------------------------",
+  "DeleteAccPageName": "Add Exceptions",
+
+  "DeleteAccInfoText": "If you dont come online at least once within this period, your account will be deleted along with all groups, messages and contacts.",
+
+  "DeleteOneMonthRadio": "1 month",
+  "DeleteThreeMonthRadio": "3 month",
+  "DeleteSixMonthRadio": "6 month",
+  "DeleteTwelveMonthRadio": "12 month",
+  "DeleteEighteenMonthRadio": "18 month",
+  "DeleteTwentyfourMonthRadio": "24 month",
+
+
+
+
+
+  "AlwayShareWith": "Always share with",
+  "NeverShareWith": "Never share with",
+
+  "CancelButName": "Cancel",
+  "CloseButName": "Close",
+  "SaveButName": "Save",
+  "ApplyButName": "Apply",
+  "OkButName": "OK",
+  "DeleteButName": "Delete",
+  "RemoveButName": "Remove",
+  "CreateButName": "Create"
+}

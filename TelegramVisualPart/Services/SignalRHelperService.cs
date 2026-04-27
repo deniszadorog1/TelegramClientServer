@@ -317,7 +317,7 @@ namespace TelegramVisualPart.Services
             ellipse.IsHitTestVisible = true;
         }
 
-        private static BitmapImage LoadBitmap(string path)
+        public static BitmapImage LoadBitmap(string path)
         {
             byte[] imageData;
 

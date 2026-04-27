@@ -11,7 +11,7 @@ using TelegramLib.Enums.Messages;
 
 namespace TelegramLib.MainClasses.Messages
 {
-    public class Message
+    public class Message : IMessage
     {
         public int Id { get; set; }
         public int SenderUserId { get; set; }

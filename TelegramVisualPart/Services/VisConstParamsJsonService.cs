@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Shapes;
 using Path = System.IO.Path;
+using System.Windows.Input;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace TelegramVisualPart.Services
 {
@@ -17,31 +19,53 @@ namespace TelegramVisualPart.Services
         private static string _fileName = string.Empty;
         private  static void SetStringParams()
         {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
-            string libPath = Path.Combine(parentPath, "TelegramVisualPart");
-            string langsPath = Path.Combine(libPath, "LanguageFiles");
+            string langsPath = Path.Combine(baseDir, "LanguageFiles");
             string jsonFilePath = Path.Combine(langsPath, _fileName);
 
+            if (!File.Exists(jsonFilePath))
+            {
+                _dict = new Dictionary<string, string>();
+                return;
+            }
+
             string json = File.ReadAllText(jsonFilePath, Encoding.UTF8);
-
-            //File.WriteAllText(jsonFilePath, json, new UTF8Encoding(false));
-
             _dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+
+/* DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+    string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
+    string libPath = Path.Combine(parentPath, "TelegramVisualPart");
+    string langsPath = Path.Combine(libPath, "LanguageFiles");
+    string jsonFilePath = Path.Combine(langsPath, _fileName);
+
+    string json = File.ReadAllText(jsonFilePath, Encoding.UTF8);
+
+    //File.WriteAllText(jsonFilePath, json, new UTF8Encoding(false));
+
+    _dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);*/
         }
 
         public static int GetNumByName(string name)
         {
             SetStringParams();
-            int.TryParse(_dict[name], out int res);
-            return res;
+            if (_dict != null && _dict.TryGetValue(name, out string value))
+            {
+                int.TryParse(value, out int res);
+                return res;
+            }
+            return 0; 
         }
 
         public static string GetStringByName(string name)
         {
             SetStringParams();
-            return _dict[name];
+            if (_dict != null && _dict.TryGetValue(name, out string value))
+            {
+                return value;
+            }
+            return $"[{name}]";
         }
 
         public static void SetFileName(string fileName)

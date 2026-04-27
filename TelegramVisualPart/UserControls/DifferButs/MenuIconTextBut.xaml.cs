@@ -22,7 +22,15 @@ namespace TelegramVisualPart.UserControls.DifferButs
     {
         public MenuIconTextBut()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Init Mistake в MenuIconTextBut: {ex.Message}");
+                throw;
+            }
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)

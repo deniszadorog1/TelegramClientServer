@@ -1,8 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.Xaml.Behaviors.Media;
 using Newtonsoft.Json;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,11 +53,20 @@ namespace TelegramVisualPart.UserControls
             new List<TelegramLib.MainClasses.Messages.Message>();
         public UserChat()
         {
-            InitializeComponent();
-            SetMarginForChatMenu();
-            SetAutoDeleteTimer();
+            try
+            {
+                InitializeComponent();
+                SetMarginForChatMenu();
+                SetAutoDeleteTimer();
 
-            SetBasicSignalRMethods();
+                SetBasicSignalRMethods();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Init Mistake in UserChat: {ex.Message}");
+                throw;
+            }
+
         }
 
         public void SetBasicSignalRMethods()
@@ -150,7 +157,7 @@ namespace TelegramVisualPart.UserControls
 
             try
             {
-                await Task.Delay(1000, token);
+                //await Task.Delay(1000, token);
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -1394,6 +1401,7 @@ namespace TelegramVisualPart.UserControls
 
             string path = await FilesAction.GetFilePathByMediaType(type, message.MediaName);
             path = FilesAction.GetPathByPseudoPath(path);
+            if (path is null || path == string.Empty) return;
 
             switch (type)
             {
@@ -2323,7 +2331,7 @@ namespace TelegramVisualPart.UserControls
 
             //system add
             int? replyId = toReply is null ? null : toReply.Id;
-            // UserContactcs contact = await ApiService.GetContactByUserAndFriendIds(_system.LoggedUser.Id, _chat.Chatter.Id);
+
             Message toAdd = new TelegramLib.MainClasses.Messages.TextMessage(
                             _chatMessages.Count, _system.LoggedUser.Id,
                             DateTime.Now, sendText, false, replyId, false, null, false);
@@ -2521,10 +2529,6 @@ namespace TelegramVisualPart.UserControls
                         _mesMenu.SetPinVisStatus(mes);*/
 
             if (toMenuMes is not null) _mesMenu.SetPinVisStatus(toMenuMes);
-            else
-            {
-
-            }
 
             MessageMenu.Children.Add(_mesMenu);
             SetMesMenuActions(_mesMenu);
@@ -3090,7 +3094,7 @@ namespace TelegramVisualPart.UserControls
             {
                 //string imgPath = FilesAction.GetFullChatImagePath(media.MediaName);
                 string imgPath = FilesAction.GetPathByName(media.MediaName);
-                
+
                 var image = new Image();
                 image.Source = new BitmapImage(new Uri(imgPath, UriKind.Absolute));
                 SaveElements.SaveImageAs(image);
@@ -3676,10 +3680,10 @@ namespace TelegramVisualPart.UserControls
                 string[] names = openFileDialog.FileNames;
 
                 //Upload medias
-                for(int i = 0; i < names.Length; i++)
+                for (int i = 0; i < names.Length; i++)
                 {
-                   names[i] = await ApiService.UploadMediaAsync(names[i]);
-                   names[i] = FilesAction.GetPathByPseudoPath(names[i]);
+                    names[i] = await ApiService.UploadMediaAsync(names[i]);
+                    names[i] = FilesAction.GetPathByPseudoPath(names[i]);
                 }
 
                 //Set media with schedule messages
@@ -3793,11 +3797,11 @@ namespace TelegramVisualPart.UserControls
             };
             media.Stop();
 
-/*            //Is video is contains in user chat folder
-            if (!FilesAction.IsVideoIsExistInSecFolder(Path.GetFileName(filePath)))
-            {
-                FilesAction.CopyVideoToVideoFolder(filePath);
-            }*/
+            /*            //Is video is contains in user chat folder
+                        if (!FilesAction.IsVideoIsExistInSecFolder(Path.GetFileName(filePath)))
+                        {
+                            FilesAction.CopyVideoToVideoFolder(filePath);
+                        }*/
 
             AddVideoMessage(media, senderImageName, mes);
         }
@@ -4143,26 +4147,26 @@ namespace TelegramVisualPart.UserControls
         }
 
 
-/*        public List<Image> GetChatImages()
-        {
-            List<Image> res = new List<Image>();
-
-            for (int i = 0; i < _chatMessages.Count; i++)
-            {
-                //For images (NO STIKER)
-                if (_chatMessages[i] is MediaAction media && media.IsSticker == _isGetStickers &&
-                    FilesAction.GetMediaTypeFromFilename(media.MediaName) == MediaType.Image)
+        /*        public List<Image> GetChatImages()
                 {
-                    string path = FilesAction.GetFilePathByMediaType(
-                        media.IsSticker ? MediaType.Sticker : MediaType.Image, media.MediaName);
-                    res.Add(new Image
+                    List<Image> res = new List<Image>();
+
+                    for (int i = 0; i < _chatMessages.Count; i++)
                     {
-                        Source = new BitmapImage(new Uri(path, UriKind.Absolute)),
-                    });
-                }
-            }
-            return res;
-        }*/
+                        //For images (NO STIKER)
+                        if (_chatMessages[i] is MediaAction media && media.IsSticker == _isGetStickers &&
+                            FilesAction.GetMediaTypeFromFilename(media.MediaName) == MediaType.Image)
+                        {
+                            string path = FilesAction.GetFilePathByMediaType(
+                                media.IsSticker ? MediaType.Sticker : MediaType.Image, media.MediaName);
+                            res.Add(new Image
+                            {
+                                Source = new BitmapImage(new Uri(path, UriKind.Absolute)),
+                            });
+                        }
+                    }
+                    return res;
+                }*/
 
         public bool _isLoopPressed = false;
         private void FindMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -5528,6 +5532,8 @@ namespace TelegramVisualPart.UserControls
                     if (mes is MediaAction mesMedia && FilesAction.IsFileIsVideo(mesMedia.MediaName))
                     {
                         Image firstVideoFrame = await VisHelper.GetFirstFrameAsync(mesMedia.MediaName);
+                        if (firstVideoFrame is null) return;
+
                         ReplyedImage.Source = firstVideoFrame.Source;
                         //return;
                     }
@@ -5548,6 +5554,7 @@ namespace TelegramVisualPart.UserControls
                 {
                     if (messages.Count == 0 || messages.First() is not MediaAction video) return;
                     Image img = await VisHelper.GetFirstFrameAsync(video.MediaName);
+                    if (img is null) return;
                     ReplyedImage.Source = img.Source;
                 }
             }

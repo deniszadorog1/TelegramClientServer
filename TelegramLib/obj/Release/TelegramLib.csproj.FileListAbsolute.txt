@@ -1,3 +1,6 @@
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.dll.config
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.dll
+B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.pdb
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Release\TelegramLib.dll.config
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Release\TelegramLib.dll
 B:\GitHub\TelegramClientServer\TelegramLib\bin\Release\TelegramLib.pdb
@@ -84,6 +87,3 @@ B:\GitHub\TelegramClientServer\TelegramLib\obj\Release\TelegramLib.csproj.CoreCo
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Release\Telegram.9F9AEC3A.Up2Date
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Release\TelegramLib.dll
 B:\GitHub\TelegramClientServer\TelegramLib\obj\Release\TelegramLib.pdb
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.dll.config
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.dll
-B:\GitHub\TelegramClientServer\TelegramBenchmarks\bin\Release\net8.0\TelegramBenchmarks-DefaultJob-1\bin\Release\net8.0\TelegramLib.pdb

@@ -16,7 +16,7 @@ namespace TelegramBenchmarks
     [MemoryDiagnoser] 
     public class MessageLoadBenchmark
     {
-        private const int ChatId = 11; 
+        private const int ChatId = 4; 
 
         [Benchmark]
         public List<Message> LoadAsList()
@@ -27,10 +27,8 @@ namespace TelegramBenchmarks
         [Benchmark]
         public async Task LoadAsStream()
         {
-            var stream = DbService.StreamMessagesById(ChatId);
-            await foreach (var item in stream)
+            await foreach (var message in DbService.StreamMessagesById(ChatId))
             {
-
             }
         }
     }

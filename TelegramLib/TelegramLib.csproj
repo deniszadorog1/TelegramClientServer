@@ -34,8 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Azure.Core, Version=1.38.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+  <ItemGroup>	  
+	  <Reference Include="Azure.Core, Version=1.38.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Core.1.38.0\lib\net472\Azure.Core.dll</HintPath>
     </Reference>
     <Reference Include="Azure.Identity, Version=1.11.4.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
@@ -168,9 +168,13 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+	<Reference Include="PresentationCore" />
+	<Reference Include="PresentationFramework" />
+	<Reference Include="System.Xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Decorators\ImageCachingDecorator.cs" />
     <Compile Include="Enums\Chat\AutoDeleteDuration.cs" />
     <Compile Include="Enums\Chat\AutoDeleteType.cs" />
     <Compile Include="Enums\Messages\MediaType.cs" />
@@ -183,11 +187,16 @@
     <Compile Include="Enums\Settings\PrivacyAndSecurity\AwayForTime.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\ShareWith.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\SubSettingType.cs" />
+    <Compile Include="Factories\Async\MessageFactory.cs" />
+    <Compile Include="Factories\Interfaces\IMessageFactory.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Interfaces\IApiService.cs" />
+    <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="MainClasses\ChatFitures\ChatBackground.cs" />
     <Compile Include="MainClasses\ChatFitures\Theme.cs" />
     <Compile Include="MainClasses\DTOsHelper\EditDTO.cs" />
     <Compile Include="MainClasses\FolderObjs\Folder.cs" />
+    <Compile Include="MainClasses\Messages\IMessage.cs" />
     <Compile Include="MainClasses\Messages\MediaAction.cs" />
     <Compile Include="MainClasses\Messages\Message.cs" />
     <Compile Include="MainClasses\Messages\ShareContactMessage.cs" />

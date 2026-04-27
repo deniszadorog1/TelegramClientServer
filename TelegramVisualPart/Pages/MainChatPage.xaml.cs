@@ -47,13 +47,22 @@ namespace TelegramVisualPart.Pages
             //messages
 
             _system = system;
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Init Mistake in MainChatPage: {ex.Message}");
+                throw;
+            }
 
             SetBasicParams();
 
             FolderSliderMenu.SetSliderWithFolders(_system.Folders, _system, (MainWindow)Window.GetWindow(this));
 
             UpdateTabsPlacement();
+
             UpdateFolders();
 
             SetLangText();
@@ -560,7 +569,7 @@ namespace TelegramVisualPart.Pages
         public void SetUserImage()
         {
             string path = FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
-            UserImage.ImageSource = new BitmapImage(new Uri(path, UriKind.Absolute));
+            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);//  new BitmapImage(new Uri(path, UriKind.Absolute));
         }
 
         public void SetChatClick()
@@ -925,6 +934,7 @@ namespace TelegramVisualPart.Pages
         public (ListBoxItem, UserTalkMessage) GetChatTalkControlByMesId(int mesId)
         {
             TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessageId(mesId);
+            if (chat is null) return (null, null);
 
             ListBoxItem? item = 
                 ChatsBox.Items

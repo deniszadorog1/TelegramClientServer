@@ -1,48 +1,18 @@
-﻿using ControlzEx.Standard;
-using MahApps.Metro.Controls;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Net.NetworkInformation;
-using System.Net.WebSockets;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Media.Animation;
-using System.Xml.Linq;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
-using TelegramLib.MainClasses.FolderObjs;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
-using TelegramLib.Services;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
-using TelegramVisualPart.Pages.Contacts;
-using TelegramVisualPart.UserControls.ContactsControls;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using TelegramLib.Decorators;
+using System.Windows.Media.Imaging;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -56,6 +26,8 @@ namespace TelegramVisualPart.Services
         private static readonly string? _host =
             Environment.GetEnvironmentVariable("localHost");
 
+        private static readonly ImageCachingDecorator _imageDecorator;
+
         static ApiService()
         {
             DotNetEnv.Env.Load();
@@ -68,9 +40,27 @@ namespace TelegramVisualPart.Services
             };
             _client = new HttpClient(handler);
             _client.BaseAddress = new Uri(_host);
-            //_client.BaseAddress = new Uri("https://localhost:7238/");
 
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            if (!_client.DefaultRequestHeaders.Contains("ngrok-skip-browser-warning"))
+            {
+                _client.DefaultRequestHeaders.Add("ngrok-skip-browser-warning", "true");
+            }
+
+            var wrapper = new ApiServiceWrapper();
+            _imageDecorator = new ImageCachingDecorator(wrapper);
+        }
+
+        public static async Task<(BitmapImage Bitmap, string Path)> GetImageAsync(string fileName)
+        {
+            return await _imageDecorator.GetImageAsync(fileName);
+        }
+
+
+        public static string GetConnectionString()
+        {
+            return _host;
         }
 
         public static void SetAuthToken(string token)
@@ -370,12 +360,37 @@ namespace TelegramVisualPart.Services
 
         public static async Task<bool> IsUserRegistrationParamsAreExist(string login, string phoneNumber)
         {
-            var response = await _client.GetAsync($"api/Auth/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
+            try
+            {
+                var response = await _client.GetAsync($"api/Auth/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
 
-            string jsonResponse = await response.Content.ReadAsStringAsync();
+                string jsonResponse = await response.Content.ReadAsStringAsync();
 
-            bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
-            return res;
+                Debug.WriteLine($"SERVER RESPONSE: {jsonResponse}");
+                System.Windows.MessageBox.Show($"RAW RESPONSE: '{jsonResponse}'");
+
+
+                if (jsonResponse.Trim().StartsWith("<"))
+                {
+                    return true;
+                }
+
+                return JsonConvert.DeserializeObject<bool>(jsonResponse);
+            }
+            catch (Exception ex)
+            {
+                // Логируем ошибку, чтобы не гадать
+                Debug.WriteLine($"Ошибка регистрации: {ex.Message}");
+                return true;
+            }
+
+
+            /*            var response = await _client.GetAsync($"api/Auth/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
+
+                        string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                        bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
+                        return res;*/
         }
 
         public static async Task<bool> IsContactContainsInContacts(UserContactcs contact, UserContactcs toCheck)
@@ -469,34 +484,6 @@ namespace TelegramVisualPart.Services
             return res;
         }
 
-        // Get TelSystem
-        public static async Task<TelSystem?> GetTelSystem(/*string login, string password*/)
-        {
-            var response = await _client.GetAsync("api/Auth/GetTelSystem");
-
-            if (!response.IsSuccessStatusCode) return null;
-
-            string jsonResponse = await response.Content.ReadAsStringAsync();
-
-            return JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-
-            /*
-                        var response = await _client.GetAsync($"api/Auth/GetTelSystem?login={login}&password={password}");
-
-                        string jsonResponse = await response.Content.ReadAsStringAsync();
-                        if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
-
-                        TelSystem? res = jsonResponse is null ? null : JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
-                        {
-                            TypeNameHandling = TypeNameHandling.Auto
-                        });
-
-                        return res;*/
-        }
-
         public static async Task<bool> AddWallpaper(string imgName)
         {
             var data = new { ImgName = imgName };
@@ -572,7 +559,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Social/DeleteUserImage"),
+                RequestUri = new Uri($"{_host}/api/Social/DeleteUserImage"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -584,8 +571,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                //RequestUri = new Uri("https://localhost:7164/api/Login/RemoveClosedGames"),
-                RequestUri = new Uri($"{_host}api/Chat/ClearChat"),
+                RequestUri = new Uri($"{_host}/api/Chat/ClearChat"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -597,7 +583,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Social/RemoveContact"),
+                RequestUri = new Uri($"{_host}/api/Social/RemoveContact"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -674,8 +660,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                //RequestUri = new Uri("https://localhost:7238/api/Login/RemoveClosedGames"),
-                RequestUri = new Uri($"{_host}api/Social/DeleteBlockedContact"),
+                RequestUri = new Uri($"{_host}/api/Social/DeleteBlockedContact"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -799,7 +784,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Social/DeleteFolder"),
+                RequestUri = new Uri($"{_host}/api/Social/DeleteFolder"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -811,7 +796,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Message/DeleteMessageById"),
+                RequestUri = new Uri($"{_host}/api/Message/DeleteMessageById"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -824,7 +809,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Message/DeleteManyMessages"),
+                RequestUri = new Uri($"{_host}/api/Message/DeleteManyMessages"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -838,7 +823,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Chat/DeleteChatById"),
+                RequestUri = new Uri($"{_host}/api/Chat/DeleteChatById"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
 
@@ -853,7 +838,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage()
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Social/DeleteContactFromFolder"),
+                RequestUri = new Uri($"{_host}/api/Social/DeleteContactFromFolder"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
 
@@ -1327,7 +1312,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{_host}api/Chat/ClearSaveChatById"),
+                RequestUri = new Uri($"{_host}/api/Chat/ClearSaveChatById"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -1341,8 +1326,7 @@ namespace TelegramVisualPart.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Delete,
-                //RequestUri = new Uri("https://localhost:7164/api/Login/RemoveClosedGames"),
-                RequestUri = new Uri($"{_host}api/Message/DeleteSavedMessage"),
+                RequestUri = new Uri($"{_host}/api/Message/DeleteSavedMessage"),
                 Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
             };
             var response = await _client.SendAsync(request);
@@ -1390,8 +1374,8 @@ namespace TelegramVisualPart.Services
                 string json = await response.Content.ReadAsStringAsync();
 
                 var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                
-                return result["url"]; 
+
+                return result["url"];
             }
             return null;
         }
@@ -1421,6 +1405,58 @@ namespace TelegramVisualPart.Services
             string previewName = Path.GetFileNameWithoutExtension(videoName) + ".png";
 
             return $"/Uploads/Images/{previewName}";
+        }
+
+        // Get TelSystem
+        public static async Task<TelSystem?> GetTelSystem()
+        {
+            var response = await _client.GetAsync("api/Auth/GetTelSystem");
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+        }
+
+
+        private static TelSystem? _cachedSystem;
+        private static Task<TelSystem?>? _initializationTask;
+        private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
+        public static async Task<TelSystem?> GetTelSystemSinglton()
+        {
+            if (_cachedSystem != null) return _cachedSystem;
+
+            await _semaphore.WaitAsync();
+            try
+            {
+                if (_cachedSystem == null)
+                {
+                    _cachedSystem = await LoadTelSystemInternal();
+                }
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+
+            return _cachedSystem;
+        }
+
+        private static async Task<TelSystem?> LoadTelSystemInternal()
+        {
+            var response = await _client.GetAsync("api/Auth/GetTelSystem");
+            if (!response.IsSuccessStatusCode) return null;
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
         }
 
 

@@ -24,9 +24,16 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
     {
         public SearchMessage()
         {
-            InitializeComponent();
-
-            CloseBut.IconType.Kind = PackIconKind.Close; 
+            try
+            {
+                InitializeComponent();
+                CloseBut.IconType.Kind = PackIconKind.Close; 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Minstake in SearchMessage: {ex.Message}");
+                throw;
+            }
         }
 
         public void SetUserImage(string userImageName)

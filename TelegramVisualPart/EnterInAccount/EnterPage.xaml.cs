@@ -36,7 +36,6 @@ namespace TelegramVisualPart.EnterInAccount
             InitializeComponent();
         }
 
-
         private void RegistrationGrid_MouseLeave(object sender, MouseEventArgs e)
         {
             Register.TextDecorations = null;
@@ -59,13 +58,14 @@ namespace TelegramVisualPart.EnterInAccount
             if (string.IsNullOrWhiteSpace(LoginBox.Text) ||
                 string.IsNullOrWhiteSpace(PasswordBox.Text)) return;
 
-
             string token = await ApiService.GetToken(LoginBox.Text, PasswordBox.Text);
+
+            //MessageBox.Show(token is null || token == string.Empty ? "0 - tocken is empty" : "I got token");
 
             if (!string.IsNullOrEmpty(token))
             {
                 ApiService.SetAuthToken(token);
-                _system = await ApiService.GetTelSystem();
+                _system = /*await ApiService.GetTelSystemSinglton(); //*/ await ApiService.GetTelSystem();
 
                 _system.Token = token;
 
@@ -86,20 +86,22 @@ namespace TelegramVisualPart.EnterInAccount
             
             SignalRHelperService.SetStatSystem(_system);
 
-
-/*            UserChat chat = _system.Chats.First(x => x.Id == 11);
-            for (int i = 0; i < 10000; i++)
+/*
+            UserChat chat = _system.Chats.First(x => x.Id == 4);
+            for (int i = 0; i < 100000; i++)
             {
                 DbService.AddMessage(chat, new TelegramLib.MainClasses.Messages.TextMessage(-1, 1, DateTime.Now, "asd", false, -1, false, null, false));
-            }*/
-
+            }
+*/
             if (_system is null)
             {
                 MessageBox.Show("No user with such params");
                 ClearBoxes();
                 return;
             }
+
             _system.SetEmptyUserImages();
+
 
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
             if (isOnline)
@@ -108,13 +110,16 @@ namespace TelegramVisualPart.EnterInAccount
                 ClearBoxes();
                 return;
             }
-            
+
+            //MessageBox.Show("1.I am online. Starting to set basic params");//
 
             _system.Settings.ChatsSettings.SetBasicThemes();
 
             _system.Settings.ChatsSettings.PossibleWallpapers = 
                 FilesAction.GetAllWallpaperNames(_system.Settings.ChatsSettings.PossibleWallpapers);
-           
+
+            //MessageBox.Show("2. Set basic wallpapers!");
+
             _system.Settings.ChatsSettings.Theme = 
                 TelegramLib.Enums.Settings.ChatSettings.ThemeType.Night;
 
@@ -130,6 +135,9 @@ namespace TelegramVisualPart.EnterInAccount
             Application.Current.Resources["TempActiveTextColor"] =
                 new SolidColorBrush(Color.FromRgb(_system.LoggedUser.MainColor.R,
                 _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
+             
+
+            //MessageBox.Show("3. Eneded of Setting basic params! going to create main page");
 
             ((MainWindow)Window.GetWindow(this)).SetMainPage(_system);
         }

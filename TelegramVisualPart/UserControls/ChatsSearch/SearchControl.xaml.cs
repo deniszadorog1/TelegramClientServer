@@ -34,7 +34,15 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
         public SearchControl()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Init Mistake in SearchControl: {ex.Message}");
+                throw;
+            }
         }
 
         public void SetContacts(TelSystem system)

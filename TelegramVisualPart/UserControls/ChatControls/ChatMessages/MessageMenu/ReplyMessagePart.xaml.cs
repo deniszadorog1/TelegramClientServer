@@ -59,13 +59,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         {
             if (FilesAction.IsFileIsImage(mediaName))
             {
-                string path = FilesAction.GetFullChatImagePath(mediaName);
-                if (!File.Exists(path)) return;
+                //string path = FilesAction.GetFullChatImagePath(mediaName);
+                string path = FilesAction.GetPathByName(mediaName);
+                if (path is null) return;
                 ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
             }
             else if (FilesAction.IsFileIsGif(mediaName))
             {
-                string fullGifName = FilesAction.GetFullGifPath(mediaName);
+                //string fullGifName = FilesAction.GetFullGifPath(mediaName);
+                string fullGifName = FilesAction.GetPathByName(mediaName);
 
                 BitmapSource firstGifImgSource = FilesAction.GetFirstImageFromGif(fullGifName);
                 if (firstGifImgSource is null) return;
@@ -74,9 +76,11 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             }
             else if (FilesAction.IsFileIsVideo(mediaName))
             {
-                mediaName = System.IO.Path.GetFileName(mediaName);
+                //mediaName = System.IO.Path.GetFileName(mediaName);
+                string path = FilesAction.GetPathByName(mediaName);
 
-                Image img = await VisHelper.GetFirstFrameAsync(mediaName);
+                Image img = await VisHelper.GetFirstFrameAsync(path);
+                if (img is null) return;
                 ReplyImage.Source = img.Source;
             }
         }

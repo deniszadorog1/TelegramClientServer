@@ -74,17 +74,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             }
         }
 
-        public void SetTestWallpapers()
-        {
-/*            OneTest.WallpaperImage.Source = GetWallpaperImage("Monkey.jpg").Source;
-            OneTest.WallpaperImage.Tag = "Monkey.jpg";
-
-            TwoTest.WallpaperImage.Source = GetWallpaperImage("Pineapple.jpg").Source;
-            TwoTest.WallpaperImage.Tag = "Pineapple.jpg";
-
-            ThreeTest.WallpaperImage.Source = GetWallpaperImage("Snowman.jpg").Source;
-            ThreeTest.WallpaperImage.Tag = "Snowman.jpg";*/
-        }
         public void SetClickEventToWallpapers()
         {
             for (int i = 0; i < WallpapersPanel.Children.Count; i++)

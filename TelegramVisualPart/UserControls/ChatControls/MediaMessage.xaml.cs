@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -412,21 +413,27 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             foreach (var path in paths)
             {
-                string tempPath = System.IO.Path.GetFileName(path);
+                string newPath = FilesAction.GetPathByName(Path.GetFileName(path));
+                if (newPath is null || newPath == string.Empty) continue;
+
+                string tempPath = System.IO.Path.GetFileName(newPath);
                 string videoExt = System.IO.Path.GetExtension(tempPath);
 
                 if (videoExt == ".mp4" || videoExt == ".amv")
                 {
                     Image videoFrame = await VisHelper.GetFirstFrameAsync(tempPath);
+                    if (videoFrame is null) continue;
 
                     if (videoFrame.Source is BitmapImage bitImg) res.Add(bitImg);
                     continue;
                 }
 
-                BitmapImage bitMap = new BitmapImage(new Uri(path, UriKind.Absolute));
+                //MessageBox.Show($"Getting {newPath} as path");
 
-/*                BitmapImage bitMap = new BitmapImage(new Uri(
-                    FilesAction.GetFullChatImagePath(path), UriKind.Absolute));*/
+                BitmapImage bitMap = SignalRHelperService.LoadBitmap(newPath);//  new BitmapImage(new Uri(path, UriKind.Absolute));
+
+                //MessageBox.Show($"Got {newPath} as path");
+
                 if (bitMap is not null) res.Add(bitMap);
             }
 
@@ -470,6 +477,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (videoExt == ".mp4" || videoExt == ".amv")
             {
                 Image videoFrame = await VisHelper.GetFirstFrameAsync(path);
+                if (videoFrame is null) return;
 
                 brush.ImageSource = videoFrame.Source;
 
@@ -531,9 +539,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 var brush = brushes[i];
 
                 double aspect = (double)img.PixelWidth / img.PixelHeight;
-
                 border.Height = finalHeight;
-
                 double targetWidth = widthPerAspectUnit * aspect;
 
                 if (i == borders.Count - 1)
@@ -549,6 +555,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 border.Margin = new Thickness(0);
 
                 brush.ImageSource = img;
+
                 brush.Stretch = Stretch.UniformToFill; 
             }
         }
@@ -1031,18 +1038,26 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_message.IsImage())
             {
-                ImgMessage.ImageSource =
-                    new BitmapImage(new Uri(
-                        FilesAction.GetFullChatImagePath(_message.MediaName),
+                /*ImgMessage.ImageSource =
+                   new BitmapImage(new Uri(
+                   FilesAction.GetFullChatImagePath(_message.MediaName),
+                   UriKind.Absolute));*/
+
+                ImgMessage.ImageSource = new BitmapImage(new Uri(
+                        FilesAction.GetPathByName(_message.MediaName),
                         UriKind.Absolute));
+
 
                 //SetImgMessageSize(_img, ImageBorder);
                 ImageBorder.Visibility = Visibility.Visible;
             }
             else if (_message.IsVideo())
             {
-                string name = System.IO.Path.GetFileName(_message.MediaName);
+                //string name = System.IO.Path.GetFileName(_message.MediaName);
+                string name = FilesAction.GetPathByName(_message.MediaName);
+
                 Image img = await VisHelper.GetFirstFrameAsync(name);
+                if (img is null) return;
 
                 GifBorder.Visibility = Visibility.Visible;
                 GifImage.Source = img.Source;
@@ -1050,7 +1065,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             else if (_message.IsGif())
             {
                 string name = System.IO.Path.GetFileName(_message.MediaName);
-                string gifPath = FilesAction.GetFullGifPath(name);
+                //string gifPath = FilesAction.GetFullGifPath(name);
+
+                string gifPath = FilesAction.GetPathByName(_message.MediaName);
 
                 BitmapSource source = FilesAction.GetFirstImageFromGif(gifPath);
                 if (source is null) return;

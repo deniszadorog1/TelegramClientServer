@@ -162,7 +162,11 @@ namespace TelegramVisualPart.Helper
        
         public static async Task<Image> GetFirstFrameAsync(string fileName)
         {
-            string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));
+            //string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));
+            fileName = Path.GetFileName(fileName);
+            
+            string videoPath = FilesAction.GetPathByName(fileName);
+            if (videoPath is null || videoPath == string.Empty) return null;
 
             if (!videoPath.StartsWith("http") && !File.Exists(videoPath))
                 throw new FileNotFoundException("Video not Found", videoPath);

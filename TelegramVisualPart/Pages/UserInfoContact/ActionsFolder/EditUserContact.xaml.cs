@@ -377,6 +377,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             //Set in visual part
             UpdateVisAfterMasking();
+            UpdateImage();
         }
 
         public void UpdateVisAfterMasking()
@@ -400,7 +401,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             if (chat is null) return;
 
             //Check for mask
-            _user = chat is TelegramLib.MainClasses.SavedMessagesChat ? _system.LoggedUser : chat.GetChatter();
             await SignalRHelperService.SetContactPhoto(user,
                 chat, BgBrush, UserEllipseImage, settings: settings);
         }

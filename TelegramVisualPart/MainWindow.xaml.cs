@@ -73,7 +73,6 @@ namespace TelegramVisualPart
 
             OutWindowBorder.BorderThickness = new Thickness(0);
 
-            ///Visuals/Images/UserImages/Minato.jpg"
             SetLoginPage();
             SetWindowSizeState();
 
@@ -208,10 +207,6 @@ namespace TelegramVisualPart
 
                 contactToUpdate.UpdateByUser(updated);
 
-                if (ThirdFrame.Content is EditUserContact edit)
-                {
-                    edit.UpdateImage();
-                }
             });
         }
 
@@ -234,7 +229,18 @@ namespace TelegramVisualPart
                 await SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             }
 
-            MainChatPage page = new MainChatPage(_system);
+            MainChatPage page = null; 
+            try
+            {
+                page = new MainChatPage(_system);
+            }
+            catch (Exception ex)
+            {
+                Exception realEx = ex;
+                while (realEx.InnerException != null) realEx = realEx.InnerException;
+                MessageBox.Show($"BINGO: {realEx.Message}");
+            }
+
 
             page.PageLoadedAction += SetOnlyChatPage;
 
@@ -1065,11 +1071,6 @@ namespace TelegramVisualPart
                 info.UpdateContact(contact);
             }
             //check in UserChat thing
-
-            if (ThirdFrame.Content is EditUserContact edit)
-            {
-                edit.UpdateImage();
-            }
         }
 
         public void UpdateDeletedUser(UserContactcs contact)
@@ -1490,11 +1491,6 @@ namespace TelegramVisualPart
             {
                 //Set for contact info
                 info.UpdateImage();
-            }
-
-            if(ThirdFrame.Content is EditUserContact edit)
-            {
-                edit.UpdateImage();
             }
         }
 

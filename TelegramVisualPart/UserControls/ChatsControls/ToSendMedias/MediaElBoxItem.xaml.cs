@@ -49,6 +49,8 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
             if (FilesAction.IsFileIsVideo(_mediaPath))
             {
                 Image img = await VisHelper.GetFirstFrameAsync(_mediaPath);
+                if (img is null) return;
+
                 Img.Source = img.Source;
                 Img.Tag = _mediaPath;
             }
@@ -59,9 +61,10 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
             if (FilesAction.IsFileIsVideo(path))
             {
                 Image img = await VisHelper.GetFirstFrameAsync(path);
+                if (img is null) return;
+
                 Img.Source = img.Source;
                 Img.Tag = path;
-
                 return;
             }
 

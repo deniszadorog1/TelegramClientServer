@@ -49,7 +49,9 @@ namespace TelegramVisualPart.Pages
             if(_user.BirthDay is not null)BirthdayBlock.Text = $"{_user.BirthDay.Value.Day}.{_user.BirthDay.Value.Month}.{_user.BirthDay.Value.Year}";
 
 
-            UserImage.ImageSource = 
+            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+
+            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
                 new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
             
             BlocksSize();

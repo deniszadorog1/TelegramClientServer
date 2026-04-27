@@ -19,6 +19,7 @@ namespace TelegramLib.MainClasses.Messages
             DateTime sentTime, string mediaName, 
             bool isSticker, bool isRead, bool isPinned,
             int? forwardedFromId, int bandId = -1) : 
+
             base(id, senderUserId, sentTime, isRead, isPinned, forwardedFromId)
         {
             IsSticker = isSticker;

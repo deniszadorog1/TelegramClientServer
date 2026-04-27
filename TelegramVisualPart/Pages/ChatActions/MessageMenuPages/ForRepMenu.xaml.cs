@@ -21,6 +21,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums.Menus;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 
@@ -66,6 +67,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             _system = system;
 
             InitializeComponent();
+
 
             SetBasicParams();
             SetVisibleMessages();

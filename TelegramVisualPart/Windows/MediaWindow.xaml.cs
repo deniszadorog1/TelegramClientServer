@@ -1,36 +1,19 @@
-﻿using MahApps.Metro.Behaviors;
-using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Routing.Constraints;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Dynamic;
+﻿using MaterialDesignThemes.Wpf;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml.Linq;
-using TelegramLib.Enums.Messages;
+using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.MainClasses.UserParams;
-using TelegramLib.Models;
+using TelegramLib.UserSettings;
+using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
-using TelegramVisualPart.UserControls.ChatControls.MediaActions;
-using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
 
 namespace TelegramVisualPart.Windows
 {
@@ -39,20 +22,20 @@ namespace TelegramVisualPart.Windows
     /// </summary>
     public partial class MediaWindow : Window
     {
-        private TelegramLib.MainClasses.User _user;
+        private User _user;
         private MainWindow _godWindow;
         private MediaShowType _type;
-        private TelegramLib.MainClasses.TelSystem _system;
+        private TelSystem _system;
 
         public event EventHandler ToRemoveImage;
 
         private bool _isSchedule = false;
 
         //Base
-        public MediaWindow(TelegramLib.MainClasses.User user,
+        public MediaWindow(User user,
             MainWindow godWindow,
             MediaShowType type,
-            TelegramLib.MainClasses.TelSystem system)
+            TelSystem system)
         {
             _user = user;
             _godWindow = godWindow;
@@ -296,11 +279,18 @@ namespace TelegramVisualPart.Windows
 
         public void SetUserImages()
         {
-            //_user - Chatter for who to set images
-            //Set first one
-            SetAllUserImages(
-                _user.UserImages.Select(x => x.Name).ToList(),
-                _user.UserImages.Select(x => x.Date).ToList(),
+            List<string> names = _user.UserImages.Select(x => x.Name).ToList();
+            List<DateTime> dates = _user.UserImages.Select(x => x.Date).ToList();
+
+            if (_type == MediaShowType.OtherUserImages &&
+                _system.LoggedUser.Id != _user.Id &&
+                _user.ImageMask is not null)
+            {
+                names.RemoveRange(1, names.Count - 1);
+                dates.RemoveRange(1, dates.Count - 1);
+            }
+
+            SetAllUserImages(names, dates,
                 GetSendersForUserImages(_user.UserImages.Count));
 
             _imgInfo = _allImagesInfo.FirstOrDefault();
@@ -352,11 +342,11 @@ namespace TelegramVisualPart.Windows
 
         public void SetImageToShow(string allPath)
         {
-            Image img = new Image()
+/*            Image img = new Image()
             {
                 Source = new BitmapImage(new Uri(allPath, UriKind.Absolute))
-            };
-            ImageToShow.Source = img.Source;
+            };*/
+            ImageToShow.Source = SignalRHelperService.LoadBitmap(allPath);// img.Source;
 
             ClearRotationValues();
         }
@@ -552,8 +542,11 @@ namespace TelegramVisualPart.Windows
                 if (fileName is null) return;
 
                 string path = FilesAction.GetPathByName(fileName);
-                if (path is null) return;
-
+                if (path is null)
+                {
+                    MessageBox.Show("Naruto photos is forbidden!!");
+                    return;
+                }
                 DataObject data = new DataObject();
                 data.SetData(DataFormats.FileDrop, new string[] { path });
                 data.SetImage((BitmapSource)ImageToShow.Source);

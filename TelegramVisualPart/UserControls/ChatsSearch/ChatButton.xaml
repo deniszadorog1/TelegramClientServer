@@ -18,7 +18,9 @@
             <Ellipse Grid.Row="0" Name ="ChatImage" 
                  Width="45" Height="45" HorizontalAlignment="Center">
                 <Ellipse.Fill>
-                    <ImageBrush x:Name="UserImgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
+
+                    <!--ImageSource="/Visuals/Images/UserImages/Minato.jpg"-->
+                    <ImageBrush x:Name="UserImgBrush" />
                 </Ellipse.Fill>
             </Ellipse>
 

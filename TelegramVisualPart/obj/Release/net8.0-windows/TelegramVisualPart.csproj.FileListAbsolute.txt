@@ -1,10 +1,30 @@
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TestThing.deps.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TestThing.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TestThing.exe
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TelegramVisualPart.exe
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Cursors\tungTungSahurCursor.cur
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Gifs\TestGif.gif
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Icon\TelIcon.ico
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Stickers\Figure.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Stickers\Girl.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\SystemImages\kchau.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\SystemImages\StopSign.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\UserImages\Minato.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\UserImages\WhiteCat.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\blackCat.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\check.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\fray.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\GetFont.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\image.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\Monkey.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\Pineapple.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\Snowman.jpg
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Images\Wallpapers\Снимок экрана 2023-05-05 003346.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Sounds\NotifSounds\brak.mp3
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\Sounds\NotifSounds\Default.mp3
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\LanguageFiles\EnglishLang.json
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\LanguageFiles\RussianLang.json
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TelegramVisualPart.exe
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\.env
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TelegramVisualPart.deps.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TelegramVisualPart.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\TelegramVisualPart.dll
@@ -170,6 +190,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\Use
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsControls\UserChatsMenuElement.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\ChatButton.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchControl.g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .g.cs
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMessage.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\RadioBut.g.cs
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.g.cs
@@ -326,6 +348,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\Use
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsControls\UserChatsMenuElement.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\ChatButton.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchControl.baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .baml
+B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenuItem.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ChatsSearch\SearchMessage.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\RadioBut.baml
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\UserControls\ContactsControls\AutoDeleteControls\SpecialListBox.baml

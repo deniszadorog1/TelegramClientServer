@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls
 {
@@ -40,7 +41,7 @@ namespace TelegramVisualPart.UserControls
         public void SetChat(TelegramLib.MainClasses.UserChat chat)
         {
             _chat = chat;
-            if(_chat is TelegramLib.MainClasses.SavedMessagesChat)
+            if (_chat is TelegramLib.MainClasses.SavedMessagesChat)
             {
                 SetSavedMessageBlock();
             }
@@ -56,17 +57,34 @@ namespace TelegramVisualPart.UserControls
             _imgName = newName;
         }
 
-        public void SetContactImage()
+        public async void SetContactImage()
         {
-            if (_imgName is null)
+            try
             {
-                ImageIcon.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
-                return;
-            }
+                if (string.IsNullOrEmpty(_imgName))
+                {
+                    ImageIcon.ImageSource = new BitmapImage(new Uri(
+                        FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                    return;
+                }
 
-            ImageIcon.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_imgName), UriKind.Absolute));
+                string path = FilesAction.GetUserImagePath(_imgName);
+
+/*                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(path, UriKind.Absolute);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+                bitmap.EndInit();
+                //bitmap.Freeze();*/
+
+                ImageIcon.ImageSource = SignalRHelperService.LoadBitmap(path);//  bitmap;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading image: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error loading image: {ex.Message}");
+            }
         }
 
         public void UpdateImage(string imgName)
@@ -98,7 +116,7 @@ namespace TelegramVisualPart.UserControls
 
         public void ChangePinVisOnOposit()
         {
-            PinBlock.Visibility = PinBlock.Visibility == Visibility.Hidden ? 
+            PinBlock.Visibility = PinBlock.Visibility == Visibility.Hidden ?
                 Visibility.Visible : Visibility.Hidden;
         }
 
@@ -129,7 +147,7 @@ namespace TelegramVisualPart.UserControls
             Background = background;
         }
 
-        public void SetAutoDelDurationCircle(AutoDeleteType type, 
+        public void SetAutoDelDurationCircle(AutoDeleteType type,
             string duration)
         {
             if (type == AutoDeleteType.Nothing)
@@ -151,7 +169,7 @@ namespace TelegramVisualPart.UserControls
         {
             ImageIcon = null;
 
-            UserEllipseImage.Fill = 
+            UserEllipseImage.Fill =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
             SavedMassageIcon.Visibility = Visibility.Visible;
         }
@@ -173,7 +191,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetTick(TelegramLib.MainClasses.Messages.Message mes, TelSystem system)
         {
-            if(mes is null || mes.SenderUserId != system.LoggedUser.Id)
+            if (mes is null || mes.SenderUserId != system.LoggedUser.Id)
             {
                 ReadTick.Visibility = Visibility.Hidden;
                 return;
