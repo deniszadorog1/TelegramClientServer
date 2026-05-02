@@ -89,8 +89,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/savedchatcontrol" +
-                    "s/mediaparam.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/savedchatcontrols/mediapa" +
+                    "ram.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\SavedChatControls\MediaParam.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

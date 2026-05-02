@@ -601,11 +601,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             //Set in DB
             await ApiService.UpdatePrivSettings(_settings);       
             
-            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
-
             await VisHelper.UpdateStatesWithSignalR(_system);
+            ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
-
 
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

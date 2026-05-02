@@ -80,9 +80,12 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                     _system.Chats[i].Chatter.Name;
 
                 control.HideIcon();
+
+                BitmapImage bitmap = ApiService.GetCachedBitmap(FilesAction.GetUserImagePath(contactPath));
+
                 control.ChatEllipse.Fill = new ImageBrush()
                 {
-                    ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
+                    ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
                     Stretch = Stretch.Fill
                 };
 

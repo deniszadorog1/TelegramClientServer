@@ -67,8 +67,11 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
                 but.ChatName.Text = _system.Contacts[i].Name;
 
-                but.UserImgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
+                BitmapImage bitmap = ApiService.GetCachedBitmap(_system.Contacts[i].GetFirstImageName().Name);
+
+                but.UserImgBrush.ImageSource = bitmap is not null ? bitmap : 
+                    SignalRHelperService.LoadBitmap(FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name));
+                // new BitmapImage(new Uri(FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
                 ChatsPanel.Children.Add(but);
             }
         }

@@ -19,6 +19,7 @@ using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatsControls.ToSendMedias;
 
 namespace TelegramVisualPart.Pages.ChatActions.SendMedia
@@ -229,6 +230,13 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+                //Upload medias
+                for (int i = 0; i < names.Length; i++)
+                {
+                    names[i] = await ApiService.UploadMediaAsync(names[i]);
+                    names[i] = FilesAction.GetPathByPseudoPath(names[i]);
+                }
 
                 if (names.Length > 1)
                 {

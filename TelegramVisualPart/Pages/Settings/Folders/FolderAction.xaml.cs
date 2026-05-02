@@ -283,9 +283,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
                 folderChat.RemoveControl += RemoveFolderChat_PreviewMouseDown;
 
+                BitmapImage bitmap = ApiService.GetCachedBitmap(contacts[i].GetFirstImageName().Name);
+
                 folderChat.ChatEllipse.Fill = new ImageBrush()
                 {
-                    ImageSource = new BitmapImage(new Uri(
+                    ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(
                         FilesAction.GetUserImagePath(contacts[i].GetFirstImageName().Name), UriKind.Absolute)),
 
                 };

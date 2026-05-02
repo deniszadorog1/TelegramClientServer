@@ -7,6 +7,11 @@
     <UserSecretsId>1f0b1db1-13e1-48f2-b566-e1f2f081a74b</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="ffmpeg.exe" />
+    <None Remove="ffprobe.exe" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
 		<PackageReference Include="DotNetEnv" Version="3.1.1" />
@@ -30,6 +35,14 @@
     <Folder Include="wwwroot\Uploads\Images\" />
     <Folder Include="wwwroot\Uploads\Videos\" />
     <Folder Include="wwwroot\Uploads\GIFs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ffprobe.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

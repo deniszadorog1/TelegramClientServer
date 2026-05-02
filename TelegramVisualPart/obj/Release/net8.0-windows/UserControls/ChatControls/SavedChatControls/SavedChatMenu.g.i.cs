@@ -153,8 +153,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/savedchatcontrol" +
-                    "s/savedchatmenu.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/savedchatcontrols/savedch" +
+                    "atmenu.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\SavedChatControls\SavedChatMenu.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

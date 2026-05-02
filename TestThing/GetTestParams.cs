@@ -23,7 +23,16 @@ namespace TestThing
 
         public static string GetWallpaperPath(string wallpaperName)
         {
-            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string visuals =  Path.Combine(AppContext.BaseDirectory, "Visuals");
+            string images = Path.Combine(visuals, "Images");
+            string wallpapers = Path.Combine(images, "Wallpapers");
+
+            string resPath =  Path.Combine(wallpapers, wallpaperName);
+
+            return resPath;
+
+
+/*            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
             string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
             string visPath = Path.Combine(tempPath, "Visuals");
@@ -31,7 +40,7 @@ namespace TestThing
             string wallpaperPath = Path.Combine(imagesPath, "Wallpapers");
             string resPath = Path.Combine(wallpaperPath, wallpaperName);
 
-            return resPath;
+            return resPath;*/
         }
 
         

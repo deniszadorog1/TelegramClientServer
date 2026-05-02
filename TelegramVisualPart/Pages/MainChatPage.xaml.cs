@@ -208,21 +208,12 @@ namespace TelegramVisualPart.Pages
 
         public void SetBasicParams()
         {
-            /*            LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;
-                        LeftButtons.OnMenuClick += LeftButtons_OnMenuClick;*/
-
             SetDrawButsStyles();
 
             SetChatClick();
 
             LeftButtons.SetSystemParam(_system);
 
-            /*            Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            MainWindow window = (MainWindow)Window.GetWindow(this);
-                            UserChat.SetSystemAndMainWindowParam(_system, window);
-                        });
-            */
             UserChat.BackButton_MouseDown += BackButton_MouseDown;
 
             SetUserImage();
@@ -569,7 +560,7 @@ namespace TelegramVisualPart.Pages
         public void SetUserImage()
         {
             string path = FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
-            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);//  new BitmapImage(new Uri(path, UriKind.Absolute));
+            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
         }
 
         public void SetChatClick()
@@ -936,7 +927,7 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat = _system.GetChatByMessageId(mesId);
             if (chat is null) return (null, null);
 
-            ListBoxItem? item = 
+            ListBoxItem? item =
                 ChatsBox.Items
                     .OfType<ListBoxItem>()
                     .FirstOrDefault(x => x.Tag is not null && x.Tag.ToString() == chat.Id.ToString());
@@ -2190,9 +2181,6 @@ namespace TelegramVisualPart.Pages
                 //Hide Contact info Button
                 UserChat.SetUserInfoButGrid(true);
 
-                //Set User Chat Column Width
-                /*                double newUserChatColumn = this.ActualWidth - LeftButtons.ActualWidth;
-                                SetColumnWidth(ChatColumn, newUserChatColumn);*/
             }
             else
             {
@@ -2286,9 +2274,6 @@ namespace TelegramVisualPart.Pages
             ChatColumn.Width = new GridLength(0);
 
             ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
-            //this.ActualWidth - LeftButtonsColumn.Width.Value - GridSplitterColumn.Width.Value);
-
-            // ChatsColumn.MaxWidth = ChatsColumn.Width.Value;
         }
 
         public void SetUserTalkMenuAction(UserTalkControlButTypes type)
@@ -2408,15 +2393,11 @@ namespace TelegramVisualPart.Pages
 
             _menuChatterTalk.SetVisibilityToUnreadEllipse(false);
 
-            //If temp chat is on
-            /* if (_system.GetChosenChat() is not null &&
-                 _system.GetChosenChat().Id == chat.Id)
-             {*/
             //Clear chat
             UserChat.Visibility = Visibility.Hidden;
             ChosoeChatBorder.Visibility = Visibility.Visible;
             CloseMediaWindows();
-            //}
+
             //If chat is already y on main page
             if (((MainWindow)Window.GetWindow(this)).ChatIsOnOtherWindow(chat))
             {
@@ -2427,7 +2408,7 @@ namespace TelegramVisualPart.Pages
 
             MainWindow window = new MainWindow(_system, chat, main);
 
-            window.Opacity = 0;
+            //window.Opacity = 0;
             window.Show();
 
             window.ContentRendered += (s, e) =>
@@ -2466,10 +2447,7 @@ namespace TelegramVisualPart.Pages
             int.TryParse(_menuChatterTalk.Tag.ToString(), out int id);
 
             if (_system.LoggedUser.Id == id) return _system.SavedMesesChat;
-            return _system.Chats.FirstOrDefault(x => x.Chatter.Id == id);//.GetChatById(id); //_system.GetUserChatByChatterLogin(_menuChatterTalk.FriendLogin.Text);
-
-            /*UserChat.SetUserChat(
-             _system.GetUserChatByChatterName(_menuChatterTalk.FriendLogin.Text));*/
+            return _system.Chats.FirstOrDefault(x => x.Chatter.Id == id);
         }
 
 
@@ -2496,6 +2474,7 @@ namespace TelegramVisualPart.Pages
 
             UserChat.SetSystem(_system);
             UserChat.SetUserChat(chat);
+            //MessageBox.Show("Only user chat is set!");
         }
 
 
@@ -2808,7 +2787,7 @@ namespace TelegramVisualPart.Pages
 
             //Get last share contact date message
 
-            TelegramLib.MainClasses.UserChat? chatterChat = 
+            TelegramLib.MainClasses.UserChat? chatterChat =
                 await ApiService.GetChatByUserAndSenderId(chatter.Id, _system.LoggedUser.Id);
             if (chatterChat is null) return;
 

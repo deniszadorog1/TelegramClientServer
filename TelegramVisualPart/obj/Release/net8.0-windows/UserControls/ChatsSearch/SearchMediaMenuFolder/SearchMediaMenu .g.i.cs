@@ -77,8 +77,8 @@ namespace TelegramVisualPart.UserControls.ChatsSearch.SearchMediaMenuFolder {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatssearch/searchmediamenufo" +
-                    "lder/searchmediamenu%20.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatssearch/searchmediamenufolder/sear" +
+                    "chmediamenu%20.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatsSearch\SearchMediaMenuFolder\SearchMediaMenu .xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

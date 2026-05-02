@@ -28,6 +28,7 @@ using TelegramVisualPart.Helper;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 using System.Net.NetworkInformation;
+using System.Formats.Asn1;
 
 namespace TelegramVisualPart.Services
 {
@@ -81,6 +82,8 @@ namespace TelegramVisualPart.Services
 
         public static event Action<HashSet<int>>? UpdateChatsAfterSched;
         public static event Action<User>? UpdatePagePhotoDel;
+
+        public static event Func<int, Task>? UpdateCachedDel;
 
         private static bool _isChatEventsAreSet = false;
         public static bool GetIsChatEventsAreSet() => _isChatEventsAreSet;
@@ -375,6 +378,11 @@ namespace TelegramVisualPart.Services
                 UpdatePagePhotoDel?.Invoke(loggedUser);
             });
 
+            _connection.On<int>("UpdateCachedSettings", (id) =>
+            {
+                UpdateCachedDel?.Invoke(id);
+            });
+
             await _connection.StartAsync();
         }
 
@@ -600,6 +608,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateUserImages", user);
+        }
+
+        public static async Task UpdateCachedSettings(int id)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("UpdateCachedSettings", id);
         }
     }
 }

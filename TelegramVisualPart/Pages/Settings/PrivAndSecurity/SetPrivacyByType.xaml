@@ -90,10 +90,10 @@
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0" Name="RadioPhoneEveybodyDescription"
-                            Background="{StaticResource DarkThemeDeviderField}">
-                                <TextBlock Name="DescriptionPhoneEverybodyText" TextWrapping="Wrap" Margin="20 0 20 0"
-                                       Foreground="Gray" FontSize="14" Padding="0 10 0 0"
-                                       Text="There is gona some text one two three four five size seve eight nine ten"/>
+                                    Background="{StaticResource DarkThemeDeviderField}">
+                                    <TextBlock Name="DescriptionPhoneEverybodyText" TextWrapping="Wrap" Margin="20 0 20 0"
+                                           Foreground="Gray" FontSize="14" Padding="0 10 0 0"
+                                           Text="There is gona some text one two three four five size seve eight nine ten"/>
                             </Grid>
 
                             <TextBlock Grid.Row="1"

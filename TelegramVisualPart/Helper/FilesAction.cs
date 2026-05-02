@@ -176,7 +176,7 @@ namespace TelegramVisualPart.Helper
             return Path.Combine(AppContext.BaseDirectory, "Visuals");
         }
 
-        private static string GetImagesPath()
+        public static string GetImagesPath()
         {
             return Path.Combine(GetVisualPath(), "Images");
         }
@@ -236,7 +236,7 @@ namespace TelegramVisualPart.Helper
             {
                 //MessageBox.Show("Getting pseudo path");
                 var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
-                string res = MediaServerUrl.Url + pseudoPath;
+                string res = pseudoPath.Contains(MediaServerUrl.Url) ? pseudoPath : MediaServerUrl.Url + pseudoPath;
 
                 //MessageBox.Show(res);               
                 return res;
@@ -255,7 +255,7 @@ namespace TelegramVisualPart.Helper
             }
             if (pseudoPath.Contains("Minato")) return string.Empty;
 
-            string res = MediaServerUrl.Url + pseudoPath;
+            string res = pseudoPath.Contains(MediaServerUrl.Url) ? pseudoPath : MediaServerUrl.Url + pseudoPath;
             return res;
         }
 
@@ -635,6 +635,34 @@ namespace TelegramVisualPart.Helper
 
                 return result;
             }
+        }
+
+        public static bool IsRealMedia(string path)
+        {
+            try
+            {
+                byte[] buffer = new byte[12];
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    fs.Read(buffer, 0, buffer.Length);
+                }
+
+                // PNG: 89 50 4E 47
+                if (buffer[0] == 0x89 && buffer[1] == 0x50 && buffer[2] == 0x4E && buffer[3] == 0x47) return true;
+
+                // JPEG: FF D8 FF
+                if (buffer[0] == 0xFF && buffer[1] == 0xD8 && buffer[2] == 0xFF) return true;
+
+                // GIF: 47 49 46 (GIF87a / GIF89a)
+                if (buffer[0] == 0x47 && buffer[1] == 0x49 && buffer[2] == 0x46) return true;
+
+
+                // Байты: 66 74 79 70 (ASCII 'ftyp')
+                if (buffer[4] == 0x66 && buffer[5] == 0x74 && buffer[6] == 0x79 && buffer[7] == 0x70) return true;
+
+                return false;
+            }
+            catch { return false; }
         }
     }
 }

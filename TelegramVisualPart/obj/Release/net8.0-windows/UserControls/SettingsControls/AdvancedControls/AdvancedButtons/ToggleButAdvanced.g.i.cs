@@ -73,8 +73,8 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AdvancedControls.Adva
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/settingscontrols/advancedcont" +
-                    "rols/advancedbuttons/togglebutadvanced.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/settingscontrols/advancedcontrols/adva" +
+                    "ncedbuttons/togglebutadvanced.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\..\UserControls\SettingsControls\AdvancedControls\AdvancedButtons\ToggleButAdvanced.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

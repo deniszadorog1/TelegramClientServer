@@ -16,6 +16,7 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.MediaShow;
 using TelegramVisualPart.Enums.Menus;
@@ -130,7 +131,6 @@ namespace TelegramVisualPart.UserControls
                 {
                     return mainWind.IsOnlyTempOnlyChatIsExist(chat);
                 }
-
                 return false;
             });
         }
@@ -936,11 +936,9 @@ namespace TelegramVisualPart.UserControls
 
             await SetOnlineStatus();
 
-            //_chat.Messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(1, 1, DateTime.Now, "asd"));
-
             UserChatMenu.SetChatParam(_chat);
 
-            ClearChat();
+            //ClearChat();
 
             SetChatParams(_chat.GetChatter());
             SetChatMessages();
@@ -963,10 +961,6 @@ namespace TelegramVisualPart.UserControls
         public async void SetLittleChatterImage()
         {
             if (_chat is null || _chat.Chatter is null) return;
-            /*
-                        bool asd = !await ApiService.IsUserIsBlocked(_system.LoggedUser.Id, _chat.Chatter.Id);
-
-                        if (!asd) return;*/
 
             await SignalRHelperService.SetPhotoInEllipse(_chat.Chatter,
                  UserImage, LittlePhotoEllipse);
@@ -1123,9 +1117,13 @@ namespace TelegramVisualPart.UserControls
         public void SetChatterImage()
         {
             if (_chat.Chatter is null) return;
-            UserImage.ImageSource = new BitmapImage(
+            string imgName = _chat.Chatter.GetFirstImageNameInString();
+
+            UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
+
+/*            UserImage.ImageSource = new BitmapImage(
                 new Uri(FilesAction.GetUserImagePath(
-                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));
+                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
         }
 
         public async Task SetOnlineStatus()
@@ -1224,7 +1222,7 @@ namespace TelegramVisualPart.UserControls
 
 
             UserChatMenu.SetSystemParam(system);
-            SetTestChatMessages();
+            //SetTestChatMessages();
 
             EmojisBoard.SetSystem(_system);
 
@@ -1239,6 +1237,9 @@ namespace TelegramVisualPart.UserControls
             SetMessagesInChat();
         }
 
+
+        private MainSettings _chatterSettings;
+        private User _chatter;
         public async Task SetMessagesInChat()
         {
             await Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -1248,6 +1249,10 @@ namespace TelegramVisualPart.UserControls
                 _isEdit = false;
 
                 List<int> bandBankIds = new List<int>();
+
+                //Update chatter CachedUser + his MainSettings 
+                if (_chat is not null && _chat.Chatter is not null) await ApiService.UpdateChachedUserAndSettings(_chat.Chatter.Id);
+
                 for (int i = 0; i < _chatMessages.Count; i++)
                 {
                     if (_chatMessages[i] is MediaAction mediaAct &&
@@ -1326,8 +1331,10 @@ namespace TelegramVisualPart.UserControls
                statMes.MessageReferenceId is null ? null :
                _chat.GetMessageById((int)statMes.MessageReferenceId);
 
+            User cached = ApiService.GetCachedUser(statMes.SenderUserId);
             TelegramLib.MainClasses.User sender = _isSavedMessageChat ? _system.LoggedUser :
-                    Task.Run(() => ApiService.GetUserById(statMes.SenderUserId)).Result;
+                                cached is not null ? cached :
+                                await ApiService.GetUserById(statMes.SenderUserId);
             /*await ApiService.GetUserById(statMes.SenderUserId);*/
 
             if (sender is null) return;
@@ -2378,9 +2385,6 @@ namespace TelegramVisualPart.UserControls
 
             if (toAdd is not TelegramLib.MainClasses.Messages.TextMessage toAddText) return;
 
-            //await SendMessageToReceiver(toAddText);
-
-            //toAdd.SenderId = contact.Id;
             _chatMessages.Add(toAddText);
             if (CommentTextBox.Text == sendText) CommentTextBox.Text = string.Empty;
 
@@ -3021,7 +3025,6 @@ namespace TelegramVisualPart.UserControls
 
         public void ForwardMesAction()
         {
-
             //Get message to resend
             ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
@@ -4046,7 +4049,8 @@ namespace TelegramVisualPart.UserControls
 
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
-            SetSenderImageByListBoxItem(item, _system.GetUserById(media.SenderUserId), _system.LoggedUser.Id == media.SenderUserId);
+            SetSenderImageByListBoxItem(item, _system.GetUserById(media.SenderUserId),
+                _system.LoggedUser.Id == media.SenderUserId);
 
             //Check is via signalR
             //ScrollToNewMessage();
@@ -4302,6 +4306,8 @@ namespace TelegramVisualPart.UserControls
         {
             ContactInfoGrid.Children.Clear();
             UserInfoColumn.Width = new GridLength(0);
+
+            if (_mainWindow is null) return;
 
             if (_mainWindow.GetIsLongContnetChatState())
             {
@@ -5531,6 +5537,7 @@ namespace TelegramVisualPart.UserControls
 
                     if (mes is MediaAction mesMedia && FilesAction.IsFileIsVideo(mesMedia.MediaName))
                     {
+
                         Image firstVideoFrame = await VisHelper.GetFirstFrameAsync(mesMedia.MediaName);
                         if (firstVideoFrame is null) return;
 
@@ -5539,9 +5546,11 @@ namespace TelegramVisualPart.UserControls
                     }
                     else
                     {
+                        string path = media.GetImageBorderSource(messages.First().Id);
                         //for image
-                        ReplyedImage.Source = new BitmapImage(new Uri(
-                            media.GetImageBorderSource(messages.First().Id), UriKind.Absolute));
+
+                        ReplyedImage.Source = ApiService.GetCachedBitmap(path);
+                        //ReplyedImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
                     }
                 }
                 else if (media._img is not null) ReplyedImage.Source = media._img.Source;
@@ -5552,10 +5561,17 @@ namespace TelegramVisualPart.UserControls
                 }
                 else
                 {
+
                     if (messages.Count == 0 || messages.First() is not MediaAction video) return;
-                    Image img = await VisHelper.GetFirstFrameAsync(video.MediaName);
-                    if (img is null) return;
-                    ReplyedImage.Source = img.Source;
+                    //Image img = await VisHelper.GetFirstFrameAsync(video.MediaName);
+                    string fullPath = await ApiService.GetVideoPreviewPath(video.MediaName);
+
+                    if (fullPath is not null && fullPath != string.Empty)
+                    {
+                        Image firstVideoFrame = await VisHelper.GetFirstFrameAsync(fullPath);
+                        ReplyedImage.Source = firstVideoFrame.Source;
+                    }
+                    //ReplyedImage.Source = ApiService.GetCashedBitmap(video.MediaName);/*is BitmapImage bit and not null ? bit : img.Source;*/
                 }
             }
             else
@@ -5671,8 +5687,6 @@ namespace TelegramVisualPart.UserControls
 
         public async Task SetStopMessageForChatter()
         {
-            //string stopSignPath = FilesAction.GetSystemImagePath("StopSign.png");
-
             //Get is need to set stop img
             IEnumerable<ListBoxItem> items = ChatBox.Items.OfType<ListBoxItem>();
 
@@ -6792,8 +6806,10 @@ namespace TelegramVisualPart.UserControls
 
         public void SetUserImage(string imgName)
         {
-            UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+            UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
+
+/*             new BitmapImage(new Uri(
+                FilesAction.GetUserImagePath(imgName), UriKind.Absolute));*/
         }
 
         public void SetAddMediaButVisibility()
@@ -6823,21 +6839,21 @@ namespace TelegramVisualPart.UserControls
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                // Получаем массив путей к файлам
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                //Remove wrong paths
 
                 List<string> paths = new List<string>();
 
                 for (int i = 0; i < files.Length; i++)
                 {
-                    if (FilesAction.IsFileIsImage(files[i]) ||
-                        FilesAction.IsFileIsVideo(files[i]))
+                    if ((FilesAction.IsFileIsImage(files[i]) ||
+                        FilesAction.IsFileIsVideo(files[i])) &&
+                        FilesAction.IsRealMedia(files[i]))
                     {
                         paths.Add(files[i]);
                     }
                 }
+
+                if (paths.Count == 0) return;
 
                 Window window = Window.GetWindow(this);
 

@@ -198,6 +198,11 @@ namespace TelegramClientServer.SignalRHubs
             await Clients.User(chatterId.ToString()).
                 SendAsync("RemoveManyMessagesByDateTimes", sentTimes, loggedUserId);
         }
+
+        public async Task UpdateCachedSettings(int id)
+        {
+            await Clients.All.SendAsync("UpdateCachedSettings", id);
+        }
     }
 
     public class MessageDispatcher : BackgroundService

@@ -6,6 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
@@ -67,6 +68,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _chat = chat;
             _contact = contact;
             _isSetMaxHeight = isSetMaxHeight;
+
+            if(_chat is not null && _chat.Chatter is not null) await ApiService.UpdateChachedUserAndSettings(chat.Chatter.Id);
 
             if (!_isSetMaxHeight) MaxHeight = int.MaxValue;
 
@@ -482,7 +485,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             IsPrivacyException shareType =
                 await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.Bio, settings: settings);
-            if (settings is null) settings = await ApiService.GetSettingsByUserId(toUpdate.Id);
+
+
+            if (settings is null) settings = await SignalRHelperService.GetMainSettings(toUpdate, settings);
 
             bool isStop = await SignalRHelperService.IsAndSetStopPath(Enums.PrivacySettingType.Bio, toUpdate,
                 settings: settings);
@@ -938,20 +943,20 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private void Line_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_chat is null) return;
-            if (sender is Grid grid)
+            if (sender is FrameworkElement element)
             {
                 ((MainWindow)Window.GetWindow(this)).SetThirdFrame(new Pages.UserInfoContact.
                     SentObjectsUserInfo.SentItemsUserContact(
                     ((MainWindow)Window.GetWindow(this)).GetSystem(),
-                    GetItemType(grid.Name), _chat));
+                    GetItemType(element.Name), _chat));
             }
         }
 
         private Enums.SentItemsTypes GetItemType(string name)
         {
-            return name == PhotosLine.Name.ToString() ? Enums.SentItemsTypes.Photos :
-                name == VideosLine.Name.ToString() ? Enums.SentItemsTypes.Video :
-                name == GifLine.Name.ToString() ? Enums.SentItemsTypes.GIFs :
+            return name == PhotosLine.Name.ToString() || name == ImageIcon.Name.ToString() || name == AmountOfPhotosTextBlock.Name.ToString() ? Enums.SentItemsTypes.Photos :
+                name == VideosLine.Name.ToString() || name == VideoIcon.Name.ToString() || name == AmountOfVideosTextBlock.Name.ToString() ? Enums.SentItemsTypes.Video :
+                name == GifLine.Name.ToString() || name == GifIcon.Name.ToString() || name == AmountOfGifsTextBlock.Name.ToString() ? Enums.SentItemsTypes.GIFs :
                 name == LinkLine.Name.ToString() ? Enums.SentItemsTypes.SharedLinks :
                 Enums.SentItemsTypes.Photos;
         }
@@ -1051,8 +1056,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (_chat is not SavedMessagesChat && _chat.GetChatter() is not null)
             {
-                MainSettings settings =
-                    await ApiService.GetSettingsByUserId(_chat.GetChatter().Id);
+                MainSettings settings = await SignalRHelperService.GetMainSettings(_chat.GetChatter(), null); 
+                    //await ApiService.GetSettingsByUserId(_chat.GetChatter().Id);
+
                 ProfilePhotosSub sub = settings.PrivacySettings.ProfPhotoPrivacy;
 
                 if (sub.ShareType == TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||

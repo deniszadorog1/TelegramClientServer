@@ -1,37 +1,19 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.Xaml.Behaviors.Core;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Globalization;
-using System.Linq;
 using System.Net.Http;
-using System.Security.Permissions;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
-using TelegramVisualPart.Pages.VisualPages;
-using TelegramVisualPart.UserControls.ChatControls;
-using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.Windows;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 {
@@ -107,7 +89,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                 (string title, string desc) siteParams = await GetParsedParams(links[i]);
 
                 SentLinkControl linkControl = new SentLinkControl(siteParams.title, siteParams.desc, links[i]);
-                ElemsPanel.Children.Add(linkControl); 
+                ElemsPanel.Children.Add(linkControl);
             }
         }
 
@@ -173,7 +155,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
         public void MediaGifs_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not Image img ) return;
+            if (sender is not Image img) return;
             int.TryParse(img.Tag.ToString(), out int imgIndex);
 
             //string path = _gifPaths[imgIndex];
@@ -193,14 +175,14 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             mediaWindow.Show();
 
             //SetVideo Paths
-/*            VisualActionPage page = new VisualActionPage(chosenGifPath, _gifPaths);
+            /*            VisualActionPage page = new VisualActionPage(chosenGifPath, _gifPaths);
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
 
 
-            int chosenGifIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+                        int chosenGifIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, gifs, chosenGifIndex, _chat);*/
+                        page.SetUserChat(_system, gifs, chosenGifIndex, _chat);*/
         }
 
         public List<MediaAction> GetGifMessages()
@@ -266,16 +248,16 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             mediaWindow.Show();
 
 
-/*            //SetVideo Paths
-            VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
+            /*            //SetVideo Paths
+                        VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
 
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
+                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
 
-            List<MediaAction> videos = GetVideoMessages();
+                        List<MediaAction> videos = GetVideoMessages();
 
-            int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+                        int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
-            page.SetUserChat(_system, videos, chosenVideoIndex, _chat);*/
+                        page.SetUserChat(_system, videos, chosenVideoIndex, _chat);*/
         }
 
         public int GetImageIndex(Image img)
@@ -305,7 +287,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             _imgs = GetImages();
 
             SetOnlyImagesInMedias();
-          
+
             for (int i = 0; i < _imgs.Count; i++)
             {
                 _imgs[i].Width = mediaSize;
@@ -378,7 +360,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
                 ListBoxItem item = _menu.GetChosenListBoxItem();
                 TelegramLib.MainClasses.Messages.Message mes = _menu.GetMessage();
-               
+
                 if (item.Content is not UserControl control || mes is null) return;
 
                 ((MainWindow)Window.GetWindow(this)).SetReplyMessage(control, new List<TelegramLib.MainClasses.Messages.Message>() { mes });
@@ -404,7 +386,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
         public void SetChatMediaObjs()
         {
             _medias.Clear();
-            for(int i = 0; i < _chat.Messages.Count; i++)
+            for (int i = 0; i < _chat.Messages.Count; i++)
             {
                 if (_chat.Messages[i] is MediaAction media)
                 {
@@ -417,15 +399,15 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
         {
             List<MediaAction> toRemove = new List<MediaAction>();
 
-            for(int i = 0; i < _medias.Count; i++)
+            for (int i = 0; i < _medias.Count; i++)
             {
-                if(_medias[i].IsSticker || !FilesAction.IsFileIsImage(_medias[i].MediaName))
+                if (_medias[i].IsSticker || !FilesAction.IsFileIsImage(_medias[i].MediaName))
                 {
                     toRemove.Add(_medias[i]);
                 }
             }
 
-            foreach(var val in toRemove)
+            foreach (var val in toRemove)
             {
                 _medias.Remove(val);
             }
@@ -475,7 +457,12 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                 {
                     if (media.IsImage() && !media.IsSticker)//!FilesAction.IsUserChatMediaIsExist(media.MediaName)) continue;
                     {
-                        res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));
+                        string path = FilesAction.GetUserImagePath(media.MediaName);
+                        BitmapImage bitmap = ApiService.GetCachedBitmap(media.MediaName);
+                        
+                        if(bitmap is not null) res.Add(new Image() { Source = bitmap});
+                        //UserImage.ImageSource = ApiService.GetCashedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
+                        //res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));
                     }
                 }
             }

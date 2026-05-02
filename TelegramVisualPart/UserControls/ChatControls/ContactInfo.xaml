@@ -250,6 +250,7 @@
 
 
                             <TextBlock Grid.Column="1" Grid.Row="0" 
+                                       Background="Transparent"
                                        Name="AmountOfPhotosTextBlock" FontSize="16"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource UsualTextColor}"

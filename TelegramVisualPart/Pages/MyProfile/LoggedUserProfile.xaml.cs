@@ -51,8 +51,7 @@ namespace TelegramVisualPart.Pages
 
             string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
 
-            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
-                new BitmapImage(new Uri(FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+            UserImage.ImageSource = UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
             
             BlocksSize();
         }

@@ -99,3 +99,5 @@ B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Release\net8.0\refint\Te
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Release\net8.0\TelegramClientServer.pdb
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Release\net8.0\TelegramClientServer.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramClientServer\obj\Release\net8.0\ref\TelegramClientServer.dll
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\ffmpeg.exe
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\ffprobe.exe

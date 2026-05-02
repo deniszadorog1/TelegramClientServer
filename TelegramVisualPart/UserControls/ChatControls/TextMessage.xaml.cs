@@ -57,7 +57,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _forwardedFrom = text.ForwardedFromId;
 
             InitializeComponent();
-
             SetViewControlParams();
         }
 
@@ -277,8 +276,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             await SignalRHelperService.SetPhotoInEllipse(
                 _system.GetUserById(_message.SenderUserId),
                 BgBrush, UserEllipseImage);
-
-            //this.Visibility = Visibility.Visible;
         }
 
         private const int _minMessageWidth = 125;
@@ -349,7 +346,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             PinColumn.Width = new GridLength(0);
         }
 
-        private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_isOnlyView) return;
 
@@ -357,7 +354,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 
             if (user is null) return;
-            if (!SetIsUserCanSeeChattersInfo(user.Id))
+            if (!await SetIsUserCanSeeChattersInfo(user))
             {
                 MessageBox.Show("No no no mister fish, you go to tasik");
                 return;
@@ -380,9 +377,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(infoPage);
         }
 
-        public bool SetIsUserCanSeeChattersInfo(int userId)
+        public async Task<bool> SetIsUserCanSeeChattersInfo(TelegramLib.MainClasses.User user)
         {
-            MainSettings setUserSettings = Task.Run(() => ApiService.GetSettingsByUserId(userId)).Result;
+            MainSettings setUserSettings = await SignalRHelperService.GetMainSettings(user, null);  
 
             if (setUserSettings.PrivacySettings.ForwardMesPrivacy
                 .ShareWithExps.Any(x => x.Id == _system.LoggedUser.Id)) return true;
@@ -390,7 +387,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 .NeverShareExps.Any(x => x.Id == _system.LoggedUser.Id)) return false;
 
             return setUserSettings.PrivacySettings.
-                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, userId);
+                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, user.Id);
         }
 
         private void LoginForwarded_MouseEnter(object sender, MouseEventArgs e)

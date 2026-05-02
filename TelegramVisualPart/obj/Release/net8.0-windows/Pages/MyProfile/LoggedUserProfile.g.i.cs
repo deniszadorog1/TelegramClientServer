@@ -226,7 +226,7 @@ namespace TelegramVisualPart.Pages {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/pages/myprofile/loggeduserprofile.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/pages/myprofile/loggeduserprofile.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Pages\MyProfile\LoggedUserProfile.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

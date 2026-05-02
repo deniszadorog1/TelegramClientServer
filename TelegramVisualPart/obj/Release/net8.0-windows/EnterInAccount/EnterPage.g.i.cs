@@ -97,7 +97,7 @@ namespace TelegramVisualPart.EnterInAccount {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/enterinaccount/enterpage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/enterinaccount/enterpage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\EnterInAccount\EnterPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

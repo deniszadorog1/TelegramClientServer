@@ -279,6 +279,8 @@ namespace TelegramVisualPart.Pages
 
         private async Task CallSignalRMethods()
         {
+            await SignalRService.UpdateCachedSettings(_system.LoggedUser.Id);
+
             await SignalRService.SetPhoneNumVisByExps(_system.LoggedUser);
             await SignalRService.SetContactLastSeenVisState(_system.LoggedUser);
 

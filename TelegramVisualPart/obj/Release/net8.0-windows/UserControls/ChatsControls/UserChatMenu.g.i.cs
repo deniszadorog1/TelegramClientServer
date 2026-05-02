@@ -137,8 +137,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatscontrols/userchatmenu.xa" +
-                    "ml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatscontrols/userchatmenu.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\ChatsControls\UserChatMenu.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

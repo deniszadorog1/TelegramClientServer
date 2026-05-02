@@ -45,7 +45,7 @@ namespace TelegramVisualPart
         public UserChat _onlyChatUserChat;
 
         List<MainWindow> _chatWindows = new List<MainWindow>();
-        private MainWindow _bossWindow;
+        public MainWindow _bossWindow;
 
         DispatcherTimer _blockTimer;
 
@@ -79,6 +79,7 @@ namespace TelegramVisualPart
             SignalRService.UpdateContactDel += UpdateUserSignalR;
             SignalRService.UpdateUserImagesDel += UpdateUserImages;
             SignalRService.UpdatePagePhotoDel += UpdatePagePhoto;
+            SignalRService.UpdateCachedDel += UpdateCachedParams;
         }
 
         //Chat in other Window
@@ -142,6 +143,7 @@ namespace TelegramVisualPart
         {
             if (!_isOnlyChat ||
                 MainFrame.Content is not MainChatPage page) return;
+
             page.SetOnlyChatPage(_onlyChatUserChat, _system);
         }
 
@@ -175,6 +177,11 @@ namespace TelegramVisualPart
                     edit.UpdateImage();
                 }
             });
+        }
+
+        public async Task UpdateCachedParams(int id)
+        {
+            await ApiService.UpdateChachedUserAndSettings(id);
         }
 
         public void ClearMediaWindows()
@@ -240,7 +247,6 @@ namespace TelegramVisualPart
                 while (realEx.InnerException != null) realEx = realEx.InnerException;
                 MessageBox.Show($"BINGO: {realEx.Message}");
             }
-
 
             page.PageLoadedAction += SetOnlyChatPage;
 
@@ -503,6 +509,8 @@ namespace TelegramVisualPart
             if (_isOnlyChat)
             {
                 this.Close();
+                _mediaWidows.ForEach(x => x.Close());
+
                 RemoveChatMainWindow();
                 return;
             }
@@ -922,6 +930,7 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateUserTalkChat();
+
         }
 
         public void SetChosenFolderByName(string folderName)

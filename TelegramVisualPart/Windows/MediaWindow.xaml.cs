@@ -50,6 +50,7 @@ namespace TelegramVisualPart.Windows
                 _type == MediaShowType.OtherUserImages) SetUserImages();
 
             godWindow.CloseAllMediaWindows();
+
             godWindow.AddMediaWindow(this);
 
             RemoveParamFromMenu();
@@ -226,9 +227,8 @@ namespace TelegramVisualPart.Windows
             _allImagesInfo.Clear();
             for (int i = 0; i < _mediaMessages.Count; i++)
             {
-                string? filePath = await ApiService.GetPathOnMediaServer(_mediaMessages[i].MediaName);// FilesAction.GetFullChatImagePath(_mediaMessages[i].MediaName);
-                if (filePath is null) continue;
-
+                string? filePath = await ApiService.GetPathOnMediaServer(_mediaMessages[i].MediaName);
+                if (filePath is null || filePath == string.Empty) continue;
                 filePath = FilesAction.GetPathByPseudoPath(filePath);
 
                 Image img = new Image()
@@ -242,6 +242,7 @@ namespace TelegramVisualPart.Windows
             }
 
             if (_imgInfo is null) return;
+
             SetChatImage(_imgInfo.Value.Img.Tag.ToString());
             SetStratImgIndex();
 
@@ -264,12 +265,17 @@ namespace TelegramVisualPart.Windows
 
         public void SetChatImage(string imgName)
         {
-            //we have a name of image
-            //Get path to it
+            string filePath = ApiService.GetChashedPath(imgName);
+            if(filePath is not null)
+            {
+                SetImageToShow(filePath);
+                return;
+            }
+
             var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(imgName)).Result;
             if (pseudoPath is null) return;
 
-            string filePath = FilesAction.GetPathByPseudoPath(pseudoPath);// FilesAction.GetFullChatImagePath(imgName);
+            filePath = FilesAction.GetPathByPseudoPath(pseudoPath);// FilesAction.GetFullChatImagePath(imgName);
             SetImageToShow(filePath);
         }
 
@@ -322,9 +328,11 @@ namespace TelegramVisualPart.Windows
             {
                 string filePath = FilesAction.GetUserImagePath(names[i]);
 
+                BitmapImage source = ApiService.GetCachedBitmap(filePath);
+
                 Image img = new Image()
                 {
-                    Source = new BitmapImage(new Uri(filePath, UriKind.Absolute)),
+                    Source = source is not null ? source : new BitmapImage(new Uri(filePath, UriKind.Absolute)),
                     Tag = names[i]
                 };
 
@@ -342,11 +350,9 @@ namespace TelegramVisualPart.Windows
 
         public void SetImageToShow(string allPath)
         {
-/*            Image img = new Image()
-            {
-                Source = new BitmapImage(new Uri(allPath, UriKind.Absolute))
-            };*/
-            ImageToShow.Source = SignalRHelperService.LoadBitmap(allPath);// img.Source;
+            BitmapImage img = ApiService.GetCachedBitmap(allPath);
+
+            ImageToShow.Source = img is not null ? img : SignalRHelperService.LoadBitmap(allPath);
 
             ClearRotationValues();
         }
@@ -468,6 +474,7 @@ namespace TelegramVisualPart.Windows
 
             if (_godWindow is null || mediaAction is null) return;
 
+           
             _godWindow.ShowChosenMessageByMessageId(mediaAction.Id);
             _godWindow.DeleteMediaWindow(this);
         }

@@ -107,6 +107,9 @@ namespace TelegramVisualPart.Helper
         }
 
         private const int _correctTimeLength = 2;
+
+        public static object GlobalFFMpegConfig { get; private set; }
+
         public static string GetCorrectTimeParamVis(string timeParam)
         {
             return timeParam.Count() == _correctTimeLength ?
@@ -121,25 +124,30 @@ namespace TelegramVisualPart.Helper
 
         public static async Task UpdateStatesWithSignalR(TelSystem system)
         {
+            await SignalRService.UpdateCachedSettings(system.LoggedUser.Id);
+
+            await Task.Delay(150);
+
+            await SignalRService.UpdateLittlePhotoVisInChat(system.LoggedUser);
+
+            await SignalRService.UpdatePagePhoto(system.LoggedUser);
+
+            await SignalRService.UpdateContactPhotoVis(system.LoggedUser);
+
             await SignalRService.SetPhoneNumVisByExps(system.LoggedUser);
 
             await SignalRService.UpdateBirtDate(system.LoggedUser);
 
-            await SignalRService.SetContactLastSeenVisState(system.LoggedUser);
+            await Task.Delay(150);
 
-            await SignalRService.UpdateContactPhotoVis(system.LoggedUser);
+            await SignalRService.SetContactLastSeenVisState(system.LoggedUser);
 
             await SignalRService.UpdateContactForwardStatus(system.LoggedUser);
 
             await SignalRService.UpdateContactBioVis(system.LoggedUser);
 
             await SignalRService.UpdateOnlineStatus(system.LoggedUser);
-
-            //Set little chat image visibility
-            await SignalRService.UpdateLittlePhotoVisInChat(system.LoggedUser);
-
-            await SignalRService.UpdatePagePhoto(system.LoggedUser);
-        }    
+        }
 
         public static string CleanText(string input)
         {
@@ -159,39 +167,104 @@ namespace TelegramVisualPart.Helper
             T parent = parentObject as T;
             return parent ?? FindParent<T>(parentObject);
         }
-       
+
+        /*                //Upload medias
+                        for (int i = 0; i < names.Length; i++)
+                        {
+                            
+                        }*/
+
         public static async Task<Image> GetFirstFrameAsync(string fileName)
         {
-            //string videoPath = FilesAction.GetFullVideoPath(Path.GetFileName(fileName));
             fileName = Path.GetFileName(fileName);
-            
+
             string videoPath = FilesAction.GetPathByName(fileName);
             if (videoPath is null || videoPath == string.Empty) return null;
 
             if (!videoPath.StartsWith("http") && !File.Exists(videoPath))
                 throw new FileNotFoundException("Video not Found", videoPath);
 
-            string tempImage = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".png");
 
-            try
+            var mediaPlayer = new MediaPlayer { Volume = 0, ScrubbingEnabled = true };
+            mediaPlayer.Open(new Uri(videoPath, UriKind.RelativeOrAbsolute));
+            mediaPlayer.Position = TimeSpan.FromSeconds(0);
+            System.Threading.Thread.Sleep(500);
+
+            var dv = new DrawingVisual();
+            using (var dc = dv.RenderOpen())
             {
-                string tempVideoFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".mp4");
-
-                using (var client = new HttpClient())
-                {
-                    var bytes = await client.GetByteArrayAsync(videoPath);
-                    await File.WriteAllBytesAsync(tempVideoFile, bytes);
-                }
-
-                await FFMpeg.SnapshotAsync(tempVideoFile, tempImage, null, TimeSpan.FromSeconds(0));
-                File.Delete(tempVideoFile);
-
-                //await FFMpeg.SnapshotAsync(videoPath, tempImage, null, TimeSpan.FromSeconds(0));
+                dc.DrawVideo(mediaPlayer, new Rect(0, 0, 320, 240)); // Размер превью
             }
-            catch (Exception ex)
+
+            var rtb = new RenderTargetBitmap(320, 240, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(dv);
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            var bitmapImage = new BitmapImage();
+            using (var ms = new MemoryStream())
             {
-                throw new Exception("FFMpeg Could not make a screen shot: " + ex.Message, ex);
+                encoder.Save(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = ms;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                mediaPlayer.Close();
             }
+
+            string tempPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+
+
+            using (var fileStream = new FileStream(tempPath, FileMode.Create))
+            {
+                BitmapEncoder temp = new PngBitmapEncoder();
+                temp.Frames.Add(BitmapFrame.Create(bitmapImage));
+                temp.Save(fileStream);
+            }
+
+            string path = await ApiService.UploadMediaAsync(tempPath);
+            path = FilesAction.GetPathByPseudoPath(path);
+
+            ApiService.AddCashParams(path, bitmapImage);
+
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            };
+
+            return new Image() { Source = bitmapImage };
+
+
+
+            
+
+
+            /*            
+
+
+
+            string tempImage = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".png");
+            string tempVideoFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".mp4");
+
+            using (var client = new HttpClient())
+            {
+                var bytes = await client.GetByteArrayAsync(videoPath);
+                await File.WriteAllBytesAsync(tempVideoFile, bytes);
+            }
+
+
+
+            await FFMpeg.SnapshotAsync(tempVideoFile, tempImage, null, TimeSpan.FromSeconds(0));
+
+            tempImage = await ApiService.UploadMediaAsync(tempImage);
+            tempImage = FilesAction.GetPathByPseudoPath(tempImage);
+
+            File.Delete(tempVideoFile);
 
             BitmapImage bitmap;
 
@@ -211,7 +284,7 @@ namespace TelegramVisualPart.Helper
             {
                 Source = bitmap,
                 Stretch = Stretch.UniformToFill
-            };
+            };*/
         }
     }
 }

@@ -68,7 +68,6 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
                 return;
             }
 
-            //path == Full file path
             Img.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
             Img.Tag = path;
         }

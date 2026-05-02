@@ -331,8 +331,7 @@ namespace TelegramVisualPart.UserControls.ChatControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/textmessage.xaml" +
-                    "", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/textmessage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\ChatControls\TextMessage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

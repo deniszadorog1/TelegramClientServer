@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.Settings.Language;
 using TelegramVisualPart.Pages.VisualPages;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
 using TelegramVisualPart.Windows;
@@ -66,11 +68,10 @@ namespace TelegramVisualPart.Pages.Settings
             but.IconType.Foreground = _textColor;
             but.ButName.Foreground = _textColor;
         }
-
         public void SetUserInfo()
         {
-            UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
+            string path = FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
+            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
 
             Username.Text = _system.LoggedUser.Login;
             PhoneNumber.Text = _system.LoggedUser.PhoneNumber;
@@ -201,18 +202,6 @@ namespace TelegramVisualPart.Pages.Settings
             if (((MainWindow)Window.GetWindow(this))
                 .IsMediaWindowIsExistByUserId(_system.LoggedUser.Id)) return;
             mediaWindow.Show();
-
-
-/*            string firstImage = _system.LoggedUser.GetFirstImageName().Name;
-            Image chosen = FilesAction.GetUserImage(firstImage);
-
-            List<Image> imgs = FilesAction.GetUserImages(_system.LoggedUser.GetUserImagesNames());
-            VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(_system.LoggedUser.UserImages, _system, _system.LoggedUser.Name, true, null);
-
-            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
-
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
         private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)

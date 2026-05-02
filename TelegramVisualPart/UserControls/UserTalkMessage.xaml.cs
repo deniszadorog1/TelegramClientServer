@@ -63,22 +63,17 @@ namespace TelegramVisualPart.UserControls
             {
                 if (string.IsNullOrEmpty(_imgName))
                 {
-                    ImageIcon.ImageSource = new BitmapImage(new Uri(
-                        FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                    string stopPath = FilesAction.GetSystemImagePath("StopSign.png");
+                    BitmapImage stopBitmap = ApiService.GetCachedBitmap(stopPath);
+
+                    ImageIcon.ImageSource = stopBitmap is not null ? stopBitmap : new BitmapImage(new Uri(stopPath, UriKind.Absolute));
                     return;
                 }
 
                 string path = FilesAction.GetUserImagePath(_imgName);
 
-/*                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(path, UriKind.Absolute);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                bitmap.EndInit();
-                //bitmap.Freeze();*/
-
-                ImageIcon.ImageSource = SignalRHelperService.LoadBitmap(path);//  bitmap;
+                BitmapImage bitmap = ApiService.GetCachedBitmap(path);
+                ImageIcon.ImageSource = bitmap is not null ? bitmap : SignalRHelperService.LoadBitmap(path);
             }
             catch (Exception ex)
             {

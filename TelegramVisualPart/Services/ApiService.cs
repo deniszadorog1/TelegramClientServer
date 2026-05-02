@@ -13,6 +13,8 @@ using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramLib.Decorators;
 using System.Windows.Media.Imaging;
+using TelegramVisualPart.Helper;
+using System.Data.Entity.Migrations.Model;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -52,11 +54,25 @@ namespace TelegramVisualPart.Services
             _imageDecorator = new ImageCachingDecorator(wrapper);
         }
 
-        public static async Task<(BitmapImage Bitmap, string Path)> GetImageAsync(string fileName)
-        {
-            return await _imageDecorator.GetImageAsync(fileName);
-        }
+        public static BitmapImage GetCachedBitmap(string path) => _imageDecorator.GetBitmap(path);
+        public static void AddCashParams(string fullPath, BitmapImage bitmap) => _imageDecorator.AddCashedParams(fullPath, bitmap);
+        public static string GetChashedPath(string name) => _imageDecorator.GetPath(name);
 
+        public static void SetCachedSettings(MainSettings settings) => _imageDecorator.SetSettings(settings);
+        public static MainSettings GetCachedSettings(int id) =>_imageDecorator.GetSettings(id);
+
+        public static void SetChchedUser(TelegramLib.MainClasses.User user) => _imageDecorator.SetUser(user);
+        public static TelegramLib.MainClasses.User GetCachedUser(int id) => _imageDecorator.GetUser(id);
+
+        public static async Task UpdateChachedUserAndSettings(int id)
+        {
+            MainSettings settings = await GetSettingsByUserId(id);
+            TelegramLib.MainClasses.User user = await GetUserById(id);
+
+            SetChchedUser(user);
+            SetCachedSettings(settings);
+        }
+        
 
         public static string GetConnectionString()
         {
@@ -329,6 +345,10 @@ namespace TelegramVisualPart.Services
 
         public static async Task<TelegramLib.MainClasses.User> GetUserById(int id)
         {
+            //Is cached
+            TelegramLib.MainClasses.User cached = _imageDecorator.GetUser(id);
+            if (cached is not null) return cached;
+
             var response = await _client.GetAsync($"api/Social/GetUserById?userId={id}");
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -336,6 +356,9 @@ namespace TelegramVisualPart.Services
 
             TelegramLib.MainClasses.User? user = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
+
+            if (user is not null) _imageDecorator.SetUser(user);
+            
             return user;
         }
 
@@ -1382,17 +1405,22 @@ namespace TelegramVisualPart.Services
 
         public static async Task<string?> GetPathOnMediaServer(string fileName)
         {
-            fileName = Path.GetFileName(fileName);
+            string cashedPath = _imageDecorator.GetPath(fileName);
+            if (cashedPath is not null) return cashedPath;
 
+            fileName = Path.GetFileName(fileName);
             var response = await _client.GetAsync($"api/Media/GetPath/{fileName}");
 
             if (!response.IsSuccessStatusCode) return null;
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
-
             var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
 
-            return result?["url"];
+            string newPath =  result?["url"];
+
+            _imageDecorator.AddPath(newPath.Contains(MediaServerUrl.Url) ? newPath : (MediaServerUrl.Url + newPath));
+
+            return newPath;
         }
 
         public static async Task<string?> GetVideoPreviewPath(string videoName)

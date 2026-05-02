@@ -69,8 +69,8 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/chatcontrols/chatbutscontrols" +
-                    "/textboxmenubutton.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/chatcontrols/chatbutscontrols/textboxm" +
+                    "enubutton.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\UserControls\ChatControls\ChatButsControls\TextBoxMenuButton.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

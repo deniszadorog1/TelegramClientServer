@@ -396,6 +396,15 @@ namespace TelegramLib.MainClasses
             return Chats.FirstOrDefault(x => x.Chatter.Id == id);
         }
 
+        public UserImage GetChatterImgMask(int chatterId)
+        {
+            UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
+
+            if (chat is null || chat is SavedMessagesChat || chat.Chatter is null ) return null;
+
+            return chat.Chatter.ImageMask;
+        }
+
         public UserChat GetChatById(int id)
         {
             return Chats.FirstOrDefault(x => x.Id == id);

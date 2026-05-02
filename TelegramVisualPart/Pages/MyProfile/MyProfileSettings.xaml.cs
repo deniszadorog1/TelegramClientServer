@@ -55,8 +55,7 @@ namespace TelegramVisualPart.Pages.MyProfile
         public void SetUserImage()
         {
             string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
-            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
-                //new BitmapImage(new Uri(path), UriKind.Absolute);
+            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
         }
 
         public void SetUserParams()

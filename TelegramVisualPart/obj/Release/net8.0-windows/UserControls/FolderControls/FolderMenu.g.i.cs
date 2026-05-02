@@ -94,8 +94,7 @@ namespace TelegramVisualPart.UserControls.FolderControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/usercontrols/foldercontrols/foldermenu.xam" +
-                    "l", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/usercontrols/foldercontrols/foldermenu.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\UserControls\FolderControls\FolderMenu.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

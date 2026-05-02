@@ -416,6 +416,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 string newPath = FilesAction.GetPathByName(Path.GetFileName(path));
                 if (newPath is null || newPath == string.Empty) continue;
 
+                //Is Exist 
+                BitmapImage bitmap = ApiService.GetCachedBitmap(newPath);
+                if (bitmap is not null)
+                {
+                    res.Add(bitmap);
+                    continue;
+                }
+
                 string tempPath = System.IO.Path.GetFileName(newPath);
                 string videoExt = System.IO.Path.GetExtension(tempPath);
 
@@ -424,17 +432,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
                     Image videoFrame = await VisHelper.GetFirstFrameAsync(tempPath);
                     if (videoFrame is null) continue;
 
-                    if (videoFrame.Source is BitmapImage bitImg) res.Add(bitImg);
+                    if (videoFrame.Source is BitmapImage bitImg)
+                    {
+                        ApiService.AddCashParams(newPath, bitImg);
+                        res.Add(bitImg);
+                    }
                     continue;
                 }
 
-                //MessageBox.Show($"Getting {newPath} as path");
+                bitmap = SignalRHelperService.LoadBitmap(newPath);
 
-                BitmapImage bitMap = SignalRHelperService.LoadBitmap(newPath);//  new BitmapImage(new Uri(path, UriKind.Absolute));
-
-                //MessageBox.Show($"Got {newPath} as path");
-
-                if (bitMap is not null) res.Add(bitMap);
+                if (bitmap is not null)
+                {
+                    ApiService.AddCashParams(newPath, bitmap);
+                    res.Add(bitmap);
+                }
             }
 
             return res;
@@ -1043,9 +1055,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
                    FilesAction.GetFullChatImagePath(_message.MediaName),
                    UriKind.Absolute));*/
 
-                ImgMessage.ImageSource = new BitmapImage(new Uri(
+                string fullPath = FilesAction.GetPathByName(_message.MediaName);
+
+                BitmapImage bitmap = ApiService.GetCachedBitmap(_message.MediaName);
+
+                ImgMessage.ImageSource = bitmap is not null ? bitmap :
+                    SignalRHelperService.LoadBitmap(fullPath);
+                    
+/*                    new BitmapImage(new Uri(
                         FilesAction.GetPathByName(_message.MediaName),
-                        UriKind.Absolute));
+                        UriKind.Absolute));*/
 
 
                 //SetImgMessageSize(_img, ImageBorder);
@@ -1397,7 +1416,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Cursor = null;
         }
 
-        private void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void LoginForwarded_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_isOnlyVisual) return;
 
@@ -1405,7 +1424,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             var user = Task.Run(() => ApiService.GetUserById(userId)).Result;
 
             if (user is null) return;
-            if (!SetIsUserCanSeeChattersInfo(user.Id))
+            if (!await SetIsUserCanSeeChattersInfo(user))
             {
                 MessageBox.Show("No no no mister fish, you go to tasik");
                 return;
@@ -1428,9 +1447,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(infoPage);
         }
 
-        public bool SetIsUserCanSeeChattersInfo(int userId)
+        public async Task<bool> SetIsUserCanSeeChattersInfo(TelegramLib.MainClasses.User user)
         {
-            MainSettings setUserSettings = Task.Run(() => ApiService.GetSettingsByUserId(userId)).Result;
+            MainSettings setUserSettings = await SignalRHelperService.GetMainSettings(user, null);
 
             if (setUserSettings.PrivacySettings.ForwardMesPrivacy
                 .ShareWithExps.Any(x => x.Id == _system.LoggedUser.Id)) return true;
@@ -1438,7 +1457,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 .NeverShareExps.Any(x => x.Id == _system.LoggedUser.Id)) return false;
 
             return setUserSettings.PrivacySettings.
-                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, userId);
+                ForwardMesPrivacy.IsUserPageCanBeSeen(_system.Contacts, user.Id);
         }
         public bool IsTickVisible()
         {

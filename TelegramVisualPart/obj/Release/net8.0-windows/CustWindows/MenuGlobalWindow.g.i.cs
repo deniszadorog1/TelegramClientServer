@@ -61,7 +61,7 @@ namespace TelegramVisualPart.CustWindows {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;V1.0.0.0;component/custwindows/menuglobalwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/TelegramVisualPart;component/custwindows/menuglobalwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\CustWindows\MenuGlobalWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
