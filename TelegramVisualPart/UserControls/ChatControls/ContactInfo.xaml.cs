@@ -69,7 +69,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _contact = contact;
             _isSetMaxHeight = isSetMaxHeight;
 
-            if(_chat is not null && _chat.Chatter is not null) await ApiService.UpdateChachedUserAndSettings(chat.Chatter.Id);
+            if (_chat is not null && _chat.Chatter is not null) await ApiService.UpdateChachedUserAndSettings(chat.Chatter.Id);
 
             if (!_isSetMaxHeight) MaxHeight = int.MaxValue;
 
@@ -98,10 +98,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetLanguageText.SetContactInfo(this);
 
             BlockButVisibility();
+
             SetStartToggleState();
 
             LoadEnd?.Invoke();
         }
+
 
         private const int _baseUpperInfoRowHeight = 55;
         public void SetBasicRowHeight()
@@ -542,7 +544,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             SetNameSurnameParams();
 
-            MainSettings settings = await ApiService.GetSettingsByUserId(_chatterUser.Id);
+            MainSettings cached = ApiService.GetCachedSettings(_chatterUser.Id);
+            MainSettings settings = cached is not null ? cached : await ApiService.GetSettingsByUserId(_chatterUser.Id);
 
             await SetOnlineStatus(settings);
             //SetLastSeenOnline();
@@ -1018,14 +1021,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
         {
-            if (_chat is null) return;
+            if (_chat is null || _chat.IsNotificationStatusIsSame(true)) return;
             await ApiService.ChangeNotificationState(_chat.Id, true);
             _chat.ChangeNotificationStatus(true);
         }
 
         private async void NotificationToggle_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (_chat is null) return;
+            if (_chat is null || _chat.IsNotificationStatusIsSame(false)) return;
             await ApiService.ChangeNotificationState(_chat.Id, false);
             _chat.ChangeNotificationStatus(false);
         }

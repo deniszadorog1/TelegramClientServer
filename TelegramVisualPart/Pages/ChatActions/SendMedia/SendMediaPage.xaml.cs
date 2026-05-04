@@ -82,6 +82,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                         .OfType<ListBoxItem>()
                         .FirstOrDefault(x => x.Content == toAdd));
                     _paths.RemoveAt(pathIndex);
+                    _paths.RemoveAt(pathIndex);
 
                     if (MediasBox.Items.Count == 0)
                     {

@@ -91,7 +91,9 @@ namespace TelegramVisualPart.Pages
             string name = contactUser.GetFirstImageNameInString();
             string imgPath = FilesAction.GetUserImagePath(name);
 
-            toAddParams.UserImageBrush.ImageSource = new BitmapImage(new Uri(imgPath, UriKind.Absolute));
+            BitmapImage bitmap = ApiService.GetCachedBitmap(imgPath);
+
+            toAddParams.UserImageBrush.ImageSource = bitmap is not null ? bitmap : SignalRHelperService.LoadBitmap(imgPath);//  new BitmapImage(new Uri(imgPath, UriKind.Absolute));
         }
 
         private void AutoDeleteContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)

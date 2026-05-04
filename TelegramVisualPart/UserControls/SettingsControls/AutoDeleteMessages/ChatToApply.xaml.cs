@@ -137,9 +137,13 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
 
         public void SetParams(string imgName, string upperText, string bottomText)
         {
-            UserImageBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+            string fullPath = FilesAction.GetUserImagePath(imgName);
+            BitmapImage bitmap = ApiService.GetCachedBitmap(imgName);
 
+            UserImageBrush.ImageSource = bitmap is not null ? bitmap : 
+                SignalRHelperService.LoadBitmap(fullPath); 
+            
+            //new BitmapImage(new Uri(FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
             TypeName.Text = upperText;
             AutoDeletionType.Text = bottomText;
         }

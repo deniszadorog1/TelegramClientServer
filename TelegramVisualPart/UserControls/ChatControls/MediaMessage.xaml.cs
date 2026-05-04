@@ -505,8 +505,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             border.Visibility = Visibility.Visible;
             brush.Stretch = strech;
 
-            BitmapImage bitMap = new BitmapImage(new Uri(
-                FilesAction.GetFullChatImagePath(path), UriKind.Absolute));
+            BitmapImage img = ApiService.GetCachedBitmap(path);
+            string fullPath = FilesAction.GetFullChatImagePath(path);
+
+
+            BitmapImage bitMap = img is not null ? img : SignalRHelperService.LoadBitmap(fullPath);//  new BitmapImage(new Uri(fullPath, UriKind.Absolute));
 
 
             double width = bitMap.Width / 2;
@@ -1300,6 +1303,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
                 return;
             }
+
+/*            BitmapImage bitmap = ApiService.GetCachedBitmap(_senderImgName);
+
+            string fullPath = FilesAction.GetUserImagePath(_senderImgName);
+            ImgMessage.ImageSource = bitmap is not null ? bitmap :
+                SignalRHelperService.LoadBitmap(fullPath);*/
 
             BgBrush.ImageSource = new BitmapImage(new Uri(
                 FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));

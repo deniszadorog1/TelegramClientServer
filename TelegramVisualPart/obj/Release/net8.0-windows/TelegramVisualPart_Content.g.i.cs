@@ -8,7 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/chatsettingsimg.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/cursors/tungtungsahurcursor.cur")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/foldersimg.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/gifs/testgif.gif")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/icon/telicon.ico")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/images/stickers/figure.png")]
@@ -27,6 +29,9 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/images/wallpapers/snowman.jpg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/images/wallpapers/%d0%a1%d0%bd%d0%b8%d0%bc%d0%be%d0%ba%20%d1%8d%d0%ba%d1%" +
     "80%d0%b0%d0%bd%d0%b0%202023-05-05%20003346.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/mainimg.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/palletteimg.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/settingsimg.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/sounds/notifsounds/brak.mp3")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("visuals/sounds/notifsounds/default.mp3")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("languagefiles/englishlang.json")]

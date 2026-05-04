@@ -288,6 +288,11 @@ namespace TelegramLib.MainClasses
         {
             NotificationStatus = state;
         }
+        
+        public bool IsNotificationStatusIsSame(bool state)
+        {
+            return NotificationStatus == state;
+        }
 
         public bool GetNotificationStatus()
         {

@@ -278,7 +278,6 @@
                 </Grid>
             </Border>
 
-
             <Grid VerticalAlignment="Bottom" Grid.Row="1"
                   HorizontalAlignment="Right"
                   Height="20"

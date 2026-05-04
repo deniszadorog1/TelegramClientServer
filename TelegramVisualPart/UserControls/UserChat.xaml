@@ -46,8 +46,6 @@
                 <Ellipse  Width="45" Name="LittlePhotoEllipse"
                      Height="45" Margin="7 0 0 0 ">
                     <Ellipse.Fill>
-
-                        <!--  ImageSource="/Visuals/Images/UserImages/Minato.jpg"-->
                         <ImageBrush x:Name="UserImage"/>
                     </Ellipse.Fill>
                 </Ellipse>

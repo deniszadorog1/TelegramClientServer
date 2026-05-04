@@ -2139,6 +2139,7 @@ namespace TelegramVisualPart.UserControls
 
                 ClearResenderInForwardedMessages();
 
+                ClearForwardElements();
                 await AddForwardedMessagesInDB(chat);
                 chat.Messages.AddRange(_toForwardMessages);
 
@@ -2148,6 +2149,14 @@ namespace TelegramVisualPart.UserControls
                 return true;
             }
             return false;
+        }
+
+        public void ClearForwardElements()
+        {
+            const int maxLeft = 5;
+
+            if (_toForwardMessages.Count <= maxLeft) return;
+            _toForwardMessages.RemoveRange(maxLeft, _toForwardMessages.Count - maxLeft);
         }
 
         public void ClearResenderInForwardedMessages()
@@ -2178,7 +2187,6 @@ namespace TelegramVisualPart.UserControls
             bool isChatterOnline = UpdateChatStatusAsync(chat);
 
             await ChangeBandIdsInForward();
-
 
             HashSet<int> bandIds = new HashSet<int>();
 
@@ -3749,9 +3757,12 @@ namespace TelegramVisualPart.UserControls
             string senderImageName, MediaAction mediaMes)
         {
             //AddStickerMessage()
+
+            BitmapImage bitmapImage = ApiService.GetCachedBitmap(filePath);
+
             var img = new Image
             {
-                Source = new BitmapImage(new Uri(filePath, UriKind.Absolute)),
+                Source = bitmapImage is not null ? bitmapImage : SignalRHelperService.LoadBitmap(filePath)// new BitmapImage(new Uri(filePath, UriKind.Absolute)),
             };
 
             AddMediaIntoMediasFolder(filePath);
@@ -5879,7 +5890,6 @@ namespace TelegramVisualPart.UserControls
                 : item.Content is UserControl control ? control : null;
         }
 
-
         public async void SendForwardMessageInSignalR(TelegramLib.MainClasses.UserChat chat,
                 List<TelegramLib.MainClasses.Messages.Message> mes)
         {
@@ -5895,7 +5905,6 @@ namespace TelegramVisualPart.UserControls
             {
                 await SignalRService.AddShareContactMessage(_system.LoggedUser, _chat.Chatter, share.SharedUser.Id);
             }
-
         }
 
         public static object DeepCopy(object obj)

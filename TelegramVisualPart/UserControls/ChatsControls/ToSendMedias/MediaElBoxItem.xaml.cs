@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
 {
@@ -68,7 +69,9 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
                 return;
             }
 
-            Img.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
+            BitmapImage cachedBitmap = ApiService.GetCachedBitmap(path);
+
+            Img.Source = cachedBitmap is not null ? cachedBitmap : SignalRHelperService.LoadBitmap(path);// new BitmapImage(new Uri(path, UriKind.Absolute));
             Img.Tag = path;
         }
 

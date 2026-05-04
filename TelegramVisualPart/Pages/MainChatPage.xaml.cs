@@ -576,6 +576,10 @@ namespace TelegramVisualPart.Pages
 
         private void Magnifier_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            //If basic chat
+            Window window = Window.GetWindow(this);
+
+            if (window is MainWindow main && main.GetIsOnlyChat()) return;           
             if (ChatsColumn.Width.Value == 0)
             {
                 BackButton_MouseDown();

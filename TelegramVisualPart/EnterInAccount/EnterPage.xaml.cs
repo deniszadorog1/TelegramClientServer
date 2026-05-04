@@ -60,8 +60,6 @@ namespace TelegramVisualPart.EnterInAccount
 
             string token = await ApiService.GetToken(LoginBox.Text, PasswordBox.Text);
 
-            //MessageBox.Show(token is null || token == string.Empty ? "0 - tocken is empty" : "I got token");
-
             if (!string.IsNullOrEmpty(token))
             {
                 ApiService.SetAuthToken(token);
