@@ -9,8 +9,6 @@ A Telegram-inspired messenger built with C# as a learning project and a base for
 ![Chat Settings](TelegramVisualPart/Visuals/ChatSettingsImg.png)
 ![Folders](TelegramVisualPart/Visuals/FoldersImg.png)
 
-> Add screenshots to the `Images/` folder with these filenames to display them here.
-
 ## Features
 
 **Messaging**
