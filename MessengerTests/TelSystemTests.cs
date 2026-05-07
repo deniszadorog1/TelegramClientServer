@@ -1,5 +1,6 @@
 
 using TelegramLib.Enums.Chat;
+using TelegramLib.Interfaces;
 using TelegramLib.MainClasses;
 
 namespace MessengerTests
@@ -48,5 +49,26 @@ namespace MessengerTests
 
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void AddFolder_NullName_ThrowsArgumentException()
+        {
+            var system = new TelSystem();
+
+            Assert.Throws<ArgumentException>(() =>
+                system.AddFolder(1, null, "icon", new List<User>(), new List<User>()));
+        }
+
+        [Fact]
+        public void GetChatByMessageId_NonExistentId_ReturnsNull()
+        {
+            var system = new TelSystem();
+            system.SavedMesesChat = new SavedMessagesChat { Messages = new List<TelegramLib.MainClasses.Messages.Message>() };
+
+            var result = system.GetChatByMessageId(999999); 
+
+            Assert.Null(result);
+        }
+
     }
 }

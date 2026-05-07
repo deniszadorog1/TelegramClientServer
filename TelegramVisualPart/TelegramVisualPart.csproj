@@ -72,6 +72,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Visuals\ChatSettingsImg.png" />
+	  <None Remove="Visuals\FoldersImg.png" />
+	  <None Remove="Visuals\SettingsImg.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Update=".env">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

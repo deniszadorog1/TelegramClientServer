@@ -412,3 +412,8 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref\TelegramVisualPart.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\ChatSettingsImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\FoldersImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\MainImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\PalletteImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Visuals\SettingsImg.png

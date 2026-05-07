@@ -67,13 +67,12 @@ namespace TelegramVisualPart.UserControls
                 MessageBox.Show($"Init Mistake in UserChat: {ex.Message}");
                 throw;
             }
-
         }
 
         public void SetBasicSignalRMethods()
         {
-            /*            if (SignalRService.GetIsChatEventsAreSet()) return;
-                        SignalRService.ChangeIsChatEventsAreSet(true);*/
+            /*if (SignalRService.GetIsChatEventsAreSet()) return;
+                  SignalRService.ChangeIsChatEventsAreSet(true);*/
             SignalRService.TextMessageReceived += OnTextMessageReceived;
             SignalRService.MediaMessageReceived += OnMediaMessageReceived;
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
@@ -1121,9 +1120,9 @@ namespace TelegramVisualPart.UserControls
 
             UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
 
-/*            UserImage.ImageSource = new BitmapImage(
-                new Uri(FilesAction.GetUserImagePath(
-                    _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
+            /*            UserImage.ImageSource = new BitmapImage(
+                            new Uri(FilesAction.GetUserImagePath(
+                                _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
         }
 
         public async Task SetOnlineStatus()
@@ -1239,7 +1238,7 @@ namespace TelegramVisualPart.UserControls
 
 
         private MainSettings _chatterSettings;
-        private User _chatter;
+        private TelegramLib.MainClasses.User _chatter;
         public async Task SetMessagesInChat()
         {
             await Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -1331,7 +1330,7 @@ namespace TelegramVisualPart.UserControls
                statMes.MessageReferenceId is null ? null :
                _chat.GetMessageById((int)statMes.MessageReferenceId);
 
-            User cached = ApiService.GetCachedUser(statMes.SenderUserId);
+            TelegramLib.MainClasses.User cached = ApiService.GetCachedUser(statMes.SenderUserId);
             TelegramLib.MainClasses.User sender = _isSavedMessageChat ? _system.LoggedUser :
                                 cached is not null ? cached :
                                 await ApiService.GetUserById(statMes.SenderUserId);
@@ -1713,6 +1712,8 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
 
+
+            SetOnlyChatVisState(false);
             //Update prev Point
             UpdatePrevPoint(GetPointChatBoxScroll(e.GetPosition(this)));
 
@@ -1860,6 +1861,7 @@ namespace TelegramVisualPart.UserControls
 
             _repliedMessage = null;
             _toForwardMessages = null;
+
         }
 
         bool _isSending = false;
@@ -2214,7 +2216,7 @@ namespace TelegramVisualPart.UserControls
                     continue;
                 }
 
-                if (_toForwardMessages[i] is ShareContactMessage share)
+                if (_toForwardMessages[i] is TelegramLib.MainClasses.Messages.ShareContactMessage share)
                 {
                     await ApiService.AddShareContactMessage(share.SharedUser.Id,
                         share.SharedUser.Name, chat.Id, _system.LoggedUser.Id, DateTime.Now);
@@ -2283,7 +2285,7 @@ namespace TelegramVisualPart.UserControls
             }
             for (int i = 0; i < messages.Count; i++)
             {
-                if (_toForwardMessages[i] is ShareContactMessage share)
+                if (_toForwardMessages[i] is TelegramLib.MainClasses.Messages.ShareContactMessage share)
                 {
                     await ApiService.AddShareContactMessage(share.SharedUser.Id,
                         share.SharedUser.Name, chattersChat.Id, _system.LoggedUser.Id, DateTime.Now);
@@ -4188,6 +4190,21 @@ namespace TelegramVisualPart.UserControls
         {
             //find message menu
             _isLoopPressed = true;
+
+            Window window = Window.GetWindow(this);
+            if (window is not MainWindow main || !main.GetIsOnlyChat()) return;
+
+            SetOnlyChatVisState(true);
+
+            ClearVisualStuffAfterBlocked();
+        }
+
+        public void SetOnlyChatVisState(bool isVis)
+        {
+            Visibility visState = isVis ? Visibility.Visible : Visibility.Hidden;
+
+            OnlyChatSearchChatGrid.Visibility = visState;
+            BottomOnlyChatGrid.Visibility = visState;
         }
 
         public bool GetLoopState() => _isLoopPressed;
@@ -6817,8 +6834,8 @@ namespace TelegramVisualPart.UserControls
         {
             UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
 
-/*             new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(imgName), UriKind.Absolute));*/
+            /*             new BitmapImage(new Uri(
+                            FilesAction.GetUserImagePath(imgName), UriKind.Absolute));*/
         }
 
         public void SetAddMediaButVisibility()
@@ -6844,7 +6861,7 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        private void ChatBox_Drop(object sender, DragEventArgs e)
+        private async void ChatBox_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -6862,10 +6879,15 @@ namespace TelegramVisualPart.UserControls
                     }
                 }
 
+                //Upload medias
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    paths[i] = await ApiService.UploadMediaAsync(paths[i]);
+                    paths[i] = FilesAction.GetPathByPseudoPath(paths[i]);
+                }
                 if (paths.Count == 0) return;
 
                 Window window = Window.GetWindow(this);
-
                 if (window is MainWindow main)
                 {
                     main.ClearSecFrame();
@@ -6925,6 +6947,111 @@ namespace TelegramVisualPart.UserControls
 
             e.Handled = true;
         }
+
+        private void BackOnlyChatGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+            BackOnlyChatIcon.Foreground = new SolidColorBrush(Colors.White);
+        }
+
+        private void BackOnlyChatGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+            BackOnlyChatIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void BackOnlyChatGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            OnlyChatSearchChatGrid.Visibility = Visibility.Hidden;
+
+            //Set visual only chat stuff 
+            SetOnlyChatVisState(false);
+        }
+
+        private void OnlyChatCalenar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void OnlyChatCalenar_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void OnlyChatCalenar_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Set calendar
+            CalendarPage calendar = new CalendarPage();
+
+            //calendar.
+
+            Window window = Window.GetWindow(this);
+            if (window is MainWindow main)
+            {
+                main.SetSecondaryFrame(calendar);
+            }
+        }
+
+        private void OnlyChatArrowUp_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void OnlyChatArrowUp_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void OnlyChatArrowUp_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //move to up message
+            ScrollToMessage(true);
+        }
+
+        private void OnlyChatArrowDown_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void OnlyChatArrowDown_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = null;
+        }
+
+        private void OnlyChatArrowDown_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //Move to down message
+            ScrollToMessage(false);
+        }
+
+        int _mesIndex = -1;
+        public void ScrollToMessage(bool isUp)
+        {
+            string findMes = OnlyChatSearchTextBox.Text;
+
+            //Get message that contains mes
+            List<TelegramLib.MainClasses.Messages.Message>? meses =
+                _chat is null ? null : _chat.GetMessagesWithStr(findMes);
+            if (meses is null || meses.Count == 0) return;
+
+            _mesIndex =
+                !isUp && _mesIndex <= 0 ? meses.Count - 1 :
+                !isUp ? _mesIndex - 1 :
+                isUp && _mesIndex >= meses.Count - 1 ? 0 :
+                _mesIndex + 1;
+
+            Message mes = meses[_mesIndex];
+            if (mes is null) return;
+
+            //Get next message index
+            ScrollToMessageByMessageId(mes.Id);
+        }
+
+        private void OnlyChatSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _mesIndex = -1;
+        }
+
     }
 
     public static class ScrollViewerBehavior

@@ -512,7 +512,7 @@ namespace TelegramLib.MainClasses
         {
             //Check for Same Day
             TelegramLib.MainClasses.Messages.Message sameDateMes =
-                Messages.FirstOrDefault(x => x.IsMessageForDate(date));
+                Messages.FirstOrDefault(x => x.IsMessageIsAproximitlyInTime(date));
             if (!(sameDateMes is null)) return sameDateMes;
 
             //Date close date message
@@ -751,6 +751,11 @@ namespace TelegramLib.MainClasses
                 return share.SentTime;
             }
             return DateTime.Now;
+        }
+
+        public List<Messages.Message>GetMessagesWithStr(string str)
+        {
+            return Messages.Where(x => x is TextMessage text && text.Text.Contains(str)).ToList();
         }
     }
 }

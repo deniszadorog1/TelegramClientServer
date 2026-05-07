@@ -103,7 +103,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             }
         }
 
-        public void SetForwardedMessages()
+        public async void SetForwardedMessages()
         {
             for (int i = 0; i < _messages.Count; i++)
             {
