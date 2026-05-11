@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 using static System.Collections.Specialized.BitVector32;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
@@ -62,7 +63,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
                 //string path = FilesAction.GetFullChatImagePath(mediaName);
                 string path = FilesAction.GetPathByName(mediaName);
                 if (path is null) return;
-                ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
+
+                BitmapImage cached = ApiService.GetCachedBitmap(path);
+
+                ReplyImage.Source = cached is not null ? cached : SignalRHelperService.LoadBitmap(path);
+
+                //ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
             }
             else if (FilesAction.IsFileIsGif(mediaName))
             {

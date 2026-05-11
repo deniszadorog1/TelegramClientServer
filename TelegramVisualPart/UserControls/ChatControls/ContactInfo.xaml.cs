@@ -47,7 +47,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             InitializeComponent();
             SetIconsSize();
 
-            this.Visibility = Visibility.Hidden;
+            //this.Visibility = Visibility.Hidden;
             SetMenuVisibility(Visibility.Hidden);
         }
 

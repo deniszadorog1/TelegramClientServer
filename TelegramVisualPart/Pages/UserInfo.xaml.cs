@@ -34,6 +34,11 @@ namespace TelegramVisualPart.Pages
                 chat is TelegramLib.MainClasses.SavedMessagesChat ? null : 
                 _system.GetContactByUserId(_chat.Chatter.Id);
 
+            ContactInfo.LoadEnd += () =>
+            {
+                Visibility = Visibility.Visible;
+            };
+                
             ContactInfo.SetContactInfo(_chat, _system, contact); /*_system.ChosenChatContact*/
            
             SetMaxValue();
@@ -43,10 +48,7 @@ namespace TelegramVisualPart.Pages
 
             ContactInfo.SetMenuVisibility(Visibility.Visible);
 
-            ContactInfo.LoadEnd += () =>
-            {
-                Visibility = Visibility.Visible;
-            };
+
         }
 
         public void ClearTempPage()

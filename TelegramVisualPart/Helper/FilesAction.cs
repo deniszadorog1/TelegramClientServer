@@ -656,9 +656,15 @@ namespace TelegramVisualPart.Helper
                 // GIF: 47 49 46 (GIF87a / GIF89a)
                 if (buffer[0] == 0x47 && buffer[1] == 0x49 && buffer[2] == 0x46) return true;
 
-
-                // Байты: 66 74 79 70 (ASCII 'ftyp')
+                // MP4 (и другие контейнеры): Байты 'ftyp' на позициях 4-7 (66 74 79 70)
                 if (buffer[4] == 0x66 && buffer[5] == 0x74 && buffer[6] == 0x79 && buffer[7] == 0x70) return true;
+
+                // WEBP: 'RIFF' на позициях 0-3 (52 49 46 46) И 'WEBP' на позициях 8-11 (57 45 42 50)
+                if (buffer[0] == 0x52 && buffer[1] == 0x49 && buffer[2] == 0x46 && buffer[3] == 0x46 && // RIFF
+                    buffer[8] == 0x57 && buffer[9] == 0x45 && buffer[10] == 0x42 && buffer[11] == 0x50)  // WEBP
+                {
+                    return true;
+                }
 
                 return false;
             }

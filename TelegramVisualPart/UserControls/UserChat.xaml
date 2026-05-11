@@ -17,7 +17,7 @@
              PreviewKeyDown="UserControl_KeyDown"
              MouseLeave="UserControl_MouseLeave"
              PreviewMouseDown="UserControl_PreviewMouseDown">
-    <Grid>
+    <Grid Margin="8,0,-8,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" Name="UpperRow"/>
             <RowDefinition Name="PinRow" Height="50"/>
@@ -388,6 +388,7 @@
                          ScrollViewer.ScrollChanged="ChatBox_ScrollChanged"
                          ScrollViewer.CanContentScroll="True"
                          VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.ScrollUnit="Pixel"
                          VirtualizingPanel.VirtualizationMode="Recycling"
                          ScrollViewer.PanningRatio="0.3"
                          

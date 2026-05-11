@@ -402,7 +402,6 @@ namespace TelegramVisualPart.Services
             }
             catch (Exception ex)
             {
-                // Логируем ошибку, чтобы не гадать
                 Debug.WriteLine($"Ошибка регистрации: {ex.Message}");
                 return true;
             }

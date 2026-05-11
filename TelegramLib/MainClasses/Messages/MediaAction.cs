@@ -38,8 +38,8 @@ namespace TelegramLib.MainClasses.Messages
         public bool IsImage()
         {
             if (IsSticker) return false;
-             string ext = Path.GetExtension(MediaName);
-            return ext == ".png" || ext == ".jpg" || ext == "jpeg";
+             string ext = Path.GetExtension(MediaName).ToLowerInvariant();
+            return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".webp";
         }
 
         public bool IsGif()
