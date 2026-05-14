@@ -1562,6 +1562,8 @@ namespace TelegramVisualPart
 
         public bool BringWindowToView(UserChat chat)
         {
+            if (_onlyChatUserChat is null) return false;
+
             MainWindow? window = _chatWindows.FirstOrDefault(x => x._onlyChatUserChat.Id == chat.Id &&
             _onlyChatUserChat.GetType() == chat.GetType());
 

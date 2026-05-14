@@ -81,13 +81,16 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     MediasBox.Items.Remove(MediasBox.Items
                         .OfType<ListBoxItem>()
                         .FirstOrDefault(x => x.Content == toAdd));
+                    
                     _paths.RemoveAt(pathIndex);
-                    _paths.RemoveAt(pathIndex);
+                    //_paths.RemoveAt(pathIndex);
 
                     if (MediasBox.Items.Count == 0)
                     {
                         ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                        return;
                     }
+                    SetBasePaths();
                 };
 
                 ListBoxItem item = new ListBoxItem()
@@ -229,47 +232,50 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             {
                 string[] names = openFileDialog.FileNames;
 
-                string filePath = openFileDialog.FileName;
-                string extension = System.IO.Path.GetExtension(filePath).ToLower();
+                //string filePath = openFileDialog.FileName;
+                //string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
                 //Upload medias
                 for (int i = 0; i < names.Length; i++)
                 {
                     names[i] = await ApiService.UploadMediaAsync(names[i]);
                     names[i] = FilesAction.GetPathByPseudoPath(names[i]);
-                }
 
-                if (names.Length > 1)
-                {
-                    _paths.AddRange(names.ToList());
+                    string extension = System.IO.Path.GetExtension(names[i]).ToLower();
 
-                    SetBasePaths();
-                    GroupImages();
-                    return;
-                }
 
-                if (extension == ".png" || extension == ".jpg" ||
-                    extension == ".jpeg")
-                {
-                    if (toChange is not null)
+                    if (names.Length > 1)
                     {
-                        toChange.SetImage(filePath);
-                        if (pathIdToChange != -1) _paths[pathIdToChange] = filePath;
+                        _paths.AddRange(names.ToList());
+
+                        SetBasePaths();
+                        GroupImages();
+                        return;
                     }
-                    else _paths.Add(filePath);
-                    GroupImages();
-                    SetBasePaths();
 
-                }
-                else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
-                {
-                    //Image img = await VisHelper.GetFirstFrameAsync(filePath);
+                    if (extension == ".png" || extension == ".jpg" ||
+                        extension == ".jpeg" || extension == ".webp")
+                    {
+                        if (toChange is not null)
+                        {
+                            toChange.SetImage(names[i]);
+                            if (pathIdToChange != -1) _paths[pathIdToChange] = names[i];
+                        }
+                        else _paths.Add(names[i]);
+                        GroupImages();
+                        SetBasePaths();
 
-                    if (toChange is not null) return;
-                    _paths.Add(filePath);
-                    GroupImages();
-                    SetBasePaths();
+                    }
+                    else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
+                    {
+                        //Image img = await VisHelper.GetFirstFrameAsync(filePath);
+                        if (toChange is not null) return;
+                        _paths.Add(names[i]);
+                        GroupImages();
+                        SetBasePaths();
+                    }
                 }
+
             }
         }
 
@@ -333,13 +339,13 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     if (toRemove is null) return;
                     _paths.RemoveAt(index);
 
-
                     GroupPanel.Children.Remove(toRemove);
-
-                    if (MediasBox.Items.Count == 0)
+                    if (GroupPanel.Children.Count == 0)
                     {
                         ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
+                        return;
                     }
+                    GroupImages();
                 };
 
                 GroupPanel.Children.Add(toAdd);

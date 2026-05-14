@@ -47,7 +47,7 @@ namespace TelegramVisualPart {
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.26.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.27.0")]
         public void InitializeComponent() {
             if (_contentLoaded) {
                 return;
@@ -79,7 +79,7 @@ namespace TelegramVisualPart {
         /// </summary>
         [System.STAThreadAttribute()]
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.26.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.27.0")]
         public static void Main() {
             TelegramVisualPart.App app = new TelegramVisualPart.App();
             app.InitializeComponent();

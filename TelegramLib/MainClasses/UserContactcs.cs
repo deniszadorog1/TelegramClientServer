@@ -60,8 +60,6 @@ namespace TelegramLib.MainClasses
 
             IsOnline = false;
 
-            UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
-            UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
         }
 
         public void SetAutoDeleteDuration(AutoDeleteType? type)

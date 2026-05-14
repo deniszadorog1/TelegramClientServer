@@ -434,11 +434,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {
-
-                //MessageBox.Show("Ведутся технические работі");
-                /*LoggedUserProfile logged =
-                    new LoggedUserProfile(_system.LoggedUser, _system);*/
-
                 UserInfo logged = new UserInfo(_system.SavedMesesChat, _system);
 
                 ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);

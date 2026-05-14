@@ -16,7 +16,7 @@
 
         public ChatBackground()
         {
-            FileName = "Minato.jpg";
+            FileName = string.Empty;
             IsBlurred = false;
             IsGeneral = false;
         }

@@ -4225,6 +4225,7 @@ namespace TelegramLib.Services
                 toAddObj.IsSavedMessage = true;
                 toAddObj.MessageQuote = toAdd.RepliedQuote;
                 toAddObj.BandId = -1;
+                toAddObj.SenderId = toAdd.SenderUserId; 
 
                 if (toAdd is TextMessage text)
                 {
@@ -4397,7 +4398,7 @@ namespace TelegramLib.Services
 
             toAdd.Id = mes.Id;
             toAdd.RepliedQuote = mes.MessageQuote;
-            toAdd.SenderUserId = 1;
+            toAdd.SenderUserId = mes.SenderId is null ? 1 : (int)mes.SenderId;
 
             toAdd.SentTime = mes.SentDate is null ? DateTime.Now : (DateTime)mes.SentDate;
             toAdd.IsRead = mes.IsRead;

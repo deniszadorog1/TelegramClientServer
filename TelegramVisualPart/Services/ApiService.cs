@@ -148,6 +148,14 @@ namespace TelegramVisualPart.Services
             return mes;
         }
 
+        public static async Task<string?> TestMinAPI()
+        {
+            var response = await _client.GetAsync($"/MinAPI");
+
+            string res = await response.Content.ReadAsStringAsync();
+            return res;
+        }
+
         public static async Task<int> GetLastMessageBandId()
         {
             var response =
@@ -402,7 +410,7 @@ namespace TelegramVisualPart.Services
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Ошибка регистрации: {ex.Message}");
+                Debug.WriteLine($"Registration mistake: {ex.Message}");
                 return true;
             }
 

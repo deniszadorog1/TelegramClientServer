@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
 using TelegramClientServer.Interfaces;
 using Microsoft.Extensions.FileProviders;
+using TelegramClientServer.Middlewares;
 
 namespace TelegramClientServer
 {
@@ -31,6 +32,7 @@ namespace TelegramClientServer
 
 
             builder.Services.AddSignalR();
+
             builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
             builder.Services.AddSingleton<IHashPassword, PasswordHasherService>();
@@ -55,8 +57,12 @@ namespace TelegramClientServer
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddHttpLogging(options => { });
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+     
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -86,6 +92,26 @@ namespace TelegramClientServer
 
 
             var app = builder.Build();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();              
+
+            app.UseHttpLogging();
+
+            /*            app.Use(async (context, next) =>
+                        {
+                            context.Request.Headers.Append("Test", "Some test value");
+                            await next();
+                        });
+
+                        app.Use(async (context, next) =>
+                        {
+                            var header = context.Request.Headers["Test"];
+                            Console.WriteLine(header);
+
+                            await next();
+
+                            await context.Response.WriteAsync(header.ToString());
+                        });*/
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -103,10 +129,13 @@ namespace TelegramClientServer
 
             app.MapControllers();
 
+
             app.MapHub<SignalRHubs.MainHub>("/chatHub");
 
+            //minimal API Test
+            app.MapGet("/MinAPI", () => "Min api Test");
+            
             app.Run();
-   
         }
     }
 }

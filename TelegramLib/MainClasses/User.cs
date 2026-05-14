@@ -93,9 +93,6 @@ namespace TelegramLib.MainClasses
 
             IsOnline = false;
 
-            /*            UserImages = new List<UserImage>();
-                        UserImages.Add(new UserImage("WhiteCat.png", DateTime.Now));
-                        UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));*/
         }
 
         public bool IsSameId(int id)
@@ -108,22 +105,8 @@ namespace TelegramLib.MainClasses
             if (UserImages is null || UserImages.Count == 0)
             {
                 UserImages = new List<UserImage>();
-                UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
             }
             return UserImages.First();
-        }
-
-        public bool SetBasicUserImage()
-        {
-            if (!(UserImages is null) && UserImages.Count > 0) return false;
-
-/*            if (UserImages is null || UserImages.Count == 0)
-            {*/
-                UserImages = new List<UserImage>();
-                UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
-                return true;
-/*            }
-            return false;*/
         }
 
         public string GetFirstImageNameInString()

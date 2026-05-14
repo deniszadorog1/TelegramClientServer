@@ -1226,13 +1226,6 @@ namespace TelegramVisualPart.UserControls
 
         }
 
-        public void SetTestChatMessages()
-        {
-            //Get Chatter here (Contact type)
-            _chatMessages = _system.GetTestMessages();
-            SetMessagesInChat();
-        }
-
 
         private MainSettings _chatterSettings;
         private TelegramLib.MainClasses.User _chatter;
@@ -1866,8 +1859,8 @@ namespace TelegramVisualPart.UserControls
         private async void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (_isSending) return;
-
             if (IsSendingChatterIsBlocked()) return;
+            if (OnlyPinnedHeaderGrid.Visibility == Visibility.Visible) return;
 
             if (e.Key == Key.V && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
             {
@@ -5801,7 +5794,7 @@ namespace TelegramVisualPart.UserControls
             UserControl? messageControl = messages.Count > 1 ? null :
                 GetMessageControlById(messages.First().Id);
 
-            _toForwardMessages = await GetListOfMessagesToSendForward(messages);
+            _toForwardMessages = await GetListOfMessagesToSendForward(messages, userIdToSend);
             ClearForwardMessagesFromReply();
 
             _forwardSenderId = userIdToSend;
@@ -5866,7 +5859,7 @@ namespace TelegramVisualPart.UserControls
         }
 
         public async Task<List<Message>> GetListOfMessagesToSendForward(
-            List<Message> toConvert)
+            List<Message> toConvert, int? toSendId)
         {
             List<Message> res = new List<Message>();
 
@@ -5879,7 +5872,10 @@ namespace TelegramVisualPart.UserControls
                 copy.ForwardedFromId = toConvert[i].SenderUserId;
 
                 //To check this
-                copy.SenderUserId = _system.LoggedUser.Id;
+
+                //if (toSendId is not null) copy.SenderUserId = _system.LoggedUser.Id;
+                copy.SenderUserId = toSendId is not null ? _system.LoggedUser.Id : copy.SenderUserId;
+
                 copy.IsPinned = false;
                 copy.IsRead = false;
                 copy.SentTime = DateTime.Now;
@@ -5891,8 +5887,6 @@ namespace TelegramVisualPart.UserControls
             }
 
             await ChangeSelectedMedias(res);
-
-
             return res;
         }
 
@@ -6863,6 +6857,8 @@ namespace TelegramVisualPart.UserControls
 
         private async void ChatBox_Drop(object sender, DragEventArgs e)
         {
+            if (OnlyPinnedHeaderGrid.Visibility == Visibility.Visible) return;
+
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
