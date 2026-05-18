@@ -7,12 +7,95 @@
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\userchat.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\userchat.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\userchat.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\helper\\filesaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\helper\\filesaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\emojis\\fullvisualsblock.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\userchat.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\userchat.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\userchat.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\userchat.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatssearch\\searchcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatssearch\\searchcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|B:\\GitHub\\TelegramClientServer\\telegramlib\\mainclasses\\messages\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|solutionrelative:telegramlib\\mainclasses\\messages\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\contactinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\contactinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\privandsecurity\\butspages\\passcodepages\\autolock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\privandsecurity\\butspages\\passcodepages\\autolock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|B:\\GitHub\\TelegramClientServer\\telegramlib\\services\\dbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|solutionrelative:telegramlib\\services\\dbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|solutionrelative:telegramclientserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|solutionrelative:telegramclientserver\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\chatactions\\sendmedia\\sendmediapage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -36,10 +119,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\windows\\mediawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\windows\\mediawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\helper\\filesaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\helper\\filesaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|B:\\GitHub\\TelegramClientServer\\telegramlib\\usersettings\\settingstypes\\subsettings\\chatwallpaper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,20 +153,8 @@
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\chatactions\\deletechat.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|B:\\GitHub\\TelegramClientServer\\telegramlib\\services\\dbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|solutionrelative:telegramlib\\services\\dbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\controllers\\messagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|solutionrelative:telegramclientserver\\controllers\\messagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\enterinaccount\\enterpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -100,14 +167,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\textmessage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\textmessage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|solutionrelative:telegramclientserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|solutionrelative:telegramclientserver\\middlewares\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{35BEFD52-591A-44DD-9D19-9796E2C457F1}|TelegramClientServer\\TelegramClientServer.csproj|b:\\github\\telegramclientserver\\telegramclientserver\\ffprobe.exe||{177559E0-D141-11D0-92DF-00A0C9138C45}",
@@ -124,10 +183,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\userinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\userinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\contactinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\contactinfo.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\contactinfo.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -201,15 +256,8 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\denis\\AppData\\Local\\SourceServer\\e155ff3092e5c364377caf0bbe360e48193594afb4a6eb8b2d6374693345061f\\src\\libraries\\System.Private.Uri\\src\\System\\UriExt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\chatactions\\calendarpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\chatactions\\calendarpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|B:\\GitHub\\TelegramClientServer\\telegramlib\\mainclasses\\messages\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{58DCF614-E194-4C31-9DCD-953CE327240C}|TelegramLib\\TelegramLib.csproj|solutionrelative:telegramlib\\mainclasses\\messages\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\chatactions\\calendarpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -279,10 +327,6 @@
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\privandsecurity\\butspages\\passcodepages\\autolock.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\privandsecurity\\butspages\\passcodepages\\autolock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\privandsecurity\\butspages\\passcodepages\\autolock.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\settings\\privandsecurity\\privacydeleteaccount.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\settings\\privandsecurity\\privacydeleteaccount.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -299,28 +343,12 @@
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\mediamessage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatssearch\\searchcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatssearch\\searchcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\languagefiles\\englishlang.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\languagefiles\\englishlang.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\pages\\mainchatpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\pages\\mainchatpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatscontrols\\userchatmenu.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\usercontrols\\chatcontrols\\chatbutscontrols\\userchatmenubutton.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\usercontrols\\chatcontrols\\chatbutscontrols\\userchatmenubutton.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|solutionrelative:telegramvisualpart\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{532DAD4B-B4BF-42E3-9CD1-CED37C365424}|TelegramVisualPart\\TelegramVisualPart.csproj|b:\\github\\telegramclientserver\\telegramvisualpart\\windows\\mediawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -525,11 +553,11 @@
       "DocumentGroups": [
         {
           "DockedHeight": 16,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 13,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 59,
               "Title": "SignalRService.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SignalRService.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\SignalRService.cs",
@@ -542,7 +570,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 58,
               "Title": "MainHub.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\SignalRHubs\\MainHub.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\SignalRHubs\\MainHub.cs",
@@ -555,7 +583,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 57,
               "Title": "SentItemsUserContact.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml.cs",
@@ -568,7 +596,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 35,
               "Title": "GetTestParams.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TestThing\\GetTestParams.cs",
               "RelativeDocumentMoniker": "TestThing\\GetTestParams.cs",
@@ -578,6 +606,20 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-02T08:00:09.308Z",
               "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MainChatPage.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
+              "ViewState": "AgIAAAcFAAAAAAAAAAAUwCIFAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T18:45:59.311Z",
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -597,19 +639,58 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "VisHelper.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\VisHelper.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\VisHelper.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\VisHelper.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Helper\\VisHelper.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAAAwLAAAAAoAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "FullVisualsBlock.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAiwEAAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T10:52:10.766Z"
+              "WhenOpened": "2026-05-18T21:38:26.883Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
+              "Title": "FullVisualsBlock.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-18T21:38:07.333Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAD8DAAAAAAAAAAAEwFcDAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T11:00:48.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserChat.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ViewState": "AgIAAOQPAAAAAAAAAAAmwPIPAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-25T07:41:47.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "UserChat.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml",
@@ -621,20 +702,192 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UserChat.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ViewState": "AgIAALYaAAAAAAAAAAAlwMwaAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "FilesAction.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\FilesAction.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\FilesAction.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\FilesAction.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Helper\\FilesAction.cs",
+              "ViewState": "AgIAANQAAAAAAAAAAAAlwOoAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-25T07:41:47.237Z",
+              "WhenOpened": "2026-04-25T08:05:52.187Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
+              "Title": "MainChatPage.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-04-27T23:50:42.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "UserChatMenu.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-02T07:53:33.088Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SearchControl.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAlwDkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-02T08:18:06.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserChatMenu.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml.cs",
+              "ViewState": "AgIAALIBAAAAAAAAAAAuwNEBAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T22:43:57.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Message.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\Messages\\Message.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\Messages\\Message.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\Messages\\Message.cs",
+              "RelativeToolTip": "TelegramLib\\MainClasses\\Messages\\Message.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAD4v4AAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-05T14:56:37.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UserChat.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ToolTip": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
+              "ViewState": "AgIAANAFAAAAAAAAAAAkwOUFAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-05T22:38:44.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ContactInfo.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
+              "ViewState": "AgIAABoBAAAAAAAAAAAkwDIBAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-27T17:36:16.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-01T12:50:47.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "AutoLock.xaml.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAmwDMAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T00:26:21.808Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "DbService.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Services\\DbService.cs",
+              "RelativeDocumentMoniker": "TelegramLib\\Services\\DbService.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Services\\DbService.cs",
+              "RelativeToolTip": "TelegramLib\\Services\\DbService.cs",
+              "ViewState": "AgIAAJ8NAAAAAAAAAAAAwLUNAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-26T18:39:54.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ApiService.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ApiService.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ApiService.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ApiService.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Services\\ApiService.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwCEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-24T21:33:01.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ExceptionHandlingMiddleware.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "RelativeDocumentMoniker": "TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "RelativeToolTip": "TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T16:44:42.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Program.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Program.cs",
+              "RelativeDocumentMoniker": "TelegramClientServer\\Program.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Program.cs",
+              "RelativeToolTip": "TelegramClientServer\\Program.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAQwDwAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-04T17:23:21.079Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "ChatToAddInFolder.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-13T07:55:44.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
               "Title": "MediaElBoxItem.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\ToSendMedias\\MediaElBoxItem.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsControls\\ToSendMedias\\MediaElBoxItem.xaml.cs",
@@ -646,43 +899,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ChatToAddInFolder.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\ChatToAddInFolder.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-13T07:55:44.225Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml.cs",
-              "ViewState": "AgIAABIGAAAAAAAAAIA7wBwGAAAkAAAAAAAAAA==",
+              "DocumentIndex": 28,
+              "Title": "VisHelper.cs",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\VisHelper.cs",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\VisHelper.cs",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\VisHelper.cs",
+              "RelativeToolTip": "TelegramVisualPart\\Helper\\VisHelper.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAAwLAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T11:00:48.202Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-29T10:52:10.766Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "FilesAction.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\FilesAction.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\FilesAction.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\FilesAction.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Helper\\FilesAction.cs",
-              "ViewState": "AgIAAN0AAAAAAAAAAAAAwOoAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-25T08:05:52.187Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 24,
               "Title": "SendMediaPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml.cs",
@@ -690,12 +919,11 @@
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml.cs",
               "ViewState": "AgIAAEgAAAAAAAAAAAAAwFsAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-30T22:54:15.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T22:54:15.446Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 25,
               "Title": "ThrowHelper.cs",
               "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\Temp\\.vsdbgsrc\\90793c3eb31d7122de8c9fc198b40ef620e753d16ec471ad4ebd91d387ca3092\\ThrowHelper.cs",
               "ToolTip": "C:\\Users\\denis\\AppData\\Local\\Temp\\.vsdbgsrc\\90793c3eb31d7122de8c9fc198b40ef620e753d16ec471ad4ebd91d387ca3092\\ThrowHelper.cs [\u0422\u043E\u043B\u044C\u043A\u043E \u0447\u0442\u0435\u043D\u0438\u0435]",
@@ -706,19 +934,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 26,
               "Title": "SendMediaPage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\SendMedia\\SendMediaPage.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-30T22:53:50.029Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T22:53:50.029Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 29,
               "Title": "MediaWindow.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Windows\\MediaWindow.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Windows\\MediaWindow.xaml.cs",
@@ -730,7 +957,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 37,
               "Title": "DeleteChat.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\DeleteChat.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\DeleteChat.xaml",
@@ -741,19 +968,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "ApiService.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ApiService.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ApiService.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ApiService.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Services\\ApiService.cs",
-              "ViewState": "AgIAANgEAAAAAAAAAAAlwP4EAABOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T21:33:01.957Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 43,
               "Title": "appsettings.json",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\appsettings.json",
               "RelativeDocumentMoniker": "TelegramClientServer\\appsettings.json",
@@ -765,19 +980,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "MainChatPage.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml.cs",
-              "ViewState": "AgIAABULAAAAAAAAAAAlwC0LAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T18:45:59.311Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 42,
               "Title": "ffprobe.exe",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\ffprobe.exe",
               "RelativeDocumentMoniker": "TelegramClientServer\\ffprobe.exe",
@@ -788,7 +991,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 38,
               "Title": "MessageController.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Controllers\\MessageController.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\Controllers\\MessageController.cs",
@@ -800,7 +1003,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 39,
               "Title": "EnterPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\EnterInAccount\\EnterPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\EnterInAccount\\EnterPage.xaml.cs",
@@ -812,7 +1015,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 44,
               "Title": "TelegramClientServer.http",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\TelegramClientServer.http",
               "RelativeDocumentMoniker": "TelegramClientServer\\TelegramClientServer.http",
@@ -824,7 +1027,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 40,
               "Title": "TextMessage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\TextMessage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\TextMessage.xaml.cs",
@@ -837,7 +1040,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 41,
               "Title": "TextMessage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\TextMessage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\TextMessage.xaml",
@@ -848,43 +1051,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "ExceptionHandlingMiddleware.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
-              "RelativeDocumentMoniker": "TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
-              "RelativeToolTip": "TelegramClientServer\\Middlewares\\ExceptionHandlingMiddleware.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T16:44:42.706Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "Program.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Program.cs",
-              "RelativeDocumentMoniker": "TelegramClientServer\\Program.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Program.cs",
-              "RelativeToolTip": "TelegramClientServer\\Program.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAEwIkAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T17:23:21.079Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "ContactInfo.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml.cs",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAMwGcAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-27T17:36:16.973Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 46,
               "Title": "ContactInfo.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ContactInfo.xaml",
@@ -895,7 +1062,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 45,
               "Title": "UserInfo.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfo.xaml.cs",
@@ -907,7 +1074,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 50,
               "Title": "RegistrationPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\EnterInAccount\\RegistrationPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\EnterInAccount\\RegistrationPage.xaml.cs",
@@ -919,7 +1086,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 48,
               "Title": "SetLanguageText.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\SetLanguageText.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\SetLanguageText.cs",
@@ -931,7 +1098,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 49,
               "Title": "UserInfo.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfo.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfo.xaml",
@@ -942,7 +1109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 51,
               "Title": "RegistrationPage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\EnterInAccount\\RegistrationPage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\EnterInAccount\\RegistrationPage.xaml",
@@ -953,7 +1120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 52,
               "Title": "SignalRHelperService.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\SignalRHelperService.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\SignalRHelperService.cs",
@@ -965,7 +1132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 54,
               "Title": "MediaMessage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\MediaMessage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\MediaMessage.xaml.cs",
@@ -977,7 +1144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 60,
               "Title": "TelSystemTests.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\MessengerTests\\TelSystemTests.cs",
               "RelativeDocumentMoniker": "MessengerTests\\TelSystemTests.cs",
@@ -989,7 +1156,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 56,
               "Title": "ReplyMessagePart.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\MessageMenu\\ReplyMessagePart.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\MessageMenu\\ReplyMessagePart.xaml",
@@ -1000,7 +1167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 55,
               "Title": "ReplyMessagePart.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\MessageMenu\\ReplyMessagePart.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\MessageMenu\\ReplyMessagePart.xaml.cs",
@@ -1012,7 +1179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 61,
               "Title": "ForRepMenu.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageMenuPages\\ForRepMenu.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageMenuPages\\ForRepMenu.xaml.cs",
@@ -1025,7 +1192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 62,
               "Title": "MainContacts.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Contacts\\MainContacts.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Contacts\\MainContacts.xaml",
@@ -1036,7 +1203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 63,
               "Title": "UriExt.cs",
               "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\e155ff3092e5c364377caf0bbe360e48193594afb4a6eb8b2d6374693345061f\\src\\libraries\\System.Private.Uri\\src\\System\\UriExt.cs",
               "ToolTip": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\e155ff3092e5c364377caf0bbe360e48193594afb4a6eb8b2d6374693345061f\\src\\libraries\\System.Private.Uri\\src\\System\\UriExt.cs [\u0422\u043E\u043B\u044C\u043A\u043E \u0447\u0442\u0435\u043D\u0438\u0435]",
@@ -1047,17 +1214,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
-              "Title": "UserChat.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ToolTip": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\963410c69e102c8188a0983202e7702b039e7663e1d434b5a9e7199eceaf861a\\TelegramVisualPart\\UserControls\\UserChat.xaml.cs",
-              "ViewState": "AgIAAOoIAAAAAAAAAAAgwAQJAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T22:38:44.306Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 64,
               "Title": "CalendarPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml.cs",
@@ -1069,19 +1226,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 65,
               "Title": "CalendarPage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\CalendarPage.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-05T13:39:10.819Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-05T13:39:10.819Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 66,
               "Title": "List.cs",
               "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\3f37b34f0847a5a20980d5e7d75b864dc0e6ae3aa760bd78b353f469bf8ec2d0\\src\\libraries\\System.Private.CoreLib\\src\\System\\Collections\\Generic\\List.cs",
               "ToolTip": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\3f37b34f0847a5a20980d5e7d75b864dc0e6ae3aa760bd78b353f469bf8ec2d0\\src\\libraries\\System.Private.CoreLib\\src\\System\\Collections\\Generic\\List.cs [\u0422\u043E\u043B\u044C\u043A\u043E \u0447\u0442\u0435\u043D\u0438\u0435]",
@@ -1092,7 +1248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 67,
               "Title": "UserTalkMessage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserTalkMessage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserTalkMessage.xaml.cs",
@@ -1104,19 +1260,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 59,
+              "DocumentIndex": 71,
               "Title": "ClearChatHistory.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-04T00:32:50.917Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T00:32:50.917Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
+              "DocumentIndex": 70,
               "Title": "ClearChatHistory.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\ClearChatHistory.xaml.cs",
@@ -1128,7 +1283,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 68,
               "Title": "UserChatInfoMenu.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml",
@@ -1140,7 +1295,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 69,
               "Title": "UserChatInfoMenu.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\UserChatInfoMenu.xaml.cs",
@@ -1152,7 +1307,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 67,
+              "DocumentIndex": 79,
               "Title": "ChatToApply.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml.cs",
@@ -1164,7 +1319,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 80,
               "Title": "FontToChoose.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\FontFamilyChoose\\FontToChoose.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\ChatSettingsControls\\FontFamilyChoose\\FontToChoose.xaml",
@@ -1175,19 +1330,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 60,
+              "DocumentIndex": 72,
               "Title": "NewMessagesDeletion.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-04T00:26:07.646Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T00:26:07.646Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 61,
+              "DocumentIndex": 73,
               "Title": "NewMessagesDeletion.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\NewMessagesDeletion.xaml.cs",
@@ -1199,7 +1353,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 62,
+              "DocumentIndex": 74,
               "Title": "SelfDestructTimer.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\SelfDestructTimer.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\SelfDestructTimer.xaml",
@@ -1210,7 +1364,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 75,
               "Title": "SelfDestructTimer.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\SelfDestructTimer.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\MessageAutoDeletion\\SelfDestructTimer.xaml.cs",
@@ -1222,19 +1376,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 64,
+              "DocumentIndex": 76,
               "Title": "ToChooseChats.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ToChooseChats.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ToChooseChats.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ToChooseChats.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\ToChooseChats.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-29T11:12:05.57Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-29T11:12:05.57Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
+              "DocumentIndex": 77,
               "Title": "ToChooseChats.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ToChooseChats.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ToChooseChats.xaml.cs",
@@ -1247,31 +1400,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 66,
+              "DocumentIndex": 78,
               "Title": "ChatToApply.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml",
               "RelativeToolTip": "TelegramVisualPart\\UserControls\\SettingsControls\\AutoDeleteMessages\\ChatToApply.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-04T00:36:35.915Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-04T00:36:35.915Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
-              "Title": "AutoLock.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T00:26:21.808Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 83,
               "Title": "DeleteContact.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\DeleteContact.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\DeleteContact.xaml",
@@ -1282,7 +1422,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 81,
               "Title": "AutoLock.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\ButsPages\\PasscodePages\\AutoLock.xaml",
@@ -1293,7 +1433,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 82,
               "Title": "PrivacyDeleteAccount.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyDeleteAccount.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyDeleteAccount.xaml",
@@ -1304,7 +1444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
+              "DocumentIndex": 84,
               "Title": "MediaServerUrl.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Helper\\MediaServerUrl.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Helper\\MediaServerUrl.cs",
@@ -1316,7 +1456,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 74,
+              "DocumentIndex": 85,
               "Title": "MediaMessage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\MediaMessage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\MediaMessage.xaml",
@@ -1327,19 +1467,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 75,
-              "Title": "SearchControl.xaml.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsSearch\\SearchControl.xaml.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAowDkAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-02T08:18:06.872Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 76,
+              "DocumentIndex": 86,
               "Title": "EnglishLang.json",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\LanguageFiles\\EnglishLang.json",
               "RelativeDocumentMoniker": "TelegramVisualPart\\LanguageFiles\\EnglishLang.json",
@@ -1351,31 +1479,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 77,
-              "Title": "MainChatPage.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-27T23:50:42.885Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 78,
-              "Title": "UserChatMenu.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-02T07:53:33.088Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 79,
+              "DocumentIndex": 87,
               "Title": "UserChatMenuButton.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\UserChatMenuButton.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\UserChatMenuButton.xaml",
@@ -1387,19 +1491,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 80,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "TelegramVisualPart\\MainWindow.xaml",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\MainWindow.xaml",
-              "RelativeToolTip": "TelegramVisualPart\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-01T12:50:47.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 85,
+              "DocumentIndex": 92,
               "Title": "FoldersChat.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\FoldersChat.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\FoldersChat.xaml.cs",
@@ -1411,19 +1503,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 83,
+              "DocumentIndex": 90,
               "Title": "FolderAction.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-01T07:11:30.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-01T07:11:30.182Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 86,
+              "DocumentIndex": 93,
               "Title": "FoldersChatAction.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml.cs",
@@ -1435,7 +1526,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 84,
+              "DocumentIndex": 91,
               "Title": "FoldersChat.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\FoldersChat.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\FoldersPrivacy\\FoldersChat.xaml",
@@ -1446,7 +1537,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 82,
+              "DocumentIndex": 89,
               "Title": "FolderAction.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\Folders\\FolderAction.xaml.cs",
@@ -1458,31 +1549,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 81,
+              "DocumentIndex": 88,
               "Title": "MediaWindow.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Windows\\MediaWindow.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Windows\\MediaWindow.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Windows\\MediaWindow.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Windows\\MediaWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-01T12:28:15.398Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-01T12:28:15.398Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 87,
+              "DocumentIndex": 94,
               "Title": "FoldersChatAction.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\Folders\\FoldersChatAction.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-05-01T07:11:31.992Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-01T07:11:31.992Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 89,
+              "DocumentIndex": 96,
               "Title": "MediaController.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Controllers\\MediaController.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\Controllers\\MediaController.cs",
@@ -1494,7 +1583,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 90,
+              "DocumentIndex": 97,
               "Title": "TelegramVisualPart.csproj",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\TelegramVisualPart.csproj",
               "RelativeDocumentMoniker": "TelegramVisualPart\\TelegramVisualPart.csproj",
@@ -1506,7 +1595,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 91,
+              "DocumentIndex": 98,
               "Title": "SavedChatMenu.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\SavedChatControls\\SavedChatMenu.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\SavedChatControls\\SavedChatMenu.xaml.cs",
@@ -1518,7 +1607,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 92,
+              "DocumentIndex": 99,
               "Title": "TelegramClientServer.csproj",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\TelegramClientServer.csproj",
               "RelativeDocumentMoniker": "TelegramClientServer\\TelegramClientServer.csproj",
@@ -1530,7 +1619,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 94,
+              "DocumentIndex": 101,
               "Title": "SendMessageMenu.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\SendMessageMenu.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\SendMessageMenu.xaml",
@@ -1542,7 +1631,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 93,
+              "DocumentIndex": 100,
               "Title": "SendMessageMenu.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\SendMessageMenu.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\SendMessageMenu.xaml.cs",
@@ -1554,7 +1643,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 95,
+              "DocumentIndex": 102,
               "Title": "ffmpeg.exe",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\ffmpeg.exe",
               "RelativeDocumentMoniker": "TelegramClientServer\\ffmpeg.exe",
@@ -1565,7 +1654,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 96,
+              "DocumentIndex": 103,
               "Title": "HttpConnectionPool.cs",
               "DocumentMoniker": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\4c7792adabd1f3d6680f8b39129a58b8355115e8a9be3f727df5c007bc64e55c\\src\\libraries\\System.Net.Http\\src\\System\\Net\\Http\\SocketsHttpHandler\\HttpConnectionPool.cs",
               "ToolTip": "C:\\Users\\denis\\AppData\\Local\\SourceServer\\4c7792adabd1f3d6680f8b39129a58b8355115e8a9be3f727df5c007bc64e55c\\src\\libraries\\System.Net.Http\\src\\System\\Net\\Http\\SocketsHttpHandler\\HttpConnectionPool.cs",
@@ -1575,7 +1664,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 97,
+              "DocumentIndex": 104,
               "Title": "SettingsPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml.cs",
@@ -1587,7 +1676,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 98,
+              "DocumentIndex": 105,
               "Title": "MyProfileSettings.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml.cs",
@@ -1599,43 +1688,40 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 99,
+              "DocumentIndex": 106,
               "Title": "SentItemsUserContact.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\UserInfoContact\\SentObjectsUserInfo\\SentItemsUserContact.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-30T16:59:44.804Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:59:44.804Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 100,
+              "DocumentIndex": 107,
               "Title": "SettingsPage.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\SettingsPage.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-30T16:40:24.553Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:40:24.553Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 101,
+              "DocumentIndex": 108,
               "Title": "MyProfileSettings.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\MyProfile\\MyProfileSettings.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-30T16:38:56.949Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:38:56.949Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 102,
+              "DocumentIndex": 109,
               "Title": "LoggedUserProfile.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml.cs",
@@ -1647,31 +1733,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 103,
+              "DocumentIndex": 110,
               "Title": "LoggedUserProfile.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\MyProfile\\LoggedUserProfile.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-30T16:37:43.724Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T16:37:43.724Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 105,
+              "DocumentIndex": 112,
               "Title": "SetPrivacyByType.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml",
               "RelativeToolTip": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-29T10:51:25.895Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-29T10:51:25.895Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 106,
+              "DocumentIndex": 113,
               "Title": "PrivacyMessages.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyMessages.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyMessages.xaml",
@@ -1682,7 +1766,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 104,
+              "DocumentIndex": 111,
               "Title": "SetPrivacyByType.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\SetPrivacyByType.xaml.cs",
@@ -1694,7 +1778,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 107,
+              "DocumentIndex": 114,
               "Title": "PrivacyAndSecurity.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyAndSecurity.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyAndSecurity.xaml",
@@ -1705,7 +1789,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 108,
+              "DocumentIndex": 115,
               "Title": "PrivacyAndSecurity.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyAndSecurity.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\Settings\\PrivAndSecurity\\PrivacyAndSecurity.xaml.cs",
@@ -1717,18 +1801,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 109,
+              "DocumentIndex": 116,
               "Title": "MenuIconTextBut.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\DifferButs\\MenuIconTextBut.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\DifferButs\\MenuIconTextBut.xaml",
               "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\DifferButs\\MenuIconTextBut.xaml",
               "RelativeToolTip": "TelegramVisualPart\\UserControls\\DifferButs\\MenuIconTextBut.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-04-29T11:11:25.387Z"
+              "WhenOpened": "2026-04-29T11:11:25.387Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 110,
+              "DocumentIndex": 117,
               "Title": "IconTextButAdvanced.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\SettingsControls\\AdvancedControls\\AdvancedButtons\\IconTextButAdvanced.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\SettingsControls\\AdvancedControls\\AdvancedButtons\\IconTextButAdvanced.xaml",
@@ -1739,7 +1824,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 111,
+              "DocumentIndex": 118,
               "Title": "ShareContactControl.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\ShareContactControl.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatMessages\\ShareContactControl.xaml",
@@ -1750,7 +1835,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 112,
+              "DocumentIndex": 119,
               "Title": "SharedLink.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\SentObjects\\SharedLink.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\SentObjects\\SharedLink.xaml",
@@ -1761,7 +1846,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 113,
+              "DocumentIndex": 120,
               "Title": "SharedFile.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\SentObjects\\SharedFile.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\ChatButsControls\\SentObjects\\SharedFile.xaml",
@@ -1772,7 +1857,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 114,
+              "DocumentIndex": 121,
               "Title": "ShareContact.xaml",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\ShareContact.xaml",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\ShareContact.xaml",
@@ -1783,7 +1868,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 118,
+              "DocumentIndex": 125,
               "Title": "Program.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramBenchmarks\\Program.cs",
               "RelativeDocumentMoniker": "TelegramBenchmarks\\Program.cs",
@@ -1795,7 +1880,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 117,
+              "DocumentIndex": 124,
               "Title": "SocialController.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Controllers\\SocialController.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\Controllers\\SocialController.cs",
@@ -1807,7 +1892,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 115,
+              "DocumentIndex": 122,
               "Title": "ApiServiceWrapper.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ApiServiceWrapper.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ApiServiceWrapper.cs",
@@ -1819,7 +1904,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 119,
+              "DocumentIndex": 126,
               "Title": "MessengerTests.csproj",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\MessengerTests\\MessengerTests.csproj",
               "RelativeDocumentMoniker": "MessengerTests\\MessengerTests.csproj",
@@ -1831,7 +1916,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 120,
+              "DocumentIndex": 127,
               "Title": "ProxyDataProvider.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Services\\ProxyDataProvider.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Services\\ProxyDataProvider.cs",
@@ -1843,7 +1928,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 121,
+              "DocumentIndex": 128,
               "Title": "VisualActionPage.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\VisualPages\\VisualActionPage.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\VisualPages\\VisualActionPage.xaml.cs",
@@ -1855,7 +1940,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 122,
+              "DocumentIndex": 129,
               "Title": "launchSettings.json",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "TelegramClientServer\\Properties\\launchSettings.json",
@@ -1867,7 +1952,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 123,
+              "DocumentIndex": 130,
               "Title": ".env",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\.env",
               "RelativeDocumentMoniker": "TelegramVisualPart\\.env",
@@ -1879,7 +1964,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 124,
+              "DocumentIndex": 131,
               "Title": "DeleteChat.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\ChatActions\\DeleteChat.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\ChatActions\\DeleteChat.xaml.cs",
@@ -1891,7 +1976,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 126,
+              "DocumentIndex": 133,
               "Title": "EditUserContact.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\EditUserContact.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\UserInfoContact\\ActionsFolder\\EditUserContact.xaml.cs",
@@ -1904,7 +1989,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 125,
+              "DocumentIndex": 132,
               "Title": "UserContact.xaml.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ContactsControls\\UserContact.xaml.cs",
               "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ContactsControls\\UserContact.xaml.cs",
@@ -1916,7 +2001,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 127,
+              "DocumentIndex": 134,
               "Title": "SettingsController.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Controllers\\SettingsController.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\Controllers\\SettingsController.cs",
@@ -1928,7 +2013,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 128,
+              "DocumentIndex": 135,
               "Title": "ContactController.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\Controllers\\ContactController.cs",
               "RelativeDocumentMoniker": "TelegramClientServer\\Controllers\\ContactController.cs",
@@ -1940,7 +2025,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 30,
               "Title": "ChatWallpaper.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
               "RelativeDocumentMoniker": "TelegramLib\\UserSettings\\SettingsTypes\\SubSettings\\ChatWallpaper.cs",
@@ -1952,7 +2037,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 31,
               "Title": "UserContactcs.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\UserContactcs.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\UserContactcs.cs",
@@ -1964,7 +2049,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 32,
               "Title": "User.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\User.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\User.cs",
@@ -1977,7 +2062,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 33,
               "Title": "TelSystem.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\TelSystem.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\TelSystem.cs",
@@ -1989,7 +2074,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 34,
               "Title": "ChatBackground.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\ChatFitures\\ChatBackground.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\ChatFitures\\ChatBackground.cs",
@@ -2001,20 +2086,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "DbService.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Services\\DbService.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\Services\\DbService.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Services\\DbService.cs",
-              "RelativeToolTip": "TelegramLib\\Services\\DbService.cs",
-              "ViewState": "AgIAAHMQAAAAAAAAAAAtwIMQAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-26T18:39:54.504Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 47,
               "Title": "UserChat.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\UserChat.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\UserChat.cs",
@@ -2026,7 +2098,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 53,
               "Title": "MediaAction.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\Messages\\MediaAction.cs",
               "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\Messages\\MediaAction.cs",
@@ -2038,19 +2110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
-              "Title": "Message.cs",
-              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\Messages\\Message.cs",
-              "RelativeDocumentMoniker": "TelegramLib\\MainClasses\\Messages\\Message.cs",
-              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\MainClasses\\Messages\\Message.cs",
-              "RelativeToolTip": "TelegramLib\\MainClasses\\Messages\\Message.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAhwEcAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-05T14:56:37.448Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 129,
+              "DocumentIndex": 136,
               "Title": "IDataProvider.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Interfaces\\IDataProvider.cs",
               "RelativeDocumentMoniker": "TelegramLib\\Interfaces\\IDataProvider.cs",
@@ -2062,7 +2122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 88,
+              "DocumentIndex": 95,
               "Title": "ImageCachingDecorator.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Decorators\\ImageCachingDecorator.cs",
               "RelativeDocumentMoniker": "TelegramLib\\Decorators\\ImageCachingDecorator.cs",
@@ -2074,7 +2134,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 116,
+              "DocumentIndex": 123,
               "Title": "IApiService.cs",
               "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramLib\\Interfaces\\IApiService.cs",
               "RelativeDocumentMoniker": "TelegramLib\\Interfaces\\IApiService.cs",
@@ -2083,6 +2143,79 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-26T15:20:24.692Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "4c659688-e494-4fa3-819f-df0500cb9418",
+        "Display": 0,
+        "X": 961,
+        "Y": 76,
+        "Width": 800,
+        "Height": 600,
+        "WindowState": 0
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MainChatPage.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\Pages\\MainChatPage.xaml",
+              "ViewState": "AgIAAPkAAAAAAAAAAAAAABgBAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-17T22:01:59.076Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserChat.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\UserChat.xaml",
+              "ViewState": "AgIAADACAAAAAAAAAAArwEoCAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-17T22:58:27.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FullVisualsBlock.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatControls\\Emojis\\FullVisualsBlock.xaml",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAFgAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-18T21:38:09.235Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UserChatMenu.xaml",
+              "DocumentMoniker": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "RelativeDocumentMoniker": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "ToolTip": "B:\\GitHub\\TelegramClientServer\\TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "RelativeToolTip": "TelegramVisualPart\\UserControls\\ChatsControls\\UserChatMenu.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-17T22:44:28.519Z",
+              "EditorCaption": ""
             }
           ]
         }

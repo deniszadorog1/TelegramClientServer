@@ -470,7 +470,7 @@ namespace TelegramVisualPart.Helper
                     }
                 case MediaType.Sticker:
                     {
-                        return await ApiService.GetPathOnMediaServer(name);
+                        //return await ApiService.GetPathOnMediaServer(name);
                         return Path.Combine(GetStickerPath(), name);
                     }
                 default:

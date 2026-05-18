@@ -1244,6 +1244,11 @@ namespace TelegramVisualPart.UserControls
 
                 for (int i = 0; i < _chatMessages.Count; i++)
                 {
+                    if (_chatMessages[i] is MediaAction asd && asd.IsSticker)
+                    {
+                        Console.WriteLine();
+                    }
+
                     if (_chatMessages[i] is MediaAction mediaAct &&
                         mediaAct.BandId != -1 && !bandBankIds.Contains(mediaAct.BandId))
                     {
@@ -1396,7 +1401,8 @@ namespace TelegramVisualPart.UserControls
                 FilesAction.GetMediaTypeFromFilename(message.MediaName);
 
             string path = await FilesAction.GetFilePathByMediaType(type, message.MediaName);
-            path = FilesAction.GetPathByPseudoPath(path);
+            if(!message.IsSticker) path = FilesAction.GetPathByPseudoPath(path);
+
             if (path is null || path == string.Empty) return;
 
             switch (type)
@@ -2145,6 +2151,7 @@ namespace TelegramVisualPart.UserControls
 
         public void ClearForwardElements()
         {
+            return;
             const int maxLeft = 5;
 
             if (_toForwardMessages.Count <= maxLeft) return;
@@ -2412,7 +2419,6 @@ namespace TelegramVisualPart.UserControls
             await ApiService.AddMessage(toAdd, _chat);
             return await ApiService.GetLastChatMessage(_chat.Id);
         }
-
 
         public void SetMessageMenu_PreviewRightMouseDown(object sender, MouseEventArgs e)
         {
@@ -4061,8 +4067,6 @@ namespace TelegramVisualPart.UserControls
 
             ScrollToNewMessage();
         }
-
-
 
         public void SetMediaTickVis(MediaAction media, MediaMessage message)
         {

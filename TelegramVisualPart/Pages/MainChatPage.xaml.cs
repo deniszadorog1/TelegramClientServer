@@ -1277,13 +1277,17 @@ namespace TelegramVisualPart.Pages
 
 
         private const int _minChatColWidth = 90;
+        private const int _minChosenChatColWidth = 500;
 
+        private const int _minAllChatsColMousePosX = 300;
+        private const int _minChatColMousePosX = 1300;
         private void GridSplitter_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             Point mousePos = Mouse.GetPosition(Application.Current.MainWindow);
             double desired = ChatsColumn.ActualWidth + e.HorizontalChange;
+            double chatCol = ChatColumn.ActualWidth + e.HorizontalChange;
 
-            if (mousePos.X < 300)
+            if (mousePos.X < _minAllChatsColMousePosX)
             {
                 //hide all chat textBlocks except UserImage
                 HideAllChatBlocks();
@@ -1296,10 +1300,22 @@ namespace TelegramVisualPart.Pages
 
                 FolderSliderRow.Height = new GridLength(0);
             }
+            else if(this.ActualWidth - mousePos.X < _minChosenChatColWidth)
+            {
+                ChatColumn.MinWidth = _minChosenChatColWidth;
+                ChatColumn.Width = new GridLength(_minChosenChatColWidth);
+
+                ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+            }
             else
             {
                 double clamped = Math.Max(100, desired);
                 ChatsColumn.Width = new GridLength(clamped);
+
+                ChatColumn.MinWidth = _minChosenChatColWidth; 
+                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+
+
                 SetVisibilityForChatObjects(false);
                 SearchChatBut.Visibility = Visibility.Visible;
 
@@ -2397,8 +2413,11 @@ namespace TelegramVisualPart.Pages
 
             _menuChatterTalk.SetVisibilityToUnreadEllipse(false);
 
+            string temp = UserChat.Visibility == Visibility.Hidden ? string.Empty : UserChat.CommentTextBox.Text;
+
             //Clear chat
             UserChat.Visibility = Visibility.Hidden;
+            UserChat.CommentTextBox.Text = string.Empty;
             ChosoeChatBorder.Visibility = Visibility.Visible;
             CloseMediaWindows();
 
@@ -2417,10 +2436,13 @@ namespace TelegramVisualPart.Pages
 
             window.ContentRendered += (s, e) =>
             {
-                ((MainChatPage)window.MainFrame.Content).UserChat.SettingEnded += () =>
+                MainChatPage page = ((MainChatPage)window.MainFrame.Content);
+                page.UserChat.SettingEnded += () =>
                 {
                     window.Opacity = 1;
                 };
+
+                page.UserChat.CommentTextBox.Text = temp;
             };
 
             window.AddChatMainWindow();

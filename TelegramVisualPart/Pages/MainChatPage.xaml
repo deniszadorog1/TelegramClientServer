@@ -270,7 +270,8 @@
                               ResizeBehavior="PreviousAndNext"
                               ResizeDirection="Columns"
                               Cursor="SizeWE"
-                              DragDelta="GridSplitter_DragDelta"/>
+                              DragDelta="GridSplitter_DragDelta"
+                              />
                 
                 <Border Name="ChatBg" Grid.Column="3" 
                         Background="{StaticResource DarkThemeSecond}">
