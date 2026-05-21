@@ -5,6 +5,8 @@ B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\TelegramClientS
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\.filenesting.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\appsettings.Development.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\appsettings.json
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\ffmpeg.exe
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\ffprobe.exe
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\TelegramClientServer.staticwebassets.runtime.json
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\testhost.exe

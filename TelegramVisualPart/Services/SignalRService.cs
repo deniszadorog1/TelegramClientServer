@@ -40,7 +40,7 @@ namespace TelegramVisualPart.Services
         public static TelSystem? _system;
 
         public static event Action<User, TextMessage>? TextMessageReceived;
-        public static event Action<User, List<MediaAction>>? MediaMessageReceived;
+        public static event Func<User, List<MediaAction>, Task>? MediaMessageReceived;
         public static event Func<User, StaticMessage, Task>? StatMessageReceived;
 
         public static event Action<User>? UpdateContactDel;

@@ -15,6 +15,7 @@ using TelegramLib.Decorators;
 using System.Windows.Media.Imaging;
 using TelegramVisualPart.Helper;
 using System.Data.Entity.Migrations.Model;
+using MaterialDesignColors.Recommended;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -59,7 +60,7 @@ namespace TelegramVisualPart.Services
         public static string GetChashedPath(string name) => _imageDecorator.GetPath(name);
 
         public static void SetCachedSettings(MainSettings settings) => _imageDecorator.SetSettings(settings);
-        public static MainSettings GetCachedSettings(int id) =>_imageDecorator.GetSettings(id);
+        public static MainSettings GetCachedSettings(int id) => _imageDecorator.GetSettings(id);
 
         public static void SetChchedUser(TelegramLib.MainClasses.User user) => _imageDecorator.SetUser(user);
         public static TelegramLib.MainClasses.User GetCachedUser(int id) => _imageDecorator.GetUser(id);
@@ -72,7 +73,6 @@ namespace TelegramVisualPart.Services
             SetChchedUser(user);
             SetCachedSettings(settings);
         }
-        
 
         public static string GetConnectionString()
         {
@@ -366,7 +366,7 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.User>(jsonResponse);
 
             if (user is not null) _imageDecorator.SetUser(user);
-            
+
             return user;
         }
 
@@ -712,9 +712,9 @@ namespace TelegramVisualPart.Services
 
         public static async Task<MainSettings> GetSettingsByUserId(int userId)
         {
-            var response = await _client.GetAsync($"api/Settings/GetSettingsByUserId?userId={userId}");
+            var response = await _client.GetAsync($"api/Settings/GetSettingsByUserId?userId={userId}").ConfigureAwait(false);
 
-            string jsonResponse = await response.Content.ReadAsStringAsync();
+            string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
             MainSettings? res = JsonConvert.DeserializeObject<MainSettings>(jsonResponse);
@@ -1423,7 +1423,7 @@ namespace TelegramVisualPart.Services
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonResponse);
 
-            string newPath =  result?["url"];
+            string newPath = result?["url"];
 
             _imageDecorator.AddPath(newPath.Contains(MediaServerUrl.Url) ? newPath : (MediaServerUrl.Url + newPath));
 

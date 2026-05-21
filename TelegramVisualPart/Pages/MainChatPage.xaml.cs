@@ -286,7 +286,7 @@ namespace TelegramVisualPart.Pages
             but.FontFamily = new FontFamily("Calibri");
 
         }
-        public void SetMediaMessage(TelegramLib.MainClasses.User user,
+        public async Task SetMediaMessage(TelegramLib.MainClasses.User user,
             List<MediaAction> media)
         {
             Dispatcher.Invoke(() =>
@@ -1325,6 +1325,7 @@ namespace TelegramVisualPart.Pages
 
             SetSearchPanelWidth();
         }
+
 
         public void SetSearchPanelWidth()
         {

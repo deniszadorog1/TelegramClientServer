@@ -114,9 +114,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             //AddContactRow.Height = new GridLength(_baseUpperInfoRowHeight);
         }
 
-        public void ReceivedMedias(TelegramLib.MainClasses.User user, List<MediaAction> medias)
+        public async Task ReceivedMedias(TelegramLib.MainClasses.User user, List<MediaAction> medias)
         {
-            Dispatcher.InvokeAsync(async () =>
+            await Dispatcher.InvokeAsync(async () =>
             {
                 await SetInfoVisibility();
             });

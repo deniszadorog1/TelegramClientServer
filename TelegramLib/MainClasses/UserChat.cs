@@ -530,14 +530,16 @@ namespace TelegramLib.MainClasses
             return mes;
         }
 
-        public void RemoveMessageBySentTime(DateTime time)
+        public Messages.Message RemoveMessageBySentTime(DateTime time)
         {
             TelegramLib.MainClasses.Messages.Message toRemove = GetMessageByFullDateTime(time);
 
-            if (toRemove is null) return;
+            if (toRemove is null) return null;
             Messages.Remove(toRemove);
 
             RemoveDateMessages();
+
+            return toRemove;
         }
 
         public int GetLinksAmount()

@@ -12,8 +12,6 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visua
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\UserImages\WhiteCat.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\blackCat.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\check.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\fray.jpg
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\GetFont.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\image.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Monkey.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Pineapple.jpg
@@ -417,3 +415,4 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visua
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\MainImg.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\PalletteImg.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\SettingsImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\broller.jpg
