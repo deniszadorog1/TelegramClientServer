@@ -2,6 +2,7 @@
 using FFMpegCore.Pipes;
 using MaterialDesignThemes.Wpf;
 using System.IO;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -123,7 +124,7 @@ namespace TelegramVisualPart.Helper
 
             if (pseudoPath is not null)
             {
-                string res = MediaServerUrl.Url + pseudoPath;
+                string res = /*MediaServerUrl.Url +*/ pseudoPath;
                 return res;
             }
 
@@ -485,66 +486,113 @@ namespace TelegramVisualPart.Helper
                     return Path.Combine(GetVideosPath(), name);
                 }*/
 
-        public static Image GetImagePreviewForVideo(string videoName)
+        public static async Task<Image> GetImagePreviewForVideo(string videoName)
         {
-            var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
+            // 1. Асинхронно получаем путь
+            var pseudoPath = await ApiService.GetVideoPreviewPath(videoName);
+            if (string.IsNullOrEmpty(pseudoPath)) return new Image();
+
+            string fullUrl = FilesAction.GetPathByPseudoPath(pseudoPath);
+
+            try
+            {
+                // Создаем встроенный плеер WPF. Он умеет читать потоковое видео по URL через ngrok
+                var mediaPlayer = new MediaPlayer { Volume = 0, ScrubbingEnabled = true };
+
+                var tcs = new TaskCompletionSource<bool>();
+
+                // Подписываемся на событие успешного открытия файла
+                mediaPlayer.MediaOpened += (s, e) => tcs.TrySetResult(true);
+                mediaPlayer.MediaFailed += (s, e) => tcs.TrySetResult(false);
+
+                // Открываем URL видео
+                mediaPlayer.Open(new Uri(fullUrl, UriKind.Absolute));
+
+                // Асинхронно ждем, пока ngrok прожует заголовки и видео откроется (таймаут 7 секунд)
+                var delayTask = Task.Delay(7000);
+                var completedTask = await Task.WhenAny(tcs.Task, delayTask);
+
+                if (completedTask == delayTask || !await tcs.Task)
+                {
+                    mediaPlayer.Close();
+                    return new Image(); // Таймаут или ошибка сети ngrok
+                }
+
+                // Перематываем на 0.5 секунды, чтобы гарантированно уйти от возможного черного первого кадра
+                mediaPlayer.Position = TimeSpan.FromSeconds(0.5);
+
+                // Маленькая асинхронная пауза, чтобы видеокарта успела отрисовать кадр в буфер
+                await Task.Delay(300);
+
+                // Получаем реальные размеры видео (если не определились, ставим стандарт)
+                double width = mediaPlayer.NaturalVideoWidth > 0 ? mediaPlayer.NaturalVideoWidth : 320;
+                double height = mediaPlayer.NaturalVideoHeight > 0 ? mediaPlayer.NaturalVideoHeight : 240;
+
+                // Рендерим кадр видео в визуальный элемент прямо в памяти
+                var drawingVisual = new DrawingVisual();
+                using (var drawingContext = drawingVisual.RenderOpen())
+                {
+                    drawingContext.DrawVideo(mediaPlayer, new Rect(0, 0, width, height));
+                }
+
+                // Переводим картинку в честный BitmapImage (RenderTargetBitmap является наследником BitmapSource)
+                var renderTargetBitmap = new RenderTargetBitmap(
+                    (int)width, (int)height,
+                    96, 96, PixelFormats.Pbgra32);
+
+                renderTargetBitmap.Render(drawingVisual);
+
+                if (renderTargetBitmap.CanFreeze)
+                    renderTargetBitmap.Freeze(); // Замораживаем для UI
+
+                mediaPlayer.Close();
+
+                // Возвращаем то, что просит твой контракт — Image с Bitmap в Source
+                return new Image { Source = renderTargetBitmap, Height = 205, Width = 225 };
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Ошибка генерации кадра: {ex.Message}");
+                return new Image();
+            }
+
+
+            /*var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
 
             if (string.IsNullOrEmpty(pseudoPath))
                 return new Image();
 
             string fullUrl = FilesAction.GetPathByPseudoPath(pseudoPath);
 
-            using (var client = new System.Net.WebClient())
+            byte[] imageData;
+            using (var httpClient = new System.Net.Http.HttpClient())
             {
-                byte[] imageData = client.DownloadData(fullUrl);
-
-                using (var ms = new MemoryStream(imageData))
+                try
                 {
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    bitmap.Freeze(); 
-
-                    return new Image { Source = bitmap };
+                    imageData = Task.Run(async () => await httpClient.GetByteArrayAsync(fullUrl)).Result;
+                }
+                catch
+                {
+                    return new Image();
                 }
             }
 
-            /*
-                        GlobalFFOptions.Configure(new FFOptions
-                        {
-                            BinaryFolder = Path.Combine(AppContext.BaseDirectory, "ffmpeg"),
-                            TemporaryFilesFolder = Path.GetTempPath()
-                        });
+            if (imageData == null || imageData.Length == 0)
+                return new Image();
 
+            using (var ms = new MemoryStream(imageData))
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = ms;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
 
-                        //string videoPath = Path.Combine(GetVideosPath(), videoName);
-                        var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
+                if (bitmap.CanFreeze)
+                    bitmap.Freeze();
 
-
-
-                        using var ms = new MemoryStream();
-
-                        FFMpegArguments
-                            .FromFileInput(videoPath)
-                            .OutputToPipe(new StreamPipeSink(ms), options => options
-                                .WithVideoCodec("png")
-                                .WithFrameOutputCount(1)
-                                .ForceFormat("image2pipe"))
-                            .ProcessSynchronously();
-
-
-                        ms.Seek(0, SeekOrigin.Begin);
-
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.StreamSource = ms;
-                        bitmap.EndInit();
-                        bitmap.Freeze();
-
-                        return new Image { Source = bitmap };*/
+                return new Image { Source = bitmap };
+            }*/
         }
 
         public static MediaElement GetMediaElementByVideoName(string name)

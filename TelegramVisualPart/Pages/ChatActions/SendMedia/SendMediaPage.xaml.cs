@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
@@ -370,6 +371,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
         private void SchedMesBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            List<Message> messages = new List<Message>();
+
             bool isBand = GroupItems.IsChecked is null ? false : (bool)GroupItems.IsChecked;
 
             Window window = Window.GetWindow(this);
@@ -385,8 +388,17 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                 medias.Add(new MediaAction(-1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), System.IO.Path.GetFileName(_paths[i]), false, false, false, null));
             }
 
+            messages.AddRange(medias.Cast<Message>().ToList());
+            //Capture
+            if (CaptureBox.Text != string.Empty)
+            {
+                messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(
+                    -1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), CaptureBox.Text, false, null, false, null, false));
+            }
+
             SetScheduleMessage message =
-                new SetScheduleMessage(_chat, medias.Cast<Message>().ToList(), _system, _forwardMessages, isBandMessages:isBand);
+                new SetScheduleMessage(_chat, messages,
+                _system, _forwardMessages, isBandMessages:isBand);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }

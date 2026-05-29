@@ -81,7 +81,7 @@ namespace TelegramVisualPart.Pages.ChatActions
                     mainWindow.CloseAllMediaWindows();
                     mainWindow.ClearVisChat();
 
-                    mainWindow.UpdateGlobalMedias();
+                    await mainWindow.UpdateGlobalMedias();
                 }
 
                 //clear from db
@@ -95,7 +95,7 @@ namespace TelegramVisualPart.Pages.ChatActions
             {
                 main.CloseAllMediaWindows();
 
-                main.UpdateGlobalMedias();
+               await main.UpdateGlobalMedias();
             }
             //Is to clear both users
             bool isClearBoth = (bool)ShowChatNameBox.IsChecked;

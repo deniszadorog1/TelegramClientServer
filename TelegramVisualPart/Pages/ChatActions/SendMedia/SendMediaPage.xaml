@@ -52,8 +52,7 @@
                     <Grid Margin="30 0 30 0" Background="{StaticResource DarkThemeSecond}">
                         <ListBox Name="MediasBox" Width="300" Height="170"
                                  Margin="10 10 10 10">
-
-
+                            
                         </ListBox>
 
                         <ScrollViewer Name="GroupScroll"

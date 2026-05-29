@@ -24,6 +24,7 @@ using TelegramVisualPart.Pages.Settings;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
+using TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
@@ -1696,7 +1697,7 @@ namespace TelegramVisualPart
             }
         }
 
-        public void UpdateGlobalMedias()
+        public async Task UpdateGlobalMedias()
         {
             if (MainFrame.Content is not MainChatPage main) return;
 
@@ -1705,7 +1706,19 @@ namespace TelegramVisualPart
 
             if (type is null) return;
 
-            main.SetSearchedParams((TelegramLib.Enums.Messages.MediaType)type);
+            await main.SetSearchedParams((TelegramLib.Enums.Messages.MediaType)type);
+        }
+
+        public async void UpdateSentItemsContact(UserChat chat)
+        {
+            if (ThirdFrame.Content is not SentItemsUserContact page || !page.IsChatIdsAreSame(chat.Id)) return;
+
+            await page.SetFiles();
+        }
+
+        public bool IsSentItemsContactIsOpen()
+        {
+            return ThirdFrame.Content is SentItemsUserContact;
         }
 
     }

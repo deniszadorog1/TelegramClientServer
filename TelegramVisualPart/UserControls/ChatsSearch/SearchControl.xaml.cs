@@ -29,7 +29,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
     /// </summary>
     public partial class SearchControl : UserControl
     {
-        public event Action<TelegramLib.Enums.Messages.MediaType> SetSearchType; 
+        public event Func<TelegramLib.Enums.Messages.MediaType, Task> SetSearchType; 
         private TelSystem _system;
 
         public SearchControl()

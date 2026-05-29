@@ -1,10 +1,10 @@
+B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\.filenesting.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\appsettings.Development.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\appsettings.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\ffmpeg.exe
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\ffprobe.exe
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.staticwebassets.runtime.json
-B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.exe
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.deps.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramClientServer\bin\Release\net8.0\TelegramClientServer.dll

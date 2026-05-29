@@ -374,7 +374,7 @@ namespace TelegramVisualPart.Pages
         }
 
         private const int mediaSize = 85;
-        public void SetSearchedParams(TelegramLib.Enums.Messages.MediaType type)
+        public async Task SetSearchedParams(TelegramLib.Enums.Messages.MediaType type)
         {
             if (type == TelegramLib.Enums.Messages.MediaType.Unknown)
             {
@@ -388,7 +388,7 @@ namespace TelegramVisualPart.Pages
             }
             else if (type == TelegramLib.Enums.Messages.MediaType.Video)
             {
-                SetVideosInPanel();
+                await SetVideosInPanel();
             }
         }
 
@@ -396,7 +396,7 @@ namespace TelegramVisualPart.Pages
         private List<MediaAction> _mediasinSearhPanel;
         private List<string> _videoPaths;
 
-        public void SetVideosInPanel()
+        public async Task SetVideosInPanel()
         {
             AllMediasElements.Children.Clear();
             //Get paths for 
@@ -406,7 +406,7 @@ namespace TelegramVisualPart.Pages
             //Set preview image
             for (int i = 0; i < _videoPaths.Count; i++)
             {
-                Image img = FilesAction.GetImagePreviewForVideo(_videoPaths[i]);
+                Image img = await FilesAction.GetImagePreviewForVideo(_videoPaths[i]);
 
                 img.Tag = _videoPaths[i];
 

@@ -53,23 +53,26 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             Date.Text = DateTime.Now.ToString("MMMM", new CultureInfo("en-US"));
         }
 
-        private void SetFiles()
+        public async Task SetFiles()
         {
+            ElemsPanel.Children.Clear();
+            MessageMenu.Children.Clear();
+
             switch (_type)
             {
                 case Enums.SentItemsTypes.Photos:
                     {
-                        SetImagesInPanel();
+                        await SetImagesInPanel();
                         break;
                     }
                 case Enums.SentItemsTypes.Video:
                     {
-                        SetVideosInPanel();
+                        await SetVideosInPanel();
                         break;
                     }
                 case Enums.SentItemsTypes.SharedLinks:
                     {
-                        SetLinksInPanel();
+                        await SetLinksInPanel();
                         break;
                     }
                 case Enums.SentItemsTypes.GIFs:
@@ -78,6 +81,11 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                         break;
                     }
             }
+        }
+
+        public bool IsChatIdsAreSame(int id)
+        {
+            return _chat.Id == id;
         }
 
         public async Task SetLinksInPanel()
@@ -200,7 +208,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             return res;
         }
 
-        public void SetVideosInPanel()
+        public async Task SetVideosInPanel()
         {
             //Get paths for 
             _videoPaths = GetVideoFileNames();
@@ -208,7 +216,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             //Set preview image
             for (int i = 0; i < _videoPaths.Count; i++)
             {
-                Image img = FilesAction.GetImagePreviewForVideo(_videoPaths[i]);
+                Image img = await FilesAction.GetImagePreviewForVideo(_videoPaths[i]);
 
                 img.Tag = _videoPaths[i];
 
@@ -281,10 +289,10 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
         }
 
         private MesMenu _menu;
-        public void SetImagesInPanel()
+        public async Task SetImagesInPanel()
         {
             SetChatMediaObjs();
-            _imgs = GetImages();
+            _imgs = await GetImages();
 
             SetOnlyImagesInMedias();
 
@@ -447,7 +455,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             return res;
         }
 
-        public List<Image> GetImages()
+        public async Task<List<Image>> GetImages()
         {
             List<Image> res = new List<Image>();
             for (int i = 0; i < _chat.Messages.Count; i++)
@@ -459,7 +467,18 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                     {
                         string path = FilesAction.GetUserImagePath(media.MediaName);
                         BitmapImage bitmap = ApiService.GetCachedBitmap(media.MediaName);
-                        
+
+                        if (bitmap is null)
+                        {
+                            string? fullPath = await ApiService.GetPathOnMediaServer(media.MediaName);
+
+                            if (fullPath is null) continue;
+                            SignalRHelperService.LoadBitmap(fullPath);
+
+
+                            bitmap = ApiService.GetCachedBitmap(path);
+                        }
+
                         if(bitmap is not null) res.Add(new Image() { Source = bitmap});
                         //UserImage.ImageSource = ApiService.GetCashedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
                         //res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));

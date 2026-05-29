@@ -429,7 +429,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 if (videoExt == ".mp4" || videoExt == ".amv")
                 {
-                    Image videoFrame = await VisHelper.GetFirstFrameAsync(tempPath);
+                    Image videoFrame = await /*FilesAction.GetImagePreviewForVideo(tempPath);// */VisHelper.GetFirstFrameAsync(tempPath);
                     if (videoFrame is null) continue;
 
                     if (videoFrame.Source is BitmapImage bitImg)
@@ -1133,7 +1133,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (isVideo) return;
 
-            ScaleVideo(img, border);
+            if(!ScaleVideo(img, border))
+            {
+                border.Height = 150;
+                border.Width = 225;
+            }
 
             return;
 
@@ -1149,9 +1153,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (border.Height > _maxMediaSize) border.Height = _maxMediaSize;
         }
 
-        public void ScaleVideo(Image img, Border border)
+        public bool ScaleVideo(Image img, Border border)
         {
-            if (img.Source is not BitmapImage bitmap) return;
+            if (img.Source is not BitmapImage bitmap) return false;
 
             double w = bitmap.PixelWidth;
             double h = bitmap.PixelHeight;
@@ -1174,6 +1178,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             border.Width = w;
             border.Height = h;
+
+            return true;
         }
 
         public MediaMessage(TelSystem system, string gifPath,
@@ -1314,14 +1320,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
         }
 
-        private void SetVideoPreview()
+        private async Task SetVideoPreview()
         {
             string fileName = System.IO.Path.GetFileName(_media.Source.LocalPath);
 
-            Image img = FilesAction.GetImagePreviewForVideo(fileName);
+            Image img = await FilesAction.GetImagePreviewForVideo(fileName);
 
             ImgMessage.ImageSource = img.Source;
-            VideoParams.Visibility = Visibility.Visible;
+           // VideoParams.Visibility = Visibility.Visible;
 
             SetImgMessageSize(img, ImageBorder, isVideo: false);
 

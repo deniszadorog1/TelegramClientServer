@@ -104,7 +104,10 @@ namespace TelegramLib.MainClasses
         {
             if (UserImages is null || UserImages.Count == 0)
             {
-                UserImages = new List<UserImage>();
+                UserImages = new List<UserImage>()
+                {
+                    new UserImage()
+                };
             }
             return UserImages.First();
         }
