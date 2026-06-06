@@ -158,9 +158,9 @@ namespace TelegramVisualPart.Pages.ChatActions
                     continue;
                 }
 
-                await ApiService.AddMessage(toSetIn[i], _chat);
-
-                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));
+/*                await ApiService.AddMessage(toSetIn[i], _chat);
+                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));*/
+                schedMeses.Add(await ApiService.AddMessage(toSetIn[i], _chat));
             }
 
             if(bandMesses.Count != 0)
@@ -177,9 +177,12 @@ namespace TelegramVisualPart.Pages.ChatActions
             for (int j = 0; j < bandMesses.Count; j++)
             {
                 bandMesses[j].BandId = newBandId;
-                await ApiService.AddMessage(bandMesses[j], _chat);
 
-                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));
+/*                await ApiService.AddMessage(bandMesses[j], _chat);
+                schedMeses.Add(await ApiService.GetLastChatMessage(_chat.Id));*/
+
+
+                schedMeses.Add(await ApiService.AddMessage(bandMesses[j], _chat));
             }
             bandMesses.Clear();
         }

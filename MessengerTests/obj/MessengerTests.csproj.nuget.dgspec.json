@@ -90,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.420/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.421/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -168,9 +168,13 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
+            "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Microsoft.Bcl.AsyncInterfaces": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[10.0.8, )"
             },
             "Microsoft.Data.SqlClient": {
               "target": "Package",

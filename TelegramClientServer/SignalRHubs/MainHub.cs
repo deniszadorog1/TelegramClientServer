@@ -23,27 +23,27 @@ namespace TelegramClientServer.SignalRHubs
         }*/
 
 
-        public async Task SendTextMessage(User user, TextMessage message, User chatter)
+        public async Task SendTextMessage(User user, List<Message> messages, User chatter)
         {
+            /*            var envelope = new MessageEnvelope
+                        {
+                            Sender = user,
+                            Content = messages,
+                            ReceiverId = chatter.Id.ToString()
+                        };
 
-            // Створюємо обгортку з даними
-            var envelope = new MessageEnvelope
-            {
-                Sender = user,
-                Content = message,
-                ReceiverId = chatter.Id.ToString()
-            };
+                        await MessageBus.PublishAsync(envelope);*/
 
-            await MessageBus.PublishAsync(envelope);
 
-            //await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", user, message);
+            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", messages, user);
+
         }
 
-        public async Task SendMediaMessage(User user,List<MediaAction> message, User chatter)
+        public async Task SendMediaMessage(User user, List<Message> messages, User chatter)
         {
             var senderId = Context.UserIdentifier;
 
-            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", user, message);
+            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", messages, user);
         }
 
         public async Task SendStatMessage(User user, StaticMessage message, User chatter)
@@ -202,6 +202,12 @@ namespace TelegramClientServer.SignalRHubs
         public async Task UpdateCachedSettings(int id)
         {
             await Clients.All.SendAsync("UpdateCachedSettings", id);
+        }
+
+        public async Task SendAllMessages(List<Message> messages, User sender, User chatter)
+        {
+            await Clients.User(chatter.Id.ToString()).
+                SendAsync("SendAllMessages", messages, sender);
         }
     }
 

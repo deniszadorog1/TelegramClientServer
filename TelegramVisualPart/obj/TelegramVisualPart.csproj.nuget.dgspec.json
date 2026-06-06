@@ -112,9 +112,13 @@
               "target": "Package",
               "version": "[10.0.0-preview.7.25380.108, )"
             },
+            "Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Microsoft.Bcl.AsyncInterfaces": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[10.0.8, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

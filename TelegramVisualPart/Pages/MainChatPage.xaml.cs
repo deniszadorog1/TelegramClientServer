@@ -8,6 +8,8 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
+using TelegramLib.Models;
+using TelegramLib.UserSettings;
 using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.Menus;
@@ -23,6 +25,7 @@ using TelegramVisualPart.UserControls.ChatsSearch.SearchMediaMenuFolder;
 using TelegramVisualPart.UserControls.ContactsControls;
 using TelegramVisualPart.UserControls.DifferButs;
 using TelegramVisualPart.UserControls.MainPage.LittleMainControls;
+using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
 using TelegramVisualPart.Windows;
 using ListBoxItem = System.Windows.Controls.ListBoxItem;
 using Page = System.Windows.Controls.Page;
@@ -286,21 +289,25 @@ namespace TelegramVisualPart.Pages
             but.FontFamily = new FontFamily("Calibri");
 
         }
-        public async Task SetMediaMessage(TelegramLib.MainClasses.User user,
-            List<MediaAction> media)
+        public async Task SetMediaMessage(List<Message> messages, 
+            TelegramLib.MainClasses.User user)
         {
             Dispatcher.Invoke(() =>
             {
-                SetInUserTalkMessageLastMessage(user, "media");
+                Message mes = messages.Last();
+
+                SetInUserTalkMessageLastMessage(user, mes is TextMessage text ? text.Text : "media");
             });
         }
 
-        public void SentTextMessage(TelegramLib.MainClasses.User user,
-            TelegramLib.MainClasses.Messages.TextMessage textMes)
+        public async Task SentTextMessage(List<Message> messages,
+            TelegramLib.MainClasses.User user)
         {
             Dispatcher.Invoke(() =>
             {
-                SetInUserTalkMessageLastMessage(user, textMes.Text);
+                Message mes = messages.Last();
+
+                SetInUserTalkMessageLastMessage(user, mes is TextMessage text ? text.Text : "media");
             });
         }
 
@@ -579,7 +586,7 @@ namespace TelegramVisualPart.Pages
             //If basic chat
             Window window = Window.GetWindow(this);
 
-            if (window is MainWindow main && main.GetIsOnlyChat()) return;           
+            if (window is MainWindow main && main.GetIsOnlyChat()) return;
             if (ChatsColumn.Width.Value == 0)
             {
                 BackButton_MouseDown();
@@ -1300,7 +1307,7 @@ namespace TelegramVisualPart.Pages
 
                 FolderSliderRow.Height = new GridLength(0);
             }
-            else if(this.ActualWidth - mousePos.X < _minChosenChatColWidth)
+            else if (this.ActualWidth - mousePos.X < _minChosenChatColWidth)
             {
                 ChatColumn.MinWidth = _minChosenChatColWidth;
                 ChatColumn.Width = new GridLength(_minChosenChatColWidth);
@@ -1312,7 +1319,7 @@ namespace TelegramVisualPart.Pages
                 double clamped = Math.Max(100, desired);
                 ChatsColumn.Width = new GridLength(clamped);
 
-                ChatColumn.MinWidth = _minChosenChatColWidth; 
+                ChatColumn.MinWidth = _minChosenChatColWidth;
                 ChatColumn.Width = new GridLength(1, GridUnitType.Star);
 
 
@@ -1577,13 +1584,13 @@ namespace TelegramVisualPart.Pages
             talkMes.LastMessage.Text = message;
         }
 
-        public async Task<UserTalkMessage> GetTalkMessage(int chatIndex)
+        public async Task<UserTalkMessage> GetTalkMessage(int chatIndex, MainSettings settings = null)
         {
             TelegramLib.MainClasses.UserChat chat =
                 _system.GetChatByIndex(chatIndex);
 
             TelegramLib.MainClasses.User chatterUser = chat.Chatter;//  await ApiService.GetUserById(chat.Chatter.Id);
-            string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser);
+            string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser, settings);
 
             UserTalkMessage chatControl = new UserTalkMessage(imageName /*chat.GetChatter().GetFirstImageName().Name*/)
             {
@@ -1625,11 +1632,12 @@ namespace TelegramVisualPart.Pages
             talkMes.SetTick(lastMes, _system);
         }
 
-        public void ClearChosenUserTalkValue()
+        public void ClearChosenUserTalkValue(TelegramLib.MainClasses.UserChat checkChat)
         {
             TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
             if (chat is null) chat = _chosenChat;
+            if (chat is null) chat = checkChat;
 
             if (chat is null || chat.Chatter is null) return;
 
@@ -2760,7 +2768,7 @@ namespace TelegramVisualPart.Pages
 
             UpdateUserTalkChat();
 
-            await ApiService.SetReadStatus(sharedId);
+            await ApiService.SetReadStatus(new List<int>() { sharedId });
             chat.Messages.Last().IsRead = true;
         }
 

@@ -901,11 +901,11 @@ namespace TelegramVisualPart
             chatPage.SetUserChatBg();
         }
 
-        public void ClearChat()
+        public void ClearChat(UserChat chat)
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UserChat.ClearChat();
-            chatPage.ClearChosenUserTalkValue();
+            chatPage.ClearChosenUserTalkValue(chat);
 
             if (_isOnlyChat && _bossWindow is not null)
             {

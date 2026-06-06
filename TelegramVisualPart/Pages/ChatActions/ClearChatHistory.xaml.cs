@@ -105,7 +105,7 @@ namespace TelegramVisualPart.Pages.ChatActions
                 await ClearForChatter();
             }
             //clear for temp user
-            await ClearTempUserChat();
+            await ClearTempUserChat(_chat);
         }
 
         public async Task ClearForChatter()
@@ -125,14 +125,14 @@ namespace TelegramVisualPart.Pages.ChatActions
             }
         }
 
-        private async Task ClearTempUserChat()
+        private async Task ClearTempUserChat(UserChat chat)
         {
             await ApiService.ClearChat(_chat);
 
             _system.RemoveAllMessagesFromChat(_chat);
             _chat.ClearChat();
 
-            ((MainWindow)Window.GetWindow(this)).ClearChat();
+            ((MainWindow)Window.GetWindow(this)).ClearChat(chat);
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 

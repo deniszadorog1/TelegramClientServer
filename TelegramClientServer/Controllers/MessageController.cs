@@ -106,18 +106,61 @@ namespace TelegramClientServer.Controllers
             return DbService.AddAndGetSchedMessage(dto.Chat, dto.ActionMessage);
         }
 
+        //Add ALL forwarded messages 
+        [HttpPost("AddAndGetAllForwMessages")]
+        public List<TelegramLib.MainClasses.Messages.Message> AddAndGetAllForwMessages([FromBody] AddAndGetAllForwMessagesDTO dto)
+        {
+            return DbService.AddAllForwardedMessages(dto.Chat, dto.Messages, dto.LoggedUserId);
+        }
+
+        public record AddAndGetAllForwMessagesDTO 
+        {
+            public UserChat Chat { get; set; }
+            public List<TelegramLib.MainClasses.Messages.Message> Messages { get; set; }
+            public int LoggedUserId { get; set; }
+        }
+
+
         //Add Message
         [HttpPut("AddMessage")]
-        public IActionResult AddMessage([FromBody] MessageDTO dto)
+        public TelegramLib.MainClasses.Messages.Message AddMessage([FromBody] MessageDTO dto)
         {
-            bool res = DbService.AddMessage(dto.Chat, dto.ActionMessage);
-            return res ? Ok(true) : NotFound(false);
+            return DbService.AddMessage(dto.Chat, dto.ActionMessage);
         }
         public class MessageDTO
         {
             public UserChat Chat { get; set; }
             public Message ActionMessage { get; set; }
         }
+
+        [HttpPut("AddMessages")]
+        public List<TelegramLib.MainClasses.Messages.Message> AddMessages([FromBody] MessagesDTO dto)
+        {
+            return DbService.AddMessages(dto.Chat, dto.Messages);
+           // return res ? Ok(true) : NotFound(false);
+        }
+        public record MessagesDTO
+        {
+            public UserChat Chat { get; set; }
+            public List<Message> Messages { get; set; } 
+        }
+
+      
+
+        [HttpPost("AddAndGetPairMediaMessages")]
+        public ActionResult<List<MediaAction>> AddAndGetMediaMessages([FromBody] MediaMessagesRequestDTO request)
+        {
+            var result = DbService.AddAndGetPairsMediaMessages(request.Medias, request.Chat);
+            return Ok(result);
+        }
+        public class MediaMessagesRequestDTO
+        {
+            public List<MediaAction> Medias { get; set; }
+            public UserChat Chat { get; set; }
+
+            public MediaMessagesRequestDTO() { }
+        }
+
 
         [HttpGet("GetPairToMessage")]
         public IActionResult GetPairToMessage(int mesId)
@@ -166,21 +209,21 @@ namespace TelegramClientServer.Controllers
         [HttpPost("ReadMessage")]
         public void ReadMessage([FromBody] ReadMessageDTO readMessage)
         {
-            DbService.SetReadMessageAction(readMessage.Id);
+            DbService.SetReadMessageAction(readMessage.Ids);
         }
         public class ReadMessageDTO
         {
-            public int Id { get; set; }
+            public List<int> Ids { get; set; }
         }
 
         [HttpPost("SetReadStatus")]
         public void SetReadStatus([FromBody] SetReadStatusDTO readStatDTO)
         {
-            DbService.SetReadStatusByMessIdBySendTime(readStatDTO.MesId);
+            DbService.SetReadStatusByMessIdBySendTime(readStatDTO.Ids);
         }
         public class SetReadStatusDTO
         {
-            public int MesId { get; set; }
+            public List<int> Ids { get; set; }
         }
 
         [HttpGet("GetReadStatus")]
@@ -196,15 +239,15 @@ namespace TelegramClientServer.Controllers
             return DbService.GetCorrectIdBySentDate(checkDate);
         }
 
-        [HttpPut("AddSavedMessage")]
-        public void AddSavedMessage([FromBody] AddSavedMessageDTO mesDTO)
+        [HttpPost("AddSavedMessage")]
+        public List<TelegramLib.MainClasses.Messages.Message> AddSavedMessage([FromBody] AddSavedMessageDTO mesDTO)
         {
-            DbService.AddSavedMessage(mesDTO.SavedChatId, mesDTO.Mes);
+            return DbService.AddSavedMessage(mesDTO.SavedChatId, mesDTO.Messages);
         }
         public class AddSavedMessageDTO
         {
             public int SavedChatId { get; set; }
-            public TelegramLib.MainClasses.Messages.Message Mes { get; set; }
+            public List<TelegramLib.MainClasses.Messages.Message> Messages { get; set; }
         }
 
         [HttpDelete("DeleteSavedMessage")]
@@ -219,5 +262,11 @@ namespace TelegramClientServer.Controllers
             public List<int> ToRemoveIds { get; set; }
         }
 
+
+        [HttpGet("GetReplyIds")]
+        public List<int?> GetReplyIds(List<TelegramLib.MainClasses.Messages.Message> messages)
+        {
+            return DbService.GetPairsForReplyMessage(messages);
+        }
     }
 }

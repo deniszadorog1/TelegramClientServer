@@ -11,7 +11,7 @@ namespace TelegramClientServer.SignalRHubs
     public class MessageEnvelope
     {
         public User Sender { get; set; }
-        public TextMessage Content { get; set; }
+        public List<Message> Content { get; set; }
         public string ReceiverId { get; set; }
     }
 

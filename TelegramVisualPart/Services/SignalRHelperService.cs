@@ -379,12 +379,12 @@ namespace TelegramVisualPart.Services
             }
         }
 
-        public static async Task<string> GetUserPhotoToSet(TelegramLib.MainClasses.User user)
+        public static async Task<string> GetUserPhotoToSet(TelegramLib.MainClasses.User user, MainSettings settings = null)
         {
             IsPrivacyException shareType =
                await GetTypeByUser(user, Enums.PrivacySettingType.ProfilePhotos);
 
-            MainSettings settings = await GetMainSettings(user, null);
+            settings = await GetMainSettings(user, settings);
 
             if (shareType == IsPrivacyException.Share ||
                 user.ImageMask is not null)

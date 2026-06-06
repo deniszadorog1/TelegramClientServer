@@ -26,8 +26,11 @@ B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\EntityFramework
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\FFMpegCore.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Instances.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Data.SqlClient.dll
@@ -35,6 +38,10 @@ B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Entit
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Extensions.Features.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Extensions.Options.dll
+B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Extensions.Primitives.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Identity.Client.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
 B:\GitHub\TelegramClientServer\MessengerTests\bin\Release\net8.0\Microsoft.IdentityModel.Abstractions.dll

@@ -1,7 +1,9 @@
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.deps.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\TestThing.exe
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\ChatSettingsImg.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Cursors\tungTungSahurCursor.cur
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\FoldersImg.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Gifs\TestGif.gif
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Icon\TelIcon.ico
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Stickers\Figure.png
@@ -11,12 +13,16 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visua
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\UserImages\Minato.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\UserImages\WhiteCat.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\blackCat.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\broller.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\check.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\image.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Monkey.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Pineapple.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Snowman.jpg
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\Снимок экрана 2023-05-05 003346.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\MainImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\PalletteImg.png
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\SettingsImg.png
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Sounds\NotifSounds\brak.mp3
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Sounds\NotifSounds\Default.mp3
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\LanguageFiles\EnglishLang.json
@@ -48,6 +54,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Micro
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.SignalR.Client.Core.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.SignalR.Common.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.Bcl.TimeProvider.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
@@ -410,9 +417,3 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\refin
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Debug\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\ChatSettingsImg.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\FoldersImg.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\MainImg.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\PalletteImg.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\SettingsImg.png
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Debug\net8.0-windows\Visuals\Images\Wallpapers\broller.jpg

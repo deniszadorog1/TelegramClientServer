@@ -352,7 +352,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
                 //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
 
-                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
+                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
+
+                SetupImageRow(
+                  new List<Border>() { OneInGroupBorder },
+                  new List<ImageBrush>() { OneImg },
+                  await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                  _maxSize.Width, _maxSize.Height);
 
                 //_maxHeight = 0;
                 //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
@@ -397,7 +403,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 for (int i = 0; i < _bandPaths.Count; i++)
                 {
-                    SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i], _minSize, _maxSize);
+                    SetupImageRow(
+                      new List<Border>() { _bandBorders[i] },
+                      new List<ImageBrush>() { _bandBrushes[i] },
+                      await GetBitImagesByPaths(new List<string>() { _bandPaths[i] }),
+                      _maxSize.Width, _maxSize.Height);
+
+                    //SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i], _minSize, _maxSize);
                 }
 
                 for (int i = _bandPaths.Count; i < _bandBorders.Count; i++)
@@ -506,7 +518,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             brush.Stretch = strech;
 
             BitmapImage img = ApiService.GetCachedBitmap(path);
-            string fullPath = FilesAction.GetFullChatImagePath(path);
+            string fullPath = FilesAction.GetFullChatImagePath(Path.GetFileName(path)); //FilesAction.GetFullChatImagePath(path);
 
 
             BitmapImage bitMap = img is not null ? img : SignalRHelperService.LoadBitmap(fullPath);//  new BitmapImage(new Uri(fullPath, UriKind.Absolute));

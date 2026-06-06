@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using TelegramVisualPart.Helper;
 using System.Data.Entity.Migrations.Model;
 using MaterialDesignColors.Recommended;
+using TelegramLib.Models;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -148,6 +149,27 @@ namespace TelegramVisualPart.Services
             return mes;
         }
 
+        public static async Task<List<MediaAction>> AddAndGetPairMediaMessages(List<TelegramLib.MainClasses.Messages.MediaAction> messages, UserChat chat)
+        {
+            var data = new
+            {
+                Medias = messages,
+                Chat = chat
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync("api/Message/AddAndGetPairMediaMessages", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            List<MediaAction>? mes = JsonConvert.DeserializeObject<List<MediaAction>>(jsonResponse, settings);
+
+            return mes ?? new List<MediaAction>();
+        }
+
         public static async Task<string?> TestMinAPI()
         {
             var response = await _client.GetAsync($"/MinAPI");
@@ -185,9 +207,9 @@ namespace TelegramVisualPart.Services
             return JsonConvert.DeserializeObject<int?>(jsonResponse);
         }
 
-        public static async Task<bool> SetReadStatus(int mesId)
+        public static async Task<bool> SetReadStatus(List<int> Ids)
         {
-            var data = new { MesId = mesId };
+            var data = new { Ids = Ids };
 
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -251,11 +273,11 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<bool> ReadMessage(int messageId)
+        public static async Task<bool> ReadMessage(List<int> messageIds)
         {
             var data = new
             {
-                Id = messageId
+                Ids = messageIds
             };
 
             var json = JsonConvert.SerializeObject(data);
@@ -350,6 +372,19 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.Messages.TextMessage>(jsonResponse);
             return mes;
         }
+
+        public static async Task<List<int?>> GetReplyIds(List<TelegramLib.MainClasses.Messages.Message> messages)
+        {
+            var response = await _client.GetAsync($"api/Message/GetReplyIds?id={messages}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            List<int?> res = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<List<int?>>(jsonResponse);
+            return res;
+        }
+
 
         public static async Task<TelegramLib.MainClasses.User> GetUserById(int id)
         {
@@ -891,7 +926,7 @@ namespace TelegramVisualPart.Services
         }
 
         //Add message
-        public static async Task<bool> AddMessage(Message message, UserChat chat)
+        public static async Task<TelegramLib.MainClasses.Messages.Message?> AddMessage(Message message, UserChat chat)
         {
             var data = new { Chat = chat, ActionMessage = message };
 
@@ -907,9 +942,67 @@ namespace TelegramVisualPart.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PutAsync("api/Message/AddMessage", content);
 
-            return response.IsSuccessStatusCode;
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+            Message? asd = JsonConvert.DeserializeObject<Message>(jsonResponse, settings);
+
+            return asd;
+
+            //return JsonConvert.DeserializeObject<Message>(jsonResponse);
         }
 
+        //Add many messages
+        public static async Task<List<Message>?> AddManyMessages(List<Message> messages, UserChat chat)
+        {
+            var data = new { Chat = chat, Messages = messages };
+
+            var json = JsonConvert.SerializeObject(data);
+
+            json = JsonConvert.SerializeObject(
+                data,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PutAsync("api/Message/AddMessages", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+            List<Message> asd =  JsonConvert.DeserializeObject<List<Message>>(jsonResponse, settings);
+
+            return asd;
+        }
+
+        public static async Task<List<Message>?> AddAllForwardedMessages(List<Message> messages, UserChat chat, int loggedUserId)
+        {
+            var data = new { Chat = chat, Messages = messages, LoggedUserId = loggedUserId };
+
+            var json = JsonConvert.SerializeObject(data);
+
+            json = JsonConvert.SerializeObject(
+                data,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/Message/AddAndGetAllForwMessages", content);
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+            List<Message> asd = JsonConvert.DeserializeObject<List<Message>>(jsonResponse, settings);
+
+            return asd;
+        }
 
         //Add chat
         public static async Task AddNewChat(int userId, int contactId)
@@ -1257,12 +1350,13 @@ namespace TelegramVisualPart.Services
         }
 
         //Saved messages
-        public static async Task<bool> AddSavedMessage(int savedChatId, TelegramLib.MainClasses.Messages.Message mes)
+        public static async Task<List<TelegramLib.MainClasses.Messages.Message>> AddSavedMessage
+            (int savedChatId, List<TelegramLib.MainClasses.Messages.Message> mes)
         {
             var data = new
             {
                 SavedChatId = savedChatId,
-                Mes = mes
+                Messages = mes
             };
 
             var json = JsonConvert.SerializeObject(data);
@@ -1276,9 +1370,15 @@ namespace TelegramVisualPart.Services
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync("api/Message/AddSavedMessage", content);
+            var response = await _client.PostAsync("api/Message/AddSavedMessage", content);
 
-            return response.IsSuccessStatusCode;
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
+            List<Message> asd = JsonConvert.DeserializeObject<List<Message>>(jsonResponse, settings);
+
+            return asd;
         }
 
         public static async Task<TelegramLib.MainClasses.Messages.Message> GetLastSavedMessage(int chatId)

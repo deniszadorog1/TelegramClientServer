@@ -13,12 +13,14 @@ namespace TelegramClientServer.Middlewares
             RequestDelegate next,
             ILogger<ExceptionHandlingMiddleware> logger)
         {
+            return;
             _next = next;
             _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
+            return;
             try
             {
                 await _next(context);

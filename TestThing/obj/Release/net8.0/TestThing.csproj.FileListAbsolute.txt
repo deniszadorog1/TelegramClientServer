@@ -1,10 +1,10 @@
+B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\EntityFramework.dll
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\TestThing.exe
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\TestThing.deps.json
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\TestThing.runtimeconfig.json
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\TestThing.dll
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\TestThing.pdb
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\EntityFramework.SqlServer.dll
-B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\EntityFramework.dll
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\Microsoft.Win32.SystemEvents.dll
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\Newtonsoft.Json.dll
 B:\GitHub\TelegramClientServer\TestThing\bin\Release\net8.0\System.CodeDom.dll

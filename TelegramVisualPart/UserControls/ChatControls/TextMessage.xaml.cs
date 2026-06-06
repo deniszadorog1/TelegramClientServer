@@ -429,9 +429,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             //Settings logged user page
             if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) ||
-
                 (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0) ||
-
                 (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
             {
                 UserInfo logged = new UserInfo(_system.SavedMesesChat, _system);

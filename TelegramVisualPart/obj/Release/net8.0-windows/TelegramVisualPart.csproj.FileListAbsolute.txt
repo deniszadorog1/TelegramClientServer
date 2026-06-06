@@ -416,3 +416,4 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref\TelegramVisualPart.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll

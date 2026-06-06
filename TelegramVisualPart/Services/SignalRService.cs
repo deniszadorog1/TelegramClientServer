@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection; 
 using Newtonsoft.Json;
 
 using System;
@@ -39,9 +40,12 @@ namespace TelegramVisualPart.Services
         private static HubConnection? _connection;
         public static TelSystem? _system;
 
-        public static event Action<User, TextMessage>? TextMessageReceived;
-        public static event Func<User, List<MediaAction>, Task>? MediaMessageReceived;
+        public static event Func<List<Message>, User, Task>? TextMessageReceived;
+        public static event Func<List<Message>, User, Task>? MediaMessageReceived;
+
         public static event Func<User, StaticMessage, Task>? StatMessageReceived;
+
+        public static event Func<List<Message>, User, Task>? SendAllMessagesDel;  
 
         public static event Action<User>? UpdateContactDel;
         public static event Action<User>? UpdateOnlineStatusDel;
@@ -154,6 +158,15 @@ namespace TelegramVisualPart.Services
 
             //MessageBox.Show($"{connection}   ___   {str}");
 
+            /*            _connection = new HubConnectionBuilder()
+                            .WithUrl($"{connection}/chatHub", options =>
+                            {
+                                options.Headers["ngrok-skip-browser-warning"] = "true";
+                                options.AccessTokenProvider = () => Task.FromResult(_system.Token);
+                            })
+                            .WithAutomaticReconnect()
+                            .Build();*/
+
             _connection = new HubConnectionBuilder()
                 .WithUrl($"{connection}/chatHub", options =>
                 {
@@ -161,20 +174,24 @@ namespace TelegramVisualPart.Services
                     options.AccessTokenProvider = () => Task.FromResult(_system.Token);
                 })
                 .WithAutomaticReconnect()
+                .AddNewtonsoftJsonProtocol(options =>
+                {
+                    options.PayloadSerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
+                })
                 .Build();
 
             //MessageBox.Show("Its done!");
 
 
-            _connection.On<User, TextMessage>("ReceiveTextMessage", (user, message) =>
+            _connection.On<List<Message>, User>("ReceiveTextMessage", (messages, user) =>
             {
-                TextMessageReceived?.Invoke(user, message);
+                TextMessageReceived?.Invoke(messages, user);
                 return;
             });
 
-            _connection.On<User, List<MediaAction>>("ReceiveMediaMessage", (sender, message) =>
+            _connection.On<List<Message>, User>("ReceiveMediaMessage", (messages, sender) =>
             {
-                MediaMessageReceived?.Invoke(sender, message);
+                MediaMessageReceived?.Invoke(messages, sender);
                 return;
             });
 
@@ -383,10 +400,15 @@ namespace TelegramVisualPart.Services
                 UpdateCachedDel?.Invoke(id);
             });
 
+            _connection.On<List<Message>, User>("SendAllMessages", (messages, user) =>
+            {
+                SendAllMessagesDel?.Invoke(messages, user);
+            });
+
             await _connection.StartAsync();
         }
 
-        public static async Task SendTextMessage(User sender, TextMessage message, User chatter)
+        public static async Task SendTextMessage(User sender, List<Message> message, User chatter)
         {
 /*            if (_connection.State == HubConnectionState.Connected)
             {
@@ -397,7 +419,7 @@ namespace TelegramVisualPart.Services
                 await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
         }
 
-        public static async Task SendMediaMessage(User sender, List<MediaAction> message, User chatter)
+        public static async Task SendMediaMessage(User sender, List<Message> message, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
@@ -614,6 +636,12 @@ namespace TelegramVisualPart.Services
         {
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("UpdateCachedSettings", id);
+        }
+
+        public static async Task SendAllMessages(List<Message> messages, User sender, User chatter)
+        {
+            if (_connection.State == HubConnectionState.Connected)
+                await _connection.InvokeAsync("SendAllMessages", messages, sender, chatter);
         }
     }
 }

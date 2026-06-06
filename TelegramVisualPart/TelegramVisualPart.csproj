@@ -26,7 +26,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.0-preview.7.25380.108" />
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="10.0.8" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.8" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 		<PackageReference Include="WpfAnimatedGif" Version="2.0.2" />

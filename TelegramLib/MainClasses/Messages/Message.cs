@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using TelegramLib.Enums.Messages;
 
+using Newtonsoft.Json;
+
 namespace TelegramLib.MainClasses.Messages
 {
     public class Message : IMessage

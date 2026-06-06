@@ -33,6 +33,7 @@ using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using AdvancedSettings = TelegramLib.Models.AdvancedSettings;
 using ChatSettings = TelegramLib.Models.ChatSettings;
 using mainClass = TelegramLib.MainClasses;
@@ -215,7 +216,7 @@ namespace TelegramLib.Services
 
         public static void UpdateUserNameSurname(int userId, string name, string surname)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.User toUpdate = model.User.FirstOrDefault(x => x.Id == userId);
                 if (toUpdate is null) return;
@@ -370,7 +371,7 @@ namespace TelegramLib.Services
                             GetPinnedMessages(chat.Id),
                             GetMessagesByChatId(chat.Id, true));
 
-                        if(!(toAdd.Chatter is null)) toAdd.Chatter.BlockedUsers = GetBlockedContactsByUserId(userId);
+                        if (!(toAdd.Chatter is null)) toAdd.Chatter.BlockedUsers = GetBlockedContactsByUserId(userId);
 
                         //Set mask for chatterId
                         SetMaskForChatterId(toAdd.Chatter, userId);
@@ -389,14 +390,14 @@ namespace TelegramLib.Services
 
         private static void SetMaskForChatterId(TelegramLib.MainClasses.User chatter, int loggedUserId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                TelegramLib.MainClasses.UserParams.UserImage mask = 
+                TelegramLib.MainClasses.UserParams.UserImage mask =
                     GetContactMaskByContactUserId(loggedUserId, chatter.Id);
 
                 if (mask is null) return;
 
-                chatter.ImageMask = 
+                chatter.ImageMask =
                     new TelegramLib.MainClasses.UserParams.UserImage(
                         System.IO.Path.GetFileName(mask.Name), mask.Date);
 
@@ -493,7 +494,7 @@ namespace TelegramLib.Services
             {
                 foreach (var mes in model.Messages)
                 {
-                    if (mes.ChatId == chatId && 
+                    if (mes.ChatId == chatId &&
                         mes.IsInSchedule == isGetSchedMessages)
                     {
                         res.Add(GetMessageByMessages(mes));
@@ -589,6 +590,31 @@ namespace TelegramLib.Services
                 statMessage.Date = mes.StatDate;
             }
             return toAdd;
+        }
+
+        public static List<int?> GetPairsForReplyMessage(List<TelegramLib.MainClasses.Messages.Message> messages)
+        {
+            List<int?> res = new List<int?>();
+            using (var model = new TelegramModel())
+            {
+                foreach (var mes in messages)
+                {
+                    if (mes is TelegramLib.MainClasses.Messages.TextMessage text && text.RepliedMessageId is not null)
+                    {
+                        TelegramLib.MainClasses.Messages.Message tempMes = GetMessageById((int)text.RepliedMessageId);
+                        if (tempMes is null)
+                        {
+                            res.Add(null);
+                            continue;
+                        }
+
+                        Messages tempRes = GetPairOfMessageById(tempMes.Id, model);
+                        if (tempMes is not null) res.Add(tempMes.Id);
+                    }
+                    else res.Add(null);
+                }
+            }
+            return res;
         }
 
         private static model.ShareContactMessage GetShareModelById(int id)
@@ -2331,7 +2357,7 @@ namespace TelegramLib.Services
         }
         //SETTINGS OPTIONS
         //Chats
-        public static bool AddMessage(UserChat chat, TelegramLib.MainClasses.Messages.Message message)
+        public static TelegramLib.MainClasses.Messages.Message AddMessage(UserChat chat, TelegramLib.MainClasses.Messages.Message message)
         {
             if (message is MediaAction mediaAction) AddChatMedia(chat, mediaAction);
 
@@ -2339,41 +2365,127 @@ namespace TelegramLib.Services
             {
                 Messages toAdd = new Messages();
 
-                toAdd.ChatId = chat.Id;
-                toAdd.SenderId = message.SenderUserId;
-                toAdd.SentDate = message.SentTime;
-                toAdd.IsRead = !(chat is null) && !(chat.Chatter is null) && chat.Chatter.Id != message.SenderUserId ? true : false;
-                toAdd.IsInSchedule = message.IsSchedule;
-
-                toAdd.MessageQuote = message.RepliedQuote;
-                toAdd.BandId = message is MediaAction bandMedia ? bandMedia.BandId : -1;
-
-                toAdd.Message = message is TextMessage text ? text.Text : null;
-
-                if (message is MediaAction video && video.IsVideo()) toAdd.VideoId = GetVideoIdByName(video.MediaName);
-                else toAdd.VideoId = null;
-
-                if (message is MediaAction image && image.IsImage()) toAdd.ImageId = GetChatImageIdByName(image.MediaName);
-                else toAdd.ImageId = null;
-
-                if (message is MediaAction gif && gif.IsGif()) toAdd.GifId = GetChatGifIdByName(gif.MediaName);
-                else toAdd.GifId = null;
-
-                toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
-
-                toAdd.IsPinned = message.IsPinned;
-                toAdd.ForwardedFrom = message.ForwardedFromId;
-
-                if (message is TextMessage addText)
-                {
-                    toAdd.ReplyId = addText.RepliedMessageId;
-                    toAdd.IsEdited = addText.IsEdited;
-                }
+                SetMessage(toAdd, chat, message);
 
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
             }
-            return true;
+
+            return GetLastChatMessage(chat.Id);
+        }
+
+        public static List<TelegramLib.MainClasses.Messages.Message> AddAllForwardedMessages(UserChat chat,
+            List<TelegramLib.MainClasses.Messages.Message> messages, int loggedUserId)
+        {
+            HashSet<int> bandIds = new HashSet<int>();
+
+            foreach (var mes in messages)
+            {
+                if (mes is MediaAction media &&
+                    media.BandId != -1)
+                {
+                    if (bandIds.Contains(media.BandId)) continue;
+
+                    List<MediaAction> bandMedias = messages.OfType<MediaAction>().Where(x => x.BandId == media.BandId).ToList();
+
+                    List<TelegramLib.MainClasses.Messages.Message> mediaBandRes =
+                        AddMessages(chat, bandMedias.Cast<TelegramLib.MainClasses.Messages.Message>().ToList());
+
+                    for (int i = 0; i < mediaBandRes.Count; i++)
+                    {
+                        bandMedias[i].Id = mediaBandRes[i].Id;
+                    }
+
+                    //await AddForwardedMessageInDB(bandMedias.Cast<Message>().ToList(), chat, isChatterOnline, isBlocked);
+
+                    bandIds.Add(media.BandId);
+                    continue;
+                }
+
+                if (mes is TelegramLib.MainClasses.Messages.ShareContactMessage share)
+                {
+                    TelegramLib.MainClasses.Messages.Message temp = AddShareMessage(share.SharedUser.Id,
+                        share.SharedUser.Name, chat.Id, loggedUserId, DateTime.Now);
+                    mes.Id = temp.Id;
+                }
+                else
+                {
+                    //Add In Db (for sender user)
+                    TelegramLib.MainClasses.Messages.Message temp = AddMessage(chat, mes);
+                    mes.Id = temp.Id;
+                }
+            }
+            return messages;
+        }
+
+
+        public static List<TelegramLib.MainClasses.Messages.Message> AddMessages(UserChat chat, List<TelegramLib.MainClasses.Messages.Message> messages)
+        {
+            for (int i = 0; i < messages.Count; i++) if (messages[i] is MediaAction mediaAction) AddChatMedia(chat, mediaAction);
+
+            List<TelegramLib.MainClasses.Messages.Message> res = new List<TelegramLib.MainClasses.Messages.Message>();
+
+            using (var model = new TelegramModel())
+            {
+                for (int i = 0; i < messages.Count; i++)
+                {
+                    Messages toAdd = new Messages();
+
+                    SetMessage(toAdd, chat, messages[i]);
+
+                    model.Messages.Add(toAdd);
+                    model.SaveChanges();
+
+                    res.Add(GetLastChatMessage(chat.Id));
+                }
+            }
+            return res;
+        }
+
+        public static List<MediaAction> AddAndGetPairsMediaMessages(List<MediaAction> medias, UserChat chat)
+        {
+            List<MediaAction> res = new List<MediaAction>();
+            for (int i = 0; i < medias.Count; i++)
+            {
+                AddMessage(chat, medias[i]);
+                res.Add((MediaAction)GetPairOfMessageBySentTime(medias[i].Id));
+            }
+            return res;
+        }
+
+        private static void SetMessage(Messages toAdd, UserChat chat, TelegramLib.MainClasses.Messages.Message message)
+        {
+            toAdd.ChatId = chat.Id;
+            toAdd.SenderId = message.SenderUserId;
+            toAdd.SentDate = message.SentTime;
+            toAdd.IsRead = !(chat is null) && !(chat.Chatter is null) && chat.Chatter.Id != message.SenderUserId ? true : false;
+            toAdd.IsInSchedule = message.IsSchedule;
+
+            toAdd.MessageQuote = message.RepliedQuote;
+            toAdd.BandId = message is MediaAction bandMedia ? bandMedia.BandId : -1;
+
+            toAdd.Message = message is TextMessage text ? text.Text : null;
+
+            if (message is MediaAction video && video.IsVideo()) toAdd.VideoId = GetVideoIdByName(video.MediaName);
+            else toAdd.VideoId = null;
+
+            if (message is MediaAction image && image.IsImage()) toAdd.ImageId = GetChatImageIdByName(image.MediaName);
+            else toAdd.ImageId = null;
+
+            if (message is MediaAction gif && gif.IsGif()) toAdd.GifId = GetChatGifIdByName(gif.MediaName);
+            else toAdd.GifId = null;
+
+            toAdd.StickerId = message is MediaAction media && media.IsSticker ? GetStickerIdByName(media.MediaName) : null;
+
+            toAdd.IsPinned = message.IsPinned;
+            toAdd.ForwardedFrom = message.ForwardedFromId;
+
+            if (message is TextMessage addText)
+            {
+                toAdd.ReplyId = addText.RepliedMessageId;
+                toAdd.IsEdited = addText.IsEdited;
+            }
+
         }
 
         public static void EditSchedMessage(int mesId,
@@ -2385,11 +2497,11 @@ namespace TelegramLib.Services
                 Messages toEdit = model.Messages.FirstOrDefault(x => x.Id == mesId);
                 if (toEdit is null) return;
 
-                if(!(textMes is null))
+                if (!(textMes is null))
                 {
                     toEdit.Message = textMes.Text;
                 }
-                else if(!(mediaMes is null))
+                else if (!(mediaMes is null))
                 {
                     if (mediaMes is MediaAction video && video.IsVideo()) toEdit.VideoId = GetVideoIdByName(video.MediaName);
                     if (mediaMes is MediaAction image && image.IsImage()) toEdit.ImageId = GetChatImageIdByName(image.MediaName);
@@ -2476,8 +2588,20 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                List<Messages> toGet = model.Messages.Where(x => x.ChatId == chatId).ToList();
-                Messages chosen = toGet.Last();
+                var chosen = model.Messages
+                    .Where(x => x.ChatId == chatId)
+                    .OrderByDescending(x => x.Id) 
+                    .FirstOrDefault();
+
+                if (chosen is null)
+                {
+                    return new TextMessage
+                    {
+                        Id = 0,
+                        Text = string.Empty,
+                        SentTime = DateTime.Now
+                    };
+                }
 
                 TelegramLib.MainClasses.Messages.Message res;
 
@@ -2603,7 +2727,7 @@ namespace TelegramLib.Services
                 foreach (var mes in model.Messages)
                 {
                     if (mes.ChatId == chat.Id &&
-                        !chat.Messages.Any(x => x.Id == mes.Id) && 
+                        !chat.Messages.Any(x => x.Id == mes.Id) &&
                         !mes.IsInSchedule)
                     {
                         toRemove.Add(mes);
@@ -2699,7 +2823,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                foreach(var mes in model.Messages)
+                foreach (var mes in model.Messages)
                 {
                     if (mes.ChatId == chatId)
                     {
@@ -2711,7 +2835,7 @@ namespace TelegramLib.Services
                     .RemoveRange(model.Messages
                         .Where(x => x.ChatId == chatId));
 
-                
+
 
 
                 model.SaveChanges();
@@ -2955,7 +3079,7 @@ namespace TelegramLib.Services
             {
                 List<Messages> toRemove = model.Messages.Where(x => x.ChatId == chatId).ToList();
 
-                foreach(var mes in toRemove)
+                foreach (var mes in toRemove)
                 {
                     ChangeForRepPointers(mes.Id, model);
                 }
@@ -3235,9 +3359,9 @@ namespace TelegramLib.Services
 
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.ChatterId == contactId /*contact.FriendId*/);
                 if (chat is null) return null;
-                return new UserChat(chat.Id, 
+                return new UserChat(chat.Id,
                     GetUserById((int)chat.ChatterId),
-                    GetMessagesByChatId(chat.Id, false), 
+                    GetMessagesByChatId(chat.Id, false),
                     GetChosenBgByChatId(chat.Id),
                     GetAutoDelTypeById(chat.AutoDeleteId),
                     new List<mainClass.Messages.Message>(),
@@ -3382,7 +3506,7 @@ namespace TelegramLib.Services
 
         public static bool IsLoginExist(string login)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.User.Any(x => x.Login == login);
             }
@@ -3390,7 +3514,7 @@ namespace TelegramLib.Services
 
         public static void UpdateUserLogin(int id, string newLogin)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 model.User toUpdate = model.User.FirstOrDefault(x => x.Id == id);
                 if (toUpdate is null) return;
@@ -3409,9 +3533,9 @@ namespace TelegramLib.Services
             const int maxDateDiffer = 100;
             using (var model = new TelegramModel())
             {
-/*                var from = toRemove.Date.AddMilliseconds(-maxDateDiffer);
-                var to = toRemove.Date.AddMilliseconds(maxDateDiffer);
-*/
+                /*                var from = toRemove.Date.AddMilliseconds(-maxDateDiffer);
+                                var to = toRemove.Date.AddMilliseconds(maxDateDiffer);
+                */
                 model.UserImage img =
                     model.UserImage.FirstOrDefault(x =>
                         x.UserId == userId &&
@@ -3787,8 +3911,8 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void AddShareMessage(int userId,
-            string contactName, int chatId, int senderId,  DateTime? sent)
+        public static TelegramLib.MainClasses.Messages.Message AddShareMessage(int userId,
+            string contactName, int chatId, int senderId, DateTime? sent)
         {
             AddShareContactMessage(contactName, userId);
 
@@ -3812,6 +3936,8 @@ namespace TelegramLib.Services
                 model.Messages.Add(toAdd);
                 model.SaveChanges();
             }
+
+            return GetLastChatMessage(chatId);
         }
 
 
@@ -3853,46 +3979,64 @@ namespace TelegramLib.Services
             }
         }
 
-        public static void SetReadMessageAction(int messageId)
+        public static void SetReadMessageAction(List<int> messageIds)
         {
             using (var model = new TelegramModel())
             {
-                Messages toRead = model.Messages.FirstOrDefault(x => x.Id == messageId);
-                if (toRead is null) return;
-                toRead.IsRead = true;
-
+                var messagesToRead = model.Messages
+                                          .Where(x => messageIds.Contains(x.Id))
+                                          .ToList();
+                foreach (var message in messagesToRead)
+                {
+                    message.IsRead = true;
+                }
                 model.SaveChanges();
             }
         }
 
-        public static void SetReadStatusByMessIdBySendTime(int messageId)
+        public static void SetReadStatusByMessIdBySendTime(List<int> Ids)
         {
             using (var model = new TelegramModel())
             {
-                //Get message 
-                Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
-                if (mes is null) return;
+                foreach (int id in Ids)
+                {
+                    //Get message 
+                    Messages mes = model.Messages.FirstOrDefault(x => x.Id == id);
+                    if (mes is null) continue;
 
-                mes.IsRead = true;
+                    mes.IsRead = true;
 
-                model.SaveChanges();
-                return;
+                    model.SaveChanges();
+                }
 
-                //Get message with same sendTime (but differ id)
-                var sameTimeMessage = model.Messages
-                .AsEnumerable()
-                .FirstOrDefault(x =>
-                    x.Id != mes.Id &&
-                    x.SentDate.HasValue && mes.SentDate.HasValue &&
-                    Math.Abs((x.SentDate.Value - mes.SentDate.Value).TotalMilliseconds) < 10);
-
-
-                if (sameTimeMessage is null) return;
-
-                //compare them(read status)
-                if (sameTimeMessage.IsRead) mes.IsRead = true;
-                model.SaveChanges();
             }
+            /*
+                            using (var model = new TelegramModel())
+                        {
+                            //Get message 
+                            Messages mes = model.Messages.FirstOrDefault(x => x.Id == messageId);
+                            if (mes is null) return;
+
+                            mes.IsRead = true;
+
+                            model.SaveChanges();
+                            return;
+
+                            //Get message with same sendTime (but differ id)
+                            var sameTimeMessage = model.Messages
+                            .AsEnumerable()
+                            .FirstOrDefault(x =>
+                                x.Id != mes.Id &&
+                                x.SentDate.HasValue && mes.SentDate.HasValue &&
+                                Math.Abs((x.SentDate.Value - mes.SentDate.Value).TotalMilliseconds) < 10);
+
+
+                            if (sameTimeMessage is null) return;
+
+                            //compare them(read status)
+                            if (sameTimeMessage.IsRead) mes.IsRead = true;
+                            model.SaveChanges();
+                        }*/
         }
 
         public static TelegramLib.MainClasses.Messages.Message GetPairOfMessageBySentTime(int mesId)
@@ -3986,14 +4130,14 @@ namespace TelegramLib.Services
 
         public static void RemoveManyMessages(List<int> mesIds, bool isBoth)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                for(int i = 0; i < mesIds.Count; i++)
+                for (int i = 0; i < mesIds.Count; i++)
                 {
                     //Get pair of message
                     if (isBoth)
                     {
-                       Messages pairToRemove =  GetPairOfMessageById(mesIds[i], model);
+                        Messages pairToRemove = GetPairOfMessageById(mesIds[i], model);
                         if (!(pairToRemove is null)) RemoveMessageById(pairToRemove.Id, model);
                     }
                     RemoveMessageById(mesIds[i], model);
@@ -4044,15 +4188,15 @@ namespace TelegramLib.Services
                 .ToList()
                 .ForEach(x => x.ForwardedFrom = -1);
 
-/*            model.SavedMessages
-                .Where(x => x.ReplyId == id)
-                .ToList()
-                .ForEach(x => x.ReplyId = -1);
+            /*            model.SavedMessages
+                            .Where(x => x.ReplyId == id)
+                            .ToList()
+                            .ForEach(x => x.ReplyId = -1);
 
-            model.SavedMessages
-                .Where(x => x.ForwardedFrom == id)
-                .ToList()
-                .ForEach(x => x.ForwardedFrom = -1);*/
+                        model.SavedMessages
+                            .Where(x => x.ForwardedFrom == id)
+                            .ToList()
+                            .ForEach(x => x.ForwardedFrom = -1);*/
         }
 
         public static void AddStatMessage(int chatId,
@@ -4083,7 +4227,7 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-               return model.Contacts.Any(x => x.UserId == userId && x.FriendId == friendUserId);
+                return model.Contacts.Any(x => x.UserId == userId && x.FriendId == friendUserId);
             }
         }
         public static int? GetLastStatMesIdByChatId(int chatId)
@@ -4212,58 +4356,65 @@ namespace TelegramLib.Services
             }
         }
 
-        
 
-        public static void AddSavedMessage(int savedMessageChatId,
-            TelegramLib.MainClasses.Messages.Message toAdd)
+
+        public static List<TelegramLib.MainClasses.Messages.Message> AddSavedMessage(int savedMessageChatId,
+            List<TelegramLib.MainClasses.Messages.Message> messages)
         {
             using (var model = new TelegramModel())
             {
-                Messages toAddObj = new Messages();
-
-                toAddObj.ChatId = savedMessageChatId;
-                toAddObj.IsSavedMessage = true;
-                toAddObj.MessageQuote = toAdd.RepliedQuote;
-                toAddObj.BandId = -1;
-                toAddObj.SenderId = toAdd.SenderUserId; 
-
-                if (toAdd is TextMessage text)
+                foreach (var toAdd in messages)
                 {
-                    toAddObj.Message = text.Text;
-                    toAddObj.ReplyId = text.RepliedMessageId;
+                    Messages toAddObj = new Messages();
+
+                    toAddObj.ChatId = savedMessageChatId;
+                    toAddObj.IsSavedMessage = true;
+                    toAddObj.MessageQuote = toAdd.RepliedQuote;
+                    toAddObj.BandId = -1;
+                    toAddObj.SenderId = toAdd.SenderUserId;
+
+                    if (toAdd is TextMessage text)
+                    {
+                        toAddObj.Message = text.Text;
+                        toAddObj.ReplyId = text.RepliedMessageId;
+                    }
+
+                    if (toAdd is MediaAction media)
+                    {
+                        toAddObj.ImageId = media.IsImage() ? GetChatImageIdByName(media.MediaName) : (int?)null;
+                        toAddObj.StickerId = media.IsSticker ? GetStickerIdByName(media.MediaName) : (int?)null;
+                        toAddObj.GifId = media.IsGif() ? GetChatGifIdByName(media.MediaName) : (int?)null;
+                        toAddObj.VideoId = media.IsVideo() ? GetVideoIdByName(media.MediaName) : (int?)null;
+                        toAddObj.BandId = media.BandId;
+                    }
+
+                    toAddObj.SentDate = toAdd.SentTime;
+                    //toAddObj. = DateTime.Now;
+
+                    if (toAdd is TelegramLib.MainClasses.Messages.ShareContactMessage share)
+                    {
+                        toAddObj.ShareContactId = share.SharedUser.Id;
+                    }
+
+                    toAddObj.IsRead = toAdd.IsRead;
+                    toAddObj.IsPinned = toAdd.IsPinned;
+
+                    toAddObj.ForwardedFrom = toAdd.ForwardedFromId;
+
+                    if (toAdd is StaticMessage statMes)
+                    {
+                        toAddObj.MessageRefference = statMes.MessageReferenceId;
+                        toAddObj.StatDate = statMes.Date;
+                    }
+
+                    model.Messages.Add(toAddObj);
+
+                    toAdd.Id = GetLastChatMessage(savedMessageChatId).Id;
                 }
-
-                if (toAdd is MediaAction media)
-                {
-                    toAddObj.ImageId = media.IsImage() ? GetChatImageIdByName(media.MediaName) : (int?)null;
-                    toAddObj.StickerId = media.IsSticker ? GetStickerIdByName(media.MediaName) : (int?)null;
-                    toAddObj.GifId = media.IsGif() ? GetChatGifIdByName(media.MediaName) : (int?)null;
-                    toAddObj.VideoId = media.IsVideo() ? GetVideoIdByName(media.MediaName) : (int?)null;
-                    toAddObj.BandId = media.BandId;
-                }
-
-                toAddObj.SentDate = toAdd.SentTime;
-                //toAddObj. = DateTime.Now;
-
-                if (toAdd is TelegramLib.MainClasses.Messages.ShareContactMessage share)
-                {
-                    toAddObj.ShareContactId = share.SharedUser.Id;
-                }
-
-                toAddObj.IsRead = toAdd.IsRead;
-                toAddObj.IsPinned = toAdd.IsPinned;
-
-                toAddObj.ForwardedFrom = toAdd.ForwardedFromId;
-
-                if (toAdd is StaticMessage statMes)
-                {
-                    toAddObj.MessageRefference = statMes.MessageReferenceId;
-                    toAddObj.StatDate = statMes.Date;
-                }
-
-                model.Messages.Add(toAddObj);
                 model.SaveChanges();
             }
+
+            return messages;
         }
 
         public static mainClass.SavedMessagesChat GetSavedMessageChat(int userId)
@@ -4292,7 +4443,7 @@ namespace TelegramLib.Services
 
         private static List<TelegramLib.MainClasses.Messages.Message> GetSchedMessagesForSavedMesChat(int userId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Chat chat = model.Chat.FirstOrDefault(x => x.UserId == userId && x.IsSavedMessagesChat);
                 if (chat is null) return null;
@@ -4319,11 +4470,11 @@ namespace TelegramLib.Services
 
         public static void ClearSaveChatById(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
-                foreach(var mes in model.Messages)
+                foreach (var mes in model.Messages)
                 {
-                    if(mes.ChatId == chatId && mes.IsSavedMessage)
+                    if (mes.ChatId == chatId && mes.IsSavedMessage)
                     {
                         ChangeForRepPointers(mes.Id, model);
                     }
@@ -4370,7 +4521,8 @@ namespace TelegramLib.Services
         {
             using (var model = new TelegramModel())
             {
-                foreach(var messageId in messageIds){
+                foreach (var messageId in messageIds)
+                {
 
                     Messages toRemove = model.Messages.
                         FirstOrDefault(x => x.ChatId == savedChatId && x.Id == messageId);
@@ -4380,7 +4532,7 @@ namespace TelegramLib.Services
                     if (toRemove is null) continue;
                     model.Messages.Remove(toRemove);
                 }
-               
+
                 model.SaveChanges();
             }
         }
@@ -4393,7 +4545,7 @@ namespace TelegramLib.Services
                 !(mes.StatDate is null)) toAdd = new mainClass.Messages.StaticMessage();
 
             else if (!(mes.ShareContactId is null)) toAdd = new TelegramLib.MainClasses.Messages.ShareContactMessage();
-            else if (mes.Message is null) toAdd = new MediaAction();          
+            else if (mes.Message is null) toAdd = new MediaAction();
             else toAdd = new TextMessage();
 
             toAdd.Id = mes.Id;
@@ -4495,7 +4647,7 @@ namespace TelegramLib.Services
             }
         }
 
-        public static TelegramLib.MainClasses.Messages.Message AddAndGetSchedMessage(UserChat chat, 
+        public static TelegramLib.MainClasses.Messages.Message AddAndGetSchedMessage(UserChat chat,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             mes.IsSchedule = true;
@@ -4521,7 +4673,7 @@ namespace TelegramLib.Services
         {
             HashSet<int> userIds = new HashSet<int>();
             HashSet<int> chatIds = new HashSet<int>();
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 IQueryable<Messages> toSendQuery = model.Messages.Where(
                     x => x.IsInSchedule &&
@@ -4530,7 +4682,7 @@ namespace TelegramLib.Services
 
                 List<Messages> toSend = toSendQuery.ToList();
 
-                for(int i = 0; i < toSend.Count; i++)
+                for (int i = 0; i < toSend.Count; i++)
                 {
                     bool isInSavedChat = IsChatIsSavedChat((int)toSend[i].ChatId);
                     AddChatUserAndChatterInSet(userIds, (int)toSend[i].ChatId);
@@ -4568,7 +4720,7 @@ namespace TelegramLib.Services
 
         private static bool IsChatIsSavedChat(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 return model.Chat.Any(x => x.Id == chatId && x.IsSavedMessagesChat);
             }
@@ -4576,7 +4728,7 @@ namespace TelegramLib.Services
 
         private static void AddChatUserAndChatterInSet(HashSet<int> set, int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
                 if (chat is null) return;
@@ -4584,20 +4736,20 @@ namespace TelegramLib.Services
                 int chatterId = chat.ChatterId is null ? -1 : (int)chat.ChatterId;
 
                 set.Add((int)chat.UserId);
-                if(chatterId != -1)set.Add(chatterId);
+                if (chatterId != -1) set.Add(chatterId);
             }
         }
 
         private static int GetPairChatIdByChatId(int chatId)
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 Chat chat = model.Chat.FirstOrDefault(x => x.Id == chatId);
-                
+
                 if (chat is null) return -1;
 
                 Chat pair = model.Chat.FirstOrDefault(
-                    x => x.UserId == chat.ChatterId && 
+                    x => x.UserId == chat.ChatterId &&
                     x.ChatterId == chat.UserId);
 
                 return pair is null ? -1 : pair.Id;
@@ -4606,7 +4758,7 @@ namespace TelegramLib.Services
 
         public static int GetLastMessageBandId()
         {
-            using(var model = new TelegramModel())
+            using (var model = new TelegramModel())
             {
                 var maxMessage = model.Messages
                         .OrderByDescending(m => m.BandId)
@@ -4628,7 +4780,7 @@ namespace TelegramLib.Services
 
         public static model.User GetUserModelByLogin(string login)
         {
-            using(TelegramModel model = new TelegramModel())
+            using (TelegramModel model = new TelegramModel())
             {
                 return model.User.FirstOrDefault(x => x.Login == login);
             }

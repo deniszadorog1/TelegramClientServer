@@ -13,7 +13,7 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.Messages.Message message, 
             TelegramLib.MainClasses.UserChat chat)
         {
-            return await ApiService.AddMessage(message, chat);
+            return await ApiService.AddMessage(message, chat) is not null;
         }
     }
 }

@@ -13,6 +13,8 @@ using TelegramClientServer.Interfaces;
 using Microsoft.Extensions.FileProviders;
 using TelegramClientServer.Middlewares;
 
+using Newtonsoft.Json;
+
 namespace TelegramClientServer
 {
 
@@ -31,12 +33,18 @@ namespace TelegramClientServer
             builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => { });
 
 
-            builder.Services.AddSignalR();
+            // В Program.cs на сервере:
+            builder.Services.AddSignalR()
+                .AddNewtonsoftJsonProtocol(options =>
+                {
+                    options.PayloadSerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
+                });
 
             builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
             builder.Services.AddSingleton<IHashPassword, PasswordHasherService>();
             builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            
             builder.Services.AddHostedService<MessageDispatcher>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -54,8 +62,13 @@ namespace TelegramClientServer
                 });
 
             // Add services to the container.
-            builder.Services.AddControllers();
-            builder.Services.AddHttpLogging(options => { });
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
+                });
+            
+            //builder.Services.AddHttpLogging(options => { });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -89,9 +102,8 @@ namespace TelegramClientServer
 
 
             var app = builder.Build();
-            app.UseMiddleware<ExceptionHandlingMiddleware>();              
-
-            app.UseHttpLogging();
+            //app.UseMiddleware<ExceptionHandlingMiddleware>();              
+            //app.UseHttpLogging();
 
             /*            app.Use(async (context, next) =>
                         {
@@ -120,8 +132,12 @@ namespace TelegramClientServer
             app.UseStaticFiles();
 
 
-            //app.UseHttpsRedirection();
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
@@ -130,7 +146,7 @@ namespace TelegramClientServer
             app.MapHub<SignalRHubs.MainHub>("/chatHub");
 
             //minimal API Test
-            app.MapGet("/MinAPI", () => "Min api Test");
+            //app.MapGet("/MinAPI", () => "Min api Test");
             
             app.Run();
         }
