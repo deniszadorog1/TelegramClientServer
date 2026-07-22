@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Services;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 
@@ -56,7 +44,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-            if (UserNameBox.Text.Count() <= _minAmountOfSymbols || 
+            if (UserNameBox.Text.Count() <= _minAmountOfSymbols ||
                 string.IsNullOrWhiteSpace(UserNameBox.Text))
             {
                 MessageBox.Show("Stop acting weird!!");
@@ -65,7 +53,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             };
 
             //Set checks if this is exist
-            if(await ApiService.IsLoginExist(UserNameBox.Text))
+            if (await ApiService.IsLoginExist(UserNameBox.Text))
             {
                 MessageBox.Show("This is already exist");
                 UserNameBox.Text = _user.Login;
@@ -74,7 +62,7 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
             //+ Set Changings in DB
             await ApiService.UpdateUserLogin(_user.Id, UserNameBox.Text);
-
+            
             _user.Login = UserNameBox.Text;
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
@@ -95,9 +83,9 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private void UserNameBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Space || e.Key == Key.Tab)
+            if (e.Key == Key.Space || e.Key == Key.Tab)
             {
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
     }

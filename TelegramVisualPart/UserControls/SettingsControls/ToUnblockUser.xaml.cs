@@ -26,10 +26,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls
             InitializeComponent();
         }
 
-        public void SetUserImage(string imageName)
+        public async Task SetUserImage(string imageName)
         {
             UserImageBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(imageName), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(imageName), UriKind.Absolute));
         }
 
         private void UnblockBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

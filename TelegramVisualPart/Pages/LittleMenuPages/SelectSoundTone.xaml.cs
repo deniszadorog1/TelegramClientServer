@@ -98,12 +98,15 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         public void SetBasicRadios()
         {
+            const string def = "Default.mp3";
+            const string noSound = "NoSound";
+
             //Set default + no sound
             for (int i = 0; i < _system.Settings.SoundNotifSettings.MesSounds.Count; i++)
             {
                 string name = _system.Settings.SoundNotifSettings.MesSounds[i];
 
-                if (name == "Default.mp3" || name == "NoSound") continue;
+                if (name == def || name == noSound) continue;
                 AddSoundRadio(_system.Settings.SoundNotifSettings.MesSounds[i]);
             }
 
@@ -119,9 +122,10 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         public void AddSoundRadio(string soundName)
         {
+            (int, int) padding = (10, 2);
             RadioButton toAdd = new RadioButton()
             {
-                Padding = new Thickness(10, 0, 0, 2),
+                Padding = new Thickness(padding.Item1, 0, 0, padding.Item2),
                 Content = soundName,
                 Style = (Style)FindResource("RadiButStyle")
             };
@@ -175,10 +179,12 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         private void AddSound_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const string title = "Choose vidoe file";
+            const string filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             var dlg = new OpenFileDialog
             {
-                Title = "Выберите MP3 файл",
-                Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
+                Title = title,
+                Filter = filter,
                 Multiselect = false
             };
 
@@ -211,6 +217,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         public void PlaySound()
         {
+            const int maxSoundVal = 100;
             string chosenSound = _tempChosenSound;
             if (chosenSound == string.Empty) return;
 
@@ -221,7 +228,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             int.TryParse(PercentsNumberBlock.Text, out int vol);
 
             //Play it
-            VisHelper.PlaySound(path, (double)vol / 100);
+            VisHelper.PlaySound(path, (double)vol / maxSoundVal);
         }
 
         public void PlayOnChangedSound(string soundName)

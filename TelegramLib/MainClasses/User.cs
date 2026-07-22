@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using TelegramLib.Helpers;
-using TelegramLib.MainClasses.UserParams;
-using TelegramLib.Models;
 using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
 
 namespace TelegramLib.MainClasses
@@ -37,7 +32,7 @@ namespace TelegramLib.MainClasses
                     string surname, string bio,
                     ColorHelper color, string phoneNumber, DateTime? birthDay,
                     List<User> blockedContacts,
-                    List<UserImage> userImages, DateTime lastSeen, 
+                    List<UserImage> userImages, DateTime lastSeen,
                     bool isOnline)
         {
             Id = id;
@@ -61,7 +56,7 @@ namespace TelegramLib.MainClasses
 
         public void UpdateParamsByUser(User user)
         {
-            if (user is null || Id  != user.Id) return;
+            if (user is null || Id != user.Id) return;
 
             Login = user.Login;
             Password = user.Password;
@@ -74,25 +69,8 @@ namespace TelegramLib.MainClasses
         }
 
         //Smth like test params
-       public User()
+        public User()
         {
-            return;
-            Id = -1;
-            Login = "emptyLOGIN";
-            Password = "emptyPASSWORD";
-            Name = "emptyNAME";
-            Surname = "emptySURNAME";
-            BIO = "emptyBIO";
-
-            MainColor = new ColorHelper(-1, 255, 0, 0);
-
-            PhoneNumber = "emptyPhoneNumber";
-
-            BirthDay = new DateTime(2000, 1, 1);
-            BlockedUsers = new List<User>();
-
-            IsOnline = false;
-
         }
 
         public bool IsSameId(int id)
@@ -112,12 +90,13 @@ namespace TelegramLib.MainClasses
             return UserImages.First();
         }
 
+        const string _baseMinato = "Minato.jpg";
         public string GetFirstImageNameInString()
         {
             if (UserImages is null || UserImages.Count == 0 ||
                 UserImages.First().Name == string.Empty)
             {
-                return "Minato.jpg";
+                return _baseMinato;
             }
             return UserImages.First().Name;
         }
@@ -176,9 +155,10 @@ namespace TelegramLib.MainClasses
 
         public void AddUserImage(UserImage img)
         {
-            if(!(ImageMask is null))
+            const int minIndex = 1;
+            if (!(ImageMask is null))
             {
-                UserImages.Insert(1, img);
+                UserImages.Insert(minIndex, img);
                 return;
             }
             UserImages.Insert(0, img);

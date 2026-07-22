@@ -1,23 +1,11 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics.Eventing.Reader;
-using System.DirectoryServices.ActiveDirectory;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Dynamic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
@@ -25,8 +13,6 @@ using TelegramLib.MainClasses.UserParams;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.MediaActions;
-using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
-using static System.Net.Mime.MediaTypeNames;
 using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.VisualPages
@@ -65,10 +51,9 @@ namespace TelegramVisualPart.Pages.VisualPages
             ImageToShow.Source = _img.Source;
 
             VideoToShow.Visibility = Visibility.Hidden;
-            //VideoToShow = null;
         }
 
-        public void SetUserImages(List<UserImage> images, TelSystem system, 
+        public void SetUserImages(List<UserImage> images, TelSystem system,
             string userName, bool isLoggedUser, UserChat chat)
         {
             MediaMenu = null;
@@ -82,26 +67,19 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             SetUserImageParams();
 
-            HideDeleteFromuserMenu(isLoggedUser);
             SetEventsForUsersImagesMenu();
-        }
-
-        public void HideDeleteFromuserMenu(bool isLogged)
-        {
-            //if (!isLogged) UsersImageMenu.ChildrenPanel.Children.Remove(UsersImageMenu.Delete);
         }
 
         public void SetEventsForUsersImagesMenu()
         {
             UsersImageMenu.SaveAs.PreviewMouseDown += SaveBut_PreviewMouseDown;
-            //if (UsersImageMenu.Delete is not null) UsersImageMenu.Delete.PreviewMouseDown += DeleteImage_PreviewMouseDown;
             UsersImageMenu.Copy.PreviewMouseDown += CopyUserImage_PreviewMouseDown;
             UsersImageMenu.Report.PreviewMouseDown += ReportUserImage_PreviewMouseDown;
         }
 
         private void ReportUserImage_PreviewMouseDown(object senner, MouseButtonEventArgs e)
         {
-            MessageBox.Show("!!!You cant reprt here!!!");
+            MessageBox.Show("!!!You cant report here!!!");
         }
 
         private void CopyUserImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -110,7 +88,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             Clipboard.SetImage(bitmapSource);
         }
 
-        private void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void DeleteImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             UserImage userImage = _userImages[_tempMediaIndex];
 
@@ -126,7 +104,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             }
 
             ImageToShow.Source = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_userImages.First().Name), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(_userImages.First().Name), UriKind.Absolute));
 
             SetUserImageParams();
         }
@@ -430,17 +408,18 @@ namespace TelegramVisualPart.Pages.VisualPages
             SaveElement();
         }
 
-        private void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void RightArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int adderIndex = 1;
             if (_userImages is not null &&
                 (_tempMediaIndex + 1) < _userImages.Count)
             {
                 _tempMediaIndex++;
-                SetUserImage();
+                await SetUserImage();
             }
             else if (_img is not null &&
                 _imgs is not null &&
-                (_tempMediaIndex + 1) < _imgs.Count)
+                (_tempMediaIndex + adderIndex) < _imgs.Count)
             {
                 _tempMediaIndex++;
                 ImageToShow.Source = _imgs[_tempMediaIndex].Source;
@@ -449,7 +428,7 @@ namespace TelegramVisualPart.Pages.VisualPages
                 RightArrowActions();
             }
             else if (_media is not null &&
-                (_tempMediaIndex + 1) < _mediaPaths.Count)
+                (_tempMediaIndex + adderIndex) < _mediaPaths.Count)
             {
                 _tempMediaIndex++;
                 SetMediaFile();
@@ -459,9 +438,9 @@ namespace TelegramVisualPart.Pages.VisualPages
             //Set next visual element
         }
 
-        public void SetUserImage()
+        public async Task SetUserImage()
         {
-            _img = FilesAction.GetUserImage(_userImages[_tempMediaIndex].Name);
+            _img = await FilesAction.GetUserImage(_userImages[_tempMediaIndex].Name);
             ImageToShow.Source = _img.Source;
 
             ClearRenderTransform();
@@ -479,6 +458,9 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetMediaFile()
         {
+            //no readonly, no const ?
+            Size size = new Size(300, 200);
+            
             HideAllShows();
 
             MediaType type = FilesAction.GetMediaTypeFromFilename(_mediaPaths[_tempMediaIndex]);
@@ -494,8 +476,8 @@ namespace TelegramVisualPart.Pages.VisualPages
                 var media = new MediaElement
                 {
                     Source = new Uri(_mediaPaths[_tempMediaIndex], UriKind.Absolute),
-                    Width = 300,
-                    Height = 200,
+                    Width = size.Width,
+                    Height = size.Height,
                     LoadedBehavior = MediaState.Manual,
                     UnloadedBehavior = MediaState.Manual
                 };
@@ -507,17 +489,18 @@ namespace TelegramVisualPart.Pages.VisualPages
             }
         }
 
-        private void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void LeftArrowEl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int lessIndex = 1;
             if (_userImages is not null &&
-                (_tempMediaIndex - 1) >= 0)
+                (_tempMediaIndex - lessIndex) >= 0)
             {
                 _tempMediaIndex--;
-                SetUserImage();
+                await SetUserImage();
             }
             else if (_img is not null &&
                 _imgs is not null &&
-                (_tempMediaIndex - 1) >= 0)
+                (_tempMediaIndex - lessIndex) >= 0)
             {
                 _tempMediaIndex--;
                 ImageToShow.Source = _imgs[_tempMediaIndex].Source;
@@ -526,7 +509,7 @@ namespace TelegramVisualPart.Pages.VisualPages
                 LeftArrowAction();
             }
             else if (_media is not null &&
-                (_tempMediaIndex - 1) >= 0)
+                (_tempMediaIndex - lessIndex) >= 0)
             {
                 _tempMediaIndex--;
                 SetMediaFile();
@@ -537,7 +520,6 @@ namespace TelegramVisualPart.Pages.VisualPages
         public void LeftArrowAction()
         {
             ClearRenderTransform();
-            //_tempMediaIndex--;
             SetMediaParams();
         }
 
@@ -564,6 +546,9 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void RotateBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int divider = 2;
+            const int duration = 300;
+
             UIElement el = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow : ImageToShow;
 
             double width = ImageToShow.Visibility == Visibility.Hidden ? VideoToShow.ActualWidth : ImageToShow.ActualWidth;
@@ -571,7 +556,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             if (!(el.RenderTransform is RotateTransform rotateTransform))
             {
-                rotateTransform = new RotateTransform(_rotation, width / 2, height / 2);
+                rotateTransform = new RotateTransform(_rotation, width / divider, height / divider);
                 el.RenderTransform = rotateTransform;
             }
             _rotation += _rotateAngle;
@@ -579,7 +564,7 @@ namespace TelegramVisualPart.Pages.VisualPages
             DoubleAnimation animation = new DoubleAnimation
             {
                 To = _rotation,
-                Duration = TimeSpan.FromMilliseconds(300),
+                Duration = TimeSpan.FromMilliseconds(duration),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
 
@@ -591,11 +576,13 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         }
 
+        private const int halfDivider = 2;
         private void ImageToShow_Loaded(object sender, RoutedEventArgs e)
         {
+            
             if (ImageToShow is null || _gifPath is not null) return;
             ImageToShow.RenderTransform = new RotateTransform(_rotation,
-                ImageToShow.ActualWidth / 2, ImageToShow.ActualHeight / 2);
+                ImageToShow.ActualWidth / halfDivider, ImageToShow.ActualHeight / halfDivider);
         }
 
         private void VideoToShow_MediaOpened(object sender, RoutedEventArgs e)
@@ -606,7 +593,7 @@ namespace TelegramVisualPart.Pages.VisualPages
 
             if (width > 0 && height > 0)
             {
-                VideoToShow.RenderTransform = new RotateTransform(_rotation, width / 2, height / 2);
+                VideoToShow.RenderTransform = new RotateTransform(_rotation, width / halfDivider, height / halfDivider);
             }
         }
 

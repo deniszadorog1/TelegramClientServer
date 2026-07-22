@@ -38,19 +38,23 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
 
         public void SetOwnGradientBrush()
         {
+            Point endPoint = new Point(1, 0);
+            const double firstStop = 0.1;
+            const double secStop = 1.0;
+            const int recSize = 1;
             var gradient = new LinearGradientBrush
             {
                 StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 0)
+                EndPoint = endPoint
             };
 
-            _stop = new GradientStop(Colors.Red, 0.1);
+            _stop = new GradientStop(Colors.Red, firstStop);
             gradient.GradientStops.Add(_stop);
-            gradient.GradientStops.Add(new GradientStop(Colors.White, 1.0));
+            gradient.GradientStops.Add(new GradientStop(Colors.White, secStop));
 
             var geometryDrawing = new GeometryDrawing
             {
-                Geometry = new RectangleGeometry(new Rect(0, 0, 1, 1)),
+                Geometry = new RectangleGeometry(new Rect(0, 0, recSize, recSize)),
                 Brush = gradient
             };
 
@@ -71,9 +75,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
         const int _baseMargin = 7;
         private void SetMarginToTriangles(PackIcon icon, Point position)
         {
+            const int sizeSub = 14;
             icon.Margin = new Thickness(
                 position.X < 0 ? 0 :
-                position.X > this.ActualWidth - 14 ? this.ActualWidth - 14 : position.X,
+                position.X > this.ActualWidth - sizeSub ? this.ActualWidth - sizeSub : position.X,
                 0, 0, 0);
         }
 
@@ -104,9 +109,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
 
         public void SetLumValue()
         {
-            double onePart = ColorSpecter.ActualWidth / 100;
+            const int maxDivider = 100;
+            double onePart = ColorSpecter.ActualWidth / maxDivider;
 
-            _lum = (UpperTriangle.Margin.Left / onePart) / 100;
+            _lum = (UpperTriangle.Margin.Left / onePart) / maxDivider;
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)

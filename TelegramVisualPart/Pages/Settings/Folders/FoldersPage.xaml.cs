@@ -47,18 +47,17 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void SetBackButVisibility()
         {
+            const int backButWidth = 60;
             if (!_isShowTextButton)
             {
                 BackButColumn.Width = new GridLength(0);
                 return;
             }
-            BackButColumn.Width = new GridLength(60);
+            BackButColumn.Width = new GridLength(backButWidth);
         }
 
         private void SetTestObject()
         {
-            //TestThing.FolderName.Text = "Folder Name";
-            //TestThing.AmountOfChats.Text = "Amount of Users";
             TestThing.BucketIcon.Visibility = Visibility.Hidden;
         }
 
@@ -72,9 +71,10 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         public void CreateFolderControl(Folder folder)
         {
+            const int paddingPar = 5;
             FolderLittleInfo info = new FolderLittleInfo()
             {
-                Padding = new Thickness(0, 5, 5, 5),
+                Padding = new Thickness(0, paddingPar, paddingPar, paddingPar),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Width = this.Width
             };

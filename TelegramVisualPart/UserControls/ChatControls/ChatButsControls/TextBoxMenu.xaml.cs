@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,16 +60,17 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
 
         public void SetActions(TextBoxMenuButton button)
         {
+            const int changeIndex = 1;
             if (button == Undo)
             {
-                if (_histIndex - 1 < 0) return;
+                if (_histIndex - changeIndex < 0) return;
                 _histIndex--;
                 UnReDoAction?.Invoke();
                 _box.Text = _history[_histIndex];
             }
             else if (button == Redo)
             {
-                if (_histIndex + 1 >= _history.Count()) return;
+                if (_histIndex + changeIndex >= _history.Count()) return;
                 _histIndex++;
                 UnReDoAction?.Invoke();
                 _box.Text = _history[_histIndex];

@@ -1,18 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TelegramClientServer.Interfaces;
 //using System.Data.Entity;
-using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
-using TelegramLib;
 using TelegramLib.Helpers;
-using TelegramLib.Models;
 using TelegramLib.Services;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
-using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,15 +18,21 @@ namespace TelegramClientServer.Controllers
 
     public class SettingsController : ControllerBase
     {
+        private readonly IFController _clientProps;
+        public SettingsController(IFController clientProps)
+        {
+            _clientProps = clientProps;
+        }
+
         //ADVANCED
-        [HttpPost("UpdateAdvanced")] 
+        [HttpPost("UpdateAdvanced")]
         public void UpdateAdvanced([FromBody] AdvancedDTO adv)
         {
             DbService.UpdateAdvanced(adv.Advanced);
         }
         public class AdvancedDTO()
         {
-            public TelegramLib.UserSettings.SettingsTypes.AdvancedSettings Advanced{get;set;}
+            public TelegramLib.UserSettings.SettingsTypes.AdvancedSettings Advanced { get; set; }
         }
 
         //NOTIFICATIONS
@@ -80,16 +80,21 @@ namespace TelegramClientServer.Controllers
             public ColorHelper ChosenColor { get; set; }
         }
 
-
         [HttpGet("GetLastSeenVisState")]
         public void GetLastSeenVisState(int userId)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return;
+
             DbService.GetLastSeenStateByUserId(userId);
         }
 
         [HttpGet("GetSettingsByUserId")]
         public MainSettings GetSettingsByUserId(int userId)
         {
+/*            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return null;*/
+
             return DbService.GetSettingsByUserId(userId);
         }
 
@@ -107,19 +112,25 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdateNotifMonitor")]
         public void UpdateNotifMonitor([FromBody] NotifMonitorDTO notMonitor)
         {
-            DbService.UpdateWindowNotifcation(notMonitor.Side, 
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != notMonitor.UserId) return;
+
+            DbService.UpdateWindowNotifcation(notMonitor.Side,
                 notMonitor.MessagesAmount, notMonitor.UserId);
         }
         public class NotifMonitorDTO()
         {
-            public TelegramLib.Enums.Settings.Notifs.NotifMessageSide Side{ get; set; }
+            public TelegramLib.Enums.Settings.Notifs.NotifMessageSide Side { get; set; }
             public int MessagesAmount { get; set; }
             public int UserId { get; set; }
         }
 
         [HttpPost("UpdateSound")]
-        public void UpdateSound([FromBody] UpdateSoundDTO soundUpdate) 
+        public void UpdateSound([FromBody] UpdateSoundDTO soundUpdate)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != soundUpdate.UserId) return;
+
             DbService.UpdateSounds(soundUpdate.UserId, soundUpdate.Sound,
                 soundUpdate.Volume, soundUpdate.IsDefault);
         }
@@ -144,7 +155,10 @@ namespace TelegramClientServer.Controllers
         [HttpPut("AddUserColor")]
         public void AddUserColor([FromBody] AddUserColorDTO colorToAdd)
         {
-            DbService.AddUserColor(colorToAdd.R, 
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != colorToAdd.UserId) return;
+
+            DbService.AddUserColor(colorToAdd.R,
                 colorToAdd.G, colorToAdd.B, colorToAdd.UserId);
         }
         public class AddUserColorDTO()
@@ -159,12 +173,18 @@ namespace TelegramClientServer.Controllers
         [HttpGet("IsUserColorExist")]
         public bool IsUserColorExist(int userId)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return false;
+
             return DbService.IsUserColorExist(userId);
         }
 
         [HttpGet("GetUserColorId")]
         public int GetUserColorId(int userId)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return -1;
+
             return DbService.GetUserColorIdByUserId(userId);
         }
 
@@ -173,10 +193,13 @@ namespace TelegramClientServer.Controllers
         {
             return DbService.GetAllSounds();
         }
-        
+
         [HttpPost("UpdateFoldersPosition")]
         public void UpdateFoldersPosition([FromBody] UpdateFolderPositionDTO folderPos)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (folderPos.UserId != id) return;
+
             DbService.UpdateFolderPosition(folderPos.UserId, folderPos.State);
         }
 
@@ -189,6 +212,9 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdateUserLanguage")]
         public void UpdateUserLanguage([FromBody] UpdateLangDTO lang)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (lang.UserId != id) return;
+
             DbService.UpdateLanguage(lang.UserId, lang.Type);
         }
 

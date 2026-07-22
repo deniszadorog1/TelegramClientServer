@@ -39,10 +39,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.LittleMenusContols
 
         public void SetMaxNumber()
         {
+            const int maxMin = 59;
+            const int maxHour = 23;
+            const int maxDay = 31;
+
             _maxValue =
-                _type == DatePartType.Minute ? 59 :
-                _type == DatePartType.Hour ? 23 :
-                _type == DatePartType.Day ? 31 :
+                _type == DatePartType.Minute ? maxMin :
+                _type == DatePartType.Hour ? maxHour :
+                _type == DatePartType.Day ? maxDay :
                 throw new Exception("WTF");
         }
     

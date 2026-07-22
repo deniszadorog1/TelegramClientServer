@@ -1,23 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
-using static System.Net.Mime.MediaTypeNames;
 using User = TelegramLib.MainClasses.User;
 
 namespace TelegramVisualPart.Pages.MyProfile.SetInformation
@@ -149,6 +137,10 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         public void SetStartDate()
         {
+            const int minYear = 1;
+            const int maxYearAdd = 1;
+            const int baseYearAddIndex = 2;
+
             if (_user.BirthDay is null) return;
 
             //DaysSpecial.SetSelectedIndex(1);
@@ -159,155 +151,22 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
             //YearSpecial.SetSelectedIndex(2);
 
-            int yearIndex = _user.BirthDay.Value.Year == 1 ? DateTime.Now.Year - _minYear + 2 : (_user.BirthDay.Value.Year - _minYear) + 1;
+            int yearIndex = _user.BirthDay.Value.Year == minYear ? DateTime.Now.Year - _minYear + baseYearAddIndex : (_user.BirthDay.Value.Year - _minYear) + maxYearAdd;
             YearSpecial.ValueByIndex(yearIndex);
-
-            //Set day
-            /*            Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                        {
-                            DaysSpecial.SetSelectedIndex(_user.BirthDay.Value.Day + 1);
-                            DaysSpecial.ScrollViewer_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
-                            {
-                                RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                                Source = DaysSpecial.ScrollView
-                            });
-                        }));
-
-                        //Set month
-                        Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                        {
-                            MonthsSpecial.SetSelectedIndex(_user.BirthDay.Value.Month + 1);
-                            MonthsSpecial.ScrollViewer_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
-                            {
-                                RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                                Source = MonthsSpecial.ScrollView
-                            });
-                        }));*/
-
-            /*          //Set Year   
-                      Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-                      {
-                          _selectedYearIndex = (_user.BirthDay.Value.Year - _minYear) + 2;
-                          YearScroll_PreviewMouseWheel(this, new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, 0)
-                          {
-                              RoutedEvent = UIElement.PreviewMouseWheelEvent,
-                              Source = YearScroll
-                          });
-                      }));*/
-
         }
-        /*        public void SetBasicParams()
-                {
-                    SetDays();
-                    SetMonths();
-                    SetYears();
-                }
-        */
-        /*        public int chosenMonth = 1;
-                public int _selectedDayIndex = 2;
-                public void SetDays()
-                {
-                    int days = DateTime.DaysInMonth(_minYear + _selectedYearIndex, chosenMonth);
-                    DaysPanel.Children.Clear();
 
-                    DaysPanel.Children.Add(GetTextBlock(" "));
-                    DaysPanel.Children.Add(GetTextBlock(" "));
-
-                    for (int i = 1; i <= days; i++)
-                    {
-                        DaysPanel.Children.Add(GetTextBlock($"{i}"));
-                    }
-
-                    DaysPanel.Children.Add(GetTextBlock(" "));
-                    DaysPanel.Children.Add(GetTextBlock(" "));
-                }
-
-                private void DaysScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-                {
-                    if (DaysPanel.Children.Count == 0)
-                        return;
-
-                    if (e.Delta < 0)
-                        _selectedDayIndex = Math.Min(DaysPanel.Children.Count - 1 - 2, _selectedDayIndex + 1);
-                    else if (e.Delta > 0)
-                        _selectedDayIndex = Math.Max(2, _selectedDayIndex - 1);
-
-                    var selectedElement = DaysPanel.Children[_selectedDayIndex] as UIElement;
-                    CenterElementInScrollViewer(selectedElement, DaysScroll);
-
-                    e.Handled = true;
-                }
-
-                public void SetYears()
-                {
-                    YearPanel.Children.Add(GetTextBlock(" "));
-                    YearPanel.Children.Add(GetTextBlock(" "));
-
-                    for (int i = _minYear; i <= DateTime.Now.Year; i++)
-                    {
-                        YearPanel.Children.Add(GetTextBlock($"{i}"));
-                    }
-
-                    YearPanel.Children.Add(GetTextBlock(" "));
-                    YearPanel.Children.Add(GetTextBlock(" "));
-                }
-
-                public void SetMonths()
-                {
-                    foreach (var month in _months)
-                    {
-                        MonthPanel.Children.Add(GetTextBlock(month.Value));
-                    }
-                }
-
-                private int _selectedMonthIndex = 2;
-                private void MonthScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-                {
-                    if (MonthPanel.Children.Count == 0)
-                        return;
-
-                    if (e.Delta < 0)
-                        _selectedMonthIndex = Math.Min(MonthPanel.Children.Count - 1 - 2, _selectedMonthIndex + 1);
-                    else if (e.Delta > 0)
-                        _selectedMonthIndex = Math.Max(2, _selectedMonthIndex - 1);
-
-                    var selectedElement = MonthPanel.Children[_selectedMonthIndex] as UIElement;
-                    CenterElementInScrollViewer(selectedElement, MonthScroll);
-
-                    e.Handled = true;
-
-                    chosenMonth = _selectedMonthIndex - 1;
-                    SetDays();
-                }
-
-                private int _selectedYearIndex = 2;
-                private void YearScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-                {
-                    if (YearPanel.Children.Count == 0)
-                        return;
-
-                    if (e.Delta < 0)
-                        _selectedYearIndex = Math.Min(YearPanel.Children.Count - 1 - 2, _selectedYearIndex + 1);
-                    else if (e.Delta > 0)
-                        _selectedYearIndex = Math.Max(2, _selectedYearIndex - 1);
-
-                    var selectedElement = YearPanel.Children[_selectedYearIndex] as UIElement;
-                    CenterElementInScrollViewer(selectedElement, YearScroll);
-
-                    //HighlightSelectedElement(_selectedIndex); 
-                    e.Handled = true;
-                }*/
 
         private void CenterElementInScrollViewer(UIElement element, ScrollViewer scroll)
         {
+            const int devider = 2;
             if (element == null)
                 return;
 
             var transform = element.TransformToAncestor(scroll);
             Point position = transform.Transform(new Point(0, 0));
 
-            double elementCenter = position.Y + ((FrameworkElement)element).ActualHeight / 2;
-            double scrollViewerCenter = scroll.ViewportHeight / 2;
+            double elementCenter = position.Y + ((FrameworkElement)element).ActualHeight / devider;
+            double scrollViewerCenter = scroll.ViewportHeight / devider;
 
             double offset = scroll.VerticalOffset + (elementCenter - scrollViewerCenter);
             scroll.ScrollToVerticalOffset(offset);
@@ -315,14 +174,18 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         private TextBlock GetTextBlock(string text)
         {
+            const int baseHeight = 40;
+            const int baseFontSize = 16;
+            const int baseThickness = 10;
+
             TextBlock block = new TextBlock()
             {
                 Text = text,
-                Height = 40,
+                Height = baseHeight,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 16,
-                Padding = new Thickness(10),
+                FontSize = baseFontSize,
+                Padding = new Thickness(baseThickness),
                 Foreground = (SolidColorBrush)System.Windows.Application.Current.Resources["UsualTextColor"]
             };
 
@@ -331,38 +194,20 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             return block;
         }
 
-        /*        private bool _isSelecting = false;
-                private double _baseY;
-                private int _baseIndex;*/
         public void ChooseBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            /*            if (e.OriginalSource is TextBlock tb)
-                        {
-                            _isSelecting = true;
-                            Mouse.Capture(this, CaptureMode.Element);
-
-                            _baseY = e.GetPosition(this).Y;
-                            _baseIndex = ChatBox.SelectedIndex = ChatBox.Items.IndexOf(tb.Text);
-                        }*/
 
             if (sender is not TextBlock block ||
                 string.IsNullOrWhiteSpace(block.Text)) return;
             //CenterElementInScrollViewer(block, GetScrollViewerByTextBlock(block));
         }
 
-        /*        public ScrollViewer GetScrollViewerByTextBlock(TextBlock block)
-                {
-                    return DaysPanel.Children.Contains(block) ? DaysScroll :
-                        MonthPanel.Children.Contains(block) ? MonthScroll :
-                        YearScroll;
-                }
-        */
-
         private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
+            const int devIndex = 1;
             //Make check for date
-            int day = DaysSpecial.GetSelectedIndex() - 1;
-            int month = MonthsSpecial.GetSelectedIndex() - 1;
+            int day = DaysSpecial.GetSelectedIndex() - devIndex;
+            int month = MonthsSpecial.GetSelectedIndex() - devIndex;
 
             int year = GetYear();
 
@@ -371,7 +216,6 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             await ApiService.UpdateUser(_user);
 
             //Update in Signal R
-
             await SignalRService.UpdateBirtDate(_user);
 
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
@@ -380,11 +224,14 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
 
         public int GetYear()
         {
+            const int minYear = 1;
+            const int devIndex = 2;
+
             if (YearSpecial.GetValueBySelectedIndex() == _emptyYear)
             {
-                return 1;
+                return minYear;
             }
-            return _minYear + YearSpecial.GetSelectedIndex() - 2;
+            return _minYear + YearSpecial.GetSelectedIndex() - devIndex;
         }
 
         private void CancelBut_Click(object sender, RoutedEventArgs e)

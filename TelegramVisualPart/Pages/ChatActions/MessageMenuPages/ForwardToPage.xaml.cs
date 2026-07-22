@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
+using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
-using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 {
@@ -35,10 +23,11 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             _system = system;
             _mes = mes;
-            
+
             InitializeComponent();
 
-            SetBasicParams();
+            Loaded += async (s, e) => await SetBasicParams();
+            //SetBasicParams();
         }
 
         public ForwardToPage(TelSystem system)
@@ -46,24 +35,25 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             _system = system;
 
             InitializeComponent();
-
-            SetBasicParams();
+            
+            Loaded += async (s, e) => await SetBasicParams();
+            //SetBasicParams();
         }
 
-        public void SetBasicParams()
+        public async Task SetBasicParams()
         {
             ChatsPanel.Children.Clear();
 
             for (int i = 0; i < _system.Chats.Count; i++)
             {
-                SetChatListBoxItem(_system.Chats[i]);
+                await SetChatListBoxItem(_system.Chats[i]);
             }
-            SetChatListBoxItem(_system.GetSavedChatMessages());
+            await SetChatListBoxItem(_system.GetSavedChatMessages());
 
             if (ChatsPanel.Children.Count == 0) Visibility = Visibility.Visible;
         }
 
-        public void SetChatListBoxItem(TelegramLib.MainClasses.UserChat chat)
+        public async Task SetChatListBoxItem(TelegramLib.MainClasses.UserChat chat)
         {
             ListBoxItem item = new ListBoxItem()
             {
@@ -75,22 +65,28 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             };
             item.PreviewMouseDown += Contacts_PreviewMouseDown;
 
-            SetContactToApply(chat is TelegramLib.MainClasses.SavedMessagesChat ?
+            await SetContactToApply(chat is TelegramLib.MainClasses.SavedMessagesChat ?
                 _system.LoggedUser : chat.Chatter, item);
         }
 
-        public void SetContactToApply(TelegramLib.MainClasses.User user,
+        public async Task SetContactToApply(TelegramLib.MainClasses.User user,
             ListBoxItem item)
         {
             ChatToApply contact = new ChatToApply(user);
+            //await contact.SetActions();
+
             contact.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             if (item.Tag is not null)
             {
-                contact.AddedUserImage(user);
+                await SignalRHelperService.SetPhotoInEllipse(user,
+                 contact.UserImageBrush, contact.UserImageEllipse);
+               
+                //contact.AddedUserImage(user);
+             
                 contact.TypeName.Text = user.Login;
                 contact.AutoDeletionType.Text = user.GetLastSeenInChat();
-                
+
                 contact.Tag = user.GetFirstImageName().Name;
             }
             else
@@ -99,7 +95,6 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 contact.SetSavedMesChatGrid();
             }
             item.Content = contact;
-
             ChatPanel.Items.Add(item);
         }
 

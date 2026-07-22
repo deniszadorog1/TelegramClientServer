@@ -1,24 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
-using TelegramLib.Services;
+
 using TelegramVisualPart.Helper;
-using TelegramVisualPart.Pages;
+using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.EnterInAccount
@@ -52,7 +39,7 @@ namespace TelegramVisualPart.EnterInAccount
             ((MainWindow)Window.GetWindow(this)).SetMainFrameContent(new RegistrationPage());
         }
 
-        private async void EnterBut_Click(object sender, RoutedEventArgs e)
+        private async void EnterBut_Click(object sender, RoutedEventArgs e) 
         {
             //Is field are empty 
             if (string.IsNullOrWhiteSpace(LoginBox.Text) ||
@@ -63,11 +50,11 @@ namespace TelegramVisualPart.EnterInAccount
             if (!string.IsNullOrEmpty(token))
             {
                 ApiService.SetAuthToken(token);
-                _system = /*await ApiService.GetTelSystemSinglton(); //*/ await ApiService.GetTelSystem();
+                _system = await ApiService.GetPartlyTelSystem();// await ApiService.GetTelSystem();
 
                 _system.Token = token;
 
-                if(_system is null)
+                if (_system is null)
                 {
                     MessageBox.Show("Bruh...");
                     return;
@@ -79,18 +66,9 @@ namespace TelegramVisualPart.EnterInAccount
                 return;
             }
 
-
-            //_system = await ApiService.GetTelSystem(LoginBox.Text, PasswordBox.Text);
-            
             SignalRHelperService.SetStatSystem(_system);
 
-/*
-            UserChat chat = _system.Chats.First(x => x.Id == 4);
-            for (int i = 0; i < 100000; i++)
-            {
-                DbService.AddMessage(chat, new TelegramLib.MainClasses.Messages.TextMessage(-1, 1, DateTime.Now, "asd", false, -1, false, null, false));
-            }
-*/
+
             if (_system is null)
             {
                 MessageBox.Show("No user with such params");
@@ -99,6 +77,9 @@ namespace TelegramVisualPart.EnterInAccount
             }
 
             _system.SetEmptyUserImages();
+
+
+            await ShitTest();
 
 
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
@@ -110,19 +91,18 @@ namespace TelegramVisualPart.EnterInAccount
             }
 
             //MessageBox.Show("1.I am online. Starting to set basic params");//
-
             _system.Settings.ChatsSettings.SetBasicThemes();
 
-            _system.Settings.ChatsSettings.PossibleWallpapers = 
+            _system.Settings.ChatsSettings.PossibleWallpapers =
                 FilesAction.GetAllWallpaperNames(_system.Settings.ChatsSettings.PossibleWallpapers);
 
             //MessageBox.Show("2. Set basic wallpapers!");
 
-            _system.Settings.ChatsSettings.Theme = 
+            _system.Settings.ChatsSettings.Theme =
                 TelegramLib.Enums.Settings.ChatSettings.ThemeType.Night;
 
             Application.Current.Resources["AppFont"] =
-              new FontFamily(_system.Settings.ChatsSettings.FontName); 
+              new FontFamily(_system.Settings.ChatsSettings.FontName);
 
             await SetOnlineStatus();
 
@@ -133,11 +113,13 @@ namespace TelegramVisualPart.EnterInAccount
             Application.Current.Resources["TempActiveTextColor"] =
                 new SolidColorBrush(Color.FromRgb(_system.LoggedUser.MainColor.R,
                 _system.LoggedUser.MainColor.G, _system.LoggedUser.MainColor.B));
-             
+
 
             //MessageBox.Show("3. Eneded of Setting basic params! going to create main page");
 
-            ((MainWindow)Window.GetWindow(this)).SetMainPage(_system);
+            Window window = Window.GetWindow(this);
+
+            if(window is not null && window is MainWindow main) main.SetMainPage(_system);
         }
 
         private async Task SetOnlineStatus()
@@ -152,6 +134,56 @@ namespace TelegramVisualPart.EnterInAccount
             PasswordBox.Text = string.Empty;
         }
 
+        public async Task ShitTest()
+        {
+/*            const int usersAmount = 100;
 
+            //Add 100 users
+            for (int i = 0; i < usersAmount; i++)
+            {
+                string iS = i.ToString();
+
+                await ApiService.AddNewUser(iS, iS, iS, iS, iS, DateTime.Now);
+
+                int dbId = i + 2;
+
+                await ApiService.AddUserBasicColor(dbId);
+                await ApiService.AddUserSettings(dbId);
+                await ApiService.AddSavedMessagesChat(dbId);
+            }
+
+            int addId = 1;
+            //contact To EachOther
+            for (int i = 2; i < usersAmount + 1; i++)
+            {
+                string temp = i.ToString();
+                string prev = (i - 1).ToString();
+
+                UserContactcs prevCont = new UserContactcs(-1, prev, prev, prev, DateTime.Now, string.Empty, prev, DateTime.Now, false, null, null, false);
+                prevCont.ContactUserId = i;
+
+                UserContactcs tempCont = new UserContactcs(-1, temp, temp, temp, DateTime.Now, string.Empty, temp, DateTime.Now, false, null, null, false);
+                tempCont.ContactUserId = addId;
+
+
+                await ApiService.AddContact(addId, prevCont);
+                await ApiService.AddContact(i, tempCont);
+            }
+*/
+            return;
+            //Messages In chat
+            for (int i = 0; i < _system.Contacts.Count; i++)
+            {
+                await ApiService.AddNewChat(1, _system.Contacts[i].ContactUserId);
+
+                TelegramLib.MainClasses.UserChat? chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, _system.Contacts[i].ContactUserId);
+
+                for (int j = 0; j < 100; j++)
+                {
+                    await ApiService.AddMessage(new TelegramLib.MainClasses.Messages.TextMessage(-1, 1, DateTime.Now, "asd", false, -1, false, null, false), chat);
+                }
+            }
+
+        }
     }
 }

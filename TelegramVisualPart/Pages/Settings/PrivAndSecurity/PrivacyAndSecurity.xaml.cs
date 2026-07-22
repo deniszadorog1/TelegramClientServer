@@ -67,38 +67,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             BackBut.IconType.Kind = PackIconKind.ArrowLeft;
             CloseBut.IconType.Kind = PackIconKind.Close;
 
-            //LocalPasscode.NamePart.Text = "Local passcode";
             SetLocalPasscodeStatus();
 
-            //BlockedUsers.NamePart.Text = "Blocked users";
-            //BlockedUsers.EnumPart.Text = "AMOUNT";
-
-            //PhoneNumber.NamePart.Text = "Phone number";
-            //PhoneNumber.EnumPart.Text = "STATUS";
-
-            //LastSeen.NamePart.Text = "Last seen & online";
-            //LastSeen.EnumPart.Text = "STATUS";
-
-            //ProfilePhotos.NamePart.Text = "Profile photos";
-            //ProfilePhotos.EnumPart.Text = "STATUS";
-
-            //ForwardedMessages.NamePart.Text = "Forwarded messages";
-            //ForwardedMessages.EnumPart.Text = "STATUS";
-
-            //Messages.NamePart.Text = "Messages";
-            //Messages.EnumPart.Text = "STATUS";
-
-            //DateOfBirth.NamePart.Text = "Date of Birth";
-            //DateOfBirth.EnumPart.Text = "STATUS";
-
-            //BioBut.NamePart.Text = "BIO";
-            //BioBut.EnumPart.Text = "STATUS";
-
-            //ClearPayments.NamePart.Text = "Clear Payments and Shipping Info";
             ClearPayments.EnumPart.Visibility = Visibility.Hidden;
-
-            //DeleteAway.NamePart.Text = "If away for...";
-            //DeleteAway.EnumPart.Text = "STATUS";
         }
 
         public void SetLocalPasscodeStatus()

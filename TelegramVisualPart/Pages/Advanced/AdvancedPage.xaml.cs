@@ -68,26 +68,10 @@ namespace TelegramVisualPart.Pages.Advanced
             CloseBut.IconType.Kind = PackIconKind.Close;
 
             DownloadPathBut.IconType.Kind = PackIconKind.FileOutline;
-            //DownloadPathBut.ButName.Text = "Download path";
-            //DownloadPathBut.TempStatusBut.Text = "Default folder";
 
             Downloads.IconType.Kind = PackIconKind.DownloadOutline;
-            //Downloads.ButName.Text = "Downloads";
-
-            //IsAskDownloadPath.TextBlock.Text = "Ask download path for each file";
 
             PrivateChatsBut.IconType.Kind = PackIconKind.AccountCircleOutline;
-            //PrivateChatsBut.ButName.Text = "In private chats";
-
-            //ShowChatNameBox.Content = "Show chat name";
-            //UnreadCountBox.Content = "Total unread count";
-            //WindowFrame.Content = "Use system window frame";
-
-            //VersionBut.FirstTextBlock.Text = "Update automatically";
-            //VersionBut.SecondTextBlock.Text = "temp version";
-
-            //InstalBetaBut.TextBlock.Text = "Install beta version";
-            //CheckForUpdates.TextBlock.Text = "Check for updates";
         }
 
         private void GetBackBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

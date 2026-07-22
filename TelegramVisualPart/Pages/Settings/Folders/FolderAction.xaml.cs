@@ -1,4 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.CodeDom;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -57,8 +59,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         }
         public void SetCorrectFolder()
         {
-            PageName.Text = "Edit folder";
-            CreateBut.Content = "Edit";
+            const string edit = "Edit folder";
+            const string create = "Edit";
+
+            PageName.Text = edit;
+            CreateBut.Content = create;
         }
 
         public void SetUpdateBlocks()
@@ -92,12 +97,6 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
         private void SetBlocks()
         {
-            //CreateNewFolderBut.NewFolderText.Text = "Add chat";
-            //ChatToExcludeBut.NewFolderText.Text = "Add Chats to Exclude";
-
-            //CreateInviteLinkBut.NewFolderText.Text = "Create an Invite Link";
-            //CreateInviteLinkBut.IconType.Kind = PackIconKind.LinkVariant;
-
             ChatToExcludeBut.IconType.Kind = PackIconKind.Minus;
         }
 
@@ -259,26 +258,21 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             toClear.RemoveAll(contact => chosen.Any(x => x.Name == contact.Name));
 
-
-            /*            foreach (UserContactcs contact in toClear)
-                        {
-                            UserContactcs toRemove = chosen.Where(x => x.Name == contact.Name).FirstOrDefault();
-                            if (toRemove is not null)
-                            {
-                                toClear.Remove(toRemove);
-                            }
-                        }*/
         }
 
-        public void SetContactsInListBox(List<User> contacts, ListBoxItem addFolder)
+        public async void SetContactsInListBox(List<User> contacts, ListBoxItem addFolder)
         {
+            const int widthDev = 10;
+            const int padParam = 5;
+            const int addIndex = 1;
+            
             int butIndex = MainListBox.Items.IndexOf(addFolder);
             UpdateFolderChats(butIndex);
 
             for (int i = 0; i < contacts.Count; i++)
             {
                 FoldersChat folderChat = new FoldersChat();
-                folderChat.Width = this.Width - 10;
+                folderChat.Width = this.Width - widthDev;
                 folderChat.NewFoldersChatText.Text = contacts[i].Name;
 
                 folderChat.RemoveControl += RemoveFolderChat_PreviewMouseDown;
@@ -288,18 +282,18 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 folderChat.ChatEllipse.Fill = new ImageBrush()
                 {
                     ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(
-                        FilesAction.GetUserImagePath(contacts[i].GetFirstImageName().Name), UriKind.Absolute)),
+                        await FilesAction.GetUserImagePath(contacts[i].GetFirstImageName().Name), UriKind.Absolute)),
 
                 };
 
                 ListBoxItem item = new ListBoxItem()
                 {
                     Content = folderChat,
-                    Padding = new Thickness(0, 5, 5, 5)
+                    Padding = new Thickness(0, padParam, padParam, padParam)
                 };
 
 
-                MainListBox.Items.Insert(butIndex + 1, item);
+                MainListBox.Items.Insert(butIndex + addIndex, item);
             }
         }
 

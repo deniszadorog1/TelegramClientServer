@@ -1,20 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.Settings.Folders;
@@ -22,8 +10,6 @@ using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.ChatsControls;
-using TelegramVisualPart.UserControls.DifferButs;
-using TelegramVisualPart.UserControls.SettingsControls;
 
 namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 {
@@ -74,13 +60,12 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
         {
             if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
             //Is chatter is contact  
-            bool isContact =  _system.IsChatterIdIsContact(_chat.Chatter.Id);
+            bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
 
             //Set  vis for edit contact + folder + add contact
             EditContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
             ShareContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
             DeleteContact.Visibility = isContact ? Visibility.Visible : Visibility.Hidden;
-
 
             AddContact.Visibility = isContact ? Visibility.Hidden : Visibility.Visible;
 
@@ -180,9 +165,9 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 return null;
             }
 
-            UserContactcs contact = _chat.Chatter is null ? null :  _system.GetContactByUserId(_chat.Chatter.Id);
-            if (contact is null && 
-                name != AddContact.Name.ToString() && 
+            UserContactcs contact = _chat.Chatter is null ? null : _system.GetContactByUserId(_chat.Chatter.Id);
+            if (contact is null &&
+                name != AddContact.Name.ToString() &&
                 name != AutoDelete.Name.ToString() &&
                 name != ShareContact.Name.ToString()) return null;
 
@@ -199,13 +184,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public void SetFoldersParams()
         {
+            Size size = new Size(250, 15);
+
             //Set panel children
             //Set height
             //hide upper panel
             if (_chat is null) return;
             ButPanel.Children.Clear();
-            Height = 15;
-            Width = 250;
+            Width = size.Width;
+            Height = size.Height;
 
             int chatterId = _chat is TelegramLib.MainClasses.SavedMessagesChat ?
                 _system.LoggedUser.Id : _chat.Chatter.Id;
@@ -302,13 +289,18 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
 
         public double GetAddFolderButPos()
         {
-            int multiplier = 
-                _chat is TelegramLib.MainClasses.SavedMessagesChat ? 
-                4 : 6;
+            const int minMult = 4;
+            const int maxMult = 6;
+            const int addButPos = 15;
+            const int addMult = 1;
+
+            int multiplier =
+                _chat is TelegramLib.MainClasses.SavedMessagesChat ?
+                minMult : maxMult;
 
             //Get Amount of VisParapms
             bool isContact = _chat is TelegramLib.MainClasses.SavedMessagesChat ? false : _system.IsChatterIdIsContact(_chat.Chatter.Id);
-            return AddToFolder.Height * (isContact ? multiplier : multiplier - 1) + 15;
+            return AddToFolder.Height * (isContact ? multiplier : multiplier - addMult) + addButPos;
         }
 
         MainWindow _wind;

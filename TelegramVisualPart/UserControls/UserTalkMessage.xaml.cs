@@ -70,10 +70,10 @@ namespace TelegramVisualPart.UserControls
                     return;
                 }
 
-                string path = FilesAction.GetUserImagePath(_imgName);
+                string path = await FilesAction.GetUserImagePath(_imgName);
 
                 BitmapImage bitmap = ApiService.GetCachedBitmap(path);
-                ImageIcon.ImageSource = bitmap is not null ? bitmap : SignalRHelperService.LoadBitmap(path);
+                ImageIcon.ImageSource = bitmap is not null ? bitmap : await SignalRHelperService.LoadBitmap(path);
             }
             catch (Exception ex)
             {

@@ -1,19 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
@@ -41,16 +30,16 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             Cursor = null;
         }
 
-        public void SetSenderImage(string imgName)
+        public async Task SetSenderImage(string imgName)
         {
             BgBrush.ImageSource = new BitmapImage(
-            new Uri(FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+            new Uri(await FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
         }
 
-        public void SetSharedUserImage(string imgName)
+        public async Task SetSharedUserImage(string imgName)
         {
             ImageIcon.ImageSource = new BitmapImage(
-                new Uri(FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+                new Uri(await FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
         }
 
         public void SetSharedUserName(string name)
@@ -66,7 +55,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         public void SetSendTime()
         {
             DateTime time = DateTime.Now;
-            
+
             SendTimeBlock.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
                 $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";
         }

@@ -1,23 +1,9 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.TextFormatting;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml;
 using TelegramVisualPart.Services;
 using Color = System.Windows.Media.Color;
 using Point = System.Windows.Point;
@@ -76,7 +62,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
             Canvas.SetLeft(CircleBut, x);
         }
 
-        public (int, int)? GetColorCord(byte r, byte g, byte b) 
+        public (int, int)? GetColorCord(byte r, byte g, byte b)
         {
             Color targetColor = Color.FromArgb(255, r, g, b);
             const int argbMult = 4;
@@ -84,6 +70,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
             const int rStep = 2;
             const int aStep = 3;
 
+            const int mult = 2;
 
             System.Windows.Controls.Image specimage = ConvertRectangleFillToImage();
             RenderTargetBitmap renderTarget = specimage.Source as RenderTargetBitmap;
@@ -121,10 +108,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
                     }
 
                     double distance = Math.Sqrt(
-                      Math.Pow(rCheck - targetColor.R, 2) +
-                      Math.Pow(gCheck - targetColor.G, 2) +
-                      Math.Pow(bCheck - targetColor.B, 2) +
-                      Math.Pow(aCheck - targetColor.A, 2)
+                      Math.Pow(rCheck - targetColor.R, mult) +
+                      Math.Pow(gCheck - targetColor.G, mult) +
+                      Math.Pow(bCheck - targetColor.B, mult) +
+                      Math.Pow(aCheck - targetColor.A, mult)
                   );
 
                     if (distance < minDistance)
@@ -211,21 +198,7 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
             const int lumDevider = 100;
             _tempColor = new ColorConvertService(color);
             _tempColor.RGBtoHSL(color);
-/*            double lum = _pallete.TempL;
-            lum /= lumDevider;
-            _tempColor.Luminance = lum;
-            System.Windows.Media.Color newColor = _tempColor.HSLtoRGB();
-
-            HexTable.InfoTextBox.Text = _tempColor.GetHexFromRGB();
-            ChosenColorShow.Background = new SolidColorBrush(newColor);
-
-            InitStartLuminanceGradientValue(color);
-            UpdateColorParams(newColor);*/
         }
-
-
-
-
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -249,19 +222,19 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
+            const int substruct = 1;
             if (_isDragging)
             {
                 _colorPoint = e.GetPosition(this);
 
-                Canvas.SetLeft(CircleBut, _colorPoint.X );
-                Canvas.SetTop(CircleBut, _colorPoint.Y );
+                Canvas.SetLeft(CircleBut, _colorPoint.X);
+                Canvas.SetTop(CircleBut, _colorPoint.Y);
 
-                if (_colorPoint.X > this.ActualWidth - 1) _colorPoint.X = this.ActualWidth- 1;
+                if (_colorPoint.X > this.ActualWidth - substruct) _colorPoint.X = this.ActualWidth - substruct;
                 else if (_colorPoint.X < 0) _colorPoint.X = 0;
 
-                if (_colorPoint.Y > this.ActualHeight - 1) _colorPoint.Y = this.ActualHeight - 1;
-                else if (_colorPoint.Y < 1) _colorPoint.Y = 1;
-
+                if (_colorPoint.Y > this.ActualHeight - substruct) _colorPoint.Y = this.ActualHeight - substruct;
+                else if (_colorPoint.Y < substruct) _colorPoint.Y = substruct;
 
                 Canvas.SetLeft(CircleBut, _colorPoint.X);
                 Canvas.SetTop(CircleBut, _colorPoint.Y);
@@ -289,31 +262,20 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
                         {
                             Color oldColor = stop.Color;
 
-
                             byte r = (byte)(oldColor.R + (Colors.White.R - oldColor.R) * bright);
                             byte g = (byte)(oldColor.G + (Colors.White.G - oldColor.G) * bright);
                             byte b = (byte)(oldColor.B + (Colors.White.B - oldColor.B) * bright);
-                            stop.Color =  Color.FromArgb(oldColor.A, r, g, b);
-
-                      /*      
-                            byte r = Clamp((int)(oldColor.R * factor));
-                            byte g = Clamp((int)(oldColor.G * factor));
-                            byte b = Clamp((int)(oldColor.B * factor));
-
-                            stop.Color = Color.FromArgb(oldColor.A, r, g, b);*/
+                            stop.Color = Color.FromArgb(oldColor.A, r, g, b);
                         }
                     }
                 }
             }
         }
 
-        // Допоміжна функція для обмеження значення в межах 0–255
         private byte Clamp(int value)
         {
-            return (byte)(value < 0 ? 0 : value > 255 ? 255 : value);
+            return (byte)(value < 0 ? 0 : value > byte.MaxValue ? byte.MaxValue : value);
         }
-
-
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {

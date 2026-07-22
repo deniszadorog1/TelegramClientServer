@@ -55,6 +55,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
         public void SetBasicParams()
         {
+            const int bothDeleteBlockHeight = 25;
+
             BothUsersMessageAction act = 
                 _actionType == BothUsersMessageAction.SchedDelete ? 
                 BothUsersMessageAction.Delete : _actionType;
@@ -69,9 +71,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             if(!_isBothDelete)
             {
                 CheckBoxRow.Height = new GridLength(0);
-                Height -= 25;
+                Height -= bothDeleteBlockHeight;
             }
-
 
             if(_actionType == BothUsersMessageAction.UnPin || 
                 _actionType == BothUsersMessageAction.SchedDelete)

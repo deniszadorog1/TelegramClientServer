@@ -43,7 +43,6 @@ namespace TelegramVisualPart.UserControls
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Toggle.IsChecked = !Toggle.IsChecked;
-            //Set toggle state Change
         }
 
         private void Toggle_Checked(object sender, RoutedEventArgs e)

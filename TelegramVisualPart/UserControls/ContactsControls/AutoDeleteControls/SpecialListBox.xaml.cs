@@ -1,4 +1,5 @@
 ﻿using System.CodeDom;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -107,26 +108,18 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
             if (CheckPanel.Children.Count == 0)
                 return;
 
-            /*            if (e.Delta < 0)
-                            _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
-                        else if (e.Delta > 0)
-                            _selectedIndex = Math.Max(2, _selectedIndex - 1);
-
-                        var selectedElement = CheckPanel.Children[_selectedIndex] as UIElement;
-                        CenterElementInScrollViewer(selectedElement);*/
-
             UpdateSelectedItem(e.Delta);
-
-            //HighlightSelectedElement(_selectedIndex); 
-            //e.Handled = true;
         }
 
         public void UpdateSelectedItem(double delta)
         {
+            const int minIndex = 2;
+            const int adder = 1;
+
             if (delta < 0)
-                _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
+                _selectedIndex = Math.Min(CheckPanel.Children.Count - adder - minIndex, _selectedIndex + adder);
             else if (delta > 0)
-                _selectedIndex = Math.Max(2, _selectedIndex - 1);
+                _selectedIndex = Math.Max(minIndex, _selectedIndex - adder);
 
             var selectedElement = CheckPanel.Children[_selectedIndex] as UIElement;
             CenterElementInScrollViewer(selectedElement);
@@ -141,32 +134,32 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
         private void CenterElementInScrollViewer(UIElement element)
         {
+            const int divider = 2;
             if (element == null) return;
 
             var transform = element.TransformToAncestor(ScrollView);
             Point position = transform.Transform(new Point(0, 0));
 
-            double elementCenter = position.Y + ((FrameworkElement)element).ActualHeight / 2;
-            double scrollViewerCenter = ScrollView.ViewportHeight / 2;
+            double elementCenter = position.Y + ((FrameworkElement)element).ActualHeight / divider;
+            double scrollViewerCenter = ScrollView.ViewportHeight / divider;
 
             double offset = ScrollView.VerticalOffset + (elementCenter - scrollViewerCenter);
 
             offset = Math.Max(0, Math.Min(offset, ScrollView.ScrollableHeight));
 
-
             SmoothScrollTo(offset);
-            //ScrollView.ScrollToVerticalOffset(offset);
         }
 
         private void SmoothScrollTo(double targetOffset)
         {
+            const int duration = 75;
             double start = ScrollView.VerticalOffset;
 
             var animation = new DoubleAnimation
             {
                 From = start,
                 To = targetOffset,
-                Duration = TimeSpan.FromMilliseconds(75),
+                Duration = TimeSpan.FromMilliseconds(duration),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
 
@@ -204,21 +197,22 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
                 TextBlock block = GetTextBlock(val.Value);
                 CheckPanel.Children.Add(block);
             }
-
-            //DaysListBox.SelectedIndex = 2;
-            //ScrollView.Scroll(DaysListBox.SelectedItem);
         }
 
         private TextBlock GetTextBlock(string text)
         {
+            const int height = 40;
+            const int fontSize = 16;
+            const int padding = 10;
+
             TextBlock res = new TextBlock()
             {
                 Text = text,
-                Height = 40,
+                Height = height,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 16,
-                Padding = new Thickness(10),
+                FontSize = fontSize,
+                Padding = new Thickness(padding),
                 Foreground = new SolidColorBrush(Colors.Gray)
             };
 
@@ -234,14 +228,13 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //move by click to another el
+            const int adder = 1;
             if (sender is TextBlock tb)
             {
                 int index = CheckPanel.Children.IndexOf(tb);
-                _selectedIndex = index + 1;
+                _selectedIndex = index + adder;
                 ValueByIndex(0);
             }
-
 
             _isDragging = true;
             _startPoint = e.GetPosition(ScrollView);
@@ -263,13 +256,9 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
                 Point currentPoint = e.GetPosition(ScrollView);
                 double delta = currentPoint.Y - _startPoint.Y;
 
-                // Скролим ScrollViewer
                 ScrollView.ScrollToVerticalOffset(ScrollView.VerticalOffset - delta);
 
                 UpdatePressMoveSelectedIndex(delta);
-                //UpdateSelectedItem(delta);
-                //UpdateSelectedItem();
-
                 _startPoint = currentPoint;
             }
         }
@@ -279,12 +268,14 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
         public void UpdatePressMoveSelectedIndex(double delta)
         {
+            const int minIndex = 2;
+            const int adder = 1;
+
             _accumulatedDelta += delta;
 
             while (_accumulatedDelta <= -_thresholdValue)
             {
-                //_selectedIndex = Math.Min(CheckPanel.Children.Count - 1, _selectedIndex + 1);
-                _selectedIndex = Math.Min(CheckPanel.Children.Count - 1 - 2, _selectedIndex + 1);
+                _selectedIndex = Math.Min(CheckPanel.Children.Count - adder - minIndex, _selectedIndex + adder);
 
                 _accumulatedDelta += _thresholdValue;
                 CenterElementInScrollViewer(CheckPanel.Children[_selectedIndex] as UIElement);
@@ -294,8 +285,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls.AutoDeleteControls
 
             while (_accumulatedDelta >= _thresholdValue)
             {
-                //_selectedIndex = Math.Max(0, _selectedIndex - 1);
-                _selectedIndex = Math.Max(2, _selectedIndex - 1);
+                _selectedIndex = Math.Max(2, _selectedIndex - adder);
 
                 _accumulatedDelta -= _thresholdValue;
                 CenterElementInScrollViewer(CheckPanel.Children[_selectedIndex] as UIElement);

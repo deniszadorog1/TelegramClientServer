@@ -28,13 +28,6 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
         public NotificationSettings()
         {
-            return;
-            Id = -1;
-            IsDesktopNotifications = false;
-            IsFlashTaskBar = false;
-            IsAllowSounds = false;
-            IsPrivateChats = false;
-            IsPinnedMessages = false;
         }
 
     }

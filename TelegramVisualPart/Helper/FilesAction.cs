@@ -1,8 +1,5 @@
-﻿using FFMpegCore;
-using FFMpegCore.Pipes;
-using MaterialDesignThemes.Wpf;
+﻿using MaterialDesignThemes.Wpf;
 using System.IO;
-using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,6 +14,33 @@ namespace TelegramVisualPart.Helper
 {
     public static class FilesAction
     {
+        private static readonly List<string> _imgsExt = new List<string>()
+        {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".bmp",
+            ".webp"
+        };
+
+        private static readonly List<string> _gifExt = new List<string>()
+        {
+            ".gif"
+        };
+
+
+        private static readonly List<string> _videoExt = new List<string>()
+        {
+            ".mp4",
+            ".avi",
+            ".mov",
+            ".webm",
+            ".mkv",
+            ".wmv"
+        };
+
+        private const string _baseImgName = "Minato";
+
         public static MediaType GetMediaTypeFromFilename(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -26,24 +50,27 @@ namespace TelegramVisualPart.Helper
 
             switch (extension)
             {
-                case ".jpg":
+                case var _ when _imgsExt.Contains(extension):
+/*                case ".jpg":
                 case ".jpeg":
                 case ".png":
                 case ".bmp":
-                case ".webp":
+                case ".webp":*/
                     {
                         return MediaType.Image;
                     }
-                case ".gif":
+                case var _ when _gifExt.Contains(extension):
+                //case ".gif":
                     {
                         return MediaType.Gif;
                     }
-                case ".mp4":
+                case var _ when _videoExt.Contains(extension):
+/*                case ".mp4":
                 case ".avi":
                 case ".mov":
                 case ".webm":
                 case ".mkv":
-                case ".wmv":
+                case ".wmv":*/
                     {
                         return MediaType.Video;
                     }
@@ -169,10 +196,10 @@ namespace TelegramVisualPart.Helper
 
         private static string GetVisualPath()
         {
-/*            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-            string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
-            string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
-            return Path.Combine(tempPath, "Visuals");*/
+            /*            DirectoryInfo baseDirectoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                        string parentPath = baseDirectoryInfo.Parent.Parent.Parent.Parent.FullName;
+                        string tempPath = Path.Combine(parentPath, "TelegramVisualPart");
+                        return Path.Combine(tempPath, "Visuals");*/
 
             return Path.Combine(AppContext.BaseDirectory, "Visuals");
         }
@@ -220,23 +247,23 @@ namespace TelegramVisualPart.Helper
         }
 
 
-        public static Image GetUserImage(string path)
+        public static async Task<Image> GetUserImage(string path)
         {
             return new Image()
             {
-                Source = new BitmapImage(new Uri(GetUserImagePath(path), UriKind.Absolute)),
+                Source = new BitmapImage(new Uri(await GetUserImagePath(path), UriKind.Absolute)),
                 Stretch = Stretch.Fill
             };
         }
 
-        public static string GetUserImagePath(string fileName)
+        public static async Task<string> GetUserImagePath(string fileName)
         {
             fileName = Path.GetFileName(fileName);
 
-            if (!fileName.Contains("Minato"))
+            if (!fileName.Contains(_baseImgName))
             {
                 //MessageBox.Show("Getting pseudo path");
-                var pseudoPath = Task.Run(async () => await ApiService.GetPathOnMediaServer(fileName)).Result;
+                var pseudoPath = await ApiService.GetPathOnMediaServer(fileName);
                 string res = pseudoPath.Contains(MediaServerUrl.Url) ? pseudoPath : MediaServerUrl.Url + pseudoPath;
 
                 //MessageBox.Show(res);               
@@ -250,12 +277,10 @@ namespace TelegramVisualPart.Helper
 
         public static string GetPathByPseudoPath(string pseudoPath)
         {
-            if (pseudoPath is null)
+            if (pseudoPath is null || pseudoPath.Contains(_baseImgName))
             {
                 return string.Empty;
             }
-            if (pseudoPath.Contains("Minato")) return string.Empty;
-
             string res = pseudoPath.Contains(MediaServerUrl.Url) ? pseudoPath : MediaServerUrl.Url + pseudoPath;
             return res;
         }
@@ -419,7 +444,7 @@ namespace TelegramVisualPart.Helper
         {
             while (child != null && !(child is T))
             {
-                child = VisualTreeHelper.GetParent(child);
+                child = VisualTreeHelper.GetParent(child); 
             }
             return child as T;
         }
@@ -488,7 +513,13 @@ namespace TelegramVisualPart.Helper
 
         public static async Task<Image> GetImagePreviewForVideo(string videoName)
         {
-            // 1. Асинхронно получаем путь
+            Size baseVideoSize = new Size(320, 240);
+            Size imgSize = new Size(225, 205);
+            const int dpi = 96;
+            const int delay = 7000;
+            const int baseDelay = 300;
+            const double timeSpan = 0.5;
+
             var pseudoPath = await ApiService.GetVideoPreviewPath(videoName);
             if (string.IsNullOrEmpty(pseudoPath)) return new Image();
 
@@ -496,115 +527,69 @@ namespace TelegramVisualPart.Helper
 
             try
             {
-                // Создаем встроенный плеер WPF. Он умеет читать потоковое видео по URL через ngrok
                 var mediaPlayer = new MediaPlayer { Volume = 0, ScrubbingEnabled = true };
 
                 var tcs = new TaskCompletionSource<bool>();
 
-                // Подписываемся на событие успешного открытия файла
                 mediaPlayer.MediaOpened += (s, e) => tcs.TrySetResult(true);
                 mediaPlayer.MediaFailed += (s, e) => tcs.TrySetResult(false);
 
                 // Открываем URL видео
                 mediaPlayer.Open(new Uri(fullUrl, UriKind.Absolute));
 
-                // Асинхронно ждем, пока ngrok прожует заголовки и видео откроется (таймаут 7 секунд)
-                var delayTask = Task.Delay(7000);
+                var delayTask = Task.Delay(delay);
                 var completedTask = await Task.WhenAny(tcs.Task, delayTask);
 
                 if (completedTask == delayTask || !await tcs.Task)
                 {
                     mediaPlayer.Close();
-                    return new Image(); // Таймаут или ошибка сети ngrok
+                    return new Image(); 
                 }
 
-                // Перематываем на 0.5 секунды, чтобы гарантированно уйти от возможного черного первого кадра
-                mediaPlayer.Position = TimeSpan.FromSeconds(0.5);
+                mediaPlayer.Position = TimeSpan.FromSeconds(timeSpan);
 
-                // Маленькая асинхронная пауза, чтобы видеокарта успела отрисовать кадр в буфер
-                await Task.Delay(300);
+                await Task.Delay(baseDelay);
 
-                // Получаем реальные размеры видео (если не определились, ставим стандарт)
-                double width = mediaPlayer.NaturalVideoWidth > 0 ? mediaPlayer.NaturalVideoWidth : 320;
-                double height = mediaPlayer.NaturalVideoHeight > 0 ? mediaPlayer.NaturalVideoHeight : 240;
+                double width = mediaPlayer.NaturalVideoWidth > 0 ? mediaPlayer.NaturalVideoWidth : baseVideoSize.Width;// 320;
+                double height = mediaPlayer.NaturalVideoHeight > 0 ? mediaPlayer.NaturalVideoHeight : baseVideoSize.Height;// 240;
 
-                // Рендерим кадр видео в визуальный элемент прямо в памяти
                 var drawingVisual = new DrawingVisual();
                 using (var drawingContext = drawingVisual.RenderOpen())
                 {
                     drawingContext.DrawVideo(mediaPlayer, new Rect(0, 0, width, height));
                 }
 
-                // Переводим картинку в честный BitmapImage (RenderTargetBitmap является наследником BitmapSource)
                 var renderTargetBitmap = new RenderTargetBitmap(
                     (int)width, (int)height,
-                    96, 96, PixelFormats.Pbgra32);
+                    dpi, dpi, PixelFormats.Pbgra32);
 
                 renderTargetBitmap.Render(drawingVisual);
 
                 if (renderTargetBitmap.CanFreeze)
-                    renderTargetBitmap.Freeze(); // Замораживаем для UI
+                    renderTargetBitmap.Freeze(); 
 
                 mediaPlayer.Close();
 
-                // Возвращаем то, что просит твой контракт — Image с Bitmap в Source
-                return new Image { Source = renderTargetBitmap, Height = 205, Width = 225 };
+                return new Image { Source = renderTargetBitmap, Height = imgSize.Height, Width = imgSize.Width };
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Ошибка генерации кадра: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Mistake in img generation: {ex.Message}");
                 return new Image();
             }
-
-
-            /*var pseudoPath = Task.Run(async () => await ApiService.GetVideoPreviewPath(videoName)).Result;
-
-            if (string.IsNullOrEmpty(pseudoPath))
-                return new Image();
-
-            string fullUrl = FilesAction.GetPathByPseudoPath(pseudoPath);
-
-            byte[] imageData;
-            using (var httpClient = new System.Net.Http.HttpClient())
-            {
-                try
-                {
-                    imageData = Task.Run(async () => await httpClient.GetByteArrayAsync(fullUrl)).Result;
-                }
-                catch
-                {
-                    return new Image();
-                }
-            }
-
-            if (imageData == null || imageData.Length == 0)
-                return new Image();
-
-            using (var ms = new MemoryStream(imageData))
-            {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = ms;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-
-                if (bitmap.CanFreeze)
-                    bitmap.Freeze();
-
-                return new Image { Source = bitmap };
-            }*/
         }
 
         public static MediaElement GetMediaElementByVideoName(string name)
         {
+            Size medisSize = new Size(300, 200);
             //string videoPath = Path.Combine(GetVideosPath(), name);
             string videoPath = GetPathByName(name);
 
             MediaElement res = new MediaElement()
             {
                 Source = new Uri(videoPath, UriKind.Absolute),
-                Width = 300,
-                Height = 200,
+                Width = medisSize.Width,
+                Height = medisSize.Height,
                 LoadedBehavior = MediaState.Manual,
                 UnloadedBehavior = MediaState.Manual
             };
@@ -679,7 +664,7 @@ namespace TelegramVisualPart.Helper
                 result.StreamSource = ms;
                 result.CacheOption = BitmapCacheOption.OnLoad;
                 result.EndInit();
-                result.Freeze(); 
+                result.Freeze();
 
                 return result;
             }

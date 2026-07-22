@@ -1,21 +1,10 @@
-﻿using Microsoft.Extensions.Primitives;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
-using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Model;
-using System.Data.OleDb;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
-using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
-using TelegramLib.MainClasses.FolderObjs;
+using TelegramLib.Exceptions;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.MainClasses.UserParams;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using Folder = TelegramLib.MainClasses.FolderObjs.Folder;
 using UserImage = TelegramLib.MainClasses.UserParams.UserImage;
@@ -167,9 +156,9 @@ namespace TelegramLib.MainClasses
                 SetChatBg(chat);
                 return chat;
             }
-            //Create new chat(if its absent)
 
-            throw new Exception("cant be chat should be set!!!");
+            //Create new chat(if its absent)
+            throw new ChatException("cant be chat should be set!!!");
         }
 
         public void SetChatBg(UserChat chat)
@@ -187,11 +176,6 @@ namespace TelegramLib.MainClasses
                 (wallpaper.WallpaperName, wallpaper.IsBlurred, true);
         }
 
-        /*        public UserContactcs GetContactByName(string name)
-                {
-                    return Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault();
-                }
-        */
         public UserContactcs GetContactByUserId(int id)
         {
             return Contacts.FirstOrDefault(x => x.ContactUserId == id);/*x.IsSendersIdsAreEqual(id)*/
@@ -335,7 +319,7 @@ namespace TelegramLib.MainClasses
         {
             UserChat chat = Chats.FirstOrDefault(x => x.Chatter.Id == chatterId);
 
-            if (chat is null || chat is SavedMessagesChat || chat.Chatter is null ) return null;
+            if (chat is null || chat is SavedMessagesChat || chat.Chatter is null) return null;
 
             return chat.Chatter.ImageMask;
         }
@@ -347,12 +331,12 @@ namespace TelegramLib.MainClasses
 
         public UserChat GetChatWithSavedById(int id)
         {
-            return SavedMesesChat.Id == id ? SavedMesesChat : GetChatById(id);             
+            return SavedMesesChat.Id == id ? SavedMesesChat : GetChatById(id);
         }
 
         public UserChat GetChatByMessageId(int mesId)
         {
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 if (Chats[i].IsMessageContains(mesId)) return Chats[i];
             }
@@ -382,14 +366,6 @@ namespace TelegramLib.MainClasses
 
             return res;
         }
-
-  /*      public List<MediaAction> GetMessagesByChatFromChat(MediaType type, int chatId)
-        {
-            UserChat chat = SavedMesesChat.Id == chatId ? SavedMesesChat : Chats.FirstOrDefault(x => x.Id == chatId);
-            if (chat is null) return null;
-
-            for(int i = 0; i < SavedMesesChat.Id; )
-        }*/
 
         public List<MediaAction> GetMessagesByTypeFromChat(TelegramLib.MainClasses.UserChat chat, MediaType type)
         {
@@ -475,7 +451,7 @@ namespace TelegramLib.MainClasses
             //Chats.Remove(chat);
             RemoveAllMessagesFromChat(chat);
             chat.ClearChat();
-                
+
 
             //Delete from folders
             for (int i = 0; i < Folders.Count; i++)
@@ -584,7 +560,7 @@ namespace TelegramLib.MainClasses
 
         public bool IsAllowedToWriteMessages(User chatter)
         {
-            if (Settings.PrivacySettings.MessagesPrivacy.WhoCanSend == 
+            if (Settings.PrivacySettings.MessagesPrivacy.WhoCanSend ==
                 Enums.Settings.PrivacyAndSecurity.ShareWith.Everybody) return true;
 
             //Only for contacts
@@ -595,7 +571,7 @@ namespace TelegramLib.MainClasses
         {
             if (id is null) return null;
 
-            TelegramLib.MainClasses.Messages.Message message = 
+            TelegramLib.MainClasses.Messages.Message message =
                 SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
 
             if (/*_isSavedMesChat*/message is not null)
@@ -638,8 +614,10 @@ namespace TelegramLib.MainClasses
 
             /*if (_isSavedMesChat)
             {*/
-                res = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
-                if (!(res is null)) return res;
+            res = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
+
+            return res;
+            if (!(res is null)) return res;
             //}
 
             return res;
@@ -685,7 +663,7 @@ namespace TelegramLib.MainClasses
         {
             if (chat is null) return;
 
-            for(int i = 0; i < chat.Messages.Count; i++)
+            for (int i = 0; i < chat.Messages.Count; i++)
             {
                 ClearForRepFeatures(chat.Messages[i]);
             }
@@ -693,7 +671,7 @@ namespace TelegramLib.MainClasses
 
         public void ClearForRepFeatures(Message mes)
         {
-            for(int i = 0; i < Chats.Count; i++)
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Chats[i].RemovePinnedMessageById(mes.Id);
                 Chats[i].RemoveRepliedMessages(mes);
@@ -750,8 +728,8 @@ namespace TelegramLib.MainClasses
 
         public void SetChatParamsAfterMessageRemoved(
             TelegramLib.MainClasses.Messages.Message mes)
-        { 
-            for(int i = 0; i < Chats.Count; i++)
+        {
+            for (int i = 0; i < Chats.Count; i++)
             {
                 Chats[i].RemoveRepliedMessages(mes);
             }
@@ -761,8 +739,8 @@ namespace TelegramLib.MainClasses
             UserChat chat = GetChatByMessage(mes);
 
             if (chat is null) return;
-/*            //Remove from replied
-            chat.RemoveRepliedMessages(mes);*/
+            /*            //Remove from replied
+                        chat.RemoveRepliedMessages(mes);*/
 
             //Remove from pinned
             chat.RemovePinnedMessage(mes);
@@ -850,8 +828,31 @@ namespace TelegramLib.MainClasses
             }
         }
 
+        private readonly List<string> durs = new List<string>()
+            {
+                "ct",
+                "1d",
+                "3d",
+                "4d",
+                "5d",
+                "6d",
+                "1w",
+                "2w",
+                "2w",
+                "1m",
+                "1m",
+                "2m",
+                "3m",
+                "4m",
+                "5m",
+                "6m",
+                "1y",
+            };
+
         public string GetAutDelDurationInString(Enums.Chat.AutoDeleteType type)
         {
+            return durs[(int)type];
+
             return type == Enums.Chat.AutoDeleteType.OneDay ? "1d" :
                 type == Enums.Chat.AutoDeleteType.TwoDays ? "2d" :
                 type == Enums.Chat.AutoDeleteType.ThreeDays ? "3d" :
@@ -913,6 +914,7 @@ namespace TelegramLib.MainClasses
 
         public void UpdateChatterImage(User toUpdateUser)
         {
+            const int startIndex = 1;
             User user = GetUserById(toUpdateUser.Id);
             UserContactcs contact = GetContactById(toUpdateUser.Id);
 
@@ -920,12 +922,12 @@ namespace TelegramLib.MainClasses
 
             //remove
             int startRemoveIndex =
-                !(user.ImageMask is null) || IsChatterBlocked(user) ? 1 : 0;
+                !(user.ImageMask is null) || IsChatterBlocked(user) ? startIndex : 0;
 
             user.UserImages.RemoveRange(startRemoveIndex, user.UserImages.Count - startRemoveIndex);
             if (!(contact is null)) contact.UserImages.RemoveRange(startRemoveIndex, contact.UserImages.Count - startRemoveIndex);
 
-            int startCount = !(toUpdateUser.ImageMask is null) ? 1 : 0;
+            int startCount = !(toUpdateUser.ImageMask is null) ? startIndex : 0;
 
             //Remove others
             for (int i = startCount; i < toUpdateUser.UserImages.Count; i++)
@@ -969,16 +971,37 @@ namespace TelegramLib.MainClasses
 
         public bool IsSendingBand(List<Message> messages)
         {
+            const int minCount = 1;
             bool isAllMedia = messages.Where(x => !(x is MediaAction)).ToList().Count == 0;
             if (!isAllMedia) return false;
 
             List<MediaAction> actions = messages.Cast<MediaAction>().ToList();
 
-            bool isBandAreTheSame = actions.Count <= 1 || actions.All(m => m.BandId == actions[0].BandId);
+            bool isBandAreTheSame = actions.Count <= minCount || actions.All(m => m.BandId == actions.First().BandId);
             if (!isBandAreTheSame) return false;
 
 
             return actions[0].BandId != -1;
+        }
+
+        private List<UserChat> _bufChats = new List<UserChat>();
+        public List<UserChat> GetChatsToPaint(int tempId, int amountToGet) 
+        {
+            List<UserChat> res = 
+                Chats.Where(x => x.Id >= tempId && !_bufChats.Contains(x)).Take(amountToGet).ToList();
+            AddBuf(res);
+
+            return res;
+        }
+
+        public void AddBuf(List<UserChat> chats)
+        {
+            _bufChats.AddRange(chats);
+        }
+
+        public void ClearBufChats()
+        {
+            _bufChats.Clear();
         }
     }
 }

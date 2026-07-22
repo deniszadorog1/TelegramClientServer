@@ -1,32 +1,17 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Mapping;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Permissions;
-using System.Security.Policy;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -47,7 +32,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public event Action PushForwarded;
 
-        public TextMessage(TelSystem system,  
+        public TextMessage(TelSystem system,
             TelegramLib.MainClasses.Messages.TextMessage text)
         {
             _isOnlyView = true;
@@ -108,7 +93,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return _message;
         }
 
-        public async void SetForwardedRow() 
+        public async void SetForwardedRow()
         {
             await SetForwardedFromRow();
         }
@@ -180,17 +165,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Message.Text = text;
             string fullText = FirstPart.Text + linkText + SecondPart.Text;
             SelectableText.Text = fullText;
-
-            /*
-                        LinkPart.Text = string.Empty;
-                        SecondPart.Text = string.Empty;*/
-            //TrimText();
         }
 
         public void TrimText()
         {
             FirstPart.Text = FirstPart.Text.Trim(' ');
-            //LinkPart.Text = LinkPart.Text.Trim(' ');
             SecondPart.Text = SecondPart.Text.Trim(' ');
         }
 
@@ -247,7 +226,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             ReplyControl.PreviewMouseDown += (sender, e) =>
             {
                 if (_toReply is null) return;
-                
+
                 //Set scrolling to message
                 var window = Window.GetWindow(this) as MainWindow;
 
@@ -281,21 +260,19 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _minMessageWidth = 125;
         private void SetWidth(string fontName)
         {
-            double blockSize = GetStringWidth(fontFamily: fontName) + 10;
+            const int blockAdder = 10;
+            double blockSize = GetStringWidth(fontFamily: fontName) + blockAdder;
 
             if (blockSize < _minMessageWidth) blockSize = _minMessageWidth;
 
             Width = blockSize + ImageColumnSize.Width.Value + Message.FontSize;
             SetTime();
-            //Height = 50;
         }
 
         private void SetTime()
         {
             DateTime time = DateTime.Now;
             SetTime(DateTime.Now);
-            //SentTime.Text = $"{VisHelper.GetCorrectTimeParamVis(time.Hour.ToString())}:" +
-            //    $"{VisHelper.GetCorrectTimeParamVis(time.Minute.ToString())}";
         }
 
         public void SetTime(DateTime time)
@@ -379,7 +356,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public async Task<bool> SetIsUserCanSeeChattersInfo(TelegramLib.MainClasses.User user)
         {
-            MainSettings setUserSettings = await SignalRHelperService.GetMainSettings(user, null);  
+            MainSettings setUserSettings = await SignalRHelperService.GetMainSettings(user, null);
 
             if (setUserSettings.PrivacySettings.ForwardMesPrivacy
                 .ShareWithExps.Any(x => x.Id == _system.LoggedUser.Id)) return true;
@@ -451,7 +428,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private const int _selectTickColWidth = 30;
         public void SetTickVisibility(bool isVis)
         {
-            if (isVis)
+            if (isVis && TickColumnDef.Width.Value == 0)
             {
                 this.Width += _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(_selectTickColWidth);
@@ -461,6 +438,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 this.Width -= _selectTickColWidth;
                 TickColumnDef.Width = new GridLength(0);
             }
+        }
+
+        public bool IsSelectVis()
+        {
+            return TickColumnDef.Width.Value != 0;
         }
 
         public void SetTickVisOnlyTickCol(bool isVis)

@@ -33,6 +33,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         public ChatSetPalette(TelegramLib.UserSettings.SettingsTypes.ChatSettings settings, TelSystem system)
         {
+            const int leftPadding = 20;
             _settings = settings;
             _system = system;
 
@@ -42,7 +43,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             Palette.SpecialConditionTriggered += MyUserControl_SpecialConditionTriggered;
             ColorPickerLine.SpecialConditionTriggered += MyUserControl_SpecialConditionTriggered;
 
-            Hex.Number.Padding = new Thickness(20, 0, 0, 0);
+            Hex.Number.Padding = new Thickness(leftPadding, 0, 0, 0);
 
             SetLanguageText.SetChatSetPalette(this);
         }
@@ -50,12 +51,14 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         private void MyUserControl_SpecialConditionTriggered(object sender, EventArgs e)
         {
             //Update blocks
+            const int maxH = 360;
+            const int maxSL = 100;
 
             Color color = Palette._tempColor.RgbValue;
 
-            HueBox.Number.Text = (Palette._tempColor.H * 360).ToString();
-            SaturationBox.Number.Text = (Palette._tempColor.S * 100).ToString();
-            LuminisityBox.Number.Text = (Palette._tempColor.L * 100).ToString();
+            HueBox.Number.Text = (Palette._tempColor.H * maxH).ToString();
+            SaturationBox.Number.Text = (Palette._tempColor.S * maxSL).ToString();
+            LuminisityBox.Number.Text = (Palette._tempColor.L * maxSL).ToString();
 
             RedBox.Number.Text = color.R.ToString();
             GreenBox.Number.Text = color.G.ToString();

@@ -1,19 +1,10 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
+using TelegramClientServer.Interfaces;
 //using System.Data.Entity.Core.Common.CommandTrees;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Policy;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.ChatFitures;
-using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramLib.Services;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,10 +15,19 @@ namespace TelegramClientServer.Controllers
     [Authorize]
     public class SocialController : ControllerBase
     {
+        private readonly IFController _clientProps;
+        public SocialController(IFController clientProps)
+        {
+            _clientProps = clientProps;
+        }
+
         //Add folder
         [HttpPut("AddFolder")]
         public void AddFolder([FromBody] FolderDTO folder)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != folder.UserId) return;
+
             DbService.AddFolder(folder.Folder, folder.UserId);
         }
         public class FolderDTO
@@ -40,13 +40,17 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdateFolder")]
         public IActionResult UpdateFolder([FromBody] FolderDTO folder)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != folder.UserId) return NotFound();
             return DbService.UpdateFolder(folder.Folder, folder.UserId) ? Ok() : NotFound();
         }
-
 
         [HttpPost("UpdateUserLogin")]
         public void UpdateUserLogin([FromBody] UpdateUserLoginDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != dto.UserId) return;
+
             DbService.UpdateUserLogin(dto.UserId, dto.NewLogin);
         }
         public record UpdateUserLoginDTO(int UserId, string NewLogin);
@@ -56,12 +60,18 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteFolder")]
         public void DeleteFolder([FromBody] FolderDTO folder)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != folder.UserId) return;
+
             DbService.RemoveFolder(folder.Folder.Id);
         }
 
         [HttpDelete("DeleteContactFromFolder")]
         public void DeleteContactFromFolder([FromBody] RemoveContactFromFolderDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != dto.UserId) return;
+
             DbService.DeleteUserFromFolder(dto.FolderId, dto.UserId);
         }
         public class RemoveContactFromFolderDTO
@@ -104,6 +114,9 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetLastFolderIdByUserId")]
         public int GetLastFolderIdByUserId(int userId)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return -1;
+
             return DbService.GetLastFolderIdByOwnerId(userId);
         }
 
@@ -116,6 +129,9 @@ namespace TelegramClientServer.Controllers
         [HttpPost("UpdateUserNameSurname")]
         public void UpdateUserNameSurname([FromBody] UpdateUserNameSurnameDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != dto.UserId) return;
+
             DbService.UpdateUserNameSurname(dto.UserId, dto.Name, dto.Surname);
         }
         public record UpdateUserNameSurnameDTO(int UserId, string Name, string Surname);
@@ -123,6 +139,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("RemoveContact")]
         public void RemoveContact([FromBody] RemoveContactDTO contact)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != contact.LoggedUser.Id) return;
+
             DbService.RemoveContact(contact.Contact, contact.LoggedUser);
         }
         public class RemoveContactDTO
@@ -164,6 +183,9 @@ namespace TelegramClientServer.Controllers
         [HttpPut("AddBlockedContact")]
         public void AddBlockedContact([FromBody] BlockedContactDTO contact)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != contact.UserId) return;
+
             DbService.AddBlockedContact(contact.UserId, contact.ContactId);
         }
         public class BlockedContactDTO
@@ -176,6 +198,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteBlockedContact")]
         public void DeleteBlockedContact([FromBody] BlockedContactDTO contact)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != contact.UserId) return;
+
             DbService.UnBlockContact(contact.UserId, contact.ContactId);
         }
 
@@ -188,6 +213,9 @@ namespace TelegramClientServer.Controllers
         [HttpGet("IsUserIsBlocked")]
         public bool IsUserIsBlocked(int userId, int contactId)
         {
+            int id = _clientProps.GetCurrentUserId();
+            if (userId != id) return false;
+
             return DbService.IsUserIsBlocked(userId, contactId);
         }
 
@@ -212,6 +240,9 @@ namespace TelegramClientServer.Controllers
         [HttpPost("SetUserOnlineStatus")]
         public void SetuserOnlineStatus([FromBody] SetOnlineStatus setStatus)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != setStatus.UserId) return;
+
             DbService.SetOnlineStatus(setStatus.UserId, setStatus.Status);
         }
         public class SetOnlineStatus()
@@ -223,6 +254,9 @@ namespace TelegramClientServer.Controllers
         [HttpPost("AddUserImage")]
         public void AddUserImage([FromBody] ToAddUserImage toAddUserImage)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != toAddUserImage.User.Id) return;
+
             DbService.AddUserImage(toAddUserImage.User, toAddUserImage.UserImageName);
         }
         public class ToAddUserImage
@@ -245,6 +279,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteUserImage")]
         public void DeleteUserImage([FromBody] DeleteUserImageDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != dto.UserId) return;
+
             DbService.RemoveUserImage(dto.UserImg, dto.UserId);
         }
         public class DeleteUserImageDTO
@@ -253,12 +290,11 @@ namespace TelegramClientServer.Controllers
             public int UserId { get; set; }
         }
 
-
         //Diploma
         [HttpGet("stream/{chatId}")]
         public async Task GetStream(int chatId)
         {
-            Response.ContentType = "application/x-ndjson"; 
+            Response.ContentType = "application/x-ndjson";
 
             var messageStream = DbService.StreamMessagesById(chatId);
 
@@ -266,7 +302,7 @@ namespace TelegramClientServer.Controllers
             {
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(message);
                 await Response.Body.WriteAsync(System.Text.Encoding.UTF8.GetBytes(json + "\n"));
-                await Response.Body.FlushAsync(); 
+                await Response.Body.FlushAsync();
             }
         }
 

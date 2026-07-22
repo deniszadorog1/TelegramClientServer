@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using TelegramClientServer.Interfaces;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
 using TelegramLib.Services;
@@ -13,10 +13,19 @@ namespace TelegramClientServer.Controllers
     [Authorize]
     public class MessageController : ControllerBase
     {
+        private readonly IFController _clientProps;
+        public MessageController(IFController clientProps)
+        {
+            _clientProps = clientProps;
+        }
+
         [HttpPut("AddShareContactMessage")]
         public void AddShareContactMessage(
             [FromBody] AddShareContactMessageDTO shareMessage)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != shareMessage.SenderId) return;
+
             DbService.AddShareMessage(shareMessage.SharedUserId,
                 shareMessage.SharedName, shareMessage.ChatId,
                 shareMessage.SenderId, shareMessage.Date);
@@ -68,6 +77,14 @@ namespace TelegramClientServer.Controllers
         [HttpPost("EditMessage")]
         public void EditMessage([FromBody] EditMessageDTO editDTO)
         {
+            int userId = _clientProps.GetCurrentUserId();
+
+            var mes = editDTO.TextMes != null
+                ? DbService.GetMessageById(editDTO.TextMes.Id)
+                : DbService.GetMessageById(editDTO.MediaMes.Id);
+
+            if (mes is null || mes.SenderUserId != userId) return;
+
             DbService.EditMessage(editDTO.ChatId, editDTO.TextMes, editDTO.MediaMes);
         }
 
@@ -81,6 +98,10 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteMessageById")]
         public void DeleteMessageById([FromBody] DeleteMessageDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            var message = DbService.GetMessageById(dto.Id);
+            if (message is null || userId != message.SenderUserId) return;
+
             DbService.RemoveMessageById(dto.Id);
         }
         public class DeleteMessageDTO
@@ -108,12 +129,16 @@ namespace TelegramClientServer.Controllers
 
         //Add ALL forwarded messages 
         [HttpPost("AddAndGetAllForwMessages")]
-        public List<TelegramLib.MainClasses.Messages.Message> AddAndGetAllForwMessages([FromBody] AddAndGetAllForwMessagesDTO dto)
+        public List<TelegramLib.MainClasses.Messages.Message> AddAndGetAllForwMessages(
+            [FromBody] AddAndGetAllForwMessagesDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (userId != dto.LoggedUserId) return null;
+
             return DbService.AddAllForwardedMessages(dto.Chat, dto.Messages, dto.LoggedUserId);
         }
 
-        public record AddAndGetAllForwMessagesDTO 
+        public record AddAndGetAllForwMessagesDTO
         {
             public UserChat Chat { get; set; }
             public List<TelegramLib.MainClasses.Messages.Message> Messages { get; set; }
@@ -137,15 +162,15 @@ namespace TelegramClientServer.Controllers
         public List<TelegramLib.MainClasses.Messages.Message> AddMessages([FromBody] MessagesDTO dto)
         {
             return DbService.AddMessages(dto.Chat, dto.Messages);
-           // return res ? Ok(true) : NotFound(false);
+            // return res ? Ok(true) : NotFound(false);
         }
         public record MessagesDTO
         {
             public UserChat Chat { get; set; }
-            public List<Message> Messages { get; set; } 
+            public List<Message> Messages { get; set; }
         }
 
-      
+
 
         [HttpPost("AddAndGetPairMediaMessages")]
         public ActionResult<List<MediaAction>> AddAndGetMediaMessages([FromBody] MediaMessagesRequestDTO request)
@@ -240,8 +265,12 @@ namespace TelegramClientServer.Controllers
         }
 
         [HttpPost("AddSavedMessage")]
-        public List<TelegramLib.MainClasses.Messages.Message> AddSavedMessage([FromBody] AddSavedMessageDTO mesDTO)
+        public List<TelegramLib.MainClasses.Messages.Message> AddSavedMessage
+            ([FromBody] AddSavedMessageDTO mesDTO)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(mesDTO.SavedChatId, userId)) return null;
+
             return DbService.AddSavedMessage(mesDTO.SavedChatId, mesDTO.Messages);
         }
         public class AddSavedMessageDTO
@@ -253,6 +282,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteSavedMessage")]
         public void DeleteSavedMessage([FromBody] DeleteSavedMessageDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(dto.SavedChatId, userId)) return;
+
             DbService.RemoveSavedMessage(dto.SavedChatId, dto.ToRemoveIds);
         }
 

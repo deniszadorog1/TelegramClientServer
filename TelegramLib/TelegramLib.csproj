@@ -34,8 +34,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>	  
-	  <Reference Include="Azure.Core, Version=1.38.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
+  <ItemGroup>
+    <Reference Include="Azure.Core, Version=1.38.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Core.1.38.0\lib\net472\Azure.Core.dll</HintPath>
     </Reference>
     <Reference Include="Azure.Identity, Version=1.11.4.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
@@ -168,12 +168,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-	<Reference Include="PresentationCore" />
-	<Reference Include="PresentationFramework" />
-	<Reference Include="System.Xaml" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Decorators\ImageCachingDecorator.cs" />
     <Compile Include="Enums\Chat\AutoDeleteDuration.cs" />
     <Compile Include="Enums\Chat\AutoDeleteType.cs" />
@@ -187,6 +186,7 @@
     <Compile Include="Enums\Settings\PrivacyAndSecurity\AwayForTime.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\ShareWith.cs" />
     <Compile Include="Enums\Settings\PrivacyAndSecurity\SubSettingType.cs" />
+    <Compile Include="Exceptions\ChatException.cs" />
     <Compile Include="Factories\Async\MessageFactory.cs" />
     <Compile Include="Factories\Interfaces\IMessageFactory.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -208,56 +208,7 @@
     <Compile Include="MainClasses\UserChat.cs" />
     <Compile Include="MainClasses\UserContactcs.cs" />
     <Compile Include="MainClasses\UserParams\UserImage.cs" />
-    <Compile Include="Models\AdvancedSettings.cs" />
-    <Compile Include="Models\AutoDeleteType.cs" />
-    <Compile Include="Models\AutoNight.cs" />
-    <Compile Include="Models\AwayForType.cs" />
-    <Compile Include="Models\BioSettings.cs" />
-    <Compile Include="Models\BlockedContacts.cs" />
-    <Compile Include="Models\Chat.cs" />
-    <Compile Include="Models\ChatBG.cs" />
-    <Compile Include="Models\ChatImage.cs" />
-    <Compile Include="Models\ChatSettings.cs" />
-    <Compile Include="Models\ChosenPrivacyContacts.cs" />
-    <Compile Include="Models\ContactImageMask.cs" />
-    <Compile Include="Models\Contacts.cs" />
-    <Compile Include="Models\ContactsInFolder.cs" />
-    <Compile Include="Models\DateOfBirthSettings.cs" />
-    <Compile Include="Models\Folder.cs" />
-    <Compile Include="Models\FolderIcons.cs" />
-    <Compile Include="Models\ForwardMessagesSettings.cs" />
-    <Compile Include="Models\GIF.cs" />
-    <Compile Include="Models\Languages.cs" />
-    <Compile Include="Models\LanguageType.cs" />
-    <Compile Include="Models\LastSeenSettings.cs" />
-    <Compile Include="Models\Messages.cs" />
-    <Compile Include="Models\MessagesSettings.cs" />
-    <Compile Include="Models\MessageVideo.cs" />
-    <Compile Include="Models\MonitorNotifs.cs" />
-    <Compile Include="Models\MonitorSidesType.cs" />
-    <Compile Include="Models\NotificationChats.cs" />
-    <Compile Include="Models\NotificatioonsAndSound.cs" />
-    <Compile Include="Models\PassCode.cs" />
-    <Compile Include="Models\PhoneNumberSettings.cs" />
-    <Compile Include="Models\PossibleChatBGs.cs" />
-    <Compile Include="Models\PrivacySetting.cs" />
-    <Compile Include="Models\PrivacySettingType.cs" />
-    <Compile Include="Models\ProfilePhotoSettings.cs" />
-    <Compile Include="Models\Settings.cs" />
-    <Compile Include="Models\ShareContactMessage.cs" />
-    <Compile Include="Models\Sounds.cs" />
-    <Compile Include="Models\StickerImage.cs" />
-    <Compile Include="Models\TelegramModel.cs" />
-    <Compile Include="Models\Theme.cs" />
-    <Compile Include="Models\ThemeColor.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserColor.cs" />
-    <Compile Include="Models\UserImage.cs" />
-    <Compile Include="Models\UserSounds.cs" />
-    <Compile Include="Models\UserTheme.cs" />
-    <Compile Include="Models\WhoCanSeeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DbService.cs" />
     <Compile Include="UserSettings\MainSettings.cs" />
     <Compile Include="UserSettings\SettingsTypes\AdvancedSettings.cs" />
     <Compile Include="UserSettings\SettingsTypes\ChatSettings.cs" />

@@ -2,11 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.IO;
-using System.Security.Cryptography.Pkcs;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -19,7 +17,6 @@ using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Enums.MediaShow;
@@ -29,7 +26,6 @@ using TelegramVisualPart.Pages.ChatActions;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Pages.ChatActions.MessageMenuPages;
 using TelegramVisualPart.Pages.ChatActions.SendMedia;
-using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
@@ -158,7 +154,6 @@ namespace TelegramVisualPart.UserControls
 
             if (textMessages.Any(x => x.RepliedMessageId is not null))
             {
-                // Используем ваш новый оптимизированный метод ApiService.GetReplyIds
                 List<int?> ids = await ApiService.GetReplyIds(messages);
                 if (ids is not null)
                 {
@@ -179,10 +174,9 @@ namespace TelegramVisualPart.UserControls
             }
 
 
-
-            bool componentsExist = Dispatcher.Invoke(() =>
+            bool componentsExist = await Dispatcher.Invoke(async () =>
             {
-                SetNewUserChatMessageControl(chat);
+                await SetNewUserChatMessageControl(chat);
                 return IsOnlyChatWindowWithChatIsExist(chat);
             });
 
@@ -262,14 +256,6 @@ namespace TelegramVisualPart.UserControls
             });
         }
 
-        //Tactic for differ window chats
-
-        //Problem
-        //Boss window and only chat window gets message
-        //and both adding it to db etc
-
-        //Result
-        //if only chat window is exist(with chatter => return this)
 
         public bool IsOnlyChatWindowWithChatIsExist(TelegramLib.MainClasses.UserChat chat)
         {
@@ -288,12 +274,11 @@ namespace TelegramVisualPart.UserControls
         public async void SetTypingAction(
             TelegramLib.MainClasses.User toSetTyping)
         {
+            const string typingVal = "typing...";
             if (_chat is null || _chat.GetChatter() is null ||
                 _chat.GetChatter().Id != toSetTyping.Id) return;
 
-            const string typeStr = "typing...";
-
-            //Set typing stuff
+            const string typeStr = typingVal;
 
             _typingCts?.Cancel();
             _typingCts = new CancellationTokenSource();
@@ -306,8 +291,6 @@ namespace TelegramVisualPart.UserControls
 
             try
             {
-                //await Task.Delay(1000, token);
-
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     if (ChatFriendLastSeen.Text != typeStr) return;
@@ -396,22 +379,21 @@ namespace TelegramVisualPart.UserControls
 
             await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                //Adding In Db + logic + i vis
                 await AddStatMessage(mes, false, chat);
             });
 
         }
 
-        public void PinMessage(TelegramLib.MainClasses.User chatter,
+        public async Task PinMessage(TelegramLib.MainClasses.User chatter,
             TelegramLib.MainClasses.Messages.Message mes)
         {
             //Try to get pair of the message
-            TelegramLib.MainClasses.Messages.Message pair =
-                ApiService.GetPairOfMessage(mes).Result;
+            TelegramLib.MainClasses.Messages.Message? pair =
+                await ApiService.GetPairOfMessage(mes);
             if (pair is null) return;
 
             //Get listBoxItem
-            Dispatcher.Invoke(() =>
+            await Dispatcher.InvokeAsync(async () =>
             {
                 //Check from chat
                 TelegramLib.MainClasses.UserChat chat =
@@ -429,10 +411,10 @@ namespace TelegramVisualPart.UserControls
                 pair = _system.GetMessageById(pair.Id);
 
                 //bool isBlocked = _system.IsChatterBlocked(chatter);
-                SetPinAction(pair, item, false,
+                await SetPinAction(pair, item, false,
                     isChatterBlocked: false);
 
-                if (IsOnlyPinnedChatIsOn()) SetChatMessages(true);
+                if (IsOnlyPinnedChatIsOn()) await SetChatMessages(true);
 
                 ToUpdateUserControlMessage();
             });
@@ -481,7 +463,7 @@ namespace TelegramVisualPart.UserControls
 
 
                 _chat = tempChat;
-                _mainWindow.UpdateChatControls();
+                await _mainWindow.UpdateChatControls();
 
                 UpdateGlobalMedias();
                 UpdateItemsContact(_chat);
@@ -530,7 +512,7 @@ namespace TelegramVisualPart.UserControls
                 //Update UserTalkMessage(Chat) - if last message was removed
 
                 _chat = tempChat;
-                _mainWindow.UpdateChatControls();
+                await _mainWindow.UpdateChatControls();
 
                 UpdateGlobalMedias();
 
@@ -664,8 +646,7 @@ namespace TelegramVisualPart.UserControls
 
                 for (int i = 0; i < ChatBox.Items.Count; i++)
                 {
-                    if (/*chat.Messages[i].SenderUserId != user.Id ||
-                   */ ChatBox.Items[i] is not ListBoxItem item) continue;
+                    if (ChatBox.Items[i] is not ListBoxItem item) continue;
                     if (item.Tag is null) continue;
 
                     int.TryParse(item.Tag.ToString(), out int mesId);
@@ -675,15 +656,12 @@ namespace TelegramVisualPart.UserControls
                     {
                         continue;
                     }
-
                     if (item.Content is ChatControls.TextMessage textMes)
                     {
                         SignalRHelperService.FastSetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);
-                        //await SignalRHelperService.SetContactPhoto(user, _chat, textMes.BgBrush, textMes.UserEllipseImage);    
                     }
                     else if (item.Content is MediaMessage mediaMes)
                     {
-                        //SetSenderImageByListBoxItem(item, _system.LoggedUser.Id == user.SenderUserId);
                         SignalRHelperService.FastSetContactPhoto(user, _chat, mediaMes.BgBrush, mediaMes.UserEllipseImage);
                     }
                     else if (item.Content is ShareContactControl share)
@@ -702,99 +680,10 @@ namespace TelegramVisualPart.UserControls
                 IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(toUpdate, Enums.PrivacySettingType.LastSeen);
                 await SignalRHelperService.SetLastSeenString(toUpdate, shareType, _chat, ChatFriendLastSeen);
 
-                /* if (_chat is null || _chat.GetChatter().ContactUserId != toUpdate.Id) return;
-                 HelperService.SetOnlineStatusInTextBox(ChatFriendLastSeen, toUpdate.IsOnline, toUpdate.LastSeenOnline);
-             */
             });
         }
 
         private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-
-      /*  public async Task OnMediaMessageReceived(TelegramLib.MainClasses.User sender,
-            List<TelegramLib.MainClasses.Messages.MediaAction> messages)
-        {
-            List<Message> selected = null;
-
-            Dispatcher.Invoke(() =>
-            {
-                RemoveRightContactInfo();
-                selected = GetSelectedMessages();
-            });
-
-            bool isBandUpdate = false;
-            TelegramLib.MainClasses.UserChat? chat = null;
-            chat = await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
-
-            //make all messages in db in one thing
-            //(Adding and getting pair)
-            messages = await ApiService.AddAndGetPairMediaMessages(messages, chat);
-
-            for (int i = 0; i < messages.Count; i++)
-            {
-                MediaAction? message = messages[i];
-                //Get chat where Logged is Sender 
-
-                //is Chatter is blocked
-                if (chat is null || chat.Chatter is null ||
-                    !_system.IsAllowedToWriteMessages(chat.Chatter) ||
-                    _system.IsUserBlockedForMesSend(chat.Chatter))
-                {
-                    return;
-                }
-                //_system.GetChatByChatterId(sender.Id);
-
-                Dispatcher.Invoke(() => SetNewUserChatMessageControl(chat));
-                //SetNewUserChatMessageControl(chat);
-
-                if (IsOnlyChatWindowWithChatIsExist(chat)) return;
-
-
-                Dispatcher.Invoke(() =>
-                {
-                    if (_chat is null || chat.Id != _chat.Id)
-                    {
-                        AddMediaMessageInUnChosenChat(chat, message);
-                        ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
-                    }
-                    else
-                    {
-                        isBandUpdate = true;
-                        AddMediaMessageInChosenChat(message, sender);
-                    }
-                    ToUpdateUserControlMessage();
-                });
-            }
-
-            bool isScheduleVisible = Dispatcher.Invoke(() => SchedueleMessagesGrid.Visibility == Visibility.Visible);
-            if (isScheduleVisible) return;
-
-            if (isBandUpdate && chat is not null && _chat is not null && chat.Id == _chat.Id)
-            {
-                await _semaphore.WaitAsync();
-                try
-                {
-                    await SetChatMessages();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine();
-                }
-                finally
-                {
-                    _semaphore.Release();
-                }
-            }
-
-            Dispatcher.Invoke(() =>
-            {
-                HideSelectionRowFromSignalR(selected);
-                ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
-                UpdateGlobalMedias();
-
-                UpdateItemsContact(chat);
-            });
-        }*/
-
         public async Task<MediaAction?> GetPairOfMedia(MediaAction message)
         {
             //Get pair of this from db
@@ -805,12 +694,6 @@ namespace TelegramVisualPart.UserControls
 
         private void AddMediaMessageInChosenChat(MediaAction message, TelegramLib.MainClasses.User sender)
         {
-            //Add media in vis
-            if (!IsOnlyPinnedChatIsOn())
-            {
-                /*  SetMediaMessageInChat(message,
-                     await SignalRHelperService.GetUserPhotoToSet(sender) *//*sender.GetFirstImageNameInString()*//*);*/
-            }
             //Add in system
             _chat.Messages.Add(message);
 
@@ -826,55 +709,8 @@ namespace TelegramVisualPart.UserControls
             //Add in system 
             chat.Messages.Add(message);
 
-            //Add in db
-            //await ApiService.AddMessage(message, chat);
-
             ToUpdateUserControlMessage();
         }
-
-        //private void OnTextMessageReceived(TelegramLib.MainClasses.Messages.TextMessage message, TelegramLib.MainClasses.User sender)
-        //{
-        //    Dispatcher.Invoke(async Task () =>
-        //    {
-        //        if (message.RepliedMessageId is not null)
-        //        {
-        //            TelegramLib.MainClasses.Messages.Message toGetPair = await ApiService.GetTextMessageById((int)message.RepliedMessageId);
-        //            if (toGetPair is not null)
-        //            {
-        //                TelegramLib.MainClasses.Messages.Message? replied = await ApiService.GetPairOfMessage(toGetPair);
-        //                if (replied is not null) message.RepliedMessageId = replied.Id;
-        //            }
-        //        }
-
-        //        TelegramLib.MainClasses.UserChat? chat =
-        //            await GetChatByUserSendersIds(_system.LoggedUser.Id, sender.Id);
-
-        //        //is Chatter is blocked
-        //        if (chat is null || chat.Chatter is null ||
-        //            !_system.IsAllowedToWriteMessages(chat.Chatter) ||
-        //            _system.IsUserBlockedForMesSend(chat.Chatter)) return;
-
-        //        //Set user talk if not contains un chats
-        //        SetNewUserChatMessageControl(chat);
-        //        if (IsOnlyChatWindowWithChatIsExist(chat)) return;
-
-        //        if (_chat is null ||
-        //            chat.Id != _chat.Id)
-        //        {
-        //            await AddTextMessageInUnChosenChat(chat, message);
-        //            ((MainWindow)Window.GetWindow(this)).UpdateReadCountOfReadMessages(chat.Id);
-        //        }
-        //        else await AddTextMessageInChosenChat(message, sender, chat);
-
-        //        //SetOnlyChat(chat);
-
-        //        //Is temp chat is chosen
-        //        ToUpdateUserControlMessage();
-
-        //        HideSelectionRowFromSignalR(GetSelectedMessages());
-        //    });
-        //}
-
         public void HideSelectionRowFromSignalR(List<Message> selected)
         {
             //Is selection row is visible
@@ -901,8 +737,6 @@ namespace TelegramVisualPart.UserControls
 
             //Set amount of selected messages
             UpdateTickedAmount(counter);
-
-            //UpdateSelectedAmount();
         }
 
         public void SetTickVisForChat(bool isVis, List<Message> selected)
@@ -975,13 +809,13 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public void SetNewUserChatMessageControl(TelegramLib.MainClasses.UserChat chat)
+        public async Task SetNewUserChatMessageControl(TelegramLib.MainClasses.UserChat chat)
         {
             if (_system.IsChatContainsInChats(chat.Id)) return;
 
             //Add chat + Update User talk controls(Chats)
             _system.AddChat(chat);
-            ((MainWindow)Window.GetWindow(this)).UpdateChatControls();
+            await ((MainWindow)Window.GetWindow(this)).UpdateChatControls();
         }
 
         private async Task AddTextMessageInChosenChat(
@@ -994,7 +828,7 @@ namespace TelegramVisualPart.UserControls
 
             ChatControls.TextMessage text = new ChatControls.TextMessage(_system,
                 GetConvertedStringMessage(message.Text),
-                /*sender.GetFirstImageNameInString()*/ await SignalRHelperService.GetUserPhotoToSet(sender),
+                await SignalRHelperService.GetUserPhotoToSet(sender),
                 _system.Settings.GetChatSettings().FontName,
                 message.IsEdited,
                 message,
@@ -1008,9 +842,6 @@ namespace TelegramVisualPart.UserControls
                 text.ReplyControl.ReplyedMessage.Text = textMes.Text;
             }
 
-            //message = (TelegramLib.MainClasses.Messages.TextMessage)await ApiService.AddMessage(message, chat);
-
-
             chat.Messages.Add(message);
 
             if (SchedueleMessagesGrid.Visibility == Visibility.Visible) return;
@@ -1023,10 +854,6 @@ namespace TelegramVisualPart.UserControls
 
         public void ScrollToNewMessage()
         {
-            //Console.WriteLine();
-
-            //Dispatcher.BeginInvoke(new Action(() =>
-            //{
             ChatBox.UpdateLayout();
 
             ScrollViewer sv = HelperService.GetScrollViewer(ChatBox);
@@ -1039,7 +866,7 @@ namespace TelegramVisualPart.UserControls
 
             double percent = maxOffset <= 0
                 ? maxPercent
-                : (sv.VerticalOffset / maxOffset) * 100;
+                : (sv.VerticalOffset / maxOffset) * maxPercent;
 
             if (ChatBox.Items.Count == 0) return;
 
@@ -1048,7 +875,6 @@ namespace TelegramVisualPart.UserControls
 
             sv?.ScrollToBottom();
 
-            //}), DispatcherPriority.Loaded);
         }
 
         public void ToUpdateUserControlMessage()
@@ -1062,8 +888,6 @@ namespace TelegramVisualPart.UserControls
         public void AddTextControl(ChatControls.TextMessage text,
             TelegramLib.MainClasses.Messages.Message mes)
         {
-            //if (IsOnlyPinnedChatIsOn()) return;
-
             ListBoxItem item = new ListBoxItem()
             {
                 Content = text,
@@ -1073,8 +897,6 @@ namespace TelegramVisualPart.UserControls
             SetChatItemEvents(item);
             SetPaddingToMessageItem(item, mes);
 
-            //SetMessagePositionSettings(item);
-
             ChatBox.Items.Add(item);
             SetMessagesPosition(_isGluedToLeft);
         }
@@ -1082,7 +904,7 @@ namespace TelegramVisualPart.UserControls
         private async Task AddTextMessageInUnChosenChat(TelegramLib.MainClasses.UserChat chat,
             TelegramLib.MainClasses.Messages.TextMessage message)
         {
-            chat.Messages.Add( message /*await ApiService.AddMessage(message, chat)*/);
+            chat.Messages.Add(message);
             ToUpdateUserControlMessage();
         }
 
@@ -1095,7 +917,6 @@ namespace TelegramVisualPart.UserControls
             if (_isHiddenSender) _isHiddenSender = false;
 
             if (chat is null) return;
-            SetAddMediaButVisibility();
             SendMesMenu.SetUserChatControl(this, _system);
 
             HideSelectionRow();
@@ -1116,7 +937,7 @@ namespace TelegramVisualPart.UserControls
             SetNewAutoDelIconVisibility();
             SetScheduleMessageIconVisibility();
 
-            SetPinnedMessages();
+            await SetPinnedMessages();
 
             SetUnblockGridVis();
 
@@ -1162,7 +983,6 @@ namespace TelegramVisualPart.UserControls
                 SetSavedMessagesChatView();
                 return;
             }
-
             HideSavedChatVisibility();
         }
 
@@ -1201,6 +1021,8 @@ namespace TelegramVisualPart.UserControls
             Application.Current.Dispatcher.Invoke(() =>
             {
                 const int _autoSchedGridWidth = 40;
+                const int margin = 10;
+
                 if (_chat.ScheduleMessages is null) return;
 
                 ScheduleMessageGrid.Visibility =
@@ -1214,10 +1036,8 @@ namespace TelegramVisualPart.UserControls
 
                 int newLeftMargin =
                 ScheduleMessageGrid.Visibility == Visibility.Visible ?
-                10 : 0;
+                margin : 0;
                 ScheduleMessageGrid.Margin = new Thickness(0, 0, newLeftMargin, 0);
-
-                SetAddMediaButVisibility();
             });
         }
 
@@ -1226,21 +1046,21 @@ namespace TelegramVisualPart.UserControls
             _system = system;
         }
 
-        public void SetPinnedMessages()
+        public async Task SetPinnedMessages()
         {
+            const int height = 50;
             if (_chat is null) return;
             if (_chat.PinnedMessages.Count == 0)
             {
                 PinRow.Height = new GridLength(0);
                 return;
             }
-            PinRow.Height = new GridLength(50);
-
+            PinRow.Height = new GridLength(height);
 
             //Get messages to Set
             for (int i = 0; i < _chat.PinnedMessages.Count; i++)
             {
-                SetPinnedMessageInPanel(_chat.PinnedMessages[i]);
+                await SetPinnedMessageInPanel(_chat.PinnedMessages[i]);
                 //Set them
             }
         }
@@ -1264,7 +1084,6 @@ namespace TelegramVisualPart.UserControls
             _chat.UpdateScheduleMessages(_system.LoggedUser);
 
             SchedueleMessagesGrid.Visibility = Visibility.Visible;
-            SetAddMediaButVisibility();
             SetChatMessages(isOnlySchedule: true);
         }
 
@@ -1303,10 +1122,6 @@ namespace TelegramVisualPart.UserControls
             string imgName = _chat.Chatter.GetFirstImageNameInString();
 
             UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
-
-            /*            UserImage.ImageSource = new BitmapImage(
-                            new Uri(FilesAction.GetUserImagePath(
-                                _chat.Chatter.GetFirstImageNameInString()), UriKind.Absolute));*/
         }
 
         public async Task SetOnlineStatus()
@@ -1321,6 +1136,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetUserBg()
         {
+            const int radius = 15;
             ChatBackground bg = _chat.GetBackground();
             if (bg is null) return;
 
@@ -1336,7 +1152,7 @@ namespace TelegramVisualPart.UserControls
             {
                 CustomBg.Effect = new BlurEffect()
                 {
-                    Radius = 15
+                    Radius = radius
                 };
             }
             else CustomBg.Effect = null;
@@ -1371,7 +1187,8 @@ namespace TelegramVisualPart.UserControls
 
             await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
-                await SetMessagesInChat();
+                ChatBox.Items.Clear();
+                await SetMessagesInChat(_chatMessages.Count == 0 ? 0 : _chatMessages.Last().Id);
             });
         }
 
@@ -1430,83 +1247,116 @@ namespace TelegramVisualPart.UserControls
 
         private MainSettings _chatterSettings;
         private TelegramLib.MainClasses.User _chatter;
-        public async Task SetMessagesInChat()
+        private const int _stepAmountOfMessage = 10;
+        public async Task SetMessagesInChat(int startId)
         {
-            /*await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {*/
-            ChatBox.Items.Clear();
+            if (startId == 0) ChatBox.Items.Clear();
             CommentTextBox.Text = string.Empty;
             _isEdit = false;
 
             List<int> bandBankIds = new List<int>();
 
-            /*                //Update chatter CachedUser + his MainSettings 
-                            if (_chat is not null && _chat.Chatter is not null)
-                            {
+            var existingIds = ChatBox.Items.Cast<ListBoxItem>()
+                 .Select(x => x.Tag?.ToString())
+                 .ToHashSet();
 
-                                await ApiService.UpdateChachedUserAndSettings(_chat.Chatter.Id);
+            List<Message> messages = startId == 0
+                ? _chatMessages
+                    .OrderByDescending(x => x.Id)
+                    .Where(x => !existingIds.Contains(x.Id.ToString()))
+                    .Take(_stepAmountOfMessage)
+                    .OrderBy(x => x.Id)
+                    .ToList()
+                : _chatMessages
+                    .Where(x => x.Id <= startId && !existingIds.Contains(x.Id.ToString()))
+                    .OrderByDescending(x => x.Id)
+                    .Take(_stepAmountOfMessage)
+                    .OrderBy(x => x.Id)
+                    .ToList();
 
-                            }*/
 
-            for (int i = 0; i < _chatMessages.Count; i++)
+            int insertIndex = 0;
+
+            bool isChooseVis = false;
+
+            if (startId != 0) isChooseVis = GetLastMesChooseState();
+
+            foreach (var message in messages)
             {
-                if (_chatMessages[i] is MediaAction mediaAct &&
+                if (message is MediaAction mediaAct &&
                     mediaAct.BandId != -1 && !bandBankIds.Contains(mediaAct.BandId))
                 {
                     List<MediaAction> mediaBand = _chatMessages.OfType<MediaAction>().Where(x => x.BandId == mediaAct.BandId).ToList();
                     await SetBandMessage(mediaBand);
 
-                    foreach (MediaAction media in mediaBand) SetPinnedInSettingChatMessages(media);
+                    foreach (MediaAction media in mediaBand) await SetPinnedInSettingChatMessages(media);
 
                     bandBankIds.Add(mediaAct.BandId);
                     continue;
                 }
-                else if (_chatMessages[i] is MediaAction media && bandBankIds.Contains(media.BandId) &&
+                else if (message is MediaAction media && bandBankIds.Contains(media.BandId) &&
                 media.BandId != -1)
                 {
                     continue;
                 }
 
-                if (_chat is null || _chatMessages.Count <= i || _chatMessages[i] is null)
+                if (_chat is null || message is null)
                 {
                     return;
                 }
-                string imgName = _chatMessages[i].SenderUserId == _system.LoggedUser.Id || _isSavedMessageChat ?
+                string imgName = message.SenderUserId == _system.LoggedUser.Id || _isSavedMessageChat ?
                         _system.LoggedUser.GetFirstImageName().Name :
                         _chat.GetChatter().GetFirstImageName().Name;
 
-                if (_chatMessages[i] is TelegramLib.MainClasses.Messages.TextMessage text)
+                if (message is TelegramLib.MainClasses.Messages.TextMessage text)
                 {
-                    SetTextMessageInChat(text, imgName);
+                    SetTextMessageInChat(text, imgName, startId == 0 ? -1 : insertIndex++, isChooseVis);
+
+                    //SetTextMessageInChat(text, imgName);
                     //text
                 }
-                else if (_chatMessages[i] is MediaAction media)
+                else if (message is MediaAction media)
                 {
                     //Video or photo
-                    await SetMediaMessageInChat(media, imgName);
+                    await SetMediaMessageInChat(media, imgName, startId == 0 ? -1 : insertIndex++);
                 }
-                else if (_chatMessages[i] is
+                else if (message is
                     TelegramLib.MainClasses.Messages.ShareContactMessage share)
                 {
-                    ShareContact(share.SharedUser, share.SharedName, _chatMessages[i]);
+                    await ShareContact(share.SharedUser, share.SharedName, message, insertIndex++);
                 }
-                else if (_chatMessages[i] is
+                else if (message is
                     TelegramLib.MainClasses.Messages.StaticMessage statMes)
                 {
-                    await SetStaticMessageInVis(statMes);
+                    await SetStaticMessageInVis(statMes, insertIndex++);
                 }
 
-                SetPinnedInSettingChatMessages(_chatMessages[i]);
+                await SetPinnedInSettingChatMessages(message);
             }
 
             if (GetAmountOfPinnMesses() == 0)
                 PinRow.Height = new GridLength(0);
 
             _mainWindow.UpdateUserChatTalkControl();
-            /* });*/
+
+            /*            if (ChatBox.Items.Count > 0)
+                        {
+                            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+                        }*/
         }
 
-        public void SetPinnedInSettingChatMessages(TelegramLib.MainClasses.Messages.Message mes)
+        public bool GetLastMesChooseState()
+        {
+            if (ChatBox.Items.Count == 0) return false;
+
+            ListBoxItem item = ChatBox.Items.Cast<ListBoxItem>().Last();
+            if (item is null) return false;
+
+            return item.Content is null ? false :
+                item.Content is TelegramVisualPart.UserControls.ChatControls.TextMessage text ? text.IsSelectVis() : false;
+        }
+
+        public async Task SetPinnedInSettingChatMessages(TelegramLib.MainClasses.Messages.Message mes)
         {
             if (mes.IsPinned)
             {
@@ -1514,12 +1364,12 @@ namespace TelegramVisualPart.UserControls
                 if (item is null ||
                     item.Content is not UserControl control) return;
 
-                SetPinMessage(mes, control);
+                await SetPinMessage(mes, control);
             }
         }
 
         public async Task SetStaticMessageInVis(
-            TelegramLib.MainClasses.Messages.StaticMessage statMes)
+            TelegramLib.MainClasses.Messages.StaticMessage statMes, int insertIndex = -1)
         {
             //Get MessageById
             TelegramLib.MainClasses.Messages.Message? refMes =
@@ -1530,7 +1380,6 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.User sender = _isSavedMessageChat ? _system.LoggedUser :
                                 cached is not null ? cached :
                                 await ApiService.GetUserById(statMes.SenderUserId);
-            /*await ApiService.GetUserById(statMes.SenderUserId);*/
 
             if (sender is null) return;
 
@@ -1561,7 +1410,14 @@ namespace TelegramVisualPart.UserControls
             if (statMes.Date is null) item.PreviewMouseRightButtonDown += SetStateMessageMenu;
             if (statMes.Date is not null) item.PreviewMouseLeftButtonDown += SetCalendarPage;
 
-            ChatBox.Items.Add(item);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
 
             ScrollToNewMessage();
         }
@@ -1595,7 +1451,7 @@ namespace TelegramVisualPart.UserControls
             return count;
         }
 
-        public async ValueTask SetMediaMessageInChat(MediaAction message, string senderImgName)
+        public async ValueTask SetMediaMessageInChat(MediaAction message, string senderImgName, int insertIndex = -1)
         {
             //Got type (To know what folder to search in)
             MediaType type = message.IsSticker ? MediaType.Sticker :
@@ -1610,22 +1466,22 @@ namespace TelegramVisualPart.UserControls
             {
                 case MediaType.Image:
                     {
-                        await AddImageMessage(path, false, senderImgName, message);
+                        await AddImageMessage(path, false, senderImgName, message, insertIndex);
                         return;
                     }
                 case MediaType.Gif:
                     {
-                        SendGif(path, senderImgName, isAdd: false, message);
+                        SendGif(path, senderImgName, isAdd: false, message, insertIndex);
                         return;
                     }
                 case MediaType.Video:
                     {
-                        AddMediaElement(path, senderImgName, message);
+                        AddMediaElement(path, senderImgName, message, insertIndex);
                         return;
                     }
                 case MediaType.Sticker:
                     {
-                        await AddImageMessage(path, true, senderImgName, message);
+                        await AddImageMessage(path, true, senderImgName, message, insertIndex);
                         return;
                     }
                 default:
@@ -1646,7 +1502,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetTextMessageInChat(
             TelegramLib.MainClasses.Messages.TextMessage message,
-            string senderImageName)
+            string senderImageName, int insertIndex = -1, bool isChooseVis = false)
         {
             TelegramLib.MainClasses.Messages.Message? reply =
                 message.RepliedMessageId is null ? null :
@@ -1667,17 +1523,26 @@ namespace TelegramVisualPart.UserControls
 
             newMes.SetTime(message.SentTime);
 
+            newMes.SetTickVisibility(isChooseVis);//.SetTickVisOnlyTickCol(false);
+            newMes.SelectionTickObj.SetChosenParam(false);
+
             ListBoxItem item = new ListBoxItem()
             {
                 Content = newMes,
                 Tag = message.Id.ToString(),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                //Padding = new Thickness(0, 1, 0, 1)
             };
             SetChatItemEvents(item);
             SetPaddingToMessageItem(item, message);
 
-            ChatBox.Items.Add(item);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
 
             SetTickStatusIfCorrectMes(item, message);
 
@@ -1687,10 +1552,8 @@ namespace TelegramVisualPart.UserControls
                 newMes.SetPushForwardedVis();
             }
 
-            ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
+            if (insertIndex < 0) ChatBox.ScrollIntoView(ChatBox.Items[ChatBox.Items.Count - 1]);
             SetMessagesPosition(_isGluedToLeft);
-
-            //SetSenderImageByListBoxItem(item, _system.GetUserById(message.SenderUserId), _system.LoggedUser.Id == message.SenderUserId);
         }
 
         private void SetPaddingToMessageItem(ListBoxItem item,
@@ -1699,7 +1562,6 @@ namespace TelegramVisualPart.UserControls
             if (_tempSendTime is null)
             {
                 _tempSendTime = mes.SentTime;
-                //return;
             }
 
             SetChatItemPadding(item, mes);
@@ -1712,16 +1574,20 @@ namespace TelegramVisualPart.UserControls
         {
             const int maxSecDiffer = 5;
             const int closeDiffer = 1;
+            const int leftPad = 7;
+            const int rightPad = 10;
+
+            Thickness padding = new Thickness(7, 15, 10, 0);
 
             if (_tempSendTime is null) return;
 
             double secDiffer = (mes.SentTime - _tempSendTime.Value).TotalSeconds;
 
-            item.Padding = new Thickness(7, 15, 10, 0);
+            item.Padding = padding;
 
             if (secDiffer >= 0 && secDiffer < maxSecDiffer)
             {
-                item.Padding = new Thickness(7, closeDiffer, 10, closeDiffer);
+                item.Padding = new Thickness(leftPad, closeDiffer, rightPad, closeDiffer);
             }
         }
 
@@ -1840,9 +1706,6 @@ namespace TelegramVisualPart.UserControls
                 _isSelected = !share.SelectionTickObj._isChosen;
                 share.ChangeTickStatus();
             }
-
-            //ShowSelectionBar();
-            //SetSelectionTick(false, item);
         }
 
         public void MessageItem_MouseEnter(object sender, MouseEventArgs e)
@@ -2029,10 +1892,11 @@ namespace TelegramVisualPart.UserControls
 
         public void SetMarginForChatMenu()
         {
+            const int rightPad = 20;
             UserChatMenu.Margin = new Thickness(
                 0,
                 UpperRow.Height.Value,
-                20,
+                rightPad,
                 0
             );
         }
@@ -2058,7 +1922,6 @@ namespace TelegramVisualPart.UserControls
 
             _repliedMessage = null;
             _toForwardMessages = null;
-
         }
 
         bool _isSending = false;
@@ -2106,7 +1969,6 @@ namespace TelegramVisualPart.UserControls
                 try
                 {
                     _isSending = true;
-                    //HideSelectionRow();
 
                     await SendMessage();
 
@@ -2178,7 +2040,6 @@ namespace TelegramVisualPart.UserControls
             CommentTextBox.Clear();
         }
 
-
         public async Task<bool> IsEditedMessage()
         {
             if (_isEdit)
@@ -2188,6 +2049,7 @@ namespace TelegramVisualPart.UserControls
             }
             return false;
         }
+
         public void SetSchedulePage()
         {
             //form message
@@ -2210,20 +2072,21 @@ namespace TelegramVisualPart.UserControls
         private const int _baseCommentBoxHeight = 50;
         public void SetCommentBoxHeight()
         {
+            const int adder = 1;
             //Get amount of new lines
             int count = CommentTextBox.Text
             .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
-            .Length - 1;
+            .Length - adder;
 
             int maxSteps = _maxCommentBoxHeight / _baseCommentBoxHeight;
 
             //Set height of the comment height
             int newSize = count == 0 ? _baseCommentBoxHeight :
-                (count > maxSteps + 1) ? _maxCommentBoxHeight :
+                (count > maxSteps + adder) ? _maxCommentBoxHeight :
 
-                ((count + 1) * _baseCommentBoxHeight) > _maxCommentBoxHeight ?
+                ((count + adder) * _baseCommentBoxHeight) > _maxCommentBoxHeight ?
                 _maxCommentBoxHeight :
-                (count + 1) * _baseCommentBoxHeight;
+                (count + adder) * _baseCommentBoxHeight;
 
             CommentRow.Height = new GridLength(newSize);
         }
@@ -2250,7 +2113,6 @@ namespace TelegramVisualPart.UserControls
 
             //Visual
             await SetChatMessages();
-            //await SetMessagesInChat();
         }
 
         public void SetIsMouseDownValue(bool val)
@@ -2313,7 +2175,6 @@ namespace TelegramVisualPart.UserControls
 
             //Visual
             await SetChatMessages();
-            //await SetMessagesInChat();
         }
 
         public void SetEditedParams(TelegramLib.MainClasses.Messages.Message toEdit)
@@ -2341,7 +2202,6 @@ namespace TelegramVisualPart.UserControls
 
                 ClearResenderInForwardedMessages();
 
-                ClearForwardElements();
                 await AddForwardedMessagesInDB(chat);
                 chat.Messages.AddRange(_toForwardMessages);
 
@@ -2352,15 +2212,6 @@ namespace TelegramVisualPart.UserControls
                 return true;
             }
             return false;
-        }
-
-        public void ClearForwardElements()
-        {
-            return;
-            const int maxLeft = 5;
-
-            if (_toForwardMessages.Count <= maxLeft) return;
-            _toForwardMessages.RemoveRange(maxLeft, _toForwardMessages.Count - maxLeft);
         }
 
         public void ClearResenderInForwardedMessages()
@@ -2395,80 +2246,15 @@ namespace TelegramVisualPart.UserControls
 
             HashSet<int> bandIds = new HashSet<int>();
 
-
-            //What if first add in db - then add via signalR
-
             List<Message> messages = await ApiService.AddAllForwardedMessages(_toForwardMessages, chat, _system.LoggedUser.Id);
             for (int i = 0; i < messages.Count; i++) _toForwardMessages[i].Id = messages[i].Id;
 
-
             await AddForwardedMessageInDB(_toForwardMessages, chat, isChatterOnline, isBlocked);
-
-
-            /* for (int i = 0; i < _toForwardMessages.Count; i++)
-             {
-                 if (_toForwardMessages[i] is MediaAction media &&
-                     media.BandId != -1)
-                 {
-                     if (bandIds.Contains(media.BandId)) continue;
-
-                     List<MediaAction> bandMedias = _toForwardMessages.OfType<MediaAction>().Where(x => x.BandId == media.BandId).ToList();
-
-                     await AddBandMessagesInDb(bandMedias, chat);
-
-                     *//*                   for (int j = 0; j < bandMedias.Count; j++)
-                                        {
-                                            //Add In Db (for sender user)
-                                            if (await ApiService.AddMessage(bandMedias[j], chat) is Message mes)
-                                            {
-                                                bandMedias[j].Id = mes.Id;
-                                            }
-                                            //Set correct id
-                                            await UpdateIdForMessageBySentDate(bandMedias[j]);
-                                        }*//*
-
-                     await AddForwardedMessageInDB(bandMedias.Cast<Message>().ToList(), chat, isChatterOnline, isBlocked);
-
-                     bandIds.Add(media.BandId);
-                     continue;
-                 }
-
-                 if (_toForwardMessages[i] is TelegramLib.MainClasses.Messages.ShareContactMessage share)
-                 {
-                     await ApiService.AddShareContactMessage(share.SharedUser.Id,
-                         share.SharedUser.Name, chat.Id, _system.LoggedUser.Id, DateTime.Now);
-                 }
-                 else
-                 {
-                     //Add In Db (for sender user)
-                     await ApiService.AddMessage(_toForwardMessages[i], chat);
-                 }
-
-                 //Set correct id
-                 await UpdateIdForMessageBySentDate(_toForwardMessages[i]);
-
-                 //Add for chatter
-                 await AddForwardedMessageInDB(new List<Message>() { _toForwardMessages[i] }, chat, isChatterOnline, isBlocked);
-             }*/
-
-
-
-        }
-
-        public async Task AddBandMessagesInDb(List<MediaAction> band, TelegramLib.MainClasses.UserChat chat)
-        {
-            List<MediaAction>? medias = (await ApiService.AddManyMessages(band.Cast<Message>().ToList(), chat))
-                                        .OfType<MediaAction>()
-                                        .ToList();
-
-            for (int i = 0; i < medias.Count; i++)
-            {
-                band[i].Id = medias[i].Id;
-            }
         }
 
         public async Task ChangeBandIdsInForward()
         {
+            const int adder = 1;
             int lastBandId = await ApiService.GetLastMessageBandId();
 
             HashSet<int> bandIds = new HashSet<int>();
@@ -2479,27 +2265,18 @@ namespace TelegramVisualPart.UserControls
                     media.BandId != -1 && !bandIds.Contains(media.BandId))
                 {
                     bandIds.Add(media.BandId);
-                    bandIds.Add(lastBandId + 1);
+                    bandIds.Add(lastBandId + adder);
 
                     List<MediaAction> medias = _toForwardMessages.OfType<MediaAction>().Where(x => x.BandId == media.BandId).ToList();
 
                     for (int j = 0; j < medias.Count; j++)
                     {
-                        medias[j].BandId = lastBandId + 1;
+                        medias[j].BandId = lastBandId + adder;
                     }
                     lastBandId++;
                 }
-
             }
 
-        }
-
-        public async Task UpdateIdForMessageBySentDate(TelegramLib.MainClasses.Messages.Message mes)
-        {
-            TelegramLib.MainClasses.Messages.Message checkMes = await ApiService.GetLastChatMessage(_chat.Id);
-
-            if (checkMes is null) return;
-            mes.Id = checkMes.Id;
         }
 
         private async Task<bool> UpdateChatStatusAsync(TelegramLib.MainClasses.UserChat chat)
@@ -2527,21 +2304,6 @@ namespace TelegramVisualPart.UserControls
             }
 
             await ApiService.AddAllForwardedMessages(messages, chattersChat, _system.LoggedUser.Id);
-
-
-            /*            for (int i = 0; i < messages.Count; i++)
-                        {
-                            if (_toForwardMessages[i] is TelegramLib.MainClasses.Messages.ShareContactMessage share)
-                            {
-                                await ApiService.AddShareContactMessage(share.SharedUser.Id,
-                                    share.SharedUser.Name, chattersChat.Id, _system.LoggedUser.Id, DateTime.Now);
-                            }
-                            else
-                            {
-                                //Add In Db (for sender user)
-                                await ApiService.AddMessage(messages[i], chattersChat);
-                            }
-                        }*/
         }
 
         public async Task AddAdditionalToForwardsTextMessage()
@@ -2579,8 +2341,6 @@ namespace TelegramVisualPart.UserControls
                 _mesMenu.GetChosenListBoxItem() is null ||
                 ReplyMessageRow.Height.Value == 0 ||
                 _isHiddenSender) return null;
-
-            //int.TryParse(_mesMenu.GetChosenListBoxItem().Tag.ToString(), out int id);
 
             int id = _repliedMessage is null ? _mesMenu.GetMessage().Id : _repliedMessage.Id;
 
@@ -2722,7 +2482,6 @@ namespace TelegramVisualPart.UserControls
                     }
                     obj = VisualTreeHelper.GetParent(obj);
                 }
-
                 return -1;
             }
             if (item.Tag is null) return -1;
@@ -2787,10 +2546,6 @@ namespace TelegramVisualPart.UserControls
                 else Canvas.SetTop(_mesMenu, point.Y);
             };
 
-            //WTF is this???
-            /*            Message mes = GetMessageByListBoxTag(item);
-                        _mesMenu.SetPinVisStatus(mes);*/
-
             if (toMenuMes is not null) _mesMenu.SetPinVisStatus(toMenuMes);
 
             MessageMenu.Children.Add(_mesMenu);
@@ -2831,7 +2586,6 @@ namespace TelegramVisualPart.UserControls
 
             SetScheduleMessage message =
                 new SetScheduleMessage(GetChat(), messages, _system, _toForwardMessages, isUpdateDate: true);
-
 
             for (int i = 0; i < messages.Count; i++)
             {
@@ -2875,8 +2629,6 @@ namespace TelegramVisualPart.UserControls
             {
                 await SendSchedMessageNow(mes);
             }
-            //Send must be doing service in server part
-
             UpdateGlobalMedias();
         }
 
@@ -2892,7 +2644,7 @@ namespace TelegramVisualPart.UserControls
 
         public List<Message> GetChosenMesInMesMenu()
         {
-            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return null;
 
             if (item.Content is MediaMessage media &&
@@ -2921,7 +2673,6 @@ namespace TelegramVisualPart.UserControls
             _isEdit = true;
 
             //ADD IS EDITED FLAG
-
             //Show reply line   
             SetReplyMessageRow();
 
@@ -2944,10 +2695,9 @@ namespace TelegramVisualPart.UserControls
 
         public TelegramLib.MainClasses.Messages.Message GetMessageToEdit()
         {
-            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return null;
 
-            //item.Tag == message id; Get message by system
             Message mes = GetMessageByListBoxTag(item);
             return mes;
         }
@@ -2958,7 +2708,7 @@ namespace TelegramVisualPart.UserControls
             HideOnlyPinnedBorders();
 
             //Get ListBoxItem From Menu
-            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
             //item.Tag == message id; Get message by system
@@ -3012,15 +2762,6 @@ namespace TelegramVisualPart.UserControls
                 media.IsBandMedia();
         }
 
-        public bool IsAllMessagesInMediaAreChosen(ListBoxItem item)
-        {
-            if (!IsListBoxItemIsBandMessage(item)) return false;
-
-            MediaMessage media = item.Content as MediaMessage;
-
-            return media.IsAllMediasInBandAreChosen();
-        }
-
         public void ShowSelectionBar()
         {
             if (SelectedMessesGrid.Visibility == Visibility.Visible) return;
@@ -3066,14 +2807,12 @@ namespace TelegramVisualPart.UserControls
                 {
                     isSet = media.IsAllMediasInBandAreChosen();
                 }
-
                 media.SelectionTickObj.SetTickByGivenParam(isSet);
             }
             else if (item.Content is ShareContactControl share)
             {
                 share.SelectionTickObj.SetTickByGivenParam(isSet);
             }
-
         }
 
         public async Task SetBothUsersPage(TelegramLib.MainClasses.Messages.Message mes,
@@ -3109,7 +2848,6 @@ namespace TelegramVisualPart.UserControls
             if (actionType == BothUsersMessageAction.Delete ||
                 actionType == BothUsersMessageAction.SchedDelete)
             {
-
                 if (actionType == BothUsersMessageAction.SchedDelete) isBoth = false;
                 //Set page actions
                 await DeleteMessage(mes, itemMessage, isBoth);
@@ -3135,13 +2873,8 @@ namespace TelegramVisualPart.UserControls
 
         public void UpdateParamsInPinnedChat()
         {
-            //UPDATE THEM
-
             //Counter
             PinnedAmountRun.Text = _chat.GetAmountOfPinnedMessages().ToString();
-
-            //Remove int vis
-
         }
 
         public async Task SetStatMessageAfterPin(Message referMessage, bool isBoth)
@@ -3212,11 +2945,6 @@ namespace TelegramVisualPart.UserControls
         public async Task AddStatMessage(StaticMessage toAdd, bool isBoth,
             TelegramLib.MainClasses.UserChat chat)
         {
-            /*            //Add it in db
-                        await ApiService.AddStatMessage(toAdd, chat.Id);
-                        //Get static message from db + assign messageId
-                        int? lastMesId = await ApiService.GetLastAddedStatMessageIdByChatId(chat.Id);*/
-
             int? lastMesId = await AddStatMessageInDb(toAdd, chat);
 
             if (lastMesId is null) throw new ArgumentNullException("Wtf Bro?");
@@ -3230,7 +2958,6 @@ namespace TelegramVisualPart.UserControls
                 !IsOnlyPinnedChatIsOn()) await SetStaticMessageInVis(toAdd);
 
             //Set in UserTalkMessage
-            /*((MainWindow)Window.GetWindow(this))*/
             _mainWindow.UpdateUserChatTalkControl();
 
             //Set for chatter (only db or SignalR)
@@ -3250,7 +2977,6 @@ namespace TelegramVisualPart.UserControls
 
             bool isBlocked = await ApiService.IsUserIsBlocked(_chat.Chatter.Id, _system.LoggedUser.Id);
             if (isBlocked) return;
-
 
             if (isChatterOnline)
             {
@@ -3272,14 +2998,11 @@ namespace TelegramVisualPart.UserControls
                 (mes.MessageReferenceId is null && mes.DelType is null) ? null :
                 _chat.GetMessageById((int)mes.MessageReferenceId);
 
-
             if (stat.DelType is not null) chat.AutoDel = (TelegramLib.Enums.Chat.AutoDeleteType)stat.DelType;
-
             //Stat message Id from chatter side
             if (mes.MessageReferenceId is not null) mes.MessageReferenceId = chat.GetMesIdPairOfMessageByTime(refedMes);
 
             await ApiService.UpdateChat(chat);
-
             //Add 
             await ApiService.AddStatMessage(mes, chat.Id);
         }
@@ -3350,13 +3073,11 @@ namespace TelegramVisualPart.UserControls
             if (mes is null || mes is not MediaAction media) return;
             if (media.IsGif())
             {
-                //string gifFullPath = FilesAction.GetFullGifPath(media.MediaName);
                 string gifFullPath = FilesAction.GetPathByName(media.MediaName);
                 SaveElements.SaveGifAs(gifFullPath);
             }
             else if (media.IsImage())
             {
-                //string imgPath = FilesAction.GetFullChatImagePath(media.MediaName);
                 string imgPath = FilesAction.GetPathByName(media.MediaName);
 
                 var image = new Image();
@@ -3387,8 +3108,6 @@ namespace TelegramVisualPart.UserControls
             else if (mes is TelegramLib.MainClasses.Messages.MediaAction media)
             {
                 if (!media.IsImage()) return;
-
-                //string mediaPath = FilesAction.GetFullChatImagePath(media.MediaName);
 
                 string mediaPath = FilesAction.GetPathByName(media.MediaName);
                 if (mediaPath is null) return;
@@ -3500,8 +3219,6 @@ namespace TelegramVisualPart.UserControls
             //Get selected messages
             List<Message> toDelete = GetMessagesByDate(dates);
 
-            //One by one is too slow try many at the same time 
-
             await RemoveManyMessages(toDelete, isBoth);
 
             HideSelectionRow();
@@ -3550,9 +3267,6 @@ namespace TelegramVisualPart.UserControls
             if (isBoth)
             {
                 await DeleteMessageForBoth(message, isVisUpdate: isUpdateChatVis);
-                //SignalRService.DeleteMessageById(_system.LoggedUser, _chat.Chatter, mes);
-
-                //await SignalRService.UpdateChatsControls(_system.LoggedUser, _chat.Chatter);
             }
 
             //Set for replied + pinned message
@@ -3647,10 +3361,9 @@ namespace TelegramVisualPart.UserControls
             ClearSelectionRow();
 
             //Get ListBoxItem From Menu
-            ListBoxItem item = _mesMenu.GetChosenListBoxItem();  //GetListBoxItemFromMenu();
+            ListBoxItem item = _mesMenu.GetChosenListBoxItem();
             if (item is null || item.Content is not UserControl control) return;
 
-            //item.Tag == message id; Get message by system
             Message mes = _mesMenu.GetMessage();
             if (mes is null) mes = GetMessageByListBoxTag(item);
 
@@ -3663,30 +3376,26 @@ namespace TelegramVisualPart.UserControls
             await SetBothUsersPage(mes, item, actType);
         }
 
-        public void SetPinAction(
+        public async Task SetPinAction(
             TelegramLib.MainClasses.Messages.Message? mes,
             ListBoxItem item, bool isBoth, bool isChatterBlocked = false)
         {
             if (item is not null && item.Content is not UserControl) return;
 
-            //if (item.Content is not UserControl control) return;
-            //Check this
             UserControl? control = item is null ? null :
                 item.Content is UserControl ctrl ? ctrl : null;
 
-            //Set Pin status in system
-
             mes.MirrorPinStatus();
-            ApiService.SetPinStatus(mes.Id, mes.IsPinned, _isSavedMessageChat);
+            await ApiService.SetPinStatus(mes.Id, mes.IsPinned, _isSavedMessageChat);
 
-            if (!isChatterBlocked) SetPinMessage(mes, control, isBoth);
+            if (!isChatterBlocked) await SetPinMessage(mes, control, isBoth);
         }
 
-        public void SetPinMessage(TelegramLib.MainClasses.Messages.Message mes,
+        public async Task SetPinMessage(TelegramLib.MainClasses.Messages.Message mes,
             UserControl control, bool bothPin = false)
         {
             if (mes.IsPinned) AddPinnedMessage(mes);
-            else DeletePinnedMessage(mes);
+            else await DeletePinnedMessage(mes);
 
             if (control is not null) SetPinOnVisControl(control, mes.IsPinned);
 
@@ -3694,12 +3403,12 @@ namespace TelegramVisualPart.UserControls
             {
                 bool isOnline = Task.Run(() => ApiService.IsUserOnline(_chat.Chatter.Id)).Result;
 
-                if (isOnline) SignalRService.PinMessage(_system.LoggedUser, _chat.Chatter, mes);
+                if (isOnline) await SignalRService.PinMessage(_system.LoggedUser, _chat.Chatter, mes);
                 else
                 {
                     Message? pair = Task.Run(() => ApiService.GetPairOfMessage(mes)).Result;
                     if (pair is null) return;
-                    ApiService.SetPinStatus(pair.Id, mes.IsPinned, _isSavedMessageChat);
+                    await ApiService.SetPinStatus(pair.Id, mes.IsPinned, _isSavedMessageChat);
                 }
 
             }
@@ -3716,41 +3425,30 @@ namespace TelegramVisualPart.UserControls
             return false;
         }
 
-        public void DeletePinnedMessage(
+        public async Task DeletePinnedMessage(
             TelegramLib.MainClasses.Messages.Message mes)
         {
             //Delete from vis
             int.TryParse(PinRowBorder.Tag.ToString(), out int tempMesId);
 
-            //Change temp on next
-            /* if (mes.Id == tempMesId)
-             {*/
-            TelegramLib.MainClasses.Messages.Message nextMes; /* =
-               _system.GetLastPinnedMessageByMessage(mes);*/ // _system.GetNextPinnedMessage(mes);
+            TelegramLib.MainClasses.Messages.Message nextMes;
 
             //Remove mes from system
             _system.DeletePinnedMessage(mes);
 
             nextMes = _chat.GetLastPinnedMessage();
 
-            if (nextMes is not null) SetPinnedMessageInPanel(nextMes);
-
-            //}
-
-            //Delete in DB
-            //Delete with SignalR
+            if (nextMes is not null) await SetPinnedMessageInPanel(nextMes);
 
             if (IsHidePinnedMessesRow(mes)) return;
             //Is pinned panel is visible
             ShowPinnedIfNotOnlyPinned();
-            //PinRow.Height = new GridLength(50);
         }
 
         public void AddPinnedMessage(TelegramLib.MainClasses.Messages.Message mes)
         {
             //Is pinned panel is visible
             ShowPinnedIfNotOnlyPinned();
-            //PinRow.Height = new GridLength(50);
 
             //Add in last position
             _system.AddPinnedMessage(mes);
@@ -3765,12 +3463,12 @@ namespace TelegramVisualPart.UserControls
             PinRow.Height = new GridLength(50);
         }
 
-        public void SetPinnedMessageInPanel(
+        public async Task SetPinnedMessageInPanel(
             TelegramLib.MainClasses.Messages.Message mes)
         {
             if (mes is MediaAction mediaAct)
             {
-                string path = FilesAction.GetUserImagePath(mediaAct.MediaName);
+                string path = await FilesAction.GetUserImagePath(mediaAct.MediaName);
                 if (File.Exists(path))
                 {
                     PinnedImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
@@ -3807,7 +3505,7 @@ namespace TelegramVisualPart.UserControls
             //Get chat
             TelegramLib.MainClasses.UserChat chat =
                 await GetChatByUserSendersIds(_chat.Chatter.Id, _system.LoggedUser.Id);
-            //await ApiService.GetChatByUserAndSenderId(_chat.Chatter.Id, _system.LoggedUser.Id);
+
             if (chat is null) return;
 
             if ((_forwardSenderId is null || _toForwardMessages is null
@@ -3935,6 +3633,7 @@ namespace TelegramVisualPart.UserControls
 
         private async void AddFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int addDay = 1;
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 Title = "Choose image or video",
@@ -3981,7 +3680,7 @@ namespace TelegramVisualPart.UserControls
                         if (page.CaptureBox.Text != string.Empty)
                         {
                             messages.Add(new TelegramLib.MainClasses.Messages.TextMessage(
-                                -1, _system.LoggedUser.Id, DateTime.Now.AddDays(1), page.CaptureBox.Text, false, null, false, null, false));
+                                -1, _system.LoggedUser.Id, DateTime.Now.AddDays(addDay), page.CaptureBox.Text, false, null, false, null, false));
                         }
 
                         SetScheduleMessage message =
@@ -4017,18 +3716,16 @@ namespace TelegramVisualPart.UserControls
         }
 
         public async Task AddImageMessage(string filePath, bool isSticker,
-            string senderImageName, MediaAction mediaMes)
+            string senderImageName, MediaAction mediaMes, int insertIndex = -1)
         {
-            //AddStickerMessage()
-
             BitmapImage bitmapImage = ApiService.GetCachedBitmap(filePath);
 
             var img = new Image
             {
-                Source = bitmapImage is not null ? bitmapImage : SignalRHelperService.LoadBitmap(filePath)// new BitmapImage(new Uri(filePath, UriKind.Absolute)),                          
+                Source = bitmapImage is not null ? bitmapImage : await SignalRHelperService.LoadBitmap(filePath)// new BitmapImage(new Uri(filePath, UriKind.Absolute)),                          
             };
 
-            await AddImageMessage(img, isSticker, senderImageName, mediaMes);
+            await AddImageMessage(img, isSticker, senderImageName, mediaMes, insertIndex);
         }
 
         public async Task<bool> AddMediaPath(string filePath,
@@ -4051,29 +3748,22 @@ namespace TelegramVisualPart.UserControls
             return false;
         }
 
-        public void AddMediaElement(string filePath, string senderImageName, MediaAction mes)
+        public void AddMediaElement(string filePath, string senderImageName,
+            MediaAction mes, int insertIndex = -1)
         {
             var media = new MediaElement
             {
                 Source = new Uri(filePath, UriKind.Absolute),
-                /*                Width = 300,
-                                Height = 200,*/
                 LoadedBehavior = MediaState.Manual,
                 UnloadedBehavior = MediaState.Manual
             };
             media.Stop();
 
-            /*            //Is video is contains in user chat folder
-                        if (!FilesAction.IsVideoIsExistInSecFolder(Path.GetFileName(filePath)))
-                        {
-                            FilesAction.CopyVideoToVideoFolder(filePath);
-                        }*/
-
-            AddVideoMessage(media, senderImageName, mes);
+            AddVideoMessage(media, senderImageName, mes, insertIndex);
         }
 
         public void SendGif(string gifPath, string senderImageName,
-            bool isAdd = true, MediaAction mes = null)
+            bool isAdd = true, MediaAction mes = null, int insertIndex = -1)
         {
             if (SchedueleMessagesGrid.Visibility == Visibility.Visible &&
                 mes is null)
@@ -4113,13 +3803,20 @@ namespace TelegramVisualPart.UserControls
 
             if (mes is not null) SetMediaForwardButVis(mes, message);
 
-            ChatBox.Items.Add(item);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
+
             SetMessagesPosition(_isGluedToLeft);
 
             //ScrollChatToEnd();
             ScrollToNewMessage();
         }
-
 
         private async void ChatGif_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -4146,17 +3843,10 @@ namespace TelegramVisualPart.UserControls
             mediaWindow.SetGif(chosenMesIndex, baseGifPaths, gifs,
                 SchedueleMessagesGrid.Visibility == Visibility.Visible);
             mediaWindow.Show();
-
-            /*
-                        VisualActionPage page = new VisualActionPage(message.GetGifPath(), GetChatMediaPaths(MediaType.Gif));
-
-                        ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
-
-                        VisualActionPageParams(message, MediaType.Gif, page);*/
         }
 
         private void AddVideoMessage(MediaElement el, string senderImageName,
-            MediaAction mes)
+            MediaAction mes, int insertIndex = -1)
         {
             var video = new MediaMessage(_system, el, senderImageName, mes, mes.ForwardedFromId);
             video.BigGrid.PreviewMouseLeftButtonDown += ChatVideo_PreviewMouseDown;
@@ -4170,7 +3860,6 @@ namespace TelegramVisualPart.UserControls
             ListBoxItem item = new ListBoxItem()
             {
                 Content = video,
-                // Width = 250,
                 Tag = mes.Id.ToString(),
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
@@ -4178,18 +3867,21 @@ namespace TelegramVisualPart.UserControls
             SetChatItemEvents(item);
             SetPaddingToMessageItem(item, mes);
 
-            //SetMessagePositionSettings(item);
             item.Tag = mes.Id;
             video.Tag = mes.Id;
 
             SetMediaForwardButVis(mes, video);
 
-            ChatBox.Items.Add(item);
-            SetMessagesPosition(_isGluedToLeft);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
 
-            //Check is via signalR
-            //ScrollToNewMessage();
-            //ScrollChatToEnd();
+            SetMessagesPosition(_isGluedToLeft);
         }
 
         private async void ChatVideo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -4202,12 +3894,9 @@ namespace TelegramVisualPart.UserControls
             MediaMessage message = mediaParent as MediaMessage;
 
             MediaElement videoElement = message.GetVideo();
-            List<MediaAction> videos = GetChatMedias(MediaType.Video);// new List<MediaAction>();
-                                                                      //GetChatMedias(MediaType.Video);// SetVideosInList(videos);
+            List<MediaAction> videos = GetChatMedias(MediaType.Video);
 
             List<string> allVideoPaths = await GetChatMediaPaths(MediaType.Video);
-
-            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
             MediaWindow mediaWindow = new MediaWindow(
                 null, (MainWindow)Window.GetWindow(this),
@@ -4215,39 +3904,6 @@ namespace TelegramVisualPart.UserControls
 
             mediaWindow.SetVideos(videoElement, allVideoPaths, videos, isShed: SchedueleMessagesGrid.Visibility == Visibility.Visible);
             mediaWindow.Show();
-        }
-
-        public void SetVideosInList(List<MediaAction> videos)
-        {
-            if (SchedueleMessagesGrid.Visibility == Visibility.Visible && _chat is not null)
-            {
-                videos.AddRange(_chat.GetSchedVideos());
-            }
-            else videos.AddRange(_system.GetAllVideoMessages());
-        }
-
-        public void VisualActionPageParams(MediaMessage mediaMes, MediaType type,
-            VisualActionPage page)
-        {
-            List<MediaAction> elements =
-                FilesAction.GetMediaElementsFromListByType(_chat.GetMediaMessages(), type);
-
-            int chosenVideoIndex = GetChosenVideoIndex(mediaMes, elements);
-            if (chosenVideoIndex == -1) return;
-
-            page.SetUserChat(_system, elements, chosenVideoIndex, _chat);
-        }
-
-        public int GetChosenVideoIndex(MediaMessage message, List<MediaAction> videos)
-        {
-            ListBoxItem item = ChatBox.Items.OfType<ListBoxItem>().FirstOrDefault(x => x.Content == message);
-            if (item is null) return -1;
-
-            int messageItemIndex = ChatBox.Items.IndexOf(item);
-            if (messageItemIndex == -1) return -1;
-
-
-            return videos.IndexOf((MediaAction)_chat.Messages[messageItemIndex]);
         }
 
         public async Task<List<string>> GetChatMediaPaths(MediaType type)
@@ -4282,7 +3938,7 @@ namespace TelegramVisualPart.UserControls
         private bool _isGetStickers;
 
         public async Task AddImageMessage(Image img, bool isSticker, string senderImgName,
-            MediaAction media)
+            MediaAction media, int insertIndex = -1)
         {
             var message = new MediaMessage(_system, img, isSticker,
                 senderImgName, media.SentTime,
@@ -4311,14 +3967,19 @@ namespace TelegramVisualPart.UserControls
 
             SetMediaForwardButVis(media, message);
 
-            ChatBox.Items.Add(item);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
+
+
             SetMessagesPosition(_isGluedToLeft);
             await SetSenderImageByListBoxItem(item, _system.GetUserById(media.SenderUserId),
                 _system.LoggedUser.Id == media.SenderUserId);
-
-            //Check is via signalR
-            //ScrollToNewMessage();
-            //ScrollChatToEnd();
 
             ScrollToNewMessage();
             SetMessagesPosition(_isGluedToLeft);
@@ -4335,8 +3996,6 @@ namespace TelegramVisualPart.UserControls
 
         public async void AddStickerMessage(Image img, string senderImageName)
         {
-            //AddImageMessage
-
             string fileName = FilesAction.GetStickerPathObjByName(img.Tag.ToString());
             img.Source = new BitmapImage(new Uri(fileName, UriKind.Absolute));
 
@@ -4349,7 +4008,6 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
 
-            //message.PreviewMouseDown += ChatImage_PreviewMouseDown;
             ListBoxItem item = new ListBoxItem()
             {
                 Content = message,
@@ -4358,12 +4016,7 @@ namespace TelegramVisualPart.UserControls
             };
             SetChatItemEvents(item);
 
-            //SetMessagePositionSettings(item);
-
             ChatBox.Items.Add(item);
-
-            //TelegramLib.MainClasses.UserChat messages = _system.GetChosenChat();
-            //_chat.AddSticker(img.Tag.ToString(), _system.LoggedUser.Id);
 
             await AddMediaPath(img.Tag.ToString(), true);
 
@@ -4380,17 +4033,10 @@ namespace TelegramVisualPart.UserControls
 
             //Check is via signalR
             ScrollToNewMessage();
-            //ScrollChatToEnd();
-
-            /*  Dispatcher.BeginInvoke(new Action(() =>
-              {
-                  item.Visibility = Visibility.Visible;
-              }), System.Windows.Threading.DispatcherPriority.Render);*/
         }
 
         public void ChatImage_MouseDown(MediaMessage message)
         {
-            //if (sender is not MediaMessage message) return;
             if (SelectedMessesGrid.Visibility == Visibility.Visible) return;
 
             _isGetStickers = message.IsSticker;
@@ -4502,8 +4148,6 @@ namespace TelegramVisualPart.UserControls
             ContactInfo info = new ContactInfo();
             ContactInfoGrid.Children.Add(info);
 
-            //info.SetContactInfo(_chat, _system, _system.GetContactByUserId(_chat.Chatter.Id)); /*_system.ChosenChatContact*/
-
             info.LoadEnd += () =>
             {
                 if (windowWidth + _userContactWidth <=
@@ -4560,12 +4204,10 @@ namespace TelegramVisualPart.UserControls
             info?.SetContactInfo(_chat, _system,
                  _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: false);
         }
-
         public void CloseContactInfo_MouseDown(object sender, MouseEventArgs e)
         {
             RemoveRightContactInfo();
         }
-
         public void RemoveRightContactInfo()
         {
             ContactInfoGrid.Children.Clear();
@@ -4586,7 +4228,6 @@ namespace TelegramVisualPart.UserControls
         {
             UserInfoBut.Width = isVis ? _basicButWidth : 0;
         }
-
         public void UpdateColors()
         {
             EmojisBoard.ActiveRect.Fill =
@@ -4599,17 +4240,13 @@ namespace TelegramVisualPart.UserControls
             block.Foreground =
                 (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"];
         }
-
         private bool CompareColors(TextBlock block)
         {
             return block.Foreground is SolidColorBrush brush &&
                 brush.Color == Colors.Gray;
         }
-
-
         private void UserChatMenuBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (_isSavedMessageChat) return;
             //show user menu
             HideChatMenuBlocks();
             UserChatMenu.Visibility = Visibility.Visible;
@@ -4731,10 +4368,7 @@ namespace TelegramVisualPart.UserControls
             //Is replied from other chat
             if (await IsRepliedFromOtherChat(messageId)) return;
 
-            ListBoxItem? item = GetChatListBoxItemByMessageId(messageId); /*ChatBox.Items
-                .OfType<ListBoxItem>()
-                .FirstOrDefault(x => x.Tag.ToString() == messageId.ToString());*/
-
+            ListBoxItem? item = GetChatListBoxItemByMessageId(messageId);
 
             if (item is null) return;
 
@@ -4766,7 +4400,6 @@ namespace TelegramVisualPart.UserControls
 
             return null;
         }
-
         public async ValueTask<bool> IsRepliedFromOtherChat(int mesId)
         {
             if (SchedueleMessagesGrid.Visibility == Visibility.Hidden &&
@@ -4856,6 +4489,7 @@ namespace TelegramVisualPart.UserControls
 
         public void SetGeneralBackground()
         {
+            const int radius = 20;
             //Update Every unset bgs in chat
             CustomBg.Background = GetBgImageBrush(
                 _system.Settings.GetChatSettings().Wallpaper.WallpaperName);
@@ -4864,7 +4498,7 @@ namespace TelegramVisualPart.UserControls
             {
                 CustomBg.Effect = new BlurEffect()
                 {
-                    Radius = 20
+                    Radius = radius
                 };
                 return;
             }
@@ -4873,13 +4507,14 @@ namespace TelegramVisualPart.UserControls
 
         public void SetChatBackground()
         {
+            const int radius = 20;
             CustomBg.Background = GetBgImageBrush(_chat.GetBackground().GetFileName());
 
             if (_chat.GetBackground().GetBlurState())
             {
                 CustomBg.Effect = new BlurEffect()
                 {
-                    Radius = 20
+                    Radius = radius
                 };
             }
             else CustomBg.Effect = null;
@@ -4887,10 +4522,9 @@ namespace TelegramVisualPart.UserControls
 
         public ImageBrush GetBgImageBrush(string fileName)
         {
-            //System.UnauthorizedAccessException: "Access to the path 'B:\GitHub\TelegramClientServer\TelegramVisualPart\Visuals\Images\Wallpapers' is denied."
             return new ImageBrush()
             {
-                ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(fileName), UriKind.Absolute)), // или Relative
+                ImageSource = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(fileName), UriKind.Absolute)),
                 Stretch = Stretch.UniformToFill
             };
         }
@@ -4921,11 +4555,6 @@ namespace TelegramVisualPart.UserControls
                 //NEED to delete
                 ChatBox.Items.RemoveAt(0);
                 _chat.RemoveFirstMessage();
-
-
-                //Check IF NEED to update
-                //update vis + code (check it)
-
             };
 
             _timer.Start();
@@ -4936,7 +4565,6 @@ namespace TelegramVisualPart.UserControls
             Emojis.Foreground = new SolidColorBrush(Colors.Gray);
             Cursor = null;
         }
-
         public void RemoveElementFromChatBox(int elIndex, MediaType type)
         {
             for (int i = 0; i < ChatBox.Items.Count; i++)
@@ -4978,22 +4606,6 @@ namespace TelegramVisualPart.UserControls
             }
 
             await SignalRService.SendAllMessages(messages, _system.LoggedUser, _chat.Chatter);
-
-/*            foreach (var message in messages)
-            {
-                if (message is TelegramLib.MainClasses.Messages.TextMessage text)
-                {
-                    await SignalRService.SendTextMessage(_system.LoggedUser, text, _chat.Chatter);
-                }
-                else if (message is TelegramLib.MainClasses.Messages.MediaAction media)
-                {
-                    await SignalRService.SendMediaMessage(_system.LoggedUser, new List<MediaAction>() { media }, _chat.Chatter);
-                }
-                else if (message is TelegramLib.MainClasses.Messages.ShareContactMessage share)
-                {
-                    await SignalRService.AddShareContactMessage(_system.LoggedUser, _chat.Chatter, share.SharedUser.Id);
-                }
-            }*/
         }
 
         private bool _isGluedToLeft = false;
@@ -5005,15 +4617,6 @@ namespace TelegramVisualPart.UserControls
             //Set that in chat can be ONLY MESSAGES
             for (int i = 0; i < ChatBox.Items.Count; i++)
             {
-                /*                bool isGroupSend = ChatBox.Items[i] is ListBoxItem it &&
-                                    it.Content is MediaMessage mediaMes && mediaMes.IsBandMedia();*/
-
-                /*                if ( (ChatBox.Items[i] is not ListBoxItem item ||
-                                    item.Tag is null) && !isGroupSend)
-                                {
-                                    continue;
-                                }*/
-
                 if (ChatBox.Items[i] is not ListBoxItem item) continue;
 
                 int id = item.Tag is null ? GetItemTagId(item) : int.Parse(item.Tag.ToString());
@@ -5088,7 +4691,8 @@ namespace TelegramVisualPart.UserControls
 
         public void SetVisibilityToBackBut(bool isVisible)
         {
-            BackButColumn.Width = isVisible ? new GridLength(50) :
+            const int width = 50;
+            BackButColumn.Width = isVisible ? new GridLength(width) :
                 new GridLength(0);
         }
 
@@ -5234,8 +4838,7 @@ namespace TelegramVisualPart.UserControls
 
             ScrollToNewMessage();
 
-            if (/*(paths.Count == 1 && FilesAction.IsFileIsVideo(paths[0])) || 
-                */(paths.Count > 1 && type == SendMediaType.Group))
+            if ((paths.Count > 1 && type == SendMediaType.Group))
             {
                 //Divide in groups of 9(if more than nine)
                 if (paths.Count > maxMediasInBand)
@@ -5258,10 +4861,7 @@ namespace TelegramVisualPart.UserControls
                 foreach (var img in imgs)
                 {
                     string fullPath = img.Tag.ToString();
-                    //bool isAdd = await AddMediaPath(fullPath);
 
-                    /*if (isAdd)
-                    {*/
                     MediaAction toCheck = (MediaAction)_chatMessages.Last();
 
                     if (FilesAction.IsFileIsVideo(fullPath))
@@ -5274,7 +4874,6 @@ namespace TelegramVisualPart.UserControls
                             _system.LoggedUser.GetFirstImageName().Name, toCheck);
                     }
                     ScrollToNewMessage();
-                    //}
                 }
             }
             UpdateContactInfoBlock();
@@ -5309,8 +4908,6 @@ namespace TelegramVisualPart.UserControls
         public async Task AddBandImgMessage(MediaMessage bandMessage, List<MediaAction> medias)
         {
             // think about tag etc...
-            // message.Tag = media.Id;
-
             MediaAction media = medias.First();
 
             for (int i = 0; i < bandMessage._bandBorders.Count; i++)
@@ -5383,7 +4980,6 @@ namespace TelegramVisualPart.UserControls
             {
                 Content = bandMessage,
                 Visibility = Visibility.Hidden
-                //HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             //mb ok
@@ -5399,43 +4995,24 @@ namespace TelegramVisualPart.UserControls
             await SetSenderImageByListBoxItem(item, _system.GetUserById(media.SenderUserId), _system.LoggedUser.Id == media.SenderUserId);
 
             //Check is via signalR
-            //ScrollChatToEnd();
             ScrollToNewMessage();
         }
 
-
-        private void ClearAllMediaWindows()
-        {
-            Window window = Window.GetWindow(this);
-
-            if (window is not null && window is MainWindow main)
-            {
-                main.CloseAllMediaWindows();
-            }
-        }
-
-
         //The True one
-        public void ShareContact(TelegramLib.MainClasses.User sharedContact,
-            string sharedName, Message mes)
+        public async Task ShareContact(TelegramLib.MainClasses.User sharedContact,
+            string sharedName, Message mes, int insertIndex = -1)
         {
             //Set send message control
             ShareContactControl shareContact =
                 new ShareContactControl();
 
             //Set control params
-            shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
-            shareContact.SetSharedUserImage(sharedContact.GetFirstImageNameInString());
+            await shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
+            await shareContact.SetSharedUserImage(sharedContact.GetFirstImageNameInString());
             shareContact.SetSharedUserName(sharedName);
             shareContact.SetSharedUserPhoneNumber(sharedContact.PhoneNumber);
             shareContact.SetSendTime();
             shareContact.Tag = sharedContact.Id;
-
-            //Add In DB 
-            //ApiService.AddMessage
-
-            //Add in system
-            //AddSharedMessageInSystem(sharedContact);
 
             //Events etc...
             shareContact.SharedClicked += async () =>
@@ -5449,7 +5026,6 @@ namespace TelegramVisualPart.UserControls
                     await AddChat(sharedContact);
 
                     chat = await ApiService.GetChatByUserAndSenderId(_system.LoggedUser.Id, sharedContact.Id);
-                    //chat = _system.GetChatByChatterId(tagId);
 
                     //Add chat in system
                     _system.AddChat(chat);
@@ -5458,7 +5034,7 @@ namespace TelegramVisualPart.UserControls
                 if (chat is null) return;
 
                 //Set another chat with this 
-                SetUserChat(chat);
+                await SetUserChat(chat);
 
                 //Set Chosen chat
                 ((MainWindow)Window.GetWindow(this)).SetChosenChat(chat);
@@ -5476,8 +5052,6 @@ namespace TelegramVisualPart.UserControls
             SetChatItemEvents(item);
             SetPaddingToMessageItem(item, mes);
 
-            //SetMessagePositionSettings(item);
-
             //Set user tick icon
             if (mes.SenderUserId == _system.LoggedUser.Id)
             {
@@ -5486,7 +5060,15 @@ namespace TelegramVisualPart.UserControls
             }
 
             //Add it in chat
-            ChatBox.Items.Add(item);
+            if (insertIndex >= 0)
+            {
+                ChatBox.Items.Insert(insertIndex, item);
+            }
+            else
+            {
+                ChatBox.Items.Add(item);
+            }
+
             SetMessagesPosition(_isGluedToLeft);
 
             ScrollToNewMessage();
@@ -5504,7 +5086,6 @@ namespace TelegramVisualPart.UserControls
             try
             {
                 _isProcessingReads = true;
-                //Tag => message Id for every message Control
                 if (_chat is null) return;
 
                 var visibleIds = GetIdsByVisibleElems();
@@ -5531,11 +5112,7 @@ namespace TelegramVisualPart.UserControls
                 }
 
                 await SetChatterMessagesReadStatus(isChatterOnline);
-
-                //Send signalR To set message as read
-                //var objsInView = Helper.VisHelper.GetVisibleItems(ChatBox);
             }
-
             finally { _isProcessingReads = false; }
         }
 
@@ -5552,15 +5129,6 @@ namespace TelegramVisualPart.UserControls
         {
             if (!isOnline) return;
             await SignalRService.UpdateReadStatusMethod(_system.LoggedUser, _chat.Chatter);
-
-            /*if (_chat.Chatter is null) return;
-            //Is online
-            if (await ApiService.IsUserOnline(_chat.Chatter.Id))
-            {
-                await SignalRService.UpdateReadStatusMethod(_system.LoggedUser, _chat.Chatter);
-                return;
-            }*/
-            //Set only in db
         }
 
         public List<int> GetIdsByVisibleElems()
@@ -5628,14 +5196,7 @@ namespace TelegramVisualPart.UserControls
             {
                 if (!messages[i].IsRead)
                 {
-
-                    //Get and change status from db
-                    /*       bool updatedStatus =
-                              await ApiService.GetMessageReadStatus(messages[i].Id);*/
-
-                    messages[i].IsRead = true;// updatedStatus;
-
-                    //Set for band message
+                    messages[i].IsRead = true;
                 }
             }
             UpdateReadStatus(chat);
@@ -5648,8 +5209,6 @@ namespace TelegramVisualPart.UserControls
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                //if (chat is null || chat.Chatter is null || chat.GetLastMessage() is null) return;
-
                 //need main thread...bruh...
                 Window window = Window.GetWindow(this);
                 if (window is MainWindow main)
@@ -5686,7 +5245,7 @@ namespace TelegramVisualPart.UserControls
                         SetVisualReadIconKind(item,
                             chat.Messages.FirstOrDefault(x => x.Id == mesId));
                     }
-                    else if (item.Content is MediaMessage mediaImg)//image (Sticker, image, etc...)
+                    else if (item.Content is MediaMessage mediaImg)
                     {
                         if (mediaImg.Tag is null)
                         {
@@ -5713,7 +5272,6 @@ namespace TelegramVisualPart.UserControls
                             }
                             continue;
                         }
-
                         int.TryParse(item.Tag.ToString(), out int mesId);
                         SetVisualReadIconKind(item,
                             chat.Messages.FirstOrDefault(x => x.Id == mesId));
@@ -5768,21 +5326,48 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        private void ChatBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        private bool _isLoadingMessages = false;
+        private async void ChatBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (this.Visibility == Visibility.Hidden || _isSavedMessageChat) return;
 
-            Dispatcher.BeginInvoke(new Action(() =>
+            await Dispatcher.InvokeAsync(async () =>
             {
-                SetReadMessageAction();
-            }), System.Windows.Threading.DispatcherPriority.Background);
+                await SetReadMessageAction();
+            }, System.Windows.Threading.DispatcherPriority.Background);
+
+            double updateOffset = ChatBox.ActualHeight / 3;
+
+            if (e.VerticalOffset != 0 && e.VerticalOffset < updateOffset)
+            {
+                if (_isLoadingMessages || ChatBox is null ||
+                    ChatBox.Items.Count == 0) return;
+                _isLoadingMessages = true;
+                try
+                {
+                    ListBoxItem firstItem = ChatBox.Items.Cast<ListBoxItem>().First();
+                    if (firstItem is null) return;
+                    if (!int.TryParse(firstItem.Tag?.ToString(), out int id)) return;
+
+                    var firstVisible = firstItem;
+
+                    await SetMessagesInChat(id);
+
+                    /*             await Dispatcher.InvokeAsync(() =>
+                                 {
+                                     firstVisible.BringIntoView();
+                                 }, DispatcherPriority.Loaded);*/
+                }
+                finally
+                {
+                    _isLoadingMessages = false;
+                }
+            }
         }
 
         public void UpdateUserChat(int chatId)
         {
             if (chatId != _chat.Id) return;
-
-            //Update whole chat or just add share message control
         }
 
         public async Task AddChat(TelegramLib.MainClasses.User toMakeChatWith)
@@ -5899,7 +5484,6 @@ namespace TelegramVisualPart.UserControls
                 {
 
                     if (messages.Count == 0 || messages.First() is not MediaAction video) return;
-                    //Image img = await VisHelper.GetFirstFrameAsync(video.MediaName);
                     string fullPath = await ApiService.GetVideoPreviewPath(video.MediaName);
 
                     if (fullPath is not null && fullPath != string.Empty)
@@ -5907,7 +5491,6 @@ namespace TelegramVisualPart.UserControls
                         Image firstVideoFrame = await VisHelper.GetFirstFrameAsync(fullPath);
                         ReplyedImage.Source = firstVideoFrame.Source;
                     }
-                    //ReplyedImage.Source = ApiService.GetCashedBitmap(video.MediaName);/*is BitmapImage bit and not null ? bit : img.Source;*/
                 }
             }
             else
@@ -5927,7 +5510,7 @@ namespace TelegramVisualPart.UserControls
                 quoteText = textControl.SelectableText.SelectedText;
                 textControl.SelectableText.Select(0, 0);
             }
-            else if (/*!_isSavedMessageChat ||*/ !isResend)
+            else if (!isResend)
             {
                 _repliedMessage.RepliedQuote = string.Empty;
             }
@@ -5968,22 +5551,6 @@ namespace TelegramVisualPart.UserControls
             TelegramLib.MainClasses.Messages.Message mes =
                 _system.GetMessageById(id);
             return mes;
-        }
-
-        public List<MediaAction> GetMessagesFromBandMessage(ListBoxItem item)
-        {
-            List<MediaAction> res = new List<MediaAction>();
-            if (item.Content is not MediaMessage media) return res;
-
-            List<int> mesIds = media.GetBandMessagesIds();
-
-            foreach (var id in mesIds)
-            {
-                Message mes = _system.GetMessageById(id);
-                if (mes is not null && mes is MediaAction act) res.Add(act);
-            }
-
-            return res;
         }
 
         public ListBoxItem? GetChatItemByMessageId(int id)
@@ -6078,18 +5645,8 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public void SetForwardMessages(int userToSendId, List<Message> messages)
-        {
-            _forwardSenderId = userToSendId;
-            if (_toForwardMessages is null) _toForwardMessages = new List<Message>();
-            else _toForwardMessages.Clear();
-
-            _toForwardMessages.AddRange(messages);
-        }
-
         public void HideChatControlFeatures()
         {
-            //SetForwardMessages(userIdToSend, messages);
             HidePinnedChatAndShowChatMessages();
 
             //Hide selection stuff
@@ -6189,7 +5746,6 @@ namespace TelegramVisualPart.UserControls
 
                 //To check this
 
-                //if (toSendId is not null) copy.SenderUserId = _system.LoggedUser.Id;
                 copy.SenderUserId = toSendId is not null ? _system.LoggedUser.Id : copy.SenderUserId;
 
                 copy.IsPinned = false;
@@ -6208,9 +5764,7 @@ namespace TelegramVisualPart.UserControls
 
         public UserControl? GetMessageControlById(int id)
         {
-            ListBoxItem? item = GetChatListBoxItemByMessageId(id); /*ChatBox.Items
-                .OfType<ListBoxItem>()
-                .FirstOrDefault(x => x.Tag.ToString() == id.ToString());*/
+            ListBoxItem? item = GetChatListBoxItemByMessageId(id);
 
             return item is null || item.Content is null ? null
                 : item.Content is UserControl control ? control : null;
@@ -6220,21 +5774,6 @@ namespace TelegramVisualPart.UserControls
                 List<TelegramLib.MainClasses.Messages.Message> mes)
         {
             await SignalRService.SendAllMessages(mes, _system.LoggedUser, chat.Chatter);
-
-/*            return;
-
-            if (mes.Count == 1 && mes[0] is TelegramLib.MainClasses.Messages.TextMessage text)
-            {
-                await SignalRService.SendTextMessage(_system.LoggedUser, text, chat.Chatter);
-            }
-            else if (mes.Count >= 1 && mes[0] is TelegramLib.MainClasses.Messages.MediaAction media)
-            {
-                await SignalRService.SendMediaMessage(_system.LoggedUser, mes.Cast<MediaAction>().ToList(), chat.Chatter);
-            }
-            else if (mes.Count == 1 && mes[0] is TelegramLib.MainClasses.Messages.ShareContactMessage share)
-            {
-                await SignalRService.AddShareContactMessage(_system.LoggedUser, _chat.Chatter, share.SharedUser.Id);
-            }*/
         }
 
         public static object DeepCopy(object obj)
@@ -6310,29 +5849,6 @@ namespace TelegramVisualPart.UserControls
             }
         }
 
-        public void SetMessageSelectByOnlyTickCol(bool isVis)
-        {
-            for (int i = 0; i < ChatBox.Items.Count; i++)
-            {
-                if (ChatBox.Items[i] is not ListBoxItem item) continue;
-
-                if (item.Content is ChatControls.TextMessage text)
-                {
-                    text.SelectionTickObj.SetChosenParam(false);
-                    text.SetTickVisOnlyTickCol(isVis);
-                }
-                else if (item.Content is ChatControls.MediaMessage media)
-                {
-                    media.SelectionTickObj.SetChosenParam(false);
-                    media.SetTickVisOnlyTockCol(isVis);
-                }
-                else if (item.Content is ShareContactControl share)
-                {
-                    share.SelectionTickObj.SetChosenParam(false);
-                    share.SetTickVisibility(isVis);
-                }
-            }
-        }
 
         private List<Message> _toForwardMessages;
         private int? _forwardSenderId;
@@ -6377,10 +5893,11 @@ namespace TelegramVisualPart.UserControls
 
         public async Task ChangeSelectedMedias(List<Message> messages)
         {
+            const int idAdder = 1;
             List<MediaAction> medias = messages.OfType<MediaAction>().Where(x => x.BandId != -1).ToList();
             if (medias.Count == 0) return;
 
-            int maxBandId = await ApiService.GetLastMessageBandId() + 1;
+            int maxBandId = await ApiService.GetLastMessageBandId() + idAdder;
 
             var uniqueBandIds = medias
                 .Select(m => m.BandId)
@@ -6397,7 +5914,6 @@ namespace TelegramVisualPart.UserControls
                 }
                 maxBandId++;
             }
-
         }
 
         private void DeleteSelectedBut_Click(object sender, RoutedEventArgs e)
@@ -6438,9 +5954,6 @@ namespace TelegramVisualPart.UserControls
 
                 HideSelectionRow();
                 await RemoveDateStateIfNoMesOnDate();
-
-
-
             };
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
         }
@@ -6470,9 +5983,7 @@ namespace TelegramVisualPart.UserControls
             //Update vis 
             bool isOnlyPinnedChat = IsOnlyPinnedChatIsOn();
             if (isOnlyPinnedChat) IsOnlyPinnedChatPinAction();
-            else SetChatMessages();
-
-            //Set page actions
+            else await SetChatMessages();
         }
 
         public ListBoxItem GetItemByTagId(int mesId)
@@ -6488,8 +5999,6 @@ namespace TelegramVisualPart.UserControls
                     }
                     if (item.Tag is not null && item.Tag.ToString() == mesId.ToString()) return item;
                 }
-
-
             }
             return null;
         }
@@ -6696,8 +6205,6 @@ namespace TelegramVisualPart.UserControls
 
         private void PinnedChatBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //Set chat with only pinned messages
-
             //Hide other borders
             ClearSelectionRow(); //Hiding selection action
             ClearMessageForwarding(); //Hide reply border
@@ -6712,8 +6219,6 @@ namespace TelegramVisualPart.UserControls
             //Set amount of pinned messages
             PinnedAmountRun.Text = _chatMessages.Count.ToString();
             PinRow.Height = new GridLength(0);
-
-            //mb set some actions on Visual messages
         }
 
         public void HideOnlyPinnedBorders()
@@ -6877,29 +6382,6 @@ namespace TelegramVisualPart.UserControls
             return UserInfoColumn.Width.Value;
         }
 
-        public void ScrollChatToEnd()
-        {
-            return;
-            ScrollViewer sv = HelperService.GetScrollViewer(ChatBox);
-            if (sv == null) return;
-
-            double from = sv.VerticalOffset;
-            double to = sv.ScrollableHeight;
-
-            var animation = new DoubleAnimation
-            {
-                From = from,
-                To = to,
-                Duration = TimeSpan.FromMilliseconds(250),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-            };
-
-            sv.BeginAnimation(
-                ScrollViewerBehavior.AnimatedVerticalOffsetProperty,
-                animation,
-                HandoffBehavior.SnapshotAndReplace);
-        }
-
         private void SendMessageGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (SendMesMenu.Visibility == Visibility.Visible)
@@ -6947,8 +6429,6 @@ namespace TelegramVisualPart.UserControls
         {
             //Get back tpo chat 
             SchedueleMessagesGrid.Visibility = Visibility.Hidden;
-
-            SetAddMediaButVisibility();
 
             //Update Icon Visibility
             SetScheduleMessageIconVisibility();
@@ -7060,19 +6540,14 @@ namespace TelegramVisualPart.UserControls
                     _toForwardMessages.Count > 0)
                     {
                         await SetForwardedMessage(_toForwardMessages, senderId);
-                        //((MainWindow)Window.GetWindow(this)).ClearAllChatWindowsFromBosWindow();
-
                         //Check is this is chatWindow + sender id is opened in main MainWindow
                         if (senderId is not null) ((MainWindow)Window.GetWindow(this)).HideEnnesChat((int)senderId);
                     }
                     else if (_repliedMessage is not null)
                     {
                         await SentRepliedMessage(_repliedMessage, senderId, true);
-                        //((MainWindow)Window.GetWindow(this)).ClearAllChatWindowsFromBosWindow();
 
                         ((MainWindow)Window.GetWindow(this)).HideEnnesChat(senderId);
-                        //To check this thing
-                        // await SetForwardedMessage(new List<Message>() { _repliedMessage}, senderId);
                     }
                     CommentTextBox.Focus();
                 };
@@ -7123,8 +6598,6 @@ namespace TelegramVisualPart.UserControls
                 Keyboard.Focus(this);
 
             }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
-
-
         }
 
         public async ValueTask SetUserChatByChat(TelegramLib.MainClasses.UserChat chat)
@@ -7152,21 +6625,6 @@ namespace TelegramVisualPart.UserControls
         public void SetUserImage(string imgName)
         {
             UserImage.ImageSource = ApiService.GetCachedBitmap(imgName);
-
-            /*             new BitmapImage(new Uri(
-                            FilesAction.GetUserImagePath(imgName), UriKind.Absolute));*/
-        }
-
-        public void SetAddMediaButVisibility()
-        {
-            /*            AddMediaButGrid.Visibility = 
-                            SchedueleMessagesGrid.Visibility == Visibility.Visible ?
-                            Visibility.Hidden : Visibility.Visible;*/
-        }
-
-        public void RestMediaMenu(TelegramLib.MainClasses.Messages.Message mes)
-        {
-            _mesMenu = new MesMenu(mes);
         }
 
         public async void SetChatterLittlePhotoVisibility(TelegramLib.MainClasses.User user)
@@ -7348,6 +6806,7 @@ namespace TelegramVisualPart.UserControls
         int _mesIndex = -1;
         public void ScrollToMessage(bool isUp)
         {
+            const int indexMove = 1;
             string findMes = OnlyChatSearchTextBox.Text;
 
             //Get message that contains mes
@@ -7356,10 +6815,10 @@ namespace TelegramVisualPart.UserControls
             if (meses is null || meses.Count == 0) return;
 
             _mesIndex =
-                !isUp && _mesIndex <= 0 ? meses.Count - 1 :
-                !isUp ? _mesIndex - 1 :
-                isUp && _mesIndex >= meses.Count - 1 ? 0 :
-                _mesIndex + 1;
+                !isUp && _mesIndex <= 0 ? meses.Count - indexMove :
+                !isUp ? _mesIndex - indexMove :
+                isUp && _mesIndex >= meses.Count - indexMove ? 0 :
+                _mesIndex + indexMove;
 
             Message mes = meses[_mesIndex];
             if (mes is null) return;
@@ -7372,7 +6831,6 @@ namespace TelegramVisualPart.UserControls
         {
             _mesIndex = -1;
         }
-
     }
 
     public static class ScrollViewerBehavior

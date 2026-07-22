@@ -34,6 +34,10 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
         public void SetReplyMessageParams(TelSystem system,
             TelegramLib.MainClasses.Messages.Message mes)
         {
+            const string mesStr = "Message";
+            const string mediaStr = "Media";
+
+
             if (mes.Id == -1)
             {
                 ImageColumn.Width = new GridLength(0);
@@ -51,28 +55,24 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             WhoSent.Text = system.GetSenderUserById(mes.SenderUserId).Login;
 
             ReplyedMessage.Text =
-                mes is MediaAction ? "Media" :
+                mes is MediaAction ? mediaStr :
                 mes is TelegramLib.MainClasses.Messages.TextMessage secText ? secText.RepliedQuote == string.Empty ? secText.Text : secText.RepliedQuote :
-                "Message";
+                mesStr;
         }
 
         public async void SetMediaPath(string mediaName)
         {
             if (FilesAction.IsFileIsImage(mediaName))
             {
-                //string path = FilesAction.GetFullChatImagePath(mediaName);
                 string path = FilesAction.GetPathByName(mediaName);
                 if (path is null) return;
 
                 BitmapImage cached = ApiService.GetCachedBitmap(path);
 
-                ReplyImage.Source = cached is not null ? cached : SignalRHelperService.LoadBitmap(path);
-
-                //ReplyImage.Source = new BitmapImage(new Uri(path, UriKind.Absolute));
+                ReplyImage.Source = cached is not null ? cached : await SignalRHelperService.LoadBitmap(path);
             }
             else if (FilesAction.IsFileIsGif(mediaName))
             {
-                //string fullGifName = FilesAction.GetFullGifPath(mediaName);
                 string fullGifName = FilesAction.GetPathByName(mediaName);
 
                 BitmapSource firstGifImgSource = FilesAction.GetFirstImageFromGif(fullGifName);
@@ -82,7 +82,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages.MessageMenu
             }
             else if (FilesAction.IsFileIsVideo(mediaName))
             {
-                //mediaName = System.IO.Path.GetFileName(mediaName);
                 string path = FilesAction.GetPathByName(mediaName);
 
                 Image img = await VisHelper.GetFirstFrameAsync(path);

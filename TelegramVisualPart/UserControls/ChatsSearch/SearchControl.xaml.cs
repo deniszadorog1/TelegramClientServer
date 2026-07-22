@@ -1,23 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup.Localizer;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using Point = System.Windows.Point;
@@ -29,7 +16,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
     /// </summary>
     public partial class SearchControl : UserControl
     {
-        public event Func<TelegramLib.Enums.Messages.MediaType, Task> SetSearchType; 
+        public event Func<TelegramLib.Enums.Messages.MediaType, Task> SetSearchType;
         private TelSystem _system;
 
         public SearchControl()
@@ -45,23 +32,23 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             }
         }
 
-        public void SetContacts(TelSystem system)
+        public async Task SetContacts(TelSystem system)
         {
             _system = system;
-            SetContacts();
+            await SetContacts();
         }
 
-        public void UpdateContacts(TelSystem system)
+        public async Task UpdateContacts(TelSystem system)
         {
             _system = system;
-            SetContacts();
+            await SetContacts();
         }
 
-        public void SetContacts()
+        public async Task SetContacts()
         {
             ChatsPanel.Children.Clear();
 
-            for(int i = 0; i < _system.Contacts.Count; i++)
+            for (int i = 0; i < _system.Contacts.Count; i++)
             {
                 ChatButton but = new ChatButton();
 
@@ -69,8 +56,8 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
                 BitmapImage bitmap = ApiService.GetCachedBitmap(_system.Contacts[i].GetFirstImageName().Name);
 
-                but.UserImgBrush.ImageSource = bitmap is not null ? bitmap : 
-                    SignalRHelperService.LoadBitmap(FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name));
+                but.UserImgBrush.ImageSource = bitmap is not null ? bitmap :
+                    await SignalRHelperService.LoadBitmap(await FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name));
                 // new BitmapImage(new Uri(FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
                 ChatsPanel.Children.Add(but);
             }
@@ -95,10 +82,11 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
         private bool _isShowChats = false;
         public void SetControlSize()
         {
+            const int mult = 2;
             if (!_isShowChats)
             {
                 //ChatsPanel.Height = TestChat.Height;
-                this.Height = TestChat.Height * 2;
+                this.Height = TestChat.Height * mult;
                 ChatsPanel.Width = ChatsPanel.Children.Count * TestChat.Width;
 
                 ChatsPanel.Background = new SolidColorBrush(Colors.Transparent);
@@ -115,8 +103,6 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             ChatsPanel.Width = someInRow * TestChat.Width;
 
             this.Height = (amountOfRows) * TestChat.Height + (TypesRows.Height.Value + FrqContactRow.Height.Value);
-
-            //ChatsPanel.Background = new SolidColorBrush(Colors.Red);
         }
 
         public void UpdateColors()
@@ -134,7 +120,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
         private bool CompareColors(TextBlock block)
         {
-            return  block.Foreground is SolidColorBrush brush && 
+            return block.Foreground is SolidColorBrush brush &&
                 brush.Color == Colors.Gray;
         }
 
@@ -150,25 +136,11 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
             SetSearchType?.Invoke(type);
 
-
-/*            if (sender == ChatTab)
-            {
-                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Unknown);
-            } 
-            else if (sender == PhotosTab)
-            {
-                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Image);
-            }
-            else if(sender == VideosTab)
-            {
-                SetSearchType?.Invoke(TelegramLib.Enums.Messages.MediaType.Video);
-            }*/
         }
 
         public void SetBlockAnimation(object sender)
         {
-            //UpdateColors();
-
+            const int xPos = 10;
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
 
@@ -188,7 +160,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             var moveAnim = new DoubleAnimation
             {
                 From = currentX,
-                To = targetPos.X - 10,
+                To = targetPos.X - xPos,
                 Duration = animDuration,
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
@@ -230,7 +202,7 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
         {
             for (int i = 0; i < TabsPanel.Children.Count; i++)
             {
-                if (TabsPanel.Children[i] is TextBlock textBlock && 
+                if (TabsPanel.Children[i] is TextBlock textBlock &&
                     textBlock.Foreground ==
                     (SolidColorBrush)Application.Current.Resources["TempActiveTextColor"])
                 {

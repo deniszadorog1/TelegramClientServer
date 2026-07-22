@@ -20,7 +20,8 @@ namespace TelegramLib.MainClasses.UserParams
 
         public UserImage()
         {
-            Name = "fray.jpg";
+            const string baseImg = "fray.jpg";
+            Name = baseImg;
             Date = DateTime.Now;
         }
     }

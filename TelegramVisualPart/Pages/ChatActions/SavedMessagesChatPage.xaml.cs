@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramLib.Models;
+﻿using System.Windows.Controls;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -40,8 +26,9 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         public void SetPageHeight()
         {
-            Height = SavedChatMenuControl.GetHeightOfControl() + 30;
+            const int adder = 30;
+            Height = SavedChatMenuControl.GetHeightOfControl() + adder;
         }
-        
+
     }
 }

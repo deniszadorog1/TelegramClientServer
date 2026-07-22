@@ -168,14 +168,9 @@ namespace TelegramVisualPart.Helper
             return parent ?? FindParent<T>(parentObject);
         }
 
-        /*                //Upload medias
-                        for (int i = 0; i < names.Length; i++)
-                        {
-                            
-                        }*/
-
         public static async Task<Image> GetFirstFrameAsync(string fileName)
         {
+            (int, int, int, int) bitmapVals = (320, 240, 96, 96); 
             fileName = Path.GetFileName(fileName);
 
             string videoPath = FilesAction.GetPathByName(fileName);
@@ -193,10 +188,11 @@ namespace TelegramVisualPart.Helper
             var dv = new DrawingVisual();
             using (var dc = dv.RenderOpen())
             {
-                dc.DrawVideo(mediaPlayer, new Rect(0, 0, 320, 240)); // Размер превью
+                dc.DrawVideo(mediaPlayer, new Rect(0, 0, bitmapVals.Item1, bitmapVals.Item2));
             }
 
-            var rtb = new RenderTargetBitmap(320, 240, 96, 96, PixelFormats.Pbgra32);
+
+            var rtb = new RenderTargetBitmap(bitmapVals.Item1, bitmapVals.Item2, bitmapVals.Item3, bitmapVals.Item4, PixelFormats.Pbgra32);
             rtb.Render(dv);
 
             var encoder = new PngBitmapEncoder();
@@ -238,53 +234,6 @@ namespace TelegramVisualPart.Helper
             };
 
             return new Image() { Source = bitmapImage };
-
-
-
-            
-
-
-            /*            
-
-
-
-            string tempImage = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".png");
-            string tempVideoFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".mp4");
-
-            using (var client = new HttpClient())
-            {
-                var bytes = await client.GetByteArrayAsync(videoPath);
-                await File.WriteAllBytesAsync(tempVideoFile, bytes);
-            }
-
-
-
-            await FFMpeg.SnapshotAsync(tempVideoFile, tempImage, null, TimeSpan.FromSeconds(0));
-
-            tempImage = await ApiService.UploadMediaAsync(tempImage);
-            tempImage = FilesAction.GetPathByPseudoPath(tempImage);
-
-            File.Delete(tempVideoFile);
-
-            BitmapImage bitmap;
-
-            using (var stream = new FileStream(tempImage, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.StreamSource = stream;
-                bitmap.EndInit();
-                bitmap.Freeze();
-            }
-
-            File.Delete(tempImage);
-
-            return new Image
-            {
-                Source = bitmap,
-                Stretch = Stretch.UniformToFill
-            };*/
         }
     }
 }

@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion;
 using TelegramVisualPart.Services;
@@ -68,7 +57,7 @@ namespace TelegramVisualPart.Pages.ChatActions
         {
             //Saved messages
             Window window = Window.GetWindow(this);
-            if(_chat is TelegramLib.MainClasses.SavedMessagesChat saved)
+            if (_chat is TelegramLib.MainClasses.SavedMessagesChat saved)
             {
                 _system.RemoveAllMessagesFromChat(_chat);
 
@@ -76,7 +65,7 @@ namespace TelegramVisualPart.Pages.ChatActions
                 _chat.ClearChat();
 
                 //clear chat in vis
-                if(window is MainWindow mainWindow)
+                if (window is MainWindow mainWindow)
                 {
                     mainWindow.CloseAllMediaWindows();
                     mainWindow.ClearVisChat();
@@ -95,7 +84,7 @@ namespace TelegramVisualPart.Pages.ChatActions
             {
                 main.CloseAllMediaWindows();
 
-               await main.UpdateGlobalMedias();
+                await main.UpdateGlobalMedias();
             }
             //Is to clear both users
             bool isClearBoth = (bool)ShowChatNameBox.IsChecked;
@@ -115,7 +104,7 @@ namespace TelegramVisualPart.Pages.ChatActions
 
             if (isChatterOnline)
             {
-               await SignalRService.ClearChat(chatter.Id, _system.LoggedUser);
+                await SignalRService.ClearChat(chatter.Id, _system.LoggedUser);
             }
             else
             {

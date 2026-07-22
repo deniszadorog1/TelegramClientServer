@@ -12,7 +12,8 @@
       Height="650" Width="450"
       VerticalAlignment="Center"
       HorizontalAlignment="Center"
-      Title="MainContacts">
+      Title="MainContacts"
+      Visibility="Visible">
 
     <Border CornerRadius="15" Background="{StaticResource DarkThemeOne}">
         <Grid>
@@ -69,7 +70,8 @@
             </Grid>
 
             <Grid Grid.Row="2">
-                <ListBox Name="ContactsListBox">
+                <ListBox Name="ContactsListBox"
+                         ScrollViewer.ScrollChanged="ContactsListBox_ScrollChanged">
                     <ListBoxItem HorizontalContentAlignment="Stretch">
                         <!-- <controls:UserContact x:Name="TestContact" 
                                               PreviewMouseDown="UserContact_PreviewMouseDown"/>-->

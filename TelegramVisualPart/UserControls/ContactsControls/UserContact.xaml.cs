@@ -1,20 +1,8 @@
-﻿using ControlzEx.Standard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
@@ -38,19 +26,6 @@ namespace TelegramVisualPart.UserControls.ContactsControls
             //Update contact vis state
         }
 
-        /*        public UserContact(string imgSource, string login,
-                    DateTime? lastOnline, string contactImgName)
-                {
-                    _imgSource = imgSource;
-                    _login = login;
-                    _contactImgName = contactImgName;
-
-                    InitializeComponent();
-
-                    SetParams();
-                    SetUserImage();
-                }*/
-
         public UserContact(TelegramLib.MainClasses.User user)
         {
             _imgSource = string.Empty;
@@ -61,10 +36,8 @@ namespace TelegramVisualPart.UserControls.ContactsControls
             InitializeComponent();
 
             SetLogin();
-            //SetUserImage();
 
-            //HelperService.SetOnlineStatusInTextBox(LastSennOnline, user.IsOnline, user.LastSeenOnline);
-            SetBasicParams();
+            Loaded += async (s, e) => await SetBasicParams(); 
 
             //last seen row
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
@@ -92,7 +65,7 @@ namespace TelegramVisualPart.UserControls.ContactsControls
         {
             Dispatcher.Invoke(async () =>
             {
-                if (_user is null || user is null || 
+                if (_user is null || user is null ||
                 _user.Id != user.Id) return;
                 await SignalRHelperService.SetPhotoInEllipse(user,
                     ImgBrushSource, UserImage);
@@ -115,18 +88,14 @@ namespace TelegramVisualPart.UserControls.ContactsControls
             await SignalRHelperService.SetLastSeenStatus(user, shareType, LastSennOnline);
         }
 
-        public void SetUserImage()
+        public async Task SetUserImage()
         {
             ImgBrushSource.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_contactImgName), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(_contactImgName), UriKind.Absolute));
         }
 
         public void SetLogin()
         {
-/*            if (_imgSource != string.Empty)
-            {
-                ImgBrushSource.ImageSource = new BitmapImage(new Uri(_imgSource, UriKind.Absolute));
-            }*/
             UserLogin.Text = _login;
         }
 

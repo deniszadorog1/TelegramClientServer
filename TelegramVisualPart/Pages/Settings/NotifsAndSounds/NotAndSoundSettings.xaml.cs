@@ -1,23 +1,10 @@
-﻿using MahApps.Metro.Controls;
-using MaterialDesignThemes.Wpf;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.Enums.Settings.Notifs;
 using TelegramLib.MainClasses;
 using TelegramLib.UserSettings.SettingsTypes;
@@ -25,7 +12,6 @@ using TelegramVisualPart.CustWindows;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls;
-using TelegramVisualPart.UserControls.DifferButs;
 using TelegramVisualPart.UserControls.SettingsControls.NotificationPrivacy;
 
 namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
@@ -76,13 +62,6 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         public void SetChosenStack()
         {
-/*            MessagesStack chosenStack =
-                _system.Settings.NotSettings.SideType == NotifMessageSide.TopLeft ? TopLeftStack :
-                _system.Settings.NotSettings.SideType == NotifMessageSide.TopRight ? TopRightStack :
-                _system.Settings.NotSettings.SideType == NotifMessageSide.BottomRight ? BottomRightStack :
-                BottomLeftStack;
-
-            SetSideParam(chosenStack);*/
             SetMessagesInMonitor();
         }
 
@@ -346,6 +325,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
 
         private void SetMessagesInMonitor()
         {
+            const int height = 20;
+            const int padding = 5;
             //Get chosen stack
             MessagesStack stack = GetChosenMessageStack();
 
@@ -358,8 +339,8 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             {
                 MonitorMessage message = new MonitorMessage()
                 {
-                    Height = 20,
-                    Margin = new Thickness(0, 0, 0, 5),
+                    Height = height,
+                    Margin = new Thickness(0, 0, 0, padding),
                 };
 
                 if (stack == BottomLeftStack ||

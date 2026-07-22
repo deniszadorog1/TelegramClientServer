@@ -23,7 +23,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
     {
         private TelSystem _system;
 
-        private List<string> _durations = new List<string>()
+        private readonly List<string> _durations = new List<string>()
         {
             "",
             "",
@@ -106,7 +106,6 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
         private void DotsGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             //Set custom mut choose
-
             ((MainWindow)Window.GetWindow(this))
                 .SetSecondaryFrame(new CustomMute(_system));
         }

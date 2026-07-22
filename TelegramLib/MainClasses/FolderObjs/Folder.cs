@@ -56,11 +56,6 @@ namespace TelegramLib.MainClasses.FolderObjs
             ExcludedContacts.Add(contact);
         }
 
-/*        public void RemoveContactByName(string name)
-        {
-            Contacts.Remove(Contacts.Where(x => x.IsNamesAreEqual(name)).FirstOrDefault());
-        }*/
-
         public void RemoveContactById(int contactId)
         {
             User toRemove =  Contacts.FirstOrDefault(x => x.Id == contactId);

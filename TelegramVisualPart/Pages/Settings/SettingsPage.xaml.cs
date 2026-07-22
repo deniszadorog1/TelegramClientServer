@@ -1,34 +1,18 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.Settings.ChatSettings;
 using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.Settings.Language;
-using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
-using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.DifferButs;
 using TelegramVisualPart.Windows;
-using static System.Net.Mime.MediaTypeNames;
-using Image = System.Windows.Controls.Image;
 
 namespace TelegramVisualPart.Pages.Settings
 {
@@ -47,19 +31,8 @@ namespace TelegramVisualPart.Pages.Settings
 
             SetUserInfo();
 
-            SetColorToSettingsButs();
 
             LogOutMenu.SettSystem(_system);
-        }
-
-        public void SetColorToSettingsButs()
-        {
-            return;
-            List<MenuIconTextBut> buts = SettingsButs.Children.OfType<MenuIconTextBut>().ToList();
-            for (int i = 0; i < buts.Count(); i++)
-            {
-                SetColorToSettingBut(buts[i]);
-            }
         }
 
         private readonly SolidColorBrush _textColor = new SolidColorBrush(Colors.White);
@@ -68,10 +41,10 @@ namespace TelegramVisualPart.Pages.Settings
             but.IconType.Foreground = _textColor;
             but.ButName.Foreground = _textColor;
         }
-        public void SetUserInfo()
+        public async void SetUserInfo()
         {
-            string path = FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
-            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
+            string path = await FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name);
+            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : await SignalRHelperService.LoadBitmap(path);
 
             Username.Text = _system.LoggedUser.Login;
             PhoneNumber.Text = _system.LoggedUser.PhoneNumber;
@@ -100,7 +73,7 @@ namespace TelegramVisualPart.Pages.Settings
                 Page? page = GetPageByIcon(icon);
                 if (page is null) return;
 
-                if(page is LanguagePage langPage)
+                if (page is LanguagePage langPage)
                 {
                     ((MainWindow)Window.GetWindow(this)).SetThirdFrame(langPage);
                     return;
@@ -179,7 +152,7 @@ namespace TelegramVisualPart.Pages.Settings
 
             Window window = Window.GetWindow(this);
 
-            if(window is MainWindow main)
+            if (window is MainWindow main)
             {
                 main.SetTemporaryText("Login is copied!");
             }
@@ -204,10 +177,10 @@ namespace TelegramVisualPart.Pages.Settings
             mediaWindow.Show();
         }
 
-        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        private async void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
         {
             UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         private void UserIcon_MouseEnter(object sender, MouseEventArgs e)

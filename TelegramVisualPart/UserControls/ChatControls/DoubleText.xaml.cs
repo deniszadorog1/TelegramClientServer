@@ -44,7 +44,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             UpperTextGrid.MouseEnter += UpperText_MouseEnter;
             UpperTextGrid.MouseLeave += UpperText_MouseLeave;
 
-            UpperTextGrid.PreviewMouseLeftButtonDown += 
+            UpperTextGrid.PreviewMouseLeftButtonDown +=
                 UpperTextGrid_PreviewMouseLeftButtonDown;
         }
 
@@ -68,7 +68,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             SetClipboardTextSafe(UpperText.Text);
 
             Window window = Window.GetWindow(this);
-            if(window is MainWindow main)
+            if (window is MainWindow main)
             {
                 main.SetTemporaryText("Username copied to clipboard");
             }
@@ -77,16 +77,16 @@ namespace TelegramVisualPart.UserControls.ChatControls
         private static void SetClipboardTextSafe(string text, int retryCount = 5)
         {
             if (Clipboard.GetText() == text) return;
-                for (int i = 0; i < retryCount; i++)
+            for (int i = 0; i < retryCount; i++)
             {
                 try
                 {
-                   Clipboard.SetText(text);
-                   return;
+                    Clipboard.SetText(text);
+                    return;
                 }
                 catch (COMException)
                 {
-                    return; 
+                    return;
                 }
             }
         }

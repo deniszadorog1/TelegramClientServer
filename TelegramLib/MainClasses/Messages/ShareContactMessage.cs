@@ -36,7 +36,8 @@ namespace TelegramLib.MainClasses.Messages
 
         public override string GetLastMessage()
         {
-            return "Contact";
+            const string contact = "Contact";
+            return contact; 
         }
 
     }

@@ -33,9 +33,13 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         public void SetBasicParams()
         {
-            DaysBox.AdditionalTextBlock.Text = "Days";
-            HoursBox.AdditionalTextBlock.Text = "Hours";
-            MinutesBox.AdditionalTextBlock.Text = "Minutes";
+            const string days = "Days";
+            const string hours = "Hours";
+            const string mins = "Minutes";
+
+            DaysBox.AdditionalTextBlock.Text = days;
+            HoursBox.AdditionalTextBlock.Text = hours;
+            MinutesBox.AdditionalTextBlock.Text = mins;
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

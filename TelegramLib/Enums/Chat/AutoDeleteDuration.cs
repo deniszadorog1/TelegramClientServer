@@ -85,7 +85,7 @@ namespace TelegramLib.Enums.Chat
             };*/
         }
 
-        public DateTime GetDurationByType( )
+        public DateTime GetDurationByType()
         {
             switch (Type)
             {

@@ -166,14 +166,8 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             if (sender is not Image img) return;
             int.TryParse(img.Tag.ToString(), out int imgIndex);
 
-            //string path = _gifPaths[imgIndex];
-            //string chosenGifPath = FilesAction.GetFullGifPath(_gifPaths[int.Parse(img.Tag.ToString())]);
-
             _gifPaths = FilesAction.GetFullGifPaths(_gifPaths);
             List<MediaAction> gifs = GetGifMessages();
-
-            //List<MediaAction> videos = _system.GetAllVideoMessages();
-            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
 
             MediaWindow mediaWindow = new MediaWindow(
                 null, (MainWindow)Window.GetWindow(this),
@@ -181,16 +175,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             mediaWindow.SetGif(imgIndex, _gifPaths, gifs, false);
             mediaWindow.Show();
-
-            //SetVideo Paths
-            /*            VisualActionPage page = new VisualActionPage(chosenGifPath, _gifPaths);
-
-                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
-
-
-                        int chosenGifIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
-
-                        page.SetUserChat(_system, gifs, chosenGifIndex, _chat);*/
         }
 
         public List<MediaAction> GetGifMessages()
@@ -245,8 +229,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             _videoPaths = FilesAction.GetFullPathForVideos(_videoPaths);
 
-            List<MediaAction> videos = _chat.GetChatVideos();// _system.GetAllVideoMessages();
-            //int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
+            List<MediaAction> videos = _chat.GetChatVideos();
 
             MediaWindow mediaWindow = new MediaWindow(
                 null, (MainWindow)Window.GetWindow(this),
@@ -254,43 +237,13 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
             mediaWindow.SetVideos(videoElement, _videoPaths, videos);
             mediaWindow.Show();
-
-
-            /*            //SetVideo Paths
-                        VisualActionPage page = new VisualActionPage(videoElement, _videoPaths);
-
-                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);
-
-                        List<MediaAction> videos = GetVideoMessages();
-
-                        int chosenVideoIndex = GetImageIndex(img);// _videoPaths.IndexOf(tag);
-
-                        page.SetUserChat(_system, videos, chosenVideoIndex, _chat);*/
-        }
-
-        public int GetImageIndex(Image img)
-        {
-            return ElemsPanel.Children.IndexOf(img);
-        }
-
-        public List<MediaAction> GetVideoMessages()
-        {
-            List<MediaAction> res = new List<MediaAction>();
-
-            for (int i = 0; i < _chat.Messages.Count; i++)
-            {
-                if (_chat.Messages[i] is MediaAction media &&
-                    FilesAction.IsFileIsVideo(media.MediaName))
-                {
-                    res.Add(media);
-                }
-            }
-            return res;
         }
 
         private MesMenu _menu;
         public async Task SetImagesInPanel()
         {
+            const int thickness = 5;
+
             SetChatMediaObjs();
             _imgs = await GetImages();
 
@@ -303,7 +256,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
                 _imgs[i].Tag = _medias[i].Id;
 
-                _imgs[i].Margin = new Thickness(5);
+                _imgs[i].Margin = new Thickness(thickness);
 
                 _imgs[i].PreviewMouseLeftButtonDown += MediaImages_PreviewMouseDown;
 
@@ -345,8 +298,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
                 _imgs[i].MouseEnter += MediaElement_MouseEnter;
                 _imgs[i].MouseLeave += MediaElement_MouseLeave;
-
-
 
                 ElemsPanel.Children.Add(_imgs[i]);
             }
@@ -439,21 +390,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             mediaWindow.Show();
         }
 
-        public List<MediaAction> GetImageMessages()
-        {
-            List<MediaAction> res = new List<MediaAction>();
-
-            for (int i = 0; i < _chat.Messages.Count; i++)
-            {
-                if (_chat.Messages[i] is MediaAction media &&
-                    FilesAction.IsFileIsImage(media.MediaName))
-                {
-                    res.Add(media);
-                }
-            }
-
-            return res;
-        }
 
         public async Task<List<Image>> GetImages()
         {
@@ -465,7 +401,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                 {
                     if (media.IsImage() && !media.IsSticker)//!FilesAction.IsUserChatMediaIsExist(media.MediaName)) continue;
                     {
-                        string path = FilesAction.GetUserImagePath(media.MediaName);
+                        string path = await FilesAction.GetUserImagePath(media.MediaName);
                         BitmapImage bitmap = ApiService.GetCachedBitmap(media.MediaName);
 
                         if (bitmap is null)
@@ -473,15 +409,12 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                             string? fullPath = await ApiService.GetPathOnMediaServer(media.MediaName);
 
                             if (fullPath is null) continue;
-                            SignalRHelperService.LoadBitmap(fullPath);
-
+                            await SignalRHelperService.LoadBitmap(fullPath);
 
                             bitmap = ApiService.GetCachedBitmap(path);
                         }
 
-                        if(bitmap is not null) res.Add(new Image() { Source = bitmap});
-                        //UserImage.ImageSource = ApiService.GetCashedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
-                        //res.Add(FilesAction.GetImageFromChatImageFolder(media.MediaName));
+                        if (bitmap is not null) res.Add(new Image() { Source = bitmap });
                     }
                 }
             }
@@ -495,8 +428,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
             for (int i = 0; i < _chat.Messages.Count; i++)
             {
                 if (_chat.Messages[i] is MediaAction media &&
-                    media.IsGif()/*
-                    !FilesAction.IsGifNameIsExist(media.MediaName)*/)
+                    media.IsGif())
                 {
                     res.Add(media);
                 }
@@ -527,31 +459,36 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
         public void SetBasicBlocks()
         {
+            const string photos = "Photos";
+            const string videos = "Videos";
+            const string files = "Files";
+            const string sharedLinks = "Shared Links";
+            const string gifs = "GIFs";
             switch (_type)
             {
                 case Enums.SentItemsTypes.Photos:
                     {
-                        PageName.Text = "Photos";
+                        PageName.Text = photos;
                         break;
                     }
                 case Enums.SentItemsTypes.Video:
                     {
-                        PageName.Text = "Videos";
+                        PageName.Text = videos;
                         break;
                     }
                 case Enums.SentItemsTypes.File:
                     {
-                        PageName.Text = "Files";
+                        PageName.Text = files;
                         break;
                     }
                 case Enums.SentItemsTypes.SharedLinks:
                     {
-                        PageName.Text = "Shared Links";
+                        PageName.Text = sharedLinks;
                         break;
                     }
                 case Enums.SentItemsTypes.GIFs:
                     {
-                        PageName.Text = "GIFs";
+                        PageName.Text = gifs;
                         break;
                     }
             }

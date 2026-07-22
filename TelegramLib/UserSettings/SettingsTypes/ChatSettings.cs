@@ -40,11 +40,14 @@ namespace TelegramLib.UserSettings.SettingsTypes
 
         public ChatSettings()
         {
+            (int, byte, byte, byte) baseColor = (-1, 210, 117, 112);
+            const string baseFont = "Times New Roman";
+
             Id = -1;
             Theme = ThemeType.Tinted;
-            ChosenColor = new ColorHelper(-1, 210, 117, 112); //Test seventh color
+            ChosenColor = new ColorHelper(baseColor.Item1, baseColor.Item2, baseColor.Item3, baseColor.Item4); //Test seventh color
             NightMode = AutoNightMode.System;
-            FontName = "Times New Roman";
+            FontName = baseFont;
             IsSendWithEnter = true;
             Wallpaper = new ChatWallpaper();
             PossibleWallpapers = new List<string>()
@@ -69,10 +72,10 @@ namespace TelegramLib.UserSettings.SettingsTypes
         {
             Themes = new List<Theme>();
 
-            Themes.Add(new MainClasses.ChatFitures.Theme(1, ThemeType.Classic, new ColorHelper(-1, 255, 0, 0)));
-            Themes.Add(new MainClasses.ChatFitures.Theme(2, ThemeType.Day, new ColorHelper(-1, 0, 255, 0)));
-            Themes.Add(new MainClasses.ChatFitures.Theme(3, ThemeType.Tinted, new ColorHelper(-1, 0, 0, 255)));
-            Themes.Add(new MainClasses.ChatFitures.Theme(4, ThemeType.Night, new ColorHelper(-1, 255, 0, 255)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(1, ThemeType.Classic, new ColorHelper(-1, byte.MaxValue, 0, 0)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(2, ThemeType.Day, new ColorHelper(-1, 0, byte.MaxValue, 0)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(3, ThemeType.Tinted, new ColorHelper(-1, 0, 0, byte.MaxValue)));
+            Themes.Add(new MainClasses.ChatFitures.Theme(4, ThemeType.Night, new ColorHelper(-1, byte.MaxValue, 0, byte.MaxValue)));
         }
 
         public bool GetIsSendWithEnter()

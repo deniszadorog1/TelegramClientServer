@@ -11,8 +11,6 @@ namespace TelegramVisualPart.Services
     {
         public async Task<byte[]> GetFileBytesAsync(string fileName)
         {
-            //return await ApiService.GetPathOnMediaServer(fileName);
-
             return new byte[12];
         }
     }

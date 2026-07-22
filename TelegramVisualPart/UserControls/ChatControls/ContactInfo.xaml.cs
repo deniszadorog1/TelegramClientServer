@@ -1,32 +1,22 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
 using System.CodeDom;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Diagnostics.Eventing.Reader;
+using System.Data.Entity.Core.Mapping;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.TextFormatting;
-using System.Xml.Linq;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
-using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
-using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls.ContactInfoControls;
 using TelegramVisualPart.UserControls.ChatControls.UserContactControls;
 using TelegramVisualPart.UserControls.ChatsControls;
 using TelegramVisualPart.Windows;
-using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.UserControls.ChatControls
 {
@@ -129,7 +119,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             {
                 if (_chat is not null && _chat.Chatter is not null && _chat.Chatter.Id == logged.Id)
                 {
-                    //_chat.RemoveMessagesByList(medias.Cast<TelegramLib.MainClasses.Messages.Message>().ToList());
                     TelegramLib.MainClasses.Messages.Message? pair =
                         await ApiService.GetPairOfMessage(mes);
 
@@ -280,6 +269,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetAddContactVisibility()
         {
+            const int minInfoHeight = 280;
+            const int maxInfoHeight = 330;
+
+            const int contHeight = 50;
+
             if (_chat is TelegramLib.MainClasses.SavedMessagesChat) return;
 
             bool isContact = _system.IsChatterIdIsContact(_chat.Chatter.Id);
@@ -287,31 +281,30 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (isContact)
             {
                 AddContactRow.Height = new GridLength(0);
-                //AddContactBlock.Visibility = Visibility.Hidden;
-                //MaxHeight -= InfoRow.Height.Value - 260;
-                InfoRow.Height = new GridLength(280);
+                InfoRow.Height = new GridLength(minInfoHeight);
                 return;
             }
-            AddContactRow.Height = new GridLength(50);
-            //AddContactBlock.Visibility = Visibility.Visible;
-            //MaxHeight += 330 - InfoRow.Height.Value;
-            InfoRow.Height = new GridLength(330);
+            AddContactRow.Height = new GridLength(contHeight);
+            InfoRow.Height = new GridLength(maxInfoHeight);
         }
 
         public void SetMediasRowVisibility()
         {
+            const int minAdd = 5;
+            const int maxAdd = 10;
+
             MediasRow.Height = new GridLength(
                 PhotoRow.Height.Value + VideosRow.Height.Value +
-                GifRow.Height.Value + LinkRow.Height.Value + 10);
+                GifRow.Height.Value + LinkRow.Height.Value + maxAdd);
 
-            MaxHeight += 5;
+            MaxHeight += minAdd;
 
             if (BottomDivideLine.Visibility == Visibility.Hidden)
             {
-                MaxHeight -= 10;
+                MaxHeight -= maxAdd;
                 DivRow.Height = new GridLength(0);
             }
-            else DivRow.Height = new GridLength(10);
+            else DivRow.Height = new GridLength(maxAdd);
 
             if (MediasRow.Height.Value == 0) DivRow.Height = new GridLength(0);
         }
@@ -319,7 +312,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public const int _hiddenParasHeight = 150;
         public void SetIsContactRemovedVis()
         {
-            /*if (!_isSetMaxHeight) return;*/
+            const int minHeight = 50;
+            const int midHeight = 75;
+            const int maxHeight = 200;
+
             if (_contact is null)
             {
                 //Hide lines
@@ -328,26 +324,26 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 DeleteRow.Height = new GridLength(0);
 
                 //Set page height
-                ToBeHiddenButs.Height = new GridLength(50);
+                ToBeHiddenButs.Height = new GridLength(minHeight);
 
                 MaxHeight -= _hiddenParasHeight;
             }
-            else if (ToBeHiddenButs.Height.Value != 200) //lines are not hidden
+            else if (ToBeHiddenButs.Height.Value != maxHeight) //lines are not hidden
             {
-                ShareRow.Height = new GridLength(50);
-                EditRow.Height = new GridLength(50);
-                DeleteRow.Height = new GridLength(50);
+                ShareRow.Height = new GridLength(minHeight);
+                EditRow.Height = new GridLength(minHeight);
+                DeleteRow.Height = new GridLength(minHeight);
 
                 //Set page height
-                ToBeHiddenButs.Height = new GridLength(200);
+                ToBeHiddenButs.Height = new GridLength(maxHeight);
 
                 MaxHeight += _hiddenParasHeight;
             }
 
             if (_chat is TelegramLib.MainClasses.SavedMessagesChat)
             {
-                ShareRow.Height = new GridLength(50);
-                ToBeHiddenButs.Height = new GridLength(75);
+                ShareRow.Height = new GridLength(minHeight);
+                ToBeHiddenButs.Height = new GridLength(midHeight);
             }
         }
 
@@ -390,8 +386,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             });
         }
 
-
-
         public void SetPhoneNumberVisByExps(TelegramLib.MainClasses.User user)
         {
             Dispatcher.InvokeAsync(async () =>
@@ -406,7 +400,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_chat is null || _chat.GetChatter() is null || _chat.GetChatter().Id != contactUser.Id) return;
 
             IsPrivacyException shareType = await SignalRHelperService.GetTypeByUser(contactUser, Enums.PrivacySettingType.PhoneNumber);
-
             await SignalRHelperService.SetPhoneNumber(contactUser, shareType, _chat, MobileNumber.UpperText);
         }
 
@@ -454,7 +447,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 ContSurname.Text = updated.Surname;
 
                 await SetUserPhoneNumber(updated);
-                //MobileNumber.UpperText.Text = updated.PhoneNumber;
 
                 UserName.UpperText.Text = updated.Name;
 
@@ -588,10 +580,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void AddFoldersSubMenu()
         {
+            const int yPosChange = 15;
             ContactMenu.AddToFolder.MouseEnter += (sender, e) =>
             {
                 Point relativePoint = e.GetPosition(this);
-                Point point = new Point(relativePoint.X, relativePoint.Y - 15);
+                Point point = new Point(relativePoint.X, relativePoint.Y - yPosChange);
 
                 UserContactMenu foldMenu = new UserContactMenu();
                 foldMenu.SetTelSystemParam(_system, _chat);
@@ -627,23 +620,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void AddMenuElement(UserChatMenu menu, Point cordPoint)
         {
-            //MenusCan.Children.Add(menu);
+            const int xChange = 100;
 
-            /*            Window window = Window.GetWindow(menu);
-                        if (window is null ||
-                            window is not MainWindow) throw new Exception("Its should be Main Window");
-
-                        menu.SetWindow(window as MainWindow);*/
-
-            Canvas.SetLeft(menu, cordPoint.X + 100);
+            Canvas.SetLeft(menu, cordPoint.X + xChange);
             Canvas.SetTop(menu, cordPoint.Y);
         }
 
-
-
         public void SetNameSurnameParams()
         {
-
             if (_contact is null)
             {
                 TelegramLib.MainClasses.User user = GetUserToSetParams();
@@ -670,7 +654,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public async Task SetContactPhoto(MainSettings settings = null)
         {
-            //TelegramLib.MainClasses.User? user = await GetChatterUser();
             if (_chatterUser is null /*|| _chat.GetChatter().Id != _chatterUser.Id*/) return;
 
             //Check for mask
@@ -705,20 +688,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             await SignalRHelperService.SetPhoneNumber(_chatterUser, shareType, _chat,
                 MobileNumber.UpperText, settings: settings);
-
-            //MobileNumber.SetBottomText("Mobile");
         }
 
         public async Task SetOnlineStatus(MainSettings settings)
         {
-            //if (_chat is null) return;
-            /*TelegramLib.MainClasses.User? user =
-                await GetChatterUser();*/ //await ApiService.GetUserById(_chat.GetChatter().Id);
             if (_chatterUser is null) return;
 
             IsPrivacyException shareType =
                 await SignalRHelperService.GetTypeByUser(_chatterUser, Enums.PrivacySettingType.LastSeen, settings: settings);
-
             await SignalRHelperService.SetLastSeenString(_chatterUser, shareType, _chat, LastSeenOnline, settings: settings);
         }
 
@@ -764,13 +741,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetIconsSize()
         {
+            const int topPadChange = 10;
             SetIconSize(InfoIcon);
             SetIconSize(BellIcon);
 
             SetIconSize(ImageIcon);
             SetIconSize(VideoIcon);
-            //SetIconSize(FileIcon);
-            //SetIconSize(LinkIcon);
             SetIconSize(GifIcon);
 
             SetIconSize(SendIcon);
@@ -780,7 +756,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             ContactMenu.Margin = new Thickness(
                 0,
-                UpperRow.Height.Value + 10,
+                UpperRow.Height.Value + topPadChange,
                 0,
                 0
                 );
@@ -1013,10 +989,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetMenuPosition(Point relativePoint)
         {
+            const double xDevider = 1.3;
+            const int yChange = 50;
+
             Point point = new Point(relativePoint.X, relativePoint.Y);
 
-            Canvas.SetLeft(ContactMenu, point.X - ContactMenu.Width / 1.3);
-            Canvas.SetTop(ContactMenu, point.Y - 50);
+            Canvas.SetLeft(ContactMenu, point.X - ContactMenu.Width / xDevider);
+            Canvas.SetTop(ContactMenu, point.Y - yChange);
         }
 
         private async void NotificationToggle_Checked(object sender, RoutedEventArgs e)
@@ -1040,7 +1019,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _system.LoggedUser : _chat.GetChatter();
 
             if (!await IsCanShowMediaWindow(user)) return;
-            
+
             //Set window here
             MediaWindow mediaWindow = new MediaWindow(
                 user, (MainWindow)Window.GetWindow(this),
@@ -1059,8 +1038,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             if (_chat is not SavedMessagesChat && _chat.GetChatter() is not null)
             {
-                MainSettings settings = await SignalRHelperService.GetMainSettings(_chat.GetChatter(), null); 
-                    //await ApiService.GetSettingsByUserId(_chat.GetChatter().Id);
+                MainSettings settings = await SignalRHelperService.GetMainSettings(_chat.GetChatter(), null);
 
                 ProfilePhotosSub sub = settings.PrivacySettings.ProfPhotoPrivacy;
 
@@ -1076,7 +1054,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
 
             return true;
-        } 
+        }
 
         private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -1098,8 +1076,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             ContName.Text = _chat.Chatter.Name;
             ContSurname.Text = _chat.Chatter.Surname;
-
-            //Set hide action params
         }
 
         private void AddContactGrid_MouseEnter(object sender, MouseEventArgs e)

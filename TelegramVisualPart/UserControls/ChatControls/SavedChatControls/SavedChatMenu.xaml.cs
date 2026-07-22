@@ -1,20 +1,8 @@
-﻿using Accessibility;
-using FFMpegCore.Enums;
-using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 
 namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
@@ -29,7 +17,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
 
         public event Action ControlLoaded;
         public event Action CloseControl;
-        
+
         public SavedChatMenu()
         {
             InitializeComponent();
@@ -46,62 +34,17 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
 
         public void SetChats()
         {
-/*            return; 
-            //Get unique message items
-            List<TelegramLib.MainClasses.Messages.Message> messes = 
-                new List<TelegramLib.MainClasses.Messages.Message>();
-
-            for(int i = 0; i < _chat.Messages.Count; i++)
-            {
-                if(messes.Any(x => x.SenderUserId ==
-                _chat.Messages[i].SenderUserId))
-                {
-                    messes.Add(_chat.Messages[i]);
-                }
-                else
-                {
-                   int index =  messes.IndexOf(messes.First(x => x.SenderUserId ==
-                    _chat.Messages[i].SenderUserId));
-
-                    messes[index] = _chat.Messages[i];
-                }
-            }
-
-            List<UserTalkMessage> talkMessages = new List<UserTalkMessage>();
-
-            //Set user talk messages
-            for(int i = 0; i < _chat.Messages.Count; i++)
-            {
-                 //string imgName = _system.
-
-                //UserTalkMessage toAdd = new UserTalkMessage();
-
-
-                //talkMessages.Add(toAdd);
-            }
-
-            //Set them in chat
-
-            foreach(var control in talkMessages)
-            {
-                ListBoxItem item = new ListBoxItem()
-                {
-                    Content = control
-                };
-            }
-
-*/
 
         }
 
         public void SetHeightParams()
         {
-            double newHeight = PhotoMedia.Height + VideoMedia.Height + 
+            double newHeight = PhotoMedia.Height + VideoMedia.Height +
                 LinkMedia.Height + GifMedia.Height;
 
             MediaTypesRow.Height = new GridLength(newHeight);
         }
-        
+
         public void SetBasicParams()
         {
             //Set amount + clcks on this
@@ -165,7 +108,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
         public double GetHeightOfControl()
         {
             double res = 0;
-            
+
             res += UpperRow.Height.Value;
             res += GetMediaParamsHeight();
 

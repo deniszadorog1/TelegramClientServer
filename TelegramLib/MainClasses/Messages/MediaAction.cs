@@ -35,30 +35,53 @@ namespace TelegramLib.MainClasses.Messages
             IsRead = false;
         }
 
+        private readonly List<string> _imgsExt = new List<string>()
+        {
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp"
+        };
+
+        private readonly List<string> _gifExt = new List<string>()
+        {
+            ".gif"
+        };
+
+        private readonly List<string> _videoExt = new List<string>()
+        {
+            ".mp4"
+        };
+
         public bool IsImage()
         {
             if (IsSticker) return false;
              string ext = Path.GetExtension(MediaName).ToLowerInvariant();
-            return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".webp";
+
+            return _imgsExt.Contains(ext);
+            //return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".webp";
         }
 
         public bool IsGif()
         {
             if (IsSticker) return false;
             string ext = Path.GetExtension(MediaName);
-            return ext == ".gif";
+            return _gifExt.Contains(ext);
+            //return ext == ".gif";
         }
 
         public bool IsVideo()
         {
             if (IsSticker) return false;
             string ext = Path.GetExtension(MediaName);
-            return ext == ".mp4";
+            return _videoExt.Contains(ext);
+            //return ext == ".mp4";
         }
 
         public override string GetLastMessage()
         {
-            return "Media";
+            const string returnType = "Media";
+            return returnType;
         }
     }
 

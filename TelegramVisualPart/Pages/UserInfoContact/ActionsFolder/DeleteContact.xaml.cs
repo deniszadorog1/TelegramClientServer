@@ -35,10 +35,10 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             SetBasicParams();
         }
 
-        private void SetBasicParams()
+        private async void SetBasicParams()
         {
             BgBrush.ImageSource = new BitmapImage(new Uri
-                (FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
+                (await FilesAction.GetUserImagePath(_contact.GetFirstImageName().Name), UriKind.Absolute));
 
             UsernamePlace.Text = _contact.Name;
         }
@@ -50,7 +50,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
             //Remove with signalR
 
             //update window after contact remove 
-            ((MainWindow)Window.GetWindow(this)).UpdateDeletedUser(_contact);
+            await ((MainWindow)Window.GetWindow(this)).UpdateDeletedUser(_contact);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
         }
 

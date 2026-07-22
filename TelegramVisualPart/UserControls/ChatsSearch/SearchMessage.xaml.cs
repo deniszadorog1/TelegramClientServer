@@ -36,10 +36,10 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
             }
         }
 
-        public void SetUserImage(string userImageName)
+        public async Task SetUserImage(string userImageName)
         {
             ImgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(userImageName), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(userImageName), UriKind.Absolute));
         }
 
         private void CloseBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)

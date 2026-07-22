@@ -22,10 +22,10 @@ namespace TelegramVisualPart.Pages.ChatActions
 
             SetLanguageText.SetDeleteChat(this);
         }
-        public void SetBasicParams()
+        public async void SetBasicParams()
         {
             BgBrush.ImageSource = new BitmapImage(
-                new Uri(FilesAction.GetUserImagePath(
+                new Uri(await FilesAction.GetUserImagePath(
                     _user.GetFirstImageNameInString()), UriKind.Absolute));
 
             FirstUsername.Text = _user.Login;

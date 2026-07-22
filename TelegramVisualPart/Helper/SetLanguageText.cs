@@ -1,18 +1,4 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Xps.Packaging;
-using TelegramLib.MainClasses;
-using TelegramLib.Models;
-using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Pages;
 using TelegramVisualPart.Pages.Advanced;
 using TelegramVisualPart.Pages.ChatActions;
@@ -26,7 +12,6 @@ using TelegramVisualPart.Pages.Settings.Folders;
 using TelegramVisualPart.Pages.Settings.Language;
 using TelegramVisualPart.Pages.Settings.NotifsAndSounds;
 using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
-using TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ChatControls;
 
@@ -484,7 +469,7 @@ namespace TelegramVisualPart.Helper
             page.BlockedUsers.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecBlockedUsersEnumPart");
 
             page.PrivBlock.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPrivBlock");
-            
+
             page.PhoneNumber.NamePart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPhoneNumberNamePart");
             page.PhoneNumber.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecPhoneNumberEnumPart");
 
@@ -514,7 +499,7 @@ namespace TelegramVisualPart.Helper
             page.DeleteAway.EnumPart.Text = VisConstParamsJsonService.GetStringByName("PrivAndSecDeleteAwayEnumPart");
         }
 
-        public static void SetAccountDeletion(PrivacyDeleteAccount page) 
+        public static void SetAccountDeletion(PrivacyDeleteAccount page)
         {
             page.PageName.Text = VisConstParamsJsonService.GetStringByName("DeleteAccPageName");
             page.InfoText.Text = VisConstParamsJsonService.GetStringByName("DeleteAccInfoText");

@@ -47,8 +47,6 @@ namespace TelegramVisualPart.Pages
             ContactInfo.SendMesPressed += ClearTempPage;
 
             ContactInfo.SetMenuVisibility(Visibility.Visible);
-
-
         }
 
         public void ClearTempPage()

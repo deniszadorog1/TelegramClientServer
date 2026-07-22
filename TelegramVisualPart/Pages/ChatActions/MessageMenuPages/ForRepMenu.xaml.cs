@@ -136,17 +136,11 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 
             if (control is MediaMessage media)
             {
-                //BitmapImage source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapImage : media.ImgMessage.ImageSource as BitmapImage;
                 BitmapSource source = media.ImgMessage.ImageSource is null ? media.GifImage.Source as BitmapSource : media.ImgMessage.ImageSource as BitmapSource;
-
                 BitmapImage bitmap = FilesAction.ToBitmapImage(source);
 
                 if (bitmap is not null)
                 {
-/*                    media.Background = new SolidColorBrush(Colors.Red);
-                    media.ImageBorder.Background = new SolidColorBrush(Colors.Green);
-                    media.GifBorder.Background = new SolidColorBrush(Colors.Blue);*/
-
                     media.AdditionalTextRow.Height = new GridLength(0);
 
                     SetupImageRow(bitmap, media);

@@ -122,10 +122,13 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         private void ChooseFromFileGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const string title = "Choose wallpaper";
+            const string filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
             //Set Add file 
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Title = "Choose wallpaper";
-            dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            dlg.Title = title;
+            dlg.Filter = filter;
             dlg.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Visuals", "Images");
 
             if (dlg.ShowDialog() == true)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,8 +45,11 @@ namespace TelegramLib.MainClasses.Messages
 
         public override string GetLastMessage()
         {
-            if (!(DelType is null)) return "Set deleted type";
-            return "Pinned message";
+            const string delRes = "Set deleted type";
+            const string pinned = "Pinned message";
+
+            if (!(DelType is null)) return delRes;
+            return pinned;
         }
     }
 }

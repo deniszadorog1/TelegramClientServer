@@ -1,19 +1,12 @@
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using TelegramClientServer.SignalRHubs;
-using TelegramLib.Services;
-using TelegramClientServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Identity;
-using TelegramClientServer.Interfaces;
-using Microsoft.Extensions.FileProviders;
-using TelegramClientServer.Middlewares;
-
 using Newtonsoft.Json;
+using System.Text;
+using TelegramClientServer.Interfaces;
+using TelegramClientServer.Services;
+using TelegramClientServer.SignalRHubs;
 
 namespace TelegramClientServer
 {
@@ -32,23 +25,26 @@ namespace TelegramClientServer
 
             builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => { });
 
-
-            // В Program.cs на сервере:
             builder.Services.AddSignalR()
                 .AddNewtonsoftJsonProtocol(options =>
                 {
                     options.PayloadSerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
                 });
 
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddHostedService<ScheduledMessageService>();//To Check Schedule Messages
             builder.Services.AddSingleton<IUserIdProvider, HeaderUserIdProvider>();//Basic for signalR usage
             builder.Services.AddSingleton<IHashPassword, PasswordHasherService>();
             builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
-            
+
+            builder.Services.AddScoped<IFController, ClientPropsService>();
+
             builder.Services.AddHostedService<MessageDispatcher>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -67,12 +63,12 @@ namespace TelegramClientServer
                 {
                     options.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
                 });
-            
+
             //builder.Services.AddHttpLogging(options => { });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-     
+
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -128,7 +124,7 @@ namespace TelegramClientServer
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            
+
             app.UseStaticFiles();
 
 
@@ -147,7 +143,7 @@ namespace TelegramClientServer
 
             //minimal API Test
             //app.MapGet("/MinAPI", () => "Min api Test");
-            
+
             app.Run();
         }
     }

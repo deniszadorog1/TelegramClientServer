@@ -1,20 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TelegramLib.MainClasses;
-using TelegramLib.Models;
-using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
 using User = TelegramLib.MainClasses.User;
 
@@ -73,7 +59,8 @@ namespace TelegramVisualPart.EnterInAccount
         {
             User user = new User();
 
-            await ApiService.AddNewUser(LoginBox.Text, PasswordBox.Text, NameBox.Text, SurnameBox.Text, PhoneBox.Text, null);
+            await ApiService.AddNewUser(LoginBox.Text, PasswordBox.Text, 
+                NameBox.Text, SurnameBox.Text, PhoneBox.Text, null);
 
             user = await ApiService.GetUser(LoginBox.Text, PasswordBox.Text);
 

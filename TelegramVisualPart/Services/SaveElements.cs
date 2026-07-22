@@ -38,12 +38,6 @@ namespace TelegramVisualPart.Services
 
         public static void SaveGifAs(string gifPath)
         {
-            /*            if (!gifPath.StartsWith("pack://siteoforigin:,,,"))
-                        {
-                            MessageBox.Show("Ожидался URI в формате pack://siteoforigin:,,,");
-                            return;
-                        }*/
-
             string relativePath = gifPath.Replace("pack://siteoforigin:,,,", "").TrimStart('/');
 
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
@@ -56,7 +50,7 @@ namespace TelegramVisualPart.Services
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Сохранить GIF как...",
+                Title = "Save gif as...",
                 Filter = "GIF files (*.gif)|*.gif",
                 FileName = Path.GetFileName(absolutePath)
             };
@@ -72,7 +66,7 @@ namespace TelegramVisualPart.Services
             string originalPath = element.Source.LocalPath; 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Сохранить видео как...",
+                Title = "Save Video as...",
                 Filter = "MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*",
                 FileName = Path.GetFileName(originalPath)
             };

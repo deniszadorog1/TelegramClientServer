@@ -116,14 +116,15 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
 
         public void SetTimeInBlock()
         {
+            const int minDev = 60;
             ChosenTime.Text = string.Empty;
             int minutes = _system.Settings.PrivacySettings.PassCode.MinutesTimer;
             //if hours 
-            if(minutes > 60)
+            if(minutes > minDev)
             {
-                int hours = minutes / 60;
+                int hours = minutes / minDev;
                 ChosenTime.Text += $"{hours} : ";
-                minutes -= hours * 60;
+                minutes -= hours * minDev;
             }
             //if minutes
             ChosenTime.Text += $"{minutes}"; 
@@ -131,8 +132,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
 
         private void DisableCodeGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int minTimer = -1;
             ((MainWindow)Window.GetWindow(this)).ClearTimer();
-            _system.Settings.PrivacySettings.PassCode.MinutesTimer = -1;
+            _system.Settings.PrivacySettings.PassCode.MinutesTimer = minTimer;
 
             UpdateStats?.Invoke();
 

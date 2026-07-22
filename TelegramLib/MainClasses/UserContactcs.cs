@@ -47,19 +47,6 @@ namespace TelegramLib.MainClasses
 
         public UserContactcs()
         {
-            return;
-            Id = -1;
-            Name = "testNAME";
-            Login = "testUSERNAME";
-            BirthDate = DateTime.Now;
-            BIO = "testBIO";
-            LastSeen = DateTime.Now;
-            IsNotificationsIsOn = true;
-
-            AutoDeletion = null;
-
-            IsOnline = false;
-
         }
 
         public void SetAutoDeleteDuration(AutoDeleteType? type)
@@ -78,14 +65,11 @@ namespace TelegramLib.MainClasses
             IsNotificationsIsOn = state;
         }
 
-/*        public bool IsNamesAreEqual(string name)
-        {
-            return Name == name;
-        }*/
 
+        const string _unavailable = "unavailable";
         public string GetPhoneNumber()
         {
-            return PhoneNumber is null ? "unavailable" : PhoneNumber;
+            return PhoneNumber is null ? _unavailable : PhoneNumber;
         }
 
         public string GetUserName()
@@ -100,14 +84,8 @@ namespace TelegramLib.MainClasses
 
         public string GetBirthDate()
         {
-            return BirthDate is null ? "unavailable" :
+            return BirthDate is null ? _unavailable :
                 $"{((DateTime)BirthDate).Day}.{((DateTime)BirthDate).Month}.{((DateTime)BirthDate).Year}";
-        }
-
-        public string GetLastSeen()
-        {
-            return LastSeen is null ? "recently" :
-                $"{LastSeen.Value.Day}.{LastSeen.Value.Month}.{LastSeen.Value.Year}";
         }
 
         public bool IsSendersIdsAreEqual(int senderId)
@@ -115,13 +93,15 @@ namespace TelegramLib.MainClasses
             return Id == senderId;
         }
 
+        const string _baseMinato = "Minato.jpg";
+
         public UserImage GetFirstImageName()
         {
             if (!(MaskImage is null)) return MaskImage;
             if (UserImages is null || UserImages.Count == 0)
             {
                 UserImages = new List<UserImage>();
-                UserImages.Add(new UserImage("Minato.jpg", DateTime.Now));
+                UserImages.Add(new UserImage(_baseMinato, DateTime.Now));
             }
             return UserImages.First();
         }
@@ -131,7 +111,7 @@ namespace TelegramLib.MainClasses
             if (UserImages is null || UserImages.Count == 0 || 
                 UserImages.First().Name == string.Empty)
             {
-                return "Minato.jpg";
+                return _baseMinato;
             }
             return UserImages.First().Name;
         }

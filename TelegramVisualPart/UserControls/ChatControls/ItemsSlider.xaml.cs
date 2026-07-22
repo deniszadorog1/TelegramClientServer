@@ -1,26 +1,10 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.FolderObjs;
-using TelegramLib.Models;
-using TelegramVisualPart.Enums;
-using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.FolderControls;
-using TelegramVisualPart.Windows;
 using Folder = TelegramLib.MainClasses.FolderObjs.Folder;
 
 namespace TelegramVisualPart.UserControls.ChatControls
@@ -77,14 +61,17 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void AddFolderBlock(string name, int folderId, bool isAllChats = false)
         {
+            const int fontSize = 17;
+            const int padding = 10;
+
             TextBlock block = new TextBlock()
             {
                 Foreground = Brushes.Gray,
-                FontSize = 17,
+                FontSize = fontSize,
                 FontWeight = FontWeights.SemiBold,
                 TextWrapping = TextWrapping.Wrap,
                 Text = name,
-                Margin = new Thickness(10, 0, 10, 0),
+                Margin = new Thickness(padding, 0, padding, 0),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Background = Brushes.Transparent,
                 Tag = folderId
@@ -104,6 +91,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetFolderMenuBlock(object sender, MouseButtonEventArgs e)
         {
+            const double multdivider = 2.5;
+            const int multAdd = 1;
+            const double yDivider = 1.75;
+            
             if (sender is not TextBlock block) return;
 
             int.TryParse(block.Tag.ToString(), out int folderId);
@@ -126,13 +117,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
                 //is y too big
 
-                double mult = menu.GetFolderId() != -1 ? 1 : 2.5;
+                double mult = menu.GetFolderId() != -1 ? multAdd : multdivider;
 
-                if (point.Y + menu.ActualHeight * mult  > windowSize.Height)
+                if (point.Y + menu.ActualHeight * mult > windowSize.Height)
                 {
                     Canvas.SetTop(menu, windowSize.Height - menu.ActualHeight * mult);
                 }
-                else Canvas.SetTop(menu, point.Y + menu.ActualHeight * mult / 1.75);
+                else Canvas.SetTop(menu, point.Y + menu.ActualHeight * mult / yDivider);
             };
             _window.AddFolderMenu(menu);
         }
@@ -164,6 +155,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetAnimation(TextBlock block)
         {
+            const int duration = 300;
             ClearForegroundForTabs();
 
             block.Foreground =
@@ -176,7 +168,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             double currentX = transform?.X ?? 0;
             double currentWidth = ActiveRect.ActualWidth;
 
-            Duration animDuration = TimeSpan.FromMilliseconds(300);
+            Duration animDuration = TimeSpan.FromMilliseconds(duration);
 
             var moveAnim = new DoubleAnimation
             {

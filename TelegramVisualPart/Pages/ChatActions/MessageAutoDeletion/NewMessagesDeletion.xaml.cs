@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using AutoDeleteType = TelegramLib.Enums.Chat.AutoDeleteType;
@@ -51,7 +40,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
 
         public void SetRemoveButVisibility()
         {
-            if(_chat.AutoDel == AutoDeleteType.Nothing)
+            if (_chat.AutoDel == AutoDeleteType.Nothing)
             {
                 RemoveBut.Visibility = Visibility.Hidden;
                 return;
@@ -125,7 +114,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
             AutoDeleteType type = SpecialList.GetChosenAutoDelItem();
 
             UserContactcs contact = _system.GetContactByUserId(_chat.GetChatter().Id);
-            if(contact is not null) contact.AutoDeletion = new AutoDeleteDuration(type);
+            if (contact is not null) contact.AutoDeletion = new AutoDeleteDuration(type);
 
             _chat.AutoDel = type;
 
@@ -152,7 +141,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageAutoDeletion
         }
 
         public async void AddStaticMessage()
-        {           
+        {
             await ((MainWindow)Window.GetWindow(this))
                 .AddStatMessage(new StaticMessage(_chat.AutoDel, _system.LoggedUser.Id),
                 true, _chat);

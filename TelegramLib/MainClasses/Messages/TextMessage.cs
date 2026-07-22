@@ -26,8 +26,10 @@ namespace TelegramLib.MainClasses.Messages
 
         public TextMessage()
         {
+            const string textMsg = "TextMessage";
+
             Id = -1;
-            Text = "TextMessage";
+            Text = textMsg;
             SentTime = DateTime.Now;
             IsRead = false;
             RepliedMessageId = null;

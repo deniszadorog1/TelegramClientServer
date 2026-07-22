@@ -69,10 +69,6 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
         public void SetBasicParams()
         {
             ChangeLightState.IconType.Kind = PackIconKind.WeatherSunny;
-
-            //Share.TextBlock.Text = "Share";
-            //Cancel.TextBlock.Text = "Cancel";
-            //Apply.TextBlock.Text = "Apply";
         }
 
         private void BlurGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -87,6 +83,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
         private void BlurGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int readius = 20;
             IsBlurCheckBox.IsChecked = !IsBlurCheckBox.IsChecked;
 
             if (ImageGrid.Effect is not null)
@@ -97,7 +94,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
 
             ImageGrid.Effect = new BlurEffect()
             {
-                Radius = 20
+                Radius = readius
             };
         }
 

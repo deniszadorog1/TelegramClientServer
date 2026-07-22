@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using TelegramClientServer.Interfaces;
 using TelegramLib.MainClasses;
+using TelegramLib.Models;
 using TelegramLib.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,10 +21,14 @@ namespace TelegramClientServer.Controllers
         private readonly IConfiguration _config;
         private IHashPassword _hash;
 
-        public AuthController(IConfiguration config, IHashPassword toHash)
+        private readonly IFController _clientProps;
+
+        public AuthController(IConfiguration config, IHashPassword toHash, IFController clientProps)
         {
             _config = config;
             _hash = toHash;
+
+            _clientProps = clientProps;
         }
 
         [HttpPost("Login")]
@@ -69,7 +74,7 @@ namespace TelegramClientServer.Controllers
         }
         public class UserDTO()
         {
-            public User User { get; set; }
+            public TelegramLib.MainClasses.User User { get; set; }
         }
 
         [HttpPut("AddUserSettings")]
@@ -118,7 +123,7 @@ namespace TelegramClientServer.Controllers
 
         [HttpGet("GetUser")]
         [AllowAnonymous]
-        public User GetUser(string login, string password)
+        public TelegramLib.MainClasses.User GetUser(string login, string password)
         {
             var user = DbService.GetUserModelByLogin(login);
             if (user is null) return null;
@@ -135,7 +140,7 @@ namespace TelegramClientServer.Controllers
 
         [Authorize]
         [HttpGet("GetTelSystem")]
-        public ActionResult<TelSystem> GetTellSystemByUser(/*string login, string password*/)
+        public ActionResult<TelSystem> GetTellSystemByUser()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null) return Unauthorized();
@@ -149,9 +154,24 @@ namespace TelegramClientServer.Controllers
             return Ok(system);
         }
 
+        [Authorize]
+        [HttpGet("GetPartOfTelSystem")]
+        public ActionResult<TelSystem> GetPartOfTelSystem()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var system = DbService.GetPartlyTelSystem(userId);
+            if (system == null) return NotFound();
+
+            return Ok(system);
+        }
+
 
         [HttpGet("GetUserByLoginPassword")]
-        public User GetUserByLoginPassword(string login, string password)
+        public TelegramLib.MainClasses.User GetUserByLoginPassword(string login, string password)
         {
             return DbService.GetUserByLoginPass(login, password);
         }
@@ -161,14 +181,13 @@ namespace TelegramClientServer.Controllers
         public IActionResult IsRegistrationParamsAreExist(string login, string phoneNumber)
         {
             var exists = DbService.IsRegistrationParamsareExist(login, phoneNumber);
-            return Ok(exists); 
+            return Ok(exists);
         }
 
-            private string GenerateJwtToken(TelegramLib.Models.User user)
+        private string GenerateJwtToken(TelegramLib.Models.User user)
         {
             var keyString = _config["Jwt:Key"];
 
-            // Если упадет здесь, значит конфигурация реально не видит ключ
             if (string.IsNullOrEmpty(keyString))
                 throw new Exception("JWT Key is missing in appsettings.json!");
 
@@ -185,7 +204,7 @@ namespace TelegramClientServer.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7), // Токен будет жить неделю
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

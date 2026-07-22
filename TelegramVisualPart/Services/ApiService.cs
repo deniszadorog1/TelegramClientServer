@@ -4,6 +4,8 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Windows.Media.Imaging;
+using TelegramLib.Decorators;
 using TelegramLib.Helpers;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
@@ -11,12 +13,7 @@ using TelegramLib.MainClasses.Messages;
 using TelegramLib.UserSettings;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
-using TelegramLib.Decorators;
-using System.Windows.Media.Imaging;
 using TelegramVisualPart.Helper;
-using System.Data.Entity.Migrations.Model;
-using MaterialDesignColors.Recommended;
-using TelegramLib.Models;
 
 //using static ControlzEx.Standard.NativeMethods;
 
@@ -148,6 +145,25 @@ namespace TelegramVisualPart.Services
 
             return mes;
         }
+
+        public static async Task<List<Message>> GetPartlyMessagesByChatId(int chatId, int tempMesId)
+        {
+            var response =
+                await _client.GetAsync($"api/Chat/GetPartlyMessages?chatId={chatId}&tempMessageId={tempMesId}");
+            string jsonResponse =
+                await response.Content.ReadAsStringAsync();
+
+            List<TelegramLib.MainClasses.Messages.Message>? mes =
+                JsonConvert.DeserializeObject<List<Message>>(
+                jsonResponse,
+                new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+
+            return mes;
+        }
+
 
         public static async Task<List<MediaAction>> AddAndGetPairMediaMessages(List<TelegramLib.MainClasses.Messages.MediaAction> messages, UserChat chat)
         {
@@ -345,7 +361,19 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.UserParams.UserImage? imgParams = jsonResponse is null ? null :
                 JsonConvert.DeserializeObject<TelegramLib.MainClasses.UserParams.UserImage>(jsonResponse);
             return imgParams;
+        }
 
+        public static async Task<List<TelegramLib.MainClasses.UserContactcs>?> GetPartlyContacts(int loggedUserId, int tempContactId)
+        {
+            var response = await _client.GetAsync($"api/Chat/GetPartlyContacts?loggedUserId={loggedUserId}&tempContactId={tempContactId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            List<TelegramLib.MainClasses.UserContactcs>? res = jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<List<TelegramLib.MainClasses.UserContactcs>>(jsonResponse);
+
+            return res;
         }
 
         // Get User
@@ -448,14 +476,6 @@ namespace TelegramVisualPart.Services
                 Debug.WriteLine($"Registration mistake: {ex.Message}");
                 return true;
             }
-
-
-            /*            var response = await _client.GetAsync($"api/Auth/IsRegistrationParamsAreExist?login={login}&phoneNumber={phoneNumber}");
-
-                        string jsonResponse = await response.Content.ReadAsStringAsync();
-
-                        bool res = JsonConvert.DeserializeObject<bool>(jsonResponse);
-                        return res;*/
         }
 
         public static async Task<bool> IsContactContainsInContacts(UserContactcs contact, UserContactcs toCheck)
@@ -522,7 +542,6 @@ namespace TelegramVisualPart.Services
             return res;
         }
 
-        //Get User By phone number
         public static async Task<TelegramLib.MainClasses.User> GetUserByPhoneNumber(string phoneNumber)
         {
             phoneNumber = phoneNumber.Replace("+", "");
@@ -538,7 +557,6 @@ namespace TelegramVisualPart.Services
             return user;
         }
 
-        //Get Users phoneNumber
         public static async Task<string> GetUsersPhoneNumber()
         {
             var response = await _client.GetAsync($"api/Social/GetUsersPhoneNumber");
@@ -559,7 +577,6 @@ namespace TelegramVisualPart.Services
 
             return response.IsSuccessStatusCode;
         }
-
 
         public static async Task<string> GetToken(string login, string password)
         {
@@ -949,8 +966,6 @@ namespace TelegramVisualPart.Services
             Message? asd = JsonConvert.DeserializeObject<Message>(jsonResponse, settings);
 
             return asd;
-
-            //return JsonConvert.DeserializeObject<Message>(jsonResponse);
         }
 
         //Add many messages
@@ -974,7 +989,7 @@ namespace TelegramVisualPart.Services
             if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
 
             var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto };
-            List<Message> asd =  JsonConvert.DeserializeObject<List<Message>>(jsonResponse, settings);
+            List<Message> asd = JsonConvert.DeserializeObject<List<Message>>(jsonResponse, settings);
 
             return asd;
         }
@@ -1041,7 +1056,6 @@ namespace TelegramVisualPart.Services
             return response.IsSuccessStatusCode;
         }
 
-
         //Set aut delition
         public static async Task<bool> SetAutoDeletion(int chatId,
             TelegramLib.Enums.Chat.AutoDeleteType type)
@@ -1068,6 +1082,20 @@ namespace TelegramVisualPart.Services
                     TypeNameHandling = TypeNameHandling.Auto
                 });
         }
+
+        public static async Task<List<UserChat>?> GetPartlyChats(int userId, int tempChatId)
+        {
+            var response = await _client.GetAsync($"api/Chat/GetPartlyChats?userId={userId}&tempChatId={tempChatId}");
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonResponse)) return null;
+
+            return jsonResponse is null ? null :
+                JsonConvert.DeserializeObject<List<UserChat>>(jsonResponse, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto
+                });
+        } 
 
         public static async Task<bool> IsLoginExist(string login)
         {
@@ -1144,7 +1172,6 @@ namespace TelegramVisualPart.Services
             });
         }
 
-
         public static async Task<int> GetLastFolderIdByUserId(int userId)
         {
             var response = await _client.GetAsync($"api/Social/GetLastFolderIdByUserId?userId={userId}");
@@ -1191,8 +1218,6 @@ namespace TelegramVisualPart.Services
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Message/SetPinStatus", content);
-
-            Console.WriteLine(response.IsSuccessStatusCode);
         }
 
         public static async Task<bool> SetUserOnlineStatus(int userId, bool status)
@@ -1202,14 +1227,12 @@ namespace TelegramVisualPart.Services
             string json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/Social/SetUserOnlineStatus", content);
-
             return response.IsSuccessStatusCode;
         }
 
         public static async Task<bool> UpdateMonitor(int userId,
             TelegramLib.Enums.Settings.Notifs.NotifMessageSide side, int mesAmount)
         {
-            //var data = new { Sound = sound, Volume = volume, UserId = userId, IsDefault }
             var data = new { Side = side, MessagesAmount = mesAmount, UserId = userId };
 
             string json = JsonConvert.SerializeObject(data);
@@ -1484,7 +1507,6 @@ namespace TelegramVisualPart.Services
                 JsonConvert.DeserializeObject<int>(jsonResponse);
         }
 
-
         //Medias on Server
         public static async Task<string> UploadMediaAsync(string localPath)
         {
@@ -1556,6 +1578,21 @@ namespace TelegramVisualPart.Services
                 TypeNameHandling = TypeNameHandling.Auto
             });
         }
+
+        public static async Task<TelSystem?> GetPartlyTelSystem()
+        {
+            var response = await _client.GetAsync("api/Auth/GetPartOfTelSystem");
+
+            if (!response.IsSuccessStatusCode) return null;
+
+            string jsonResponse = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TelSystem>(jsonResponse, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+        }
+
 
 
         private static TelSystem? _cachedSystem;

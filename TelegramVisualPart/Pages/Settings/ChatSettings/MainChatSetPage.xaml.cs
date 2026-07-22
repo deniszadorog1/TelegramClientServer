@@ -1,37 +1,19 @@
 ﻿using MaterialDesignThemes.Wpf;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Win32;
-using Newtonsoft.Json.Bson;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Security.Permissions;
-using System.Security.RightsManagement;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using TelegramLib.Enums.Settings.ChatSettings;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
-using TelegramLib.UserSettings.SettingsTypes;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls;
-using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
-using static MaterialDesignThemes.Wpf.Theme;
 using Color = System.Windows.Media.Color;
 using Path = System.IO.Path;
 using RadioButton = System.Windows.Controls.RadioButton;
@@ -75,10 +57,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetChatBgLittleImage()
         {
+            const int radius = 20;
             if (_chatsSettings.Wallpaper.WallpaperName == string.Empty) return;
             ChosenWallpaperImage.Source = new BitmapImage(new Uri(TestThing.GetTestParams.GetWallpaperPath(_chatsSettings.Wallpaper.WallpaperName), UriKind.Absolute));
 
-            ChosenWallpaperImage.Effect = _chatsSettings.Wallpaper.IsBlurred ? new BlurEffect() { Radius = 20 } : null;
+            ChosenWallpaperImage.Effect = _chatsSettings.Wallpaper.IsBlurred ? new BlurEffect() { Radius = radius } : null;
         }
 
         public void SetClassParams()
@@ -146,10 +129,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void SetChatWallpaperParam()
         {
+            Size size = new Size(200, 200);
             ChosenWallpaperImage.Source = new System.Windows.Controls.Image
             {
-                Width = 200,
-                Height = 200,
+                Width = size.Width,
+                Height = size.Height,
                 Source = new BitmapImage(new Uri(FilesAction.GetWallpaperPathByName(_chatsSettings.GetWallpaperName()), UriKind.Absolute)),
                 Stretch = Stretch.UniformToFill
             }.Source;
@@ -342,7 +326,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             ActivateClickCircleColorByCircle(last);
 
         }
-        
+
         public void SetThemesBaseParams()
         {
             SetBaseThemeParam(Classic,
@@ -400,7 +384,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
                 _chatsSettings.Theme = type is null ? ThemeType.Tinted : (ThemeType)type;
 
-             
+
                 ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
@@ -528,7 +512,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
                 //Set them params
                 UpdateThemeParams();
 
-                if(e.Timestamp != _timeSpan) ActiveThemeParams();
+                if (e.Timestamp != _timeSpan) ActiveThemeParams();
             }
         }
 
@@ -636,10 +620,11 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const string filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
             //Set Add file 
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Title = "Choose wallpaper";
-            dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            dlg.Filter = filter;
             dlg.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Visuals", "Images");
 
             if (dlg.ShowDialog() == true)
@@ -691,10 +676,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
         {
             if (IsNightNow())
             {
-                //Set it on start (when is base initioation)
-                 
-                //Set night theme
-                //Get set timer activation
+                return;
             }
         }
 

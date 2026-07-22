@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,13 +41,14 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
         public void SetPassCode()
         {
+            const int devHeight = 60;
             if (!_isEnterCode) return;
 
             SecondBoxCode.Visibility = Visibility.Hidden;
 
             AddPasscode.Content = "Submit";
 
-            BoxesRow.Height = new GridLength(BoxesRow.Height.Value - 60);
+            BoxesRow.Height = new GridLength(BoxesRow.Height.Value - devHeight);
             //Height -= 160;
         }
 

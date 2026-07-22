@@ -54,6 +54,7 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Mic
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Client.Core.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Common.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.Bcl.TimeProvider.dll
 B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
@@ -416,4 +417,3 @@ B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.pdb
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\TelegramVisualPart.genruntimeconfig.cache
 B:\GitHub\TelegramClientServer\TelegramVisualPart\obj\Release\net8.0-windows\ref\TelegramVisualPart.dll
-B:\GitHub\TelegramClientServer\TelegramVisualPart\bin\Release\net8.0-windows\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll

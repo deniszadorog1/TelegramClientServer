@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TelegramClientServer.Interfaces;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.Services;
@@ -13,9 +13,20 @@ namespace TelegramClientServer.Controllers
 
     public class ChatController : ControllerBase
     {
+        private readonly IFController _clientProps;
+
+        public ChatController(IFController clientProps)
+        {
+            _clientProps = clientProps;
+        }
+
+
         [HttpDelete("ClearSaveChatById")]
         public void ClearSaveChatById([FromBody] ClearSaveMessagesChatDTO dto)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(dto.Id, userId)) return;
+
             DbService.ClearSaveChatById(dto.Id);
         }
 
@@ -27,6 +38,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("DeleteChatById")]
         public void DeleteChatById([FromBody] DeleteChatByChatterIdDTO chatterIdDTO)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(chatterIdDTO.ChatId, userId)) return;
+
             DbService.DeleteChatById(chatterIdDTO.ChatId);
         }
         public class DeleteChatByChatterIdDTO()
@@ -45,6 +59,9 @@ namespace TelegramClientServer.Controllers
         [HttpDelete("ClearChat")]
         public void ClearChat([FromBody] ChatDTO chat)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(chat.Chat.Id, userId)) return;
+
             DbService.ClearChat(chat.Chat.Id);
         }
 
@@ -78,8 +95,26 @@ namespace TelegramClientServer.Controllers
             public int ChatId { get; set; }
         }
 
+        [HttpGet("GetPartlyChats")]
+        public List<TelegramLib.MainClasses.UserChat> GetPartlyChats(int userId, int tempChatId)
+        {
+            return DbService.GetPartOfTheUserChat(userId, tempChatId);
+        }
+
+        [HttpGet("GetPartlyMessages")]
+        public List<TelegramLib.MainClasses.Messages.Message> GetPartlyMessages(int chatId, int tempMessageId)
+        {
+            return DbService.GetPartOfTheMessages(chatId, tempMessageId);
+        }
+
+        [HttpGet("GetPartlyContacts")]
+        public List<TelegramLib.MainClasses.UserContactcs> GetPartlyContacts(int userId, int tempContactId)
+        {
+            return DbService.GetPartOfTheContacts(userId, tempContactId);
+        }
+
         [HttpGet("GetChatBgIdByName")]
-        public int GetChatBgidByName(string name)
+        public int GetChatBgIdByName(string name)
         {
             return DbService.GetChatBgIdByName(name);
         }
@@ -96,6 +131,8 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetSavedMessagesChat")]
         public TelegramLib.MainClasses.SavedMessagesChat GetSavedMessagesChat(int userId)
         {
+            if (_clientProps.GetCurrentUserId() != userId) return null;
+
             return DbService.GetSavedMessageChat(userId);
         }
 
@@ -143,6 +180,9 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetMessagesByChatId")]
         public List<TelegramLib.MainClasses.Messages.Message> GetMessagesByChatId(int chatId)
         {
+            int userId = _clientProps.GetCurrentUserId();
+            if (!DbService.IsChatOwnedByUser(chatId, userId)) return null;
+
             return DbService.GetMessagesByChatId(chatId);
         }
 

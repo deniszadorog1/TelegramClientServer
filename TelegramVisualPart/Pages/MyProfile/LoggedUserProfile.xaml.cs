@@ -32,7 +32,7 @@ namespace TelegramVisualPart.Pages
             SetLanguageText.SetLoggedUserProfile(this);
         }
 
-        public void SetBasicParams()
+        public async void SetBasicParams()
         {
             CloseBut.IconType.Kind = PackIconKind.Close;
             SettingsBut.IconType.Kind = PackIconKind.LeadPencil;
@@ -40,8 +40,6 @@ namespace TelegramVisualPart.Pages
             UserLoginBlock.Text = _user.Name;
 
             SetOnlineStatus();
-            //LastSeenOnline.Text = _user.LastSeenOnline.ToString();
-
        
             PhoneNumberBlock.Text = _user.PhoneNumber;
             UserNameBlock.Text = _user.Login;
@@ -49,9 +47,11 @@ namespace TelegramVisualPart.Pages
             if(_user.BirthDay is not null)BirthdayBlock.Text = $"{_user.BirthDay.Value.Day}.{_user.BirthDay.Value.Month}.{_user.BirthDay.Value.Year}";
 
 
-            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+            string path = await FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
 
-            UserImage.ImageSource = UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
+            UserImage.ImageSource = UserImage.ImageSource = 
+                ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : 
+                await SignalRHelperService.LoadBitmap(path);
             
             BlocksSize();
         }
@@ -64,11 +64,12 @@ namespace TelegramVisualPart.Pages
 
         public void SetRowHeight(RowDefinition row, TextBlock block, RowDefinition iconRow)
         {
+            const int devHeight = 40;
             if (block.Text == string.Empty)
             {
                 row.Height = new GridLength(0);
                 iconRow.Height = new GridLength(0);
-                BlockColumn.Height = new GridLength(BlockColumn.Height.Value - 40);
+                BlockColumn.Height = new GridLength(BlockColumn.Height.Value - devHeight);
             }
             else
             {
@@ -79,18 +80,22 @@ namespace TelegramVisualPart.Pages
                 }
                 row.Height = new GridLength(1, GridUnitType.Star);
                 iconRow.Height = new GridLength(1, GridUnitType.Star);
-                BlockColumn.Height = new GridLength(BlockColumn.Height.Value + 40);
+                BlockColumn.Height = new GridLength(BlockColumn.Height.Value + devHeight);
             }
         }
 
         public void SetBioBlockHeight()
         {
-            if(BioBlock.Text.Length < 30)
+            const int maxLength = 30;
+            const double minLengthVal = 1.25; 
+            const double maxLengthVal = 1.75; 
+
+            if(BioBlock.Text.Length < maxLength)
             {
-                BioColumn.Height = new GridLength(1.25, GridUnitType.Star);
+                BioColumn.Height = new GridLength(minLengthVal, GridUnitType.Star);
                 return;
             }
-            BioColumn.Height = new GridLength(1.75, GridUnitType.Star);
+            BioColumn.Height = new GridLength(maxLengthVal, GridUnitType.Star);
         }
 
         private void SetOnlineStatus()
@@ -140,11 +145,6 @@ namespace TelegramVisualPart.Pages
 
         private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //string firstImage = _user.GetFirstImageName().Name;
-            //Image chosen = FilesAction.GetUserImage(firstImage);
-
-            //List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());
-
             MediaWindow mediaWindow = new MediaWindow(
                 _system.LoggedUser, (MainWindow)Window.GetWindow(this), 
                 Enums.MediaShow.MediaShowType.UserImages, _system);
@@ -153,20 +153,12 @@ namespace TelegramVisualPart.Pages
             if (((MainWindow)Window.GetWindow(this))
                 .IsMediaWindowIsExistByUserId(_system.LoggedUser.Id)) return;
             mediaWindow.Show();
-
-/*
-            VisualActionPage page = new VisualActionPage(chosen, imgs);
-            page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
-
-            page.ToRemoveImage += ToRemoveUserImage_MouseDown;
-
-            ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
-        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        private async void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
         {
             UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));
         }
 
         private void UserNameBlock_MouseEnter(object sender, MouseEventArgs e)
@@ -184,7 +176,6 @@ namespace TelegramVisualPart.Pages
         private void UserNameBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             Clipboard.SetText(UserNameBlock.Text);
-
             Window window = Window.GetWindow(this);
 
             if(window is MainWindow main)

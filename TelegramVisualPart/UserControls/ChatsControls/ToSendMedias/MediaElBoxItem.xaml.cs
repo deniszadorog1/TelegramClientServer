@@ -71,7 +71,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls.ToSendMedias
 
             BitmapImage cachedBitmap = ApiService.GetCachedBitmap(path);
 
-            Img.Source = cachedBitmap is not null ? cachedBitmap : SignalRHelperService.LoadBitmap(path);// new BitmapImage(new Uri(path, UriKind.Absolute));
+            Img.Source = cachedBitmap is not null ? cachedBitmap : await SignalRHelperService.LoadBitmap(path);// new BitmapImage(new Uri(path, UriKind.Absolute));
             Img.Tag = path;
         }
 

@@ -28,9 +28,9 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
             InitializeComponent();
         }
 
-        public void SetBasicParams(string userImgName, string name)
+        public async Task SetBasicParams(string userImgName, string name)
         {
-            UserImageBrush.ImageSource = new BitmapImage(new Uri(FilesAction.GetUserImagePath(userImgName), UriKind.Absolute));
+            UserImageBrush.ImageSource = new BitmapImage(new Uri(await FilesAction.GetUserImagePath(userImgName), UriKind.Absolute));
             UserName.Text = name;
         }
 

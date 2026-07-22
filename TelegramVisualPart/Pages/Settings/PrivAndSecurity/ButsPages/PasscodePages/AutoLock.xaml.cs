@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -47,11 +48,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
 
         private void SetTime_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int oneRadio = 1;
+            const int twoRadio = 5;
+            const int threeRadio = 60;
+            const int fourRadio = 300;
+
             int minutes = 0;
-            if (sender == OneMin) minutes = 1;
-            if (sender == FiveMin) minutes = 5;
-            if (sender == OneHour) minutes = 60;
-            if (sender == FiveHours) minutes = 300;
+            if (sender == OneMin) minutes = oneRadio;
+            if (sender == FiveMin) minutes = twoRadio;
+            if (sender == OneHour) minutes = threeRadio;
+            if (sender == FiveHours) minutes = fourRadio;
 
             SetNewPassCode(minutes);
 
@@ -61,10 +67,11 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages.PasscodePa
 
         private void Custom_Checked(object sender, RoutedEventArgs e)
         {
+            const int minMult = 60;
             int.TryParse(HoursBox.Text, out int hours);
             int.TryParse(MinutesBox.Text, out int minutes);
 
-            SetNewPassCode(hours * 60 + minutes);
+            SetNewPassCode(hours * minMult + minutes);
 
             UpdateTime?.Invoke();
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);

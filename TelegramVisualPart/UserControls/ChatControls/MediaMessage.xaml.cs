@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.CodeDom;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -419,6 +420,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        private readonly List<string> _videoExt = new List<string>()
+        {
+            ".mp4",
+            ".amv"
+        };
+
         public async Task<List<BitmapImage>> GetBitImagesByPaths(List<string> paths)
         {
             List<BitmapImage> res = new List<BitmapImage>();
@@ -439,7 +446,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 string tempPath = System.IO.Path.GetFileName(newPath);
                 string videoExt = System.IO.Path.GetExtension(tempPath);
 
-                if (videoExt == ".mp4" || videoExt == ".amv")
+                if (_videoExt.Contains(videoExt) /*videoExt == ".mp4" || videoExt == ".amv"*/)
                 {
                     Image videoFrame = await /*FilesAction.GetImagePreviewForVideo(tempPath);// */VisHelper.GetFirstFrameAsync(tempPath);
                     if (videoFrame is null) continue;
@@ -452,7 +459,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                     continue;
                 }
 
-                bitmap = SignalRHelperService.LoadBitmap(newPath);
+                bitmap = await SignalRHelperService.LoadBitmap(newPath);
 
                 if (bitmap is not null)
                 {
@@ -493,12 +500,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         public async void SetBandImg(Border border, ImageBrush brush,
             string path, Size minSize, Size maxSize)
         {
+            const int halfDivider = 2;
             const Stretch strech = Stretch.Fill;
 
             path = System.IO.Path.GetFileName(path);
             string videoExt = System.IO.Path.GetExtension(path);
 
-            if (videoExt == ".mp4" || videoExt == ".amv")
+            if (_videoExt.Contains(videoExt)/* videoExt == ".mp4" || videoExt == ".amv"*/)
             {
                 Image videoFrame = await VisHelper.GetFirstFrameAsync(path);
                 if (videoFrame is null) return;
@@ -521,11 +529,11 @@ namespace TelegramVisualPart.UserControls.ChatControls
             string fullPath = FilesAction.GetFullChatImagePath(Path.GetFileName(path)); //FilesAction.GetFullChatImagePath(path);
 
 
-            BitmapImage bitMap = img is not null ? img : SignalRHelperService.LoadBitmap(fullPath);//  new BitmapImage(new Uri(fullPath, UriKind.Absolute));
+            BitmapImage bitMap = img is not null ? img : await SignalRHelperService.LoadBitmap(fullPath);//  new BitmapImage(new Uri(fullPath, UriKind.Absolute));
 
 
-            double width = bitMap.Width / 2;
-            double height = bitMap.Height / 2;
+            double width = bitMap.Width / halfDivider;
+            double height = bitMap.Height / halfDivider;
 
             border.Width = width > minSize.Width && width < maxSize.Width ? width : minSize.Width;
             border.Height = height > minSize.Height && height < maxSize.Height ? height : minSize.Height;
@@ -1007,7 +1015,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
             }
-
         }
 
         public void SetTagIdsToBandBorders(List<MediaAction> medias)
@@ -1065,24 +1072,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             if (_message.IsImage())
             {
-                /*ImgMessage.ImageSource =
-                   new BitmapImage(new Uri(
-                   FilesAction.GetFullChatImagePath(_message.MediaName),
-                   UriKind.Absolute));*/
-
                 string fullPath = FilesAction.GetPathByName(_message.MediaName);
 
                 BitmapImage bitmap = ApiService.GetCachedBitmap(_message.MediaName);
 
                 ImgMessage.ImageSource = bitmap is not null ? bitmap :
-                    SignalRHelperService.LoadBitmap(fullPath);
+                    await SignalRHelperService.LoadBitmap(fullPath);
                     
-/*                    new BitmapImage(new Uri(
-                        FilesAction.GetPathByName(_message.MediaName),
-                        UriKind.Absolute));*/
-
-
-                //SetImgMessageSize(_img, ImageBorder);
                 ImageBorder.Visibility = Visibility.Visible;
             }
             else if (_message.IsVideo())
@@ -1143,12 +1139,13 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetImgMessageSize(Image img, Border border, bool isVideo = false)
         {
+            Size size = new Size(225, 150);
             if (isVideo) return;
 
             if(!ScaleVideo(img, border))
             {
-                border.Height = 150;
-                border.Width = 225;
+                border.Width = size.Width;
+                border.Height = size.Height;
             }
 
             return;
@@ -1313,7 +1310,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return SelectionTickObj.GetChosenStatus();
         }
 
-        public void SetSenderImage()
+        public async void SetSenderImage()
         {
             if (_senderImgName is null)
             {
@@ -1322,14 +1319,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 return;
             }
 
-/*            BitmapImage bitmap = ApiService.GetCachedBitmap(_senderImgName);
-
-            string fullPath = FilesAction.GetUserImagePath(_senderImgName);
-            ImgMessage.ImageSource = bitmap is not null ? bitmap :
-                SignalRHelperService.LoadBitmap(fullPath);*/
-
             BgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
+                await FilesAction.GetUserImagePath(_senderImgName), UriKind.Absolute));
         }
 
         private async Task SetVideoPreview()
@@ -1339,7 +1330,6 @@ namespace TelegramVisualPart.UserControls.ChatControls
             Image img = await FilesAction.GetImagePreviewForVideo(fileName);
 
             ImgMessage.ImageSource = img.Source;
-           // VideoParams.Visibility = Visibility.Visible;
 
             SetImgMessageSize(img, ImageBorder, isVideo: false);
 

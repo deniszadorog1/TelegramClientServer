@@ -47,9 +47,10 @@ namespace TelegramVisualPart.UserControls
 
         private void UserIcon_MouseEnter(object sender, MouseEventArgs e)
         {
+            const int moveVal = 50;
             Cursor = Cursors.Hand;
 
-            AnimateMenuGrid(50);
+            AnimateMenuGrid(moveVal);
         }
 
         private void UserIcon_MouseLeave(object sender, MouseEventArgs e)
@@ -60,22 +61,22 @@ namespace TelegramVisualPart.UserControls
 
         private void AnimateMenuGrid(double toValue)
         {
+            const int duration = 300;
             var anim = new DoubleAnimation
             {
                 To = toValue,
-                Duration = TimeSpan.FromMilliseconds(300),
+                Duration = TimeSpan.FromMilliseconds(duration),
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
             };
 
             (MenuGrid.RenderTransform as TranslateTransform)?.BeginAnimation(TranslateTransform.YProperty, anim);
         }
 
-
-        public void SetUserInfo()
+        public async Task SetUserInfo()
         {
             if (_system is null) return;
             UserImage.ImageSource = new BitmapImage(new Uri(
-                 FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
+                 await FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageName().Name), UriKind.Absolute));
 
         }
 

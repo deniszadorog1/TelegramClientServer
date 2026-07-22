@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramLib.MainClasses;
+using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
 
@@ -33,7 +34,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             InitializeComponent();
 
-            SetContactsToShareWith();
+            Loaded += async (s, e) => await SetContactsToShareWith();
         }
 
         private User _checkedContact;
@@ -48,12 +49,17 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 if (isContains || _contact is null || _contact.Id == _system.Contacts[i].Id) continue;
 
                 _checkedContact = await ApiService.GetUserById(_system.Contacts[i].ContactUserId);
-                UserContact toAdd = new UserContact(_checkedContact);
-                toAdd.Tag = _system.GetChatByChatterId(_system.Contacts[i].ContactUserId).Id;
 
+                string imgPath = await FilesAction.GetUserImagePath(_checkedContact.GetFirstImageNameInString());
+                if (ApiService.GetCachedBitmap(imgPath) is null)
+                    await SignalRHelperService.LoadBitmap(imgPath);
+
+                UserContact toAdd = new UserContact(_checkedContact);
+                await toAdd.SetBasicParams();
+
+                toAdd.Tag = _system.GetChatByChatterId(_system.Contacts[i].ContactUserId).Id;
                 toAdd.MouseEnter += UserControl_MouserEnter;
                 toAdd.MouseLeave += UserControl_MouseLeave;
-
                 toAdd.PreviewMouseDown += UserControl_PreviewMouseDown;
 
                 //add in contacts if not contatins
@@ -105,7 +111,6 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 
             //Add chat in DB
             await ApiService.AddNewChat(user.Id, contact.Id);
-
         }
 
         public void UserControl_MouserEnter(object sender, MouseEventArgs e)

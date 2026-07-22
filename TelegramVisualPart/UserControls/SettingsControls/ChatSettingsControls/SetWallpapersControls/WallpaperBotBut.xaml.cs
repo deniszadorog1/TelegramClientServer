@@ -33,7 +33,6 @@ namespace TelegramVisualPart.UserControls.SettingsControls.ChatSettingsControls.
         private void BorderBg_MouseEnter(object sender, MouseEventArgs e)
         {
             BorderBg.Background = new SolidColorBrush(Colors.Gray);
-                  // (SolidColorBrush)Application.Current.Resources["DarkThemeMouseEnterBut"];
         }
 
         private void BorderBg_PreviewMouseDown(object sender, MouseButtonEventArgs e)

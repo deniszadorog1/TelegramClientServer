@@ -90,6 +90,5 @@ namespace TelegramVisualPart.Pages.MyProfile.SetInformation
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
-
     }
 }

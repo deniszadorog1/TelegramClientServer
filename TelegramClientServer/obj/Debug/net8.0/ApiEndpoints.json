@@ -97,6 +97,26 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.AuthController",
+    "Method": "GetPartOfTelSystem",
+    "RelativePath": "api/Auth/GetPartOfTelSystem",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TelegramLib.MainClasses.TelSystem",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.AuthController",
     "Method": "GetTellSystemByUser",
     "RelativePath": "api/Auth/GetTelSystem",
     "HttpMethod": "GET",
@@ -370,7 +390,7 @@
   },
   {
     "ContainingType": "TelegramClientServer.Controllers.ChatController",
-    "Method": "GetChatBgidByName",
+    "Method": "GetChatBgIdByName",
     "RelativePath": "api/Chat/GetChatBgIdByName",
     "HttpMethod": "GET",
     "IsController": true,
@@ -611,6 +631,99 @@
     "Parameters": [
       {
         "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[TelegramLib.MainClasses.Messages.Message, TelegramLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetPartlyChats",
+    "RelativePath": "api/Chat/GetPartlyChats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tempChatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[TelegramLib.MainClasses.UserChat, TelegramLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetPartlyContacts",
+    "RelativePath": "api/Chat/GetPartlyContacts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tempContactId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[TelegramLib.MainClasses.UserContactcs, TelegramLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "TelegramClientServer.Controllers.ChatController",
+    "Method": "GetPartlyMessages",
+    "RelativePath": "api/Chat/GetPartlyMessages",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "chatId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "tempMessageId",
         "Type": "System.Int32",
         "IsRequired": false
       }

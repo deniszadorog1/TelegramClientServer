@@ -52,14 +52,15 @@ namespace TelegramVisualPart.Pages.MyProfile
             SetLanguageText.SetMyProfileSettings(this);
         }
 
-        public void SetUserImage()
+        public async void SetUserImage()
         {
-            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
-            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : SignalRHelperService.LoadBitmap(path);
+            string path = await FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+            UserImage.ImageSource = ApiService.GetCachedBitmap(path) is BitmapImage b and not null ? b : await SignalRHelperService.LoadBitmap(path);
         }
 
         public void SetUserParams()
         {
+            const int minYear = 1;
             UserName.Text = _user.Login;
 
             HelperService.SetOnlineStatusInTextBox(LastSeenOnline, _user.IsOnline, _user.LastSeenOnline);
@@ -74,7 +75,7 @@ namespace TelegramVisualPart.Pages.MyProfile
             BirthdayBut.AdditionalText.Text = _user.BirthDay is null ? string.Empty :
                 (((DateTime)_user.BirthDay).Day + " " +
                 ((DateTime)_user.BirthDay).Month + " " +
-                (((DateTime)_user.BirthDay).Year == 1 ? " " :
+                (((DateTime)_user.BirthDay).Year == minYear ? " " :
                 ((DateTime)_user.BirthDay).Year))
             .ToString();
         }
@@ -201,11 +202,6 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         private void Ellipse_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            /*            string firstImage = _user.GetFirstImageName().Name;
-                        Image chosen = FilesAction.GetUserImage(firstImage);
-
-                        List<Image> imgs = FilesAction.GetUserImages(_user.GetImagesNames());*/
-
             //Set window here
             MediaWindow mediaWindow = new MediaWindow(
                 _system.LoggedUser, (MainWindow)Window.GetWindow(this),
@@ -215,25 +211,12 @@ namespace TelegramVisualPart.Pages.MyProfile
             if (((MainWindow)Window.GetWindow(this))
                 .IsMediaWindowIsExistByUserId(_system.LoggedUser.Id)) return;
             mediaWindow.Show();
-
-
-
-            /*            VisualActionPage page = new VisualActionPage(chosen, imgs);
-                        page.SetUserImages(_user.UserImages, _system, _user.Name, true, null);
-
-                        page.ToRemoveImage += ToRemoveUserImage_MouseDown;
-
-                        ((MainWindow)Window.GetWindow(this)).SetThirdFrame(page);*/
         }
 
-        private void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
+        private async void ToRemoveUserImage_MouseDown(object sender, EventArgs e)
         {
-            string path = FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
-            UserImage.ImageSource = SignalRHelperService.LoadBitmap(path);
-            //new BitmapImage(new Uri(path), UriKind.Absolute);
-
-/*            UserImage.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetUserImagePath(_user.GetFirstImageName().Name), UriKind.Absolute));*/
+            string path = await FilesAction.GetUserImagePath(_user.GetFirstImageName().Name);
+            UserImage.ImageSource = await SignalRHelperService.LoadBitmap(path);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -251,13 +234,22 @@ namespace TelegramVisualPart.Pages.MyProfile
             Cursor = null;
         }
 
+        private List<string> _imgsExt = new List<string>()
+        {
+            ".png",
+            ".jpg",
+            ".jpeg"
+        };
+
         private async void SetPhotoGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            const string title = "Choose image";
+            const string filter = "Image files|*.png;*.jpg;*.jpeg;";
             //Get photo
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Choose image",
-                Filter = "Image files|*.png;*.jpg;*.jpeg;"
+                Title = title,
+                Filter = filter
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -265,7 +257,7 @@ namespace TelegramVisualPart.Pages.MyProfile
                 string filePath = openFileDialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-                if (extension != ".png" && extension != ".jpg" && extension != ".jpeg") return;
+                if (!_imgsExt.Contains(extension) /*extension != ".png" && extension != ".jpg" && extension != ".jpeg"*/) return;
 
                 string newImagePath = await ApiService.UploadMediaAsync(filePath);
 
@@ -278,11 +270,8 @@ namespace TelegramVisualPart.Pages.MyProfile
                 //Add in system
                 _system.LoggedUser.AddUserImage(img);
 
-                //Add file in correct folder(if not added yet)
-                //FilesAction.AddNewUserImage(newImagePath);
-
                 //Add in db
-                ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(newImagePath));
+                await ApiService.AddUserImage(_system.LoggedUser, System.IO.Path.GetFileName(newImagePath));
 
                 //Update in system
                 Window window = Window.GetWindow(this);

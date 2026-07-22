@@ -1,35 +1,12 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.DependencyInjection; 
-using Newtonsoft.Json;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using TelegramLib.MainClasses;
-using TelegramLib.MainClasses.Messages;
-using TelegramVisualPart.UserControls;
-using Newtonsoft.Json.Bson;
-using TelegramLib.Models;
-
-using UserChat = TelegramLib.MainClasses.UserChat;
-using User = TelegramLib.MainClasses.User;
-
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.Http;
-using System.Runtime.CompilerServices;
-using TelegramVisualPart.UserControls.SettingsControls;
-using TelegramVisualPart.Pages;
-using TelegramVisualPart.Windows;
 using TelegramLib.MainClasses.DTOsHelper;
-using Microsoft.Xaml.Behaviors.Core;
+using TelegramLib.MainClasses.Messages;
 using TelegramVisualPart.Helper;
-using Microsoft.Extensions.Hosting;
-using System.Windows;
-using System.Net.NetworkInformation;
-using System.Formats.Asn1;
+using User = TelegramLib.MainClasses.User;
+using UserChat = TelegramLib.MainClasses.UserChat;
 
 namespace TelegramVisualPart.Services
 {
@@ -45,7 +22,7 @@ namespace TelegramVisualPart.Services
 
         public static event Func<User, StaticMessage, Task>? StatMessageReceived;
 
-        public static event Func<List<Message>, User, Task>? SendAllMessagesDel;  
+        public static event Func<List<Message>, User, Task>? SendAllMessagesDel;
 
         public static event Action<User>? UpdateContactDel;
         public static event Action<User>? UpdateOnlineStatusDel;
@@ -71,7 +48,7 @@ namespace TelegramVisualPart.Services
         public static event Action<User, TextMessage>? ReplyMesAction;
         public static event Action<User, Message>? ForwardMesAction;
         public static event Action<User, Message, bool>? DeleteMessageByIdDel;
-        public static event Action<User, Message>? ToPinMessageDel;
+        public static event Func<User, Message, Task>? ToPinMessageDel;
         public static event Action<User>? UpdateLittlePhotoVisInChatDel;
 
         public static event Func<User, Task>? RemoveContactDel;
@@ -410,10 +387,10 @@ namespace TelegramVisualPart.Services
 
         public static async Task SendTextMessage(User sender, List<Message> message, User chatter)
         {
-/*            if (_connection.State == HubConnectionState.Connected)
-            {
-                await _connection.InvokeAsync("TestConnection");
-            }*/
+            /*            if (_connection.State == HubConnectionState.Connected)
+                        {
+                            await _connection.InvokeAsync("TestConnection");
+                        }*/
 
             if (_connection.State == HubConnectionState.Connected)
                 await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
@@ -485,10 +462,10 @@ namespace TelegramVisualPart.Services
         {
             if (_connection is null) return;
 
-            if(_connection.State == HubConnectionState.Connected)
+            if (_connection.State == HubConnectionState.Connected)
             {
                 await _connection.InvokeAsync("UpdatePagePhoto", loggedUser);
-            }       
+            }
         }
 
         public static async Task AddUserImage(User addedImage)

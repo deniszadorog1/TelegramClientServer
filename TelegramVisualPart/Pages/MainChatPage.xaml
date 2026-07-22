@@ -214,7 +214,11 @@
                           Width="0"
                           Height="0"/>
 
-                    <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden">
+                    <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden"
+                             ScrollViewer.ScrollChanged="ChatsBox_ScrollChanged"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             Padding="0 0 50 0"
+                             >
                         <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                     </ListBox>
@@ -235,7 +239,8 @@
                     </StackPanel>
 
                     <ListBox Grid.Row="2" Name="GlobalMessageSearch"
-                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible"
+                             ScrollViewer.ScrollChanged="GlobalMessageSearch_ScrollChanged"
                              Visibility="Hidden" 
                              VerticalAlignment="Top"
                              Margin="0 20 0 0"/>

@@ -1,24 +1,12 @@
-﻿using Microsoft.Identity.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlTypes;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TelegramLib.Enums.Chat;
 using TelegramLib.Enums.Messages;
 using TelegramLib.MainClasses.ChatFitures;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
-using static System.Net.Mime.MediaTypeNames;
 using AutoDeleteType = TelegramLib.Enums.Chat.AutoDeleteType;
 using ShareContactMessage = TelegramLib.MainClasses.Messages.ShareContactMessage;
 
@@ -73,7 +61,6 @@ namespace TelegramLib.MainClasses
                 .Where(x => !x.IsSticker).ToList();
         }
 
-
         public List<MediaAction> GetSchedVideos()
         {
             return ScheduleMessages.OfType<MediaAction>().Where(x => x.IsVideo()).ToList();
@@ -83,15 +70,7 @@ namespace TelegramLib.MainClasses
         {
             return Messages.OfType<MediaAction>().Where(x => x.IsVideo()).ToList();
         }
-        /*        public int GetMessageId(Message message)
-                {
-                    return Messages.Where(x => x.Id == message.Id).First().Id;
-                }*/
 
-        /*        public void AddSticker(string name, int senderId)
-                {
-                    Messages.Add(new MediaAction(Messages.Count + 1, senderId, DateTime.Now, name, true));
-                }*/
 
         public ChatBackground GetBackground()
         {
@@ -158,9 +137,10 @@ namespace TelegramLib.MainClasses
             Messages.RemoveAt(0);
         }
 
+        const string _inFuture = "*Will be there*";
         public string GetLastMessageInString()
         {
-            return Messages.Count == 0 ? "*Will be there*" : Messages.Last().GetLastMessage();
+            return Messages.Count == 0 ? _inFuture : Messages.Last().GetLastMessage();
         }
 
         public Messages.Message GetLastMessage()
@@ -173,10 +153,6 @@ namespace TelegramLib.MainClasses
             return Messages.Last();
         }
 
-        /*        public bool IsNamesAreEqual(string chatterName)
-                {
-                    return Chatter.IsNamesAreEqual(chatterName);
-                }*/
 
         public bool IsUserLoginsAreEqual(string login)
         {
@@ -219,6 +195,31 @@ namespace TelegramLib.MainClasses
             }
         }
 
+        private readonly List<string> _imgsExt = new List<string>()
+        {
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp",
+            ".bmp"
+        };
+
+        private readonly List<string> _gifExt = new List<string>()
+        {
+            ".gif"
+        };
+
+        private readonly List<string> _videoExt = new List<string>()
+        {
+            ".mp4",
+            ".avi",
+            ".mov",
+            ".webm",
+            ".mkv",
+            ".wmv"
+        };
+
+
         public MediaType GetMediaTypeFromFilename(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
@@ -228,24 +229,27 @@ namespace TelegramLib.MainClasses
 
             switch (extension)
             {
-                case ".jpg":
+                case var _ when _imgsExt.Contains(extension):
+/*                case ".jpg":
                 case ".jpeg":
                 case ".png":
                 case ".bmp":
-                case ".webp":
+                case ".webp":*/
                     {
                         return MediaType.Image;
                     }
-                case ".gif":
+                case var _ when _gifExt.Contains(extension):
+                //case ".gif":
                     {
                         return MediaType.Gif;
                     }
-                case ".mp4":
+                case var _ when _videoExt.Contains(extension):
+/*                case ".mp4":
                 case ".avi":
                 case ".mov":
                 case ".webm":
                 case ".mkv":
-                case ".wmv":
+                case ".wmv":*/
                     {
                         return MediaType.Video;
                     }
@@ -288,7 +292,7 @@ namespace TelegramLib.MainClasses
         {
             NotificationStatus = state;
         }
-        
+
         public bool IsNotificationStatusIsSame(bool state)
         {
             return NotificationStatus == state;
@@ -434,14 +438,6 @@ namespace TelegramLib.MainClasses
             const int maxDiffer = 20;
             for (int i = 0; i < Messages.Count; i++)
             {
-                /*              bool sameBaseTime =
-                                  mes.SentTime.Year == Messages[i].SentTime.Year &&
-                                  mes.SentTime.Month == Messages[i].SentTime.Month &&
-                                  mes.SentTime.Day == Messages[i].SentTime.Day &&
-                                  mes.SentTime.Hour == Messages[i].SentTime.Hour &&
-                                  mes.SentTime.Minute == Messages[i].SentTime.Minute &&
-                                  mes.SentTime.Second == Messages[i].SentTime.Second;*/
-
                 double diffMs = Math.Abs((mes.SentTime - Messages[i].SentTime).TotalMilliseconds);
                 if (diffMs < maxDiffer) return Messages[i].Id;
             }
@@ -657,7 +653,6 @@ namespace TelegramLib.MainClasses
             ScheduleMessages.Sort((a, b) => a.SentTime.CompareTo(b.SentTime));
 
             //Add Static messages(if need)
-
             List<DateTime> toAddStatTimes = new List<DateTime>();
 
             DateTime? lastDate = null;
@@ -746,7 +741,7 @@ namespace TelegramLib.MainClasses
 
         public DateTime GetSentTimeOfLastShareMessage()
         {
-            for(int i = Messages.Count - 1; i >= 0; i--)
+            for (int i = Messages.Count - 1; i >= 0; i--)
             {
                 if (Messages[i] is not ShareContactMessage share) continue;
 
@@ -755,7 +750,7 @@ namespace TelegramLib.MainClasses
             return DateTime.Now;
         }
 
-        public List<Messages.Message>GetMessagesWithStr(string str)
+        public List<Messages.Message> GetMessagesWithStr(string str)
         {
             return Messages.Where(x => x is TextMessage text && text.Text.Contains(str)).ToList();
         }

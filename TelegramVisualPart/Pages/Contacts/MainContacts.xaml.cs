@@ -1,29 +1,15 @@
-﻿using ControlzEx.Standard;
-using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MaterialDesignThemes.Wpf;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
-using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace TelegramVisualPart.Pages.Contacts
 {
@@ -50,47 +36,67 @@ namespace TelegramVisualPart.Pages.Contacts
             InitializeComponent();
             SetBasicParams();
 
-            SetContactsParams();
-            
+            SetParams();
+
             SetLanguageText.SetUserContacts(this);
         }
 
-        public async Task SetContactsParams()
+        public async void SetParams()
+        {
+            _isLoading = true;
+            await SetContactsParams(0);
+            _isLoading = false;
+
+        }
+
+        private List<int> _addedIds = new List<int>();
+        private const int _stepAmount = 9;
+
+        public async Task SetContactsParams(int id)
         {
             if (_isBlock)
             {
                 SetUsersToBlock();
                 ToCheckEnd?.Invoke();
                 return;
-            }   
+            }
 
             List<UserContactcs> toAdd = !_isBlock ? _system.Contacts :
                 _system.Contacts.Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Name).Contains(x.Name)).ToList();
 
-            for (int i = 0; i < toAdd.Count; i++)
-            {
-                TelegramLib.MainClasses.User user =
-                    await ApiService.GetUserById(toAdd[i].ContactUserId);
-                UserContact contact = new UserContact(user);
+            toAdd = toAdd.Where(x => !_addedIds.Contains(x.Id)).Take(_stepAmount).ToList();
 
-                contact.ImgSet += () =>
-                {
-                    Visibility = Visibility.Visible;
-                };
+            _addedIds.AddRange(toAdd.Select(x => x.Id));
+
+            foreach (var val in toAdd)
+            {
+                TelegramLib.MainClasses.User user = await ApiService.GetUserById(val.ContactUserId);
+
+                string imgName = user.GetFirstImageNameInString();
+                string imgPath = await FilesAction.GetUserImagePath(imgName);
+                if (ApiService.GetCachedBitmap(imgPath) is null)
+                    await SignalRHelperService.LoadBitmap(imgPath);
+
+                UserContact contact = new UserContact(user);
+                await contact.SetBasicParams();
 
                 ListBoxItem item = new ListBoxItem
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = toAdd[i].Login
+                    Tag = val.Login
                 };
 
                 item.PreviewMouseDown += Contact_PreviewMouseDown;
+                
                 ContactsListBox.Items.Add(item);
             }
-            if (toAdd.Count == 0) Visibility = Visibility.Visible;
+            Visibility = Visibility.Visible;
+
+            //if (toAdd.Count == 0) Visibility = Visibility.Visible;
             ToCheckEnd?.Invoke();
         }
+
 
         private void SetUsersToBlock()
         {
@@ -155,7 +161,9 @@ namespace TelegramVisualPart.Pages.Contacts
             }
 
             ContactClicked?.Invoke(sender, EventArgs.Empty);
-            ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
+
+            Window window = Window.GetWindow(this);
+            if (window is not null && window is MainWindow main) main.ClearSecFrame();
         }
 
         public void SetBasicParams()
@@ -295,5 +303,32 @@ namespace TelegramVisualPart.Pages.Contacts
                 ContactsListBox.Items.Add(item);
             }
         }
+
+        private bool _isLoading = false;
+
+        private const int _extHeightToLoad = 5;
+        private async void ContactsListBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isLoading) return;
+            try
+            {
+                _isLoading = true;
+                if (e.VerticalOffset + e.ViewportHeight >= e.ExtentHeight - _extHeightToLoad)
+                {
+                    ListBoxItem? item =
+                         ContactsListBox.Items.OfType<ListBoxItem>().LastOrDefault();
+                    if (item is null || item.Tag is null) return;
+
+                    int.TryParse(item.Tag.ToString(), out int id);
+
+                    await SetContactsParams(id);
+                }
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
+
     }
 }

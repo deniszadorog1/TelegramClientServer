@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramVisualPart.Pages.ChatActions;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
@@ -33,7 +21,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         private UserChat _chatControl;
         private TelegramLib.MainClasses.TelSystem _system;
         public void SetUserChatControl(
-            UserChat chatControl, 
+            UserChat chatControl,
             TelegramLib.MainClasses.TelSystem system)
         {
             _chatControl = chatControl;
@@ -57,27 +45,27 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 
             //form message
             (TelegramLib.MainClasses.Messages.Message mes,
-             TelegramLib.MainClasses.Messages.Message toReply) = 
+             TelegramLib.MainClasses.Messages.Message toReply) =
              _chatControl.GetTextMessageToSend(_chatControl.CommentTextBox.Text);
 
             List<Message> forwardMes = _chatControl.GetToForwardMessages();
 
-            if (mes is null || 
-               
-               (mes is TelegramLib.MainClasses.Messages.TextMessage textMes && 
+            if (mes is null ||
+
+               (mes is TelegramLib.MainClasses.Messages.TextMessage textMes &&
                 textMes.Text == string.Empty)) return;
 
-            if(mes is TelegramLib.MainClasses.Messages.TextMessage text)
+            if (mes is TelegramLib.MainClasses.Messages.TextMessage text)
             {
                 text.Text = text.Text.Trim(' ');
                 text.Text = text.Text.Replace("\n", "");
                 text.Text = text.Text.Trim('\r');
-                text.Text = text.Text.Replace("\r\n", ""); 
+                text.Text = text.Text.Replace("\r\n", "");
             }
 
             SetScheduleMessage message =
                 new SetScheduleMessage(_chatControl.GetChat(), new List<Message>() { mes }, _system, _chatControl.GetToForwardMessages());
-            
+
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }
     }

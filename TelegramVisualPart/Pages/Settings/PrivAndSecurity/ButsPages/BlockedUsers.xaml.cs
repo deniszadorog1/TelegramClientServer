@@ -1,21 +1,8 @@
 ﻿using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
-using TelegramLib.Models;
 using TelegramVisualPart.Pages.Contacts;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls;
@@ -39,16 +26,16 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             SetBlockedContacts();
         }
 
-        public void SetBlockedContacts()
+        public async void SetBlockedContacts()
         {
             BlockedUsersPanel.Items.Clear();
 
             List<User> blocked = _system.LoggedUser.BlockedUsers;
             for (int i = 0; i < blocked.Count; i++)
-            {   
+            {
                 ToUnblockUser blockedControl = new ToUnblockUser();
 
-                blockedControl.SetUserImage(blocked[i].GetFirstImageName().Name);
+                await blockedControl.SetUserImage(blocked[i].GetFirstImageName().Name);
 
                 blockedControl.ChaterLogin.Text = blocked[i].Name;
                 blockedControl.UserName.Text = blocked[i].Login;
@@ -60,7 +47,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
                     Content = blockedControl.Content
                 };
 
-                blockedControl.UnblockBut.PreviewMouseDown += (sender, e) =>
+                blockedControl.UnblockBut.PreviewMouseDown += async (sender, e) =>
                 {
                     User contact =
                     _system.LoggedUser.BlockedUsers.Where(
@@ -68,7 +55,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
                     _system.LoggedUser.BlockedUsers.Remove(contact);
 
-                    if(contact is not null) ApiService.RemoveBlockedContact(_system.LoggedUser.Id, contact.Id);
+                    if (contact is not null) await ApiService.RemoveBlockedContact(_system.LoggedUser.Id, contact.Id);
 
                     BlockedUsersPanel.Items.Remove(item);
 
@@ -76,7 +63,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
 
                     //Update if its temp chat 
                     ((MainWindow)Window.GetWindow(this)).UpdateChatParamsVis();
-                    ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, contact);
+                    await ((MainWindow)Window.GetWindow(this)).SetBlockedUserVisParams(false, contact);
 
                 };
 
@@ -91,10 +78,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             BackBut.IconType.Kind = PackIconKind.ArrowLeft;
             CloseBut.IconType.Kind = PackIconKind.Close;
 
-            //ToBlockBut.IconType.Foreground = (SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.IconType.Kind = PackIconKind.Hand;
 
-            //ToBlockBut.ButName.Foreground = SolidColorBrush)Application.Current.Resources["DarkThemeProfileButForeGround"];
             ToBlockBut.ButName.Text = "Block user";
 
             UpdateAmountOfBlocked();

@@ -50,8 +50,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
             for (int i = 0; i < _baseEmojis.Count; i++)
             {
-                //_emojis.Add(i, _baseEmojis[i]);
-
                 EmojisPanel.Children.Add(new Emoji(_baseEmojis[i].Item1, _baseEmojis[i].Item2));
             }
         }

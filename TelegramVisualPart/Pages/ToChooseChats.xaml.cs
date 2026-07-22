@@ -1,19 +1,14 @@
-﻿using ControlzEx.Standard;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses;
-using TelegramLib.Services;
 using TelegramLib.UserSettings.SettingsTypes;
 using TelegramLib.UserSettings.SettingsTypes.SubSettings.PrivAnSecSubs;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
-using TelegramVisualPart.Pages.Settings.PrivAndSecurity;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
 
@@ -50,27 +45,19 @@ namespace TelegramVisualPart.Pages
             _contacts = new List<User>();
             _contacts.Clear();
 
-            for(int i = 0; i < _system.Chats.Count; i++)
+            for (int i = 0; i < _system.Chats.Count; i++)
             {
-                if(_system.Chats[i].Chatter is not null) _contacts.Add(_system.Chats[i].Chatter);
+                if (_system.Chats[i].Chatter is not null) _contacts.Add(_system.Chats[i].Chatter);
             }
-
-/*            for (int i = 0; i < _system.Contacts.Count; i++)
-            {
-                UserChat? chat = _system.Chats
-                    .FirstOrDefault(x => x.Chatter.Id == _system.Contacts[i].ContactUserId);
-                if (chat is null) continue;
-
-                _contacts.Add(chat.Chatter);
-            }*/
         }
 
-        public void SetActionContacts()
+        public async void SetActionContacts()
         {
             ChatsPanelToChoose.Children.Clear();
             for (int i = 0; i < _contacts.Count; i++)
             {
                 ChatToApply contact = new ChatToApply(_contacts[i]);
+                await contact.SetActions();
 
                 contact.Tag = _contacts[i].GetFirstImageName().Name;
                 contact.Name = "contact_" + Guid.NewGuid().ToString("N");
@@ -83,32 +70,33 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void SetContactParams(ChatToApply toAddParams, User contactUser)
+        public async void SetContactParams(ChatToApply toAddParams, User contactUser)
         {
+            const string autoDelType = "auto - delete";
             toAddParams.TypeName.Text = contactUser.Name;
-            toAddParams.AutoDeletionType.Text = "auto - delete";
+            toAddParams.AutoDeletionType.Text = autoDelType;
 
             string name = contactUser.GetFirstImageNameInString();
-            string imgPath = FilesAction.GetUserImagePath(name);
+            string imgPath = await FilesAction.GetUserImagePath(name);
 
             BitmapImage bitmap = ApiService.GetCachedBitmap(imgPath);
 
-            toAddParams.UserImageBrush.ImageSource = bitmap is not null ? bitmap : SignalRHelperService.LoadBitmap(imgPath);//  new BitmapImage(new Uri(imgPath, UriKind.Absolute));
+            toAddParams.UserImageBrush.ImageSource = bitmap is not null ? bitmap : await SignalRHelperService.LoadBitmap(imgPath);
         }
 
-        private void AutoDeleteContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void AutoDeleteContact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ChatToApply chatToApply) return;
 
             if (chatToApply.GetIdClicked())
             {
-                AddAppliedContactToAutoDelete(chatToApply);
+                await AddAppliedContactToAutoDelete(chatToApply);
                 return;
             }
             RemoveAppliedChat(chatToApply);
         }
 
-        public void AddAppliedContactToAutoDelete(ChatToApply appliedChat)
+        public async Task AddAppliedContactToAutoDelete(ChatToApply appliedChat)
         {
             ChosenChat toAdd = new ChosenChat()
             {
@@ -117,7 +105,7 @@ namespace TelegramVisualPart.Pages
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            toAdd.SetBasicParams(appliedChat.Tag.ToString(),
+            await toAdd.SetBasicParams(appliedChat.Tag.ToString(),
                 appliedChat.GetTypeName());
 
             toAdd._removeChatEvent += ChosenAutoDeleteChat_RemoveClicked;
@@ -189,11 +177,12 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        public void SetContacts()
+        public async void SetContacts()
         {
             for (int i = 0; i < _contacts.Count; i++)
             {
                 ChatToApply contact = new ChatToApply(_contacts[i]);
+                await contact.SetActions();
 
                 contact.Tag = _contacts[i].GetFirstImageName().Name;
                 contact.Name = "contact_" + Guid.NewGuid().ToString("N");
@@ -204,7 +193,7 @@ namespace TelegramVisualPart.Pages
                 string lastSeenStr = lastSeen is null ? VisConstParamsJsonService.GetStringByName("RecentlyStat") :
                     $"{((DateTime)lastSeen).Day}.{((DateTime)lastSeen).Month}.{((DateTime)lastSeen).Year}";
 
-                contact.SetParams(_contacts[i].GetFirstImageName().Name, _contacts[i].Name, lastSeenStr);
+                await contact.SetParams(_contacts[i].GetFirstImageName().Name, _contacts[i].Name, lastSeenStr);
                 contact.PreviewMouseDown += Contact_PreviewMouseDown;
 
                 ChatsPanelToChoose.Children.Add(contact);
@@ -312,7 +301,7 @@ namespace TelegramVisualPart.Pages
 
         public void SetAutoDelToChat(int userId)
         {
-            TelegramLib.MainClasses.UserChat? chat = 
+            TelegramLib.MainClasses.UserChat? chat =
                 _system.Chats.FirstOrDefault(x => x.Chatter.Id == userId);
 
             if (chat is null || _newAutoDelType is null) return;
@@ -363,7 +352,7 @@ namespace TelegramVisualPart.Pages
             !chosenContacts.Select(x => x.Name).Contains(x.Name)).ToList();
         }
 
-        public void AddAppliedChat(ChatToApply chatControl)
+        public async Task AddAppliedChat(ChatToApply chatControl)
         {
             ChosenChat toAdd = new ChosenChat()
             {
@@ -373,7 +362,7 @@ namespace TelegramVisualPart.Pages
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            toAdd.SetBasicParams(chatControl.Tag.ToString(),
+            await toAdd.SetBasicParams(chatControl.Tag.ToString(),
                 chatControl.GetTypeName());
 
             toAdd._removeChatEvent += ChosenChat_RemoveClicked;

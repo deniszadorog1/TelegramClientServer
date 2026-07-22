@@ -109,6 +109,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
 
         private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            const int changePos = 40;
             if (sender is not TextBlock block) return;
             ClearForegroundForTabs();
 
@@ -127,7 +128,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.Emojis
             var moveAnim = new DoubleAnimation
             {
                 From = currentX,
-                To = targetPos.X - 40,
+                To = targetPos.X - changePos,
                 Duration = animDuration,
                 EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };

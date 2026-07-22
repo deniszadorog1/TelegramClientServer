@@ -62,7 +62,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             return item is null ? null : (FolderChatType)item.Content;
         }
 
-        public void SetContacts()
+        public async void SetContacts()
         {
             for (int i = 0; i < _system.Chats.Count; i++)
             {
@@ -81,11 +81,11 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
                 control.HideIcon();
 
-                BitmapImage bitmap = ApiService.GetCachedBitmap(FilesAction.GetUserImagePath(contactPath));
+                BitmapImage bitmap = ApiService.GetCachedBitmap(await FilesAction.GetUserImagePath(contactPath));
 
                 control.ChatEllipse.Fill = new ImageBrush()
                 {
-                    ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
+                    ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(await FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
                     Stretch = Stretch.Fill
                 };
 
@@ -127,20 +127,6 @@ namespace TelegramVisualPart.Pages.Settings.Folders
             BotsChats.IconType.Kind = PackIconKind.Android;
             //BotsChats.TypeName.Text = "Bots";
             BotsChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
-
-            /*
-                        MutedChats.IconType.Kind = PackIconKind.VolumeMute;
-                        MutedChats.TypeName.Text = "Muted";
-                        MutedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderBotsColor"];
-
-                        ReadChats.IconType.Kind = PackIconKind.MessageText;
-                        ReadChats.TypeName.Text = "Read";
-                        ReadChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderNonContactColor"];
-
-                        ArchivedChats.IconType.Kind = PackIconKind.Archive;
-                        ArchivedChats.TypeName.Text = "Archived";
-                        ArchivedChats.ChatEllipse.Fill = (SolidColorBrush)Application.Current.Resources["FolderContactColor"];
-                   */
         }
 
         private void ClearSearchBoxGrid_MouseEnter(object sender, MouseEventArgs e)
@@ -193,7 +179,6 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
             int.TryParse(item.Tag.ToString(), out int id);
 
-            //UserContactcs contact = _system.GetContactByUserId(id);// _system.GetContactByLogin(control.TypeName.Text);
             User contact = _system.GetChatterById(id);
             if (contact is null) return;
 

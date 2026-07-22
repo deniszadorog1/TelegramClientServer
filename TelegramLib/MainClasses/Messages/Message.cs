@@ -58,7 +58,8 @@ namespace TelegramLib.MainClasses.Messages
 
         public virtual string GetLastMessage()
         {
-            return "This is last message";
+            const string lastMessage = "This is last message";
+            return lastMessage;
         }
 
         public string GetSentTimeInString()

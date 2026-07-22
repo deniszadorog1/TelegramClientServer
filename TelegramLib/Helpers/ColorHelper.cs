@@ -32,22 +32,23 @@ namespace TelegramLib.Helpers
             B = b;
         }
 
+        private const int _base128 = 128;
         public ColorHelper(int id)
         {
             Id = id;
             A = byte.MaxValue;
-            R = 128;
-            G = 255;
-            B = 128;
+            R = _base128;
+            G = byte.MaxValue;
+            B = _base128;
         }
 
         public ColorHelper()
         {
             Id = -1;
             A = byte.MaxValue;
-            R = 128;
-            G = 255;
-            B = 128;
+            R = _base128;
+            G = byte.MaxValue;
+            B = _base128;
         }
     }
 }

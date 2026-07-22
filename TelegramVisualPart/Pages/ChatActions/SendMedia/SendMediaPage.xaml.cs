@@ -1,23 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
@@ -41,7 +27,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
         private List<TelegramLib.MainClasses.Messages.Message> _forwardMessages;
 
         public SendMediaPage(List<string> firstMediaPath,
-            string text, TelSystem system, 
+            string text, TelSystem system,
             UserChat chat,
             List<TelegramLib.MainClasses.Messages.Message> forwardMessages,
             bool isSchedule = false)
@@ -50,7 +36,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             _text = text;
             _isScheduleSend = isSchedule;
             _forwardMessages = forwardMessages;
-            
+
             _system = system;
             _chat = chat;
 
@@ -82,7 +68,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                     MediasBox.Items.Remove(MediasBox.Items
                         .OfType<ListBoxItem>()
                         .FirstOrDefault(x => x.Content == toAdd));
-                    
+
                     _paths.RemoveAt(pathIndex);
                     //_paths.RemoveAt(pathIndex);
 
@@ -179,8 +165,6 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
             ((MainWindow)Window.GetWindow(this)).SendBigImagesMessage(CaptureBox.Text, imgs, paths, _sendType);
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-
-            //((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
         }
 
         public List<Image> GetImagesFromMediaBox()
@@ -218,16 +202,31 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
             SetMediaFile(null, -1);
         }
 
+        private readonly List<string> _imgExt = new List<string>() 
+        {
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".webp"
+        };
+
+        private readonly List<string> _videoPath = new List<string>()
+        {
+            ".mp4",
+            ".mov",
+            ".avi",
+        };
+
         private async void SetMediaFile(MediaElBoxItem toChange, int pathIdToChange)
         {
+            const string filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi";
+            const string title = "Choose image";
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Choose image",
-                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi",
+                Title = title,
+                Filter = filter,
                 Multiselect = true
             };
-
-            //*.mp4;*.mov;*.avi
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -236,7 +235,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                 //string filePath = openFileDialog.FileName;
                 //string extension = System.IO.Path.GetExtension(filePath).ToLower();
 
-                for(int i = 0; i < names.Length; i++)
+                for (int i = 0; i < names.Length; i++)
                 {
                     names[i] = await ApiService.UploadMediaAsync(names[i]);
                     names[i] = FilesAction.GetPathByPseudoPath(names[i]);
@@ -257,8 +256,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                         return;
                     }
 
-                    if (extension == ".png" || extension == ".jpg" ||
-                        extension == ".jpeg" || extension == ".webp")
+                    if (_imgExt.Contains(extension) /*extension == ".png" || extension == ".jpg" ||
+                        extension == ".jpeg" || extension == ".webp"*/)
                     {
                         if (toChange is not null)
                         {
@@ -270,9 +269,8 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
                         SetBasePaths();
 
                     }
-                    else if (extension == ".mp4" || extension == ".mov" || extension == ".avi")
+                    else if (_videoPath.Contains(extension) /*extension == ".mp4" || extension == ".mov" || extension == ".avi"*/)
                     {
-                        //Image img = await VisHelper.GetFirstFrameAsync(filePath);
                         if (toChange is not null) return;
                         _paths.Add(names[i]);
                         GroupImages();
@@ -401,7 +399,7 @@ namespace TelegramVisualPart.Pages.ChatActions.SendMedia
 
             SetScheduleMessage message =
                 new SetScheduleMessage(_chat, messages,
-                _system, _forwardMessages, isBandMessages:isBand);
+                _system, _forwardMessages, isBandMessages: isBand);
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(message);
         }

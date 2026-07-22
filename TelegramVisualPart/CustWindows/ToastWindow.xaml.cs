@@ -46,6 +46,7 @@ namespace TelegramVisualPart.CustWindows
 
         public void SetWindowSide()
         {
+            const int basePos = 10;
             //base.OnContentRendered(e);
 
             var screen = SystemParameters.WorkArea;
@@ -58,8 +59,8 @@ namespace TelegramVisualPart.CustWindows
                         HorizontalAlignment = HorizontalAlignment.Left;
                         MessagesStack.VerticalAlignment = VerticalAlignment.Top;
 
-                        this.Left = 10;
-                        this.Top = 10;
+                        this.Left = basePos;
+                        this.Top = basePos;
                         break;
                     };
                 case NotifMessageSide.TopRight:
@@ -68,8 +69,8 @@ namespace TelegramVisualPart.CustWindows
                         HorizontalAlignment = HorizontalAlignment.Right;
                         MessagesStack.VerticalAlignment = VerticalAlignment.Top;
 
-                        this.Left = screen.Width - Width - 10;
-                        this.Top = 10;
+                        this.Left = screen.Width - Width - basePos;
+                        this.Top = basePos;
                         break;
                     }
                 case NotifMessageSide.BottomRight:
@@ -78,8 +79,8 @@ namespace TelegramVisualPart.CustWindows
                         HorizontalAlignment = HorizontalAlignment.Right;
                         MessagesStack.VerticalAlignment = VerticalAlignment.Bottom;
 
-                        this.Left = screen.Width - Width - 10; 
-                        this.Top = screen.Height - Height - 10;
+                        this.Left = screen.Width - Width - basePos; 
+                        this.Top = screen.Height - Height - basePos;
 
                         break;
                     }
@@ -89,16 +90,14 @@ namespace TelegramVisualPart.CustWindows
                         HorizontalAlignment = HorizontalAlignment.Left;
                         MessagesStack.VerticalAlignment = VerticalAlignment.Bottom;
 
-                        this.Left = 10;
-                        this.Top = screen.Height - Height - 10;
+                        this.Left = basePos;
+                        this.Top = screen.Height - Height - basePos;
                         break;
                     }
             }
             //await Task.Delay(3000);
-
             //Close();
         }
-
 
         private void SetTestMessages()
         {

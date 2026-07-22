@@ -7,7 +7,6 @@ using TelegramLib.Factories.Interfaces;
 using TelegramLib.Interfaces;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.Messages;
-using TelegramLib.Models;
 
 namespace TelegramLib.Factories.Async
 {
