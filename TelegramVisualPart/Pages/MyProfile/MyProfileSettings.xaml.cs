@@ -286,7 +286,7 @@ namespace TelegramVisualPart.Pages.MyProfile
                     mainWindow.UpdateChat();
 
                     //Update in SignalR (message, userTalkMessage)
-                    SignalRService.UpdateUserImages(_system.LoggedUser);
+                    await SignalRService.UpdateUserImages(_system.LoggedUser);
                 }
             }
         }

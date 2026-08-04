@@ -32,7 +32,7 @@ namespace TelegramVisualPart.Pages
 
             UserContactcs contact = 
                 chat is TelegramLib.MainClasses.SavedMessagesChat ? null : 
-                _system.GetContactByUserId(_chat.Chatter.Id);
+                    _system.GetContactByUserId(_chat.Chatter.Id);
 
             ContactInfo.LoadEnd += () =>
             {
@@ -64,11 +64,11 @@ namespace TelegramVisualPart.Pages
             this.MaxHeight = ContactInfo.MaxHeight;
         }
 
-        public void UpdateContact(UserContactcs contact)
+        public async void UpdateContact(UserContactcs contact)
         {
             //Check this
             ContactInfo.UpdateParams(contact);
-            ContactInfo.SetContactInfo(_chat, _system,
+            await ContactInfo.SetContactInfo(_chat, _system,
                 _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
         }
 
@@ -92,11 +92,11 @@ namespace TelegramVisualPart.Pages
             ContactInfo.BlockButVisibility();
         }
 
-        public void ContactRemoveAction()
+        public async void ContactRemoveAction()
         {
             ContactInfo.ContactRemovedAction();
 
-            ContactInfo.SetContactInfo(_chat, _system,
+            await ContactInfo.SetContactInfo(_chat, _system,
                  _system.GetContactByUserId(_chat.Chatter.Id), isSetMaxHeight: true);
         }
 

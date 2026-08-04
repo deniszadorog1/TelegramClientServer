@@ -34,8 +34,8 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity.ButsPages
             for (int i = 0; i < blocked.Count; i++)
             {
                 ToUnblockUser blockedControl = new ToUnblockUser();
-
                 await blockedControl.SetUserImage(blocked[i].GetFirstImageName().Name);
+
 
                 blockedControl.ChaterLogin.Text = blocked[i].Name;
                 blockedControl.UserName.Text = blocked[i].Login;

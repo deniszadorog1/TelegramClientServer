@@ -49,6 +49,7 @@ namespace TelegramLib.MainClasses
         {
         }
 
+        const string _baseMinato = "Minato.jpg";
         public void SetAutoDeleteDuration(AutoDeleteType? type)
         {
             if (type is null) return;
@@ -92,8 +93,6 @@ namespace TelegramLib.MainClasses
         {
             return Id == senderId;
         }
-
-        const string _baseMinato = "Minato.jpg";
 
         public UserImage GetFirstImageName()
         {

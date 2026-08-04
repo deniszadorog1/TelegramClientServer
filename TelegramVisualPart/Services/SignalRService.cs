@@ -83,14 +83,14 @@ namespace TelegramVisualPart.Services
             await SetSignalRConnection();
         }
 
-        public static string GetUserId(HubConnectionContext connection)
+/*        public static string GetUserId(HubConnectionContext connection)
         {
             if (connection.GetHttpContext().Request.Headers.TryGetValue("userId", out var userId))
             {
                 return userId;
             }
             return null;
-        }
+        }*/
 
         public static async Task DisconnectAsync()
         {
@@ -160,20 +160,20 @@ namespace TelegramVisualPart.Services
             //MessageBox.Show("Its done!");
 
 
-            _connection.On<List<Message>, User>("ReceiveTextMessage", (messages, user) =>
+            _connection.On<List<Message>, User>(SigRHelper._receiveTextMessage /*"ReceiveTextMessage"*/, (messages, user) =>
             {
                 TextMessageReceived?.Invoke(messages, user);
                 return;
             });
 
-            _connection.On<List<Message>, User>("ReceiveMediaMessage", (messages, sender) =>
+            _connection.On<List<Message>, User>(SigRHelper._receiveMediaMessage /*"ReceiveMediaMessage"*/, (messages, sender) =>
             {
                 MediaMessageReceived?.Invoke(messages, sender);
                 return;
             });
 
             //Add contacts
-            _connection.On<User, User>("AddContact", async (user, toAdd) =>
+            _connection.On<User, User>(SigRHelper._addContact /*"AddContact"*/, async (user, toAdd) =>
             {
                 //Add conatct in system
                 UserContactcs contact = new UserContactcs(-1, toAdd.Name, toAdd.Surname, toAdd.Login, toAdd.BirthDay,
@@ -197,26 +197,26 @@ namespace TelegramVisualPart.Services
             });
 
             //Update contacts (BIO, username, etc)  //MAYBE
-            _connection.On<User>("UpdateContact", (updatedContact) =>
+            _connection.On<User>(SigRHelper._updateContact /*"UpdateContact"*/, (updatedContact) =>
             {
                 UpdateContactDel?.Invoke(updatedContact);
                 return;
             });
 
             //update online status
-            _connection.On<User>("UpdateOnlineStatus", (updatedContact) =>
+            _connection.On<User>(SigRHelper._updateOnlineStatus /*"UpdateOnlineStatus"*/, (updatedContact) =>
             {
                 UpdateOnlineStatusDel?.Invoke(updatedContact);
                 return;
             });
 
-            _connection.On<User>("UpdateContactBio", (updatedContact) =>
+            _connection.On<User>(SigRHelper._updateContactBio /*"UpdateContactBio"*/, (updatedContact) =>
             {
                 UpdateContactBioDel?.Invoke(updatedContact);
                 return;
             });
 
-            _connection.On<User>("AddUserImage", (addedImage) =>
+            _connection.On<User>(SigRHelper._addUserImage /*"AddUserImage"*/, (addedImage) =>
             {
                 //Add it to contacts system
                 UserContactcs? contact = _system.Contacts.FirstOrDefault(x => x.ContactUserId == addedImage.Id);
@@ -234,54 +234,54 @@ namespace TelegramVisualPart.Services
                 //Update in view(If need)
             });
 
-            _connection.On<User>("ClearChat", (chatter) =>
+            _connection.On<User>(SigRHelper._clearChat /*"ClearChat"*/, (chatter) =>
             {
                 ClearChatDel?.Invoke(chatter);
             });
 
-            _connection.On<bool, User>("SetContactPhoneNumberVisibility", (isVisivle, updatedUser) =>
+            _connection.On<bool, User>(SigRHelper._setContactPhoneNumberVisibility /*"SetContactPhoneNumberVisibility"*/, (isVisivle, updatedUser) =>
             {
                 SetContactPhoneNumberVisibilityDel?.Invoke(isVisivle, updatedUser);
             });
 
-            _connection.On<User>("SetContactLastSeenVisState", (user) =>
+            _connection.On<User>(SigRHelper._setContactLastSeenVisState /*"SetContactLastSeenVisState"*/, (user) =>
             {
                 SetContactLastSeenVisStateDel?.Invoke(user);
             });
 
-            _connection.On<User>("SetPhoneNumVisByExps", (user) =>
+            _connection.On<User>(SigRHelper._setPhoneNumVisByExps /*"SetPhoneNumVisByExps"*/, (user) =>
             {
                 SetPhoneNumVisByExpsDel?.Invoke(user);
             });
 
-            _connection.On<User>("UpdateBirthDate", (user) =>
+            _connection.On<User>(SigRHelper._updateBirthDate /*"UpdateBirthDate"*/, (user) =>
             {
                 UpdateBirthDateDel?.Invoke(user);
             });
 
-            _connection.On<User>("UpdateContactPhoto", (user) =>
+            _connection.On<User>(SigRHelper._updateContactPhoto /*"UpdateContactPhoto"*/, (user) =>
             {
                 UpdateContactPhotoDel?.Invoke(user);
             });
 
-            _connection.On<User>("UpdateForwardStatus", (user) =>
+            _connection.On<User>(SigRHelper._updateForwardStatus /*"UpdateForwardStatus"*/, (user) =>
             {
                 UpdateForwardStatusDel?.Invoke(user);
             });
 
-            _connection.On<User, User>("DeleteChat", (loggedUser, chatter) =>
+            _connection.On<User, User>(SigRHelper._deleteChat /*"DeleteChat"*/, (loggedUser, chatter) =>
             {
                 //logged user is now chatter 
                 //Send logged user become chatter in new one
                 DeleteChat?.Invoke(loggedUser);
             });
 
-            _connection.On<User>("UpdateReadStatus", (loggedUser) =>
+            _connection.On<User>(SigRHelper._updateReadStatus /*"UpdateReadStatus"*/, (loggedUser) =>
             {
                 UpdateReadStatus?.Invoke(loggedUser);
             });
 
-            _connection.On<User, User, int>("AddShareContactMessage",
+            _connection.On<User, User, int>(SigRHelper._addShareContactMessage /*"AddShareContactMessage"*/,
                 (logged, chatter, id) =>
             {
                 //chatter is now logged
@@ -289,34 +289,34 @@ namespace TelegramVisualPart.Services
                 SetShareContactMessage?.Invoke(logged, id);
             });
 
-            _connection.On<User, TextMessage>("ReplyMessage", (logged, message) =>
+            _connection.On<User, TextMessage>(SigRHelper._replyMessage /*"ReplyMessage"*/, (logged, message) =>
             {
                 //to reply
                 ReplyMesAction?.Invoke(logged, message);
             });
 
-            _connection.On<User, Message>("PinMessage", (logged, message) =>
+            _connection.On<User, Message>(SigRHelper._pinMessage /*"PinMessage"*/, (logged, message) =>
             {
                 //to pin
                 ToPinMessageDel?.Invoke(logged, message);
             });
 
-            _connection.On<User, Message, bool>("DeleteMessage", (logged, mes, isUpdateVis) =>
+            _connection.On<User, Message, bool>(SigRHelper._deleteMessage /*"DeleteMessage"*/, (logged, mes, isUpdateVis) =>
             {
                 DeleteMessageByIdDel?.Invoke(logged, mes, isUpdateVis);
             });
 
-            _connection.On<User, Message>("ForwardMessage", (logged, mes) =>
+            _connection.On<User, Message>(SigRHelper._forwardMessage /*"ForwardMessage"*/, (logged, mes) =>
             {
                 ForwardMesAction?.Invoke(logged, mes);
             });
 
-            _connection.On<User, StaticMessage>("AddStatMessage", (logged, mes) =>
+            _connection.On<User, StaticMessage>(SigRHelper._addStatMessage /*"AddStatMessage"*/, (logged, mes) =>
             {
                 StatMessageReceived?.Invoke(logged, mes);
             });
 
-            _connection.On<User, EditDTO>("EditMessage", (logged, dto) =>
+            _connection.On<User, EditDTO>(SigRHelper._editMessage /*"EditMessage"*/, (logged, dto) =>
             {
                 //Turn into message
 
@@ -326,18 +326,18 @@ namespace TelegramVisualPart.Services
                 EditMessageDel?.Invoke(logged, mes);
             });
 
-            _connection.On<User, User>("RemoveContact", (logged, removed) =>
+            _connection.On<User, User>(SigRHelper._removeContact /*"RemoveContact"*/, (logged, removed) =>
             {
                 RemoveContactDel?.Invoke(logged);
             });
 
-            _connection.On<User>("UpdateChatsControls", (toUpdate) =>
+            _connection.On<User>(SigRHelper._updateChatsControls /*"UpdateChatsControls"*/, (toUpdate) =>
             {
                 UpdateChatsControlsDel?.Invoke(toUpdate);
                 //To update chat controls if last message was removed or changed(Text).
             });
 
-            _connection.On<User>("SendTypingAction", (logged) =>
+            _connection.On<User>(SigRHelper._sendTypingAction /*"SendTypingAction"*/, (logged) =>
             {
                 //Set typing action;
 
@@ -345,39 +345,37 @@ namespace TelegramVisualPart.Services
 
             });
 
-            _connection.On<List<DateTime>, int>("RemoveManyMessagesByDateTimes", (sentTimes, loggedUserId) =>
+            _connection.On<List<DateTime>, int>(SigRHelper._removeManyMessagesByDateTimes /*"RemoveManyMessagesByDateTimes"*/, (sentTimes, loggedUserId) =>
             {
                 RemoveManyMessagesDel?.Invoke(sentTimes, loggedUserId);
             });
 
-            _connection.On<TelegramLib.MainClasses.User>(
-                "UpdateUserImages", (user) =>
+            _connection.On<TelegramLib.MainClasses.User>(SigRHelper._updateUserImages /*"UpdateUserImages"*/, (user) =>
             {
                 UpdateUserImagesDel?.Invoke(user);
             });
 
-
-            _connection.On<HashSet<int>>("UpdateAfterSchedMessages", (chatIds) =>
+            _connection.On<HashSet<int>>(SigRHelper._updateAfterSchedMessages /*"UpdateAfterSchedMessages"*/, (chatIds) =>
             {
                 UpdateChatsAfterSched?.Invoke(chatIds);
             });
 
-            _connection.On<TelegramLib.MainClasses.User>("UpdateLittlePhotoVisInChat", (loggedUser) =>
+            _connection.On<TelegramLib.MainClasses.User>(SigRHelper._updateLittlePhotoVisInChat /*"UpdateLittlePhotoVisInChat"*/, (loggedUser) =>
             {
                 UpdateLittlePhotoVisInChatDel?.Invoke(loggedUser);
             });
 
-            _connection.On<User>("UpdatePagePhoto", (loggedUser) =>
+            _connection.On<User>(SigRHelper._updatePagePhoto /*"UpdatePagePhoto"*/, (loggedUser) =>
             {
                 UpdatePagePhotoDel?.Invoke(loggedUser);
             });
 
-            _connection.On<int>("UpdateCachedSettings", (id) =>
+            _connection.On<int>(SigRHelper._updateCachedSettings /*"UpdateCachedSettings"*/, (id) =>
             {
                 UpdateCachedDel?.Invoke(id);
             });
 
-            _connection.On<List<Message>, User>("SendAllMessages", (messages, user) =>
+            _connection.On<List<Message>, User>(SigRHelper._sendAllMessages /*"SendAllMessages"*/, (messages, user) =>
             {
                 SendAllMessagesDel?.Invoke(messages, user);
             });
@@ -618,7 +616,7 @@ namespace TelegramVisualPart.Services
         public static async Task SendAllMessages(List<Message> messages, User sender, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendAllMessages", messages, sender, chatter);
+                await _connection.InvokeAsync(SigRHelper._sendAllMessages /*"SendAllMessages"*/, messages, sender, chatter);
         }
     }
 }

@@ -11,7 +11,11 @@ namespace TelegramVisualPart.Services
     {
         public async Task<byte[]> GetFileBytesAsync(string fileName)
         {
-            return new byte[12];
+            //Just a check
+
+            const int checkIndex = 12;
+
+            return new byte[checkIndex];
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
 
 namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
 {
@@ -53,6 +54,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             if (ChatsPanel.Children.Count == 0) Visibility = Visibility.Visible;
         }
 
+        private List<ListBoxItem> _items = new List<ListBoxItem>();
         public async Task SetChatListBoxItem(TelegramLib.MainClasses.UserChat chat)
         {
             ListBoxItem item = new ListBoxItem()
@@ -61,7 +63,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 Tag = chat is TelegramLib.MainClasses.SavedMessagesChat ? null : chat.Chatter.Id,
                 Padding = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Top,
+                VerticalAlignment = VerticalAlignment.Top    
             };
             item.PreviewMouseDown += Contacts_PreviewMouseDown;
 
@@ -96,6 +98,8 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             }
             item.Content = contact;
             ChatPanel.Items.Add(item);
+
+            _items.Add(item);
         }
 
         public void Contacts_PreviewMouseDown(object sender, MouseEventArgs e)
@@ -136,5 +140,21 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
             CancelDel?.Invoke();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChatPanel.Items.Clear();
+
+            foreach(var item in _items)
+            {
+                if(item.Content is ChatToApply val && 
+                    (val.IsSameName(SearchName.Text) || string.IsNullOrWhiteSpace(SearchName.Text)))
+                {
+                    ChatPanel.Items.Add(item);
+                }
+
+            }
+        }
+
     }
 }

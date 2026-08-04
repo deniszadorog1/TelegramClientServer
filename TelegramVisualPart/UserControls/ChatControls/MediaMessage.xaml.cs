@@ -69,354 +69,431 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public bool IsBandMedia() => _bandPaths.Count > 0;
 
+
+        private static readonly Dictionary<int, int[][]> _layoutGroups = new()
+        {
+            [1] = new[] { new[] { 0 } },
+            [2] = new[] { new[] { 0, 1 } },
+            [3] = new[] { new[] { 0 }, new[] { 3, 4 } },
+            [4] = new[] { new[] { 0 }, new[] { 3, 4, 5 } },
+            [5] = new[] { new[] { 0 }, new[] { 3, 4 }, new[] { 6, 7 } },
+            [6] = new[] { new[] { 0, 1 }, new[] { 3, 4 }, new[] { 6, 7 } },
+            [7] = new[] { new[] { 0, 1, 2 }, new[] { 3 }, new[] { 6, 7, 8 } },
+            [8] = new[] { new[] { 0, 1, 2 }, new[] { 3, 4 }, new[] { 6, 7, 8 } },
+            [9] = new[] { new[] { 0 }, new[] { 3, 4, 5 }, new[] { 6, 7, 8 }, new[] { 9, 10 } },
+        };
+
         public async void SetMessages()
         {
             _maxHeight = 0;
 
-            if (_bandPaths.Count == 1)
+            var count = _bandPaths.Count;
+
+            if (_layoutGroups.TryGetValue(count, out var groups))
             {
-                BottomBandRow.Height = new GridLength(0);
-                DownBandRow.Height = new GridLength(0);
-                MiddleBandRow.Height = new GridLength(0);
+                SetRowVisibility(count);
 
-                SetupImageRow(
-                    new List<Border>() { OneInGroupBorder },
-                    new List<ImageBrush>() { OneImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0]}),
-                    _maxSize.Width, _maxSize.Height);
+                var pathIndex = 0;
+                var usedIndices = new HashSet<int>();
 
-                HideBandBorder(TwoInGroupBorder);
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(FourInGroupBorder);
-                HideBandBorder(FiveInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-                HideBandBorder(SevenInGroupBorder);
-                HideBandBorder(EightInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-                HideBandBorder(TenInGroupBorder);
-                HideBandBorder(ElevenInGroupBorder);
-                HideBandBorder(TwelveInGroupBorder);
-            }
-            else if(_bandPaths.Count == 2)
-            {
-                BottomBandRow.Height = new GridLength(0);
-                DownBandRow.Height = new GridLength(0);
-                MiddleBandRow.Height = new GridLength(0);
+                foreach (var group in groups)
+                {
+                    var borders = group.Select(i => _bandBorders[i]).ToList();
+                    var brushes = group.Select(i => _bandBrushes[i]).ToList();
+                    var paths = group.Select(_ => _bandPaths[pathIndex++]).ToList();
 
-                SetupImageRow(
-                    new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
-                    new List<ImageBrush>() { OneImg, TwoImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
-                    _maxSize.Width, _maxSize.Height);
+                    SetupImageRow(borders, brushes, await GetBitImagesByPaths(paths),
+                        _maxSize.Width, _maxSize.Height);
 
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(FourInGroupBorder);
-                HideBandBorder(FiveInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-                HideBandBorder(SevenInGroupBorder);
-                HideBandBorder(EightInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-                HideBandBorder(TenInGroupBorder);
-                HideBandBorder(ElevenInGroupBorder);
-                HideBandBorder(TwelveInGroupBorder);
-            }
-            else if (_bandPaths.Count == 3)
-            {
-                BottomBandRow.Height = new GridLength(0);
-                DownBandRow.Height = new GridLength(0);
+                    foreach (var i in group) usedIndices.Add(i);
+                }
 
-                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                                OneInGroupBorder.Width = _maxSize.Width;
-                                OneInGroupBorder.Height = _maxSize.Height;*/
-
-                SetupImageRow(
-                    new List<Border>() { OneInGroupBorder },
-                    new List<ImageBrush>() { OneImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
-                    _maxSize.Width, _maxSize.Height);
-
-
-                _maxHeight = 0;
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], _minSize, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], _minSize, _maxSize);
-
-                SetupImageRow(
-                    new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
-                    new List<ImageBrush>() { FourImg, FiveImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
-                    _maxSize.Width, _maxSize.Height);
-
-                HideBandBorder(TwoInGroupBorder);
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-                HideBandBorder(SevenInGroupBorder);
-                HideBandBorder(EightInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-            }
-            else if (_bandPaths.Count == 4)
-            {
-                BottomBandRow.Height = new GridLength(0);
-                DownBandRow.Height = new GridLength(0);
-
-                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                                OneInGroupBorder.Width = _maxSize.Width;
-                                OneInGroupBorder.Height = _maxSize.Height;*/
-
-                SetupImageRow(
-                    new List<Border>() { OneInGroupBorder },
-                    new List<ImageBrush>() { OneImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
-                    _maxSize.Width, _maxSize.Height);
-
-
-                _maxHeight = 0;
-
-                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
-                // SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
-
-                SetupImageRow(
-                    new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
-                    new List<ImageBrush>() { FourImg, FiveImg, SixImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
-                    _maxSize.Width, _maxSize.Height);
-
-                HideBandBorder(TwoInGroupBorder);
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(SevenInGroupBorder);
-                HideBandBorder(EightInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-            }
-            else if (_bandPaths.Count == 5)
-            {
-                DownBandRow.Height = new GridLength(0);
-
-                /*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
-                                OneInGroupBorder.Width = _maxSize.Width;
-                                OneInGroupBorder.Height = _maxSize.Height;*/
-
-                SetupImageRow(
-                    new List<Border>() { OneInGroupBorder },
-                    new List<ImageBrush>() { OneImg },
-                    await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
-                    _maxSize.Width, _maxSize.Height);
-
-
-                //_maxHeight = 0;
-
-                // Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], secondPart, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], secondPart, _maxSize);
-
-                SetupImageRow(
-                     new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
-                     new List<ImageBrush>() { FourImg, FiveImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
-                     _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-
-                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[3], secondPart, _maxSize);
-                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[4], secondPart, _maxSize);
-
-                SetupImageRow(
-                     new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
-                     new List<ImageBrush>() { SevenImg, EightImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
-                     _maxSize.Width, _maxSize.Height);
-
-
-                HideBandBorder(TwoInGroupBorder);
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-            }
-            else if (_bandPaths.Count == 6)
-            {
-                DownBandRow.Height = new GridLength(0);
-
-                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
-
-                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], secondPart, _maxSize);
-                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], secondPart, _maxSize);
-
-                SetupImageRow(
-                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
-                     new List<ImageBrush>() { OneImg, TwoImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
-                     _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[2], secondPart, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[3], secondPart, _maxSize);
-                SetupImageRow(
-                     new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
-                     new List<ImageBrush>() { FourImg, FiveImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[2], _bandPaths[3] }),
-                     _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], secondPart, _maxSize);
-                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], secondPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
-                      new List<ImageBrush>() { SevenImg, EightImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5] }),
-                      _maxSize.Width, _maxSize.Height);
-
-
-                HideBandBorder(ThreeInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-                HideBandBorder(NineInGroupBorder);
-            }
-            else if (_bandPaths.Count == 7)
-            {
-                DownBandRow.Height = new GridLength(0);
-
-                Size basePart = new Size(_maxSize.Width, _maxSize.Height);
-
-
-                SetupImageRow(
-                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
-                     new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
-                     _maxSize.Width, _maxSize.Height);
-
-                SetupImageRow(
-                      new List<Border>() { FourInGroupBorder },
-                      new List<ImageBrush>() { FourImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[3] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
-                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                HideBandBorder(FiveInGroupBorder);
-                HideBandBorder(SixInGroupBorder);
-            }
-            else if (_bandPaths.Count == 8)
-            {
-                DownBandRow.Height = new GridLength(0);
-
-                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
-                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height);
-
-                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
-                //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
-                //SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
-
-                SetupImageRow(
-                     new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
-                     new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
-                     await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
-                     _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], secondPart, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[4], secondPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
-                      new List<ImageBrush>() { FourImg, FiveImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
-                      _maxSize.Width, _maxSize.Height);
-
-
-                //_maxHeight = 0;
-
-                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[5], thirdPart, _maxSize);
-                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[6], thirdPart, _maxSize);
-                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[7], thirdPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
-                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[5], _bandPaths[6], _bandPaths[7] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                HideBandBorder(SixInGroupBorder);
-            }
-            else if (_bandPaths.Count == 9)
-            {
-                //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
-                //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
-
-                //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
-
-                SetupImageRow(
-                  new List<Border>() { OneInGroupBorder },
-                  new List<ImageBrush>() { OneImg },
-                  await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
-                  _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-                //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
-                //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
-                //SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
-                      new List<ImageBrush>() { FourImg, FiveImg, SixImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-
-                //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
-                //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
-                //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
-                      new List<ImageBrush>() { SevenImg, EightImg, NineImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                //_maxHeight = 0;
-                //SetBandImg(TenInGroupBorder, NineImg, _bandPaths[7], secondPart, _maxSize);
-                //SetBandImg(ElevenInGroupBorder, NineImg, _bandPaths[8], secondPart, _maxSize);
-
-                SetupImageRow(
-                      new List<Border>() { TenInGroupBorder, ElevenInGroupBorder },
-                      new List<ImageBrush>() { TenImg, ElevenImg },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[7], _bandPaths[8] }),
-                      _maxSize.Width, _maxSize.Height);
-
+                for (int i = 0; i < _bandBorders.Count; i++)
+                    if (!usedIndices.Contains(i))
+                        HideBandBorder(_bandBorders[i]);
             }
             else
             {
                 DownBandRow.Height = new GridLength(0);
+                if (count <= 6) BottomBandRow.Height = new GridLength(0);
+                if (count <= 3) MiddleBandRow.Height = new GridLength(0);
 
-                if (_bandPaths.Count <= 6) BottomBandRow.Height = new GridLength(0);
-                if (_bandPaths.Count <= 3) MiddleBandRow.Height = new GridLength(0);
-
-                for (int i = 0; i < _bandPaths.Count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     SetupImageRow(
-                      new List<Border>() { _bandBorders[i] },
-                      new List<ImageBrush>() { _bandBrushes[i] },
-                      await GetBitImagesByPaths(new List<string>() { _bandPaths[i] }),
-                      _maxSize.Width, _maxSize.Height);
-
-                    //SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i], _minSize, _maxSize);
+                        new List<Border> { _bandBorders[i] },
+                        new List<ImageBrush> { _bandBrushes[i] },
+                        await GetBitImagesByPaths(new List<string> { _bandPaths[i] }),
+                        _maxSize.Width, _maxSize.Height);
                 }
 
-                for (int i = _bandPaths.Count; i < _bandBorders.Count; i++)
-                {
+                for (int i = count; i < _bandBorders.Count; i++)
                     HideBandBorder(_bandBorders[i]);
-                }
+            }
+
+            /*            if (_bandPaths.Count == 1)
+                        {
+                            BottomBandRow.Height = new GridLength(0);
+                            DownBandRow.Height = new GridLength(0);
+                            MiddleBandRow.Height = new GridLength(0);
+
+                            SetupImageRow(
+                                new List<Border>() { OneInGroupBorder },
+                                new List<ImageBrush>() { OneImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[0]}),
+                                _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(TwoInGroupBorder);
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(FourInGroupBorder);
+                            HideBandBorder(FiveInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                            HideBandBorder(SevenInGroupBorder);
+                            HideBandBorder(EightInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                            HideBandBorder(TenInGroupBorder);
+                            HideBandBorder(ElevenInGroupBorder);
+                            HideBandBorder(TwelveInGroupBorder);
+                        }
+                        else if(_bandPaths.Count == 2)
+                        {
+                            BottomBandRow.Height = new GridLength(0);
+                            DownBandRow.Height = new GridLength(0);
+                            MiddleBandRow.Height = new GridLength(0);
+
+                            SetupImageRow(
+                                new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
+                                new List<ImageBrush>() { OneImg, TwoImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
+                                _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(FourInGroupBorder);
+                            HideBandBorder(FiveInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                            HideBandBorder(SevenInGroupBorder);
+                            HideBandBorder(EightInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                            HideBandBorder(TenInGroupBorder);
+                            HideBandBorder(ElevenInGroupBorder);
+                            HideBandBorder(TwelveInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 3)
+                        {
+                            BottomBandRow.Height = new GridLength(0);
+                            DownBandRow.Height = new GridLength(0);
+
+                            *//*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                            OneInGroupBorder.Width = _maxSize.Width;
+                                            OneInGroupBorder.Height = _maxSize.Height;*//*
+
+                            SetupImageRow(
+                                new List<Border>() { OneInGroupBorder },
+                                new List<ImageBrush>() { OneImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                                _maxSize.Width, _maxSize.Height);
+
+
+                            _maxHeight = 0;
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], _minSize, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], _minSize, _maxSize);
+
+                            SetupImageRow(
+                                new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                                new List<ImageBrush>() { FourImg, FiveImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
+                                _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(TwoInGroupBorder);
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                            HideBandBorder(SevenInGroupBorder);
+                            HideBandBorder(EightInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 4)
+                        {
+                            BottomBandRow.Height = new GridLength(0);
+                            DownBandRow.Height = new GridLength(0);
+
+                            *//*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                            OneInGroupBorder.Width = _maxSize.Width;
+                                            OneInGroupBorder.Height = _maxSize.Height;*//*
+
+                            SetupImageRow(
+                                new List<Border>() { OneInGroupBorder },
+                                new List<ImageBrush>() { OneImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                                _maxSize.Width, _maxSize.Height);
+
+
+                            _maxHeight = 0;
+
+                            //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                            // SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+
+                            SetupImageRow(
+                                new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
+                                new List<ImageBrush>() { FourImg, FiveImg, SixImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
+                                _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(TwoInGroupBorder);
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(SevenInGroupBorder);
+                            HideBandBorder(EightInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 5)
+                        {
+                            DownBandRow.Height = new GridLength(0);
+
+                            *//*                SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _minSize, _maxSize);
+                                            OneInGroupBorder.Width = _maxSize.Width;
+                                            OneInGroupBorder.Height = _maxSize.Height;*//*
+
+                            SetupImageRow(
+                                new List<Border>() { OneInGroupBorder },
+                                new List<ImageBrush>() { OneImg },
+                                await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                                _maxSize.Width, _maxSize.Height);
+
+
+                            //_maxHeight = 0;
+
+                            // Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], secondPart, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                 new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                                 new List<ImageBrush>() { FourImg, FiveImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+
+                            //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[3], secondPart, _maxSize);
+                            //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[4], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                 new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
+                                 new List<ImageBrush>() { SevenImg, EightImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+
+                            HideBandBorder(TwoInGroupBorder);
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 6)
+                        {
+                            DownBandRow.Height = new GridLength(0);
+
+                            //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 2);
+
+                            //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], secondPart, _maxSize);
+                            //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                 new List<Border>() { OneInGroupBorder, TwoInGroupBorder },
+                                 new List<ImageBrush>() { OneImg, TwoImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[2], secondPart, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[3], secondPart, _maxSize);
+                            SetupImageRow(
+                                 new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                                 new List<ImageBrush>() { FourImg, FiveImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[2], _bandPaths[3] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+                            //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], secondPart, _maxSize);
+                            //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { SevenInGroupBorder, EightInGroupBorder },
+                                  new List<ImageBrush>() { SevenImg, EightImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+
+                            HideBandBorder(ThreeInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                            HideBandBorder(NineInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 7)
+                        {
+                            DownBandRow.Height = new GridLength(0);
+
+                            Size basePart = new Size(_maxSize.Width, _maxSize.Height);
+
+
+                            SetupImageRow(
+                                 new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
+                                 new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+                            SetupImageRow(
+                                  new List<Border>() { FourInGroupBorder },
+                                  new List<ImageBrush>() { FourImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[3] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], basePart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                                  new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(FiveInGroupBorder);
+                            HideBandBorder(SixInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 8)
+                        {
+                            DownBandRow.Height = new GridLength(0);
+
+                            //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+                            //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height);
+
+                            //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], thirdPart, _maxSize);
+                            //SetBandImg(TwoInGroupBorder, TwoImg, _bandPaths[1], thirdPart, _maxSize);
+                            //SetBandImg(ThreeInGroupBorder, ThreeImg, _bandPaths[2], thirdPart, _maxSize);
+
+                            SetupImageRow(
+                                 new List<Border>() { OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder },
+                                 new List<ImageBrush>() { OneImg, TwoImg, ThreeImg },
+                                 await GetBitImagesByPaths(new List<string>() { _bandPaths[0], _bandPaths[1], _bandPaths[2] }),
+                                 _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[3], secondPart, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[4], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { FourInGroupBorder, FiveInGroupBorder },
+                                  new List<ImageBrush>() { FourImg, FiveImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[3], _bandPaths[4] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+
+                            //_maxHeight = 0;
+
+                            //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[5], thirdPart, _maxSize);
+                            //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[6], thirdPart, _maxSize);
+                            //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[7], thirdPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                                  new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[5], _bandPaths[6], _bandPaths[7] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                            HideBandBorder(SixInGroupBorder);
+                        }
+                        else if (_bandPaths.Count == 9)
+                        {
+                            //Size secondPart = new Size(_maxSize.Width / 2, _maxSize.Height / 3);
+                            //Size thirdPart = new Size(_maxSize.Width / 3, _maxSize.Height / 2);
+
+                            //SetBandImg(OneInGroupBorder, OneImg, _bandPaths[0], _maxSize, _maxSize);
+
+                            SetupImageRow(
+                              new List<Border>() { OneInGroupBorder },
+                              new List<ImageBrush>() { OneImg },
+                              await GetBitImagesByPaths(new List<string>() { _bandPaths[0] }),
+                              _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+                            //SetBandImg(FourInGroupBorder, FourImg, _bandPaths[1], thirdPart, _maxSize);
+                            //SetBandImg(FiveInGroupBorder, FiveImg, _bandPaths[2], thirdPart, _maxSize);
+                            //SetBandImg(SixInGroupBorder, SixImg, _bandPaths[3], thirdPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { FourInGroupBorder, FiveInGroupBorder, SixInGroupBorder },
+                                  new List<ImageBrush>() { FourImg, FiveImg, SixImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[1], _bandPaths[2], _bandPaths[3] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+
+                            //SetBandImg(SevenInGroupBorder, SevenImg, _bandPaths[4], thirdPart, _maxSize);
+                            //SetBandImg(EightInGroupBorder, EightImg, _bandPaths[5], thirdPart, _maxSize);
+                            //SetBandImg(NineInGroupBorder, NineImg, _bandPaths[6], thirdPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { SevenInGroupBorder, EightInGroupBorder, NineInGroupBorder },
+                                  new List<ImageBrush>() { SevenImg, EightImg, NineImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[4], _bandPaths[5], _bandPaths[6] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                            //_maxHeight = 0;
+                            //SetBandImg(TenInGroupBorder, NineImg, _bandPaths[7], secondPart, _maxSize);
+                            //SetBandImg(ElevenInGroupBorder, NineImg, _bandPaths[8], secondPart, _maxSize);
+
+                            SetupImageRow(
+                                  new List<Border>() { TenInGroupBorder, ElevenInGroupBorder },
+                                  new List<ImageBrush>() { TenImg, ElevenImg },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[7], _bandPaths[8] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                        }
+                        else
+                        {
+                            DownBandRow.Height = new GridLength(0);
+
+                            if (_bandPaths.Count <= 6) BottomBandRow.Height = new GridLength(0);
+                            if (_bandPaths.Count <= 3) MiddleBandRow.Height = new GridLength(0);
+
+                            for (int i = 0; i < _bandPaths.Count; i++)
+                            {
+                                SetupImageRow(
+                                  new List<Border>() { _bandBorders[i] },
+                                  new List<ImageBrush>() { _bandBrushes[i] },
+                                  await GetBitImagesByPaths(new List<string>() { _bandPaths[i] }),
+                                  _maxSize.Width, _maxSize.Height);
+
+                                //SetBandImg(_bandBorders[i], _bandBrushes[i], _bandPaths[i], _minSize, _maxSize);
+                            }
+
+                            for (int i = _bandPaths.Count; i < _bandBorders.Count; i++)
+                            {
+                                HideBandBorder(_bandBorders[i]);
+                            }
+                        }*/
+        }
+
+        private void SetRowVisibility(int count)
+        {
+            if (count <= 2)
+            {
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+                MiddleBandRow.Height = new GridLength(0);
+            }
+            else if (count <= 4)
+            {
+                BottomBandRow.Height = new GridLength(0);
+                DownBandRow.Height = new GridLength(0);
+            }
+            else if (count <= 8)
+            {
+                DownBandRow.Height = new GridLength(0);
             }
         }
 
@@ -595,13 +672,64 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
         }
 
+        private Border[] _allBorders;
+        private ImageBrush[] _allBrushes;
+        private Border[] _allSelectBorders;
+
+        private void InitBandArrays()
+        {
+            _allBorders = new[]
+            {
+                OneInGroupBorder, TwoInGroupBorder, ThreeInGroupBorder, FourInGroupBorder,
+                FiveInGroupBorder, SixInGroupBorder, SevenInGroupBorder, EightInGroupBorder,
+                NineInGroupBorder, TenInGroupBorder, ElevenInGroupBorder, TwelveInGroupBorder
+            };
+
+            _allBrushes = new[]
+            {
+                OneImg, TwoImg, ThreeImg, FourImg, FiveImg, SixImg,
+                SevenImg, EightImg, NineImg, TenImg, ElevenImg, TwelveImg
+            };
+
+            _allSelectBorders = new[]
+            {
+                OneSelectedBorder, TwoSelectedBorder, ThreeSelectedBorder, FourSelectedBorder,
+                FiveSelectedBorder, SixSelectedBorder, SevenSelectedBorder, EightSelectedBorder,
+                NineSelectedBorder, TenSelectedBorder, ElevenSelectedBorder, TwelveSelectedBorder
+            };
+        }
+
+
+        private static readonly Dictionary<int, int[]> _bandOrderByCount = new()
+        {
+            [3] = new[] { 0, 3, 4, 1, 2, 5, 6, 7, 8, 9, 10, 11 },
+            [4] = new[] { 0, 3, 4, 5, 1, 2, 6, 7, 8, 9, 10, 11 },
+            [5] = new[] { 0, 3, 4, 6, 7, 1, 2, 5, 8, 9, 10, 11 },
+            [6] = new[] { 0, 1, 3, 4, 6, 7, 2, 5, 8, 9, 10, 11 },
+            [7] = new[] { 0, 1, 2, 3, 6, 7, 8, 4, 5, 9, 10, 11 },
+            [8] = new[] { 0, 1, 2, 3, 4, 6, 7, 8, 5, 9, 10, 11 },
+            [9] = new[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 11 },
+        };
+
+        private static readonly int[] DefaultOrder = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+
+
         private void SetBandBorderLists()
         {
             _bandBorders.Clear();
             _bandBrushes.Clear();
             _selectBorders.Clear();
 
-            if (_bandPaths.Count == 2)
+            var order = _bandOrderByCount.TryGetValue(_bandPaths.Count, out var o) ? o : DefaultOrder;
+
+            foreach (var i in order)
+            {
+                _bandBorders.Add(_allBorders[i]);
+                _bandBrushes.Add(_allBrushes[i]);
+                _selectBorders.Add(_allSelectBorders[i]);
+            }
+
+            /*            if (_bandPaths.Count == 2)
             {
                 #region //Count two 
                 _bandBorders.Add(OneInGroupBorder);
@@ -1014,7 +1142,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
                 _selectBorders.Add(ElevenSelectedBorder);
                 _selectBorders.Add(TwelveSelectedBorder);
                 #endregion
-            }
+            }*/
         }
 
         public void SetTagIdsToBandBorders(List<MediaAction> medias)
@@ -1310,12 +1438,14 @@ namespace TelegramVisualPart.UserControls.ChatControls
             return SelectionTickObj.GetChosenStatus();
         }
 
+        const string _stopSign = "StopSign.png";
+
         public async void SetSenderImage()
         {
             if (_senderImgName is null)
             {
                 BgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                FilesAction.GetSystemImagePath(_stopSign), UriKind.Absolute));
                 return;
             }
 

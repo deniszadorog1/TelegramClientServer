@@ -178,19 +178,23 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public void SetInfoLinesVisibility()
         {
-            if (/*Birthdate.UpperText.Text ==
-                VisConstParamsJsonService.GetStringByName("CantSeeStuff") ||*/
+            if (Birthdate.UpperText.Text !=
+                VisConstParamsJsonService.GetStringByName("BirthDatNotSet")) return;
 
+
+/*            if (*//*Birthdate.UpperText.Text ==
+                VisConstParamsJsonService.GetStringByName("CantSeeStuff") ||*//*
                 Birthdate.UpperText.Text ==
-                VisConstParamsJsonService.GetStringByName("BirthDatNotSet"))
-            {
+                VisConstParamsJsonService.GetStringByName("BirthDatNotSet")
+                )
+            {*/
                 InfoRow.Height = new GridLength(
                     InfoRow.Height.Value -
                     BirthdatRow.Height.Value);
 
                 MaxHeight -= BirthdatRow.Height.Value;
                 BirthdatRow.Height = new GridLength(0);
-            }
+            //}
         }
 
         private const int _mediaRowHeight = 50;

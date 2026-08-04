@@ -113,7 +113,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
             res += GetMediaParamsHeight();
 
             res += DividerRow.Height.Value;
-            res += GetMessagesHeight();
+            //res += GetMessagesHeight();
 
             return res;
         }
@@ -126,7 +126,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
                 GifMedia.Height;
         }
 
-        public double GetMessagesHeight()
+/*        public double GetMessagesHeight()
         {
             double res = 0;
 
@@ -139,6 +139,6 @@ namespace TelegramVisualPart.UserControls.ChatControls.SavedChatControls
             }
 
             return res;
-        }
+        }*/
     }
 }

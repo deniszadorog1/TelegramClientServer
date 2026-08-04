@@ -129,7 +129,7 @@ namespace TelegramVisualPart.UserControls.MainPage
             }
         }
 
-        private void AllChatsItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void AllChatsItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ListBoxItem item ||
                 item.Content is not LeftButtonsButton but) return;
@@ -140,7 +140,7 @@ namespace TelegramVisualPart.UserControls.MainPage
             item.Background = _activeBgColor;
 
             _system.Settings.ChosenFolderId = -1;
-            ((MainWindow)Window.GetWindow(this)).SetAllChatsInMainPage();
+            await ((MainWindow)Window.GetWindow(this)).SetAllChatsInMainPage();
         }
 
         private void AllFolderMenu_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)

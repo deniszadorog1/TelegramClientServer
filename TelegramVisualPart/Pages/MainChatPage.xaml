@@ -91,7 +91,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Name="HamburgerAddGrid"  Grid.Column="0"
+                        <Grid Name="HamburgerAddGrid" Grid.Column="0"
                           Margin="5 0 0 0" 
                           Background="Transparent" 
                           MouseEnter="HamburgerAddGrid_MouseEnter"
@@ -193,8 +193,7 @@
 
                         <Grid 
                             Name="MagnifierGrid" Grid.Column="1"
-                            Background="Transparent" Visibility="Hidden"
-                            
+                            Background="Transparent" Visibility="Hidden"                        
                             MouseEnter="MagnifierGrid_MouseEnter"
                             MouseLeave="MagnifierGrid_MouseLeave"
                             PreviewMouseDown="MagnifierGrid_PreviewMouseDown">
@@ -216,9 +215,7 @@
 
                     <ListBox Grid.Row="2" x:Name="ChatsBox" Visibility="Hidden"
                              ScrollViewer.ScrollChanged="ChatsBox_ScrollChanged"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             Padding="0 0 50 0"
-                             >
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <!-- <controls:UserTalkMessage Margin="-10 0 0 0"   
                                               Width="{Binding ActualWidth, ElementName=ChatsGrid}"/> -->
                     </ListBox>

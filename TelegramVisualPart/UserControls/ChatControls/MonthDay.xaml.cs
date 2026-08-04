@@ -61,6 +61,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private const string _deletedMessage = "Deleted Message";
 
+        private const string _pinnedStr = "pinned";
+        private const string _mediaStr = "media";
+        private const string _SharedStr = "Shared contact";
         public void SetPinnedMessageParams()
         {
             //Set pinnedLogin 
@@ -69,12 +72,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (SetAutoDeleteString()) return;
             if (SetDateStatMes()) return;
 
-            CenterMessage.Text = "pinned";
+            CenterMessage.Text = _pinnedStr;
             RightMessage.Text =
                 _pinned is null ? _deletedMessage :
                 _pinned is TelegramLib.MainClasses.Messages.TextMessage text ? text.Text :
-                _pinned is TelegramLib.MainClasses.Messages.MediaAction media ? "media" :
-                "Shared contact";
+                _pinned is TelegramLib.MainClasses.Messages.MediaAction media ? _mediaStr :
+                _SharedStr;
         }
 
         public bool SetDateStatMes()
@@ -91,18 +94,21 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         public bool SetAutoDeleteString()
         {
+            const string _autoDel = "canceled auto-del";
+            const string _autoDelDur = "set autoDel dur:";
+
+
             if (_statMes.DelType is null) return false;
 
             CenterColumn.Width = new GridLength(0);
             if (_statMes.DelType == AutoDeleteType.Nothing)
             {
-                RightMessage.Text =
-                    $"canceled auto-del";
+                RightMessage.Text = _autoDel;
             }
             else
             {
                 RightMessage.Text =
-                    $"set autoDel dur: {_system.GetAutDelDurationInString((AutoDeleteType)_statMes.DelType)}";
+                    $"{_autoDelDur} {_system.GetAutDelDurationInString((AutoDeleteType)_statMes.DelType)}";
             }
 
             RightMessage.MouseLeftButtonDown += SetAutoDelPage;

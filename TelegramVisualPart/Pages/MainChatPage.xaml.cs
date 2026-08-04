@@ -1103,6 +1103,12 @@ namespace TelegramVisualPart.Pages
 
         public ListBoxItem? GetChatItemByChatId(int chatId)
         {
+            _chatsDict.TryGetValue(chatId, out ListBoxItem res);
+
+            if (res is null) return null;
+
+            return res;
+
             return ChatsBox.Items
                 .OfType<ListBoxItem>()
                 .FirstOrDefault(x => x.Tag.ToString() == chatId.ToString());
@@ -1169,7 +1175,7 @@ namespace TelegramVisualPart.Pages
             }
             finally
             {
-                _isChatLoading = false; 
+                _isChatLoading = false;
             }
         }
 
@@ -1259,27 +1265,27 @@ namespace TelegramVisualPart.Pages
 
                 FolderSliderRow.Height = new GridLength(0);
             }
-            else if (this.ActualWidth - mousePos.X < _minChosenChatColWidth)
-            {
-                ChatColumn.MinWidth = _minChosenChatColWidth;
-                ChatColumn.Width = new GridLength(_minChosenChatColWidth);
-
-                ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
-            }
             else
             {
-                double clamped = Math.Max(100, desired);
-                ChatsColumn.Width = new GridLength(clamped);
-
                 ChatColumn.MinWidth = _minChosenChatColWidth;
-                ChatColumn.Width = new GridLength(1, GridUnitType.Star);
+                
+                if (this.ActualWidth - mousePos.X < _minChosenChatColWidth)
+                {
+                    ChatColumn.Width = new GridLength(_minChosenChatColWidth);
+                    ChatsColumn.Width = new GridLength(1, GridUnitType.Star);
+                }
+                else
+                {
+                    double clamped = Math.Max(100, desired);
+                    ChatsColumn.Width = new GridLength(clamped);
+                    ChatColumn.Width = new GridLength(1, GridUnitType.Star);
 
+                    SetVisibilityForChatObjects(false);
+                    SearchChatBut.Visibility = Visibility.Visible;
 
-                SetVisibilityForChatObjects(false);
-                SearchChatBut.Visibility = Visibility.Visible;
-
-                FolderSliderRow.Height = _system.Settings.IsTabsOnTheLeft ? new GridLength(0) :
-                     new GridLength(_folderSliderHeight);
+                    FolderSliderRow.Height = _system.Settings.IsTabsOnTheLeft ? new GridLength(0) :
+                         new GridLength(_folderSliderHeight);
+                }
             }
 
             SetSearchPanelWidth();
@@ -1398,15 +1404,16 @@ namespace TelegramVisualPart.Pages
         const int _stepPaintChats = 15;
         const int _baseChatPaintAmount = 15;
 
-
         public async Task RepaintUserChatsPanel(int tempLastId, int amountToDraw = _baseChatPaintAmount)
         {
             _isLoadingChats = true;
 
-            //ChatsBox.Items.Clear();
+            ChatsBox.Items.Clear();
             //GlobalMessageSearch.Items.Clear();
 
             List<ListBoxItem> items = new List<ListBoxItem>();
+
+            SortChats();
 
             //Get chats to paint
             List<TelegramLib.MainClasses.UserChat> chats =
@@ -1435,6 +1442,7 @@ namespace TelegramVisualPart.Pages
                     System.Windows.Controls.ListBoxItem()
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Visibility = Visibility.Visible,
                     Tag = chat.Id
                 };
 
@@ -1455,6 +1463,7 @@ namespace TelegramVisualPart.Pages
             foreach (var item in items)
             {
                 if (item.Parent is not null) continue;
+                item.Visibility = Visibility.Visible;
                 ChatsBox.Items.Add(item);
             }
 
@@ -1473,6 +1482,28 @@ namespace TelegramVisualPart.Pages
             MarkStartFolderChat();
 
             _isLoadingChats = false;
+            ScrollChatsBoxToTop();
+        }
+
+        public void ScrollChatsBoxToTop()
+        {
+            if (ChatsBox.Items.Count > 0)
+                ChatsBox.ScrollIntoView(ChatsBox.Items[0]);
+        }
+
+        public void SortChats()
+        {
+            _system.Chats = _system.Chats
+                .OrderByDescending(x => x.Messages?.LastOrDefault()?.SentTime ?? DateTime.MinValue)
+                .ToList();
+
+            _chatsDict = _chatsDict
+                .OrderByDescending(x =>
+                {
+                    var chat = _system.GetChatById(x.Key);
+                    return chat?.Messages?.LastOrDefault()?.SentTime ?? DateTime.MinValue;
+                })
+                .ToDictionary(x => x.Key, x => x.Value);
         }
 
         public void SetOnlineCircleVisibility(int maxId)
@@ -1559,7 +1590,7 @@ namespace TelegramVisualPart.Pages
             /* TelegramLib.MainClasses.UserChat chat =
                  _system.GetChatByIndex(chatIndex);*/
 
-            TelegramLib.MainClasses.User chatterUser = chat.Chatter;//  await ApiService.GetUserById(chat.Chatter.Id);
+            TelegramLib.MainClasses.User chatterUser = chat.Chatter; // await ApiService.GetUserById(chat.Chatter.Id);
             string imageName = await SignalRHelperService.GetUserPhotoToSet(chatterUser, settings);
 
             UserTalkMessage chatControl = new UserTalkMessage(imageName /*chat.GetChatter().GetFirstImageName().Name*/)
@@ -1578,11 +1609,31 @@ namespace TelegramVisualPart.Pages
 
             DateTime? date = chat.GetLastMessageDateTime();
 
-            if (date is not null) chatControl.LastMessageTime.Text =
-                    $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
+            /*            if (date is not null) chatControl.LastMessageTime.Text =
+                                $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
+
+            */
             chatControl.LastMessage.Text = chat.GetLastMessageInString();
 
+            chatControl.LastMessageTime.Text = GetUseTalkDate(date);
+
             return chatControl;
+        }
+
+        private string GetUseTalkDate(DateTime? date)
+        {
+            if (date is null) return string.Empty;
+
+            if (date.HasValue && date.Value.Date == DateTime.Today)
+            {
+                return $"{date.Value.Hour}:{date.Value.Minute}";
+            }
+            if (date.HasValue && date.Value.Date >= DateTime.Today.AddDays(-7) && date.Value.Date <= DateTime.Today)
+            {
+                return date.Value.DayOfWeek.ToString();
+            }
+
+            return $"{((DateTime)date).Day}.{((DateTime)date).Month}.{((DateTime)date).Year}";
         }
 
         public void UpdateUserTalkTickStatus(TelegramLib.MainClasses.UserChat chat)
@@ -1626,7 +1677,7 @@ namespace TelegramVisualPart.Pages
             message.SetDefaultValues();
         }
 
-        public void UpdateUserTalkChat()
+        public async void UpdateUserTalkChat()
         {
             if (IsOnlyChat()) return;
 
@@ -1634,10 +1685,10 @@ namespace TelegramVisualPart.Pages
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
             if (chat is null) return;
 
-            SetLastTalkMessageByChat(chat);
+            await SetLastTalkMessageByChat(chat);
         }
 
-        public void SetLastTalkMessageByChat(TelegramLib.MainClasses.UserChat chat)
+        public async Task SetLastTalkMessageByChat(TelegramLib.MainClasses.UserChat chat)
         {
             UserTalkMessage message =
                  GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
@@ -1645,10 +1696,10 @@ namespace TelegramVisualPart.Pages
 
             //Get chat
             message.LastMessage.Text = chat.GetLastMessageInString();
-            message.LastMessageTime.Text = chat.Messages.Count == 0 ?
-                string.Empty :
-                chat.Messages.Last().GetSentTimeInString();
-
+            message.LastMessageTime.Text = GetUseTalkDate(chat.Messages.Last().SentTime);
+            /*chat.Messages.Count == 0 ?
+              string.Empty :
+              chat.Messages.Last().GetSentTimeInString();*/
             //Tick is read
             Message mes = chat.GetLastMessage();
             if (mes is not null)
@@ -1656,6 +1707,8 @@ namespace TelegramVisualPart.Pages
                 message.SetTick(mes, _system);
             }
             SetUnreadForUserTalk(message, chat);
+
+            await RepaintUserChatsPanel(0);
         }
 
         public bool IsOnlyChat()
@@ -2675,7 +2728,7 @@ namespace TelegramVisualPart.Pages
 
             for (int i = 0; i < foldersIds.Count; i++)
             {
-               await ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
+                await ApiService.DeleteContactFromFolder(foldersIds[i], chatter.Id);
             }
         }
 
@@ -2694,7 +2747,6 @@ namespace TelegramVisualPart.Pages
             TelegramLib.MainClasses.UserChat chat = _system.GetChatById(chatId);
             if (chat is null) return;
             chat.IsMarked = false;
-
 
             DateTime addDate = DateTime.Now;
 
@@ -2715,7 +2767,7 @@ namespace TelegramVisualPart.Pages
             //Add backwards
             if (isAddInSignalR) await AddSharedMessageInSignalR(chat.Chatter, contactToSend);
 
-            SetLastTalkMessageByChat(chat);
+            await SetLastTalkMessageByChat(chat);
 
             UpdateUserTalkChat();
 
@@ -2903,7 +2955,7 @@ namespace TelegramVisualPart.Pages
             UserChat.RemoveMessagesByDates(dates);
         }
 
-        public void ScrolToMessageByDateTime(DateTime date)
+        public void ScrollToMessageByDateTime(DateTime date)
         {
             if (UserChat.Visibility == Visibility.Hidden) return;
             UserChat.ScrollToMessageByDateTime(date);
@@ -3027,7 +3079,7 @@ namespace TelegramVisualPart.Pages
             if (UserChat.Visibility == Visibility.Visible &&
                UserChat._chat is not null)
             {
-               await UserChat.SetChatMessages();
+                await UserChat.SetChatMessages();
             }
 
             //Set in Chats
@@ -3102,6 +3154,7 @@ namespace TelegramVisualPart.Pages
 
         private async void ChatsBox_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
+            return;
             if (_isLoadingChats || _isInFolder) return;
 
             if (e.VerticalOffset + e.ViewportHeight >= e.ExtentHeight - _maxScrollToUpdateDist)

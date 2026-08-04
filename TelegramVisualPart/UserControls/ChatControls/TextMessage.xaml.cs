@@ -237,9 +237,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             };
         }
 
+        private const string _fontName = "Times New Roman";
+        private const string _stopSignName = "StopSign.png";
+
         private void SetFont(string font)
         {
-            if (font == string.Empty) font = "Times New Roman";
+            if (font == string.Empty) font = _fontName;
             Message.FontFamily = new FontFamily(font);
         }
 
@@ -248,7 +251,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             if (_imgName is null)
             {
                 BgBrush.ImageSource = new BitmapImage(new Uri(
-                FilesAction.GetSystemImagePath("StopSign.png"), UriKind.Absolute));
+                FilesAction.GetSystemImagePath(_stopSignName), UriKind.Absolute));
                 return;
             }
 

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -96,6 +97,8 @@ namespace TelegramVisualPart.Services
             await SetLastSeenStatus(user, type, textBlock, settings: settings);
         }
 
+        private static readonly string _onlySeeStaff = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+
         public static async Task SetLastSeenStatus(TelegramLib.MainClasses.User user,
         IsPrivacyException type, TextBlock textBlock,
             MainSettings settings = null)
@@ -117,14 +120,14 @@ namespace TelegramVisualPart.Services
                 type == IsPrivacyException.NeverShare)
             {
                 textBlock.Foreground = new SolidColorBrush(Colors.Gray);
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff;// VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
             if (isStop)
             {
                 textBlock.Foreground = new SolidColorBrush(Colors.Gray);
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff;//  VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
@@ -175,13 +178,13 @@ namespace TelegramVisualPart.Services
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 type == IsPrivacyException.NeverShare)
             {
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff; //VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
             if (isStop)
             {
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff; // VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
@@ -219,13 +222,13 @@ namespace TelegramVisualPart.Services
                 TelegramLib.Enums.Settings.PrivacyAndSecurity.ShareWith.Nobody ||
                 shareType == IsPrivacyException.NeverShare)
             {
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff; //VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
             if (isStop)
             {
-                textBlock.Text = VisConstParamsJsonService.GetStringByName("CantSeeStuff");
+                textBlock.Text = _onlySeeStaff; //VisConstParamsJsonService.GetStringByName("CantSeeStuff");
                 return;
             }
 
@@ -262,10 +265,11 @@ namespace TelegramVisualPart.Services
                 await ApiService.GetContactMask(_system.LoggedUser.Id, user.Id);*/
 
             if (mask is not null &&
-
-                (user.UserImages.Count > 0 &&
-                System.IO.Path.GetFileName(mask.Name) != System.IO.Path.GetFileName(user.UserImages.First().Name)))
+                ((user.UserImages is null) ||
+                (user.UserImages.Count > 0 && 
+                System.IO.Path.GetFileName(mask.Name) != System.IO.Path.GetFileName(user.UserImages.First().Name))))
             {
+                if (user.UserImages is null) user.UserImages = new List<TelegramLib.MainClasses.UserParams.UserImage>();
                 user.UserImages.Insert(0,
                     new TelegramLib.MainClasses.UserParams.UserImage(System.IO.Path.GetFileName(mask.Name), mask.Date));
             }

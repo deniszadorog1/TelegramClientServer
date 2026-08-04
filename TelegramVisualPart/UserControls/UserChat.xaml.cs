@@ -80,7 +80,7 @@ namespace TelegramVisualPart.UserControls
             SignalRService.UpdateOnlineStatusDel += UpdateOnlineStatus;
             SignalRService.UpdateUserImage += UpdateUserImage;
 
-            SignalRService.ClearChatDel += ClearChatAction; //Check withi first sent message late
+            SignalRService.ClearChatDel += ClearChatAction; //Check with first sent message late
 
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
             SignalRService.UpdateContactPhotoDel += UpdateChatterImage;
@@ -1188,7 +1188,7 @@ namespace TelegramVisualPart.UserControls
             await Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 ChatBox.Items.Clear();
-                await SetMessagesInChat(_chatMessages.Count == 0 ? 0 : _chatMessages.Last().Id);
+                await SetMessagesInChat(_chatMessages.Count == 0 ? 0 : _chatMessages.Max(x => x.Id)/*_chatMessages.Last().Id*/);
             });
         }
 
@@ -1959,8 +1959,10 @@ namespace TelegramVisualPart.UserControls
                 CommentTextBox.CaretIndex = caret + Environment.NewLine.Length;
 
                 e.Handled = true;
+
+                return;
             }
-            else if (
+            if (
                 (_system.Settings.ChatsSettings.GetIsSendWithEnter() && e.Key == System.Windows.Input.Key.Enter) ||
 
                 (!_system.Settings.ChatsSettings.GetIsSendWithEnter() &&
@@ -5006,9 +5008,17 @@ namespace TelegramVisualPart.UserControls
             ShareContactControl shareContact =
                 new ShareContactControl();
 
+            //Try to get by chat
+            TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(sharedContact.Id);
+
+            string imgName = chat is not null ? chat.Chatter.GetImgName() : sharedContact.GetFirstImageNameInString();
+
             //Set control params
             await shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
-            await shareContact.SetSharedUserImage(sharedContact.GetFirstImageNameInString());
+
+            await shareContact.SetChatterImg(imgName, sharedContact);
+
+            //await shareContact.SetSharedUserImage();
             shareContact.SetSharedUserName(sharedName);
             shareContact.SetSharedUserPhoneNumber(sharedContact.PhoneNumber);
             shareContact.SetSendTime();
@@ -5442,8 +5452,10 @@ namespace TelegramVisualPart.UserControls
         public async void SetReplyRowParams(UserControl control,
                 List<Message> messages, bool isResend = false)
         {
+            const int replyHeight = 50;
+
             if (messages is null) return;
-            ReplyMessageRow.Height = new GridLength(50);
+            ReplyMessageRow.Height = new GridLength(replyHeight);
 
             //Set Image to reply
             if (control is not null &&

@@ -50,14 +50,20 @@ namespace TelegramVisualPart.UserControls.ChatsSearch
 
             for (int i = 0; i < _system.Contacts.Count; i++)
             {
+                int constUserId = _system.Contacts[i].ContactUserId;
+                TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(constUserId);
+
+                string imgName = chat is not null ? chat.Chatter.GetImgName() : _system.Contacts[i].GetFirstImageName().Name;
+
                 ChatButton but = new ChatButton();
 
                 but.ChatName.Text = _system.Contacts[i].Name;
 
-                BitmapImage bitmap = ApiService.GetCachedBitmap(_system.Contacts[i].GetFirstImageName().Name);
+                BitmapImage bitmap = ApiService.GetCachedBitmap(imgName);
 
                 but.UserImgBrush.ImageSource = bitmap is not null ? bitmap :
                     await SignalRHelperService.LoadBitmap(await FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name));
+                    
                 // new BitmapImage(new Uri(FilesAction.GetUserImagePath(_system.Contacts[i].GetFirstImageName().Name), UriKind.Absolute));
                 ChatsPanel.Children.Add(but);
             }

@@ -107,22 +107,15 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatButsControls
 
         public void SetEnableStatus(bool isBoxSiEmpty)
         {
-            if (isBoxSiEmpty)
-            {
-                Undo.SetEnableStatus(false);
-                Redo.SetEnableStatus(false);
-                Cut.SetEnableStatus(false);
-                Copy.SetEnableStatus(false);
-                Delete.SetEnableStatus(false);
-                SelectAll.SetEnableStatus(false);
-                return;
-            }
-            Undo.SetEnableStatus(true);
-            Redo.SetEnableStatus(true);
-            Cut.SetEnableStatus(true);
-            Copy.SetEnableStatus(true);
-            Delete.SetEnableStatus(true);
-            SelectAll.SetEnableStatus(true);
+            bool opposite = !isBoxSiEmpty;
+
+            Undo.SetEnableStatus(opposite);
+            Redo.SetEnableStatus(opposite);
+            Cut.SetEnableStatus(opposite);
+            Copy.SetEnableStatus(opposite);
+            Delete.SetEnableStatus(opposite);
+            SelectAll.SetEnableStatus(opposite);
+
         }
     }
 }

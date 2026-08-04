@@ -41,7 +41,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             //Set Radio row height
             SetWindowHeight();
 
-            Console.WriteLine(_system.Settings.SoundNotifSettings.ChosenSound);
+            //Console.WriteLine(_system.Settings.SoundNotifSettings.ChosenSound);
         }
 
         public void SetWindowHeight()

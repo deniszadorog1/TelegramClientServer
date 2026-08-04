@@ -54,6 +54,8 @@ namespace TelegramLib.MainClasses
             IsOnline = isOnline;
         }
 
+        const string _baseMinato = "Minato.jpg";
+
         public void UpdateParamsByUser(User user)
         {
             if (user is null || Id != user.Id) return;
@@ -90,7 +92,15 @@ namespace TelegramLib.MainClasses
             return UserImages.First();
         }
 
-        const string _baseMinato = "Minato.jpg";
+        public string GetImgName()
+        {
+            return ImageMask is not null ? ImageMask.Name : 
+                UserImages.Count == 0 ? string.Empty : 
+                UserImages.FirstOrDefault().Name;
+        }
+
+        
+
         public string GetFirstImageNameInString()
         {
             if (UserImages is null || UserImages.Count == 0 ||

@@ -65,9 +65,9 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             if (sender is Button but) but.Background = Brushes.Transparent;
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
-            ApiService.UpdatePrivSettings(_settings);
+            await ApiService.UpdatePrivSettings(_settings);
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 

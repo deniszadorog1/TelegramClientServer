@@ -310,7 +310,6 @@
                      BorderThickness="0">
 
             </TextBox>
-
         </Grid>
 
         <Border Name="PinRowBorder" Grid.Row="1" 
@@ -377,7 +376,7 @@
 
             <Grid Margin="0 0 0 5">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="ChatColumn" />
+                    <ColumnDefinition x:Name="ChatColumn"/>
                     <ColumnDefinition x:Name="SelectColumn" Width="0"/>
                 </Grid.ColumnDefinitions>
 

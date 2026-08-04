@@ -337,7 +337,8 @@
                                        FontSize="16" Name="ShareContactBlock"
                                        VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Foreground="{StaticResource UsualTextColor}" 
-                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" PreviewMouseDown="ShareLine_PreviewMouseDown"/>
+                                       MouseLeave="But_MouseLeave" MouseEnter="But_MouseEnter" 
+                                       PreviewMouseDown="ShareLine_PreviewMouseDown"/>
 
                             <TextBlock Grid.Column="1" Grid.Row="1" FontSize="16"
                                       Name="EditContactBlock"

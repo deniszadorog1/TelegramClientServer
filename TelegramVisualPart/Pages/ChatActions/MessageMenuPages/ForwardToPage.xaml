@@ -45,7 +45,8 @@
 
                     <StackPanel Margin="10 5 10 5" Name="ChatsPanel"
                                 Orientation="Horizontal">
-                        <TextBox Margin="45 0 0 0" Height="40"
+                        <TextBox Name="SearchName"
+                                 Margin="45 0 0 0" Height="40"
                                  MinWidth="300"
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Stretch"
@@ -53,7 +54,8 @@
                                  Foreground="{StaticResource UsualTextColor}"
                                  FontSize="16"
                                  materialDesign:HintAssist.Hint="Login here"
-                                 materialDesign:HintAssist.IsFloating="False"/>
+                                 materialDesign:HintAssist.IsFloating="False"
+                                 TextChanged="TextBox_TextChanged"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

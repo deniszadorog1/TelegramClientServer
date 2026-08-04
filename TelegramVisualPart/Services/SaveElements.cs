@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using System.Windows.Controls;
+using System.Reflection;
 
 namespace TelegramVisualPart.Services
 {
@@ -14,12 +15,15 @@ namespace TelegramVisualPart.Services
     {
         public static void SaveImageAs(Image img)
         {
+            const string filter = "PNG Image|*.png|JPEG Image|*.jpg";
+            const string fileName = "image.png";
+
             if (img.Source is BitmapImage bitmapImage)
             {
                 var dialog = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter = "PNG Image|*.png|JPEG Image|*.jpg",
-                    FileName = "image.png"
+                    Filter = filter,
+                    FileName = fileName
                 };
 
                 if (dialog.ShowDialog() == true)
@@ -42,6 +46,9 @@ namespace TelegramVisualPart.Services
 
             string absolutePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, relativePath);
 
+            const string title = "Save gif as...";
+            const string filter = "GIF files (*.gif)|*.gif";
+
             if (!File.Exists(absolutePath))
             {
                 MessageBox.Show("File was not found:\n" + absolutePath);
@@ -50,8 +57,8 @@ namespace TelegramVisualPart.Services
 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Save gif as...",
-                Filter = "GIF files (*.gif)|*.gif",
+                Title = title,
+                Filter = filter,
                 FileName = Path.GetFileName(absolutePath)
             };
 
@@ -63,11 +70,14 @@ namespace TelegramVisualPart.Services
 
         public static void SaveVideoAs(MediaElement element)
         {
+            const string title = "Save Video as...";
+            const string filter = "MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*";
+
             string originalPath = element.Source.LocalPath; 
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                Title = "Save Video as...",
-                Filter = "MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*",
+                Title = title,
+                Filter = filter,
                 FileName = Path.GetFileName(originalPath)
             };
 

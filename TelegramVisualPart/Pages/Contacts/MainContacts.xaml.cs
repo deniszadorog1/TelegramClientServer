@@ -56,7 +56,7 @@ namespace TelegramVisualPart.Pages.Contacts
         {
             if (_isBlock)
             {
-                SetUsersToBlock();
+                await SetUsersToBlock();
                 ToCheckEnd?.Invoke();
                 return;
             }
@@ -98,18 +98,29 @@ namespace TelegramVisualPart.Pages.Contacts
         }
 
 
-        private void SetUsersToBlock()
+        private async Task SetUsersToBlock()
         {
             List<TelegramLib.MainClasses.User> toAdd =
                 _system.Chats
                     .Where(x => !_system.LoggedUser.BlockedUsers.Select(y => y.Id)
                         .Contains(x.Chatter.Id))
                     .Select(x => x.Chatter)
+                        .Where(x => !_addedIds.Contains(x.Id))
+                        .Take(_stepAmount)
                     .ToList();
 
-            for (int i = 0; i < toAdd.Count; i++)
+            _addedIds.AddRange(toAdd.Select(x => x.Id));
+
+            foreach (var val in toAdd)
             {
-                UserContact contact = new UserContact(toAdd[i]);
+                string imgName = val.GetFirstImageNameInString();
+                string imgPath = await FilesAction.GetUserImagePath(imgName);
+                if (ApiService.GetCachedBitmap(imgPath) is null)
+                    await SignalRHelperService.LoadBitmap(imgPath);
+
+                UserContact contact = new UserContact(val);
+                await contact.SetBasicParams();
+                
                 contact.ImgSet += () =>
                 {
                     Visibility = Visibility.Visible;
@@ -119,7 +130,7 @@ namespace TelegramVisualPart.Pages.Contacts
                 {
                     Content = contact,
                     HorizontalContentAlignment = HorizontalAlignment.Stretch,
-                    Tag = toAdd[i].Id
+                    Tag = val.Id
                 };
 
                 item.PreviewMouseDown += Contact_PreviewMouseDown;
@@ -246,13 +257,13 @@ namespace TelegramVisualPart.Pages.Contacts
         private PackIconKind _aKind = PackIconKind.HamburgerPlus;
         private PackIconKind _bKind = PackIconKind.HamburgerCheck;
 
-        private async void SortGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void SortGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (SortBut.IconType.Kind == PackIconKind.HamburgerMenu)
             {
                 SortBut.IconType.Kind = _aKind;
                 //Sort by name
-                await SortByContactByName();
+                SortByContactByName();
                 return;
             }
 
@@ -262,15 +273,15 @@ namespace TelegramVisualPart.Pages.Contacts
             //Sort by Name
             if (SortBut.IconType.Kind == _aKind)
             {
-                await SortByContactByName();
+                SortByContactByName();
                 return;
             }
 
             //Sort by last seen time
-            await SortByLastSeenTime();
+            SortByLastSeenTime();
         }
 
-        public async Task SortByLastSeenTime()
+        public void SortByLastSeenTime()
         {
             var sortedItems = ContactsListBox.Items
                 .Cast<ListBoxItem>()
@@ -289,7 +300,7 @@ namespace TelegramVisualPart.Pages.Contacts
             }
         }
 
-        public async Task SortByContactByName()
+        public void SortByContactByName()
         {
             var sortedItems = ContactsListBox.Items
                 .Cast<ListBoxItem>()

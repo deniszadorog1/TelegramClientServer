@@ -27,7 +27,7 @@ namespace TelegramVisualPart.UserControls.ChatControls.LittleMenusContols
         }
 
         private DatePartType _type;
-        private  int _maxValue = 59; 
+        private int _maxValue = 59;
 
         public void SetParams(DatePartType type)
         {
@@ -46,18 +46,20 @@ namespace TelegramVisualPart.UserControls.ChatControls.LittleMenusContols
             _maxValue =
                 _type == DatePartType.Minute ? maxMin :
                 _type == DatePartType.Hour ? maxHour :
-                _type == DatePartType.Day ? maxDay :
-                throw new Exception("WTF");
+                _type == DatePartType.Day ? maxDay : maxDay;
         }
-    
+
 
         public void SetAdditionalText()
         {
+            const string min = "Minutes";
+            const string hour = "Hours";
+            const string day = "Days";
+
             AdditionalTextBlock.Text =
-                _type == DatePartType.Minute ? "Minutes" :
-                _type == DatePartType.Hour ? "Hours" :
-                _type == DatePartType.Day ? "Days" : 
-                throw new Exception("WTF");
+                _type == DatePartType.Minute ? min :
+                _type == DatePartType.Hour ? hour :
+                _type == DatePartType.Day ? day : day;
         }
 
         private void TimeBox_PreviewTextInput(object sender, TextCompositionEventArgs e)

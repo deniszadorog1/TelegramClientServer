@@ -372,7 +372,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             UnCheckRadios(Night, but);
         }
 
-        public void UnCheckRadios(ThemeCard toUncheck, RadioButton chosen)
+        public async void UnCheckRadios(ThemeCard toUncheck, RadioButton chosen)
         {
             if (toUncheck.RadioBut == chosen)
             {
@@ -384,8 +384,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
                 _chatsSettings.Theme = type is null ? ThemeType.Tinted : (ThemeType)type;
 
-
-                ApiService.UpdateChatSettings(_chatsSettings);
+                await ApiService.UpdateChatSettings(_chatsSettings);
                 return;
             }
             toUncheck.RadioBut.IsChecked = false;
@@ -600,16 +599,16 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             }
         }
 
-        private void SendEnterRadio_Checked(object sender, RoutedEventArgs e)
+        private async void SendEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
             _chatsSettings.IsSendWithEnter = true;
-            ApiService.UpdateChatSettings(_chatsSettings);
+            await ApiService.UpdateChatSettings(_chatsSettings);
         }
 
-        private void SendCtrlEnterRadio_Checked(object sender, RoutedEventArgs e)
+        private async void SendCtrlEnterRadio_Checked(object sender, RoutedEventArgs e)
         {
             _chatsSettings.IsSendWithEnter = false;
-            ApiService.UpdateChatSettings(_chatsSettings);
+            await ApiService.UpdateChatSettings(_chatsSettings);
         }
 
         private void ChooseWallpaperFromGalery_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -646,14 +645,14 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
             }
         }
 
-        private void AutoNightBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void AutoNightBut_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _chatsSettings.NightMode = _chatsSettings.NightMode == AutoNightMode.Off ?
                 AutoNightMode.System : AutoNightMode.Off;
 
             AutoNightBut.ChosenType.Text = _chatsSettings.NightMode.ToString();
 
-            ApiService.UpdateChatSettings(_chatsSettings);
+            await ApiService.UpdateChatSettings(_chatsSettings);
 
             SetAutoNightTimer(_chatsSettings.NightMode);
         }

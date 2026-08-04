@@ -17,6 +17,8 @@ using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.ContactsControls;
+using static MaterialDesignThemes.Wpf.Theme.ToolBar;
+using TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages;
 
 namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
 {
@@ -63,11 +65,16 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 toAdd.PreviewMouseDown += UserControl_PreviewMouseDown;
 
                 //add in contacts if not contatins
-                ToShareWithPanel.Children.Add(toAdd);
+                if (SearchTextBox.Text == string.Empty ||
+                    toAdd.IsLoginContainsName(SearchTextBox.Text))
+                {
+                    ToShareWithPanel.Children.Add(toAdd);
+                }
+                _contacts.Add(toAdd);
             }
         }
 
-        public async void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public void UserControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not UserContact contact) return;
 
@@ -159,6 +166,23 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             SearchTextBox.Text = string.Empty;
+        }
+
+        private List<UserContact> _contacts = new List<UserContact>();
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ToShareWithPanel.Children.Clear();
+
+            foreach (var contact in _contacts)
+            {
+                if (contact is UserContact val &&
+                    (val.IsLoginContainsName(SearchTextBox.Text) || 
+                        string.IsNullOrWhiteSpace(SearchTextBox.Text)))
+                {
+                    ToShareWithPanel.Children.Add(contact);
+                }
+
+            }
         }
     }
 }

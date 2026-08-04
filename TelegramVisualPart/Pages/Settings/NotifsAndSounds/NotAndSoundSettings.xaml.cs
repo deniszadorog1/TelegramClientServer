@@ -260,12 +260,12 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             SetMesesNotifsChanged(block);
         }
 
-        private void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void TextBlock_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not TextBlock block) return;
             SetMesesNotifsChanged(block);
 
-            UpdateMonitorInDB();
+            await UpdateMonitorInDB();
         }
 
         public async Task UpdateMonitorInDB()
@@ -390,7 +390,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
             }
         }
 
-        public void UpdateSide_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        public async void UpdateSide_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             _system.Settings.NotSettings.SideType =
                 sender == TopLeftStack ? NotifMessageSide.TopLeft :
@@ -398,7 +398,7 @@ namespace TelegramVisualPart.Pages.Settings.NotifsAndSounds
                 sender == BottomLeftStack ? NotifMessageSide.BottomLeft :
                /* sender == TopLeftStack ?*/ NotifMessageSide.TopLeft;
 
-            UpdateMonitorInDB();
+            await UpdateMonitorInDB();
         }
     }
 }

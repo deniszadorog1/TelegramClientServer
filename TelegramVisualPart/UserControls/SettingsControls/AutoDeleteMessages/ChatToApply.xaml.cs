@@ -168,5 +168,10 @@ namespace TelegramVisualPart.UserControls.SettingsControls.AutoDeleteMessages
             TypeName.Text = "Saved messages";
             AutoDeletionType.Text = "Forward messages here";
         }
+
+        public bool IsSameName(string name)
+        {
+            return TypeName.Text.Contains(name);
+        }
     }
 }

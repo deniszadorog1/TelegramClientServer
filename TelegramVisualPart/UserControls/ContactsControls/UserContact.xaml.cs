@@ -37,13 +37,19 @@ namespace TelegramVisualPart.UserControls.ContactsControls
 
             SetLogin();
 
-            Loaded += async (s, e) => await SetBasicParams(); 
+            SetBasicView();
+            //Loaded += async (s, e) => await SetBasicParams();
 
             //last seen row
             SignalRService.SetContactLastSeenVisStateDel += SetLastVisState;
 
             //photo allowence
             SignalRService.UpdateContactPhotoDel += AddedUserImage;
+        }
+
+        public async void SetBasicView()
+        {
+            await SetBasicParams(); 
         }
 
         public async Task SetBasicParams()
@@ -97,6 +103,11 @@ namespace TelegramVisualPart.UserControls.ContactsControls
         public void SetLogin()
         {
             UserLogin.Text = _login;
+        }
+
+        public bool IsLoginContainsName(string name)
+        {
+            return UserLogin.Text.Contains(name);
         }
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)

@@ -34,9 +34,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
         }
         public void SetFolders()
         {
+            const int baseFolderIndex = -1;
             TabsPanel.Children.Clear();
 
-            AddFolderBlock("Personal", -1, isAllChats: true);
+            AddFolderBlock("Personal", baseFolderIndex, isAllChats: true);
             for (int i = 0; i < _folders.Count; i++)
             {
                 AddFolderBlock(_folders[i].Name, _folders[i].Id);

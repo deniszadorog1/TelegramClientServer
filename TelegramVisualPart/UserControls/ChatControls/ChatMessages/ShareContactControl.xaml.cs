@@ -3,7 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
 {
@@ -36,8 +38,19 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
             new Uri(await FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
         }
 
+        public async Task SetChatterImg(string imgName,
+            TelegramLib.MainClasses.User user)
+        {
+            await SignalRHelperService.SetPhotoInEllipse(user,
+                ImageIcon, UserEllipseImage);
+
+            ImageIcon.ImageSource = new BitmapImage(
+               new Uri(await FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
+        }
+
         public async Task SetSharedUserImage(string imgName)
         {
+            return;
             ImageIcon.ImageSource = new BitmapImage(
                 new Uri(await FilesAction.GetUserImagePath(imgName), UriKind.Absolute));
         }

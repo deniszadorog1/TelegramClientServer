@@ -70,7 +70,7 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="125"/>
+                    <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock x:Name="FriendLogin" HorizontalAlignment="Left" VerticalAlignment="Center" 
@@ -95,7 +95,7 @@
                     <TextBlock x:Name="LastMessageTime" 
                            HorizontalAlignment="Right" 
                            VerticalAlignment="Center" 
-                           Text="mestime" Margin="10 5 25 5" 
+                           Text="mestime" Margin="10 5 35 5" 
                            Foreground="Gray" FontSize="16"                           
                            FontFamily="{DynamicResource AppFont}"/>
 

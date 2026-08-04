@@ -876,7 +876,6 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateUserTalkChat();
-
         }
 
         public void SetChosenFolderByName(string folderName)
@@ -1340,7 +1339,7 @@ namespace TelegramVisualPart
 
         public void ScrollToMessagesByDate(DateTime dateTime)
         {
-            if (MainFrame.Content is MainChatPage page) page.ScrolToMessageByDateTime(dateTime);
+            if (MainFrame.Content is MainChatPage page) page.ScrollToMessageByDateTime(dateTime);
         }
 
         public void AddMenuInMenuCan(TextBoxMenu menu)

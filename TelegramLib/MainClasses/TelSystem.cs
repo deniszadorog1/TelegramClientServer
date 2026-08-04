@@ -260,8 +260,6 @@ namespace TelegramLib.MainClasses
             Contacts.Remove(Contacts.Where(x => x.Id == contact.Id).FirstOrDefault());
         }
 
-
-
         private void RemoveEmptyFolders()
         {
             List<Folder> toRemove = new List<Folder>();
@@ -987,6 +985,8 @@ namespace TelegramLib.MainClasses
         private List<UserChat> _bufChats = new List<UserChat>();
         public List<UserChat> GetChatsToPaint(int tempId, int amountToGet) 
         {
+            return Chats;
+
             List<UserChat> res = 
                 Chats.Where(x => x.Id >= tempId && !_bufChats.Contains(x)).Take(amountToGet).ToList();
             AddBuf(res);

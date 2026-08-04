@@ -171,14 +171,14 @@ namespace TelegramVisualPart.UserControls.ChatControls.UserContactControls
                 name != AutoDelete.Name.ToString() &&
                 name != ShareContact.Name.ToString()) return null;
 
-            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(/*_system.GetChosenChat()*/ _chat, _system) :
-                   name == DeleteContact.Name.ToString() ? new DeleteContact(/*_system.ChosenChatContact */contact, _system) :
+            return name == AutoDelete.Name.ToString() ? new NewMessagesDeletion(_chat, _system) :
+                   name == DeleteContact.Name.ToString() ? new DeleteContact(contact, _system) :
 
-                   name == BlockUser.Name.ToString() ? new BlockContact(_system, /*_system.ChosenChatContact*/ _chat.Chatter) :
+                   name == BlockUser.Name.ToString() ? new BlockContact(_system, _chat.Chatter) :
 
-                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, /*_system.ChosenChatContact*/contact, _system) :
+                   name == EditContact.Name.ToString() ? new EditUserContact(_system.LoggedUser, contact, _system) :
                    name == AddToFolder.Name.ToString() ? new FoldersPage(_system, false) :
-                   name == ShareContact.Name.ToString() ? new ShareContact(_system, /*_system.ChosenChatContact*/ contact) :
+                   name == ShareContact.Name.ToString() ? new ShareContact(_system,  contact) :
                    name == AddContact.Name.ToString() ? new EditUserContact(_chat.Chatter, _system) : null;
         }
 
