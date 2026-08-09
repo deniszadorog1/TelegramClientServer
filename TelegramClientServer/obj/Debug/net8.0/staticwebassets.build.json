@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "20Y+7vHj7/DcsRBFrWW6XeYqYyozjN7eWjkKIJaEcIE=",
+  "Hash": "t0lZV5RAdDp8MBgQADlJsPTGhSuyBin8ntR+bFyN1as=",
   "Source": "TelegramClientServer",
   "BasePath": "_content/TelegramClientServer",
   "Mode": "Default",
@@ -1098,6 +1098,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\1c1c8d14-3dad-41a7-b07e-4d041287bbb8.png"
+    },
+    {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\1c71cfe9-a6a9-4d0e-8b6c-d5bdf162dcfb.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/1c71cfe9-a6a9-4d0e-8b6c-d5bdf162dcfb.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\1c71cfe9-a6a9-4d0e-8b6c-d5bdf162dcfb.jpg"
     },
     {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\1cf39c73-e40c-41e4-b232-589c1da9954a.png",
@@ -3152,6 +3171,25 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\50bef79e-0b02-4283-9151-c73b989db86a.png"
     },
     {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\5126452d-bfbe-446f-b84c-b38587a45982.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/5126452d-bfbe-446f-b84c-b38587a45982.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\5126452d-bfbe-446f-b84c-b38587a45982.jpg"
+    },
+    {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\519a25cb-90ee-471c-8faf-796dec3957c5.png",
       "SourceId": "TelegramClientServer",
       "SourceType": "Discovered",
@@ -4520,6 +4558,25 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\7040bbfc-78a8-42bd-99a8-e3462e838c3c.png"
     },
     {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\70438185-017f-4cb5-80de-309263cbcbc7.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/70438185-017f-4cb5-80de-309263cbcbc7.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\70438185-017f-4cb5-80de-309263cbcbc7.jpg"
+    },
+    {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\70c6b087-f4d5-416b-bf02-449d02a8f72d.png",
       "SourceId": "TelegramClientServer",
       "SourceType": "Discovered",
@@ -5525,6 +5582,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\88f3d613-4966-4bc3-b2cc-abbea745dda1.png"
+    },
+    {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\8905354e-1b58-4b9a-bda1-ee77b9f4c16b.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/8905354e-1b58-4b9a-bda1-ee77b9f4c16b.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\8905354e-1b58-4b9a-bda1-ee77b9f4c16b.jpg"
     },
     {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\8907671f-1723-4721-8dc3-7022a38996a3.jpg",
@@ -8358,6 +8434,25 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\c9deb131-c244-4708-bec9-18572fc9143a.png"
     },
     {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\ca886ed6-2712-454c-aab5-83c9afe950b7.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/ca886ed6-2712-454c-aab5-83c9afe950b7.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\ca886ed6-2712-454c-aab5-83c9afe950b7.jpg"
+    },
+    {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\ca97a095-8e1a-4300-973e-4a727d643b9e.png",
       "SourceId": "TelegramClientServer",
       "SourceType": "Discovered",
@@ -8508,6 +8603,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\Images\\cc390370-6b32-4084-99f6-ea000b562b0a.png"
+    },
+    {
+      "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\cc409102-83d5-4789-a2ab-b25ea133da70.jpg",
+      "SourceId": "TelegramClientServer",
+      "SourceType": "Discovered",
+      "ContentRoot": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\",
+      "BasePath": "_content/TelegramClientServer",
+      "RelativePath": "Uploads/Images/cc409102-83d5-4789-a2ab-b25ea133da70.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\Images\\cc409102-83d5-4789-a2ab-b25ea133da70.jpg"
     },
     {
       "Identity": "B:\\GitHub\\TelegramClientServer\\TelegramClientServer\\wwwroot\\Uploads\\Images\\cc54d7a7-1b6e-4dcd-a2ef-fff0890f9b94.png",

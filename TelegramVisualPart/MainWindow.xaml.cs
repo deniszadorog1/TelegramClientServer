@@ -874,6 +874,12 @@ namespace TelegramVisualPart
 
         public void UpdateUserChatTalkControl()
         {
+            if(_bossWindow is not null)
+            {
+                _bossWindow.UpdateUserChatTalkControl();
+                return;
+            }
+
             if (MainFrame.Content is not MainChatPage chatPage) return;
             chatPage.UpdateUserTalkChat();
         }

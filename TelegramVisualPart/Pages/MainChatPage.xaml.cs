@@ -647,6 +647,8 @@ namespace TelegramVisualPart.Pages
             SetFoundGlobalMessages(0, new List<int>());
 
             _isLoadingGlobalMessages = false;
+
+            if (GlobalMessageSearch.Items is null || GlobalMessageSearch.Items.Count == 0) return;
             GlobalMessageSearch.ScrollIntoView(GlobalMessageSearch.Items[0]);
         }
 
@@ -1708,7 +1710,7 @@ namespace TelegramVisualPart.Pages
             }
             SetUnreadForUserTalk(message, chat);
 
-            await RepaintUserChatsPanel(0);
+            if (chat.IsLastMessageWrittenIsNow()) await RepaintUserChatsPanel(0);
         }
 
         public bool IsOnlyChat()

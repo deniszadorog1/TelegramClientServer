@@ -449,7 +449,7 @@ namespace TelegramVisualPart.UserControls
 
                 //Update vis 
                 bool isOnlyPinnedChat = IsOnlyPinnedChatIsOn();
-                if (isOnlyPinnedChat) IsOnlyPinnedChatPinAction();
+                if (isOnlyPinnedChat) await IsOnlyPinnedChatPinAction();
                 else
                 {
                     if (SavedMessagesGrid.Visibility != Visibility.Visible &&
@@ -1247,7 +1247,7 @@ namespace TelegramVisualPart.UserControls
 
         private MainSettings _chatterSettings;
         private TelegramLib.MainClasses.User _chatter;
-        private const int _stepAmountOfMessage = 10;
+        private const int _stepAmountOfMessage = 20;
         public async Task SetMessagesInChat(int startId)
         {
             if (startId == 0) ChatBox.Items.Clear();
@@ -2851,6 +2851,7 @@ namespace TelegramVisualPart.UserControls
                 actionType == BothUsersMessageAction.SchedDelete)
             {
                 if (actionType == BothUsersMessageAction.SchedDelete) isBoth = false;
+                
                 //Set page actions
                 await DeleteMessage(mes, itemMessage, isBoth);
 
@@ -2858,17 +2859,17 @@ namespace TelegramVisualPart.UserControls
             }
             else
             {
-                SetPinAction(mes, itemMessage, isBoth);
+                await SetPinAction(mes, itemMessage, isBoth);
 
                 if (mes.IsPinned) await SetStatMessageAfterPin(mes, isBoth);
-                if (IsOnlyPinnedChatIsOn()) IsOnlyPinnedChatPinAction();
+                if (IsOnlyPinnedChatIsOn()) await IsOnlyPinnedChatPinAction();
             }
         }
 
-        public void IsOnlyPinnedChatPinAction()
+        public async Task IsOnlyPinnedChatPinAction()
         {
             UpdateParamsInPinnedChat();
-            SetChatMessages(true);
+            await SetChatMessages(true);
             IsOnlyPinIsClear();
             PinRow.Height = new GridLength(0);
         }
@@ -3282,11 +3283,13 @@ namespace TelegramVisualPart.UserControls
 
             //Hide upper borders
             HideUpperBorders();
-
+            
             //Update vis 
             bool isOnlyPinnedChat = IsOnlyPinnedChatIsOn();
-            if (isOnlyPinnedChat) IsOnlyPinnedChatPinAction();
-            else if (isUpdateChatVis) SetChatMessages();
+            if (isOnlyPinnedChat) await IsOnlyPinnedChatPinAction();
+            else if (isUpdateChatVis) await SetChatMessages();
+
+            //return;
 
             //Remove from db
             await RemoveMessageFromDb(message.Id);
@@ -5994,7 +5997,7 @@ namespace TelegramVisualPart.UserControls
 
             //Update vis 
             bool isOnlyPinnedChat = IsOnlyPinnedChatIsOn();
-            if (isOnlyPinnedChat) IsOnlyPinnedChatPinAction();
+            if (isOnlyPinnedChat) await IsOnlyPinnedChatPinAction();
             else await SetChatMessages();
         }
 

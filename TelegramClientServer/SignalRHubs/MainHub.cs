@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Protocol;
+using TelegramClientServer.Helpers;
 using TelegramLib.MainClasses;
 using TelegramLib.MainClasses.DTOsHelper;
 using TelegramLib.MainClasses.Messages;
@@ -34,8 +36,7 @@ namespace TelegramClientServer.SignalRHubs
 
                         await MessageBus.PublishAsync(envelope);*/
 
-
-            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveTextMessage", messages, user);
+            await Clients.User(chatter.Id.ToString()).SendAsync(MainHubNameHelper._receiveTextMessage /*"ReceiveTextMessage"*/, messages, user);
 
         }
 
@@ -43,120 +44,120 @@ namespace TelegramClientServer.SignalRHubs
         {
             var senderId = Context.UserIdentifier;
 
-            await Clients.User(chatter.Id.ToString()).SendAsync("ReceiveMediaMessage", messages, user);
+            await Clients.User(chatter.Id.ToString()).SendAsync(MainHubNameHelper._receiveMediaMessage /*"ReceiveMediaMessage"*/, messages, user);
         }
 
         public async Task SendStatMessage(User user, StaticMessage message, User chatter)
         {
-            await Clients.User(chatter.Id.ToString()).SendAsync("AddStatMessage", user, message);
+            await Clients.User(chatter.Id.ToString()).SendAsync(MainHubNameHelper._addStatMessage /*"AddStatMessage"*/, user, message);
         }
 
         public async Task AddContact(User user, User contact)
         {
-            await Clients.User(user.Id.ToString()).SendAsync("AddContact", user, contact);
+            await Clients.User(user.Id.ToString()).SendAsync(MainHubNameHelper._addContact /*"AddContact"*/, user, contact);
             //await Clients.All.SendAsync("AddContact", user, contact);
         }
 
         public async Task UpdateContact(User updatedContact)
         {
-            await Clients.All.SendAsync("UpdateContact", updatedContact);
+            await Clients.All.SendAsync(MainHubNameHelper._updateContact /*"UpdateContact"*/, updatedContact);
         }
 
         public async Task UpdateUserImages(TelegramLib.MainClasses.User user)
         {
-            await Clients.All.SendAsync("UpdateUserImages", user);
+            await Clients.All.SendAsync(MainHubNameHelper._updateUserImages /*"UpdateUserImages"*/, user);
         }
 
         public async Task RemoveContact(User logged, User removed)
         {
-            await Clients.User(removed.Id.ToString()).SendAsync("RemoveContact", logged, removed);
+            await Clients.User(removed.Id.ToString()).SendAsync(MainHubNameHelper._removeContact /*"RemoveContact"*/, logged, removed);
         }
 
         public async Task UpdateOnlineStatus(User toUpdate)
         {
-            await Clients.All.SendAsync("UpdateOnlineStatus", toUpdate);
+            await Clients.All.SendAsync(MainHubNameHelper._updateOnlineStatus /*"UpdateOnlineStatus"*/, toUpdate);
         }
         public async Task UpdateLittlePhotoVisInChat(User loggedUser)
         {
-            await Clients.All.SendAsync("UpdateLittlePhotoVisInChat", loggedUser);
+            await Clients.All.SendAsync(MainHubNameHelper._updateLittlePhotoVisInChat /*"UpdateLittlePhotoVisInChat"*/, loggedUser);
         }
 
         public async Task UpdatePagePhoto(User loggedUser)
         {
-            await Clients.All.SendAsync("UpdatePagePhoto", loggedUser);
+            await Clients.All.SendAsync(MainHubNameHelper._updatePagePhoto /*"UpdatePagePhoto"*/, loggedUser);
         }
 
         public async Task UpdateContactBio(User user)
         {
-            await Clients.All.SendAsync("UpdateContactBio", user);
+            await Clients.All.SendAsync(MainHubNameHelper._updateContactBio /*"UpdateContactBio"*/, user);
         }
 
         public async Task AddUserImage(User addedImage)
         {
-            await Clients.All.SendAsync("AddUserImage", addedImage);
+            await Clients.All.SendAsync(MainHubNameHelper._addUserImage /*"AddUserImage"*/, addedImage);
         }
 
         public async Task EditMessage(int clientId, User logged, EditDTO dto)
         {
-            await Clients.User(clientId.ToString()).SendAsync("EditMessage", logged, dto);
+            await Clients.User(clientId.ToString()).SendAsync(MainHubNameHelper._editMessage /*"EditMessage"*/, logged, dto);
         }
 
         public async Task ClearChat(int clientId, User chatter)
         {
-            await Clients.User(clientId.ToString()).SendAsync("ClearChat", chatter);
+            await Clients.User(clientId.ToString()).SendAsync(MainHubNameHelper._clearChat /*"ClearChat"*/, chatter);
         }
 
         public async Task SetContactPhoneNumberVisibility(bool isVis, 
             TelegramLib.MainClasses.User user)
         {
-            await Clients.All.SendAsync("SetContactPhoneNumberVisibility", isVis, user);
+            await Clients.All.SendAsync(MainHubNameHelper._setContactPhoneNumberVisibility /*"SetContactPhoneNumberVisibility"*/, isVis, user);
         }
 
         public async Task SetContactLastSeenVisState(User user)
         {
-            await Clients.All.SendAsync("SetContactLastSeenVisState", user);
+            await Clients.All.SendAsync(MainHubNameHelper._setContactLastSeenVisState /*"SetContactLastSeenVisState"*/, user);
         }
 
         public async Task SetPhoneNumVisByExps(User user)
         {
-            await Clients.All.SendAsync("SetPhoneNumVisByExps", user);
+            await Clients.All.SendAsync(MainHubNameHelper._setPhoneNumVisByExps /*"SetPhoneNumVisByExps"*/, user);
         }
 
         public async Task UpdateBirthDate(User user)
         {
-            await Clients.All.SendAsync("UpdateBirthDate", user);
+            await Clients.All.SendAsync(MainHubNameHelper._updateBirthDate /*"UpdateBirthDate"*/, user);
         }
 
         public async Task UpdateContactPhoto(User user)
         {
-            await Clients.All.SendAsync("UpdateContactPhoto", user);
+            await Clients.All.SendAsync(MainHubNameHelper._updateContactPhoto /*"UpdateContactPhoto"*/, user);
         }
 
         public async Task UpdateForwardStatus(User user)
         {
-            await Clients.All.SendAsync("UpdateForwardStatus", user);
+            await Clients.All.SendAsync(MainHubNameHelper._updateForwardStatus /*"UpdateForwardStatus"*/, user);
         }
 
         public async Task DeleteChat(User loggedUser, User chatter, int clientId)
         {
-            await Clients.User(clientId.ToString()).SendAsync("DeleteChat", loggedUser, chatter);
+            await Clients.User(clientId.ToString()).SendAsync(MainHubNameHelper._deleteChat /*"DeleteChat"*/, loggedUser, chatter);
         }
 
         public async Task UpdateReadStatus(User loggedUser, int clientId)
         {
-            await Clients.User(clientId.ToString()).SendAsync("UpdateReadStatus", loggedUser);
+            await Clients.User(clientId.ToString()).SendAsync(MainHubNameHelper._updateReadStatus /*"UpdateReadStatus"*/, loggedUser);
         }
 
         public async Task UpdateChatsControls(User logged, User chatter)
         {
-            await Clients.User(chatter.Id.ToString()).SendAsync("UpdateChatsControls", logged);
+            await Clients.User(chatter.Id.ToString()).SendAsync(MainHubNameHelper._updateChatsControls /*"UpdateChatsControls"*/, logged);
         }
 
         public async Task AddShareContactMessage(User logged, 
             User chatter, int id)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("AddShareContactMessage", logged, chatter, id);
+                .SendAsync(MainHubNameHelper._addShareContactMessage, logged, chatter, id);
         }
 
 
@@ -164,50 +165,50 @@ namespace TelegramClientServer.SignalRHubs
             TelegramLib.MainClasses.Messages.TextMessage text)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("ReplyMessage", logged, text);
+                .SendAsync(MainHubNameHelper._replyMessage /*"ReplyMessage"*/, logged, text);
         }
 
         public async Task PinMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message pinned)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("PinMessage", logged, pinned);
+                .SendAsync(MainHubNameHelper._pinMessage /*"PinMessage"*/, logged, pinned);
         }
 
         public async Task ForwardMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message toForward)
         {
-            await Clients.User(chatter.Id.ToString()).SendAsync("ForwardMessage", logged, toForward);
+            await Clients.User(chatter.Id.ToString()).SendAsync(MainHubNameHelper._forwardMessage /*"ForwardMessage"*/, logged, toForward);
         }
 
         public async Task DeleteMessage(User logged, User chatter, 
             TelegramLib.MainClasses.Messages.Message mes, bool isUpdateVis)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("DeleteMessage", logged, mes, isUpdateVis);
+                .SendAsync(MainHubNameHelper._deleteMessage /*"DeleteMessage"*/, logged, mes, isUpdateVis);
         }
 
         public async Task SendTypingAction(User logged, User chatter)
         {
             await Clients.User(chatter.Id.ToString())
-                .SendAsync("SendTypingAction", logged);
+                .SendAsync(MainHubNameHelper._sendTypingAction /*"SendTypingAction"*/, logged);
         }
 
         public async Task RemoveManyMessagesByDateTimes(List<DateTime> sentTimes, int loggedUserId, int chatterId)
         {
             await Clients.User(chatterId.ToString()).
-                SendAsync("RemoveManyMessagesByDateTimes", sentTimes, loggedUserId);
+                SendAsync(MainHubNameHelper._removeManyMessagesByDateTimes /*"RemoveManyMessagesByDateTimes"*/, sentTimes, loggedUserId);
         }
 
         public async Task UpdateCachedSettings(int id)
         {
-            await Clients.All.SendAsync("UpdateCachedSettings", id);
+            await Clients.All.SendAsync(MainHubNameHelper._updateCachedSettings /*"UpdateCachedSettings"*/, id);
         }
 
         public async Task SendAllMessages(List<Message> messages, User sender, User chatter)
         {
             await Clients.User(chatter.Id.ToString()).
-                SendAsync("SendAllMessages", messages, sender);
+                SendAsync(MainHubNameHelper._sendAllMessages /*"SendAllMessages"*/, messages, sender);
         }
     }
 
@@ -225,7 +226,7 @@ namespace TelegramClientServer.SignalRHubs
             await foreach (var envelope in MessageBus.SubscribeAsync(stoppingToken))
             {
                 await _hubContext.Clients.User(envelope.ReceiverId)
-                    .SendAsync("ReceiveTextMessage", envelope.Sender, envelope.Content, stoppingToken);
+                    .SendAsync(MainHubNameHelper._receiveTextMessageSend /*"ReceiveTextMessage"*/, envelope.Sender, envelope.Content, stoppingToken);
             }
         }
     }

@@ -36,26 +36,38 @@
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Hidden">
                 <Grid>
-                    <materialDesign:PackIcon Name="MagnIcon" Kind="Magnify"
-                                             Height="25" Width="25"
-                                             VerticalAlignment="Center"
-                                             HorizontalAlignment="Left"
-                                             Margin="20 0 0 0"
-                                             Foreground="Gray"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Margin="10 5 10 5" Name="ChatsPanel"
-                                Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <materialDesign:PackIcon Name="MagnIcon" Kind="Magnify"
+                                                 Height="27" Width="27"
+                                                 VerticalAlignment="Center"
+                                                 HorizontalAlignment="Left"
+                                                 Margin="20 0 0 0"
+                                                 Foreground="Gray"/>
+
                         <TextBox Name="SearchName"
-                                 Margin="45 0 0 0" Height="40"
-                                 MinWidth="300"
-                                 HorizontalAlignment="Stretch"
-                                 HorizontalContentAlignment="Stretch"
-                                 VerticalContentAlignment="Center"
-                                 Foreground="{StaticResource UsualTextColor}"
-                                 FontSize="16"
-                                 materialDesign:HintAssist.Hint="Login here"
-                                 materialDesign:HintAssist.IsFloating="False"
-                                 TextChanged="TextBox_TextChanged"/>
+                                     Margin="10 0 0 0" Height="40"
+                                     MinWidth="300"
+                                     HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Center"
+                                     Foreground="{StaticResource UsualTextColor}"
+                                     FontSize="16"
+                                     materialDesign:HintAssist.Hint="Login here"
+                                     materialDesign:HintAssist.IsFloating="False"
+                                     TextChanged="TextBox_TextChanged"
+                                     CaretBrush="Black"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="10 5 10 5" Name="ChatsPanel"
+                                Orientation="Horizontal">
+
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
@@ -77,6 +89,6 @@
 
 
         </Grid>
-        
+
     </Border>
 </Page>

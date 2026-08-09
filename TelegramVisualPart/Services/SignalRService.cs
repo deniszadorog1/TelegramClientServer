@@ -391,13 +391,13 @@ namespace TelegramVisualPart.Services
                         }*/
 
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendTextMessage", sender, message, chatter);
+                await _connection.InvokeAsync(SigRHelper._sendTextMessage /* "SendTextMessage"*/, sender, message, chatter);
         }
 
         public static async Task SendMediaMessage(User sender, List<Message> message, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);
+                await _connection.InvokeAsync(SigRHelper._sendMediaMessage /*"SendMediaMessage"*/, sender, message, chatter);
 
             /*            if (_connection.State == HubConnectionState.Connected)
                             await _connection.InvokeAsync("SendMediaMessage", sender, message, chatter);*/
@@ -407,13 +407,13 @@ namespace TelegramVisualPart.Services
                 int id)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("AddShareContactMessage", logged, chatter, id);
+                await _connection.InvokeAsync(SigRHelper._addShareContactMessageSend /*"AddShareContactMessage"*/, logged, chatter, id);
         }
 
         public static async Task AddStatMessage(User sender, StaticMessage message, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendStatMessage", sender, message, chatter);
+                await _connection.InvokeAsync(SigRHelper._sendStatMessage /*"SendStatMessage"*/, sender, message, chatter);
         }
 
         public static async Task AddContact(User user, User contact)
@@ -422,13 +422,13 @@ namespace TelegramVisualPart.Services
 
 
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("AddContact", user, contact);
+                await _connection.InvokeAsync(SigRHelper._addContactSend /*"AddContact"*/, user, contact);
         }
 
         public static async Task UpdateContact(User updatedUser)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateContact", updatedUser);
+                await _connection.InvokeAsync(SigRHelper._updateContactSend /*"UpdateContact"*/, updatedUser);
         }
 
         public static async Task DeleteContact(User loggedUser, User removed)
@@ -436,14 +436,14 @@ namespace TelegramVisualPart.Services
             await VisHelper.UpdateStatesWithSignalR(_system);
 
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("RemoveContact", loggedUser, removed);
+                await _connection.InvokeAsync(SigRHelper._removeContactSend /*"RemoveContact"*/, loggedUser, removed);
         }
 
         public static async Task UpdateOnlineStatus(User toUpdate)
         {
             if (_connection is null) return;
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateOnlineStatus", toUpdate);
+                await _connection.InvokeAsync(SigRHelper._updateOnlineStatusSend /*"UpdateOnlineStatus"*/, toUpdate);
         }
 
         public static async Task UpdateLittlePhotoVisInChat(User loggedUser)
@@ -452,7 +452,7 @@ namespace TelegramVisualPart.Services
 
             if (_connection.State == HubConnectionState.Connected)
             {
-                await _connection.InvokeAsync("UpdateLittlePhotoVisInChat", loggedUser);
+                await _connection.InvokeAsync(SigRHelper._updateLittlePhotoVisInChatSend /*"UpdateLittlePhotoVisInChat"*/, loggedUser);
             }
         }
 
@@ -462,89 +462,89 @@ namespace TelegramVisualPart.Services
 
             if (_connection.State == HubConnectionState.Connected)
             {
-                await _connection.InvokeAsync("UpdatePagePhoto", loggedUser);
+                await _connection.InvokeAsync(SigRHelper._updatePagePhotoSend /*"UpdatePagePhoto"*/, loggedUser);
             }
         }
 
         public static async Task AddUserImage(User addedImage)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("AddUserImage", addedImage);
+                await _connection.InvokeAsync(SigRHelper._addUserImageSend /*"AddUserImage"*/, addedImage);
         }
 
         public static async Task ClearChat(int clientId, User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("ClearChat", clientId, user);
+                await _connection.InvokeAsync(SigRHelper._clearChatSend /*"ClearChat"*/, clientId, user);
         }
 
-        public static async Task SetUserPhonenumberVisibility(bool IsVisisble,
+        public static async Task SetUserPhoneNumberVisibility(bool IsVisisble,
             TelegramLib.MainClasses.User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SetContactPhoneNumberVisibility", IsVisisble, user);
+                await _connection.InvokeAsync(SigRHelper._setContactPhoneNumberVisibilitySend /*"SetContactPhoneNumberVisibility"*/, IsVisisble, user);
         }
 
         public static async Task SetContactLastSeenVisState(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SetContactLastSeenVisState", user);
+                await _connection.InvokeAsync(SigRHelper._setContactLastSeenVisStateSend /*"SetContactLastSeenVisState"*/, user);
         }
 
         public static async Task SetPhoneNumVisByExps(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SetPhoneNumVisByExps", user);
+                await _connection.InvokeAsync(SigRHelper._setPhoneNumVisByExpsSend /*"SetPhoneNumVisByExps"*/, user);
         }
 
         public static async Task UpdateBirtDate(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateBirthDate", user);
+                await _connection.InvokeAsync(SigRHelper._updateBirthDateSend /*"UpdateBirthDate"*/, user);
         }
 
         public static async Task UpdateContactPhotoVis(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateContactPhoto", user);
+                await _connection.InvokeAsync(SigRHelper._updateContactPhotoSend /*"UpdateContactPhoto"*/, user);
         }
 
         public static async Task UpdateContactBioVis(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateContactBio", user);
+                await _connection.InvokeAsync(SigRHelper._updateContactBioSend /*"UpdateContactBio"*/, user);
         }
 
         public static async Task UpdateContactForwardStatus(User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateForwardStatus", user);
+                await _connection.InvokeAsync(SigRHelper._updateForwardStatusSend /*"UpdateForwardStatus"*/, user);
         }
 
         public static async Task DeleteChatMethod(User loggedUser, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("DeleteChat", loggedUser, chatter, chatter.Id);
+                await _connection.InvokeAsync(SigRHelper._deleteChatSend /*"DeleteChat"*/, loggedUser, chatter, chatter.Id);
         }
 
         public static async Task UpdateReadStatusMethod(User loggedUser, User chatter)
         {
             if (_connection?.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateReadStatus", loggedUser, chatter.Id);
+                await _connection.InvokeAsync(SigRHelper._updateReadStatusSend /*"UpdateReadStatus"*/, loggedUser, chatter.Id);
         }
 
         public static async Task DeleteMessageById(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message mes, bool isUpdateVis = true)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("DeleteMessage", logged, chatter, mes, isUpdateVis);
+                await _connection.InvokeAsync(SigRHelper._deleteMessageSend /*"DeleteMessage"*/, logged, chatter, mes, isUpdateVis);
         }
 
         public static async Task PinMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.Message toPin)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("PinMessage", logged, chatter, toPin);
+                await _connection.InvokeAsync(SigRHelper._pinMessageSend /*"PinMessage"*/, logged, chatter, toPin);
         }
 
 
@@ -552,14 +552,14 @@ namespace TelegramVisualPart.Services
             TelegramLib.MainClasses.Messages.Message toForward)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("ForwardMessage", logged, chatter, toForward);
+                await _connection.InvokeAsync(SigRHelper._forwardMessageSend /*"ForwardMessage"*/, logged, chatter, toForward);
         }
 
         public static async Task SendReplyMessage(User logged, User chatter,
             TelegramLib.MainClasses.Messages.TextMessage replyMes)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("ReplyMessage", logged, chatter, replyMes);
+                await _connection.InvokeAsync(SigRHelper._replyMessageSend /*"ReplyMessage"*/, logged, chatter, replyMes);
         }
 
         public static async Task EditMessage(User logged, User chatter,
@@ -568,7 +568,7 @@ namespace TelegramVisualPart.Services
             EditDTO dto = GetEditDTO(toEdit);
 
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("EditMessage", chatter.Id, logged, dto);
+                await _connection.InvokeAsync(SigRHelper._editMessageSend /*"EditMessage"*/, chatter.Id, logged, dto);
         }
 
         private static EditDTO GetEditDTO(TelegramLib.MainClasses.Messages.Message mes)
@@ -584,33 +584,33 @@ namespace TelegramVisualPart.Services
         public static async Task UpdateChatsControls(User logged, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateChatsControls", logged, chatter);
+                await _connection.InvokeAsync(SigRHelper._updateChatsControlsSend /*"UpdateChatsControls"*/, logged, chatter);
         }
 
         public static async Task SendTypingAction(User logged, User chatter)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("SendTypingAction", logged, chatter);
+                await _connection.InvokeAsync(SigRHelper._sendTypingActionSend /*"SendTypingAction"*/, logged, chatter);
         }
 
         public static async Task RemoveManyMessagesByDateTimes(
             List<DateTime> sentTimes, int loggedUserId, int chatterId)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("RemoveManyMessagesByDateTimes",
+                await _connection.InvokeAsync(SigRHelper._removeManyMessagesByDateTimesSend /*"RemoveManyMessagesByDateTimes"*/,
                     sentTimes, loggedUserId, chatterId);
         }
 
         public static async Task UpdateUserImages(TelegramLib.MainClasses.User user)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateUserImages", user);
+                await _connection.InvokeAsync(SigRHelper._updateUserImagesSend /*"UpdateUserImages"*/, user);
         }
 
         public static async Task UpdateCachedSettings(int id)
         {
             if (_connection.State == HubConnectionState.Connected)
-                await _connection.InvokeAsync("UpdateCachedSettings", id);
+                await _connection.InvokeAsync(SigRHelper._updateCachedSettingsSend /*"UpdateCachedSettings"*/, id);
         }
 
         public static async Task SendAllMessages(List<Message> messages, User sender, User chatter)

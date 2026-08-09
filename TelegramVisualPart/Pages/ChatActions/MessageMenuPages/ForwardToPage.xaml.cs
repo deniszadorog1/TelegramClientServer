@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.AspNetCore.Http.Metadata;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TelegramLib.MainClasses;
@@ -36,7 +37,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             _system = system;
 
             InitializeComponent();
-            
+
             Loaded += async (s, e) => await SetBasicParams();
             //SetBasicParams();
         }
@@ -44,7 +45,6 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         public async Task SetBasicParams()
         {
             ChatsPanel.Children.Clear();
-
             for (int i = 0; i < _system.Chats.Count; i++)
             {
                 await SetChatListBoxItem(_system.Chats[i]);
@@ -63,7 +63,7 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 Tag = chat is TelegramLib.MainClasses.SavedMessagesChat ? null : chat.Chatter.Id,
                 Padding = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Top    
+                VerticalAlignment = VerticalAlignment.Top
             };
             item.PreviewMouseDown += Contacts_PreviewMouseDown;
 
@@ -83,9 +83,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
             {
                 await SignalRHelperService.SetPhotoInEllipse(user,
                  contact.UserImageBrush, contact.UserImageEllipse);
-               
+
                 //contact.AddedUserImage(user);
-             
+
                 contact.TypeName.Text = user.Login;
                 contact.AutoDeletionType.Text = user.GetLastSeenInChat();
 
@@ -97,8 +97,12 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
                 contact.SetSavedMesChatGrid();
             }
             item.Content = contact;
-            ChatPanel.Items.Add(item);
 
+            if (SearchName.Text == string.Empty || 
+                user.Login.Contains(SearchName.Text))
+            {
+                ChatPanel.Items.Add(item);
+            }
             _items.Add(item);
         }
 
@@ -145,9 +149,9 @@ namespace TelegramVisualPart.Pages.ChatActions.MessageMenuPages
         {
             ChatPanel.Items.Clear();
 
-            foreach(var item in _items)
+            foreach (var item in _items)
             {
-                if(item.Content is ChatToApply val && 
+                if (item.Content is ChatToApply val &&
                     (val.IsSameName(SearchName.Text) || string.IsNullOrWhiteSpace(SearchName.Text)))
                 {
                     ChatPanel.Items.Add(item);

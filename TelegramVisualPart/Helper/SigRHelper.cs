@@ -41,6 +41,39 @@ namespace TelegramVisualPart.Helper
         public static string _updatePagePhoto = "UpdatePagePhoto";
         public static string _updateCachedSettings = "UpdateCachedSettings";
         public static string _sendAllMessages = "SendAllMessages";
+        
+        
+        public static string _sendTextMessage = "SendTextMessage";
+        public static string _sendMediaMessage = "SendMediaMessage";
+        public static string _addShareContactMessageSend = "AddShareContactMessage";
+        public static string _sendStatMessage = "SendStatMessage";
+        public static string _addContactSend = "AddContact";
+        public static string _updateContactSend = "UpdateContact";
+        public static string _removeContactSend = "RemoveContact";
+        public static string _updateOnlineStatusSend = "UpdateOnlineStatus";
+        public static string _updateLittlePhotoVisInChatSend = "UpdateLittlePhotoVisInChat";
+        public static string _updatePagePhotoSend = "UpdatePagePhoto";
+        public static string _addUserImageSend = "AddUserImage";
+        public static string _clearChatSend = "ClearChat";
+        public static string _setContactPhoneNumberVisibilitySend = "SetContactPhoneNumberVisibility";
+        public static string _setContactLastSeenVisStateSend = "SetContactLastSeenVisState";
+        public static string _setPhoneNumVisByExpsSend = "SetPhoneNumVisByExps";
+        public static string _updateBirthDateSend = "UpdateBirthDate";
+        public static string _updateContactPhotoSend = "UpdateContactPhoto";
+        public static string _updateContactBioSend = "UpdateContactBio";
+        public static string _updateForwardStatusSend = "UpdateForwardStatus";
+        public static string _deleteChatSend = "DeleteChat";
+        public static string _updateReadStatusSend = "UpdateReadStatus";
+        public static string _deleteMessageSend = "DeleteMessage";
+        public static string _pinMessageSend = "PinMessage";
+        public static string _forwardMessageSend = "ForwardMessage";
+        public static string _replyMessageSend = "ReplyMessage";
+        public static string _editMessageSend = "EditMessage";
+        public static string _updateChatsControlsSend = "UpdateChatsControls";
+        public static string _sendTypingActionSend = "SendTypingAction";
+        public static string _removeManyMessagesByDateTimesSend = "RemoveManyMessagesByDateTimes";
+        public static string _updateUserImagesSend = "UpdateUserImages";
+        public static string _updateCachedSettingsSend = "UpdateCachedSettings";
 
 
         

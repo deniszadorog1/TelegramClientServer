@@ -754,5 +754,15 @@ namespace TelegramLib.MainClasses
         {
             return Messages.Where(x => x is TextMessage text && text.Text.Contains(str)).ToList();
         }
+
+        public bool IsLastMessageWrittenIsNow()
+        {
+            const int checkDateSec = 2;
+            if (Messages is null || Messages.Count == 0) return false;
+
+            if (Messages.Last().SentTime.AddSeconds(checkDateSec) > DateTime.Now) return true;
+
+            return false;
+        }
     }
 }
