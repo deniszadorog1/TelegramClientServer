@@ -3,7 +3,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls.ChatsSearch;
 
 namespace TelegramVisualPart.Pages.ChatActions
 {
@@ -13,9 +16,14 @@ namespace TelegramVisualPart.Pages.ChatActions
     public partial class DeleteChat : Page
     {
         private TelegramLib.MainClasses.User _user;
-        public DeleteChat(TelegramLib.MainClasses.User user)
+        private TelSystem _system;
+        private UserChat _chat;
+        public DeleteChat(TelegramLib.MainClasses.User user, TelSystem system, UserChat chat)
         {
             _user = user;
+            _system = system;
+            _chat = chat;
+
             InitializeComponent();
 
             SetBasicParams();
@@ -24,9 +32,22 @@ namespace TelegramVisualPart.Pages.ChatActions
         }
         public async void SetBasicParams()
         {
-            BgBrush.ImageSource = new BitmapImage(
+/*            BgBrush.ImageSource = new BitmapImage(
                 new Uri(await FilesAction.GetUserImagePath(
                     _user.GetFirstImageNameInString()), UriKind.Absolute));
+
+
+            string asd = _user.GetImgName();*/
+
+            UserContactcs contact = _system.GetContactById(_user.Id);
+            if (contact is null) return;
+
+            string imgName = _chat is not null ? _chat.Chatter.GetImgName() : contact.GetFirstImageName().Name;
+
+            BitmapImage bitmap = ApiService.GetCachedBitmap(imgName);
+
+            BgBrush.ImageSource = bitmap is not null ? bitmap :
+                await SignalRHelperService.LoadBitmap(await FilesAction.GetUserImagePath(contact.GetFirstImageName().Name));
 
             FirstUsername.Text = _user.Login;
             UsernameRunBlock.Text = _user.Login;

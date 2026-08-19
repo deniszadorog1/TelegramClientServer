@@ -82,7 +82,7 @@
 
 
                 <StackPanel x:Name="TickStack" HorizontalAlignment="Right" Grid.Column="1"
-                            Orientation="Horizontal">
+                            Orientation="Horizontal" Margin="0 0 5 0">
 
                     <materialDesign:PackIcon Name="ReadTick"
                                              Visibility="Hidden"
@@ -104,40 +104,46 @@
 
             </Grid>
 
-            <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
-                       HorizontalAlignment="Left" VerticalAlignment="Center"
-                       Margin="10 0 25 0" FontSize="16"
-                       TextTrimming="CharacterEllipsis"
-                       TextWrapping="NoWrap"
-                       Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"
-                       FontFamily="{DynamicResource AppFont}"/>
+            <Grid Grid.Row="1" Margin="0 0 10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Row="1" Name="LastMessage" Foreground="Gray" 
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Margin="10 0 45 0" FontSize="16"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"
+                           Text="osgibdfkvcmwosfgttgdkgmcvwpeorlsgfkdpwersdsdfvftgtg"
+                           FontFamily="{DynamicResource AppFont}"/>
 
-            <Grid Grid.Row="1" HorizontalAlignment="Right"
-                  Margin="0 0 25 5">
+                <StackPanel Grid.Row="1" HorizontalAlignment="Right"
+                      Margin="0 0 0 5" Orientation="Horizontal">
 
-                <materialDesign:PackIcon Kind="PinOutline" Name="PinBlock"
-                                         Visibility="Hidden"
-                                         Width="20" Height="20"
-                                         Foreground="Gray"/>
+                    <materialDesign:PackIcon Kind="PinOutline" Name="PinBlock"
+                                             Visibility="Hidden"
+                                             Width="20" Height="20"
+                                             Foreground="Gray"/>
 
 
-                <Border Background="Gray" CornerRadius="10"
-                        Name="UnredCountBorder" Visibility="Hidden">
-                    <TextBlock Name="MesCounter" Text="0"
-                               Foreground="White"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontFamily="{DynamicResource AppFont}"/>
-                </Border>
+                    <Border Background="Gray" CornerRadius="10"
+                            Name="UnredCountBorder" Visibility="Hidden">
+                        <TextBlock Name="MesCounter" Text="0"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   FontFamily="{DynamicResource AppFont}"/>
+                    </Border>
 
-                <Ellipse Name="UnreadEllipse" Visibility="Hidden"
-                         Width="20" Height="20"
-                    Fill="{StaticResource TempActiveTextColor}">
+                    <Ellipse Name="UnreadEllipse" Visibility="Hidden"
+                             Width="20" Height="20"
+                        Fill="{StaticResource TempActiveTextColor}">
 
-                </Ellipse>
+                    </Ellipse>
 
+            </StackPanel>
             </Grid>
-
         </Grid>
 
     </Grid>

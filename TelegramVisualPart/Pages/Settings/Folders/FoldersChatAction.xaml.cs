@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,6 +10,7 @@ using TelegramVisualPart.Enums;
 using TelegramVisualPart.Helper;
 using TelegramVisualPart.Services;
 using TelegramVisualPart.UserControls.SettingsControls.FoldersPrivacy;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace TelegramVisualPart.Pages.Settings.Folders
 {
@@ -66,11 +68,23 @@ namespace TelegramVisualPart.Pages.Settings.Folders
         {
             for (int i = 0; i < _system.Chats.Count; i++)
             {
-                UserContactcs contact = _system.GetContactByUserId(_system.Chats[i].Chatter.Id);
+                //UserContactcs contact = _system.GetContactByUserId(_system.Chats[i].Chatter.Id);
 
-                string contactPath = contact is not null ?
+/*                string contactPath = contact is not null ?
                     contact.GetFirstImageName().Name :
-                    _system.Chats[i].Chatter.GetFirstImageName().Name;
+                    _system.Chats[i].Chatter.GetFirstImageName().Name;*/
+
+                UserContactcs contact = _system.GetContactById(_system.Chats[i].Chatter.Id);
+                //if (contact is null) return;
+
+                string imgName = _system.Chats[i] is not null ? _system.Chats[i].Chatter.GetImgName() : contact.GetFirstImageName().Name;
+
+                BitmapImage bitmap = ApiService.GetCachedBitmap(imgName);
+
+                BitmapImage imgSource = bitmap is not null ? bitmap :
+                    await SignalRHelperService.LoadBitmap(await FilesAction.GetUserImagePath(contact.GetFirstImageName().Name));
+
+
 
                 FolderChatType control = new FolderChatType();
                 control.Tag = _system.Chats[i].Chatter.Id;
@@ -81,11 +95,14 @@ namespace TelegramVisualPart.Pages.Settings.Folders
 
                 control.HideIcon();
 
-                BitmapImage bitmap = ApiService.GetCachedBitmap(await FilesAction.GetUserImagePath(contactPath));
+                //BitmapImage bitmap = ApiService.GetCachedBitmap(await FilesAction.GetUserImagePath(contactPath));
 
                 control.ChatEllipse.Fill = new ImageBrush()
                 {
-                    ImageSource = bitmap is not null ? bitmap : new BitmapImage(new Uri(await FilesAction.GetUserImagePath(contactPath), UriKind.Absolute)),
+                    ImageSource = imgSource,/* bitmap is not null ? bitmap :
+                    new BitmapImage(new Uri(
+                        await FilesAction.GetUserImagePath(contactPath),
+                        UriKind.Absolute)),*/
                     Stretch = Stretch.Fill
                 };
 

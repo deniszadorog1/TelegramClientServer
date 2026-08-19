@@ -849,7 +849,9 @@ namespace TelegramVisualPart
         public void ClearChat(UserChat chat)
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
-            chatPage.UserChat.ClearChat();
+            
+            if(chatPage.UserChat.IsChatsAreEqual(chat)) chatPage.UserChat.ClearChat();
+            
             chatPage.ClearChosenUserTalkValue(chat);
 
             if (_isOnlyChat && _bossWindow is not null)
@@ -948,10 +950,10 @@ namespace TelegramVisualPart
             page.ClearSubMenus();
         }
 
-        public void SetSubMenuAction(UserTalkControlButTypes type)
+        public async Task SetSubMenuAction(UserTalkControlButTypes type)
         {
             if (MainFrame.Content is not MainChatPage page) return;
-            page.SetUserTalkMenuAction(type);
+            await page.SetUserTalkMenuAction(type);
         }
 
         public void ClearAllChatWindows()

@@ -42,7 +42,6 @@
                                Foreground="{StaticResource UsualTextColor}" 
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left"/>
-
                 </Grid>
                 <Line Stroke="{StaticResource DarkThemeSecond}" 
                       StrokeThickness="1" X1="0" X2="275"/>

@@ -1171,7 +1171,6 @@ namespace TelegramVisualPart.UserControls
             else if (isOnlyPinned) _chatMessages = _chat.GetOnlyPinnedMessages();
             else _chatMessages = _chat.GetChatMessages();
 
-
             //Update chatter CachedUser + his MainSettings 
             if (_chat is not null && _chat.Chatter is not null)
             {
@@ -2200,12 +2199,13 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.UserChat chat =
                     _system.GetChatByChatterId((int)_forwardSenderId);
 
-                await AddAdditionalToForwardsTextMessage();
 
                 ClearResenderInForwardedMessages();
 
                 await AddForwardedMessagesInDB(chat);
                 chat.Messages.AddRange(_toForwardMessages);
+
+                await AddAdditionalToForwardsTextMessage();
 
                 await SetChatMessages();
                 //await SetMessagesInChat();

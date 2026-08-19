@@ -59,7 +59,10 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
                 UserContact toAdd = new UserContact(_checkedContact);
                 await toAdd.SetBasicParams();
 
-                toAdd.Tag = _system.GetChatByChatterId(_system.Contacts[i].ContactUserId).Id;
+                UserChat chat =  _system.GetChatByChatterId(_system.Contacts[i].ContactUserId);
+                if (chat is null) continue;
+
+                toAdd.Tag = chat.Id;
                 toAdd.MouseEnter += UserControl_MouserEnter;
                 toAdd.MouseLeave += UserControl_MouseLeave;
                 toAdd.PreviewMouseDown += UserControl_PreviewMouseDown;

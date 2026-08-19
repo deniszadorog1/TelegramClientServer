@@ -449,7 +449,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
             _window.ClearSubMenus();
         }
 
-        private void UserChatsMenuElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void UserChatsMenuElement_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not UserChatsMenuElement but) return;
 
@@ -463,7 +463,7 @@ namespace TelegramVisualPart.UserControls.ChatsControls
                 _system.Settings.SoundNotifSettings.MuteTime = null;
             }
 
-            _window.SetSubMenuAction((UserTalkControlButTypes)type);
+            await _window.SetSubMenuAction((UserTalkControlButTypes)type);
         }
 
         public UserTalkControlButTypes? GetButType(UserChatsMenuElement but)

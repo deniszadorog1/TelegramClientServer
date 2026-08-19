@@ -1270,7 +1270,7 @@ namespace TelegramVisualPart.Pages
             else
             {
                 ChatColumn.MinWidth = _minChosenChatColWidth;
-                
+
                 if (this.ActualWidth - mousePos.X < _minChosenChatColWidth)
                 {
                     ChatColumn.Width = new GridLength(_minChosenChatColWidth);
@@ -1496,7 +1496,8 @@ namespace TelegramVisualPart.Pages
         public void SortChats()
         {
             _system.Chats = _system.Chats
-                .OrderByDescending(x => x.Messages?.LastOrDefault()?.SentTime ?? DateTime.MinValue)
+                .OrderByDescending(x => x.IsPinned)
+                .ThenByDescending(x => x.Messages?.LastOrDefault()?.SentTime ?? DateTime.MinValue)
                 .ToList();
 
             _chatsDict = _chatsDict
@@ -1656,7 +1657,7 @@ namespace TelegramVisualPart.Pages
 
         public void ClearChosenUserTalkValue(TelegramLib.MainClasses.UserChat checkChat)
         {
-            TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
+            TelegramLib.MainClasses.UserChat chat = checkChat is null ? _system.GetChosenChat() : checkChat;
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
             if (chat is null) chat = _chosenChat;
             if (chat is null) chat = checkChat;
@@ -1694,11 +1695,25 @@ namespace TelegramVisualPart.Pages
         {
             UserTalkMessage message =
                  GetChtControlByChatterName(chat.Chatter.Name, chat.Id);
+            if (message is null)
+            {
+                Message? checkMes = chat.Messages.LastOrDefault();
+                if (checkMes is null) return;
+
+                message = GetGlobalChatUserTalk(chat.Chatter.Id);
+            }
+
             if (message is null) return;
+
+            Message lastMes = chat.Messages.LastOrDefault();
+            DateTime? date = null;
+
+            if (lastMes is not null) date = lastMes.SentTime;
 
             //Get chat
             message.LastMessage.Text = chat.GetLastMessageInString();
-            message.LastMessageTime.Text = GetUseTalkDate(chat.Messages.Last().SentTime);
+            message.LastMessageTime.Text = GetUseTalkDate(date);
+
             /*chat.Messages.Count == 0 ?
               string.Empty :
               chat.Messages.Last().GetSentTimeInString();*/
@@ -2317,7 +2332,7 @@ namespace TelegramVisualPart.Pages
             ChatsColumn.Width = new GridLength(minStars, GridUnitType.Star);
         }
 
-        public void SetUserTalkMenuAction(UserTalkControlButTypes type)
+        public async Task SetUserTalkMenuAction(UserTalkControlButTypes type)
         {
             if (_menuChatterTalk is null) return;
 
@@ -2354,7 +2369,7 @@ namespace TelegramVisualPart.Pages
                     }
                 case UserTalkControlButTypes.DeleteChat:
                     {
-                        SetDeleteChat();
+                        await SetDeleteChat();
                         return;
                     }
             }
@@ -2367,12 +2382,13 @@ namespace TelegramVisualPart.Pages
             if (chat is null) return;
 
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(
-                    new DeleteChat(await ApiService.GetUserById(chat.GetChatter().Id)));
+                    new DeleteChat(await ApiService.GetUserById(chat.GetChatter().Id), _system, chat));
         }
 
         public void SetClearChat()
         {
-            TelegramLib.MainClasses.UserChat chat = GetChosenUserChat();
+            TelegramLib.MainClasses.UserChat? chat = GetChosenUserChat();
+            if (chat is null) return;
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(new ClearChatHistory(chat, _system));
         }
 
@@ -3084,9 +3100,16 @@ namespace TelegramVisualPart.Pages
                 await UserChat.SetChatMessages();
             }
 
+            TelegramLib.MainClasses.UserChat chatVal =
+                _system.GetChatByChatterId(userIdToSetMask);
+
             //Set in Chats
-            UserTalkMessage chat =
-                GetChatById(_system.GetChatByChatterId(userIdToSetMask));
+            UserTalkMessage chat = GetChatById(chatVal);
+
+            if (chat is null && GlobalMessageSearch.Visibility == Visibility.Visible)
+            {
+                chat = GetGlobalChatUserTalk(userIdToSetMask);
+            }
 
             TelegramLib.MainClasses.User chatter = _system.GetUserById(userIdToSetMask);
 
@@ -3094,6 +3117,21 @@ namespace TelegramVisualPart.Pages
             chat.SetNewImgName(System.IO.Path.GetFileName(chatter.GetFirstImageName().Name));
 
             chat.SetContactImage();
+        }
+
+        public UserTalkMessage GetGlobalChatUserTalk(int userId)
+        {
+            for (int i = 0; i < GlobalMessageSearch.Items.Count; i++)
+            {
+                if (GlobalMessageSearch.Items[i] is not ListBoxItem item ||
+                    item.Content is not UserTalkMessage mes) continue;
+
+                int.TryParse(mes.Tag.ToString(), out int id);
+
+                if (id == userId) return mes;
+            }
+
+            return null;
         }
 
         public void ClearChatMouseButtonDown()
