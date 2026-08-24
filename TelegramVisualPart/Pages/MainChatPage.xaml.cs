@@ -1129,6 +1129,8 @@ namespace TelegramVisualPart.Pages
 
                 ((MainWindow)Window.GetWindow(this)).BringWindowToView(chat);
 
+
+
                 //Is Chat is opened on other window
                 if (((MainWindow)Window.GetWindow(this)).IsSavedMessesIsOnlyChat() &&
                     chat is TelegramLib.MainClasses.SavedMessagesChat) return;
@@ -1169,6 +1171,8 @@ namespace TelegramVisualPart.Pages
                 }
                 await UserChat.SetUserChat(chat);
                 //UserChat.SetSavedmessagesChatView();
+
+                //UserChat.UpdateOnlyChatInWindow(chat);
 
                 SetChosenChatValues(chat);
 
@@ -1533,7 +1537,7 @@ namespace TelegramVisualPart.Pages
             talkMes.UpdateImage(chat.Chatter.GetFirstImageNameInString());
         }
 
-        public void ClearAllChatsBgs(bool isLow = false)
+        public async void ClearAllChatsBgs(bool isLow = false)
         {
             for (int i = 0; i < ChatsBox.Items.Count; i++)
             {
@@ -1549,7 +1553,7 @@ namespace TelegramVisualPart.Pages
                 //If all are hidden -> show all chats
                 if (ChatsBox.Visibility == Visibility.Visible)
                 {
-                    SetActiveChats();
+                    await SetActiveChats();
                     ChatsBox.Visibility = Visibility.Visible;
                 }
             }

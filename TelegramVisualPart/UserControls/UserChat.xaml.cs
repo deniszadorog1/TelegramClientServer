@@ -2601,6 +2601,8 @@ namespace TelegramVisualPart.UserControls
                         return;
                     }
                     ClearMenusAfterMessageReschedule();
+
+                    
                 };
             }
 
@@ -4038,6 +4040,8 @@ namespace TelegramVisualPart.UserControls
 
             //Check is via signalR
             ScrollToNewMessage();
+
+            _mainWindow.UpdateUserChatTalkControl();
         }
 
         public void ChatImage_MouseDown(MediaMessage message)
@@ -5707,6 +5711,8 @@ namespace TelegramVisualPart.UserControls
 
             _chat = chat;
 
+            UpdateOnlyChatInWindow(chat);
+
             //Set reply row in chat    
             SetReplyRowParams(messageControl, messages);
 
@@ -5717,6 +5723,16 @@ namespace TelegramVisualPart.UserControls
                 Keyboard.Focus(this);
 
             }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+        }
+
+        public void UpdateOnlyChatInWindow(TelegramLib.MainClasses.UserChat chat)
+        {
+            Window window = Window.GetWindow(this);
+
+            if(window is not null && window is MainWindow main)
+            {
+                main.UpdateOnlyChat(chat);
+            }
         }
 
         public async Task ToSendForwardedMessageInSave()
@@ -5890,7 +5906,7 @@ namespace TelegramVisualPart.UserControls
             }
 
             ForwardToPage page = new ForwardToPage(_system);
-            page.ForwardSelected += async (senderId) =>
+            page.ForwardSelected += SetForwardAction;/*async (senderId) =>
             {
                 HidePinnedChatAndShowChatMessages();
 
@@ -5902,8 +5918,51 @@ namespace TelegramVisualPart.UserControls
                 await SetForwardedMessage(selected, senderId);
 
                 CommentTextBox.Focus();
-            };
+            };*/
             ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(page);
+        }
+
+        public async void SetForwardAction(int? senderId)
+        {
+            ClearFromChatWindow(senderId);
+            ClearChatWindows();
+
+            HidePinnedChatAndShowChatMessages();
+
+            //Set reply row
+            List<Message> selected = GetSelectedMessages();
+
+            HideSelectionRow();
+
+            await SetForwardedMessage(selected, senderId);
+
+            CommentTextBox.Focus();
+        }
+
+        public void ClearChatWindows()
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && 
+                window is MainWindow main)
+            {
+                main.ClearAllChatWindows();
+            }
+        }
+
+        public bool ClearFromChatWindow(int? senderId)
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null &&
+                window is MainWindow main && 
+                main.IsOnlyChatWindow())
+            {
+                main.HideBossWindowChat(senderId);
+                return true;
+            }
+
+            return false;
         }
 
         public async Task ChangeSelectedMedias(List<Message> messages)
@@ -6603,8 +6662,12 @@ namespace TelegramVisualPart.UserControls
 
             _chat = chat;
 
+            UpdateOnlyChatInWindow(chat);
+
             //Set reply row in chat    
             SetReplyRowParams(messageControl, new List<Message>() { mes }, isResend);
+
+            UpdateOnlyChatInWindow(chat);
 
             await Dispatcher.BeginInvoke(new Action(() =>
             {

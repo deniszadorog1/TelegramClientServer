@@ -137,6 +137,12 @@ namespace TelegramVisualPart
             return _onlyChatUserChat;
         }
 
+        public void UpdateOnlyChat(UserChat chat)
+        {
+            if (_onlyChatUserChat is null || chat is null) return;
+            _onlyChatUserChat = chat;
+        }
+
         public void SetOnlyChatPage()
         {
             if (!_isOnlyChat ||
@@ -671,7 +677,7 @@ namespace TelegramVisualPart
                     mainChatPage.SetWindowSizerAction(isClearPrev);
                 }
                 //Temp chat is closing + Tabs is going to top
-                if ( width < fourSize)
+                if (width < fourSize)
                 {
                     SetWindowSizeType(Enums.SizerActionType.FourthLevel);
                     mainChatPage.SetWindowSizerAction();
@@ -848,16 +854,43 @@ namespace TelegramVisualPart
 
         public void ClearChat(UserChat chat)
         {
+            //Check on 
+            if (_chatWindows is not null && _chatWindows.Count > 0)
+            {
+                MakeClearChatForMediaWindows(chat);
+                return;
+            }
+
             if (MainFrame.Content is not MainChatPage chatPage) return;
-            
-            if(chatPage.UserChat.IsChatsAreEqual(chat)) chatPage.UserChat.ClearChat();
-            
+
+            if (chatPage.UserChat.IsChatsAreEqual(chat)) chatPage.UserChat.ClearChat();
+
             chatPage.ClearChosenUserTalkValue(chat);
 
             if (_isOnlyChat && _bossWindow is not null)
             {
                 _bossWindow.ClearChatFromOnlyChatWindow(_onlyChatUserChat);
             }
+        }
+
+        public void MakeClearChatForMediaWindows(UserChat chat)
+        {
+            if (_chatWindows is null) return;
+
+            for (int i = 0; i < _chatWindows.Count; i++)
+            {
+                if (IsMediaWindowIsGivenChat(chat, _chatWindows[i]))
+                {
+                    _chatWindows[i].ClearChat(chat);
+                }
+            }
+        }
+
+
+        public bool IsMediaWindowIsGivenChat(UserChat chat, MainWindow onlyChatWindow)
+        {
+            return onlyChatWindow._onlyChatUserChat is not null &&
+                chat.Id == onlyChatWindow._onlyChatUserChat.Id;
         }
 
         public void ClearChatFromOnlyChatWindow(TelegramLib.MainClasses.UserChat chat)
@@ -876,7 +909,7 @@ namespace TelegramVisualPart
 
         public void UpdateUserChatTalkControl()
         {
-            if(_bossWindow is not null)
+            if (_bossWindow is not null)
             {
                 _bossWindow.UpdateUserChatTalkControl();
                 return;
@@ -1272,13 +1305,58 @@ namespace TelegramVisualPart
             this.ShowInTaskbar = isVis;
         }
 
-
         public void SetForwardMessage(TelegramLib.MainClasses.Messages.Message mes,
             int? userIdToSend)
         {
+            //Is it other window?
+            if (_chatWindows is not null &&
+                _chatWindows.Count > 0)
+            {
+                IsOnlyChatWindow(userIdToSend, mes);
+                return;
+            }
+
             if (MainFrame.Content is MainChatPage page)
                 page.SetForwardMessage(userIdToSend, mes);
         }
+
+        public void IsOnlyChatWindow(int? userSenderId,
+            Message mes)
+        {
+            TelegramLib.MainClasses.UserChat chat =
+                userSenderId is null ? _system.GetSavedChatMessages() :
+                _system.GetChatByChatterId((int)userSenderId);
+
+            for (int i = 0; i < _chatWindows.Count; i++)
+            {
+                if (_chatWindows[i]._onlyChatUserChat is not null &&
+                    _chatWindows[i]._onlyChatUserChat.Id == chat.Id)
+                {
+                    _chatWindows[i].SetForwardMessage(mes, userSenderId);
+                    return;
+                }
+            }
+        }
+
+        public bool IsOnlyChatWindow()
+        {
+            return _bossWindow is not null;
+        }
+
+
+        public void HideBossWindowChat(int? senderId)
+        {
+            if (_bossWindow is not null)
+            {
+                if (_bossWindow.MainFrame.Content is not MainChatPage chatPage) return;
+                TelegramLib.MainClasses.UserChat chat = chatPage.GetUserChat();
+
+                if (chat is null || chat.Chatter is null || chat.Chatter.Id != senderId) return;
+
+                chatPage.HideChat();
+            }
+        }
+
 
         public void UpdateUserChatSelectedAmount()
         {
@@ -1575,6 +1653,8 @@ namespace TelegramVisualPart
         {
             if (MainFrame.Content is not MainChatPage chatPage) return;
             TelegramLib.MainClasses.UserChat chat = chatPage.GetUserChat();
+
+            if (chat is null) return;
 
             if ((chat is SavedMessagesChat && (senderChatId is null || _system.LoggedUser.Id == senderChatId)) ||
                 (chat.Chatter is not null && chat.Chatter.Id == senderChatId))
