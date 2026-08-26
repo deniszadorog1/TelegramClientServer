@@ -55,7 +55,10 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             _bandPaths = paths;
 
+
             InitializeComponent();
+
+            InitBandArrays();
 
             HideBordersExceptBand();
             SetBandBorderLists();
@@ -1188,6 +1191,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _forwardedFrom = media.ForwardedFromId;
             //_senderImgName = media.SenderUserId;
 
+            InitBandArrays();
+
             InitializeComponent();
             HideAllBorders();
             SetMedia();
@@ -1248,6 +1253,9 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _system = system;
 
             InitializeComponent();
+
+            InitBandArrays();
+
             ImgMessage.ImageSource = _img.Source;
 
             SetImgMessageSize(_img, ImageBorder);
@@ -1329,6 +1337,7 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _forwardedFrom = forwardedFromId;
 
             InitializeComponent();
+            InitBandArrays();
 
             HideAllBorders();
             GifBorder.Visibility = Visibility.Visible;
@@ -1385,6 +1394,8 @@ namespace TelegramVisualPart.UserControls.ChatControls
             _forwardedFrom = forwardedFromId;
 
             InitializeComponent();
+
+            InitBandArrays();
 
             HideAllBorders();
             //VideoBorder.Visibility = Visibility.Visible;

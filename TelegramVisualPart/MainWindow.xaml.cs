@@ -25,10 +25,12 @@ using TelegramVisualPart.Pages.UserInfoContact.ActionsFolder;
 using TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo;
 using TelegramVisualPart.Pages.VisualPages;
 using TelegramVisualPart.Services;
+using TelegramVisualPart.UserControls;
 using TelegramVisualPart.UserControls.ChatControls.ChatButsControls;
 using TelegramVisualPart.UserControls.FolderControls;
 using TelegramVisualPart.Windows;
 using Brushes = System.Windows.Media.Brushes;
+using UserChat = TelegramLib.MainClasses.UserChat;
 
 namespace TelegramVisualPart
 {
@@ -529,6 +531,15 @@ namespace TelegramVisualPart
             _mediaWidows.Clear();
         }
 
+        public void CloseAllOnlyChatWindows()
+        {
+            for (int i = 0; i < _chatWindows.Count; i++)
+            {
+                _chatWindows[i].Close();
+            }
+            _chatWindows.Clear();
+        }
+
         public void AddMediaWindow(MediaWindow window)
         {
             _mediaWidows.Add(window);
@@ -907,16 +918,16 @@ namespace TelegramVisualPart
             chatPage.UserChat.ClearChat();
         }
 
-        public void UpdateUserChatTalkControl()
+        public void UpdateUserChatTalkControl(int? chatId = null)
         {
             if (_bossWindow is not null)
             {
-                _bossWindow.UpdateUserChatTalkControl();
+                _bossWindow.UpdateUserChatTalkControl(chatId);
                 return;
             }
 
             if (MainFrame.Content is not MainChatPage chatPage) return;
-            chatPage.UpdateUserTalkChat();
+            chatPage.UpdateUserTalkChat(chatId);
         }
 
         public void SetChosenFolderByName(string folderName)
@@ -1551,7 +1562,7 @@ namespace TelegramVisualPart
         }
 
 
-        public bool BringWindowToView(UserChat chat)
+        public bool BringWindowToView(TelegramLib.MainClasses.UserChat chat)
         {
             if (_onlyChatUserChat is null) return false;
 
@@ -1713,5 +1724,14 @@ namespace TelegramVisualPart
             return ThirdFrame.Content is SentItemsUserContact;
         }
 
+        public (ListBoxItem, UserTalkMessage) GetChatParsFromBossWindow(int mesId)
+        {
+            if(_bossWindow is not null && _bossWindow.MainFrame.Content is MainChatPage main)
+            {
+                return main.GetChatTalkControlByMesId(mesId);
+            }
+
+            return (null, null);
+        }
     }
 }

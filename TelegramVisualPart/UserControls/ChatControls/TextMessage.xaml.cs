@@ -225,14 +225,18 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
             ReplyControl.PreviewMouseDown += (sender, e) =>
             {
+
                 if (_toReply is null) return;
 
                 //Set scrolling to message
-                var window = Window.GetWindow(this) as MainWindow;
+                Window window = Window.GetWindow(this);
 
-                if (window != null && _toReply != null)
+                if (window is not null && window is MainWindow main && _toReply is not null)
                 {
-                    window.ShowChosenMessageByMessageId(_toReply.Id);
+                    Console.WriteLine(main._onlyChatUserChat);
+                    Console.WriteLine(main._bossWindow);
+
+                    main.ShowChosenMessageByMessageId(_toReply.Id);
                 }
             };
         }

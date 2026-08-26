@@ -249,7 +249,7 @@ namespace TelegramVisualPart.UserControls
 
                 if (hasMedia)
                 {
-                    ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
+                    ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl(chat is not null ? chat.Id : null);
                     UpdateGlobalMedias();
                     UpdateItemsContact(chat);
                 }
@@ -882,7 +882,7 @@ namespace TelegramVisualPart.UserControls
             Window window = Window.GetWindow(this);
             if (window is not MainWindow mainWindow) return;
 
-            mainWindow.UpdateUserChatTalkControl();
+            mainWindow.UpdateUserChatTalkControl(_chat is not null ? _chat.Id : null);
         }
 
         public void AddTextControl(ChatControls.TextMessage text,
@@ -1336,7 +1336,7 @@ namespace TelegramVisualPart.UserControls
             if (GetAmountOfPinnMesses() == 0)
                 PinRow.Height = new GridLength(0);
 
-            _mainWindow.UpdateUserChatTalkControl();
+            _mainWindow.UpdateUserChatTalkControl(_chat is not null ? _chat.Id : null);
 
             /*            if (ChatBox.Items.Count > 0)
                         {
@@ -2417,7 +2417,7 @@ namespace TelegramVisualPart.UserControls
             //Set vis tick 
             SetTickStatusIfCorrectMes(item, toAdd);
 
-            ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl();
+            ((MainWindow)Window.GetWindow(this)).UpdateUserChatTalkControl(_chat is not null ? _chat.Id : null);
             SetMessagesPosition(_isGluedToLeft);
             item.Visibility = Visibility.Visible;
         }
@@ -2963,7 +2963,7 @@ namespace TelegramVisualPart.UserControls
                 !IsOnlyPinnedChatIsOn()) await SetStaticMessageInVis(toAdd);
 
             //Set in UserTalkMessage
-            _mainWindow.UpdateUserChatTalkControl();
+            _mainWindow.UpdateUserChatTalkControl(chat is not null ? chat.Id : null);
 
             //Set for chatter (only db or SignalR)
             _mainWindow.UpdateAutoDelVis(chat);
@@ -3233,7 +3233,7 @@ namespace TelegramVisualPart.UserControls
 
             if (window is not null && window is MainWindow main)
             {
-                main.UpdateUserChatTalkControl();
+                main.UpdateUserChatTalkControl(_chat is not null ? _chat.Id : null);
                 main.CloseAllMediaWindows();
             }
         }

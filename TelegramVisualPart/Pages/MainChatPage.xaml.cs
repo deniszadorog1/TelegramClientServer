@@ -869,13 +869,59 @@ namespace TelegramVisualPart.Pages
         {
             CloseMediaWindows();
 
-            //find chat - 
             (ListBoxItem, UserTalkMessage) pars = GetChatTalkControlByMesId(mesId);
+
+
+            MainWindow main = Window.GetWindow(this) as MainWindow;
+
+
+            //if is only chat window 
+            if (IsOnlyChatWindow() && (pars.Item1 is null || pars.Item2 is null))
+            {
+                pars = GetChatParsFromBossWindow(mesId);
+                ClearChatWrongWindows(pars.Item2);
+
+            }
 
             if (pars.Item1 is null || pars.Item2 is null) return;
             await SetChatParams(pars.Item1, pars.Item2);
 
             UserChat.ScrollToMessageByMessageId(mesId);
+        }
+
+        public void ClearChatWrongWindows(UserTalkMessage chatObj)
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && window is MainWindow main)
+            {
+                main.UpdateOnlyChat(chatObj.GetChat());
+
+                //main.ClearChatFromOnlyChatWindow
+            }
+        }
+
+        public bool IsOnlyChatWindow()
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && window is MainWindow main)
+            {
+                return main._onlyChatUserChat is not null;
+            }
+            return false;
+        }
+
+        public (ListBoxItem, UserTalkMessage) GetChatParsFromBossWindow(int mesId)
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && window is MainWindow main)
+            {
+                return main.GetChatParsFromBossWindow(mesId);
+            }
+
+            return (null, null);
         }
 
         public ListBoxItem GetChatListBoxItemByMesId(int mesId)
@@ -1079,6 +1125,7 @@ namespace TelegramVisualPart.Pages
                 item.Content is not UserTalkMessage talkControl) return;
 
             CloseMediaWindows();
+            CloseOnlyChatWindows();
             await SetChatParams(item, talkControl);
         }
 
@@ -1128,8 +1175,6 @@ namespace TelegramVisualPart.Pages
                     _system.GetChatById(id) : talkControl.GetChat();
 
                 ((MainWindow)Window.GetWindow(this)).BringWindowToView(chat);
-
-
 
                 //Is Chat is opened on other window
                 if (((MainWindow)Window.GetWindow(this)).IsSavedMessesIsOnlyChat() &&
@@ -1438,6 +1483,13 @@ namespace TelegramVisualPart.Pages
                     {
                         SetUnreadForUserTalk(usTalk, chat);
                         usTalk.LastMessage.Text = chat.GetLastMessageInString();
+
+                        DateTime? date = null;
+                        if (chat.Messages is not null && chat.Messages.Count > 0 && chat.Messages.Count > 0) date = chat.Messages.Last().SentTime;
+                        usTalk.LastMessageTime.Text = GetUseTalkDate(date);
+
+                        usTalk.SetTick(date is null ? null : chat.Messages.Last(), _system);
+
                     }
 
                     items.Add(tempItem);
@@ -1567,7 +1619,6 @@ namespace TelegramVisualPart.Pages
             //set bg for new chat
             var brush = (SolidColorBrush)Application.Current.Resources["DarkThemeSecond"];
             item.Background = brush;
-
         }
 
         public void SetUnreadForUserTalk(UserTalkMessage mes,
@@ -1684,16 +1735,23 @@ namespace TelegramVisualPart.Pages
             message.SetDefaultValues();
         }
 
-        public async void UpdateUserTalkChat()
+        public async void UpdateUserTalkChat(int? chatId = null)
         {
-            if (IsOnlyChat()) return;
+            if (IsOnlyChatWindow()) return;
 
+            await RepaintUserChatsPanel(0);
+
+            return;
             TelegramLib.MainClasses.UserChat chat = _system.GetChosenChat();
             if (chat is null) chat = ((MainWindow)Window.GetWindow(this)).GetOnlyChat();
+            if (chatId is not null) chat = _system.GetChatById((int)chatId);
             if (chat is null) return;
+
 
             await SetLastTalkMessageByChat(chat);
         }
+
+
 
         public async Task SetLastTalkMessageByChat(TelegramLib.MainClasses.UserChat chat)
         {
@@ -1836,6 +1894,17 @@ namespace TelegramVisualPart.Pages
                 main.CloseAllMediaWindows();
             }
         }
+
+        public void CloseOnlyChatWindows()
+        {
+            Window window = Window.GetWindow(this);
+
+            if (window is not null && window is MainWindow main)
+            {
+                main.CloseAllOnlyChatWindows();
+            }
+        }
+
 
         public void HideChat()
         {
