@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,17 +31,19 @@ namespace TelegramVisualPart.Pages
             _chat = chat;
             InitializeComponent();
 
-            UserContactcs contact = 
-                chat is TelegramLib.MainClasses.SavedMessagesChat ? null : 
-                    _system.GetContactByUserId(_chat.Chatter.Id);
+            UserContactcs contact = null;
+            if (chat is not TelegramLib.MainClasses.SavedMessagesChat saved)
+            {
+                contact = _system.GetContactByUserId(_chat.Chatter.Id);
+            }
 
             ContactInfo.LoadEnd += () =>
             {
                 Visibility = Visibility.Visible;
             };
-                
+
             ContactInfo.SetContactInfo(_chat, _system, contact); /*_system.ChosenChatContact*/
-           
+
             SetMaxValue();
 
             ContactInfo.UpdateAction += UpdatePage;
@@ -52,7 +55,7 @@ namespace TelegramVisualPart.Pages
         public void ClearTempPage()
         {
             ((MainWindow)Window.GetWindow(this)).ClearTempPageFrame(this);
-        } 
+        }
 
         public async Task UpdateContactVis(UserContactcs contact)
         {
@@ -102,7 +105,7 @@ namespace TelegramVisualPart.Pages
 
         public async void UpdateImage()
         {
-           await ContactInfo.SetContactPhoto();
+            await ContactInfo.SetContactPhoto();
         }
     }
 }

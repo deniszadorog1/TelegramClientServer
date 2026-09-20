@@ -170,8 +170,6 @@ namespace TelegramClientServer.Controllers
             public List<Message> Messages { get; set; }
         }
 
-
-
         [HttpPost("AddAndGetPairMediaMessages")]
         public ActionResult<List<MediaAction>> AddAndGetMediaMessages([FromBody] MediaMessagesRequestDTO request)
         {
@@ -199,7 +197,6 @@ namespace TelegramClientServer.Controllers
             });
 
             return Content(json, "application/json");
-            //return DbService.GetPairOfMessageBySentTime(mesId);
         }
 
         [HttpGet("GetMessageById")]

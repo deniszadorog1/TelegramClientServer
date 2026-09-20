@@ -194,6 +194,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
 
         public async Task SetVideosInPanel()
         {
+            const int margin = 5;
             //Get paths for 
             _videoPaths = GetVideoFileNames();
 
@@ -209,7 +210,7 @@ namespace TelegramVisualPart.Pages.UserInfoContact.SentObjectsUserInfo
                 img.Width = mediaSize;
                 img.Height = mediaSize;
 
-                img.Margin = new Thickness(5);
+                img.Margin = new Thickness(margin);
 
                 img.PreviewMouseDown += MediaVideos_PreviewMouseDown;
 

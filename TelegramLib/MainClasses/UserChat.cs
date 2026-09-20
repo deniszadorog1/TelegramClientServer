@@ -609,7 +609,7 @@ namespace TelegramLib.MainClasses
         {
             List<StaticMessage> toRemove = new List<StaticMessage>();
             bool isUsualMessageWas = false;
-            for (int i = Messages.Count - 1; i > 0; i--)
+            for (int i = Messages.Count - 1; i >= 0; i--)
             {
                 if (!isUsualMessageWas &&
                     Messages[i] is StaticMessage stat &&

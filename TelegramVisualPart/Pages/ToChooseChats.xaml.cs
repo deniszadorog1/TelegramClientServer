@@ -200,13 +200,13 @@ namespace TelegramVisualPart.Pages
             }
         }
 
-        private void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void Contact_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ChatToApply temp) return;
 
             if (temp.GetIdClicked())
             {
-                AddAppliedChat(temp);
+                await AddAppliedChat(temp);
                 return;
             }
             RemoveAppliedChat(temp);
@@ -379,7 +379,7 @@ namespace TelegramVisualPart.Pages
                 Where(x => x.Name == toRemove.Name).First());
         }
 
-        private void TestParam_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void TestParam_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is not ChatToApply) return;
 
@@ -387,7 +387,7 @@ namespace TelegramVisualPart.Pages
 
             if (temp.GetIdClicked())
             {
-                AddAppliedChat(temp);
+                await AddAppliedChat(temp);
                 return;
             }
             RemoveAppliedChat(temp);

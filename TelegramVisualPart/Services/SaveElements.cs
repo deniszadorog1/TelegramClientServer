@@ -71,7 +71,11 @@ namespace TelegramVisualPart.Services
         public static void SaveVideoAs(MediaElement element)
         {
             const string title = "Save Video as...";
-            const string filter = "MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*";
+            string filter = FileFilter.Build(
+                    includeAllFiles: true,
+                    ("MP4 files", new[] { "mp4" })
+                ); 
+            //"MP4 files (*.mp4)|*.mp4|All files (*.*)|*.*";
 
             string originalPath = element.Source.LocalPath; 
             var dialog = new Microsoft.Win32.SaveFileDialog

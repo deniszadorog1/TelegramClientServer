@@ -1817,7 +1817,8 @@ namespace TelegramVisualPart.UserControls
         {
             if (element is FrameworkElement fe)
             {
-                return fe.Name == "Bd" || fe.TemplatedParent != null && fe.DataContext == null;
+                const string name = "Bd";
+                return fe.Name == name || fe.TemplatedParent != null && fe.DataContext == null;
             }
             return false;
         }
@@ -3461,7 +3462,7 @@ namespace TelegramVisualPart.UserControls
             _system.AddPinnedMessage(mes);
 
             //Set in last position + show this in panel
-            SetPinnedMessageInPanel(mes);
+            _ = SetPinnedMessageInPanel(mes);
         }
 
         public void ShowPinnedIfNotOnlyPinned()
@@ -3641,10 +3642,16 @@ namespace TelegramVisualPart.UserControls
         private async void AddFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             const int addDay = 1;
+            string title = "Choose image or video";
+            string filter = FileFilter.Create("Image and Video files", false,
+                "png", "jpg", "jpeg", "mp4", "mov", "avi"
+            ); 
+            //"Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi";
+
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Choose image or video",
-                Filter = "Image and Video files|*.png;*.jpg;*.jpeg;*.mp4;*.mov;*.avi",
+                Title = title,
+                Filter = filter,
                 Multiselect = true
             };
 
@@ -4154,7 +4161,7 @@ namespace TelegramVisualPart.UserControls
                 return;
             }
 
-            ContactInfo info = new ContactInfo();
+            ContactInfo info = new ContactInfo(_system);
             ContactInfoGrid.Children.Add(info);
 
             info.LoadEnd += () =>
@@ -4669,7 +4676,22 @@ namespace TelegramVisualPart.UserControls
                     item.Margin = new Thickness(0, 0, 0, 0);
                 }
 
-                if (item.Content is ChatControls.TextMessage text)
+                var visibility = _isGluedToLeft ? Visibility.Visible : Visibility.Hidden;
+
+                switch (item.Content)
+                {
+                    case ChatControls.TextMessage text:
+                        text.UserEllipseImage.Visibility = visibility;
+                        break;
+                    case ChatControls.MediaMessage media:
+                        media.UserEllipseImage.Visibility = visibility;
+                        break;
+                    case ShareContactControl share:
+                        share.SenderEllipseImage.Visibility = visibility;
+                        break;
+                }
+
+/*                if (item.Content is ChatControls.TextMessage text)
                 {
                     if (!_isGluedToLeft) text.UserEllipseImage.Visibility = Visibility.Hidden;
                     else text.UserEllipseImage.Visibility = Visibility.Visible;
@@ -4683,7 +4705,7 @@ namespace TelegramVisualPart.UserControls
                 {
                     if (!_isGluedToLeft) share.SenderEllipseImage.Visibility = Visibility.Hidden;
                     else share.SenderEllipseImage.Visibility = Visibility.Visible;
-                }
+                }*/
             }
         }
 
@@ -5013,12 +5035,13 @@ namespace TelegramVisualPart.UserControls
         {
             //Set send message control
             ShareContactControl shareContact =
-                new ShareContactControl();
+                new ShareContactControl(_system);
 
             //Try to get by chat
             TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(sharedContact.Id);
 
-            string imgName = chat is not null ? chat.Chatter.GetImgName() : sharedContact.GetFirstImageNameInString();
+            string imgName = sharedContact.Id == _system.LoggedUser.Id ? _system.LoggedUser.GetFirstImageNameInString() :
+                chat is not null ? chat.Chatter.GetImgName() : sharedContact.GetFirstImageNameInString();
 
             //Set control params
             await shareContact.SetSenderImage(_system.LoggedUser.GetFirstImageNameInString());
@@ -5038,6 +5061,13 @@ namespace TelegramVisualPart.UserControls
                 TelegramLib.MainClasses.UserChat chat = _system.GetChatByChatterId(tagId);
 
                 //If chat is not found -> add it
+                //if()
+
+                if(chat is null && _system.LoggedUser.Id == tagId)
+                {
+                    chat = _system.SavedMesesChat;
+                }
+
                 if (chat is null)
                 {
                     await AddChat(sharedContact);
@@ -5709,7 +5739,7 @@ namespace TelegramVisualPart.UserControls
                 await ((MainWindow)Window.GetWindow(this)).
                     SetOtherChatByUserId(chat.Chatter.Id);
 
-            _chat = chat;
+            _chat = chat; 
 
             UpdateOnlyChatInWindow(chat);
 
@@ -6903,11 +6933,25 @@ namespace TelegramVisualPart.UserControls
 
             //Get next message index
             ScrollToMessageByMessageId(mes.Id);
+            SetAmountOfSerachMessages();
         }
 
         private void OnlyChatSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _mesIndex = -1;
+
+            SetAmountOfSerachMessages();
+        }
+
+        private void SetAmountOfSerachMessages()
+        {
+            string findMes = OnlyChatSearchTextBox.Text;
+
+            List<TelegramLib.MainClasses.Messages.Message>? meses =
+                _chat is null ? null : _chat.GetMessagesWithStr(findMes);
+
+            TempSearchNumber.Text = meses is null || meses.Count == 0 ? "no result" : 
+                $"{_mesIndex + 1}:{meses.Count().ToString()}";
         }
     }
 

@@ -92,9 +92,6 @@ namespace TelegramClientServer.Controllers
         [HttpGet("GetSettingsByUserId")]
         public MainSettings GetSettingsByUserId(int userId)
         {
-/*            int id = _clientProps.GetCurrentUserId();
-            if (userId != id) return null;*/
-
             return DbService.GetSettingsByUserId(userId);
         }
 

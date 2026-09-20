@@ -626,9 +626,41 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             ((MainWindow)Window.GetWindow(this)).ClearThirdFrame();
         }
 
+        private Dictionary<EnumPrivacyButton, Action> _exceptionsActions;
+
+        private void InitExceptionsActions()
+        {
+            _exceptionsActions = new Dictionary<EnumPrivacyButton, Action>
+            {
+                [PhoneEverybodyUsersExcepts] = () => SetToChoosePage(ChooseType.NeverShare, _settings.PhonePrivacy),
+                [PhoneContactAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.PhonePrivacy),
+                [PhoneContactNeverShareBut] = () => SetToChoosePage(ChooseType.NeverShare, _settings.PhonePrivacy),
+                [PhoneNobodyAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.PhonePrivacy),
+
+                [LastSeenEverybodyUsersExcepts] = () => SetToChoosePage(ChooseType.NeverShare, _settings.LastSeenPrivacy),
+                [LastSeenOtherAlwaysShare] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.LastSeenPrivacy),
+                [LastSeenOtherNeverShare] = () => SetToChoosePage(ChooseType.NeverShare, _settings.LastSeenPrivacy),
+
+                [ProfPhotosAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.ProfPhotoPrivacy),
+                [ProfPhotosNeverShareBut] = () => SetToChoosePage(ChooseType.NeverShare, _settings.ProfPhotoPrivacy),
+
+                [ForwardMeesagesAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.ForwardMesPrivacy),
+                [ForwardMeesagesNeverShareBut] = () => SetToChoosePage(ChooseType.NeverShare, _settings.ForwardMesPrivacy),
+
+                [BirthDateAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.DateBirthPrivacy),
+                [BirthDateNeverShareBut] = () => SetToChoosePage(ChooseType.NeverShare, _settings.DateBirthPrivacy),
+
+                [BioAlwaysShareBut] = () => SetToChoosePage(ChooseType.AlwaysShare, _settings.BioPrivacy),
+                [BioNeverShareBut] = () => SetToChoosePage(ChooseType.NeverShare, _settings.BioPrivacy),
+            };
+        }
+
         private void Exps_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is not EnumPrivacyButton openExps) return;
+            if (sender is EnumPrivacyButton openExps && _exceptionsActions.TryGetValue(openExps, out var action))
+                action();
+
+/*            if (sender is not EnumPrivacyButton openExps) return;
 
             if (openExps == PhoneEverybodyUsersExcepts) SetToChoosePage(ChooseType.NeverShare, _settings.PhonePrivacy);
             else if (openExps == PhoneContactAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.PhonePrivacy);
@@ -649,7 +681,7 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
             else if (openExps == BirthDateNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.DateBirthPrivacy);
 
             else if (openExps == BioAlwaysShareBut) SetToChoosePage(ChooseType.AlwaysShare, _settings.BioPrivacy);
-            else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.BioPrivacy);
+            else if (openExps == BioNeverShareBut) SetToChoosePage(ChooseType.NeverShare, _settings.BioPrivacy);*/
         }
 
         public void SetToChoosePage(ChooseType shareType, PrivacySub sub)
@@ -698,7 +730,12 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
         public void ToChooseImage()
         {
             const string title = "Choose image or video";
-            const string filter = "Image and Video files|*.png;*.jpg;*.jpeg";
+            string filter = FileFilter.Create(
+                    "Image and Video files",
+                    false,
+                    "png", "jpg", "jpeg"
+                ); 
+            //"Image and Video files|*.png;*.jpg;*.jpeg";
 
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {

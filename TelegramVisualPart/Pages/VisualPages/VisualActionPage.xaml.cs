@@ -1,4 +1,5 @@
 ﻿using MaterialDesignThemes.Wpf;
+using System.Data.Entity.Core.Mapping;
 using System.Dynamic;
 using System.Windows;
 using System.Windows.Controls;
@@ -116,13 +117,14 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         private void SetUserImageParams()
         {
+            const int addIndex = 1; 
             if (_system is null || _userImages is null || _tempMediaIndex == -1 ||
                 _userImages.Count == 0) return;
 
             UserImage userImage = _userImages[_tempMediaIndex];
 
             ElementName.Text = userImage.Name;
-            PositionInFolder.Text = $"{_tempMediaIndex + 1} of {_userImages.Count}";
+            PositionInFolder.Text = $"{_tempMediaIndex + addIndex} of {_userImages.Count}";
             SenderName.Text = _userName;
             SentDate.Text = $"{userImage.Date.Day}.{userImage.Date.Month}.{userImage.Date.Year}";
         }
@@ -141,11 +143,12 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetMediaParams()
         {
+            const int addIndex = 1;
             if (_system is null || _messages is null || _tempMediaIndex == -1 || _messages.Count <= _tempMediaIndex ||
                 _messages.Count == 0 || _messages[_tempMediaIndex] is not MediaAction media) return;
 
             ElementName.Text = media.MediaName;
-            PositionInFolder.Text = $"Photo {_messages.FindIndex(x => x.Id == media.Id) + 1} of {_messages.Count}";
+            PositionInFolder.Text = $"Photo {_messages.FindIndex(x => x.Id == media.Id) + addIndex} of {_messages.Count}";
 
             SentDate.Text = $"{media.GetSentDate().Value.Day} {media.GetSentDate().Value.Month} {media.GetSentDate().Value.Year}";
 
@@ -255,13 +258,14 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetGifParams()
         {
+            const int divider = 2;
             var uri = new Uri(_gifPath, UriKind.RelativeOrAbsolute);
             var source = new BitmapImage(uri);
             WpfAnimatedGif.ImageBehavior.SetAnimatedSource(ImageToShow, source);
             WpfAnimatedGif.ImageBehavior.SetRepeatBehavior(ImageToShow, RepeatBehavior.Forever);
 
             ImageToShow.RenderTransform = new RotateTransform(_rotation,
-                    source.Width / 2, source.Height / 2);
+                    source.Width / divider, source.Height / divider);
         }
 
         public void SetBasicParams()
@@ -278,35 +282,8 @@ namespace TelegramVisualPart.Pages.VisualPages
 
         public void SetEventsForMenu()
         {
-            MediaMenu.GoToMessage.PreviewMouseDown += MoveToMessage_PreviewMouseDown;
-            MediaMenu.ShowInFolder.PreviewMouseDown += ShowInFolder_PreviewMouseDown;
-            MediaMenu.CopyFrame.PreviewMouseDown += CopyFrame_PreviewMouseDown;
-            MediaMenu.Forward.PreviewMouseDown += Forward_PreviewMouseDown;
             MediaMenu.Delete.PreviewMouseDown += Delete_PreviewMouseDown;
             MediaMenu.SaveAs.PreviewMouseDown += SaveAs_PreviewMouseDown;
-        }
-
-        private void MoveToMessage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Set move to message on chat
-
-            //Get temp message
-            //go trough 
-        }
-
-        private void ShowInFolder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Show folder
-        }
-
-        private void CopyFrame_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Copy this into buffer
-        }
-
-        private void Forward_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Resent element to another user
         }
 
         private void Delete_PreviewMouseDown(object sender, MouseButtonEventArgs e)

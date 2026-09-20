@@ -228,7 +228,12 @@ namespace TelegramVisualPart.Pages.UserInfoContact.ActionsFolder
         private async void ChangeContactImageGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             const string title = "Choose image";
-            const string filter = "Image files|*.png;*.jpg;*.jpeg;";
+            string filter = FileFilter.Create(
+                "Image files",
+                false,
+                "png", "jpg", "jpeg"
+            );
+            //"Image files|*.png;*.jpg;*.jpeg;";
 
             const int minImgsAmount = 1;
             Window window = Window.GetWindow(this);

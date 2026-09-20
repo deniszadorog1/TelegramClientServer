@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TelegramLib.MainClasses;
 using TelegramVisualPart.Helper;
+using TelegramVisualPart.Pages;
 using TelegramVisualPart.Services;
 
 namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
@@ -15,9 +16,13 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
     public partial class ShareContactControl : UserControl
     {
         public event Func<Task> SharedClicked;
-        public ShareContactControl()
+        private TelSystem _system;
+
+        public ShareContactControl(TelSystem system)
         {
             InitializeComponent();
+
+            _system = system;
 
             SetEvents();
         }
@@ -148,6 +153,40 @@ namespace TelegramVisualPart.UserControls.ChatControls.ChatMessages
         public bool IsMessageIdTicked()
         {
             return SelectionTickObj.GetChosenStatus();
+        }
+
+        private void SenderEllipseImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //Get user 
+            DependencyObject check = this.Parent;
+            if (check is not ListBoxItem item) return;
+
+            int.TryParse(item.Tag.ToString(), out int mesId);
+
+            TelegramLib.MainClasses.Messages.Message mes =
+                _system.GetMessageById(mesId);
+            if (mes is null) return;
+
+            bool isSavedChat = _system.GetIsSavedMesChatStatus();
+
+            //Settings logged user page
+            if ((_system.LoggedUser.Id == mes.SenderUserId && !isSavedChat) ||
+                (isSavedChat && mes.ForwardedFromId is null && mes.SenderUserId == 0) ||
+                (isSavedChat && _system.LoggedUser.Id == mes.ForwardedFromId))
+            {
+                UserInfo logged = new UserInfo(_system.SavedMesesChat, _system);
+                ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(logged);
+                return;
+            }
+
+            //Set other user page
+            TelegramLib.MainClasses.UserChat chat = isSavedChat && mes.ForwardedFromId is not null ?
+                _system.GetChatByChatterId((int)mes.ForwardedFromId) :
+                _system.GetChatByMessage(mes);
+
+            UserInfo info = new UserInfo(chat, _system);
+            ((MainWindow)Window.GetWindow(this)).SetSecondaryFrame(info);
+
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 using TelegramLib.Enums.Chat;
 using TelegramLib.MainClasses.UserParams;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TelegramLib.MainClasses
 {
@@ -130,12 +132,18 @@ namespace TelegramLib.MainClasses
         public void UpdateByUser(User user)
         {
             Name = user.Name;
+            //Surname = user.Surname;
             Login = user.Login;
             BirthDate = user.BirthDay;
             BIO = user.BIO;
             PhoneNumber = user.PhoneNumber;
             LastSeen = user.LastSeenOnline;
             UserImages = user.UserImages is null || user.UserImages.Count == 0 ? UserImages : user.UserImages;
+
+            //UserImages = user.UserImages;
+            //IsOnline = false;
+
+           // ContactUserId = user.Id;
         }
 
         public void RemoveMask()

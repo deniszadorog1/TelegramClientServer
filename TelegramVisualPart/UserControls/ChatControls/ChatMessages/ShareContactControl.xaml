@@ -19,7 +19,10 @@
 
         <Grid>
             <Ellipse Grid.Column="0" VerticalAlignment="Bottom"
-                        Name="SenderEllipseImage" Width="40" Height="40">
+                        Name="SenderEllipseImage" Width="40" Height="40"
+                     
+                     PreviewMouseDown="SenderEllipseImage_PreviewMouseDown"
+                     >
                 <Ellipse.Fill>
                     <ImageBrush x:Name="BgBrush" ImageSource="/Visuals/Images/UserImages/Minato.jpg"/>
                 </Ellipse.Fill>

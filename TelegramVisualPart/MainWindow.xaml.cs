@@ -298,10 +298,10 @@ namespace TelegramVisualPart
         public void SetBlurEffectToFrame(Frame frame)
         {
             frame.Effect = null;
-
+            const int radius = 15;
             frame.Effect = new BlurEffect()
             {
-                Radius = 15,
+                Radius = radius,
             };
             frame.Background = Brushes.Transparent;
             SetBgShadowEffect(frame);
@@ -309,8 +309,9 @@ namespace TelegramVisualPart
 
         public void SetBgShadowEffect(Frame frame)
         {
+            const int aValue = 128;
             SolidColorBrush shadowBrush =
-                new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                new SolidColorBrush(Color.FromArgb(aValue, 0, 0, 0));
 
             if (frame == MainFrame)
             {
@@ -510,7 +511,7 @@ namespace TelegramVisualPart
                 _system.LoggedUser.IsOnline =
                     (await ApiService.GetUserById(_system.LoggedUser.Id)).IsOnline;
 
-                SignalRService.UpdateOnlineStatus(_system.LoggedUser);
+                await SignalRService.UpdateOnlineStatus(_system.LoggedUser);
             };
 
             ClearThirdFrame();

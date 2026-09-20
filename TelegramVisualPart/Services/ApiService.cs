@@ -1593,8 +1593,6 @@ namespace TelegramVisualPart.Services
             });
         }
 
-
-
         private static TelSystem? _cachedSystem;
         private static Task<TelSystem?>? _initializationTask;
         private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Razor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,7 @@ namespace TelegramVisualPart.Pages.Settings.Language
             SetLanguageText.SetLanguagePage(this);
         }
 
-        public void SetCheckEvents()
+        public async void SetCheckEvents()
         {
             //Set temp in json file(Why?)
             //Change in db
@@ -43,16 +44,18 @@ namespace TelegramVisualPart.Pages.Settings.Language
 
             EngLanguage.RadioBut.Checked += (sender, e) =>
             {
-                VisConstParamsJsonService.SetFileName("EnglishLang.json");
+                const string lang = "EnglishLang.json";
+                VisConstParamsJsonService.SetFileName(lang);
 
                 ApiService.UpdateUserLanguage(_system.LoggedUser.Id, TelegramLib.Enums.Settings.Language.LanguageType.English);
 
                 ((MainWindow)Window.GetWindow(this)).LogOut();
             };
 
-            RusLanguage.RadioBut.Checked += (sender, e) =>
+            RusLanguage.RadioBut.Checked += (sender, e) => 
             {
-                VisConstParamsJsonService.SetFileName("RussianLang.json");
+                const string lang = "RussianLang.json";
+                VisConstParamsJsonService.SetFileName(lang);
 
                 ApiService.UpdateUserLanguage(_system.LoggedUser.Id, TelegramLib.Enums.Settings.Language.LanguageType.Russian);
 
@@ -67,11 +70,15 @@ namespace TelegramVisualPart.Pages.Settings.Language
 
         public void SetLangTextBlocks()
         {
-            EngLanguage.LangEngName.Text = "English";
-            EngLanguage.LangNativeName.Text = "English";
+            const string _english = "English";
+            const string _russian = "Russian";
+            const string _rus = "Русский";
 
-            RusLanguage.LangEngName.Text = "Russian";
-            RusLanguage.LangNativeName.Text = "Русский";
+            EngLanguage.LangEngName.Text = _english;
+            EngLanguage.LangNativeName.Text = _english;
+
+            RusLanguage.LangEngName.Text = _russian;
+            RusLanguage.LangNativeName.Text = _rus;
         }
 
         private void But_MouseEnter(object sender, MouseEventArgs e)

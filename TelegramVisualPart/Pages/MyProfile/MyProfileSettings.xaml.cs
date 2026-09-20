@@ -157,18 +157,21 @@ namespace TelegramVisualPart.Pages.MyProfile
 
         public void SetTextBoxHeight()
         {
+            const int bioHeight = 90;
+            const int bioManyLineHeight = 115;
+
             BioBoxHeight.Height = new GridLength(_baseBioBoxHeight +
                 _bioBoxHeightStep * BioTextBox.LineCount);
 
             if (BioTextBox.LineCount > 1)
             {
                 BioExpGrid.Visibility = Visibility.Hidden;
-                BioRow.Height = new GridLength(90);
+                BioRow.Height = new GridLength(bioHeight);
             }
             else
             {
                 BioExpGrid.Visibility = Visibility.Visible;
-                BioRow.Height = new GridLength(115);
+                BioRow.Height = new GridLength(bioManyLineHeight);
             }
         }
 
@@ -244,7 +247,12 @@ namespace TelegramVisualPart.Pages.MyProfile
         private async void SetPhotoGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             const string title = "Choose image";
-            const string filter = "Image files|*.png;*.jpg;*.jpeg;";
+            string filter = FileFilter.Create(
+                "Image files",
+                false,
+                "png", "jpg", "jpeg"
+            ); 
+            //"Image files|*.png;*.jpg;*.jpeg;";
             //Get photo
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {

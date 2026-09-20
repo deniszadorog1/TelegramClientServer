@@ -209,74 +209,89 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         public void UpdateBgColors(TelegramLib.MainClasses.ChatFitures.Theme theme)
         {
+            const int darkOne = 5;
+            const int darkTwo = 3;
+            const int darkThree = 8;
+            const int darkFour = 4;
+
+            (byte r, byte g, byte b) darkOneRGB = (23, 33, 43);
+            (byte r, byte g, byte b) darkTwoRGB = (35, 46, 60);
+            (byte r, byte g, byte b) darkThreeRGB = (35, 45, 59);
+            (byte r, byte g, byte b) darkFourRGB = (14, 22, 33);
+            (byte r, byte g, byte b) darkFiveRGB = (58, 64, 71);
+            (byte r, byte g, byte b) darkSixRGB = (29, 42, 57);
+
+            (byte r, byte g, byte b) baseRGB = (222, 222, 222);
+
+
             //Night - my basic
             //Tinted - colored
             //Day and Classic - White and THE SAME
 
             Application.Current.Resources["DarkThemeOne"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(23, 33, 43)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkOneRGB.r, darkOneRGB.g, darkOneRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 5),
-                    GetColorParam(theme.Color.G, 5),
-                    GetColorParam(theme.Color.B, 5))) :
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkOne),
+                    GetColorParam(theme.Color.G, darkOne),
+                    GetColorParam(theme.Color.B, darkOne))) :
                 new SolidColorBrush(Colors.White);
 
             Application.Current.Resources["DarkThemeMouseEnterBut"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(35, 46, 60)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkTwoRGB.r, darkTwoRGB.g, darkTwoRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
-                    GetColorParam(theme.Color.G, 3),
-                    GetColorParam(theme.Color.B, 3))) :
-                new SolidColorBrush(Color.FromRgb(222, 222, 222));
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkTwo),
+                    GetColorParam(theme.Color.G, darkTwo),
+                    GetColorParam(theme.Color.B, darkTwo))) :
+                new SolidColorBrush(Color.FromRgb(baseRGB.r, baseRGB.g, baseRGB.b));
 
             Application.Current.Resources["DarkThemeDeviderField"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(35, 45, 59)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkThreeRGB.r, darkThreeRGB.g, darkThreeRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
-                    GetColorParam(theme.Color.G, 3),
-                    GetColorParam(theme.Color.B, 3))) :
-                new SolidColorBrush(Color.FromRgb(222, 222, 222));
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkTwo),
+                    GetColorParam(theme.Color.G, darkTwo),
+                    GetColorParam(theme.Color.B, darkTwo))) :
+                new SolidColorBrush(Color.FromRgb(baseRGB.r, baseRGB.g, baseRGB.b));
 
             Application.Current.Resources["DarkThemeSecond"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(14, 22, 33)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkFourRGB.r, darkFourRGB.g, darkFourRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 8),
-                    GetColorParam(theme.Color.G, 8),
-                    GetColorParam(theme.Color.B, 8))) :
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkThree),
+                    GetColorParam(theme.Color.G, darkThree),
+                    GetColorParam(theme.Color.B, darkThree))) :
                 new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 8),
-                    GetColorParam(theme.Color.G, 8),
-                    GetColorParam(theme.Color.B, 8)));
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkThree),
+                    GetColorParam(theme.Color.G, darkThree),
+                    GetColorParam(theme.Color.B, darkThree)));
 
             Application.Current.Resources["UpperBangColor"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(58, 64, 71)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkFiveRGB.r, darkFiveRGB.g, darkFiveRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
-                    GetColorParam(theme.Color.G, 3),
-                    GetColorParam(theme.Color.B, 3))) :
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkTwo),
+                    GetColorParam(theme.Color.G, darkTwo),
+                    GetColorParam(theme.Color.B, darkTwo))) :
                 new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 3),
-                    GetColorParam(theme.Color.G, 3),
-                    GetColorParam(theme.Color.B, 3)));
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkTwo),
+                    GetColorParam(theme.Color.G, darkTwo),
+                    GetColorParam(theme.Color.B, darkTwo)));
 
             //UpperBangColor
 
 
             Application.Current.Resources["DarkThemeProfileButEnter"] =
-                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(29, 42, 57)) : //Basic Dark 
+                theme.Type == ThemeType.Night ? new SolidColorBrush(Color.FromRgb(darkSixRGB.r, darkSixRGB.g, darkSixRGB.b)) : //Basic Dark 
                 theme.Type == ThemeType.Tinted ? new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 4),
-                    GetColorParam(theme.Color.G, 4),
-                    GetColorParam(theme.Color.B, 4))) :
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkFour),
+                    GetColorParam(theme.Color.G, darkFour),
+                    GetColorParam(theme.Color.B, darkFour))) :
                 new SolidColorBrush(
-                    Color.FromRgb(GetColorParam(theme.Color.R, 4),
-                    GetColorParam(theme.Color.G, 4),
-                    GetColorParam(theme.Color.B, 4)));
+                    Color.FromRgb(GetColorParam(theme.Color.R, darkFour),
+                    GetColorParam(theme.Color.G, darkFour),
+                    GetColorParam(theme.Color.B, darkFour)));
         }
         private byte GetColorParam(byte tempColor, int toAdd)
         {
             int value = tempColor / toAdd;
-            return (byte)(value > 255 ? 255 : value < 0 ? 0 : value);
+            return (byte)(value > byte.MaxValue ? byte.MaxValue : value < 0 ? 0 : value);
         }
 
         public void SetAdditionalTextColor(TelegramLib.MainClasses.ChatFitures.Theme theme)
@@ -619,7 +634,12 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings
 
         private void ChooseWallpaperFromFile_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            const string filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            string filter = FileFilter.Create(
+                "Image Files",
+                false,
+                "jpg", "jpeg", "png", "bmp", "gif"
+            );
+            //"Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
             //Set Add file 
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Title = "Choose wallpaper";

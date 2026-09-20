@@ -161,13 +161,13 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
                 but.Background = new SolidColorBrush(Colors.Transparent);
         }
 
-        private void SaveBut_Click(object sender, RoutedEventArgs e)
+        private async void SaveBut_Click(object sender, RoutedEventArgs e)
         {
             //Set save Action
             _system.Settings.SoundNotifSettings.SetChosenSound(_tempChosenSound);
             _system.Settings.SoundNotifSettings.SetVolume(_tempChosenVol);
 
-            ApiService.UpdateSound(_system.LoggedUser.Id, _tempChosenSound, _tempChosenVol, _tempChosenSound == "NoSound");
+            await ApiService.UpdateSound(_system.LoggedUser.Id, _tempChosenSound, _tempChosenVol, _tempChosenSound == "NoSound");
 
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
@@ -177,10 +177,14 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
             ((MainWindow)Window.GetWindow(this)).ClearSecFrame();
         }
 
-        private void AddSound_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void AddSound_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             const string title = "Choose vidoe file";
-            const string filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+            string filter = FileFilter.Build(
+                includeAllFiles: true,
+                ("MP3 files", new[] { "mp3" })
+            );
+            //"MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             var dlg = new OpenFileDialog
             {
                 Title = title,
@@ -202,7 +206,7 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
                 _system.Settings.SoundNotifSettings.AddSound(Path.GetFileName(filePath));
 
                 //Set it in db            
-                ApiService.AddNewUser(Path.GetFileName(filePath));
+                await ApiService.AddNewUser(Path.GetFileName(filePath));
             }
         }
 
@@ -247,13 +251,14 @@ namespace TelegramVisualPart.Pages.LittleMenuPages
 
         private void RadioBut_Checked(object sender, RoutedEventArgs e)
         {
+            const int volumeHeight = 90;
             if (sender is not RadioButton but) return;
 
             _tempChosenSound = but.Content.ToString();
 
             PlayOnChangedSound(but.Content.ToString());
 
-            VolumeRow.Height = new GridLength(90);
+            VolumeRow.Height = new GridLength(volumeHeight);
             SetWindowHeight();
         }
 

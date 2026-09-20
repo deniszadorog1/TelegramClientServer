@@ -117,9 +117,12 @@ namespace TelegramVisualPart.UserControls.ChatControls
             }
             else
             {
+                const int firstGroup = 6;
+                const int secondGroup = 3;
+
                 DownBandRow.Height = new GridLength(0);
-                if (count <= 6) BottomBandRow.Height = new GridLength(0);
-                if (count <= 3) MiddleBandRow.Height = new GridLength(0);
+                if (count <= firstGroup) BottomBandRow.Height = new GridLength(0);
+                if (count <= secondGroup) MiddleBandRow.Height = new GridLength(0);
 
                 for (int i = 0; i < count; i++)
                 {
@@ -483,18 +486,22 @@ namespace TelegramVisualPart.UserControls.ChatControls
 
         private void SetRowVisibility(int count)
         {
-            if (count <= 2)
+            int firstGroup = 2;
+            int secondGroup = 4;
+            int thirdGroup = 8;
+
+            if (count <= firstGroup)
             {
                 BottomBandRow.Height = new GridLength(0);
                 DownBandRow.Height = new GridLength(0);
                 MiddleBandRow.Height = new GridLength(0);
             }
-            else if (count <= 4)
+            else if (count <= secondGroup)
             {
                 BottomBandRow.Height = new GridLength(0);
                 DownBandRow.Height = new GridLength(0);
             }
-            else if (count <= 8)
+            else if (count <= thirdGroup)
             {
                 DownBandRow.Height = new GridLength(0);
             }

@@ -36,9 +36,23 @@ namespace TelegramVisualPart.UserControls.ChatControls
         {
             InitializeComponent();
             SetIconsSize();
+            SetMenuVisibility(Visibility.Hidden);
+        }
+
+
+        public ContactInfo(TelSystem system)
+        {
+            InitializeComponent();
+
+            _system = system;
+
+            SetIconsSize();
 
             //this.Visibility = Visibility.Hidden;
             SetMenuVisibility(Visibility.Hidden);
+
+            //_contact = new UserContactcs();
+            //_contact.UpdateByUser(_system.LoggedUser);
         }
 
         public void SetMenuVisibility(Visibility vis)

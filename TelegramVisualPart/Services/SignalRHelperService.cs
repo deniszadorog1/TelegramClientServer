@@ -275,7 +275,9 @@ namespace TelegramVisualPart.Services
             }
 
             BitmapImage image;
-            string avaterPath = await FilesAction.GetUserImagePath(user.GetFirstImageNameInString());
+            string avaterPath = user.Id == _system.LoggedUser.Id ? 
+                await FilesAction.GetUserImagePath(_system.LoggedUser.GetFirstImageNameInString()) :
+                await FilesAction.GetUserImagePath(user.GetFirstImageNameInString());
 
 
             if (shareType == IsPrivacyException.Share ||

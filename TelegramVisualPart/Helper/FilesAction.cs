@@ -670,7 +670,49 @@ namespace TelegramVisualPart.Helper
             }
         }
 
-        public static bool IsRealMedia(string path)
+        private static List<byte> _pngCode = new List<byte>()
+        {
+            0x89,
+            0x50,
+            0x4E,
+            0x47
+        };
+
+        private static List<byte> _jpegCode = new List<byte>()
+        {
+            0xFF,
+            0xD8,
+            0xFF,
+        };
+
+        private static List<byte> _gifCode = new List<byte>()
+        {
+            0x47,
+            0x49,
+            0x46,
+        };
+
+        private static List<byte> _mp4Code = new List<byte>()
+        {
+            0x66,
+            0x74,
+            0x79,
+            0x70
+        };
+
+        private static List<byte> _webpCode = new List<byte>()
+        {
+            0x52,
+            0x49,
+            0x46,
+            0x46,
+            0x57,
+            0x45,
+            0x42,
+            0x50
+        };
+
+        public static bool IsRealMedia(string path) 
         {
             try
             {
@@ -681,20 +723,20 @@ namespace TelegramVisualPart.Helper
                 }
 
                 // PNG: 89 50 4E 47
-                if (buffer[0] == 0x89 && buffer[1] == 0x50 && buffer[2] == 0x4E && buffer[3] == 0x47) return true;
+                if (buffer[0] == _pngCode[0] /*0x89*/ && buffer[1] == _pngCode[1] /*0x50*/ && buffer[2] == _pngCode[2] /*0x4E*/ && buffer[3] == _pngCode[3] /*0x47*/) return true;
 
                 // JPEG: FF D8 FF
-                if (buffer[0] == 0xFF && buffer[1] == 0xD8 && buffer[2] == 0xFF) return true;
+                if (buffer[0] == _jpegCode[0] /*0xFF*/ && buffer[1] == _jpegCode[1]/*0xD8*/ && buffer[2] == _jpegCode[2]/*0xFF*/) return true;
 
                 // GIF: 47 49 46 (GIF87a / GIF89a)
-                if (buffer[0] == 0x47 && buffer[1] == 0x49 && buffer[2] == 0x46) return true;
+                if (buffer[0] == _gifCode[0]/*0x47*/ && buffer[1] == _gifCode[1]/*0x49*/ && buffer[2] == _gifCode[2]/*0x46*/) return true;
 
-                // MP4 (и другие контейнеры): Байты 'ftyp' на позициях 4-7 (66 74 79 70)
-                if (buffer[4] == 0x66 && buffer[5] == 0x74 && buffer[6] == 0x79 && buffer[7] == 0x70) return true;
+                // MP4 : Байты 'ftyp' на позициях 4-7 (66 74 79 70)
+                if (buffer[4] == _mp4Code[0] /*0x66*/ && buffer[5] == _mp4Code[1]/*0x74*/ && buffer[6] == _mp4Code[2]/*0x79*/ && buffer[7] == _mp4Code[3]/*0x70*/) return true;
 
                 // WEBP: 'RIFF' на позициях 0-3 (52 49 46 46) И 'WEBP' на позициях 8-11 (57 45 42 50)
-                if (buffer[0] == 0x52 && buffer[1] == 0x49 && buffer[2] == 0x46 && buffer[3] == 0x46 && // RIFF
-                    buffer[8] == 0x57 && buffer[9] == 0x45 && buffer[10] == 0x42 && buffer[11] == 0x50)  // WEBP
+                if (buffer[0] == _webpCode[0]/*0x52*/ && buffer[1] == _webpCode[1]/*0x49*/ && buffer[2] == _webpCode[2]/*0x46*/ && buffer[3] == _webpCode[3]/*0x46*/ && // RIFF
+                    buffer[8] == _webpCode[4]/*0x57*/ && buffer[9] == _webpCode[5]/*0x45*/ && buffer[10] == _webpCode[6]/*0x42*/ && buffer[11] == _webpCode[7]/*0x50*/)  // WEBP
                 {
                     return true;
                 }

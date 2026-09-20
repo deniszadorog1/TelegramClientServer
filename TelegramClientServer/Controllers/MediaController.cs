@@ -1,6 +1,7 @@
 ﻿using FFMpegCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Drawing;
 
 namespace TelegramClientServer.Controllers
@@ -75,7 +76,9 @@ namespace TelegramClientServer.Controllers
         [HttpGet("Preview/{videoName}")]
         public async Task<IActionResult> GetVideoPreview(string videoName)
         {
-            Size previewSize = new Size(480, 270);
+            const int width = 480;
+            const int height = 270;
+            Size previewSize = new Size(width, height);
 
             string videoPath = Path.Combine(_env.ContentRootPath, "wwwroot/Uploads/Videos", videoName);
             string previewName = Path.GetFileNameWithoutExtension(videoName) + ".png";

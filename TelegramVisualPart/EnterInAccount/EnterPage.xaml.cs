@@ -54,11 +54,11 @@ namespace TelegramVisualPart.EnterInAccount
 
                 _system.Token = token;
 
-                if (_system is null)
+/*                if (_system is null)
                 {
                     MessageBox.Show("Bruh...");
                     return;
-                }
+                }*/
             }
             else
             {
@@ -78,9 +78,7 @@ namespace TelegramVisualPart.EnterInAccount
 
             _system.SetEmptyUserImages();
 
-
             await ShitTest();
-
 
             bool isOnline = await ApiService.IsUserOnline(_system.LoggedUser.Id);
             if (isOnline)
@@ -136,41 +134,42 @@ namespace TelegramVisualPart.EnterInAccount
 
         public async Task ShitTest()
         {
-/*            const int usersAmount = 100;
+            /*            const int usersAmount = 100;
 
-            //Add 100 users
-            for (int i = 0; i < usersAmount; i++)
-            {
-                string iS = i.ToString();
+                        //Add 100 users
+                        for (int i = 0; i < usersAmount; i++)
+                        {
+                            string iS = i.ToString();
 
-                await ApiService.AddNewUser(iS, iS, iS, iS, iS, DateTime.Now);
+                            await ApiService.AddNewUser(iS, iS, iS, iS, iS, DateTime.Now);
 
-                int dbId = i + 2;
+                            int dbId = i + 2;
 
-                await ApiService.AddUserBasicColor(dbId);
-                await ApiService.AddUserSettings(dbId);
-                await ApiService.AddSavedMessagesChat(dbId);
-            }
+                            await ApiService.AddUserBasicColor(dbId);
+                            await ApiService.AddUserSettings(dbId);
+                            await ApiService.AddSavedMessagesChat(dbId);
+                        }
 
-            int addId = 1;
-            //contact To EachOther
-            for (int i = 2; i < usersAmount + 1; i++)
-            {
-                string temp = i.ToString();
-                string prev = (i - 1).ToString();
+                        int addId = 1;
+                        //contact To EachOther
+                        for (int i = 2; i < usersAmount + 1; i++)
+                        {
+                            string temp = i.ToString();
+                            string prev = (i - 1).ToString();
 
-                UserContactcs prevCont = new UserContactcs(-1, prev, prev, prev, DateTime.Now, string.Empty, prev, DateTime.Now, false, null, null, false);
-                prevCont.ContactUserId = i;
+                            UserContactcs prevCont = new UserContactcs(-1, prev, prev, prev, DateTime.Now, string.Empty, prev, DateTime.Now, false, null, null, false);
+                            prevCont.ContactUserId = i;
 
-                UserContactcs tempCont = new UserContactcs(-1, temp, temp, temp, DateTime.Now, string.Empty, temp, DateTime.Now, false, null, null, false);
-                tempCont.ContactUserId = addId;
+                            UserContactcs tempCont = new UserContactcs(-1, temp, temp, temp, DateTime.Now, string.Empty, temp, DateTime.Now, false, null, null, false);
+                            tempCont.ContactUserId = addId;
 
 
-                await ApiService.AddContact(addId, prevCont);
-                await ApiService.AddContact(i, tempCont);
-            }
-*/
+                            await ApiService.AddContact(addId, prevCont);
+                            await ApiService.AddContact(i, tempCont);
+                        }*/
+
             return;
+
             //Messages In chat
             for (int i = 0; i < _system.Contacts.Count; i++)
             {

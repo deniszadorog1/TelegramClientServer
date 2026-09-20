@@ -120,7 +120,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
             ChooseFromFileGrid.Background = new SolidColorBrush(Colors.Transparent);
         }
 
-        private void ChooseFromFileGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private async void ChooseFromFileGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             const string title = "Choose wallpaper";
             const string filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
@@ -140,7 +140,7 @@ namespace TelegramVisualPart.Pages.Settings.ChatSettings.ChatSetPages
                 if (!FilesAction.IsFileIsImage(selectedFile)) return;
 
                 //if an image -> add in db
-                ApiService.AddWallpaper(fileName);
+                await ApiService.AddWallpaper(fileName); 
 
                 //Add in wallpapers folder
                 FilesAction.AddNewWallpaper(selectedFile);

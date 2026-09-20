@@ -610,15 +610,7 @@ namespace TelegramLib.MainClasses
                 if (!(mes is null)) return mes;
             }
 
-            /*if (_isSavedMesChat)
-            {*/
-            res = SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
-
-            return res;
-            if (!(res is null)) return res;
-            //}
-
-            return res;
+            return SavedMesesChat.Messages.FirstOrDefault(x => x.Id == id);
         }
 
         public void RemoveMessageById(int id)
@@ -850,24 +842,6 @@ namespace TelegramLib.MainClasses
         public string GetAutDelDurationInString(Enums.Chat.AutoDeleteType type)
         {
             return durs[(int)type];
-
-            return type == Enums.Chat.AutoDeleteType.OneDay ? "1d" :
-                type == Enums.Chat.AutoDeleteType.TwoDays ? "2d" :
-                type == Enums.Chat.AutoDeleteType.ThreeDays ? "3d" :
-                type == Enums.Chat.AutoDeleteType.FourDays ? "4d" :
-                type == Enums.Chat.AutoDeleteType.FiveDays ? "5d" :
-                type == Enums.Chat.AutoDeleteType.SixDays ? "6d" :
-                type == Enums.Chat.AutoDeleteType.OneWeek ? "1w" :
-                type == Enums.Chat.AutoDeleteType.TwoWeeks ? "2w" :
-                type == Enums.Chat.AutoDeleteType.ThreeWeeks ? "3w" :
-                type == Enums.Chat.AutoDeleteType.OneMonth ? "1m" :
-                type == Enums.Chat.AutoDeleteType.TwoMonths ? "2m" :
-                type == Enums.Chat.AutoDeleteType.ThreeMonths ? "3m" :
-                type == Enums.Chat.AutoDeleteType.FourMonths ? "4m" :
-                type == Enums.Chat.AutoDeleteType.FiveMonths ? "5m" :
-                type == Enums.Chat.AutoDeleteType.SixMonths ? "6m" :
-                type == Enums.Chat.AutoDeleteType.OneYear ? "1y" :
-                "ct";
         }
 
 

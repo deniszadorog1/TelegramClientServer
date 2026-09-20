@@ -30,6 +30,7 @@ namespace TelegramVisualPart.Pages.ChatActions
 
         public async Task SetBasicParams()
         {
+            const int chatterHeight = 100;
             if (_chat.Chatter is null)
             {
                 UsernameBlock.Text = "?"; //"Clear saved messes";
@@ -39,7 +40,7 @@ namespace TelegramVisualPart.Pages.ChatActions
                 BothPanelRow.Height = new GridLength(0);
                 EnAutoDeleteRow.Height = new GridLength(0);
 
-                Height -= 100;
+                Height -= chatterHeight;
                 return;
             }
             TelegramLib.MainClasses.User user =

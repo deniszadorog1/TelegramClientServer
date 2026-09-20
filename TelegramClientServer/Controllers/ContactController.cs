@@ -21,8 +21,6 @@ namespace TelegramClientServer.Controllers
         [HttpPut("AddContact")]
         public void AddContact([FromBody] ContactDTO contact)
         {
-/*            int userId = _clientProps.GetCurrentUserId();
-            if (contact.UserId != userId) return;*/
 
             DbService.AddContact(contact.Contact, contact.UserId);
         }

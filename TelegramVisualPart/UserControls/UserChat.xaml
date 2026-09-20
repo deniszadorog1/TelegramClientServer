@@ -447,7 +447,7 @@
                 <!--Reply message params-->
                 <Grid Grid.Column="2"
                       PreviewMouseLeftButtonDown="ReplyBorder_PreviewMouseLeftButtonDown">
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -553,7 +553,7 @@
                                              HorizontalAlignment="Center"
                                              Foreground="Gray"/>
                 </Grid>
-                
+
                 <Grid Name="EmojisGrid" 
                       HorizontalAlignment="Right"
                       Margin="0 0 10 0"
@@ -595,6 +595,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="75"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="75"/>
@@ -612,7 +613,14 @@
                                          Foreground="LightBlue"/>
             </Grid>
 
-            <Grid Grid.Column="2" Background="Transparent"
+            <Grid Grid.Column="1" Name="AmountOfSamesGrid" VerticalAlignment="Center"
+                  HorizontalAlignment="Center">
+                <TextBlock Name="TempSearchNumber" Margin="0 0 0 3" FontWeight="Medium"
+                           Foreground="LightBlue" FontSize="18"/> 
+            </Grid>
+
+
+            <Grid Grid.Column="3" Background="Transparent"
                   MouseEnter="OnlyChatArrowUp_MouseEnter"
                   MouseLeave="OnlyChatArrowUp_MouseLeave"
                   PreviewMouseLeftButtonDown="OnlyChatArrowUp_PreviewMouseLeftButtonDown">
@@ -624,7 +632,7 @@
                                          Foreground="Gray"/>
             </Grid>
 
-            <Grid Grid.Column="3" Background="Transparent"
+            <Grid Grid.Column="4" Background="Transparent"
                   MouseEnter="OnlyChatArrowDown_MouseEnter"
                   MouseLeave="OnlyChatArrowDown_MouseLeave"
                   PreviewMouseLeftButtonDown="OnlyChatArrowDown_PreviewMouseLeftButtonDown">

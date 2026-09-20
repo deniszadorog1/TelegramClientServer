@@ -61,7 +61,7 @@ namespace TelegramVisualPart.Pages.Settings.Folders
                 .Where(x => x.Content is FolderChatType folder && folder.TypeName.Text == name)
                 .FirstOrDefault();
 
-            return item is null ? null : (FolderChatType)item.Content;
+            return item is null ? null : (FolderChatType)item.Content; //item?.Content
         }
 
         public async void SetContacts()

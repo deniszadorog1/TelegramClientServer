@@ -74,10 +74,13 @@ namespace TelegramVisualPart.Pages.Settings.PrivAndSecurity
 
         public void SetLocalPasscodeStatus()
         {
+            const string _off = "Off";
+            const string _on = "On";
+
             LocalPasscode.EnumPart.Text = 
                 (_system.Settings.PrivacySettings.PassCode is null || 
                 _system.Settings.PrivacySettings.PassCode.MinutesTimer == -1)  ?
-                "Off" : "On";
+                _off : _on;
         }
 
         private void Buts_MouseEnter(object sender, MouseEventArgs e)
